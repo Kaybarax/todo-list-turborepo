@@ -39,7 +39,7 @@ jobs:
         run: npm run build-storybook
 
       - name: Publish to Chromatic
-        uses: chromaui/action@v1
+        uses: chromaui/action@v13
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN_UI_WEB }}
           workingDir: packages/ui-web
@@ -75,7 +75,7 @@ jobs:
         run: npm run build-storybook
 
       - name: Publish to Chromatic
-        uses: chromaui/action@v1
+        uses: chromaui/action@v13
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN_UI_MOBILE }}
           workingDir: packages/ui-mobile
