@@ -21,7 +21,7 @@ jobs:
         working-directory: packages/ui-web
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Required for Chromatic to track changes correctly
 
@@ -57,7 +57,7 @@ jobs:
     if: ${{ hashFiles('packages/ui-mobile/package.json') != '' }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Required for Chromatic to track changes correctly
 
