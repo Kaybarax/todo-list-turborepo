@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Modal, Alert } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, Modal, Alert, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Link } from 'expo-router';
 import { TodoForm } from '../src/components/TodoForm';
 import { TodoList } from '../src/components/TodoList';
+import { BlockchainStats } from '../src/components/BlockchainStats';
 import { useTodoStore, type Todo } from '../src/store/todoStore';
+import { useWallet } from '../src/providers/WalletProvider';
 
 export default function TodosScreen() {
   const [showForm, setShowForm] = useState(false);
@@ -20,6 +23,8 @@ export default function TodosScreen() {
     syncToBlockchain,
     fetchTodos,
   } = useTodoStore();
+
+  const { isConnected } = useWallet();
 
   useEffect(() => {
     fetchTodos();
@@ -50,9 +55,23 @@ export default function TodosScreen() {
   };
 
   const handleBlockchainSync = async (id: string, network: 'solana' | 'polkadot' | 'polygon') => {
+    if (!isConnected) {
+      Alert.alert(
+        'Wallet Required',
+        'Please connect your wallet first to sync todos to blockchain.',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Connect Wallet', onPress: () => {
+            // Navigation will be handled by the Link component
+          }},
+        ]
+      );
+      return;
+    }
+
     try {
       await syncToBlockchain(id, network);
-      Alert.alert('Success', `Todo synced to ${network} blockchain!`);
+      // Success alert is handled by the blockchain service
     } catch (error) {
       Alert.alert('Error', 'Failed to sync to blockchain: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
@@ -64,22 +83,40 @@ export default function TodosScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {error && (
           <View style={styles.errorContainer}>
             <Text style={styles.errorText}>{error}</Text>
           </View>
         )}
 
-        <TodoList
-          todos={todos}
-          onToggle={toggleTodo}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onBlockchainSync={handleBlockchainSync}
-          onRefresh={handleRefresh}
-          refreshing={isLoading}
-        />
+        {!isConnected && todos.length > 0 && (
+          <View style={styles.walletWarningContainer}>
+            <Text style={styles.walletWarningTitle}>Wallet Not Connected</Text>
+            <Text style={styles.walletWarningText}>
+              Connect your wallet to sync todos to blockchain networks.
+            </Text>
+            <Link href="/wallet" asChild>
+              <TouchableOpacity style={styles.walletWarningButton}>
+                <Text style={styles.walletWarningButtonText}>Connect Wallet</Text>
+              </TouchableOpacity>
+            </Link>
+          </View>
+        )}
+
+        <BlockchainStats todos={todos} />
+
+        <View style={styles.todoListContainer}>
+          <TodoList
+            todos={todos}
+            onToggle={toggleTodo}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onBlockchainSync={isConnected ? handleBlockchainSync : undefined}
+            onRefresh={handleRefresh}
+            refreshing={isLoading}
+          />
+        </View>
 
         <TouchableOpacity
           style={styles.fab}
@@ -118,7 +155,7 @@ export default function TodosScreen() {
             />
           </SafeAreaView>
         </Modal>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -144,6 +181,43 @@ const styles = StyleSheet.create({
     color: '#dc2626',
     fontSize: 14,
     textAlign: 'center',
+  },
+  walletWarningContainer: {
+    backgroundColor: '#fef3c7',
+    borderColor: '#fbbf24',
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  walletWarningTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#92400e',
+    marginBottom: 8,
+  },
+  walletWarningText: {
+    fontSize: 14,
+    color: '#92400e',
+    textAlign: 'center',
+    marginBottom: 12,
+    lineHeight: 20,
+  },
+  walletWarningButton: {
+    backgroundColor: '#f59e0b',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  walletWarningButtonText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  todoListContainer: {
+    flex: 1,
+    minHeight: 400,
   },
   fab: {
     position: 'absolute',

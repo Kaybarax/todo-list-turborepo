@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { createMobileBlockchainService, todoToBlockchainTodo, type TransactionResult } from '../services/blockchainService';
 
 export interface Todo {
   id: string;
@@ -102,18 +103,23 @@ export const useTodoStore = create<TodoStore>()(
             throw new Error('Todo not found');
           }
 
-          // Mock blockchain sync - will be replaced with actual implementation
-          await new Promise((resolve) => setTimeout(resolve, 2000));
+          // Create mobile blockchain service for the selected network
+          const blockchainService = createMobileBlockchainService(network);
           
-          const mockTransactionHash = `${network}-${Math.random().toString(16).substr(2, 32)}`;
+          // Convert todo to blockchain format
+          const blockchainTodo = todoToBlockchainTodo(todo);
           
+          // Create todo on blockchain
+          const result: TransactionResult = await blockchainService.createTodo(blockchainTodo);
+          
+          // Update todo with blockchain information
           set((state) => ({
             todos: state.todos.map((todo) =>
               todo.id === id
                 ? {
                     ...todo,
                     blockchainNetwork: network,
-                    transactionHash: mockTransactionHash,
+                    transactionHash: result.hash,
                     blockchainAddress: `${network}-${id}`,
                     updatedAt: new Date(),
                   }
@@ -121,6 +127,23 @@ export const useTodoStore = create<TodoStore>()(
             ),
             isLoading: false,
           }));
+
+          // Wait for transaction confirmation in the background
+          blockchainService.waitForTransaction(result.hash).then((confirmedResult) => {
+            set((state) => ({
+              todos: state.todos.map((todo) =>
+                todo.id === id && todo.transactionHash === result.hash
+                  ? {
+                      ...todo,
+                      // Could add more blockchain metadata here
+                      updatedAt: new Date(),
+                    }
+                  : todo
+              ),
+            }));
+          }).catch((error) => {
+            console.error('Transaction confirmation failed:', error);
+          });
           
         } catch (error) {
           set({
