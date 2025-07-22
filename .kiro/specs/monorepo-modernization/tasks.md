@@ -26,26 +26,26 @@
     - Add blockchain contract testing configurations
     - _Requirements: 9.1, 9.2, 9.4, 9.5_
 
-- [ ] 3. Rebuild web application as Next.js application
-  - [ ] 3.1 Initialize Next.js 14 application with App Router
+- [x] 3. Rebuild web application as Next.js application
+  - [x] 3.1 Initialize Next.js 14 application with App Router
     - Remove existing Vite-based web application
     - Create new Next.js application structure with TypeScript
     - Configure Tailwind CSS and basic layout components
     - _Requirements: 2.1, 2.2, 2.4_
 
-  - [ ] 3.2 Implement todo management interface
+  - [x] 3.2 Implement todo management interface
     - Create todo list components using shared UI library
     - Implement CRUD operations for todos with API integration
     - Add responsive design for mobile and desktop views
     - _Requirements: 2.2, 2.3_
 
-  - [ ] 3.3 Integrate WalletConnect for blockchain connectivity
+  - [x] 3.3 Integrate WalletConnect for blockchain connectivity
     - Install and configure WalletConnect v2 for Next.js
     - Create wallet connection components and context
     - Implement multi-network support (Solana, Polkadot, Polygon)
     - _Requirements: 6.1, 6.2, 6.3_
 
-  - [ ] 3.4 Implement blockchain todo storage functionality
+  - [x] 3.4 Implement blockchain todo storage functionality
     - Create blockchain service layer for contract interactions
     - Implement todo saving to selected blockchain networks
     - Add transaction status tracking and user feedback
