@@ -1,11 +1,12 @@
 module.exports = {
   extends: [
-    './react',
+    './react.js',
     'plugin:react-native/all'
   ],
   plugins: ['react-native'],
   env: {
-    'react-native/react-native': true
+    'react-native/react-native': true,
+    node: true
   },
   rules: {
     // React Native specific rules
@@ -14,6 +15,7 @@ module.exports = {
     'react-native/no-color-literals': 'warn',
     'react-native/no-raw-text': ['error', { skip: ['Button', 'Text'] }],
     'react-native/no-single-element-style-arrays': 'error',
+    'react-native/sort-styles': 'warn',
 
     // Accessibility
     'react-native/accessibility-label': 'error',
@@ -21,6 +23,7 @@ module.exports = {
     // Override React rules for React Native
     'jsx-a11y/accessible-emoji': 'off', // React Native handles emoji accessibility
     'jsx-a11y/anchor-is-valid': 'off', // Not applicable in React Native
+    'jsx-a11y/alt-text': 'off', // Different accessibility model in RN
 
     // Performance
     'react/jsx-no-bind': ['warn', {
@@ -29,6 +32,21 @@ module.exports = {
       allowArrowFunctions: true,
       allowFunctions: false,
       allowBind: false
-    }]
+    }],
+
+    // Expo specific
+    'import/no-unresolved': ['error', { ignore: ['expo'] }],
+    
+    // React Native Metro bundler
+    'import/no-nodejs-modules': 'off' // Allow Node.js modules in React Native
+  },
+  settings: {
+    'import/resolver': {
+      'react-native': {},
+      typescript: {
+        alwaysTryTypes: true,
+        project: './tsconfig.json'
+      }
+    }
   }
 };

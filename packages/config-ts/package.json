@@ -7,8 +7,10 @@
     "base.json",
     "react.json",
     "nextjs.json",
+    "nestjs.json",
     "react-native.json",
-    "node.json"
+    "node.json",
+    "library.json"
   ],
   "devDependencies": {
     "typescript": "^5.3.3"

@@ -6,19 +6,24 @@
   "files": [
     "base.js",
     "nextjs.js",
+    "nestjs.js",
     "react.js",
-    "react-native.js"
+    "react-native.js",
+    "solidity.js"
   ],
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.15.0",
-    "@typescript-eslint/parser": "^6.15.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
     "eslint-config-next": "^14.0.4",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-native": "^4.1.0"
+    "eslint-plugin-react-native": "^4.1.0",
+    "eslint-plugin-security": "^2.1.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1"
   },
   "devDependencies": {
     "eslint": "^8.56.0",
