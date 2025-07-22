@@ -3,7 +3,9 @@
 import { useState, useEffect } from 'react';
 import { TodoForm } from '@/components/TodoForm';
 import { TodoList } from '@/components/TodoList';
+import { BlockchainStats } from '@/components/BlockchainStats';
 import { useTodoStore } from '@/store/todoStore';
+import { useWallet } from '@/components/WalletProvider';
 import type { Todo } from '@/components/TodoItem';
 
 export default function TodosPage() {
@@ -21,6 +23,8 @@ export default function TodosPage() {
     syncToBlockchain,
     fetchTodos,
   } = useTodoStore();
+
+  const { isConnected } = useWallet();
 
   useEffect(() => {
     fetchTodos();
@@ -53,10 +57,16 @@ export default function TodosPage() {
   };
 
   const handleBlockchainSync = async (id: string, network: 'solana' | 'polkadot' | 'polygon') => {
+    if (!isConnected) {
+      alert('Please connect your wallet first to sync todos to blockchain.');
+      return;
+    }
+
     try {
       await syncToBlockchain(id, network);
     } catch (error) {
       console.error('Failed to sync to blockchain:', error);
+      alert('Failed to sync to blockchain: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   };
 
@@ -117,6 +127,31 @@ export default function TodosPage() {
         </div>
       )}
 
+      {!isConnected && todos.length > 0 && (
+        <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-yellow-800">Wallet Not Connected</h3>
+              <div className="mt-2 text-sm text-yellow-700">
+                <p>
+                  Connect your wallet to sync todos to blockchain networks.{' '}
+                  <a href="/wallet" className="font-medium underline hover:text-yellow-600">
+                    Go to wallet page
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <BlockchainStats todos={todos} />
+
       {isLoading && (
         <div className="flex justify-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
@@ -128,7 +163,7 @@ export default function TodosPage() {
         onToggle={toggleTodo}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        onBlockchainSync={handleBlockchainSync}
+        onBlockchainSync={isConnected ? handleBlockchainSync : undefined}
       />
     </div>
   );

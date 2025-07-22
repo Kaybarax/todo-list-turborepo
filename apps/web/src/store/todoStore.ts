@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Todo } from '@/components/TodoItem';
+import { createBlockchainService, todoToBlockchainTodo, type TransactionResult } from '@/services/blockchainService';
 
 interface TodoStore {
   todos: Todo[];
@@ -79,25 +80,55 @@ export const useTodoStore = create<TodoStore>()(
         set({ isLoading: true, error: null });
         
         try {
-          // Mock blockchain sync - will be replaced with actual implementation
-          await new Promise((resolve) => setTimeout(resolve, 2000));
+          const state = get();
+          const todo = state.todos.find(t => t.id === id);
           
-          const mockTransactionHash = `0x${Math.random().toString(16).substr(2, 64)}`;
+          if (!todo) {
+            throw new Error('Todo not found');
+          }
+
+          // Create blockchain service for the selected network
+          const blockchainService = createBlockchainService(network);
           
+          // Convert todo to blockchain format
+          const blockchainTodo = todoToBlockchainTodo(todo);
+          
+          // Create todo on blockchain
+          const result: TransactionResult = await blockchainService.createTodo(blockchainTodo);
+          
+          // Update todo with blockchain information
           set((state) => ({
             todos: state.todos.map((todo) =>
               todo.id === id
                 ? {
                     ...todo,
                     blockchainNetwork: network,
-                    transactionHash: mockTransactionHash,
-                    blockchainAddress: `${network}-address-${id}`,
+                    transactionHash: result.hash,
+                    blockchainAddress: `${network}-${id}`,
                     updatedAt: new Date(),
                   }
                 : todo
             ),
             isLoading: false,
           }));
+
+          // Wait for transaction confirmation in the background
+          blockchainService.waitForTransaction(result.hash).then((confirmedResult) => {
+            set((state) => ({
+              todos: state.todos.map((todo) =>
+                todo.id === id && todo.transactionHash === result.hash
+                  ? {
+                      ...todo,
+                      // Could add more blockchain metadata here
+                      updatedAt: new Date(),
+                    }
+                  : todo
+              ),
+            }));
+          }).catch((error) => {
+            console.error('Transaction confirmation failed:', error);
+          });
+          
         } catch (error) {
           set({
             error: error instanceof Error ? error.message : 'Failed to sync to blockchain',

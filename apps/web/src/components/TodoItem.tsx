@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { TransactionStatus } from './TransactionStatus';
 
 export interface Todo {
   id: string;
@@ -150,12 +151,12 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
             ))}
           </div>
 
-          {todo.transactionHash && (
-            <div className="mt-2 text-xs text-gray-500">
-              <span className="font-medium">Tx:</span>{' '}
-              <code className="bg-gray-100 px-1 py-0.5 rounded">
-                {todo.transactionHash.slice(0, 8)}...{todo.transactionHash.slice(-8)}
-              </code>
+          {todo.transactionHash && todo.blockchainNetwork && (
+            <div className="mt-2">
+              <TransactionStatus
+                transactionHash={todo.transactionHash}
+                network={todo.blockchainNetwork}
+              />
             </div>
           )}
 
