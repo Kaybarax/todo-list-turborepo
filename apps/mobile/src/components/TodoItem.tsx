@@ -1,0 +1,403 @@
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from 'react-native';
+import type { Todo } from '../store/todoStore';
+
+interface TodoItemProps {
+  todo: Todo;
+  onToggle: (id: string) => void;
+  onEdit: (todo: Todo) => void;
+  onDelete: (id: string) => void;
+  onBlockchainSync?: (id: string, network: 'solana' | 'polkadot' | 'polygon') => void;
+}
+
+export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }: TodoItemProps) {
+  const [showActions, setShowActions] = useState(false);
+
+  const priorityColors = {
+    low: '#10b981',
+    medium: '#f59e0b',
+    high: '#ef4444',
+  };
+
+  const networkColors = {
+    solana: '#9333ea',
+    polkadot: '#ec4899',
+    polygon: '#6366f1',
+  };
+
+  const formatDate = (date: Date) => {
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    }).format(date);
+  };
+
+  const isOverdue = todo.dueDate && new Date(todo.dueDate) < new Date() && !todo.completed;
+
+  const handleDelete = () => {
+    Alert.alert(
+      'Delete Todo',
+      'Are you sure you want to delete this todo?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Delete', style: 'destructive', onPress: () => onDelete(todo.id) },
+      ]
+    );
+  };
+
+  const handleBlockchainSync = () => {
+    if (!onBlockchainSync) return;
+
+    Alert.alert(
+      'Sync to Blockchain',
+      'Choose a network to sync this todo:',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Solana', onPress: () => onBlockchainSync(todo.id, 'solana') },
+        { text: 'Polkadot', onPress: () => onBlockchainSync(todo.id, 'polkadot') },
+        { text: 'Polygon', onPress: () => onBlockchainSync(todo.id, 'polygon') },
+      ]
+    );
+  };
+
+  return (
+    <TouchableOpacity
+      style={[
+        styles.container,
+        todo.completed && styles.completedContainer,
+        isOverdue && styles.overdueContainer,
+      ]}
+      onPress={() => setShowActions(!showActions)}
+      activeOpacity={0.7}
+    >
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.checkbox}
+          onPress={() => onToggle(todo.id)}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <View style={[styles.checkboxInner, todo.completed && styles.checkboxChecked]}>
+            {todo.completed && <Text style={styles.checkmark}>✓</Text>}
+          </View>
+        </TouchableOpacity>
+
+        <View style={styles.content}>
+          <Text
+            style={[
+              styles.title,
+              todo.completed && styles.completedTitle,
+            ]}
+            numberOfLines={2}
+          >
+            {todo.title}
+          </Text>
+
+          {todo.description && (
+            <Text
+              style={[
+                styles.description,
+                todo.completed && styles.completedDescription,
+              ]}
+              numberOfLines={2}
+            >
+              {todo.description}
+            </Text>
+          )}
+
+          <View style={styles.metadata}>
+            <View
+              style={[
+                styles.priorityBadge,
+                { backgroundColor: priorityColors[todo.priority] },
+              ]}
+            >
+              <Text style={styles.priorityText}>{todo.priority}</Text>
+            </View>
+
+            {todo.dueDate && (
+              <View
+                style={[
+                  styles.dueDateBadge,
+                  isOverdue && styles.overdueBadge,
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.dueDateText,
+                    isOverdue && styles.overdueText,
+                  ]}
+                >
+                  {formatDate(todo.dueDate)}
+                </Text>
+              </View>
+            )}
+
+            {todo.blockchainNetwork && (
+              <View
+                style={[
+                  styles.networkBadge,
+                  { backgroundColor: networkColors[todo.blockchainNetwork] },
+                ]}
+              >
+                <Text style={styles.networkText}>{todo.blockchainNetwork}</Text>
+              </View>
+            )}
+          </View>
+
+          {todo.tags.length > 0 && (
+            <View style={styles.tagsContainer}>
+              {todo.tags.slice(0, 3).map((tag) => (
+                <View key={tag} style={styles.tag}>
+                  <Text style={styles.tagText}>{tag}</Text>
+                </View>
+              ))}
+              {todo.tags.length > 3 && (
+                <Text style={styles.moreTagsText}>+{todo.tags.length - 3}</Text>
+              )}
+            </View>
+          )}
+
+          {todo.transactionHash && (
+            <View style={styles.transactionContainer}>
+              <Text style={styles.transactionLabel}>Tx:</Text>
+              <Text style={styles.transactionHash}>
+                {todo.transactionHash.slice(0, 8)}...{todo.transactionHash.slice(-8)}
+              </Text>
+            </View>
+          )}
+        </View>
+      </View>
+
+      {showActions && (
+        <View style={styles.actionsContainer}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => onEdit(todo)}
+          >
+            <Text style={styles.actionButtonText}>Edit</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.actionButton, styles.deleteButton]}
+            onPress={handleDelete}
+          >
+            <Text style={[styles.actionButtonText, styles.deleteButtonText]}>Delete</Text>
+          </TouchableOpacity>
+
+          {onBlockchainSync && !todo.blockchainNetwork && (
+            <TouchableOpacity
+              style={[styles.actionButton, styles.syncButton]}
+              onPress={handleBlockchainSync}
+            >
+              <Text style={[styles.actionButtonText, styles.syncButtonText]}>Sync</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
+    </TouchableOpacity>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  completedContainer: {
+    opacity: 0.7,
+  },
+  overdueContainer: {
+    borderLeftWidth: 4,
+    borderLeftColor: '#ef4444',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  checkbox: {
+    marginRight: 12,
+    marginTop: 2,
+  },
+  checkboxInner: {
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: '#d1d5db',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkboxChecked: {
+    backgroundColor: '#2563eb',
+    borderColor: '#2563eb',
+  },
+  checkmark: {
+    color: '#ffffff',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  content: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1f2937',
+    marginBottom: 4,
+  },
+  completedTitle: {
+    textDecorationLine: 'line-through',
+    color: '#6b7280',
+  },
+  description: {
+    fontSize: 14,
+    color: '#6b7280',
+    marginBottom: 8,
+    lineHeight: 20,
+  },
+  completedDescription: {
+    color: '#9ca3af',
+  },
+  metadata: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  priorityBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    marginRight: 8,
+    marginBottom: 4,
+  },
+  priorityText: {
+    color: '#ffffff',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  dueDateBadge: {
+    backgroundColor: '#f3f4f6',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    marginRight: 8,
+    marginBottom: 4,
+  },
+  overdueBadge: {
+    backgroundColor: '#fef2f2',
+  },
+  dueDateText: {
+    color: '#374151',
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  overdueText: {
+    color: '#dc2626',
+  },
+  networkBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    marginRight: 8,
+    marginBottom: 4,
+  },
+  networkText: {
+    color: '#ffffff',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  tagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  tag: {
+    backgroundColor: '#dbeafe',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    marginRight: 6,
+    marginBottom: 4,
+  },
+  tagText: {
+    color: '#1e40af',
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  moreTagsText: {
+    color: '#6b7280',
+    fontSize: 12,
+    fontStyle: 'italic',
+  },
+  transactionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  transactionLabel: {
+    fontSize: 12,
+    color: '#6b7280',
+    fontWeight: '500',
+    marginRight: 4,
+  },
+  transactionHash: {
+    fontSize: 12,
+    color: '#374151',
+    fontFamily: 'monospace',
+    backgroundColor: '#f3f4f6',
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  actionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#f3f4f6',
+  },
+  actionButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    marginLeft: 8,
+    backgroundColor: '#f3f4f6',
+  },
+  actionButtonText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#374151',
+  },
+  deleteButton: {
+    backgroundColor: '#fef2f2',
+  },
+  deleteButtonText: {
+    color: '#dc2626',
+  },
+  syncButton: {
+    backgroundColor: '#eff6ff',
+  },
+  syncButtonText: {
+    color: '#2563eb',
+  },
+});
