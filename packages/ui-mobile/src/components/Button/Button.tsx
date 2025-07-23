@@ -1,17 +1,35 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, ViewStyle, TextStyle } from 'react-native';
+import { 
+  TouchableOpacity, 
+  Text, 
+  StyleSheet, 
+  ActivityIndicator, 
+  ViewStyle, 
+  TextStyle,
+  View
+} from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import theme from '../../theme';
 
-export type ButtonProps = {
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'danger' | 'success' | 'ghost';
+export type ButtonSize = 'small' | 'medium' | 'large';
+
+export interface ButtonProps {
   title: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'outline' | 'danger';
-  size?: 'small' | 'medium' | 'large';
+  variant?: ButtonVariant;
+  size?: ButtonSize;
   disabled?: boolean;
   loading?: boolean;
+  leftIcon?: string;
+  rightIcon?: string;
+  iconColor?: string;
   style?: ViewStyle;
   textStyle?: TextStyle;
-};
+  fullWidth?: boolean;
+  rounded?: boolean;
+  accessibilityLabel?: string;
+}
 
 export const Button: React.FC<ButtonProps> = ({
   title,
@@ -20,13 +38,21 @@ export const Button: React.FC<ButtonProps> = ({
   size = 'medium',
   disabled = false,
   loading = false,
+  leftIcon,
+  rightIcon,
+  iconColor,
   style,
   textStyle,
+  fullWidth = false,
+  rounded = false,
+  accessibilityLabel,
 }) => {
   const buttonStyles = [
     styles.button,
     styles[`${variant}Button`],
     styles[`${size}Button`],
+    rounded && styles.roundedButton,
+    fullWidth && styles.fullWidthButton,
     disabled && styles.disabledButton,
     style,
   ];
@@ -39,20 +65,55 @@ export const Button: React.FC<ButtonProps> = ({
     textStyle,
   ];
 
+  const getIconColor = () => {
+    if (iconColor) return iconColor;
+    
+    switch (variant) {
+      case 'outline':
+      case 'ghost':
+        return theme.colors.primary;
+      default:
+        return theme.colors.white;
+    }
+  };
+
+  const iconSize = size === 'small' ? 16 : size === 'medium' ? 20 : 24;
+
   return (
     <TouchableOpacity
       style={buttonStyles}
       onPress={onPress}
       disabled={disabled || loading}
       activeOpacity={0.7}
+      accessibilityLabel={accessibilityLabel || title}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: disabled || loading }}
     >
       {loading ? (
         <ActivityIndicator
           size="small"
-          color={variant === 'outline' ? theme.colors.primary : theme.colors.white}
+          color={variant === 'outline' || variant === 'ghost' ? theme.colors.primary : theme.colors.white}
         />
       ) : (
-        <Text style={textStyles}>{title}</Text>
+        <View style={styles.contentContainer}>
+          {leftIcon && (
+            <MaterialIcons 
+              name={leftIcon} 
+              size={iconSize} 
+              color={getIconColor()} 
+              style={styles.leftIcon} 
+            />
+          )}
+          <Text style={textStyles}>{title}</Text>
+          {rightIcon && (
+            <MaterialIcons 
+              name={rightIcon} 
+              size={iconSize} 
+              color={getIconColor()} 
+              style={styles.rightIcon} 
+            />
+          )}
+        </View>
       )}
     </TouchableOpacity>
   );
@@ -65,9 +126,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
+  contentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   text: {
     fontWeight: theme.fontWeights.medium,
     textAlign: 'center',
+  },
+  leftIcon: {
+    marginRight: theme.spacing.xs,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.xs,
   },
   // Variant styles
   primaryButton: {
@@ -95,6 +167,18 @@ const styles = StyleSheet.create({
   },
   dangerText: {
     color: theme.colors.white,
+  },
+  successButton: {
+    backgroundColor: theme.colors.success,
+  },
+  successText: {
+    color: theme.colors.white,
+  },
+  ghostButton: {
+    backgroundColor: 'transparent',
+  },
+  ghostText: {
+    color: theme.colors.primary,
   },
   // Size styles
   smallButton: {
@@ -125,9 +209,17 @@ const styles = StyleSheet.create({
   disabledButton: {
     backgroundColor: theme.colors.medium,
     opacity: 0.5,
+    borderWidth: 0,
   },
   disabledText: {
     color: theme.colors.light,
+  },
+  // Additional styles
+  roundedButton: {
+    borderRadius: theme.borderRadius.round,
+  },
+  fullWidthButton: {
+    width: '100%',
   },
 });
 
