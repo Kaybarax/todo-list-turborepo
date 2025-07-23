@@ -5,10 +5,11 @@
   "scripts": {
     "build": "anchor build",
     "test": "anchor test",
-    "deploy:localnet": "anchor deploy --provider.cluster localnet",
-    "deploy:devnet": "anchor deploy --provider.cluster devnet",
-    "deploy:mainnet": "anchor deploy --provider.cluster mainnet",
-    "generate-types": "anchor build && anchor idl parse --file target/idl/todo_program.json --out app/src/types/todo_program.ts",
+    "deploy:localnet": "anchor deploy --provider.cluster localnet && ts-node scripts/deploy-localnet.ts",
+    "deploy:devnet": "anchor deploy --provider.cluster devnet && ts-node scripts/deploy-devnet.ts",
+    "deploy:mainnet": "anchor deploy --provider.cluster mainnet && ts-node scripts/deploy-mainnet.ts",
+    "generate-types": "anchor build && ts-node scripts/generate-types.ts",
+    "client-example": "ts-node examples/client-integration.ts",
     "lint": "eslint . --ext .ts,.js",
     "typecheck": "tsc --noEmit"
   },
