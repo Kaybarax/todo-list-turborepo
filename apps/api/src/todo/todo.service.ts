@@ -1,7 +1,8 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, Logger } from '@nestjs/common';
 import { FilterQuery } from 'mongoose';
 import { Todo, TodoDocument } from './schemas/todo.schema';
 import { TodoRepository } from './repositories/todo.repository';
+import { CacheService } from '../cache/cache.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { QueryTodoDto } from './dto/query-todo.dto';
@@ -16,8 +17,12 @@ export interface PaginatedTodos {
 
 @Injectable()
 export class TodoService {
+  private readonly logger = new Logger(TodoService.name);
+  private readonly CACHE_TTL = 300; // 5 minutes
+
   constructor(
     private readonly todoRepository: TodoRepository,
+    private readonly cacheService: CacheService,
   ) {}
 
   async create(createTodoDto: CreateTodoDto, userId: string): Promise<Todo> {
@@ -27,11 +32,27 @@ export class TodoService {
       dueDate: createTodoDto.dueDate ? new Date(createTodoDto.dueDate) : undefined,
     };
     
-    return this.todoRepository.create(todoData);
+    const todo = await this.todoRepository.create(todoData);
+    
+    // Invalidate user's cached data
+    await this.invalidateUserCache(userId);
+    
+    return todo;
   }
 
   async findAll(queryDto: QueryTodoDto, userId: string): Promise<PaginatedTodos> {
     const { page, limit, completed, priority, blockchainNetwork, search, tag, sortBy, sortOrder } = queryDto;
+    
+    // Generate cache key based on query parameters
+    const filterString = JSON.stringify({ completed, priority, blockchainNetwork, search, tag, sortBy, sortOrder });
+    const cacheKey = this.cacheService.generateUserTodosKey(userId, page, filterString);
+    
+    // Try to get from cache first
+    const cachedResult = await this.cacheService.get<PaginatedTodos>(cacheKey);
+    if (cachedResult) {
+      this.logger.debug(`Cache hit for user ${userId} todos page ${page}`);
+      return cachedResult;
+    }
     
     // Build filter query
     const filter: FilterQuery<TodoDocument> = { userId };
@@ -79,21 +100,39 @@ export class TodoService {
       this.todoRepository.count(filter),
     ]);
 
-    return {
+    const result = {
       todos,
       total,
       page,
       limit,
       totalPages: Math.ceil(total / limit),
     };
+
+    // Cache the result
+    await this.cacheService.set(cacheKey, result, this.CACHE_TTL);
+    this.logger.debug(`Cache set for user ${userId} todos page ${page}`);
+
+    return result;
   }
 
   async findOne(id: string, userId: string): Promise<Todo> {
+    // Try cache first
+    const cacheKey = this.cacheService.generateTodoKey(id);
+    const cachedTodo = await this.cacheService.get<Todo>(cacheKey);
+    
+    if (cachedTodo && cachedTodo.userId === userId) {
+      this.logger.debug(`Cache hit for todo ${id}`);
+      return cachedTodo;
+    }
+    
     const todo = await this.todoRepository.findByIdAndUserId(id, userId);
     
     if (!todo) {
       throw new NotFoundException(`Todo with ID ${id} not found or access denied`);
     }
+    
+    // Cache the todo
+    await this.cacheService.set(cacheKey, todo, this.CACHE_TTL);
     
     return todo;
   }
@@ -107,7 +146,15 @@ export class TodoService {
     };
     
     Object.assign(todo, updateData);
-    return todo.save();
+    const updatedTodo = await todo.save();
+    
+    // Update cache and invalidate user cache
+    await Promise.all([
+      this.cacheService.set(this.cacheService.generateTodoKey(id), updatedTodo, this.CACHE_TTL),
+      this.invalidateUserCache(userId),
+    ]);
+    
+    return updatedTodo;
   }
 
   async remove(id: string, userId: string): Promise<void> {
@@ -117,6 +164,12 @@ export class TodoService {
     if (!deleted) {
       throw new NotFoundException(`Todo with ID ${id} not found`);
     }
+    
+    // Remove from cache and invalidate user cache
+    await Promise.all([
+      this.cacheService.del(this.cacheService.generateTodoKey(id)),
+      this.invalidateUserCache(userId),
+    ]);
   }
 
   async getStats(userId: string): Promise<{
@@ -127,6 +180,15 @@ export class TodoService {
     byPriority: Record<string, number>;
     byBlockchainNetwork: Record<string, number>;
   }> {
+    // Try cache first
+    const cacheKey = this.cacheService.generateUserStatsKey(userId);
+    const cachedStats = await this.cacheService.get(cacheKey);
+    
+    if (cachedStats) {
+      this.logger.debug(`Cache hit for user ${userId} stats`);
+      return cachedStats;
+    }
+    
     const [
       total,
       completed,
@@ -161,7 +223,7 @@ export class TodoService {
       return acc;
     }, {} as Record<string, number>);
 
-    return {
+    const stats = {
       total,
       completed,
       active: total - completed,
@@ -169,11 +231,38 @@ export class TodoService {
       byPriority,
       byBlockchainNetwork,
     };
+
+    // Cache the stats with shorter TTL since they change frequently
+    await this.cacheService.set(cacheKey, stats, 60); // 1 minute
+    
+    return stats;
   }
 
   async toggleComplete(id: string, userId: string): Promise<Todo> {
     const todo = await this.findOne(id, userId);
     todo.completed = !todo.completed;
-    return todo.save();
+    const updatedTodo = await todo.save();
+    
+    // Update cache and invalidate user cache
+    await Promise.all([
+      this.cacheService.set(this.cacheService.generateTodoKey(id), updatedTodo, this.CACHE_TTL),
+      this.invalidateUserCache(userId),
+    ]);
+    
+    return updatedTodo;
+  }
+
+  private async invalidateUserCache(userId: string): Promise<void> {
+    try {
+      // Invalidate all user-related cache entries
+      await Promise.all([
+        this.cacheService.delPattern(this.cacheService.generateUserPattern(userId)),
+        this.cacheService.del(this.cacheService.generateUserStatsKey(userId)),
+      ]);
+      
+      this.logger.debug(`Cache invalidated for user ${userId}`);
+    } catch (error) {
+      this.logger.error(`Error invalidating cache for user ${userId}:`, error);
+    }
   }
 }
