@@ -1,0 +1,15 @@
+{
+  "name": "polkadot-todo-client",
+  "version": "0.1.0",
+  "description": "Client example for interacting with the Todo pallet",
+  "main": "client.js",
+  "scripts": {
+    "start": "node client.js"
+  },
+  "dependencies": {
+    "@polkadot/api": "^10.9.1",
+    "@polkadot/keyring": "^12.5.1",
+    "@polkadot/util": "^12.5.1",
+    "@polkadot/util-crypto": "^12.5.1"
+  }
+}
