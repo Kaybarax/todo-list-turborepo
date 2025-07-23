@@ -5,8 +5,6 @@
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
-    "deploy": "hardhat run scripts/deploy.js",
-    "deploy:moonbase": "hardhat run scripts/deploy.js --network moonbase",
     "verify": "hardhat verify",
     "coverage": "hardhat coverage"
   },
