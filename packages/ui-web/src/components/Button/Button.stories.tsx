@@ -1,6 +1,7 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
+import { Search, ArrowRight } from 'lucide-react';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
@@ -27,6 +28,22 @@ const meta: Meta<typeof Button> = {
     disabled: {
       control: 'boolean',
       description: 'Whether the button is disabled',
+    },
+    isLoading: {
+      control: 'boolean',
+      description: 'Whether the button is in a loading state',
+    },
+    loadingText: {
+      control: 'text',
+      description: 'Text to display when the button is loading',
+    },
+    leftIcon: {
+      control: { disable: true },
+      description: 'Icon to display on the left side of the button text',
+    },
+    rightIcon: {
+      control: { disable: true },
+      description: 'Icon to display on the right side of the button text',
     },
     className: {
       control: 'text',
@@ -111,6 +128,43 @@ export const Icon: Story = {
     children: '🔍',
     variant: 'default',
     size: 'icon',
+  },
+};
+
+export const WithLeftIcon: Story = {
+  args: {
+    children: 'Search',
+    variant: 'default',
+    size: 'default',
+    leftIcon: <Search size={16} />,
+  },
+};
+
+export const WithRightIcon: Story = {
+  args: {
+    children: 'Next',
+    variant: 'default',
+    size: 'default',
+    rightIcon: <ArrowRight size={16} />,
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    children: 'Submit',
+    variant: 'default',
+    size: 'default',
+    isLoading: true,
+  },
+};
+
+export const LoadingWithText: Story = {
+  args: {
+    children: 'Submit',
+    variant: 'default',
+    size: 'default',
+    isLoading: true,
+    loadingText: 'Submitting...',
   },
 };
 
