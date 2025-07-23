@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, FilterQuery } from 'mongoose';
+import { FilterQuery } from 'mongoose';
 import { Todo, TodoDocument } from './schemas/todo.schema';
+import { TodoRepository } from './repositories/todo.repository';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { QueryTodoDto } from './dto/query-todo.dto';
@@ -17,17 +17,17 @@ export interface PaginatedTodos {
 @Injectable()
 export class TodoService {
   constructor(
-    @InjectModel(Todo.name) private todoModel: Model<TodoDocument>,
+    private readonly todoRepository: TodoRepository,
   ) {}
 
   async create(createTodoDto: CreateTodoDto, userId: string): Promise<Todo> {
-    const todo = new this.todoModel({
+    const todoData = {
       ...createTodoDto,
       userId,
       dueDate: createTodoDto.dueDate ? new Date(createTodoDto.dueDate) : undefined,
-    });
+    };
     
-    return todo.save();
+    return this.todoRepository.create(todoData);
   }
 
   async findAll(queryDto: QueryTodoDto, userId: string): Promise<PaginatedTodos> {
@@ -71,13 +71,12 @@ export class TodoService {
 
     // Execute queries
     const [todos, total] = await Promise.all([
-      this.todoModel
-        .find(filter)
-        .sort(sort)
-        .skip((page - 1) * limit)
-        .limit(limit)
-        .exec(),
-      this.todoModel.countDocuments(filter).exec(),
+      this.todoRepository.findMany(filter, {
+        sort,
+        skip: (page - 1) * limit,
+        limit,
+      }),
+      this.todoRepository.count(filter),
     ]);
 
     return {
@@ -90,14 +89,10 @@ export class TodoService {
   }
 
   async findOne(id: string, userId: string): Promise<Todo> {
-    const todo = await this.todoModel.findById(id).exec();
+    const todo = await this.todoRepository.findByIdAndUserId(id, userId);
     
     if (!todo) {
-      throw new NotFoundException(`Todo with ID ${id} not found`);
-    }
-    
-    if (todo.userId !== userId) {
-      throw new ForbiddenException('You can only access your own todos');
+      throw new NotFoundException(`Todo with ID ${id} not found or access denied`);
     }
     
     return todo;
@@ -116,8 +111,12 @@ export class TodoService {
   }
 
   async remove(id: string, userId: string): Promise<void> {
-    const todo = await this.findOne(id, userId);
-    await this.todoModel.findByIdAndDelete(id).exec();
+    await this.findOne(id, userId); // Verify ownership
+    const deleted = await this.todoRepository.deleteById(id);
+    
+    if (!deleted) {
+      throw new NotFoundException(`Todo with ID ${id} not found`);
+    }
   }
 
   async getStats(userId: string): Promise<{
@@ -135,21 +134,21 @@ export class TodoService {
       priorityStats,
       blockchainStats,
     ] = await Promise.all([
-      this.todoModel.countDocuments({ userId }).exec(),
-      this.todoModel.countDocuments({ userId, completed: true }).exec(),
-      this.todoModel.countDocuments({
+      this.todoRepository.count({ userId }),
+      this.todoRepository.count({ userId, completed: true }),
+      this.todoRepository.count({
         userId,
         completed: false,
         dueDate: { $lt: new Date() },
-      }).exec(),
-      this.todoModel.aggregate([
+      }),
+      this.todoRepository.aggregate([
         { $match: { userId } },
         { $group: { _id: '$priority', count: { $sum: 1 } } },
-      ]).exec(),
-      this.todoModel.aggregate([
+      ]),
+      this.todoRepository.aggregate([
         { $match: { userId, blockchainNetwork: { $exists: true } } },
         { $group: { _id: '$blockchainNetwork', count: { $sum: 1 } } },
-      ]).exec(),
+      ]),
     ]);
 
     const byPriority = priorityStats.reduce((acc, stat) => {
