@@ -10,7 +10,7 @@
 /apps/mobile/ @mobile-team
 /apps/api/ @backend-team
 /apps/ingestion/ @data-team
-/apps/contracts/ @blockchain-team
+/apps/blockchain-smart-contracts/ @blockchain-team
 
 # Packages
 /packages/ui-web/ @ui-team

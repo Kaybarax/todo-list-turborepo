@@ -63,7 +63,7 @@ pub enum Priority {
 
 1. Clone the repository and navigate to the Solana contracts directory:
 ```bash
-cd apps/contracts/solana
+cd apps/blockchain-smart-contracts/solana
 ```
 
 2. Install dependencies:

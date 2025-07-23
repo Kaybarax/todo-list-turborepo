@@ -1,5 +1,5 @@
 {
-  "name": "@todo/solana-contracts",
+  "name": "@todo/solana-blockchain",
   "version": "0.1.0",
   "private": true,
   "scripts": {

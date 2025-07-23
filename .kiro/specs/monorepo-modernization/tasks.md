@@ -114,21 +114,21 @@
     - _Requirements: 4.4_
 
 - [ ] 6. Implement blockchain contracts for multiple networks
-  - [ ] 6.1 Create Solana program for todo storage
+  - [x] 6.1 Create Solana program for todo storage
     - Initialize Anchor workspace for Solana program development
     - Implement todo storage program with create, update, delete functions
     - Write comprehensive tests for Solana program functionality
     - Create deployment scripts for Solana devnet and mainnet
     - _Requirements: 5.1, 5.2, 5.3, 5.4_
 
-  - [ ] 6.2 Create Polkadot pallet for todo management
+  - [x] 6.2 Create Polkadot pallet for todo management
     - Initialize Substrate node template with custom pallet
     - Implement todo pallet with storage and extrinsics
     - Write pallet tests using Substrate testing framework
     - Create deployment configuration for Polkadot ecosystem
     - _Requirements: 5.1, 5.2, 5.3, 5.4_
 
-  - [ ] 6.3 Create Polygon smart contract
+  - [x] 6.3 Create Polygon smart contract
     - Update existing Hardhat configuration for Polygon network
     - Implement comprehensive todo smart contract in Solidity
     - Write extensive contract tests using Hardhat and Chai

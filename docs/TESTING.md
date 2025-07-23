@@ -73,29 +73,29 @@ Chromatic tests run automatically on GitHub Actions when changes are pushed to t
 
 ### Smart Contract Tests
 
-Smart contract tests are located in the `apps/contracts/test` directory and use Hardhat to test the smart contracts in a local blockchain environment.
+Smart contract tests are located in the `apps/blockchain-smart-contracts/test` directory and use Hardhat to test the smart contracts in a local blockchain environment.
 
 The test structure follows the standard Hardhat testing pattern:
-- `apps/contracts/test/TodoList.test.ts` - Tests for the TodoList smart contract
+- `apps/blockchain-smart-contracts/test/TodoList.test.ts` - Tests for the TodoList smart contract
 
 To run smart contract tests:
 
 ```bash
-cd apps/contracts
+cd apps/blockchain-smart-contracts
 npm test
 ```
 
 To run smart contract tests with coverage:
 
 ```bash
-cd apps/contracts
+cd apps/blockchain-smart-contracts
 npm run coverage
 ```
 
 To deploy smart contracts to a local or test network:
 
 ```bash
-cd apps/contracts
+cd apps/blockchain-smart-contracts
 npm run deploy
 # or for Moonbase Alpha testnet
 npm run deploy:moonbase
@@ -123,9 +123,9 @@ Visual regression tests are implemented as Storybook stories located alongside t
 
 ### Smart Contract Tests
 
-Smart contract tests are located in the `apps/contracts/test` directory and follow the Hardhat testing pattern. Each contract has its own test file:
+Smart contract tests are located in the `apps/blockchain-smart-contracts/test` directory and follow the Hardhat testing pattern. Each contract has its own test file:
 
-- `apps/contracts/test/TodoList.test.ts`
+- `apps/blockchain-smart-contracts/test/TodoList.test.ts`
 
 The tests use Hardhat's testing framework with Chai assertions and ethers.js for interacting with the contracts. Tests are organized into describe blocks for different contract features (creation, retrieval, updates, deletion).
 
