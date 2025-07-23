@@ -113,7 +113,7 @@
     - Implement health check endpoints for monitoring
     - _Requirements: 4.4_
 
-- [ ] 6. Implement blockchain contracts for multiple networks
+- [x] 6. Implement blockchain contracts for multiple networks
   - [x] 6.1 Create Solana program for todo storage
     - Initialize Anchor workspace for Solana program development
     - Implement todo storage program with create, update, delete functions
