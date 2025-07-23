@@ -137,6 +137,7 @@ export class TodoService {
     return todo;
   }
 
+  @Trace('TodoService.update')
   async update(id: string, updateTodoDto: UpdateTodoDto, userId: string): Promise<Todo> {
     const todo = await this.findOne(id, userId);
     
@@ -157,6 +158,7 @@ export class TodoService {
     return updatedTodo;
   }
 
+  @Trace('TodoService.remove')
   async remove(id: string, userId: string): Promise<void> {
     await this.findOne(id, userId); // Verify ownership
     const deleted = await this.todoRepository.deleteById(id);
@@ -172,6 +174,7 @@ export class TodoService {
     ]);
   }
 
+  @Trace('TodoService.getStats')
   async getStats(userId: string): Promise<{
     total: number;
     completed: number;
@@ -238,6 +241,7 @@ export class TodoService {
     return stats;
   }
 
+  @Trace('TodoService.toggleComplete')
   async toggleComplete(id: string, userId: string): Promise<Todo> {
     const todo = await this.findOne(id, userId);
     todo.completed = !todo.completed;

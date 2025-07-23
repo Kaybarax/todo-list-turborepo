@@ -1,14 +1,108 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException, Logger } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { UserService } from '../user/user.service';
+import { Trace } from '../telemetry/decorators/trace.decorator';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
+import { AuthResponseDto } from './dto/auth-response.dto';
+import { User } from '../user/schemas/user.schema';
 
 @Injectable()
 export class AuthService {
-  async login(email: string, password: string) {
-    // TODO: Implement authentication logic
-    return { message: 'Authentication will be implemented in a future task' };
+  private readonly logger = new Logger(AuthService.name);
+
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  @Trace('AuthService.register')
+  async register(registerDto: RegisterDto): Promise<AuthResponseDto> {
+    try {
+      const user = await this.userService.create(registerDto);
+      this.logger.log(`New user registered: ${user.email}`);
+      
+      return this.generateTokenResponse(user);
+    } catch (error) {
+      if (error instanceof ConflictException) {
+        throw error;
+      }
+      this.logger.error('Registration failed:', error);
+      throw new ConflictException('Registration failed');
+    }
   }
 
-  async register(userData: any) {
-    // TODO: Implement user registration logic
-    return { message: 'User registration will be implemented in a future task' };
+  @Trace('AuthService.login')
+  async login(loginDto: LoginDto): Promise<AuthResponseDto> {
+    const { email, password } = loginDto;
+    
+    const user = await this.userService.findByEmail(email);
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    if (!user.isActive) {
+      throw new UnauthorizedException('Account is deactivated');
+    }
+
+    const isPasswordValid = await user.comparePassword(password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    // Update last login
+    await this.userService.updateLastLogin(user._id.toString());
+    
+    this.logger.log(`User logged in: ${user.email}`);
+    return this.generateTokenResponse(user);
+  }
+
+  @Trace('AuthService.validateUser')
+  async validateUser(userId: string): Promise<User | null> {
+    const user = await this.userService.findById(userId);
+    
+    if (!user || !user.isActive) {
+      return null;
+    }
+    
+    return user;
+  }
+
+  @Trace('AuthService.refreshToken')
+  async refreshToken(userId: string): Promise<AuthResponseDto> {
+    const user = await this.validateUser(userId);
+    
+    if (!user) {
+      throw new UnauthorizedException('Invalid user');
+    }
+    
+    return this.generateTokenResponse(user);
+  }
+
+  private generateTokenResponse(user: User): AuthResponseDto {
+    const payload = {
+      sub: user._id.toString(),
+      email: user.email,
+      name: user.name,
+    };
+
+    const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
+    const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
+
+    return {
+      accessToken,
+      refreshToken,
+      user: user.toJSON(),
+      expiresIn: 15 * 60, // 15 minutes in seconds
+    };
+  }
+
+  @Trace('AuthService.verifyToken')
+  async verifyToken(token: string): Promise<any> {
+    try {
+      return this.jwtService.verify(token);
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
   }
 }

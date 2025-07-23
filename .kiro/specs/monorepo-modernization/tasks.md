@@ -76,38 +76,38 @@
     - Add transaction monitoring and push notifications
     - _Requirements: 5.1, 5.2, 6.4_
 
-- [ ] 5. Rebuild API as NestJS application
-  - [ ] 5.1 Initialize NestJS application structure
+- [x] 5. Rebuild API as NestJS application
+  - [x] 5.1 Initialize NestJS application structure
     - Remove existing Next.js API implementation
     - Create new NestJS application with TypeScript and proper module structure
     - Configure Swagger for API documentation
     - _Requirements: 4.1, 4.2, 4.4_
 
-  - [ ] 5.2 Implement todo API endpoints with validation
+  - [x] 5.2 Implement todo API endpoints with validation
     - Create todo module with controller, service, and DTOs
     - Implement full CRUD operations with Zod validation
     - Add proper error handling and response formatting
     - _Requirements: 4.2, 4.4_
 
-  - [ ] 5.3 Integrate MongoDB with Mongoose
+  - [x] 5.3 Integrate MongoDB with Mongoose
     - Configure MongoDB connection with proper error handling
     - Create todo schema and model with Mongoose
     - Implement repository pattern for data access
     - _Requirements: 4.3_
 
-  - [ ] 5.4 Implement Redis caching layer
+  - [x] 5.4 Implement Redis caching layer
     - Configure Redis connection and caching service
     - Implement caching for frequently accessed todo data
     - Add cache invalidation strategies for data consistency
     - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
-  - [ ] 5.5 Add authentication and authorization
+  - [x] 5.5 Add authentication and authorization
     - Implement JWT-based authentication middleware
     - Create user management endpoints and services
     - Add wallet-based authentication for blockchain users
     - _Requirements: 4.2, 4.4_
 
-  - [ ] 5.6 Integrate OpenTelemetry instrumentation
+  - [x] 5.6 Integrate OpenTelemetry instrumentation
     - Configure OpenTelemetry for distributed tracing
     - Add custom metrics and logging throughout the application
     - Implement health check endpoints for monitoring
