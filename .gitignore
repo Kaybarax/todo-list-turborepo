@@ -69,6 +69,7 @@ artifacts/
 cache/
 typechain/
 typechain-types/
+target/
 
 # Deployment
 .vercel
