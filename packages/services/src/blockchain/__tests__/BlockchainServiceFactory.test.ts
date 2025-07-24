@@ -1,6 +1,8 @@
 import { BlockchainServiceFactory } from '../BlockchainServiceFactory';
 import { BlockchainNetwork } from '../types';
 import { PolygonBlockchainService } from '../implementations/PolygonBlockchainService';
+import { SolanaBlockchainService } from '../implementations/SolanaBlockchainService';
+import { PolkadotBlockchainService } from '../implementations/PolkadotBlockchainService';
 
 describe('BlockchainServiceFactory', () => {
   const mockConfig = {
@@ -16,6 +18,26 @@ describe('BlockchainServiceFactory', () => {
         rpcUrl: 'https://polygon-rpc.com',
         chainId: 137,
         explorerBaseUrl: 'https://polygonscan.com',
+      },
+    },
+    solana: {
+      mainnet: {
+        rpcUrl: 'https://api.mainnet-beta.solana.com',
+        commitment: 'confirmed',
+      },
+      devnet: {
+        rpcUrl: 'https://api.devnet.solana.com',
+        commitment: 'confirmed',
+      },
+    },
+    polkadot: {
+      mainnet: {
+        wsEndpoint: 'wss://rpc.polkadot.io',
+        chainName: 'polkadot',
+      },
+      testnet: {
+        wsEndpoint: 'wss://westend-rpc.polkadot.io',
+        chainName: 'westend',
       },
     },
   };
@@ -43,12 +65,40 @@ describe('BlockchainServiceFactory', () => {
     expect(service.getNetwork()).toBe(BlockchainNetwork.POLYGON);
   });
 
-  it('should throw an error for unsupported networks', () => {
+  it('should return a Solana service for Solana mainnet', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
+    const service = factory.getService(BlockchainNetwork.SOLANA);
     
-    expect(() => {
-      factory.getService(BlockchainNetwork.SOLANA);
-    }).toThrow('Network solana is not yet implemented');
+    expect(service).toBeDefined();
+    expect(service).toBeInstanceOf(SolanaBlockchainService);
+    expect(service.getNetwork()).toBe(BlockchainNetwork.SOLANA);
+  });
+
+  it('should return a Solana service for Solana devnet', () => {
+    const factory = new BlockchainServiceFactory(mockConfig);
+    const service = factory.getService(BlockchainNetwork.SOLANA_DEVNET);
+    
+    expect(service).toBeDefined();
+    expect(service).toBeInstanceOf(SolanaBlockchainService);
+    expect(service.getNetwork()).toBe(BlockchainNetwork.SOLANA_DEVNET);
+  });
+
+  it('should return a Polkadot service for Polkadot mainnet', () => {
+    const factory = new BlockchainServiceFactory(mockConfig);
+    const service = factory.getService(BlockchainNetwork.POLKADOT);
+    
+    expect(service).toBeDefined();
+    expect(service).toBeInstanceOf(PolkadotBlockchainService);
+    expect(service.getNetwork()).toBe(BlockchainNetwork.POLKADOT);
+  });
+
+  it('should return a Polkadot service for Polkadot testnet', () => {
+    const factory = new BlockchainServiceFactory(mockConfig);
+    const service = factory.getService(BlockchainNetwork.POLKADOT_TESTNET);
+    
+    expect(service).toBeDefined();
+    expect(service).toBeInstanceOf(PolkadotBlockchainService);
+    expect(service.getNetwork()).toBe(BlockchainNetwork.POLKADOT_TESTNET);
   });
 
   it('should return the same instance for repeated calls', () => {
@@ -66,15 +116,25 @@ describe('BlockchainServiceFactory', () => {
     
     expect(networks).toContain(BlockchainNetwork.POLYGON);
     expect(networks).toContain(BlockchainNetwork.POLYGON_MUMBAI);
-    expect(networks).toHaveLength(2);
+    expect(networks).toContain(BlockchainNetwork.SOLANA);
+    expect(networks).toContain(BlockchainNetwork.SOLANA_DEVNET);
+    expect(networks).toContain(BlockchainNetwork.POLKADOT);
+    expect(networks).toContain(BlockchainNetwork.POLKADOT_TESTNET);
+    expect(networks).toHaveLength(6);
   });
 
   it('should return all services', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
     const services = factory.getAllServices();
     
-    expect(services).toHaveLength(2);
-    expect(services[0].getNetwork()).toBe(BlockchainNetwork.POLYGON);
-    expect(services[1].getNetwork()).toBe(BlockchainNetwork.POLYGON_MUMBAI);
+    expect(services).toHaveLength(6);
+    
+    const networkTypes = services.map(service => service.getNetwork());
+    expect(networkTypes).toContain(BlockchainNetwork.POLYGON);
+    expect(networkTypes).toContain(BlockchainNetwork.POLYGON_MUMBAI);
+    expect(networkTypes).toContain(BlockchainNetwork.SOLANA);
+    expect(networkTypes).toContain(BlockchainNetwork.SOLANA_DEVNET);
+    expect(networkTypes).toContain(BlockchainNetwork.POLKADOT);
+    expect(networkTypes).toContain(BlockchainNetwork.POLKADOT_TESTNET);
   });
 });

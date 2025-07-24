@@ -1,6 +1,8 @@
 import { BlockchainNetwork } from './types';
 import { BlockchainService } from './interfaces/BlockchainService';
 import { PolygonBlockchainService, PolygonBlockchainServiceOptions } from './implementations/PolygonBlockchainService';
+import { SolanaBlockchainService } from './implementations/SolanaBlockchainService';
+import { PolkadotBlockchainService } from './implementations/PolkadotBlockchainService';
 import { BlockchainError } from './utils/BlockchainError';
 
 /**
@@ -17,16 +19,28 @@ export interface BlockchainServiceConfig {
   /** Solana configuration */
   solana?: {
     /** Devnet configuration */
-    devnet?: any; // SolanaBlockchainServiceOptions
+    devnet?: {
+      rpcUrl?: string;
+      commitment?: string;
+    };
     /** Mainnet configuration */
-    mainnet?: any; // SolanaBlockchainServiceOptions
+    mainnet?: {
+      rpcUrl?: string;
+      commitment?: string;
+    };
   };
   /** Polkadot configuration */
   polkadot?: {
     /** Testnet configuration */
-    testnet?: any; // PolkadotBlockchainServiceOptions
+    testnet?: {
+      wsEndpoint?: string;
+      chainName?: string;
+    };
     /** Mainnet configuration */
-    mainnet?: any; // PolkadotBlockchainServiceOptions
+    mainnet?: {
+      wsEndpoint?: string;
+      chainName?: string;
+    };
   };
 }
 
@@ -77,11 +91,20 @@ export class BlockchainServiceFactory {
         break;
 
       case BlockchainNetwork.SOLANA:
+        service = new SolanaBlockchainService();
+        break;
+
       case BlockchainNetwork.SOLANA_DEVNET:
+        service = new SolanaBlockchainService();
+        break;
+
       case BlockchainNetwork.POLKADOT:
+        service = new PolkadotBlockchainService();
+        break;
+
       case BlockchainNetwork.POLKADOT_TESTNET:
-        // These would be implemented similarly to Polygon
-        throw new Error(`Network ${network} is not yet implemented`);
+        service = new PolkadotBlockchainService();
+        break;
 
       default:
         throw new Error(`Unsupported blockchain network: ${network}`);
@@ -107,8 +130,21 @@ export class BlockchainServiceFactory {
       services.push(this.getService(BlockchainNetwork.POLYGON_MUMBAI));
     }
 
-    // Solana (would be implemented)
-    // Polkadot (would be implemented)
+    // Solana
+    if (this.config.solana?.mainnet) {
+      services.push(this.getService(BlockchainNetwork.SOLANA));
+    }
+    if (this.config.solana?.devnet) {
+      services.push(this.getService(BlockchainNetwork.SOLANA_DEVNET));
+    }
+
+    // Polkadot
+    if (this.config.polkadot?.mainnet) {
+      services.push(this.getService(BlockchainNetwork.POLKADOT));
+    }
+    if (this.config.polkadot?.testnet) {
+      services.push(this.getService(BlockchainNetwork.POLKADOT_TESTNET));
+    }
 
     return services;
   }
@@ -128,8 +164,21 @@ export class BlockchainServiceFactory {
       networks.push(BlockchainNetwork.POLYGON_MUMBAI);
     }
 
-    // Solana (would be implemented)
-    // Polkadot (would be implemented)
+    // Solana
+    if (this.config.solana?.mainnet) {
+      networks.push(BlockchainNetwork.SOLANA);
+    }
+    if (this.config.solana?.devnet) {
+      networks.push(BlockchainNetwork.SOLANA_DEVNET);
+    }
+
+    // Polkadot
+    if (this.config.polkadot?.mainnet) {
+      networks.push(BlockchainNetwork.POLKADOT);
+    }
+    if (this.config.polkadot?.testnet) {
+      networks.push(BlockchainNetwork.POLKADOT_TESTNET);
+    }
 
     return networks;
   }

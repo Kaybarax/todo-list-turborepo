@@ -162,6 +162,42 @@ export class BlockchainError extends Error {
   }
 
   /**
+   * Create a wallet not found error
+   * @param message - Error message
+   * @param network - Blockchain network
+   * @param originalError - Original error object
+   */
+  static walletNotFound(
+    message: string,
+    network?: BlockchainNetwork,
+    originalError?: unknown
+  ): BlockchainError {
+    return new BlockchainError(
+      BlockchainErrorType.WALLET_CONNECTION_FAILED,
+      message,
+      { originalError, network }
+    );
+  }
+
+  /**
+   * Create a connection failed error
+   * @param message - Error message
+   * @param network - Blockchain network
+   * @param options - Additional error options
+   */
+  static connectionFailed(
+    message: string,
+    network?: BlockchainNetwork,
+    options?: { originalError?: unknown }
+  ): BlockchainError {
+    return new BlockchainError(
+      BlockchainErrorType.WALLET_CONNECTION_FAILED,
+      message,
+      { originalError: options?.originalError, network }
+    );
+  }
+
+  /**
    * Create an unknown error
    * @param message - Error message
    * @param originalError - Original error object
