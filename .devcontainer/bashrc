@@ -1,0 +1,262 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# Don't put duplicate lines or lines starting with space in the history.
+HISTCONTROL=ignoreboth
+
+# Append to the history file, don't overwrite it
+shopt -s histappend
+
+# For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# Check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# Make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# Set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# Set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# Uncomment for a colored prompt, if the terminal has the capability
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        # We have color support; assume it's compliant with Ecma-48
+        color_prompt=yes
+    else
+        color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# Enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# Colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# Basic aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+# Todo App Development Aliases
+alias dev='pnpm dev'
+alias test='pnpm test'
+alias build='pnpm build'
+alias clean='pnpm clean'
+alias lint='pnpm lint'
+alias format='pnpm format'
+
+# Application-specific aliases
+alias dev-web='pnpm dev:web'
+alias dev-api='pnpm dev:api'
+alias dev-mobile='pnpm dev:mobile'
+alias dev-ingestion='pnpm dev:ingestion'
+alias dev-contracts='pnpm dev:contracts'
+
+# Database aliases
+alias mongo-cli='mongosh mongodb://admin:password@mongodb:27017/todo-app?authSource=admin'
+alias redis-cli='redis-cli -h redis'
+
+# Docker aliases
+alias dc='docker-compose -f docker-compose.dev.yml'
+alias dcu='docker-compose -f docker-compose.dev.yml up'
+alias dcd='docker-compose -f docker-compose.dev.yml down'
+alias dcl='docker-compose -f docker-compose.dev.yml logs'
+alias dcr='docker-compose -f docker-compose.dev.yml restart'
+
+# Kubernetes aliases
+alias k='kubectl'
+alias kgp='kubectl get pods'
+alias kgs='kubectl get services'
+alias kgd='kubectl get deployments'
+alias kgi='kubectl get ingress'
+alias kgn='kubectl get nodes'
+alias kdp='kubectl describe pod'
+alias kds='kubectl describe service'
+alias kdd='kubectl describe deployment'
+
+# Git aliases
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git log --oneline'
+alias gb='git branch'
+alias gco='git checkout'
+alias gd='git diff'
+alias gdc='git diff --cached'
+
+# Blockchain development aliases
+alias solana-logs='solana logs'
+alias anchor-test='anchor test'
+alias hardhat-console='npx hardhat console --network localhost'
+
+# Development helper functions
+function dev-start() {
+    echo "🚀 Starting Todo App development environment..."
+    pnpm dev
+}
+
+function dev-test() {
+    echo "🧪 Running tests..."
+    pnpm test
+}
+
+function dev-build() {
+    echo "🔨 Building applications..."
+    pnpm build
+}
+
+function dev-clean() {
+    echo "🧹 Cleaning and reinstalling dependencies..."
+    pnpm clean && rm -rf node_modules && pnpm install
+}
+
+function dev-logs() {
+    if [ -z "$1" ]; then
+        echo "Usage: dev-logs <service-name>"
+        echo "Available services: api, web, mobile, ingestion, mongodb, redis, hardhat-node"
+        return 1
+    fi
+    docker-compose -f docker-compose.dev.yml logs -f $1
+}
+
+function dev-restart() {
+    if [ -z "$1" ]; then
+        echo "Usage: dev-restart <service-name>"
+        echo "Available services: api, web, mobile, ingestion, mongodb, redis, hardhat-node"
+        return 1
+    fi
+    docker-compose -f docker-compose.dev.yml restart $1
+}
+
+function dev-status() {
+    echo "📊 Development Environment Status:"
+    echo ""
+    echo "🐳 Docker Services:"
+    docker-compose -f docker-compose.dev.yml ps
+    echo ""
+    echo "🌐 Port Status:"
+    netstat -tlnp 2>/dev/null | grep -E ':(3000|3001|8081|19000|27017|6379|8545|16686|8025)' || echo "No services detected on standard ports"
+}
+
+function dev-help() {
+    echo "🔧 Todo App Development Commands:"
+    echo ""
+    echo "📦 Package Management:"
+    echo "  dev, pnpm dev          - Start all development servers"
+    echo "  test, pnpm test        - Run all tests"
+    echo "  build, pnpm build      - Build all applications"
+    echo "  clean, pnpm clean      - Clean build artifacts"
+    echo "  dev-clean              - Clean and reinstall dependencies"
+    echo ""
+    echo "🚀 Individual Services:"
+    echo "  dev-web                - Start Next.js web app"
+    echo "  dev-api                - Start NestJS API"
+    echo "  dev-mobile             - Start React Native/Expo"
+    echo "  dev-ingestion          - Start ingestion service"
+    echo "  dev-contracts          - Start Hardhat node"
+    echo ""
+    echo "🐳 Docker Management:"
+    echo "  dc <command>           - Docker compose shortcut"
+    echo "  dcu                    - Start all services"
+    echo "  dcd                    - Stop all services"
+    echo "  dcl <service>          - View service logs"
+    echo "  dev-logs <service>     - Follow service logs"
+    echo "  dev-restart <service>  - Restart specific service"
+    echo "  dev-status             - Show environment status"
+    echo ""
+    echo "💾 Database Access:"
+    echo "  mongo-cli              - Connect to MongoDB"
+    echo "  redis-cli              - Connect to Redis"
+    echo ""
+    echo "⛓️  Blockchain Development:"
+    echo "  solana-logs            - View Solana logs"
+    echo "  anchor-test            - Run Anchor tests"
+    echo "  hardhat-console        - Open Hardhat console"
+    echo ""
+    echo "🔍 Kubernetes (if available):"
+    echo "  k <command>            - kubectl shortcut"
+    echo "  kgp                    - Get pods"
+    echo "  kgs                    - Get services"
+    echo "  kgd                    - Get deployments"
+}
+
+# Add Rust and Solana to PATH
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+
+# Add pnpm to PATH
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
+# Node.js optimization for development
+export NODE_OPTIONS="--max-old-space-size=4096"
+
+# Enable bash completion if available
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+# Load custom completions if they exist
+if [ -d ~/.bash_completion.d ]; then
+    for file in ~/.bash_completion.d/*; do
+        [ -r "$file" ] && . "$file"
+    done
+fi
+
+# Welcome message for new sessions
+if [ -f /tmp/welcome.txt ] && [ -z "$WELCOME_SHOWN" ]; then
+    cat /tmp/welcome.txt
+    export WELCOME_SHOWN=1
+    echo ""
+    echo "💡 Type 'dev-help' for available commands"
+    echo ""
+fi

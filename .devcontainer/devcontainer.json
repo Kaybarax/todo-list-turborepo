@@ -1,23 +1,208 @@
 {
-  "name": "Todo App Development",
+  "name": "Todo App Monorepo Development",
   "dockerComposeFile": "../docker-compose.dev.yml",
-  "service": "dev",
+  "service": "devcontainer",
   "workspaceFolder": "/workspace",
-  "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
+  "shutdownAction": "stopCompose",
+  "overrideCommand": false,
+  
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit",
+          "source.organizeImports": "explicit"
+        },
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "typescript.preferences.importModuleSpecifier": "relative",
+        "typescript.suggest.autoImports": true,
+        "javascript.suggest.autoImports": true,
+        "eslint.workingDirectories": [
+          "apps/web",
+          "apps/api", 
+          "apps/mobile",
+          "apps/ingestion",
+          "apps/blockchain-smart-contracts",
+          "packages"
+        ],
+        "jest.jestCommandLine": "pnpm test",
+        "jest.autoRun": "off",
+        "files.watcherExclude": {
+          "**/node_modules/**": true,
+          "**/.git/**": true,
+          "**/dist/**": true,
+          "**/build/**": true,
+          "**/.next/**": true,
+          "**/coverage/**": true
+        },
+        "search.exclude": {
+          "**/node_modules": true,
+          "**/dist": true,
+          "**/build": true,
+          "**/.next": true,
+          "**/coverage": true
+        },
+        "emmet.includeLanguages": {
+          "typescript": "html",
+          "typescriptreact": "html"
+        }
+      },
+      
+      "extensions": [
+        // Core Development
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode.vscode-typescript-next",
+        
+        // React & Next.js
+        "ms-vscode.vscode-react-native",
+        "msjsdiag.vscode-react-native",
+        "formulahendry.auto-rename-tag",
+        "christian-kohler.path-intellisense",
+        
+        // Node.js & NestJS
+        "ms-vscode.vscode-node-azure-pack",
+        "firsttris.vscode-jest-runner",
+        "orta.vscode-jest",
+        
+        // Database & Infrastructure
+        "mongodb.mongodb-vscode",
+        "cweijan.vscode-redis-client",
+        "ms-azuretools.vscode-docker",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        
+        // Blockchain Development
+        "juanblanco.solidity",
+        "tintinweb.solidity-visual-auditor",
+        "rust-lang.rust-analyzer",
+        
+        // DevOps & Monitoring
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "ms-vscode.vscode-docker",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        
+        // Git & Collaboration
+        "eamodio.gitlens",
+        "github.vscode-pull-request-github",
+        "ms-vscode.vscode-github-issue-notebooks",
+        
+        // Productivity
+        "ms-vscode.vscode-todo-highlight",
+        "gruntfuggly.todo-tree",
+        "streetsidesoftware.code-spell-checker",
+        "ms-vscode.vscode-thunder-client",
+        
+        // Testing
+        "hbenl.vscode-test-explorer",
+        "kavod-io.vscode-jest-test-adapter",
+        
+        // Documentation
+        "yzhang.markdown-all-in-one",
+        "davidanson.vscode-markdownlint"
+      ]
     }
   },
-  "extensions": [
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "ms-azuretools.vscode-docker",
-    "ms-kubernetes-tools.vscode-kubernetes-tools",
-    "mongodb.mongodb-vscode"
+  
+  "forwardPorts": [
+    3000,  // Next.js web app
+    3001,  // NestJS API
+    8081,  // React Native Metro bundler
+    19000, // Expo dev tools
+    19001, // Expo dev tools
+    19002, // Expo dev tools
+    27017, // MongoDB
+    6379,  // Redis
+    8545,  // Hardhat node
+    16686, // Jaeger UI
+    8025,  // MailHog UI
+    4317,  // OTLP gRPC
+    4318   // OTLP HTTP
   ],
-  "forwardPorts": [3000, 4000, 27017],
-  "postCreateCommand": "npm install",
-  "remoteUser": "node"
+  
+  "portsAttributes": {
+    "3000": {
+      "label": "Next.js Web App",
+      "onAutoForward": "notify"
+    },
+    "3001": {
+      "label": "NestJS API",
+      "onAutoForward": "notify"
+    },
+    "8081": {
+      "label": "React Native Metro",
+      "onAutoForward": "silent"
+    },
+    "19000": {
+      "label": "Expo Dev Tools",
+      "onAutoForward": "silent"
+    },
+    "27017": {
+      "label": "MongoDB",
+      "onAutoForward": "silent"
+    },
+    "6379": {
+      "label": "Redis",
+      "onAutoForward": "silent"
+    },
+    "8545": {
+      "label": "Hardhat Node",
+      "onAutoForward": "silent"
+    },
+    "16686": {
+      "label": "Jaeger UI",
+      "onAutoForward": "notify"
+    },
+    "8025": {
+      "label": "MailHog UI",
+      "onAutoForward": "notify"
+    }
+  },
+  
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "postStartCommand": "bash .devcontainer/post-start.sh",
+  
+  "remoteUser": "node",
+  "containerUser": "node",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "nodeGypDependencies": true,
+      "version": "20"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11"
+    },
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "latest",
+      "profile": "minimal"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "enableNonRootDocker": true
+    },
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+      "version": "latest",
+      "helm": "latest",
+      "minikube": "latest"
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest",
+      "ppa": true
+    }
+  },
+  
+  "mounts": [
+    "source=${localWorkspaceFolder}/.devcontainer/bashrc,target=/home/node/.bashrc,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/.devcontainer/zshrc,target=/home/node/.zshrc,type=bind,consistency=cached"
+  ]
 }

@@ -1,0 +1,244 @@
+# ~/.zshrc: executed by zsh for interactive shells.
+
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set name of the theme to load
+ZSH_THEME="robbyrussell"
+
+# Plugins to load
+plugins=(
+    git
+    docker
+    docker-compose
+    kubectl
+    node
+    npm
+    rust
+    vscode
+    colored-man-pages
+    command-not-found
+    history-substring-search
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+)
+
+# Load Oh My Zsh if available
+if [ -d "$ZSH" ]; then
+    source $ZSH/oh-my-zsh.sh
+fi
+
+# User configuration
+
+# History settings
+HISTSIZE=10000
+SAVEHIST=10000
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_FIND_NO_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt SHARE_HISTORY
+
+# Directory navigation
+setopt AUTO_CD
+setopt AUTO_PUSHD
+setopt PUSHD_IGNORE_DUPS
+
+# Completion settings
+setopt COMPLETE_IN_WORD
+setopt ALWAYS_TO_END
+setopt AUTO_MENU
+setopt AUTO_LIST
+setopt AUTO_PARAM_SLASH
+
+# Basic aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+# Todo App Development Aliases
+alias dev='pnpm dev'
+alias test='pnpm test'
+alias build='pnpm build'
+alias clean='pnpm clean'
+alias lint='pnpm lint'
+alias format='pnpm format'
+
+# Application-specific aliases
+alias dev-web='pnpm dev:web'
+alias dev-api='pnpm dev:api'
+alias dev-mobile='pnpm dev:mobile'
+alias dev-ingestion='pnpm dev:ingestion'
+alias dev-contracts='pnpm dev:contracts'
+
+# Database aliases
+alias mongo-cli='mongosh mongodb://admin:password@mongodb:27017/todo-app?authSource=admin'
+alias redis-cli='redis-cli -h redis'
+
+# Docker aliases
+alias dc='docker-compose -f docker-compose.dev.yml'
+alias dcu='docker-compose -f docker-compose.dev.yml up'
+alias dcd='docker-compose -f docker-compose.dev.yml down'
+alias dcl='docker-compose -f docker-compose.dev.yml logs'
+alias dcr='docker-compose -f docker-compose.dev.yml restart'
+
+# Kubernetes aliases
+alias k='kubectl'
+alias kgp='kubectl get pods'
+alias kgs='kubectl get services'
+alias kgd='kubectl get deployments'
+alias kgi='kubectl get ingress'
+alias kgn='kubectl get nodes'
+alias kdp='kubectl describe pod'
+alias kds='kubectl describe service'
+alias kdd='kubectl describe deployment'
+
+# Git aliases (in addition to oh-my-zsh git plugin)
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git log --oneline'
+alias gb='git branch'
+alias gco='git checkout'
+alias gd='git diff'
+alias gdc='git diff --cached'
+
+# Blockchain development aliases
+alias solana-logs='solana logs'
+alias anchor-test='anchor test'
+alias hardhat-console='npx hardhat console --network localhost'
+
+# Development helper functions
+function dev-start() {
+    echo "🚀 Starting Todo App development environment..."
+    pnpm dev
+}
+
+function dev-test() {
+    echo "🧪 Running tests..."
+    pnpm test
+}
+
+function dev-build() {
+    echo "🔨 Building applications..."
+    pnpm build
+}
+
+function dev-clean() {
+    echo "🧹 Cleaning and reinstalling dependencies..."
+    pnpm clean && rm -rf node_modules && pnpm install
+}
+
+function dev-logs() {
+    if [ -z "$1" ]; then
+        echo "Usage: dev-logs <service-name>"
+        echo "Available services: api, web, mobile, ingestion, mongodb, redis, hardhat-node"
+        return 1
+    fi
+    docker-compose -f docker-compose.dev.yml logs -f $1
+}
+
+function dev-restart() {
+    if [ -z "$1" ]; then
+        echo "Usage: dev-restart <service-name>"
+        echo "Available services: api, web, mobile, ingestion, mongodb, redis, hardhat-node"
+        return 1
+    fi
+    docker-compose -f docker-compose.dev.yml restart $1
+}
+
+function dev-status() {
+    echo "📊 Development Environment Status:"
+    echo ""
+    echo "🐳 Docker Services:"
+    docker-compose -f docker-compose.dev.yml ps
+    echo ""
+    echo "🌐 Port Status:"
+    netstat -tlnp 2>/dev/null | grep -E ':(3000|3001|8081|19000|27017|6379|8545|16686|8025)' || echo "No services detected on standard ports"
+}
+
+function dev-help() {
+    echo "🔧 Todo App Development Commands:"
+    echo ""
+    echo "📦 Package Management:"
+    echo "  dev, pnpm dev          - Start all development servers"
+    echo "  test, pnpm test        - Run all tests"
+    echo "  build, pnpm build      - Build all applications"
+    echo "  clean, pnpm clean      - Clean build artifacts"
+    echo "  dev-clean              - Clean and reinstall dependencies"
+    echo ""
+    echo "🚀 Individual Services:"
+    echo "  dev-web                - Start Next.js web app"
+    echo "  dev-api                - Start NestJS API"
+    echo "  dev-mobile             - Start React Native/Expo"
+    echo "  dev-ingestion          - Start ingestion service"
+    echo "  dev-contracts          - Start Hardhat node"
+    echo ""
+    echo "🐳 Docker Management:"
+    echo "  dc <command>           - Docker compose shortcut"
+    echo "  dcu                    - Start all services"
+    echo "  dcd                    - Stop all services"
+    echo "  dcl <service>          - View service logs"
+    echo "  dev-logs <service>     - Follow service logs"
+    echo "  dev-restart <service>  - Restart specific service"
+    echo "  dev-status             - Show environment status"
+    echo ""
+    echo "💾 Database Access:"
+    echo "  mongo-cli              - Connect to MongoDB"
+    echo "  redis-cli              - Connect to Redis"
+    echo ""
+    echo "⛓️  Blockchain Development:"
+    echo "  solana-logs            - View Solana logs"
+    echo "  anchor-test            - Run Anchor tests"
+    echo "  hardhat-console        - Open Hardhat console"
+    echo ""
+    echo "🔍 Kubernetes (if available):"
+    echo "  k <command>            - kubectl shortcut"
+    echo "  kgp                    - Get pods"
+    echo "  kgs                    - Get services"
+    echo "  kgd                    - Get deployments"
+}
+
+# Add Rust and Solana to PATH
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+
+# Add pnpm to PATH
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
+# Node.js optimization for development
+export NODE_OPTIONS="--max-old-space-size=4096"
+
+# Zsh-specific settings
+autoload -U compinit
+compinit
+
+# Enable case-insensitive completion
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+# Completion for custom aliases
+compdef _docker dc
+compdef _docker-compose dcu
+compdef _docker-compose dcd
+compdef _docker-compose dcl
+compdef _docker-compose dcr
+
+# Key bindings
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey '^R' history-incremental-search-backward
+
+# Welcome message for new sessions
+if [ -f /tmp/welcome.txt ] && [ -z "$WELCOME_SHOWN" ]; then
+    cat /tmp/welcome.txt
+    export WELCOME_SHOWN=1
+    echo ""
+    echo "💡 Type 'dev-help' for available commands"
+    echo ""
+fi

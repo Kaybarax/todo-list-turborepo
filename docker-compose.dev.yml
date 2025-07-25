@@ -210,10 +210,35 @@ services:
     networks:
       - todo-network
 
+  # Development Container
+  devcontainer:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    container_name: todo-devcontainer
+    restart: unless-stopped
+    volumes:
+      - .:/workspace:cached
+      - /var/run/docker.sock:/var/run/docker-host.sock
+      - devcontainer_node_modules:/workspace/node_modules
+      - devcontainer_pnpm_store:/home/node/.local/share/pnpm/store
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker-host.sock
+    networks:
+      - todo-network
+    depends_on:
+      - mongodb
+      - redis
+    command: sleep infinity
+
 volumes:
   mongodb_data:
     driver: local
   redis_data:
+    driver: local
+  devcontainer_node_modules:
+    driver: local
+  devcontainer_pnpm_store:
     driver: local
 
 networks:
