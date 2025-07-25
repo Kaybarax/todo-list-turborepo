@@ -1,0 +1,243 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: todo-app-resource-quota
+  namespace: todo-app
+  labels:
+    app.kubernetes.io/name: todo-app
+    app.kubernetes.io/component: resource-quota
+    app.kubernetes.io/part-of: todo-monorepo
+spec:
+  hard:
+    # Compute resources
+    requests.cpu: "4"
+    requests.memory: 8Gi
+    limits.cpu: "8"
+    limits.memory: 16Gi
+    
+    # Storage resources
+    requests.storage: 100Gi
+    persistentvolumeclaims: "10"
+    
+    # Object counts
+    pods: "20"
+    services: "10"
+    secrets: "10"
+    configmaps: "10"
+    replicationcontrollers: "0"
+    
+    # Load balancers
+    services.loadbalancers: "2"
+    services.nodeports: "0"
+
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: todo-app-limit-range
+  namespace: todo-app
+  labels:
+    app.kubernetes.io/name: todo-app
+    app.kubernetes.io/component: limit-range
+    app.kubernetes.io/part-of: todo-monorepo
+spec:
+  limits:
+  # Container limits
+  - type: Container
+    default:
+      cpu: "500m"
+      memory: "512Mi"
+    defaultRequest:
+      cpu: "100m"
+      memory: "128Mi"
+    max:
+      cpu: "2"
+      memory: "2Gi"
+    min:
+      cpu: "50m"
+      memory: "64Mi"
+  
+  # Pod limits
+  - type: Pod
+    max:
+      cpu: "4"
+      memory: "4Gi"
+    min:
+      cpu: "50m"
+      memory: "64Mi"
+  
+  # PVC limits
+  - type: PersistentVolumeClaim
+    max:
+      storage: 50Gi
+    min:
+      storage: 1Gi
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: api-pdb
+  namespace: todo-app
+  labels:
+    app.kubernetes.io/name: api
+    app.kubernetes.io/component: pdb
+    app.kubernetes.io/part-of: todo-monorepo
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: api
+      app.kubernetes.io/component: backend
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: web-pdb
+  namespace: todo-app
+  labels:
+    app.kubernetes.io/name: web
+    app.kubernetes.io/component: pdb
+    app.kubernetes.io/part-of: todo-monorepo
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: web
+      app.kubernetes.io/component: frontend
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ingestion-pdb
+  namespace: todo-app
+  labels:
+    app.kubernetes.io/name: ingestion
+    app.kubernetes.io/component: pdb
+    app.kubernetes.io/part-of: todo-monorepo
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingestion
+      app.kubernetes.io/component: worker
+
+---
+# Horizontal Pod Autoscaler for API
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-hpa
+  namespace: todo-app
+  labels:
+    app.kubernetes.io/name: api
+    app.kubernetes.io/component: hpa
+    app.kubernetes.io/part-of: todo-monorepo
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-deployment
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+
+---
+# Horizontal Pod Autoscaler for Web
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: web-hpa
+  namespace: todo-app
+  labels:
+    app.kubernetes.io/name: web
+    app.kubernetes.io/component: hpa
+    app.kubernetes.io/part-of: todo-monorepo
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: web-deployment
+  minReplicas: 3
+  maxReplicas: 15
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 20
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 30
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 30
+
+---
+# Vertical Pod Autoscaler for databases (if VPA is installed)
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: mongodb-vpa
+  namespace: todo-app
+  labels:
+    app.kubernetes.io/name: mongodb
+    app.kubernetes.io/component: vpa
+    app.kubernetes.io/part-of: todo-monorepo
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: mongodb
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+    - containerName: mongodb
+      maxAllowed:
+        cpu: "2"
+        memory: "4Gi"
+      minAllowed:
+        cpu: "250m"
+        memory: "512Mi"

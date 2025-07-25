@@ -4,3 +4,8 @@ metadata:
   name: todo-app
   labels:
     name: todo-app
+    app.kubernetes.io/name: todo-app
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/component: namespace
+    app.kubernetes.io/part-of: todo-monorepo
+    app.kubernetes.io/managed-by: kubernetes

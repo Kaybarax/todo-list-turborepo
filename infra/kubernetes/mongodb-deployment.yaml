@@ -1,0 +1,191 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+  namespace: todo-app
+  labels:
+    app.kubernetes.io/name: mongodb
+    app.kubernetes.io/component: database
+    app.kubernetes.io/part-of: todo-monorepo
+spec:
+  serviceName: mongodb-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mongodb
+      app.kubernetes.io/component: database
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mongodb
+        app.kubernetes.io/component: database
+        app.kubernetes.io/part-of: todo-monorepo
+    spec:
+      serviceAccountName: todo-app-service-account
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        fsGroup: 999
+      containers:
+      - name: mongodb
+        image: mongo:7
+        ports:
+        - name: mongodb
+          containerPort: 27017
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "1"
+            memory: "2Gi"
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: todo-app-secrets
+              key: MONGODB_USERNAME
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: todo-app-secrets
+              key: MONGODB_PASSWORD
+        - name: MONGO_INITDB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: todo-app-config
+              key: MONGODB_DATABASE
+        
+        # Health checks
+        livenessProbe:
+          exec:
+            command:
+            - mongosh
+            - --eval
+            - "db.adminCommand('ping')"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - mongosh
+            - --eval
+            - "db.adminCommand('ping')"
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        
+        # Volume mounts
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /data/db
+        - name: mongodb-config
+          mountPath: /docker-entrypoint-initdb.d
+          readOnly: true
+        
+        # Security context
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 999
+          capabilities:
+            drop:
+            - ALL
+      
+      volumes:
+      - name: mongodb-config
+        configMap:
+          name: mongodb-init-config
+          defaultMode: 0755
+  
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-data
+      labels:
+        app.kubernetes.io/name: mongodb
+        app.kubernetes.io/component: database
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "fast-ssd"
+      resources:
+        requests:
+          storage: 20Gi
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-init-config
+  namespace: todo-app
+  labels:
+    app.kubernetes.io/name: mongodb
+    app.kubernetes.io/component: config
+data:
+  init-mongo.js: |
+    // MongoDB initialization script for Todo App
+    
+    // Switch to the todo-app database
+    db = db.getSiblingDB('todo-app');
+    
+    // Create collections with validation
+    db.createCollection('users', {
+      validator: {
+        $jsonSchema: {
+          bsonType: 'object',
+          required: ['email', 'name', 'createdAt'],
+          properties: {
+            email: {
+              bsonType: 'string',
+              pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$',
+              description: 'must be a valid email address'
+            },
+            name: {
+              bsonType: 'string',
+              minLength: 1,
+              maxLength: 100,
+              description: 'must be a string between 1 and 100 characters'
+            }
+          }
+        }
+      }
+    });
+    
+    db.createCollection('todos', {
+      validator: {
+        $jsonSchema: {
+          bsonType: 'object',
+          required: ['title', 'userId', 'completed', 'priority', 'createdAt'],
+          properties: {
+            title: {
+              bsonType: 'string',
+              minLength: 1,
+              maxLength: 200,
+              description: 'must be a string between 1 and 200 characters'
+            },
+            completed: {
+              bsonType: 'bool',
+              description: 'must be a boolean'
+            },
+            priority: {
+              bsonType: 'string',
+              enum: ['low', 'medium', 'high'],
+              description: 'must be one of: low, medium, high'
+            }
+          }
+        }
+      }
+    });
+    
+    // Create indexes
+    db.users.createIndex({ email: 1 }, { unique: true });
+    db.users.createIndex({ walletAddress: 1 }, { unique: true, sparse: true });
+    db.todos.createIndex({ userId: 1 });
+    db.todos.createIndex({ userId: 1, completed: 1 });
+    db.todos.createIndex({ userId: 1, priority: 1 });
+    db.todos.createIndex({ tags: 1 });
+    
+    print('MongoDB initialization completed successfully');

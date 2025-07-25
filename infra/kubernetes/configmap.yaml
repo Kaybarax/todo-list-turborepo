@@ -1,0 +1,178 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: todo-app-config
+  namespace: todo-app
+  labels:
+    app.kubernetes.io/name: todo-app
+    app.kubernetes.io/component: config
+    app.kubernetes.io/part-of: todo-monorepo
+data:
+  # Database Configuration
+  MONGODB_DATABASE: "todo-app"
+  REDIS_DB: "0"
+  
+  # Application Configuration
+  NODE_ENV: "production"
+  LOG_LEVEL: "info"
+  
+  # API Configuration
+  API_PORT: "3001"
+  API_HOST: "0.0.0.0"
+  CORS_ORIGIN: "https://todo-app.example.com"
+  
+  # Web Configuration
+  WEB_PORT: "3000"
+  NEXT_PUBLIC_API_URL: "https://todo-app.example.com/api"
+  NEXT_PUBLIC_WS_URL: "wss://todo-app.example.com/api"
+  
+  # Ingestion Configuration
+  INGESTION_BATCH_SIZE: "100"
+  INGESTION_RETRY_ATTEMPTS: "3"
+  INGESTION_RETRY_DELAY: "1000"
+  
+  # Monitoring Configuration
+  JAEGER_ENDPOINT: "http://jaeger-collector:14268/api/traces"
+  OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger-collector:14268/api/traces"
+  OTEL_SERVICE_NAME: "todo-app"
+  
+  # Cache Configuration
+  CACHE_TTL: "300"
+  CACHE_MAX_SIZE: "1000"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: todo-app
+  labels:
+    app.kubernetes.io/name: nginx
+    app.kubernetes.io/component: config
+    app.kubernetes.io/part-of: todo-monorepo
+data:
+  nginx.conf: |
+    events {
+        worker_connections 1024;
+    }
+
+    http {
+        include       /etc/nginx/mime.types;
+        default_type  application/octet-stream;
+
+        # Logging
+        log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                        '$status $body_bytes_sent "$http_referer" '
+                        '"$http_user_agent" "$http_x_forwarded_for"';
+
+        access_log /var/log/nginx/access.log main;
+        error_log /var/log/nginx/error.log warn;
+
+        # Basic settings
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        keepalive_timeout 65;
+        types_hash_max_size 2048;
+        client_max_body_size 10M;
+
+        # Gzip compression
+        gzip on;
+        gzip_vary on;
+        gzip_min_length 1024;
+        gzip_types
+            text/plain
+            text/css
+            text/xml
+            text/javascript
+            application/javascript
+            application/xml+rss
+            application/json;
+
+        # Rate limiting
+        limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
+        limit_req_zone $binary_remote_addr zone=web:10m rate=30r/s;
+
+        # Upstream servers
+        upstream api_backend {
+            server api-service:3001;
+            keepalive 32;
+        }
+
+        upstream web_backend {
+            server web-service:3000;
+            keepalive 32;
+        }
+
+        # Main server
+        server {
+            listen 80;
+            server_name _;
+
+            # Security headers
+            add_header X-Frame-Options "SAMEORIGIN" always;
+            add_header X-Content-Type-Options "nosniff" always;
+            add_header X-XSS-Protection "1; mode=block" always;
+            add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+            # API routes
+            location /api/ {
+                limit_req zone=api burst=20 nodelay;
+                proxy_pass http://api_backend/;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_cache_bypass $http_upgrade;
+                proxy_read_timeout 86400;
+            }
+
+            # WebSocket support
+            location /socket.io/ {
+                proxy_pass http://api_backend;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+            }
+
+            # Static files
+            location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+                limit_req zone=web burst=50 nodelay;
+                proxy_pass http://web_backend;
+                expires 1y;
+                add_header Cache-Control "public, immutable";
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+            }
+
+            # Next.js application
+            location / {
+                limit_req zone=web burst=50 nodelay;
+                proxy_pass http://web_backend;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_cache_bypass $http_upgrade;
+            }
+
+            # Health checks
+            location /health {
+                access_log off;
+                return 200 "healthy\n";
+                add_header Content-Type text/plain;
+            }
+        }
+    }

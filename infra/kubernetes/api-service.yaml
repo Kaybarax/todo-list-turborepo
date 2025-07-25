@@ -4,12 +4,25 @@ metadata:
   name: api-service
   namespace: todo-app
   labels:
-    app: api-app
+    app.kubernetes.io/name: api
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/part-of: todo-monorepo
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3001"
+    prometheus.io/path: "/metrics"
 spec:
   selector:
-    app: api-app
+    app.kubernetes.io/name: api
+    app.kubernetes.io/component: backend
   ports:
-  - port: 4000
-    targetPort: 4000
+  - name: http
+    port: 3001
+    targetPort: http
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: metrics
     protocol: TCP
   type: ClusterIP
+  sessionAffinity: None
