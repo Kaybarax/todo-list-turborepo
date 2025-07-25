@@ -1,95 +1,254 @@
 version: '3.8'
 
 services:
+  # Test Database Services
   mongodb-test:
-    image: mongo:latest
-    container_name: mongodb-test
+    image: mongo:7
+    container_name: todo-mongodb-test
     ports:
       - "27018:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=password
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: todo-app-test
     networks:
       - test-network
     tmpfs:
       - /data/db
-
-  elasticsearch-test:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.4
-    container_name: elasticsearch-test
-    environment:
-      - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=false
-    ports:
-      - "9201:9200"
-    networks:
-      - test-network
-    tmpfs:
-      - /usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   redis-test:
-    image: redis:alpine
-    container_name: redis-test
+    image: redis:7-alpine
+    container_name: todo-redis-test
     ports:
       - "6380:6379"
     networks:
       - test-network
     tmpfs:
       - /data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
-  # Test runners
+  # Unit Test Services
   api-test:
     build:
       context: .
-      dockerfile: ./apps/api/Dockerfile.test
-    volumes:
-      - ./apps/api:/app
-      - ./packages:/packages
-      - /app/node_modules
-    depends_on:
-      - mongodb-test
-      - redis-test
+      dockerfile: apps/api/Dockerfile.test
+    container_name: todo-api-test
     environment:
-      - NODE_ENV=test
-      - MONGODB_URI=mongodb://root:password@mongodb-test:27017/todos_test?authSource=admin
-      - REDIS_URI=redis://redis-test:6379
+      NODE_ENV: test
+      MONGODB_URI: mongodb://admin:password@mongodb-test:27017/todo-app-test?authSource=admin
+      REDIS_URI: redis://redis-test:6379
+      JWT_SECRET: test-jwt-secret
+    depends_on:
+      mongodb-test:
+        condition: service_healthy
+      redis-test:
+        condition: service_healthy
     networks:
       - test-network
-    command: npm test
+    volumes:
+      - ./apps/api:/app/apps/api
+      - ./packages:/app/packages
+      - ./coverage/api:/app/coverage
+    command: pnpm test:api --coverage
 
   web-test:
     build:
       context: .
-      dockerfile: ./apps/web/Dockerfile.test
-    volumes:
-      - ./apps/web:/app
-      - ./packages:/packages
-      - /app/node_modules
+      dockerfile: apps/web/Dockerfile.test
+    container_name: todo-web-test
     environment:
-      - NODE_ENV=test
+      NODE_ENV: test
+      NEXT_PUBLIC_API_URL: http://api-test:3001
     networks:
       - test-network
-    command: npm test
+    volumes:
+      - ./apps/web:/app/apps/web
+      - ./packages:/app/packages
+      - ./coverage/web:/app/coverage
+    command: pnpm test:web --coverage
 
-  e2e-test:
+  mobile-test:
     build:
       context: .
-      dockerfile: ./Dockerfile.playwright
+      dockerfile: apps/mobile/Dockerfile
+      target: test
+    container_name: todo-mobile-test
+    environment:
+      NODE_ENV: test
+    networks:
+      - test-network
     volumes:
-      - ./:/app
-      - /app/node_modules
+      - ./apps/mobile:/app/apps/mobile
+      - ./packages:/app/packages
+      - ./coverage/mobile:/app/coverage
+    command: pnpm test:mobile --coverage
+
+  ingestion-test:
+    build:
+      context: .
+      dockerfile: apps/ingestion/Dockerfile
+      target: development
+    container_name: todo-ingestion-test
+    environment:
+      NODE_ENV: test
+      MONGODB_URI: mongodb://admin:password@mongodb-test:27017/todo-app-test?authSource=admin
+      REDIS_URI: redis://redis-test:6379
+    depends_on:
+      mongodb-test:
+        condition: service_healthy
+      redis-test:
+        condition: service_healthy
+    networks:
+      - test-network
+    volumes:
+      - ./apps/ingestion:/app/apps/ingestion
+      - ./packages:/app/packages
+      - ./coverage/ingestion:/app/coverage
+    command: pnpm test:ingestion --coverage
+
+  # Contract Tests
+  contracts-test:
+    build:
+      context: .
+      dockerfile: apps/blockchain-smart-contracts/Dockerfile
+      target: test
+    container_name: todo-contracts-test
+    environment:
+      NODE_ENV: test
+    networks:
+      - test-network
+    volumes:
+      - ./apps/blockchain-smart-contracts:/app/apps/blockchain-smart-contracts
+      - ./coverage/contracts:/app/coverage
+    command: pnpm test:contracts --coverage
+
+  # Integration Tests
+  integration-test:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile.test
+    container_name: todo-integration-test
+    environment:
+      NODE_ENV: test
+      MONGODB_URI: mongodb://admin:password@mongodb-test:27017/todo-app-test?authSource=admin
+      REDIS_URI: redis://redis-test:6379
+      JWT_SECRET: test-jwt-secret
+    depends_on:
+      mongodb-test:
+        condition: service_healthy
+      redis-test:
+        condition: service_healthy
+    networks:
+      - test-network
+    volumes:
+      - ./apps/api:/app/apps/api
+      - ./packages:/app/packages
+      - ./coverage/integration:/app/coverage
+    command: pnpm test:integration --coverage
+
+  # E2E Tests
+  e2e-api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: development
+    container_name: todo-e2e-api
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: test
+      MONGODB_URI: mongodb://admin:password@mongodb-test:27017/todo-app-test?authSource=admin
+      REDIS_URI: redis://redis-test:6379
+      JWT_SECRET: test-jwt-secret
+      CORS_ORIGIN: "*"
+    depends_on:
+      mongodb-test:
+        condition: service_healthy
+      redis-test:
+        condition: service_healthy
+    networks:
+      - test-network
+    command: pnpm start:api
+
+  e2e-web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: development
+    container_name: todo-e2e-web
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: test
+      NEXT_PUBLIC_API_URL: http://e2e-api:3001
+    depends_on:
+      - e2e-api
+    networks:
+      - test-network
+    command: pnpm start:web
+
+  e2e-playwright:
+    build:
+      context: .
+      dockerfile: Dockerfile.playwright
+    container_name: todo-e2e-playwright
+    environment:
+      NODE_ENV: test
+      API_URL: http://e2e-api:3001
+      WEB_URL: http://e2e-web:3000
+      CI: true
+    depends_on:
+      - e2e-api
+      - e2e-web
+    networks:
+      - test-network
+    volumes:
+      - ./apps/web/e2e:/app/apps/web/e2e
+      - ./test-results:/app/test-results
+      - ./playwright-report:/app/playwright-report
+    command: pnpm test:e2e
+
+  # Test Results Aggregator
+  test-reporter:
+    image: node:18-alpine
+    container_name: todo-test-reporter
+    working_dir: /app
+    environment:
+      NODE_ENV: test
     depends_on:
       - api-test
       - web-test
-    environment:
-      - NODE_ENV=test
-      - API_URL=http://api-test:3000
-      - WEB_URL=http://web-test:5173
+      - mobile-test
+      - ingestion-test
+      - contracts-test
+      - integration-test
+      - e2e-playwright
     networks:
       - test-network
-    command: npx playwright test
+    volumes:
+      - ./coverage:/app/coverage
+      - ./test-results:/app/test-results
+      - ./scripts:/app/scripts
+    command: node scripts/aggregate-test-results.js
 
 networks:
   test-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
+
+volumes:
+  test-results:
+    driver: local
+  coverage:
+    driver: local
