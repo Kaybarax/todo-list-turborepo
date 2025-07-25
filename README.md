@@ -1,62 +1,74 @@
 # Todo List Monorepo
 
-A comprehensive monorepo template as a simple Todo List application, built with modern technologies and best practices.
+A modern, full-stack Todo application built as a comprehensive monorepo showcasing best practices for enterprise-grade development with blockchain integration.
 
 ## 🚀 Features
 
-- **Monorepo Structure**: Managed by Turborepo for efficient builds and dependency management
-- **Web App**: React with Vite for fast development and optimized production builds
-- **Mobile App**: React Native with Expo for cross-platform mobile development
-- **API**: Next.js 14 with App Router for server-side rendering and API routes
-- **Data Ingestion**: Workers for processing and transforming data
-- **Smart Contracts**: Polkadot-EVM compatible contracts
-- **Shared Packages**: UI components, services, and configuration
-- **Database**: MongoDB for data storage with schema versioning
-- **Search**: Elasticsearch for advanced search capabilities
+### Core Applications
+- **Web App**: Next.js 14 with App Router, TypeScript, and Tailwind CSS
+- **Mobile App**: Expo React Native with cross-platform support
+- **API**: NestJS with MongoDB, Redis, and comprehensive validation
+- **Ingestion Service**: Background processing for blockchain data
+
+### Blockchain Integration
+- **Multi-Network Support**: Polygon, Solana, and Polkadot integration
+- **Smart Contracts**: Solidity, Rust (Anchor), and Substrate pallets
+- **Wallet Connectivity**: WalletConnect v2 for seamless Web3 integration
+- **Decentralized Storage**: Todo items stored on multiple blockchain networks
+
+### Development Infrastructure
+- **Monorepo Management**: pnpm workspaces with Turborepo orchestration
+- **Shared Packages**: UI components, services, and configurations
+- **Database**: MongoDB with migrations, seeding, and validation
 - **Caching**: Redis for performance optimization
-- **Testing**: Comprehensive testing strategy with Jest, Playwright, and Chromatic
-- **DevOps**: Docker, GitHub Actions, and Kubernetes
+- **Testing**: Unit, integration, E2E, and contract testing
+- **DevOps**: Docker, Kubernetes, and comprehensive CI/CD
 
 ## 📦 Repository Structure
 
 ```
 .
 ├── apps/
-│   ├── web/                 # React-Vite app
-│   ├── mobile/              # Expo RN app
-│   ├── api/                 # Next.js 14 backend (routes/, app/)
-│   ├── ingestion/           # Data-ingestion workers
-│   └── contracts/           # Polkadot-EVM smart contracts
+│   ├── web/                 # Next.js 14 with App Router and Tailwind CSS
+│   ├── mobile/              # Expo React Native with TypeScript
+│   ├── api/                 # NestJS with MongoDB and Redis
+│   ├── ingestion/           # Blockchain data processing service
+│   └── blockchain-smart-contracts/  # Multi-network smart contracts
+│       ├── polygon/         # Solidity contracts with Hardhat
+│       ├── solana/          # Rust programs with Anchor
+│       └── polkadot/        # Substrate pallets
 ├── packages/
-│   ├── ui-web/              # React component library + Storybook
-│   ├── ui-mobile/           # RN component library + Storybook
-│   ├── services/            # Shared domain & util code
-│   ├── config-eslint/       # Shared ESLint preset
-│   ├── config-ts/           # Base tsconfig, paths
-│   ├── config-jest/         # Jest + testing-library
-│   └── config-release/      # semantic-release rules
+│   ├── ui-web/              # React component library with Storybook
+│   ├── ui-mobile/           # React Native component library
+│   ├── services/            # Shared blockchain and API services
+│   ├── config-eslint/       # ESLint configurations for all frameworks
+│   ├── config-ts/           # TypeScript configurations
+│   └── config-jest/         # Jest testing configurations
 ├── db/
-│   ├── migrations/          # Mongo / ES migration files
-│   └── seed-todos.js
+│   ├── migrations/          # MongoDB migration files with schema validation
+│   ├── setup.js             # Database setup and validation script
+│   ├── migrate.js           # Migration runner with CLI interface
+│   └── seed-todos.js        # Comprehensive seeding with sample data
+├── scripts/
+│   ├── build.sh             # Comprehensive build script with multi-env support
+│   ├── build-quick.sh       # Fast development builds
+│   ├── build-production.sh  # Production builds with security scanning
+│   └── build-contracts.sh   # Blockchain contract compilation
+├── .devcontainer/           # Complete development container setup
+│   ├── Dockerfile           # Multi-tool development environment
+│   ├── post-create.sh       # Automated environment setup
+│   └── devcontainer.json    # VS Code integration with extensions
+├── infra/
+│   ├── k8s/                 # Kubernetes manifests for all environments
+│   ├── nginx/               # NGINX configurations
+│   └── redis/               # Redis configurations
 ├── .github/
-│   ├── workflows/
-│   ├── dependabot.yml       # Automated security bumps
-│   └── codeql.yml           # Code scanning
-├── docs/                    # Docusaurus or Storybook docs site
-├── scripts/                 # startDev.* etc.
-├── devcontainer/
-├── infra/                   # IaC (K8s)
-├── turbo.json               # Turborepo configuration
-├── pnpm-workspace.yaml      # pnpm workspace configuration
-├── docker-compose*.yml
-├── .nvmrc                   # Node version pin
-├── .dockerignore            # Speeds up builds
-├── .editorconfig            # Consistent editor rules
-├── .lintstagedrc.cjs        # Pre-commit formatting
-├── .commitlintrc.cjs        # Conventional commits
-├── LICENSE                  # OSS or proprietary
-├── CONTRIBUTING.md          # How to get started
-├── SECURITY.md              # Vulnerability disclosure
+│   ├── workflows/           # CI/CD pipelines
+│   └── dependabot.yml       # Automated dependency updates
+├── turbo.json               # Turborepo build orchestration
+├── pnpm-workspace.yaml      # Workspace configuration
+├── docker-compose.dev.yml   # Development environment
+├── docker-compose.yml       # Production environment
 └── README.md
 ```
 
@@ -114,91 +126,247 @@ pnpm --filter @todo/web test
 pnpm --filter @todo/api dev
 ```
 
+## ✨ Recent Modernization Accomplishments
+
+This monorepo has been comprehensively modernized with enterprise-grade features and blockchain integration:
+
+### 🏗️ Infrastructure Modernization
+- **Complete Kubernetes Setup**: Production-ready manifests with auto-scaling, monitoring, and security
+- **Development Container**: Fully configured devcontainer with all blockchain tools (Solana CLI, Anchor, Rust)
+- **Database Management**: MongoDB with migrations, schema validation, and automated seeding
+- **Build System**: Multi-environment build scripts with security scanning and Docker optimization
+
+### ⛓️ Blockchain Integration
+- **Multi-Network Support**: Integrated Polygon (Solidity), Solana (Rust/Anchor), and Polkadot (Substrate)
+- **Smart Contracts**: Complete contract suites for decentralized todo storage across all networks
+- **Wallet Integration**: WalletConnect v2 implementation for seamless Web3 connectivity
+- **Transaction Management**: Comprehensive blockchain transaction tracking and status monitoring
+
+### 🚀 Application Modernization
+- **Next.js 14 Web App**: Rebuilt with App Router, server components, and optimized performance
+- **NestJS API**: Complete rewrite with proper architecture, validation, and OpenTelemetry tracing
+- **Expo React Native**: Modern mobile app with blockchain wallet integration
+- **Shared Libraries**: Rebuilt UI components and services with TypeScript and modern patterns
+
+### 🧪 Testing Excellence
+- **Comprehensive Coverage**: Unit, integration, E2E, and contract testing across all applications
+- **Blockchain Testing**: Specialized test suites for smart contracts on all supported networks
+- **Cross-Platform E2E**: Playwright for web and React Native testing frameworks for mobile
+- **Performance Testing**: Load testing and blockchain transaction validation
+
+### 🔧 Developer Experience
+- **Advanced Build System**: Multi-stage builds with parallel processing and caching optimization
+- **Security Integration**: Vulnerability scanning, container security, and code quality enforcement
+- **Documentation**: Comprehensive guides for setup, development, and deployment
+- **Automation**: Complete CI/CD pipelines with automated testing and deployment
+
 ## 🛠️ Getting Started
 
 ### Prerequisites
 
-- Node.js (see .nvmrc for version)
-- Docker and Docker Compose
-- pnpm (required)
+- **Node.js 20+** (see .nvmrc for exact version)
+- **Docker Desktop** or Docker Engine with Docker Compose
+- **pnpm 9+** (required for workspace management)
+- **Git** for version control
 
-### Installation
+### Optional (for blockchain development)
+- **Rust** and Cargo for Solana/Polkadot development
+- **Solana CLI** for Solana program deployment
+- **Anchor CLI** for Solana program development
 
-1. Install pnpm if you don't have it already
+### Quick Start
+
+1. **Install pnpm** (if not already installed)
    ```bash
-   npm install -g pnpm@8.15.4
+   npm install -g pnpm@9.12.0
    ```
 
-2. Clone the repository
+2. **Clone and setup**
    ```bash
    git clone https://github.com/yourusername/todo-list-monorepo.git
    cd todo-list-monorepo
-   ```
-
-3. Install dependencies
-   ```bash
    pnpm install
    ```
 
-4. Start the development environment
+3. **Start development environment**
    ```bash
-   # Start all services
+   # Option 1: Use development container (recommended)
+   # Open in VS Code and select "Reopen in Container"
+   
+   # Option 2: Local development
    docker-compose -f docker-compose.dev.yml up -d
-
-   # Start only specific services
-   docker-compose -f docker-compose.dev.yml --profile api --profile web up -d
-
-   # Start the development servers
-   pnpm dev
+   pnpm db:setup  # Setup database with sample data
+   pnpm dev       # Start all development servers
    ```
+
+4. **Access applications**
+   - **Web App**: http://localhost:3000
+   - **API**: http://localhost:3001
+   - **Mobile (Expo)**: http://localhost:19000
+   - **Jaeger Tracing**: http://localhost:16686
+   - **MailHog**: http://localhost:8025
+
+### Development Container (Recommended)
+
+The project includes a fully configured development container with all tools pre-installed:
+
+```bash
+# Open in VS Code
+code .
+
+# Select "Reopen in Container" when prompted
+# Or use Command Palette: "Dev Containers: Reopen in Container"
+```
+
+The devcontainer includes:
+- Node.js 20, pnpm, and all JavaScript tools
+- Rust, Solana CLI, and Anchor for blockchain development
+- Docker-in-Docker for container management
+- kubectl and Helm for Kubernetes development
+- All VS Code extensions for the tech stack
 
 ### Development Workflow
 
-- **Build all packages and apps**:
-  ```bash
-  pnpm build
-  ```
+#### Building
+```bash
+# Full build (all apps, packages, and contracts)
+pnpm build
 
-- **Run tests**:
-  ```bash
-  pnpm test
-  ```
+# Quick development build (skip Docker and tests)
+pnpm build:quick
 
-- **Lint code**:
-  ```bash
-  pnpm lint
-  ```
+# Production build with security scanning
+pnpm build:production
 
-- **Format code**:
-  ```bash
-  pnpm format
-  ```
+# Build specific components
+pnpm build:packages    # Shared packages only
+pnpm build:apps        # Applications only
+pnpm build:contracts   # Blockchain contracts only
+```
 
-## 🧪 Testing
+#### Development Servers
+```bash
+# Start all development servers
+pnpm dev
 
-The project uses a comprehensive testing strategy:
+# Start individual services
+pnpm dev:web          # Next.js web app
+pnpm dev:api          # NestJS API
+pnpm dev:mobile       # React Native/Expo
+pnpm dev:ingestion    # Ingestion service
+pnpm dev:contracts    # Hardhat node for contracts
+```
 
-- **Unit Tests**: Jest with React Testing Library
-- **Integration Tests**: Supertest for API endpoints
-- **E2E Tests**: Playwright for web and API
-- **Visual Regression**: Chromatic for UI components
-- **Smart Contract Tests**: Hardhat with Moonbeam local node
-
-Run tests with:
-
+#### Testing
 ```bash
 # Run all tests
 pnpm test
 
-# Run tests for a specific app or package
-pnpm --filter @todo/web test
-
-# Run E2E tests
-cd apps/web
-pnpm test:e2e
+# Specific test types
+pnpm test:unit        # Unit tests
+pnpm test:integration # Integration tests
+pnpm test:e2e         # End-to-end tests
+pnpm test:contracts   # Blockchain contract tests
 ```
 
-For detailed information about the testing strategy, test structure, and best practices, see [docs/testing.md](docs/TESTING.md).
+#### Blockchain Development
+```bash
+# Compile all contracts
+pnpm contracts:compile
+
+# Network-specific builds
+pnpm contracts:polygon   # Solidity contracts
+pnpm contracts:solana    # Rust programs
+pnpm contracts:polkadot  # Substrate pallets
+
+# Deploy contracts
+pnpm contracts:deploy
+```
+
+#### Database Management
+```bash
+# Complete database setup
+pnpm db:setup
+
+# Run migrations
+pnpm db:migrate
+
+# Seed with sample data
+pnpm db:seed
+
+# Reset database
+pnpm db:reset
+```
+
+#### Code Quality
+```bash
+# Lint and fix issues
+pnpm lint
+pnpm lint:fix
+
+# Format code
+pnpm format
+
+# Type checking
+pnpm typecheck
+```
+
+## 🧪 Comprehensive Testing Strategy
+
+The project implements enterprise-grade testing across all layers:
+
+### Frontend Testing
+- **Unit Tests**: Jest with React Testing Library for components
+- **Integration Tests**: API integration with mock servers
+- **E2E Tests**: Playwright for complete user journeys
+- **Visual Testing**: Component visual regression testing
+- **Mobile Testing**: React Native testing with platform-specific scenarios
+
+### Backend Testing
+- **Unit Tests**: NestJS services and controllers with comprehensive mocking
+- **Integration Tests**: Database integration with test containers
+- **API Tests**: Supertest for endpoint validation
+- **Performance Tests**: Load testing for critical endpoints
+
+### Blockchain Testing
+- **Contract Tests**: Comprehensive smart contract testing on all networks
+  - **Polygon**: Hardhat with Chai for Solidity contracts
+  - **Solana**: Anchor testing framework for Rust programs
+  - **Polkadot**: Substrate testing framework for pallets
+- **Integration Tests**: Blockchain service integration with test networks
+- **Transaction Tests**: End-to-end transaction flow validation
+
+### Cross-Platform Testing
+- **Multi-Environment**: Tests run across development, staging, and production configs
+- **Browser Testing**: Cross-browser compatibility with Playwright
+- **Mobile Testing**: iOS and Android testing scenarios
+- **Network Testing**: Multi-blockchain network testing
+
+### Running Tests
+```bash
+# All tests with coverage
+pnpm test
+
+# Specific test suites
+pnpm test:unit           # Unit tests across all apps
+pnpm test:integration    # Integration tests
+pnpm test:e2e           # End-to-end tests
+pnpm test:contracts     # All blockchain contract tests
+
+# Network-specific contract tests
+pnpm contracts:polygon --test
+pnpm contracts:solana --test
+pnpm contracts:polkadot --test
+
+# Watch mode for development
+pnpm test --watch
+```
+
+### Test Coverage
+- **Minimum 80% coverage** across all applications
+- **100% coverage** for critical business logic
+- **Contract coverage** for all smart contract functions
+- **E2E coverage** for all user workflows
 
 ## 📚 Documentation
 
@@ -210,12 +378,81 @@ For detailed information about the testing strategy, test structure, and best pr
 
 - API documentation is available at `/api/docs` when running the API server
 
-## 🚢 Deployment
+## 🚢 Production Deployment
 
-The project uses GitHub Actions for CI/CD:
+### Kubernetes Infrastructure
+The project includes production-ready Kubernetes manifests:
 
-- **CI**: Runs on every pull request to validate code quality and tests
-- **CD**: Deploys to staging and production environments on merge to main branch
+```bash
+# Deploy to Kubernetes
+cd infra/k8s
+./deploy.sh --environment production
+
+# Deploy specific components
+kubectl apply -f namespaces/
+kubectl apply -f deployments/
+kubectl apply -f services/
+kubectl apply -f ingress/
+```
+
+**Kubernetes Features**:
+- **Auto-scaling**: HPA for all services based on CPU/memory
+- **Monitoring**: Prometheus and Grafana integration
+- **Security**: RBAC, network policies, and pod security standards
+- **High Availability**: Multi-replica deployments with health checks
+
+### Docker Deployment
+```bash
+# Production build with Docker
+pnpm build:production
+
+# Deploy with Docker Compose
+docker-compose up -d
+
+# Or deploy individual services
+docker run -d todo-api:latest
+docker run -d todo-web:latest
+```
+
+### Environment Configuration
+```bash
+# Development
+export ENVIRONMENT=development
+./scripts/build.sh
+
+# Staging
+export ENVIRONMENT=staging
+export DOCKER_REGISTRY=staging.registry.com
+./scripts/build.sh --push
+
+# Production
+export ENVIRONMENT=production
+export VERSION=v1.0.0
+export DOCKER_REGISTRY=prod.registry.com
+./scripts/build-production.sh
+```
+
+### CI/CD Pipeline
+- **Continuous Integration**: Automated testing, linting, and security scanning
+- **Continuous Deployment**: Automated deployment to staging and production
+- **Security Scanning**: Container and dependency vulnerability scanning
+- **Performance Monitoring**: Automated performance regression detection
+
+### Blockchain Deployment
+```bash
+# Deploy contracts to all networks
+pnpm contracts:deploy
+
+# Network-specific deployment
+cd apps/blockchain-smart-contracts/polygon
+pnpm deploy:mainnet
+
+cd ../solana
+anchor deploy --provider.cluster mainnet
+
+cd ../polkadot
+./target/release/node-template --chain=polkadot
+```
 
 ## 📝 License
 
