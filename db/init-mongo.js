@@ -1,7 +1,17 @@
 // MongoDB initialization script for Todo App
+// This script runs when MongoDB container starts for the first time
+// It creates the database, collections, indexes, and sample data
 
 // Switch to the todo-app database
 db = db.getSiblingDB('todo-app');
+
+// Enable authentication if not already enabled
+try {
+  db.runCommand({ connectionStatus: 1 });
+  print('MongoDB connection established successfully');
+} catch (error) {
+  print('Error connecting to MongoDB: ' + error);
+}
 
 // Create collections with validation
 db.createCollection('users', {

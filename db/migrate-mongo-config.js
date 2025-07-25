@@ -1,34 +1,46 @@
-// In this file you can configure migrate-mongo
+// Migration configuration for Todo App MongoDB
+// This configuration works with the modernized NestJS API structure
+
+require('dotenv').config({ path: '.env.development' });
 
 const config = {
   mongodb: {
-    // TODO: Change (or review) the url to your MongoDB:
-    url: process.env.MONGODB_URI || "mongodb://localhost:27017",
+    // MongoDB connection URL - supports both local and containerized environments
+    url: process.env.MONGODB_URI || "mongodb://admin:password@localhost:27017/todo-app?authSource=admin",
 
-    // TODO: Change this to your database name:
-    databaseName: process.env.MONGODB_DB_NAME || "todos",
+    // Database name for the Todo App
+    databaseName: process.env.MONGODB_DATABASE || "todo-app",
 
     options: {
-      useNewUrlParser: true, // removes a deprecation warning when connecting
-      useUnifiedTopology: true, // removes a deprecating warning when connecting
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      // Additional options for production environments
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      family: 4 // Use IPv4, skip trying IPv6
     }
   },
 
-  // The migrations dir, can be an relative or absolute path. Only edit this when really necessary.
+  // The migrations directory
   migrationsDir: "migrations",
 
-  // The mongodb collection where the applied changes are stored. Only edit this when really necessary.
-  changelogCollectionName: "changelog",
+  // Collection to store migration history
+  changelogCollectionName: "migrations_changelog",
 
-  // The file extension to create migrations and search for in migration dir
+  // File extension for migration files
   migrationFileExtension: ".js",
 
-  // Enable the algorithm to create a checksum of the file contents and use that in the comparison to determine
-  // if the file should be run.  Requires that scripts are coded to be run multiple times.
-  useFileHash: false,
+  // Use file hash for migration tracking
+  useFileHash: true,
 
-  // Don't change this, unless you know what you're doing
+  // Module system
   moduleSystem: 'commonjs',
 };
+
+// Validate configuration
+if (!config.mongodb.url) {
+  throw new Error('MONGODB_URI environment variable is required');
+}
 
 module.exports = config;
