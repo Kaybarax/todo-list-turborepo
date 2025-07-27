@@ -22,7 +22,7 @@
   - Create **tests**/components/Button.test.tsx with full test coverage
   - _Requirements: 1.1, 1.2, 1.3, 1.5_
 
-- [ ] 3.2 Migrate Card component to Radix UI
+- [x] 3.2 Migrate Card component to Radix UI
   - Create lib/components/Card/Card.tsx with Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter
   - Implement styling with Tailwind CSS classes
   - Add TypeScript interfaces for all card sub-components
