@@ -3,9 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./lib/*"]
     }
   },
-  "include": ["src", ".storybook/**/*"],
+  "include": ["lib", "__tests__", ".storybook/**/*"],
   "exclude": ["node_modules", "dist"]
 }

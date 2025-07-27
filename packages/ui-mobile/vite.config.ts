@@ -7,13 +7,13 @@ export default defineConfig({
   plugins: [
     react(),
     dts({
-      include: ['src/**/*'],
-      exclude: ['src/**/*.stories.tsx', 'src/**/*.test.tsx'],
+      include: ['lib/**/*'],
+      exclude: ['lib/**/*.stories.tsx', 'lib/**/*.test.tsx'],
     }),
   ],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: resolve(__dirname, 'lib/index.ts'),
       name: 'TodoUIMobile',
       fileName: 'index',
       formats: ['es', 'cjs'],
@@ -41,6 +41,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
+    setupFiles: ['./__tests__/setup.ts'],
   },
 });

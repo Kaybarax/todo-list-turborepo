@@ -18,7 +18,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
-    "lint": "eslint \"src/**/*.ts*\" --fix",
+    "lint": "eslint \"lib/**/*.ts*\" --fix",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -27,6 +27,9 @@
     "chromatic": "npx chromatic --project-token=${CHROMATIC_PROJECT_TOKEN}"
   },
   "dependencies": {
+    "@ui-kitten/components": "^5.3.1",
+    "@eva-design/eva": "^2.2.0",
+    "react-native-svg": "^13.4.0",
     "react-native-vector-icons": "^10.0.0"
   },
   "devDependencies": {

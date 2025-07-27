@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./lib",
     "declaration": true,
     "jsx": "react-native",
     "lib": ["dom", "esnext"],
@@ -11,6 +11,6 @@
     "resolveJsonModule": true,
     "strict": true
   },
-  "include": ["src/**/*"],
+  "include": ["lib/**/*", "__tests__/**/*"],
   "exclude": ["node_modules", "**/*.test.ts", "**/*.stories.tsx"]
 }
