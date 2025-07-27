@@ -4,43 +4,43 @@
   - Update package.json dependencies for Radix UI in ui-web package
   - Update package.json dependencies for UI Kitten in ui-mobile package
   - Create lib/components directory structure in both packages
-  - Create __tests__/components and __tests__/__mocks__ directories
+  - Create **tests**/components and **tests**/**mocks** directories
   - _Requirements: 1.1, 2.1, 3.5_
 
 - [x] 2. Configure build and development environment
   - Update vite.config.ts to build from lib directory instead of src
   - Configure TypeScript paths for lib directory structure
   - Update package.json main/module/types paths to point to lib
-  - Set up test configuration for __tests__ directory structure
+  - Set up test configuration for **tests** directory structure
   - _Requirements: 1.4, 2.4_
 
 - [ ] 3. Migrate web components to Radix UI foundation
-- [ ] 3.1 Migrate Button component to Radix UI
+- [x] 3.1 Migrate Button component to Radix UI
   - Create lib/components/Button/Button.tsx using @radix-ui/react-slot
   - Implement variants using class-variance-authority
   - Add comprehensive TypeScript types and props interface
-  - Create __tests__/components/Button.test.tsx with full test coverage
+  - Create **tests**/components/Button.test.tsx with full test coverage
   - _Requirements: 1.1, 1.2, 1.3, 1.5_
 
 - [ ] 3.2 Migrate Card component to Radix UI
   - Create lib/components/Card/Card.tsx with Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter
   - Implement styling with Tailwind CSS classes
   - Add TypeScript interfaces for all card sub-components
-  - Create __tests__/components/Card.test.tsx testing all variants
+  - Create **tests**/components/Card.test.tsx testing all variants
   - _Requirements: 1.1, 1.2, 1.3, 1.5_
 
 - [ ] 3.3 Migrate Input component to Radix UI
   - Create lib/components/Input/Input.tsx using appropriate Radix primitive
   - Implement error states, disabled states, and size variants
   - Add proper accessibility attributes and ARIA support
-  - Create __tests__/components/Input.test.tsx with validation testing
+  - Create **tests**/components/Input.test.tsx with validation testing
   - _Requirements: 1.1, 1.2, 1.3, 1.5_
 
 - [ ] 3.4 Migrate Badge component to Radix UI
   - Create lib/components/Badge/Badge.tsx with variant and size props
   - Implement color variants and styling with CVA
   - Add TypeScript definitions for all badge variants
-  - Create __tests__/components/Badge.test.tsx testing all variants
+  - Create **tests**/components/Badge.test.tsx testing all variants
   - _Requirements: 1.1, 1.2, 1.3, 1.5_
 
 - [ ] 4. Migrate mobile components to UI Kitten foundation
@@ -48,21 +48,21 @@
   - Create lib/components/Button/Button.tsx using @ui-kitten/components Button
   - Map custom variant props to UI Kitten status props
   - Add size mapping and custom styling support
-  - Create __tests__/components/Button.test.tsx with UI Kitten wrapper
+  - Create **tests**/components/Button.test.tsx with UI Kitten wrapper
   - _Requirements: 2.1, 2.2, 2.3, 2.5_
 
 - [ ] 4.2 Migrate Card component to UI Kitten
   - Create lib/components/Card/Card.tsx using @ui-kitten/components Card
   - Implement CardHeader, CardTitle, CardDescription, CardContent, CardFooter
   - Add proper React Native styling and layout
-  - Create __tests__/components/Card.test.tsx with comprehensive coverage
+  - Create **tests**/components/Card.test.tsx with comprehensive coverage
   - _Requirements: 2.1, 2.2, 2.3, 2.5_
 
 - [ ] 4.3 Migrate Input component to UI Kitten
   - Create lib/components/Input/Input.tsx using @ui-kitten/components Input
   - Implement error states, disabled states, and size variants
   - Add proper React Native TextInput functionality
-  - Create __tests__/components/Input.test.tsx with input validation tests
+  - Create **tests**/components/Input.test.tsx with input validation tests
   - _Requirements: 2.1, 2.2, 2.3, 2.5_
 
 - [ ] 4.4 Migrate remaining mobile components to UI Kitten
@@ -135,7 +135,7 @@
 - [ ] 8.1 Implement test coverage requirements
   - Ensure 100% test coverage for all components in lib/components
   - Add integration tests for component interactions
-  - Create test mocks in __tests__/__mocks__ for external dependencies
+  - Create test mocks in **tests**/**mocks** for external dependencies
   - Set up automated test running in CI/CD pipeline
   - _Requirements: 1.5, 2.5_
 
@@ -157,7 +157,7 @@
 - [ ] 9.2 Create development guidelines and contribution docs
   - Add guidelines for creating new components with foundation libraries
   - Document lib/components directory structure and conventions
-  - Include testing requirements and __tests__ directory usage
+  - Include testing requirements and **tests** directory usage
   - Add build and deployment process documentation
   - _Requirements: 6.4, 6.5, 6.6_
 

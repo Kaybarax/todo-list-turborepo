@@ -24,7 +24,7 @@
     "@opentelemetry/sdk-trace-web": "^1.18.1",
     "@todo/services": "*",
     "@todo/ui-web": "*",
-    "@walletconnect/web3modal": "^3.0.0",
+    "@web3modal/wagmi": "^3.0.0",
     "@walletconnect/ethereum-provider": "^2.11.0",
     "next": "^14.0.4",
     "react": "^18.2.0",
@@ -33,7 +33,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@next/eslint-config-next": "^14.0.4",
+    "eslint-config-next": "^14.0.4",
     "@playwright/test": "^1.40.1",
     "@todo/config-eslint": "*",
     "@todo/config-jest": "*",
