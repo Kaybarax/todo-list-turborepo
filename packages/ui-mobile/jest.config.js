@@ -23,6 +23,6 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/lib/$1'
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|react-native-vector-icons|@ui-kitten|@eva-design)/)'
+    'node_modules/(?!(react-native|@react-native|react-native-vector-icons|@ui-kitten|@eva-design|react-native-svg)/)'
   ]
 };

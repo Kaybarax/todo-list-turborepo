@@ -44,7 +44,7 @@
   - _Requirements: 1.1, 1.2, 1.3, 1.5_
 
 - [ ] 4. Migrate mobile components to UI Kitten foundation
-- [ ] 4.1 Migrate Button component to UI Kitten
+- [x] 4.1 Migrate Button component to UI Kitten
   - Create lib/components/Button/Button.tsx using @ui-kitten/components Button
   - Map custom variant props to UI Kitten status props
   - Add size mapping and custom styling support

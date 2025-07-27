@@ -2,6 +2,10 @@
  * UI Mobile Component Library
  */
 
+// Components
+export { Button } from './components/Button';
+export type { ButtonProps, ButtonVariant, ButtonSize } from './components/Button';
+
 // Theme
 export { default as theme } from './theme';
 export {
@@ -12,6 +16,3 @@ export {
   borderRadius,
   shadows,
 } from './theme';
-
-// Temporary export for build testing
-export const version = '0.1.0';
