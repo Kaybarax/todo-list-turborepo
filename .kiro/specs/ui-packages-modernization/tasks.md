@@ -29,7 +29,7 @@
   - Create **tests**/components/Card.test.tsx testing all variants
   - _Requirements: 1.1, 1.2, 1.3, 1.5_
 
-- [ ] 3.3 Migrate Input component to Radix UI
+- [x] 3.3 Migrate Input component to Radix UI
   - Create lib/components/Input/Input.tsx using appropriate Radix primitive
   - Implement error states, disabled states, and size variants
   - Add proper accessibility attributes and ARIA support
