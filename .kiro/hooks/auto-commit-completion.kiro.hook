@@ -1,0 +1,27 @@
+{
+  "enabled": true,
+  "name": "Auto Commit on Task Completion",
+  "description": "Automatically commits changes to git when a task or subtask is completed, ensuring work is saved and tracked",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "apps/*/src/**/*.ts",
+      "apps/*/src/**/*.tsx",
+      "apps/*/src/**/*.js",
+      "apps/*/src/**/*.jsx",
+      "packages/*/src/**/*.ts",
+      "packages/*/src/**/*.tsx",
+      "apps/*/test/**/*.ts",
+      "apps/*/test/**/*.tsx",
+      "apps/*/*.json",
+      "packages/*/*.json",
+      "*.md",
+      "apps/*/README.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A task or subtask has been completed. Please review the changes made and commit them to git with an appropriate commit message that describes what was accomplished. Use conventional commit format (feat:, fix:, docs:, etc.) and include relevant details about the changes."
+  }
+}
