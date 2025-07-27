@@ -19,12 +19,14 @@
     "build": "vite build",
     "dev": "vite build --watch",
     "lint": "eslint \"lib/**/*.ts*\" --fix",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=${CHROMATIC_PROJECT_TOKEN}"
+    "chromatic": "npx chromatic --project-token=${CHROMATIC_PROJECT_TOKEN}",
+    "showcase:start": "echo 'Showcase Expo app will be implemented in task 6'",
+    "showcase:build": "echo 'Showcase build will be implemented in task 6'"
   },
   "dependencies": {
     "@ui-kitten/components": "^5.3.1",

@@ -11,6 +11,11 @@ export default defineConfig({
       exclude: ['lib/**/*.stories.tsx', 'lib/**/*.test.tsx'],
     }),
   ],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'lib'),
+    },
+  },
   build: {
     lib: {
       entry: resolve(__dirname, 'lib/index.ts'),
@@ -26,6 +31,9 @@ export default defineConfig({
         'react-native-vector-icons/MaterialIcons',
         'react-native-vector-icons/FontAwesome',
         'react-native-vector-icons/Ionicons',
+        '@ui-kitten/components',
+        '@eva-design/eva',
+        'react-native-svg'
       ],
       output: {
         globals: {
@@ -38,9 +46,5 @@ export default defineConfig({
     sourcemap: true,
     emptyOutDir: true,
   },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./__tests__/setup.ts'],
-  },
+
 });

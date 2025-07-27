@@ -4,7 +4,7 @@
   "description": "Monitors package.json files across the monorepo and automatically installs dependencies when changes are detected. Ensures all dependencies are up-to-date before starting new tasks and when new libraries are introduced to the project.",
   "version": "1",
   "when": {
-    "type": "fileEdited",
+    "type": "userTriggered",
     "patterns": [
       "package.json",
       "apps/*/package.json",

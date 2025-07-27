@@ -22,7 +22,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "@todo/*": ["packages/*/src", "apps/*/src"]
+      "@todo/*": ["packages/*/lib", "packages/*/src", "apps/*/src"]
     }
   },
   "include": [],
