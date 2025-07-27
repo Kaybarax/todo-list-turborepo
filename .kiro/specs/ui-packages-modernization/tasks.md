@@ -36,7 +36,7 @@
   - Create **tests**/components/Input.test.tsx with validation testing
   - _Requirements: 1.1, 1.2, 1.3, 1.5_
 
-- [ ] 3.4 Migrate Badge component to Radix UI
+- [x] 3.4 Migrate Badge component to Radix UI
   - Create lib/components/Badge/Badge.tsx with variant and size props
   - Implement color variants and styling with CVA
   - Add TypeScript definitions for all badge variants
