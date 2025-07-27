@@ -51,7 +51,7 @@
   - Create **tests**/components/Button.test.tsx with UI Kitten wrapper
   - _Requirements: 2.1, 2.2, 2.3, 2.5_
 
-- [ ] 4.2 Migrate Card component to UI Kitten
+- [x] 4.2 Migrate Card component to UI Kitten
   - Create lib/components/Card/Card.tsx using @ui-kitten/components Card
   - Implement CardHeader, CardTitle, CardDescription, CardContent, CardFooter
   - Add proper React Native styling and layout
