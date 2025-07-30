@@ -19,7 +19,7 @@ module.exports = {
       statements: 80
     }
   },
-  moduleNameMapping: {
+  moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/lib/$1'
   },
   transformIgnorePatterns: [
