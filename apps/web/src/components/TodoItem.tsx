@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Badge, Button } from '@todo/ui-web';
 import { TransactionStatus } from './TransactionStatus';
 
 export interface Todo {
@@ -111,43 +112,39 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
           )}
 
           <div className="mt-2 flex items-center space-x-2 flex-wrap gap-1">
-            <span
-              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                priorityColors[todo.priority]
-              }`}
+            <Badge
+              variant={todo.priority === 'high' ? 'destructive' : todo.priority === 'medium' ? 'default' : 'secondary'}
+              size="sm"
             >
               {todo.priority}
-            </span>
+            </Badge>
 
             {todo.dueDate && (
-              <span
-                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                  isOverdue
-                    ? 'bg-red-100 text-red-800'
-                    : 'bg-gray-100 text-gray-800'
-                }`}
+              <Badge
+                variant={isOverdue ? 'destructive' : 'outline'}
+                size="sm"
               >
                 Due: {formatDate(todo.dueDate)}
-              </span>
+              </Badge>
             )}
 
             {todo.blockchainNetwork && (
-              <span
-                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                  networkColors[todo.blockchainNetwork]
-                }`}
+              <Badge
+                variant="secondary"
+                size="sm"
               >
                 {todo.blockchainNetwork}
-              </span>
+              </Badge>
             )}
 
             {todo.tags.map((tag) => (
-              <span
+              <Badge
                 key={tag}
-                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                variant="outline"
+                size="sm"
               >
                 {tag}
-              </span>
+              </Badge>
             ))}
           </div>
 
@@ -167,24 +164,27 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
                   Sync to blockchain
                 </summary>
                 <div className="mt-1 flex space-x-2">
-                  <button
+                  <Button
                     onClick={() => onBlockchainSync(todo.id, 'solana')}
-                    className="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded hover:bg-purple-200"
+                    variant="outline"
+                    size="sm"
                   >
                     Solana
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={() => onBlockchainSync(todo.id, 'polkadot')}
-                    className="px-2 py-1 text-xs bg-pink-100 text-pink-800 rounded hover:bg-pink-200"
+                    variant="outline"
+                    size="sm"
                   >
                     Polkadot
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={() => onBlockchainSync(todo.id, 'polygon')}
-                    className="px-2 py-1 text-xs bg-indigo-100 text-indigo-800 rounded hover:bg-indigo-200"
+                    variant="outline"
+                    size="sm"
                   >
                     Polygon
-                  </button>
+                  </Button>
                 </div>
               </details>
             </div>

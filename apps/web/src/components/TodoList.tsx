@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { Input } from '@todo/ui-web';
 import { TodoItem, type Todo } from './TodoItem';
 
 interface TodoListProps {
@@ -124,12 +125,11 @@ export function TodoList({ todos, onToggle, onEdit, onDelete, onBlockchainSync }
       <div className="bg-white p-4 rounded-lg shadow-sm border">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 sm:space-x-4">
           <div className="flex-1">
-            <input
+            <Input
               type="text"
               placeholder="Search todos..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
             />
           </div>
           

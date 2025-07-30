@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Button, Input, Badge } from '@todo/ui-web';
 
 interface TodoFormProps {
   onSubmit: (todo: {
@@ -77,14 +78,13 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">
           Title *
         </label>
-        <input
-          type="text"
+        <Input
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
           placeholder="Enter todo title"
           required
+          className="mt-1"
         />
       </div>
 
@@ -123,12 +123,12 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
           <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700">
             Due Date
           </label>
-          <input
+          <Input
             type="date"
             id="dueDate"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+            className="mt-1"
           />
         </div>
       </div>
@@ -138,39 +138,41 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
           Tags
         </label>
         <div className="mt-1 flex rounded-md shadow-sm">
-          <input
+          <Input
             type="text"
             id="tags"
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            className="flex-1 rounded-l-md border-gray-300 focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
             placeholder="Add a tag"
+            className="flex-1 rounded-r-none"
           />
-          <button
+          <Button
             type="button"
             onClick={addTag}
-            className="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-500 text-sm hover:bg-gray-100"
+            variant="outline"
+            className="rounded-l-none border-l-0"
           >
             Add
-          </button>
+          </Button>
         </div>
         {tags.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-2">
             {tags.map((tag) => (
-              <span
+              <Badge
                 key={tag}
-                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800"
+                variant="secondary"
+                className="inline-flex items-center gap-1"
               >
                 {tag}
                 <button
                   type="button"
                   onClick={() => removeTag(tag)}
-                  className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-primary-400 hover:bg-primary-200 hover:text-primary-500 focus:outline-none focus:bg-primary-500 focus:text-white"
+                  className="ml-1 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-gray-200 focus:outline-none"
                 >
                   ×
                 </button>
-              </span>
+              </Badge>
             ))}
           </div>
         )}
@@ -178,20 +180,20 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
 
       <div className="flex justify-end space-x-3">
         {onCancel && (
-          <button
+          <Button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+            variant="outline"
           >
             Cancel
-          </button>
+          </Button>
         )}
-        <button
+        <Button
           type="submit"
-          className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+          variant="default"
         >
           {initialData ? 'Update Todo' : 'Create Todo'}
-        </button>
+        </Button>
       </div>
     </form>
   );

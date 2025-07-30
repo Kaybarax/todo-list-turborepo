@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Button } from '@todo/ui-web';
 
 export default function HomePage() {
   return (
@@ -12,18 +13,16 @@ export default function HomePage() {
           and store them securely on Solana, Polkadot, or Polygon networks.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
-          <Link
-            href="/todos"
-            className="rounded-md bg-primary-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
-          >
-            Get started
-          </Link>
-          <Link
-            href="/wallet"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Connect Wallet <span aria-hidden="true">→</span>
-          </Link>
+          <Button asChild>
+            <Link href="/todos">
+              Get started
+            </Link>
+          </Button>
+          <Button variant="link" asChild>
+            <Link href="/wallet">
+              Connect Wallet <span aria-hidden="true">→</span>
+            </Link>
+          </Button>
         </div>
       </div>
 

@@ -102,14 +102,14 @@
   - Add showcase/app.json with proper Expo settings
   - _Requirements: 5.1, 5.2_
 
-- [ ] 6.2 Implement drawer navigation and component screens
+- [x] 6.2 Implement drawer navigation and component screens
   - Create navigation/DrawerNavigator.tsx with component routes
   - Add screens directory with individual component demonstration screens
   - Implement interactive examples for each mobile component
   - Add proper React Native styling and layout
   - _Requirements: 5.3, 5.4_
 
-- [ ] 6.3 Add mobile showcase development scripts
+- [x] 6.3 Add mobile showcase development scripts
   - Update package.json with showcase:start and showcase:build scripts
   - Configure Expo development server integration
   - Set up build process for showcase testing
@@ -117,7 +117,7 @@
   - _Requirements: 5.5, 5.6_
 
 - [ ] 7. Update main applications to use package components
-- [ ] 7.1 Update web application imports
+- [x] 7.1 Update web application imports
   - Replace local components with @todo/ui-web imports in apps/web
   - Remove duplicate component files from apps/web/src/components
   - Update all component usage to use package component APIs

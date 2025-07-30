@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Button, Badge } from '@todo/ui-web';
 import { useWallet } from './WalletProvider';
 
 export function WalletConnect() {
@@ -61,33 +62,31 @@ export function WalletConnect() {
       <div className="bg-white rounded-lg shadow-sm border p-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-medium text-gray-900">Wallet Connected</h3>
-          <button
+          <Button
             onClick={handleDisconnect}
             disabled={isConnecting}
-            className="text-sm text-red-600 hover:text-red-800 disabled:opacity-50"
+            variant="destructive"
+            size="sm"
           >
             Disconnect
-          </button>
+          </Button>
         </div>
 
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-gray-700">Network:</span>
             <div className="flex items-center space-x-2">
-              <span
-                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getNetworkColor(
-                  account.network
-                )}`}
-              >
+              <Badge variant="secondary" size="sm">
                 {account.network}
-              </span>
-              <button
+              </Badge>
+              <Button
                 onClick={() => setShowNetworkSelector(!showNetworkSelector)}
                 disabled={isConnecting}
-                className="text-sm text-primary-600 hover:text-primary-800 disabled:opacity-50"
+                variant="link"
+                size="sm"
               >
                 Switch
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -96,18 +95,15 @@ export function WalletConnect() {
               <p className="text-sm font-medium text-gray-700 mb-2">Select Network:</p>
               <div className="grid grid-cols-3 gap-2">
                 {supportedNetworks.map((network) => (
-                  <button
+                  <Button
                     key={network}
                     onClick={() => handleNetworkSwitch(network)}
                     disabled={isConnecting || network === account.network}
-                    className={`px-3 py-2 text-xs font-medium rounded-md border transition-colors ${
-                      network === account.network
-                        ? `${getNetworkColor(network)} opacity-50 cursor-not-allowed`
-                        : `${getNetworkColor(network)} hover:opacity-80`
-                    }`}
+                    variant={network === account.network ? "secondary" : "outline"}
+                    size="sm"
                   >
                     {network}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -155,25 +151,22 @@ export function WalletConnect() {
           </label>
           <div className="grid grid-cols-3 gap-2">
             {supportedNetworks.map((network) => (
-              <button
+              <Button
                 key={network}
                 onClick={() => setSelectedNetwork(network)}
-                className={`px-3 py-2 text-sm font-medium rounded-md border transition-colors ${
-                  selectedNetwork === network
-                    ? `${getNetworkColor(network)} ring-2 ring-primary-500`
-                    : `${getNetworkColor(network)} hover:opacity-80`
-                }`}
+                variant={selectedNetwork === network ? "default" : "outline"}
+                size="sm"
               >
                 {network}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
 
-        <button
+        <Button
           onClick={handleConnect}
           disabled={isConnecting}
-          className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full"
         >
           {isConnecting ? (
             <>
@@ -188,7 +181,7 @@ export function WalletConnect() {
               Connect to {selectedNetwork}
             </>
           )}
-        </button>
+        </Button>
 
         <div className="text-xs text-gray-500 space-y-1">
           <p>• This is a demo implementation</p>
