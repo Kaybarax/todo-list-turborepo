@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Modal, Alert, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Modal, Alert, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
+import { Button, Card, CardContent } from '@todo/ui-mobile';
 import { TodoForm } from '../src/components/TodoForm';
 import { TodoList } from '../src/components/TodoList';
 import { BlockchainStats } from '../src/components/BlockchainStats';
@@ -91,17 +92,17 @@ export default function TodosScreen() {
         )}
 
         {!isConnected && todos.length > 0 && (
-          <View style={styles.walletWarningContainer}>
-            <Text style={styles.walletWarningTitle}>Wallet Not Connected</Text>
-            <Text style={styles.walletWarningText}>
-              Connect your wallet to sync todos to blockchain networks.
-            </Text>
-            <Link href="/wallet" asChild>
-              <TouchableOpacity style={styles.walletWarningButton}>
-                <Text style={styles.walletWarningButtonText}>Connect Wallet</Text>
-              </TouchableOpacity>
-            </Link>
-          </View>
+          <Card style={styles.walletWarningContainer}>
+            <CardContent>
+              <Text style={styles.walletWarningTitle}>Wallet Not Connected</Text>
+              <Text style={styles.walletWarningText}>
+                Connect your wallet to sync todos to blockchain networks.
+              </Text>
+              <Link href="/wallet" asChild>
+                <Button variant="primary" size="small" title="Connect Wallet" onPress={() => {}} style={styles.walletWarningButton} />
+              </Link>
+            </CardContent>
+          </Card>
         )}
 
         <BlockchainStats todos={todos} />
@@ -118,13 +119,13 @@ export default function TodosScreen() {
           />
         </View>
 
-        <TouchableOpacity
+        <Button
+          variant="primary"
+          size="large"
+          title="+"
           style={styles.fab}
           onPress={() => setShowForm(true)}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.fabText}>+</Text>
-        </TouchableOpacity>
+        />
 
         <Modal
           visible={showForm}
@@ -133,9 +134,7 @@ export default function TodosScreen() {
         >
           <SafeAreaView style={styles.modalContainer}>
             <View style={styles.modalHeader}>
-              <TouchableOpacity onPress={handleCancel}>
-                <Text style={styles.modalCancelText}>Cancel</Text>
-              </TouchableOpacity>
+              <Button variant="outline" size="small" title="Cancel" onPress={handleCancel} />
               <Text style={styles.modalTitle}>
                 {editingTodo ? 'Edit Todo' : 'New Todo'}
               </Text>
@@ -186,10 +185,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fef3c7',
     borderColor: '#fbbf24',
     borderWidth: 1,
-    borderRadius: 12,
-    padding: 16,
     marginBottom: 16,
-    alignItems: 'center',
   },
   walletWarningTitle: {
     fontSize: 16,
@@ -205,15 +201,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   walletWarningButton: {
-    backgroundColor: '#f59e0b',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  walletWarningButtonText: {
-    color: '#ffffff',
-    fontSize: 14,
-    fontWeight: '600',
+    marginTop: 8,
   },
   todoListContainer: {
     flex: 1,
@@ -226,9 +214,6 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#2563eb',
-    justifyContent: 'center',
-    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -237,11 +222,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
-  fabText: {
-    color: '#ffffff',
-    fontSize: 24,
-    fontWeight: 'bold',
   },
   modalContainer: {
     flex: 1,
@@ -256,11 +236,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e5e7eb',
   },
-  modalCancelText: {
-    color: '#2563eb',
-    fontSize: 16,
-    fontWeight: '600',
-  },
+
   modalTitle: {
     fontSize: 18,
     fontWeight: '600',

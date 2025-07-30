@@ -124,7 +124,7 @@
   - Test web application functionality with package components
   - _Requirements: 3.1, 3.2, 3.3_
 
-- [ ] 7.2 Update mobile application imports
+- [x] 7.2 Update mobile application imports
   - Replace local components with @todo/ui-mobile imports in apps/mobile
   - Remove duplicate component files from apps/mobile/src/components
   - Update all component usage to use package component APIs

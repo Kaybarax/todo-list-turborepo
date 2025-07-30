@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
+import { Card, CardContent, Badge, Button } from '@todo/ui-mobile';
 import type { Todo } from '../store/todoStore';
 
 interface TodoItemProps {
@@ -69,14 +70,17 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
 
   return (
     <TouchableOpacity
-      style={[
-        styles.container,
-        todo.completed && styles.completedContainer,
-        isOverdue && styles.overdueContainer,
-      ]}
       onPress={() => setShowActions(!showActions)}
       activeOpacity={0.7}
     >
+      <Card
+        style={[
+          styles.container,
+          todo.completed && styles.completedContainer,
+          isOverdue && styles.overdueContainer,
+        ]}
+      >
+        <CardContent>
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.checkbox}
@@ -112,14 +116,15 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
           )}
 
           <View style={styles.metadata}>
-            <View
+            <Badge
+              variant="primary"
+              size="small"
+              text={todo.priority}
               style={[
                 styles.priorityBadge,
                 { backgroundColor: priorityColors[todo.priority] },
               ]}
-            >
-              <Text style={styles.priorityText}>{todo.priority}</Text>
-            </View>
+            />
 
             {todo.dueDate && (
               <View
@@ -140,14 +145,15 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
             )}
 
             {todo.blockchainNetwork && (
-              <View
+              <Badge
+                variant="primary"
+                size="small"
+                text={todo.blockchainNetwork}
                 style={[
                   styles.networkBadge,
                   { backgroundColor: networkColors[todo.blockchainNetwork] },
                 ]}
-              >
-                <Text style={styles.networkText}>{todo.blockchainNetwork}</Text>
-              </View>
+              />
             )}
           </View>
 
@@ -175,50 +181,44 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
         </View>
       </View>
 
-      {showActions && (
-        <View style={styles.actionsContainer}>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => onEdit(todo)}
-          >
-            <Text style={styles.actionButtonText}>Edit</Text>
-          </TouchableOpacity>
+          {showActions && (
+            <View style={styles.actionsContainer}>
+              <Button
+                variant="outline"
+                size="small"
+                title="Edit"
+                style={styles.actionButton}
+                onPress={() => onEdit(todo)}
+              />
 
-          <TouchableOpacity
-            style={[styles.actionButton, styles.deleteButton]}
-            onPress={handleDelete}
-          >
-            <Text style={[styles.actionButtonText, styles.deleteButtonText]}>Delete</Text>
-          </TouchableOpacity>
+              <Button
+                variant="outline"
+                size="small"
+                title="Delete"
+                style={styles.actionButton}
+                onPress={handleDelete}
+              />
 
-          {onBlockchainSync && !todo.blockchainNetwork && (
-            <TouchableOpacity
-              style={[styles.actionButton, styles.syncButton]}
-              onPress={handleBlockchainSync}
-            >
-              <Text style={[styles.actionButtonText, styles.syncButtonText]}>Sync</Text>
-            </TouchableOpacity>
+              {onBlockchainSync && !todo.blockchainNetwork && (
+                <Button
+                  variant="primary"
+                  size="small"
+                  title="Sync"
+                  style={styles.actionButton}
+                  onPress={handleBlockchainSync}
+                />
+              )}
+            </View>
           )}
-        </View>
-      )}
+        </CardContent>
+      </Card>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
-    padding: 16,
     marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
   },
   completedContainer: {
     opacity: 0.7,
@@ -282,16 +282,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   priorityBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
     marginRight: 8,
     marginBottom: 4,
-  },
-  priorityText: {
-    color: '#ffffff',
-    fontSize: 12,
-    fontWeight: '600',
   },
   dueDateBadge: {
     backgroundColor: '#f3f4f6',
@@ -313,16 +305,8 @@ const styles = StyleSheet.create({
     color: '#dc2626',
   },
   networkBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
     marginRight: 8,
     marginBottom: 4,
-  },
-  networkText: {
-    color: '#ffffff',
-    fontSize: 12,
-    fontWeight: '600',
   },
   tagsContainer: {
     flexDirection: 'row',
@@ -377,27 +361,12 @@ const styles = StyleSheet.create({
     borderTopColor: '#f3f4f6',
   },
   actionButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 6,
     marginLeft: 8,
-    backgroundColor: '#f3f4f6',
-  },
-  actionButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#374151',
   },
   deleteButton: {
-    backgroundColor: '#fef2f2',
-  },
-  deleteButtonText: {
-    color: '#dc2626',
+    // Custom styling can be added here if needed
   },
   syncButton: {
-    backgroundColor: '#eff6ff',
-  },
-  syncButtonText: {
-    color: '#2563eb',
+    // Custom styling can be added here if needed
   },
 });

@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
+
   StyleSheet,
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import { Card, CardContent, Button, Badge } from '@todo/ui-mobile';
 import { useWallet } from '../providers/WalletProvider';
 
 export function WalletConnect() {
@@ -77,37 +78,41 @@ export function WalletConnect() {
 
   if (isConnected && account) {
     return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Wallet Connected</Text>
-          <TouchableOpacity
-            onPress={handleDisconnect}
-            disabled={isConnecting}
-            style={styles.disconnectButton}
-          >
-            <Text style={styles.disconnectButtonText}>Disconnect</Text>
-          </TouchableOpacity>
-        </View>
+      <Card style={styles.container}>
+        <CardContent>
+          <View style={styles.header}>
+            <Text style={styles.title}>Wallet Connected</Text>
+            <Button
+              variant="outline"
+              size="small"
+              title="Disconnect"
+              onPress={handleDisconnect}
+              disabled={isConnecting}
+              style={styles.disconnectButton}
+            />
+          </View>
 
         <View style={styles.accountInfo}>
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>Network:</Text>
             <View style={styles.networkContainer}>
-              <View
+              <Badge
+                variant="primary"
+                size="small"
+                text={account.network}
                 style={[
                   styles.networkBadge,
                   { backgroundColor: getNetworkColor(account.network) },
                 ]}
-              >
-                <Text style={styles.networkText}>{account.network}</Text>
-              </View>
-              <TouchableOpacity
+              />
+              <Button
+                variant="outline"
+                size="small"
+                title="Switch"
                 onPress={() => setShowNetworkSelector(!showNetworkSelector)}
                 disabled={isConnecting}
                 style={styles.switchButton}
-              >
-                <Text style={styles.switchButtonText}>Switch</Text>
-              </TouchableOpacity>
+              />
             </View>
           </View>
 
@@ -116,18 +121,19 @@ export function WalletConnect() {
               <Text style={styles.selectorTitle}>Select Network:</Text>
               <View style={styles.networkOptions}>
                 {supportedNetworks.map((network) => (
-                  <TouchableOpacity
+                  <Button
                     key={network}
+                    variant="primary"
+                    size="small"
+                    title={network}
                     onPress={() => handleNetworkSwitch(network)}
                     disabled={isConnecting || network === account.network}
-                    style={[
-                      styles.networkOption,
-                      { backgroundColor: getNetworkColor(network) },
-                      (network === account.network || isConnecting) && styles.networkOptionDisabled,
-                    ]}
-                  >
-                    <Text style={styles.networkOptionText}>{network}</Text>
-                  </TouchableOpacity>
+                    style={{
+                      ...styles.networkOption,
+                      backgroundColor: getNetworkColor(network),
+                      ...(network === account.network || isConnecting ? styles.networkOptionDisabled : {}),
+                    }}
+                  />
                 ))}
               </View>
             </View>
@@ -152,78 +158,64 @@ export function WalletConnect() {
             <Text style={styles.loadingText}>Processing...</Text>
           </View>
         )}
-      </View>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Connect Wallet</Text>
-      
-      {error && (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{error}</Text>
-        </View>
-      )}
+    <Card style={styles.container}>
+      <CardContent>
+        <Text style={styles.title}>Connect Wallet</Text>
+        
+        {error && (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{error}</Text>
+          </View>
+        )}
 
-      <View style={styles.connectSection}>
-        <Text style={styles.sectionTitle}>Select Network:</Text>
-        <View style={styles.networkOptions}>
-          {supportedNetworks.map((network) => (
-            <TouchableOpacity
-              key={network}
-              onPress={() => setSelectedNetwork(network)}
-              style={[
-                styles.networkOption,
-                { backgroundColor: getNetworkColor(network) },
-                selectedNetwork === network && styles.networkOptionSelected,
-              ]}
-            >
-              <Text style={styles.networkOptionText}>{network}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <View style={styles.connectSection}>
+          <Text style={styles.sectionTitle}>Select Network:</Text>
+          <View style={styles.networkOptions}>
+            {supportedNetworks.map((network) => (
+              <Button
+                key={network}
+                variant={selectedNetwork === network ? "primary" : "outline"}
+                size="small"
+                title={network}
+                onPress={() => setSelectedNetwork(network)}
+                style={{
+                  ...styles.networkOption,
+                  ...(selectedNetwork === network ? { backgroundColor: getNetworkColor(network) } : {}),
+                }}
+              />
+            ))}
+          </View>
 
-        <TouchableOpacity
-          onPress={handleConnect}
-          disabled={isConnecting}
-          style={[styles.connectButton, isConnecting && styles.connectButtonDisabled]}
-        >
-          {isConnecting ? (
-            <View style={styles.connectingContainer}>
-              <ActivityIndicator size="small" color="#ffffff" />
-              <Text style={styles.connectButtonText}>Connecting...</Text>
-            </View>
-          ) : (
-            <Text style={styles.connectButtonText}>
-              Connect to {selectedNetwork}
-            </Text>
-          )}
-        </TouchableOpacity>
+          <Button
+            variant="primary"
+            size="large"
+            title={isConnecting ? "Connecting..." : `Connect to ${selectedNetwork}`}
+            onPress={handleConnect}
+            disabled={isConnecting}
+            loading={isConnecting}
+            style={styles.connectButton}
+          />
 
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoText}>• This is a demo implementation</Text>
-          <Text style={styles.infoText}>• Real wallet integration will be added in production</Text>
-          <Text style={styles.infoText}>• Supports Solana, Polkadot, and Polygon networks</Text>
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoText}>• This is a demo implementation</Text>
+            <Text style={styles.infoText}>• Real wallet integration will be added in production</Text>
+            <Text style={styles.infoText}>• Supports Solana, Polkadot, and Polygon networks</Text>
+          </View>
         </View>
-      </View>
-    </View>
+      </CardContent>
+    </Card>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    // Custom styling can be added here if needed
   },
   header: {
     flexDirection: 'row',
@@ -237,15 +229,7 @@ const styles = StyleSheet.create({
     color: '#1f2937',
   },
   disconnectButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 6,
-    backgroundColor: '#fef2f2',
-  },
-  disconnectButtonText: {
-    color: '#dc2626',
-    fontSize: 14,
-    fontWeight: '500',
+    // Custom styling can be added here if needed
   },
   accountInfo: {
     marginBottom: 16,
@@ -266,26 +250,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   networkBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
     marginRight: 8,
   },
-  networkText: {
-    color: '#ffffff',
-    fontSize: 14,
-    fontWeight: '600',
-  },
   switchButton: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-    backgroundColor: '#f3f4f6',
-  },
-  switchButtonText: {
-    color: '#2563eb',
-    fontSize: 12,
-    fontWeight: '500',
+    // Custom styling can be added here if needed
   },
   networkSelector: {
     backgroundColor: '#f9fafb',
@@ -305,24 +273,10 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   networkOption: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
     minWidth: 80,
-    alignItems: 'center',
-  },
-  networkOptionSelected: {
-    borderWidth: 2,
-    borderColor: '#2563eb',
   },
   networkOptionDisabled: {
     opacity: 0.5,
-  },
-  networkOptionText: {
-    color: '#ffffff',
-    fontSize: 14,
-    fontWeight: '600',
-    textTransform: 'capitalize',
   },
   addressText: {
     fontSize: 14,
@@ -372,23 +326,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   connectButton: {
-    backgroundColor: '#2563eb',
-    paddingVertical: 14,
-    borderRadius: 8,
-    alignItems: 'center',
     marginTop: 16,
-  },
-  connectButtonDisabled: {
-    opacity: 0.6,
-  },
-  connectButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  connectingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   infoContainer: {
     marginTop: 16,

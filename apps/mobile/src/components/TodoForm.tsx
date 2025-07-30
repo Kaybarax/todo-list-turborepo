@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
-  TouchableOpacity,
   ScrollView,
   StyleSheet,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
+import { Input, Button } from '@todo/ui-mobile';
 // import { Picker } from '@react-native-picker/picker';
 
 interface TodoFormProps {
@@ -74,43 +74,27 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
-  const getPriorityColor = (priorityLevel: string) => {
-    switch (priorityLevel) {
-      case 'high':
-        return '#ef4444';
-      case 'medium':
-        return '#f59e0b';
-      case 'low':
-        return '#10b981';
-      default:
-        return '#6b7280';
-    }
-  };
+
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.form}>
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Title *</Text>
-          <TextInput
-            style={styles.input}
+          <Input
+            label="Title"
             value={title}
             onChangeText={setTitle}
             placeholder="Enter todo title"
-            placeholderTextColor="#9ca3af"
           />
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Description</Text>
-          <TextInput
-            style={[styles.input, styles.textArea]}
+          <Input
+            label="Description"
             value={description}
             onChangeText={setDescription}
             placeholder="Enter todo description"
-            placeholderTextColor="#9ca3af"
             multiline
-            numberOfLines={3}
           />
         </View>
 
@@ -119,37 +103,24 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
             <Text style={styles.label}>Priority</Text>
             <View style={styles.priorityContainer}>
               {(['low', 'medium', 'high'] as const).map((level) => (
-                <TouchableOpacity
+                <Button
                   key={level}
-                  style={[
-                    styles.priorityButton,
-                    priority === level && styles.priorityButtonActive,
-                    { borderColor: getPriorityColor(level) },
-                    priority === level && { backgroundColor: getPriorityColor(level) },
-                  ]}
+                  title={level.charAt(0).toUpperCase() + level.slice(1)}
+                  variant={priority === level ? 'primary' : 'outline'}
+                  size="small"
                   onPress={() => setPriority(level)}
-                >
-                  <Text
-                    style={[
-                      styles.priorityButtonText,
-                      priority === level && styles.priorityButtonTextActive,
-                    ]}
-                  >
-                    {level.charAt(0).toUpperCase() + level.slice(1)}
-                  </Text>
-                </TouchableOpacity>
+                  style={styles.priorityButton}
+                />
               ))}
             </View>
           </View>
 
           <View style={[styles.inputGroup, styles.halfWidth]}>
-            <Text style={styles.label}>Due Date</Text>
-            <TextInput
-              style={styles.input}
+            <Input
+              label="Due Date"
               value={dueDate}
               onChangeText={setDueDate}
               placeholder="YYYY-MM-DD"
-              placeholderTextColor="#9ca3af"
             />
           </View>
         </View>
@@ -157,17 +128,14 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Tags</Text>
           <View style={styles.tagInputContainer}>
-            <TextInput
-              style={[styles.input, styles.tagInput]}
+            <Input
+              style={styles.tagInput}
               value={tagInput}
               onChangeText={setTagInput}
               placeholder="Add a tag"
-              placeholderTextColor="#9ca3af"
               onSubmitEditing={addTag}
             />
-            <TouchableOpacity style={styles.addTagButton} onPress={addTag}>
-              <Text style={styles.addTagButtonText}>Add</Text>
-            </TouchableOpacity>
+            <Button variant="outline" size="small" title="Add" onPress={addTag} style={styles.addTagButton} />
           </View>
           
           {tags.length > 0 && (
@@ -188,15 +156,9 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
 
         <View style={styles.buttonContainer}>
           {onCancel && (
-            <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </TouchableOpacity>
+            <Button variant="outline" size="large" title="Cancel" onPress={onCancel} style={styles.cancelButton} />
           )}
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitButtonText}>
-              {initialData ? 'Update Todo' : 'Create Todo'}
-            </Text>
-          </TouchableOpacity>
+          <Button variant="primary" size="large" title={initialData ? 'Update Todo' : 'Create Todo'} onPress={handleSubmit} style={styles.submitButton} />
         </View>
       </View>
     </ScrollView>
@@ -220,19 +182,7 @@ const styles = StyleSheet.create({
     color: '#374151',
     marginBottom: 8,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    backgroundColor: '#ffffff',
-    color: '#1f2937',
-  },
-  textArea: {
-    height: 80,
-    textAlignVertical: 'top',
-  },
+
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -274,14 +224,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   addTagButton: {
-    backgroundColor: '#e5e7eb',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  addTagButtonText: {
-    color: '#374151',
-    fontWeight: '600',
+    marginLeft: 8,
   },
   tagsContainer: {
     flexDirection: 'row',
@@ -315,27 +258,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   cancelButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#d1d5db',
     marginRight: 12,
   },
-  cancelButtonText: {
-    color: '#374151',
-    fontSize: 16,
-    fontWeight: '600',
-  },
   submitButton: {
-    backgroundColor: '#2563eb',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  submitButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
+    flex: 1,
   },
 });

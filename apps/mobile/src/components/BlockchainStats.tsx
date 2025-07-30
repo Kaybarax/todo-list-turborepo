@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Card, CardContent, Badge } from '@todo/ui-mobile';
 import type { Todo } from '../store/todoStore';
 
 interface BlockchainStatsProps {
@@ -47,8 +48,9 @@ export function BlockchainStats({ todos }: BlockchainStatsProps) {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Blockchain Integration</Text>
+    <Card style={styles.container}>
+      <CardContent>
+        <Text style={styles.title}>Blockchain Integration</Text>
       
       <View style={styles.statsGrid}>
         <View style={styles.statItem}>
@@ -74,17 +76,16 @@ export function BlockchainStats({ todos }: BlockchainStatsProps) {
           <Text style={styles.sectionTitle}>Network Distribution</Text>
           <View style={styles.networkBadges}>
             {Object.entries(stats.networkBreakdown).map(([network, count]) => (
-              <View
+              <Badge
                 key={network}
+                variant="primary"
+                size="small"
+                text={`${network}: ${count}`}
                 style={[
                   styles.networkBadge,
                   { backgroundColor: getNetworkColor(network) },
                 ]}
-              >
-                <Text style={styles.networkBadgeText}>
-                  {network}: {count}
-                </Text>
-              </View>
+              />
             ))}
           </View>
         </View>
@@ -98,24 +99,14 @@ export function BlockchainStats({ todos }: BlockchainStatsProps) {
           </Text>
         </View>
       )}
-    </View>
+      </CardContent>
+    </Card>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 20,
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   title: {
     fontSize: 20,
@@ -156,15 +147,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   networkBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-  },
-  networkBadgeText: {
-    color: '#ffffff',
-    fontSize: 12,
-    fontWeight: '600',
-    textTransform: 'capitalize',
+    // Custom styling can be added here if needed
   },
   infoSection: {
     backgroundColor: '#eff6ff',

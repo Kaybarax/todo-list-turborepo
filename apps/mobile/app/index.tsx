@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Card, CardContent } from '@todo/ui-mobile';
 
 export default function HomeScreen() {
   return (
@@ -27,26 +28,32 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.featureContainer}>
-          <View style={styles.featureCard}>
-            <Text style={styles.featureTitle}>Traditional Storage</Text>
-            <Text style={styles.featureDescription}>
-              Store your todos securely with fast synchronization across devices.
-            </Text>
-          </View>
+          <Card style={styles.featureCard}>
+            <CardContent>
+              <Text style={styles.featureTitle}>Traditional Storage</Text>
+              <Text style={styles.featureDescription}>
+                Store your todos securely with fast synchronization across devices.
+              </Text>
+            </CardContent>
+          </Card>
 
-          <View style={styles.featureCard}>
-            <Text style={styles.featureTitle}>Blockchain Storage</Text>
-            <Text style={styles.featureDescription}>
-              Store todos on blockchain networks for decentralized, immutable storage.
-            </Text>
-          </View>
+          <Card style={styles.featureCard}>
+            <CardContent>
+              <Text style={styles.featureTitle}>Blockchain Storage</Text>
+              <Text style={styles.featureDescription}>
+                Store todos on blockchain networks for decentralized, immutable storage.
+              </Text>
+            </CardContent>
+          </Card>
 
-          <View style={styles.featureCard}>
-            <Text style={styles.featureTitle}>Multi-Network Support</Text>
-            <Text style={styles.featureDescription}>
-              Choose from Solana, Polkadot, or Polygon networks based on your preferences.
-            </Text>
-          </View>
+          <Card style={styles.featureCard}>
+            <CardContent>
+              <Text style={styles.featureTitle}>Multi-Network Support</Text>
+              <Text style={styles.featureDescription}>
+                Choose from Solana, Polkadot, or Polygon networks based on your preferences.
+              </Text>
+            </CardContent>
+          </Card>
         </View>
       </View>
     </SafeAreaView>
@@ -110,18 +117,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   featureCard: {
-    backgroundColor: '#ffffff',
-    padding: 16,
-    borderRadius: 8,
     marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
   },
   featureTitle: {
     fontSize: 18,

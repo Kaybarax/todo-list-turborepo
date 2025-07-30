@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button, Card, CardContent } from '@todo/ui-mobile';
 import { WalletConnect } from '../src/components/WalletConnect';
 import { useWallet } from '../src/providers/WalletProvider';
 
@@ -53,73 +54,79 @@ export default function WalletScreen() {
         <WalletConnect />
 
         {isConnected && account ? (
-          <View style={styles.actionsContainer}>
-            <Text style={styles.actionsTitle}>Wallet Actions</Text>
-            
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={handleSignMessage}
-            >
-              <Text style={styles.actionButtonText}>Sign Message</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity
-              style={[styles.actionButton, styles.primaryActionButton]}
-              onPress={handleSendTransaction}
-            >
-              <Text style={[styles.actionButtonText, styles.primaryActionButtonText]}>
-                Send Test Transaction
-              </Text>
-            </TouchableOpacity>
+          <Card style={styles.actionsContainer}>
+            <CardContent>
+              <Text style={styles.actionsTitle}>Wallet Actions</Text>
+              
+              <Button
+                variant="outline"
+                size="large"
+                title="Sign Message"
+                style={styles.actionButton}
+                onPress={handleSignMessage}
+              />
+              
+              <Button
+                variant="primary"
+                size="large"
+                title="Send Test Transaction"
+                style={styles.actionButton}
+                onPress={handleSendTransaction}
+              />
 
-            <View style={styles.featuresContainer}>
-              <Text style={styles.featuresTitle}>Blockchain Features</Text>
-              <View style={styles.featuresList}>
-                <Text style={styles.featureItem}>• Store todos on blockchain networks</Text>
-                <Text style={styles.featureItem}>• Immutable and decentralized storage</Text>
-                <Text style={styles.featureItem}>• Cross-network compatibility</Text>
-                <Text style={styles.featureItem}>• Cryptographic verification</Text>
+              <View style={styles.featuresContainer}>
+                <Text style={styles.featuresTitle}>Blockchain Features</Text>
+                <View style={styles.featuresList}>
+                  <Text style={styles.featureItem}>• Store todos on blockchain networks</Text>
+                  <Text style={styles.featureItem}>• Immutable and decentralized storage</Text>
+                  <Text style={styles.featureItem}>• Cross-network compatibility</Text>
+                  <Text style={styles.featureItem}>• Cryptographic verification</Text>
+                </View>
               </View>
-            </View>
-          </View>
+            </CardContent>
+          </Card>
         ) : (
-          <View style={styles.disconnectedContainer}>
-            <Text style={styles.disconnectedTitle}>No wallet connected</Text>
-            <Text style={styles.disconnectedSubtitle}>
-              Connect your wallet to access blockchain features.
-            </Text>
-          </View>
+          <Card style={styles.disconnectedContainer}>
+            <CardContent>
+              <Text style={styles.disconnectedTitle}>No wallet connected</Text>
+              <Text style={styles.disconnectedSubtitle}>
+                Connect your wallet to access blockchain features.
+              </Text>
+            </CardContent>
+          </Card>
         )}
 
-        <View style={styles.networksContainer}>
-          <Text style={styles.networksTitle}>Supported Networks</Text>
-          
-          <View style={styles.networksList}>
-            <View style={styles.networkItem}>
-              <View style={[styles.networkDot, { backgroundColor: '#9333ea' }]} />
-              <View style={styles.networkInfo}>
-                <Text style={styles.networkName}>Solana</Text>
-                <Text style={styles.networkDescription}>Fast and low-cost transactions</Text>
-              </View>
-            </View>
+        <Card style={styles.networksContainer}>
+          <CardContent>
+            <Text style={styles.networksTitle}>Supported Networks</Text>
             
-            <View style={styles.networkItem}>
-              <View style={[styles.networkDot, { backgroundColor: '#ec4899' }]} />
-              <View style={styles.networkInfo}>
-                <Text style={styles.networkName}>Polkadot</Text>
-                <Text style={styles.networkDescription}>Interoperable blockchain network</Text>
+            <View style={styles.networksList}>
+              <View style={styles.networkItem}>
+                <View style={[styles.networkDot, { backgroundColor: '#9333ea' }]} />
+                <View style={styles.networkInfo}>
+                  <Text style={styles.networkName}>Solana</Text>
+                  <Text style={styles.networkDescription}>Fast and low-cost transactions</Text>
+                </View>
+              </View>
+              
+              <View style={styles.networkItem}>
+                <View style={[styles.networkDot, { backgroundColor: '#ec4899' }]} />
+                <View style={styles.networkInfo}>
+                  <Text style={styles.networkName}>Polkadot</Text>
+                  <Text style={styles.networkDescription}>Interoperable blockchain network</Text>
+                </View>
+              </View>
+              
+              <View style={styles.networkItem}>
+                <View style={[styles.networkDot, { backgroundColor: '#6366f1' }]} />
+                <View style={styles.networkInfo}>
+                  <Text style={styles.networkName}>Polygon</Text>
+                  <Text style={styles.networkDescription}>Ethereum-compatible scaling solution</Text>
+                </View>
               </View>
             </View>
-            
-            <View style={styles.networkItem}>
-              <View style={[styles.networkDot, { backgroundColor: '#6366f1' }]} />
-              <View style={styles.networkInfo}>
-                <Text style={styles.networkName}>Polygon</Text>
-                <Text style={styles.networkDescription}>Ethereum-compatible scaling solution</Text>
-              </View>
-            </View>
-          </View>
-        </View>
+          </CardContent>
+        </Card>
       </ScrollView>
     </SafeAreaView>
   );
@@ -147,18 +154,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   actionsContainer: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 20,
     marginTop: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   actionsTitle: {
     fontSize: 20,
@@ -167,23 +163,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   actionButton: {
-    backgroundColor: '#f3f4f6',
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderRadius: 8,
     marginBottom: 12,
-    alignItems: 'center',
-  },
-  primaryActionButton: {
-    backgroundColor: '#2563eb',
-  },
-  actionButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#374151',
-  },
-  primaryActionButtonText: {
-    color: '#ffffff',
   },
   featuresContainer: {
     marginTop: 20,
@@ -209,13 +189,10 @@ const styles = StyleSheet.create({
   },
   disconnectedContainer: {
     backgroundColor: '#f9fafb',
-    borderRadius: 12,
     borderWidth: 2,
     borderColor: '#e5e7eb',
     borderStyle: 'dashed',
-    padding: 40,
     marginTop: 20,
-    alignItems: 'center',
   },
   disconnectedTitle: {
     fontSize: 18,
@@ -229,18 +206,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   networksContainer: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 20,
     marginTop: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   networksTitle: {
     fontSize: 20,

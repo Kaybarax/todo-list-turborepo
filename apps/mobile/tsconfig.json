@@ -1,5 +1,5 @@
 {
-  "extends": "@todo/config-ts/react-native.json",
+  "extends": "../../packages/config-ts/react-native.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -8,9 +8,5 @@
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "app/**/*.ts", "app/**/*.tsx"],
-  "exclude": ["node_modules"],
-  "references": [
-    { "path": "../../packages/ui-mobile" },
-    { "path": "../../packages/services" }
-  ]
+  "exclude": ["node_modules"]
 }
