@@ -95,7 +95,7 @@
   - _Requirements: 4.5_
 
 - [ ] 6. Create Expo React Native showcase application for mobile
-- [ ] 6.1 Set up Expo showcase application structure
+- [x] 6.1 Set up Expo showcase application structure
   - Create showcase directory with Expo configuration
   - Set up showcase/App.tsx with drawer navigation
   - Configure @ui-kitten/components ApplicationProvider
