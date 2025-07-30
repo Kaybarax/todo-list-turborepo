@@ -48,6 +48,7 @@ const components: ComponentData[] = [
 
 function App() {
   const [activeComponent, setActiveComponent] = useState<string>('Button')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
 
   const currentComponent = components.find(comp => comp.name === activeComponent)
 
@@ -73,14 +74,31 @@ function App() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Mobile Menu Button */}
+        <div className="lg:hidden mb-6">
+          <Button
+            variant="outline"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="w-full justify-between"
+          >
+            <span>Components Menu</span>
+            <span>{mobileMenuOpen ? '−' : '+'}</span>
+          </Button>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Navigation Sidebar */}
-          <div className="lg:col-span-1">
-            <Navigation
-              components={components}
-              activeComponent={activeComponent}
-              onComponentSelect={setActiveComponent}
-            />
+          <div className={`lg:col-span-1 ${mobileMenuOpen ? 'block' : 'hidden lg:block'}`}>
+            <div className="lg:sticky lg:top-8">
+              <Navigation
+                components={components}
+                activeComponent={activeComponent}
+                onComponentSelect={(component) => {
+                  setActiveComponent(component)
+                  setMobileMenuOpen(false) // Close mobile menu on selection
+                }}
+              />
+            </div>
           </div>
 
           {/* Main Content */}
