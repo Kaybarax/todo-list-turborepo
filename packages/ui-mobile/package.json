@@ -16,8 +16,10 @@
     }
   },
   "scripts": {
-    "build": "vite build",
+    "build": "tsc --project tsconfig.json && vite build",
+    "build:lib": "vite build",
     "dev": "vite build --watch",
+    "typecheck": "tsc --project tsconfig.dev.json --noEmit",
     "lint": "eslint \"lib/**/*.ts*\" --fix",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
@@ -29,7 +31,9 @@
     "showcase:build": "cd showcase && npm run build",
     "showcase:android": "cd showcase && npm run android",
     "showcase:ios": "cd showcase && npm run ios",
-    "showcase:web": "cd showcase && npm run web"
+    "showcase:web": "cd showcase && npm run web",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
     "@ui-kitten/components": "^5.3.1",
@@ -76,5 +80,8 @@
     "react-native": ">=0.70.0",
     "react-native-vector-icons": ">=10.0.0"
   },
-  "private": true
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  }
 }

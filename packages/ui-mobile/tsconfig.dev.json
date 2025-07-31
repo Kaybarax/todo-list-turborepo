@@ -1,8 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist",
-    "declaration": true,
+    "noEmit": true,
     "jsx": "react-native",
     "lib": ["dom", "esnext"],
     "moduleResolution": "node",
@@ -10,6 +9,10 @@
     "resolveJsonModule": true,
     "strict": true
   },
-  "include": ["lib/**/*"],
-  "exclude": ["node_modules", "dist", "__tests__", "showcase", "**/*.test.ts", "**/*.stories.tsx"]
+  "include": [
+    "lib/**/*",
+    "__tests__/**/*",
+    "showcase/**/*"
+  ],
+  "exclude": ["node_modules", "dist"]
 }

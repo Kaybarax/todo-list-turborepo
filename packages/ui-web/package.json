@@ -1,7 +1,10 @@
 {
   "name": "@todo/ui-web",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -19,8 +22,10 @@
     "./styles.css": "./dist/style.css"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "tsc --project tsconfig.json && vite build",
+    "build:lib": "vite build",
     "dev": "vite build --watch",
+    "typecheck": "tsc --project tsconfig.dev.json --noEmit",
     "lint": "eslint \"lib/**/*.ts*\" --fix",
     "test": "vitest run --config vitest.config.ts",
     "test:watch": "vitest --config vitest.config.ts",
@@ -33,7 +38,9 @@
     "visual-test": "npm run build-storybook && npm run chromatic",
     "visual-test:ci": "npm run build-storybook && npm run chromatic:ci",
     "showcase:dev": "vite --config showcase/vite.config.ts",
-    "showcase:build": "vite build --config showcase/vite.config.ts"
+    "showcase:build": "vite build --config showcase/vite.config.ts",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.1.2",

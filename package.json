@@ -14,6 +14,7 @@
     "build:production": "./scripts/build-production.sh",
     "build:contracts": "./scripts/build-contracts.sh",
     "build:packages": "turbo run build --filter=\"./packages/*\"",
+    "test:packages": "./scripts/test-package-installation.sh",
     "build:apps": "turbo run build --filter=\"./apps/*\"",
     "dev": "./scripts/startDev.sh",
     "dev:all": "./scripts/startDev.sh --services all",
@@ -62,7 +63,10 @@
     "prepare": "husky install",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "./scripts/build-production.sh && changeset publish"
+    "release": "./scripts/build-production.sh && changeset publish",
+    "validate-packages": "./scripts/validate-packages.sh",
+    "publish-packages": "./scripts/publish-packages.sh",
+    "publish-packages:dry-run": "./scripts/publish-packages.sh --dry-run"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
