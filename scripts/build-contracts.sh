@@ -169,6 +169,36 @@ build_polkadot() {
     print_success "Polkadot pallets built successfully"
 }
 
+# Function to build Moonbeam contracts
+build_moonbeam() {
+    if [ ! -d "apps/smart-contracts/moonbeam" ]; then
+        print_warning "Moonbeam contracts directory not found, skipping..."
+        return
+    fi
+    
+    print_status "Building Moonbeam contracts..."
+    cd apps/smart-contracts/moonbeam
+    
+    # Install dependencies if needed
+    if [ ! -d "node_modules" ]; then
+        print_status "Installing Moonbeam contract dependencies..."
+        pnpm install
+    fi
+    
+    # Compile Solidity contracts
+    print_status "Compiling Moonbeam Solidity contracts..."
+    pnpm compile
+    
+    # Run tests if not skipped
+    if [ "$RUN_TESTS" = "true" ]; then
+        print_status "Running Moonbeam contract tests..."
+        pnpm test
+    fi
+    
+    cd ../../..
+    print_success "Moonbeam contracts built successfully"
+}
+
 # Function to generate contract artifacts
 generate_artifacts() {
     print_status "Generating contract artifacts..."
@@ -195,6 +225,12 @@ generate_artifacts() {
         mkdir -p build/contracts/polkadot
         cp -r apps/smart-contracts/polkadot/target/release build/contracts/polkadot/
         print_status "Polkadot artifacts copied"
+    fi
+    
+    # Copy Moonbeam artifacts
+    if [ -d "apps/smart-contracts/moonbeam/artifacts" ]; then
+        cp -r apps/smart-contracts/moonbeam/artifacts build/contracts/moonbeam
+        print_status "Moonbeam artifacts copied"
     fi
     
     print_success "Contract artifacts generated in build/contracts/"
@@ -226,6 +262,14 @@ validate_builds() {
     if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "polkadot" ]; then
         if [ ! -f "apps/smart-contracts/polkadot/target/release/node-template" ]; then
             print_error "Polkadot node binary not found"
+            validation_failed=true
+        fi
+    fi
+    
+    # Validate Moonbeam contracts
+    if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "moonbeam" ]; then
+        if [ ! -f "apps/smart-contracts/moonbeam/artifacts/contracts/TodoList.sol/TodoList.json" ]; then
+            print_error "Moonbeam TodoList contract not found"
             validation_failed=true
         fi
     fi
@@ -262,6 +306,9 @@ show_build_summary() {
     fi
     if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "polkadot" ]; then
         echo "  Polkadot: cd apps/smart-contracts/polkadot && ./target/release/node-template --dev"
+    fi
+    if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "moonbeam" ]; then
+        echo "  Moonbeam: cd apps/smart-contracts/moonbeam && pnpm deploy:local"
     fi
 }
 
@@ -305,10 +352,14 @@ main_build() {
         polkadot)
             build_polkadot
             ;;
+        moonbeam)
+            build_moonbeam
+            ;;
         all)
             build_polygon
             build_solana
             build_polkadot
+            build_moonbeam
             ;;
         *)
             print_error "Unknown network: $NETWORK"

@@ -18,7 +18,7 @@
   - Create network configuration schemas for new networks
   - _Requirements: 2.1, 3.1, 4.1, 4.2_
 
-- [ ] 4. Create Moonbeam smart contracts directory and configuration
+- [x] 4. Create Moonbeam smart contracts directory and configuration
   - Create "apps/smart-contracts/moonbeam" directory structure
   - Implement Moonbeam-specific Hardhat configuration
   - Copy and adapt TodoList.sol and TodoListFactory.sol contracts for Moonbeam
