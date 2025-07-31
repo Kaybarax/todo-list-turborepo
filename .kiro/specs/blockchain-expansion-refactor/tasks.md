@@ -6,7 +6,7 @@
   - Update all file path references throughout the codebase
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
-- [ ] 2. Update build and deployment scripts for new directory structure
+- [x] 2. Update build and deployment scripts for new directory structure
   - Modify build-contracts.sh to reference "apps/smart-contracts" paths
   - Update deploy.sh and deployment scripts to use new directory structure
   - Update Docker configurations to reference new paths
