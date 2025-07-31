@@ -1,4 +1,4 @@
-import { BlockchainNetwork } from './types';
+import { BlockchainNetwork, EVMServiceOptions } from './types';
 import { BlockchainService } from './interfaces/BlockchainService';
 import { PolygonBlockchainService, PolygonBlockchainServiceOptions } from './implementations/PolygonBlockchainService';
 import { SolanaBlockchainService } from './implementations/SolanaBlockchainService';
@@ -41,6 +41,20 @@ export interface BlockchainServiceConfig {
       wsEndpoint?: string;
       chainName?: string;
     };
+  };
+  /** Moonbeam configuration */
+  moonbeam?: {
+    /** Testnet configuration */
+    testnet?: EVMServiceOptions;
+    /** Mainnet configuration */
+    mainnet?: EVMServiceOptions;
+  };
+  /** Base configuration */
+  base?: {
+    /** Testnet configuration */
+    testnet?: EVMServiceOptions;
+    /** Mainnet configuration */
+    mainnet?: EVMServiceOptions;
   };
 }
 
@@ -106,6 +120,34 @@ export class BlockchainServiceFactory {
         service = new PolkadotBlockchainService();
         break;
 
+      case BlockchainNetwork.MOONBEAM:
+        if (!this.config.moonbeam?.mainnet) {
+          throw new Error('Moonbeam mainnet configuration is missing');
+        }
+        // TODO: Implement MoonbeamBlockchainService in task 6
+        throw new Error('MoonbeamBlockchainService not yet implemented');
+
+      case BlockchainNetwork.MOONBEAM_TESTNET:
+        if (!this.config.moonbeam?.testnet) {
+          throw new Error('Moonbeam testnet configuration is missing');
+        }
+        // TODO: Implement MoonbeamBlockchainService in task 6
+        throw new Error('MoonbeamBlockchainService not yet implemented');
+
+      case BlockchainNetwork.BASE:
+        if (!this.config.base?.mainnet) {
+          throw new Error('Base mainnet configuration is missing');
+        }
+        // TODO: Implement BaseBlockchainService in task 7
+        throw new Error('BaseBlockchainService not yet implemented');
+
+      case BlockchainNetwork.BASE_TESTNET:
+        if (!this.config.base?.testnet) {
+          throw new Error('Base testnet configuration is missing');
+        }
+        // TODO: Implement BaseBlockchainService in task 7
+        throw new Error('BaseBlockchainService not yet implemented');
+
       default:
         throw new Error(`Unsupported blockchain network: ${network}`);
     }
@@ -146,6 +188,38 @@ export class BlockchainServiceFactory {
       services.push(this.getService(BlockchainNetwork.POLKADOT_TESTNET));
     }
 
+    // Moonbeam
+    if (this.config.moonbeam?.mainnet) {
+      try {
+        services.push(this.getService(BlockchainNetwork.MOONBEAM));
+      } catch (error) {
+        // Service not yet implemented, skip for now
+      }
+    }
+    if (this.config.moonbeam?.testnet) {
+      try {
+        services.push(this.getService(BlockchainNetwork.MOONBEAM_TESTNET));
+      } catch (error) {
+        // Service not yet implemented, skip for now
+      }
+    }
+
+    // Base
+    if (this.config.base?.mainnet) {
+      try {
+        services.push(this.getService(BlockchainNetwork.BASE));
+      } catch (error) {
+        // Service not yet implemented, skip for now
+      }
+    }
+    if (this.config.base?.testnet) {
+      try {
+        services.push(this.getService(BlockchainNetwork.BASE_TESTNET));
+      } catch (error) {
+        // Service not yet implemented, skip for now
+      }
+    }
+
     return services;
   }
 
@@ -178,6 +252,22 @@ export class BlockchainServiceFactory {
     }
     if (this.config.polkadot?.testnet) {
       networks.push(BlockchainNetwork.POLKADOT_TESTNET);
+    }
+
+    // Moonbeam
+    if (this.config.moonbeam?.mainnet) {
+      networks.push(BlockchainNetwork.MOONBEAM);
+    }
+    if (this.config.moonbeam?.testnet) {
+      networks.push(BlockchainNetwork.MOONBEAM_TESTNET);
+    }
+
+    // Base
+    if (this.config.base?.mainnet) {
+      networks.push(BlockchainNetwork.BASE);
+    }
+    if (this.config.base?.testnet) {
+      networks.push(BlockchainNetwork.BASE_TESTNET);
     }
 
     return networks;

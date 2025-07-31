@@ -1,4 +1,4 @@
-import { TransactionStatus, TransactionReceipt, BlockchainNetwork } from '../types';
+import { TransactionStatus, TransactionReceipt, BlockchainNetwork, BlockchainErrorType } from '../types';
 import { BlockchainError } from './BlockchainError';
 
 /**
@@ -75,7 +75,7 @@ export class TransactionMonitor {
       const timeoutId = setTimeout(() => {
         this.transactionHashes.delete(txHash);
         reject(new BlockchainError(
-          'TRANSACTION_FAILED',
+          BlockchainErrorType.TRANSACTION_FAILED,
           `Transaction monitoring timed out after ${txOptions.timeout}ms`,
           { transactionHash: txHash, network }
         ));
@@ -109,7 +109,7 @@ export class TransactionMonitor {
           if (attempts > txOptions.maxAttempts) {
             this.cleanupTransaction(txHash);
             reject(new BlockchainError(
-              'TRANSACTION_FAILED',
+              BlockchainErrorType.TRANSACTION_FAILED,
               `Transaction monitoring exceeded maximum attempts (${txOptions.maxAttempts})`,
               { transactionHash: txHash, network }
             ));
@@ -139,7 +139,7 @@ export class TransactionMonitor {
             } else if (receipt.status === TransactionStatus.FAILED) {
               this.cleanupTransaction(txHash);
               reject(new BlockchainError(
-                'TRANSACTION_FAILED',
+                BlockchainErrorType.TRANSACTION_FAILED,
                 'Transaction failed on the blockchain',
                 { transactionHash: txHash, network }
               ));
@@ -152,7 +152,7 @@ export class TransactionMonitor {
         } catch (error) {
           this.cleanupTransaction(txHash);
           reject(new BlockchainError(
-            'UNKNOWN_ERROR',
+            BlockchainErrorType.UNKNOWN_ERROR,
             'Error monitoring transaction',
             { originalError: error, transactionHash: txHash, network }
           ));

@@ -12,7 +12,7 @@
   - Update Docker configurations to reference new paths
   - _Requirements: 6.1, 6.2, 6.3, 6.4_
 
-- [ ] 3. Extend blockchain types and enums for new networks
+- [x] 3. Extend blockchain types and enums for new networks
   - Add MOONBEAM, MOONBEAM_TESTNET, BASE, BASE_TESTNET to BlockchainNetwork enum
   - Add network-specific error types for Moonbeam and Base
   - Create network configuration schemas for new networks

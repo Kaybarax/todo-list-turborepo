@@ -10,6 +10,10 @@ export enum BlockchainNetwork {
   SOLANA_DEVNET = 'solana_devnet',
   POLKADOT = 'polkadot',
   POLKADOT_TESTNET = 'polkadot_testnet',
+  MOONBEAM = 'moonbeam',
+  MOONBEAM_TESTNET = 'moonbeam_testnet',
+  BASE = 'base',
+  BASE_TESTNET = 'base_testnet',
 }
 
 /**
@@ -130,6 +134,17 @@ export enum BlockchainErrorType {
   INSUFFICIENT_FUNDS = 'insufficient_funds',
   USER_REJECTED = 'user_rejected',
   UNKNOWN_ERROR = 'unknown_error',
+  // Moonbeam-specific errors
+  MOONBEAM_CONNECTION_FAILED = 'moonbeam_connection_failed',
+  MOONBEAM_SUBSTRATE_ERROR = 'moonbeam_substrate_error',
+  MOONBEAM_EVM_ERROR = 'moonbeam_evm_error',
+  // Base-specific errors
+  BASE_L2_ERROR = 'base_l2_error',
+  BASE_SEQUENCER_ERROR = 'base_sequencer_error',
+  BASE_BRIDGE_ERROR = 'base_bridge_error',
+  // General network switching errors
+  NETWORK_SWITCH_REQUIRED = 'network_switch_required',
+  UNSUPPORTED_WALLET = 'unsupported_wallet',
 }
 
 /**
@@ -147,3 +162,237 @@ export const blockchainErrorSchema = z.object({
  * Type for blockchain error
  */
 export type BlockchainError = z.infer<typeof blockchainErrorSchema>;
+
+/**
+ * Schema for network configuration
+ */
+export const networkConfigSchema = z.object({
+  name: z.string(),
+  chainId: z.number(),
+  rpcUrl: z.string().url(),
+  explorerUrl: z.string().url(),
+  nativeCurrency: z.object({
+    name: z.string(),
+    symbol: z.string(),
+    decimals: z.number(),
+  }),
+  contractAddresses: z.object({
+    todoListFactory: z.string().optional(),
+    todoList: z.string().optional(),
+  }),
+  isTestnet: z.boolean().default(false),
+  isEVM: z.boolean().default(false),
+});
+
+/**
+ * Type for network configuration
+ */
+export type NetworkConfig = z.infer<typeof networkConfigSchema>;
+
+/**
+ * Schema for EVM-compatible network service options
+ */
+export const evmServiceOptionsSchema = z.object({
+  rpcUrl: z.string().url(),
+  chainId: z.number(),
+  contractAddresses: z.object({
+    todoListFactory: z.string(),
+    todoList: z.string().optional(),
+  }),
+  gasLimit: z.number().optional(),
+  gasPrice: z.string().optional(),
+  maxFeePerGas: z.string().optional(),
+  maxPriorityFeePerGas: z.string().optional(),
+});
+
+/**
+ * Type for EVM-compatible network service options
+ */
+export type EVMServiceOptions = z.infer<typeof evmServiceOptionsSchema>;
+
+
+
+/**
+ * All network configurations
+ */
+export const NETWORK_CONFIGS: Record<BlockchainNetwork, NetworkConfig> = {
+  // Existing networks (these would need to be defined elsewhere or imported)
+  [BlockchainNetwork.POLYGON]: {
+    name: 'Polygon',
+    chainId: 137,
+    rpcUrl: process.env.POLYGON_RPC_URL || 'https://polygon-rpc.com',
+    explorerUrl: 'https://polygonscan.com',
+    nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
+    contractAddresses: { todoListFactory: process.env.POLYGON_TODO_FACTORY_ADDRESS || '' },
+    isTestnet: false,
+    isEVM: true,
+  },
+  [BlockchainNetwork.POLYGON_MUMBAI]: {
+    name: 'Polygon Mumbai',
+    chainId: 80001,
+    rpcUrl: process.env.POLYGON_MUMBAI_RPC_URL || 'https://rpc-mumbai.maticvigil.com',
+    explorerUrl: 'https://mumbai.polygonscan.com',
+    nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
+    contractAddresses: { todoListFactory: process.env.POLYGON_MUMBAI_TODO_FACTORY_ADDRESS || '' },
+    isTestnet: true,
+    isEVM: true,
+  },
+  [BlockchainNetwork.SOLANA]: {
+    name: 'Solana',
+    chainId: 101, // Solana doesn't use chain IDs like EVM, but we'll use cluster ID
+    rpcUrl: process.env.SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com',
+    explorerUrl: 'https://explorer.solana.com',
+    nativeCurrency: { name: 'Solana', symbol: 'SOL', decimals: 9 },
+    contractAddresses: { todoListFactory: process.env.SOLANA_PROGRAM_ID || '' },
+    isTestnet: false,
+    isEVM: false,
+  },
+  [BlockchainNetwork.SOLANA_DEVNET]: {
+    name: 'Solana Devnet',
+    chainId: 103,
+    rpcUrl: process.env.SOLANA_DEVNET_RPC_URL || 'https://api.devnet.solana.com',
+    explorerUrl: 'https://explorer.solana.com?cluster=devnet',
+    nativeCurrency: { name: 'Solana', symbol: 'SOL', decimals: 9 },
+    contractAddresses: { todoListFactory: process.env.SOLANA_DEVNET_PROGRAM_ID || '' },
+    isTestnet: true,
+    isEVM: false,
+  },
+  [BlockchainNetwork.POLKADOT]: {
+    name: 'Polkadot',
+    chainId: 0, // Polkadot doesn't use chain IDs
+    rpcUrl: process.env.POLKADOT_RPC_URL || 'wss://rpc.polkadot.io',
+    explorerUrl: 'https://polkadot.subscan.io',
+    nativeCurrency: { name: 'Polkadot', symbol: 'DOT', decimals: 10 },
+    contractAddresses: { todoListFactory: '' }, // Polkadot uses pallets, not contracts
+    isTestnet: false,
+    isEVM: false,
+  },
+  [BlockchainNetwork.POLKADOT_TESTNET]: {
+    name: 'Westend',
+    chainId: 0,
+    rpcUrl: process.env.POLKADOT_TESTNET_RPC_URL || 'wss://westend-rpc.polkadot.io',
+    explorerUrl: 'https://westend.subscan.io',
+    nativeCurrency: { name: 'Westend', symbol: 'WND', decimals: 12 },
+    contractAddresses: { todoListFactory: '' },
+    isTestnet: true,
+    isEVM: false,
+  },
+  // New networks - Moonbeam
+  [BlockchainNetwork.MOONBEAM]: {
+    name: 'Moonbeam',
+    chainId: 1284,
+    rpcUrl: process.env.MOONBEAM_RPC_URL || 'https://rpc.api.moonbeam.network',
+    explorerUrl: 'https://moonscan.io',
+    nativeCurrency: {
+      name: 'Glimmer',
+      symbol: 'GLMR',
+      decimals: 18,
+    },
+    contractAddresses: {
+      todoListFactory: process.env.MOONBEAM_TODO_FACTORY_ADDRESS || '',
+    },
+    isTestnet: false,
+    isEVM: true,
+  },
+  [BlockchainNetwork.MOONBEAM_TESTNET]: {
+    name: 'Moonbase Alpha',
+    chainId: 1287,
+    rpcUrl: process.env.MOONBEAM_TESTNET_RPC_URL || 'https://rpc.api.moonbase.moonbeam.network',
+    explorerUrl: 'https://moonbase.moonscan.io',
+    nativeCurrency: {
+      name: 'Dev',
+      symbol: 'DEV',
+      decimals: 18,
+    },
+    contractAddresses: {
+      todoListFactory: process.env.MOONBEAM_TESTNET_TODO_FACTORY_ADDRESS || '',
+    },
+    isTestnet: true,
+    isEVM: true,
+  },
+  // New networks - Base
+  [BlockchainNetwork.BASE]: {
+    name: 'Base',
+    chainId: 8453,
+    rpcUrl: process.env.BASE_RPC_URL || 'https://mainnet.base.org',
+    explorerUrl: 'https://basescan.org',
+    nativeCurrency: {
+      name: 'Ethereum',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    contractAddresses: {
+      todoListFactory: process.env.BASE_TODO_FACTORY_ADDRESS || '',
+    },
+    isTestnet: false,
+    isEVM: true,
+  },
+  [BlockchainNetwork.BASE_TESTNET]: {
+    name: 'Base Sepolia',
+    chainId: 84532,
+    rpcUrl: process.env.BASE_TESTNET_RPC_URL || 'https://sepolia.base.org',
+    explorerUrl: 'https://sepolia.basescan.org',
+    nativeCurrency: {
+      name: 'Ethereum',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    contractAddresses: {
+      todoListFactory: process.env.BASE_TESTNET_TODO_FACTORY_ADDRESS || '',
+    },
+    isTestnet: true,
+    isEVM: true,
+  },
+};
+
+/**
+ * Helper function to get network configuration
+ */
+export function getNetworkConfig(network: BlockchainNetwork): NetworkConfig {
+  const config = NETWORK_CONFIGS[network];
+  if (!config) {
+    throw new Error(`Network configuration not found for ${network}`);
+  }
+  return config;
+}
+
+/**
+ * Helper function to check if network is EVM compatible
+ */
+export function isEVMNetwork(network: BlockchainNetwork): boolean {
+  return getNetworkConfig(network).isEVM;
+}
+
+/**
+ * Helper function to check if network is testnet
+ */
+export function isTestnetNetwork(network: BlockchainNetwork): boolean {
+  return getNetworkConfig(network).isTestnet;
+}
+
+/**
+ * Helper function to get all EVM networks
+ */
+export function getEVMNetworks(): BlockchainNetwork[] {
+  return Object.keys(NETWORK_CONFIGS).filter(network => 
+    NETWORK_CONFIGS[network as BlockchainNetwork].isEVM
+  ) as BlockchainNetwork[];
+}
+
+/**
+ * Helper function to get all mainnet networks
+ */
+export function getMainnetNetworks(): BlockchainNetwork[] {
+  return Object.keys(NETWORK_CONFIGS).filter(network => 
+    !NETWORK_CONFIGS[network as BlockchainNetwork].isTestnet
+  ) as BlockchainNetwork[];
+}
+
+/**
+ * Helper function to get all testnet networks
+ */
+export function getTestnetNetworks(): BlockchainNetwork[] {
+  return Object.keys(NETWORK_CONFIGS).filter(network => 
+    NETWORK_CONFIGS[network as BlockchainNetwork].isTestnet
+  ) as BlockchainNetwork[];
+}
