@@ -42,9 +42,9 @@ if command -v solana &> /dev/null; then
 fi
 
 # Set up Anchor workspace if available
-if [ -d "apps/blockchain-smart-contracts/solana" ] && command -v anchor &> /dev/null; then
+if [ -d "apps/smart-contracts/solana" ] && command -v anchor &> /dev/null; then
     echo "⚓ Setting up Anchor workspace..."
-    cd apps/blockchain-smart-contracts/solana
+    cd apps/smart-contracts/solana
     anchor keys list || echo "⚠️  No Anchor keys found, run 'anchor keys sync' when ready"
     cd /workspace
 fi
@@ -201,7 +201,7 @@ cat > .vscode/tasks.json << EOF
       "command": "pnpm",
       "args": ["dev:contracts"],
       "options": {
-        "cwd": "\${workspaceFolder}/apps/blockchain-smart-contracts"
+        "cwd": "\${workspaceFolder}/apps/smart-contracts"
       },
       "presentation": {
         "echo": true,
@@ -216,7 +216,7 @@ cat > .vscode/tasks.json << EOF
       "command": "pnpm",
       "args": ["deploy:local"],
       "options": {
-        "cwd": "\${workspaceFolder}/apps/blockchain-smart-contracts"
+        "cwd": "\${workspaceFolder}/apps/smart-contracts"
       },
       "presentation": {
         "echo": true,
@@ -244,7 +244,7 @@ cat > .vscode/settings.json << EOF
     "apps/api",
     "apps/mobile",
     "apps/ingestion",
-    "apps/blockchain-smart-contracts",
+    "apps/smart-contracts",
     "packages"
   ],
   "jest.jestCommandLine": "pnpm test",

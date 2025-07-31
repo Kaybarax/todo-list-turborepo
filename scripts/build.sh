@@ -126,17 +126,17 @@ build_contracts() {
     print_status "Compiling blockchain contracts..."
     
     # Compile Solidity contracts (Polygon)
-    if [ -d "apps/blockchain-smart-contracts/polygon" ]; then
+    if [ -d "apps/smart-contracts/polygon" ]; then
         print_status "Compiling Polygon contracts..."
-        cd apps/blockchain-smart-contracts/polygon
+        cd apps/smart-contracts/polygon
         pnpm compile
         cd ../../..
     fi
     
     # Compile Solana programs
-    if [ -d "apps/blockchain-smart-contracts/solana" ]; then
+    if [ -d "apps/smart-contracts/solana" ]; then
         print_status "Compiling Solana programs..."
-        cd apps/blockchain-smart-contracts/solana
+        cd apps/smart-contracts/solana
         if command -v anchor &> /dev/null; then
             anchor build
         else
@@ -146,9 +146,9 @@ build_contracts() {
     fi
     
     # Compile Polkadot pallets
-    if [ -d "apps/blockchain-smart-contracts/polkadot" ]; then
+    if [ -d "apps/smart-contracts/polkadot" ]; then
         print_status "Compiling Polkadot pallets..."
-        cd apps/blockchain-smart-contracts/polkadot
+        cd apps/smart-contracts/polkadot
         if command -v cargo &> /dev/null; then
             cargo build --release
         else
@@ -251,12 +251,12 @@ build_docker_images() {
         -f apps/ingestion/Dockerfile .
     
     # Build blockchain contracts image (for deployment)
-    if [ -f "apps/blockchain-smart-contracts/Dockerfile" ]; then
+    if [ -f "apps/smart-contracts/Dockerfile" ]; then
         print_status "Building Blockchain contracts Docker image..."
         docker build \
             --target production \
             -t ${REGISTRY_PREFIX}todo-contracts:$VERSION \
-            -f apps/blockchain-smart-contracts/Dockerfile .
+            -f apps/smart-contracts/Dockerfile .
     fi
     
     print_success "Docker images built successfully"
@@ -341,9 +341,9 @@ EOF
     "@todo/ingestion"
   ],
   "contracts": {
-    "polygon": $([ -d "apps/blockchain-smart-contracts/polygon" ] && echo "true" || echo "false"),
-    "solana": $([ -d "apps/blockchain-smart-contracts/solana" ] && echo "true" || echo "false"),
-    "polkadot": $([ -d "apps/blockchain-smart-contracts/polkadot" ] && echo "true" || echo "false")
+    "polygon": $([ -d "apps/smart-contracts/polygon" ] && echo "true" || echo "false"),
+    "solana": $([ -d "apps/smart-contracts/solana" ] && echo "true" || echo "false"),
+    "polkadot": $([ -d "apps/smart-contracts/polkadot" ] && echo "true" || echo "false")
   }
 }
 EOF

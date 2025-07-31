@@ -119,7 +119,7 @@ services:
   contracts-test:
     build:
       context: .
-      dockerfile: apps/blockchain-smart-contracts/Dockerfile
+      dockerfile: apps/smart-contracts/Dockerfile
       target: test
     container_name: todo-contracts-test
     environment:
@@ -127,7 +127,7 @@ services:
     networks:
       - test-network
     volumes:
-      - ./apps/blockchain-smart-contracts:/app/apps/blockchain-smart-contracts
+      - ./apps/smart-contracts:/app/apps/smart-contracts
       - ./coverage/contracts:/app/coverage
     command: pnpm test:contracts --coverage
 

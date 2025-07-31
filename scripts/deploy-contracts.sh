@@ -103,7 +103,7 @@ deploy_polygon() {
         return 1
     fi
     
-    cd apps/blockchain-smart-contracts/polygon
+    cd apps/smart-contracts/polygon
     
     # Install dependencies if needed
     if [ ! -d "node_modules" ]; then
@@ -190,7 +190,7 @@ deploy_solana() {
         return 1
     fi
     
-    cd apps/blockchain-smart-contracts/solana
+    cd apps/smart-contracts/solana
     
     case $ENVIRONMENT in
         development)
@@ -265,7 +265,7 @@ deploy_polkadot() {
         return 1
     fi
     
-    cd apps/blockchain-smart-contracts/polkadot
+    cd apps/smart-contracts/polkadot
     
     # Build the runtime
     print_status "Building Polkadot runtime..."
@@ -400,8 +400,8 @@ run_deployment_tests() {
     
     case $NETWORK in
         polygon|all)
-            if [ -d "apps/blockchain-smart-contracts/polygon" ]; then
-                cd apps/blockchain-smart-contracts/polygon
+            if [ -d "apps/smart-contracts/polygon" ]; then
+                cd apps/smart-contracts/polygon
                 pnpm test:deployment || print_warning "Polygon deployment tests failed"
                 cd ../../..
             fi
@@ -410,8 +410,8 @@ run_deployment_tests() {
     
     case $NETWORK in
         solana|all)
-            if [ -d "apps/blockchain-smart-contracts/solana" ]; then
-                cd apps/blockchain-smart-contracts/solana
+            if [ -d "apps/smart-contracts/solana" ]; then
+                cd apps/smart-contracts/solana
                 anchor test --skip-local-validator || print_warning "Solana deployment tests failed"
                 cd ../../..
             fi

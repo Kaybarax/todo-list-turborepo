@@ -152,14 +152,14 @@ services:
   hardhat-node:
     build:
       context: .
-      dockerfile: apps/blockchain-smart-contracts/Dockerfile
+      dockerfile: apps/smart-contracts/Dockerfile
       target: development
     container_name: todo-hardhat-node
     restart: unless-stopped
     ports:
       - "8545:8545"
     volumes:
-      - ./apps/blockchain-smart-contracts:/app/apps/blockchain-smart-contracts
+      - ./apps/smart-contracts:/app/apps/smart-contracts
       - /app/node_modules
     networks:
       - todo-network

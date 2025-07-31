@@ -327,7 +327,7 @@ curl -X POST -H "Content-Type: application/json" \
   $POLYGON_RPC_URL
 
 # Compile contracts
-cd apps/blockchain-smart-contracts/polygon
+cd apps/smart-contracts/polygon
 pnpm compile
 
 # Deploy with verbose logging

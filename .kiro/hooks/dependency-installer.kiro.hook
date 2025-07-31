@@ -9,7 +9,7 @@
       "package.json",
       "apps/*/package.json",
       "packages/*/package.json",
-      "apps/blockchain-smart-contracts/*/package.json"
+      "apps/smart-contracts/*/package.json"
     ]
   },
   "then": {

@@ -160,7 +160,7 @@ curl http://localhost:3001/api/todos
 pnpm dev:blockchain
 
 # Deploy contracts
-cd apps/blockchain-smart-contracts/polygon
+cd apps/smart-contracts/polygon
 pnpm deploy:local
 
 # Test contracts
@@ -321,7 +321,7 @@ cd apps/api && pnpm test:watch
 pnpm test:contracts
 
 # Network-specific testing
-cd apps/blockchain-smart-contracts/polygon
+cd apps/smart-contracts/polygon
 pnpm test
 
 cd ../solana
@@ -374,7 +374,7 @@ docker-compose -f docker-compose.dev.yml logs mongodb
 ### Blockchain Debugging
 ```bash
 # Hardhat console
-cd apps/blockchain-smart-contracts/polygon
+cd apps/smart-contracts/polygon
 pnpm hardhat console --network localhost
 
 # Solana logs
@@ -436,7 +436,7 @@ pnpm build:packages
 #### Blockchain Network Issues
 ```bash
 # Reset Hardhat network
-cd apps/blockchain-smart-contracts/polygon
+cd apps/smart-contracts/polygon
 pnpm hardhat clean
 pnpm hardhat node
 
@@ -522,7 +522,7 @@ docker-compose -f docker-compose.dev.yml restart
 - [API Documentation](../apps/api/README.md)
 - [Web App Documentation](../apps/web/README.md)
 - [Mobile App Documentation](../apps/mobile/README.md)
-- [Blockchain Development Guide](../apps/blockchain-smart-contracts/README.md)
+- [Blockchain Development Guide](../apps/smart-contracts/README.md)
 - [Testing Guide](../docs/TESTING.md)
 - [Deployment Guide](./DEPLOYMENT.md)
 

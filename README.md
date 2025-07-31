@@ -33,7 +33,7 @@ A modern, full-stack Todo application built as a comprehensive monorepo showcasi
 │   ├── mobile/              # Expo React Native with TypeScript
 │   ├── api/                 # NestJS with MongoDB and Redis
 │   ├── ingestion/           # Blockchain data processing service
-│   └── blockchain-smart-contracts/  # Multi-network smart contracts
+│   └── smart-contracts/  # Multi-network smart contracts
 │       ├── polygon/         # Solidity contracts with Hardhat
 │       ├── solana/          # Rust programs with Anchor
 │       └── polkadot/        # Substrate pallets
@@ -444,7 +444,7 @@ export DOCKER_REGISTRY=prod.registry.com
 pnpm contracts:deploy
 
 # Network-specific deployment
-cd apps/blockchain-smart-contracts/polygon
+cd apps/smart-contracts/polygon
 pnpm deploy:mainnet
 
 cd ../solana

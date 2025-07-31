@@ -128,7 +128,7 @@ jobs:
   contract-tests:
     name: Smart Contract Tests
     runs-on: ubuntu-latest
-    if: hashFiles('apps/blockchain-smart-contracts/package.json') != ''
+    if: hashFiles('apps/smart-contracts/package.json') != ''
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -147,7 +147,7 @@ jobs:
 
       - name: Run contract tests
         run: npm test
-        working-directory: apps/blockchain-smart-contracts
+        working-directory: apps/smart-contracts
         env:
           MOONBEAM_RPC_URL: http://localhost:9933
 

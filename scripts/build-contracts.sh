@@ -40,13 +40,13 @@ print_status "Run tests: $RUN_TESTS"
 
 # Function to build Polygon contracts
 build_polygon() {
-    if [ ! -d "apps/blockchain-smart-contracts/polygon" ]; then
+    if [ ! -d "apps/smart-contracts/polygon" ]; then
         print_warning "Polygon contracts directory not found, skipping..."
         return
     fi
     
     print_status "Building Polygon contracts..."
-    cd apps/blockchain-smart-contracts/polygon
+    cd apps/smart-contracts/polygon
     
     # Install dependencies
     if [ ! -d "node_modules" ]; then
@@ -82,13 +82,13 @@ build_polygon() {
 
 # Function to build Solana programs
 build_solana() {
-    if [ ! -d "apps/blockchain-smart-contracts/solana" ]; then
+    if [ ! -d "apps/smart-contracts/solana" ]; then
         print_warning "Solana programs directory not found, skipping..."
         return
     fi
     
     print_status "Building Solana programs..."
-    cd apps/blockchain-smart-contracts/solana
+    cd apps/smart-contracts/solana
     
     # Check if Anchor is installed
     if ! command -v anchor &> /dev/null; then
@@ -130,13 +130,13 @@ build_solana() {
 
 # Function to build Polkadot pallets
 build_polkadot() {
-    if [ ! -d "apps/blockchain-smart-contracts/polkadot" ]; then
+    if [ ! -d "apps/smart-contracts/polkadot" ]; then
         print_warning "Polkadot pallets directory not found, skipping..."
         return
     fi
     
     print_status "Building Polkadot pallets..."
-    cd apps/blockchain-smart-contracts/polkadot
+    cd apps/smart-contracts/polkadot
     
     # Check if Rust is installed
     if ! command -v cargo &> /dev/null; then
@@ -177,23 +177,23 @@ generate_artifacts() {
     mkdir -p build/contracts
     
     # Copy Polygon artifacts
-    if [ -d "apps/blockchain-smart-contracts/polygon/artifacts" ]; then
-        cp -r apps/blockchain-smart-contracts/polygon/artifacts build/contracts/polygon
+    if [ -d "apps/smart-contracts/polygon/artifacts" ]; then
+        cp -r apps/smart-contracts/polygon/artifacts build/contracts/polygon
         print_status "Polygon artifacts copied"
     fi
     
     # Copy Solana artifacts
-    if [ -d "apps/blockchain-smart-contracts/solana/target" ]; then
+    if [ -d "apps/smart-contracts/solana/target" ]; then
         mkdir -p build/contracts/solana
-        cp -r apps/blockchain-smart-contracts/solana/target/deploy build/contracts/solana/
-        cp -r apps/blockchain-smart-contracts/solana/target/idl build/contracts/solana/
+        cp -r apps/smart-contracts/solana/target/deploy build/contracts/solana/
+        cp -r apps/smart-contracts/solana/target/idl build/contracts/solana/
         print_status "Solana artifacts copied"
     fi
     
     # Copy Polkadot artifacts
-    if [ -d "apps/blockchain-smart-contracts/polkadot/target" ]; then
+    if [ -d "apps/smart-contracts/polkadot/target" ]; then
         mkdir -p build/contracts/polkadot
-        cp -r apps/blockchain-smart-contracts/polkadot/target/release build/contracts/polkadot/
+        cp -r apps/smart-contracts/polkadot/target/release build/contracts/polkadot/
         print_status "Polkadot artifacts copied"
     fi
     
@@ -208,7 +208,7 @@ validate_builds() {
     
     # Validate Polygon contracts
     if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "polygon" ]; then
-        if [ ! -f "apps/blockchain-smart-contracts/polygon/artifacts/contracts/TodoList.sol/TodoList.json" ]; then
+        if [ ! -f "apps/smart-contracts/polygon/artifacts/contracts/TodoList.sol/TodoList.json" ]; then
             print_error "Polygon TodoList contract not found"
             validation_failed=true
         fi
@@ -216,7 +216,7 @@ validate_builds() {
     
     # Validate Solana programs
     if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "solana" ]; then
-        if [ ! -f "apps/blockchain-smart-contracts/solana/target/deploy/todo_program.so" ]; then
+        if [ ! -f "apps/smart-contracts/solana/target/deploy/todo_program.so" ]; then
             print_error "Solana todo program not found"
             validation_failed=true
         fi
@@ -224,7 +224,7 @@ validate_builds() {
     
     # Validate Polkadot pallets
     if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "polkadot" ]; then
-        if [ ! -f "apps/blockchain-smart-contracts/polkadot/target/release/node-template" ]; then
+        if [ ! -f "apps/smart-contracts/polkadot/target/release/node-template" ]; then
             print_error "Polkadot node binary not found"
             validation_failed=true
         fi
@@ -255,13 +255,13 @@ show_build_summary() {
     
     echo "Deployment Commands:"
     if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "polygon" ]; then
-        echo "  Polygon: cd apps/blockchain-smart-contracts/polygon && pnpm deploy:local"
+        echo "  Polygon: cd apps/smart-contracts/polygon && pnpm deploy:local"
     fi
     if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "solana" ]; then
-        echo "  Solana: cd apps/blockchain-smart-contracts/solana && anchor deploy"
+        echo "  Solana: cd apps/smart-contracts/solana && anchor deploy"
     fi
     if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "polkadot" ]; then
-        echo "  Polkadot: cd apps/blockchain-smart-contracts/polkadot && ./target/release/node-template --dev"
+        echo "  Polkadot: cd apps/smart-contracts/polkadot && ./target/release/node-template --dev"
     fi
 }
 

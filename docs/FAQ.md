@@ -257,7 +257,7 @@ Each network has its own smart contracts and integration services.
 
 3. **Add Smart Contracts**:
    ```bash
-   mkdir apps/blockchain-smart-contracts/new-network
+   mkdir apps/smart-contracts/new-network
    # Add contract code and deployment scripts
    ```
 
@@ -274,7 +274,7 @@ Each network has its own smart contracts and integration services.
 
 ```bash
 # Start local Ethereum network (for Polygon testing)
-cd apps/blockchain-smart-contracts/polygon
+cd apps/smart-contracts/polygon
 pnpm hardhat node
 
 # Start local Solana network
@@ -361,7 +361,7 @@ pnpm test:coverage
 
 ```bash
 # Test smart contracts
-cd apps/blockchain-smart-contracts/polygon
+cd apps/smart-contracts/polygon
 pnpm test
 
 # Test blockchain services

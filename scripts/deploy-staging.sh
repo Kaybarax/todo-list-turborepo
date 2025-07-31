@@ -83,7 +83,7 @@ print_status "Deploying contracts to testnets..."
 # Deploy Polygon contracts to Mumbai testnet
 if [ -n "$POLYGON_MUMBAI_RPC_URL" ] && [ -n "$POLYGON_PRIVATE_KEY" ]; then
     print_status "Deploying Polygon contracts to Mumbai testnet..."
-    cd apps/blockchain-smart-contracts/polygon
+    cd apps/smart-contracts/polygon
     NETWORK=mumbai pnpm deploy:mumbai || print_warning "Polygon Mumbai deployment failed"
     cd ../../..
 else
@@ -93,7 +93,7 @@ fi
 # Deploy Solana programs to devnet
 if [ -n "$SOLANA_DEVNET_RPC_URL" ]; then
     print_status "Deploying Solana programs to devnet..."
-    cd apps/blockchain-smart-contracts/solana
+    cd apps/smart-contracts/solana
     anchor deploy --provider.cluster devnet || print_warning "Solana devnet deployment failed"
     cd ../../..
 else
@@ -153,8 +153,8 @@ fi
 print_status "Verifying contract deployments..."
 
 # Check if contract addresses are accessible
-if [ -f "apps/blockchain-smart-contracts/polygon/deployments/mumbai/TodoList.json" ]; then
-    contract_address=$(jq -r '.address' apps/blockchain-smart-contracts/polygon/deployments/mumbai/TodoList.json)
+if [ -f "apps/smart-contracts/polygon/deployments/mumbai/TodoList.json" ]; then
+    contract_address=$(jq -r '.address' apps/smart-contracts/polygon/deployments/mumbai/TodoList.json)
     print_success "Polygon contract deployed at: $contract_address"
 fi
 
@@ -185,8 +185,8 @@ cat > staging-deployment-report.json << EOF
     "ingestion": "$(kubectl get deployment ingestion -n $NAMESPACE -o jsonpath='{.status.readyReplicas}')/$(kubectl get deployment ingestion -n $NAMESPACE -o jsonpath='{.spec.replicas}') ready"
   },
   "contracts": {
-    "polygon": "$([ -f apps/blockchain-smart-contracts/polygon/deployments/mumbai/TodoList.json ] && echo 'deployed' || echo 'not deployed')",
-    "solana": "$([ -f apps/blockchain-smart-contracts/solana/target/deploy/todo_program.so ] && echo 'deployed' || echo 'not deployed')"
+    "polygon": "$([ -f apps/smart-contracts/polygon/deployments/mumbai/TodoList.json ] && echo 'deployed' || echo 'not deployed')",
+    "solana": "$([ -f apps/smart-contracts/solana/target/deploy/todo_program.so ] && echo 'deployed' || echo 'not deployed')"
   }
 }
 EOF

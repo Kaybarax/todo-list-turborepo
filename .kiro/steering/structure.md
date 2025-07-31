@@ -56,7 +56,7 @@ This project follows a monorepo structure with clear separation of concerns:
   - `src/models/` - Data models
   - `src/utils/` - Logging and utilities
 
-### `apps/blockchain-smart-contracts/` - Multi-Network Smart Contracts
+### `apps/smart-contracts/` - Multi-Network Smart Contracts
 - **Structure**: Organized by blockchain network
 - **Networks**:
   - `polygon/` - Solidity contracts with Hardhat

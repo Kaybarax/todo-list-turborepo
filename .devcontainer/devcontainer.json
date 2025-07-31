@@ -24,7 +24,7 @@
           "apps/api", 
           "apps/mobile",
           "apps/ingestion",
-          "apps/blockchain-smart-contracts",
+          "apps/smart-contracts",
           "packages"
         ],
         "jest.jestCommandLine": "pnpm test",

@@ -70,7 +70,7 @@ fi
 if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "polygon" ]; then
     print_status "Starting Hardhat node for Polygon development..."
     
-    cd apps/blockchain-smart-contracts/polygon
+    cd apps/smart-contracts/polygon
     
     # Install dependencies if needed
     if [ ! -d "node_modules" ]; then
@@ -146,10 +146,10 @@ fi
 
 # Start Polkadot local node
 if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "polkadot" ]; then
-    if [ -f "apps/blockchain-smart-contracts/polkadot/target/release/node-template" ]; then
+    if [ -f "apps/smart-contracts/polkadot/target/release/node-template" ]; then
         print_status "Starting Polkadot local node..."
         
-        cd apps/blockchain-smart-contracts/polkadot
+        cd apps/smart-contracts/polkadot
         
         # Start local node in background
         ./target/release/node-template --dev --tmp &
@@ -161,7 +161,7 @@ if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "polkadot" ]; then
         
         cd ../../..
     else
-        print_warning "Polkadot node binary not found. Build with: cd apps/blockchain-smart-contracts/polkadot && cargo build --release"
+        print_warning "Polkadot node binary not found. Build with: cd apps/smart-contracts/polkadot && cargo build --release"
     fi
 fi
 
@@ -226,14 +226,14 @@ fi
 echo ""
 echo "🔧 Development Tools:"
 if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "polygon" ]; then
-    echo "  Hardhat Console:      cd apps/blockchain-smart-contracts/polygon && pnpm hardhat console --network localhost"
-    echo "  Deploy Polygon:       cd apps/blockchain-smart-contracts/polygon && pnpm deploy:local"
+    echo "  Hardhat Console:      cd apps/smart-contracts/polygon && pnpm hardhat console --network localhost"
+    echo "  Deploy Polygon:       cd apps/smart-contracts/polygon && pnpm deploy:local"
 fi
 
 if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "solana" ]; then
     if command -v anchor &> /dev/null; then
-        echo "  Anchor Test:          cd apps/blockchain-smart-contracts/solana && anchor test --skip-local-validator"
-        echo "  Deploy Solana:        cd apps/blockchain-smart-contracts/solana && anchor deploy"
+        echo "  Anchor Test:          cd apps/smart-contracts/solana && anchor test --skip-local-validator"
+        echo "  Deploy Solana:        cd apps/smart-contracts/solana && anchor deploy"
     fi
 fi
 

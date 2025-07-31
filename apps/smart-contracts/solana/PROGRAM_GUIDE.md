@@ -450,7 +450,7 @@ export default TodoApp;
 
 1. Install dependencies:
 ```bash
-cd apps/blockchain-smart-contracts/solana
+cd apps/smart-contracts/solana
 yarn install
 ```
 

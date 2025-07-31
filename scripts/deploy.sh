@@ -101,7 +101,7 @@ deploy_contracts() {
         staging)
             print_status "Deploying to testnets..."
             # Deploy to testnets (Mumbai, Devnet, Westend)
-            cd apps/blockchain-smart-contracts/polygon
+            cd apps/smart-contracts/polygon
             pnpm deploy:mumbai || print_warning "Polygon testnet deployment failed"
             cd ../solana
             anchor deploy --provider.cluster devnet || print_warning "Solana devnet deployment failed"

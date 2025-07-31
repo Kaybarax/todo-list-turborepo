@@ -12,7 +12,7 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY apps/blockchain-smart-contracts/package.json ./apps/blockchain-smart-contracts/
+COPY apps/smart-contracts/package.json ./apps/smart-contracts/
 COPY packages/*/package.json ./packages/*/
 
 # Install dependencies
@@ -78,7 +78,7 @@ RUN npm install -g pnpm
 WORKDIR /app
 
 # Copy Solana program files
-COPY apps/blockchain-smart-contracts/solana ./
+COPY apps/smart-contracts/solana ./
 
 # Build Solana program
 RUN anchor build

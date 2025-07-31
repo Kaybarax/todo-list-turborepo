@@ -767,12 +767,12 @@ jobs:
       
       - name: Install dependencies
         run: |
-          cd apps/blockchain-smart-contracts/polygon
+          cd apps/smart-contracts/polygon
           npm ci
       
       - name: Deploy Polygon contracts
         run: |
-          cd apps/blockchain-smart-contracts/polygon
+          cd apps/smart-contracts/polygon
           npx hardhat deploy --network polygon
         env:
           POLYGON_PRIVATE_KEY: ${{ secrets.POLYGON_PRIVATE_KEY }}
@@ -780,7 +780,7 @@ jobs:
       
       - name: Deploy Solana programs
         run: |
-          cd apps/blockchain-smart-contracts/solana
+          cd apps/smart-contracts/solana
           anchor deploy
         env:
           SOLANA_PRIVATE_KEY: ${{ secrets.SOLANA_PRIVATE_KEY }}

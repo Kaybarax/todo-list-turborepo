@@ -358,8 +358,8 @@ rm -rf ~/.config/solana
 solana-keygen new --no-bip39-passphrase
 
 # Reset Hardhat network
-rm -rf apps/blockchain-smart-contracts/cache
-rm -rf apps/blockchain-smart-contracts/artifacts
+rm -rf apps/smart-contracts/cache
+rm -rf apps/smart-contracts/artifacts
 ```
 
 ## Performance Optimization
