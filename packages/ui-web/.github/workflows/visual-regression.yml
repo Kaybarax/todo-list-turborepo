@@ -1,0 +1,187 @@
+name: Visual Regression Testing
+
+on:
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'packages/ui-web/**'
+      - '.github/workflows/visual-regression.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/ui-web/**'
+
+jobs:
+  visual-regression:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [20]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.12.0
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Build packages
+        run: pnpm build:packages
+      
+      - name: Build Storybook
+        run: |
+          cd packages/ui-web
+          pnpm build-storybook
+        env:
+          NODE_ENV: production
+      
+      - name: Run Chromatic
+        uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          workingDir: packages/ui-web
+          buildScriptName: build-storybook
+          exitZeroOnChanges: true
+          exitOnceUploaded: true
+          onlyChanged: true
+          skip: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'false' || 'false' }}
+        env:
+          NODE_ENV: production
+      
+      - name: Run screenshot tests
+        run: |
+          cd packages/ui-web
+          pnpm test:visual
+        env:
+          CI: true
+      
+      - name: Upload screenshot artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-diffs
+          path: packages/ui-web/__tests__/visual/__image_snapshots__/__diff_output__/
+          retention-days: 7
+      
+      - name: Comment PR with visual changes
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('Visual Regression Test Results')
+            );
+            
+            const body = `## 🎨 Visual Regression Test Results
+            
+            Visual regression tests have been completed for this PR.
+            
+            ### 📊 Test Summary
+            - **Storybook Build**: ✅ Completed
+            - **Chromatic Analysis**: ✅ Completed
+            - **Screenshot Tests**: ✅ Completed
+            
+            ### 🔍 Review Process
+            1. Check the Chromatic build for visual changes
+            2. Review any screenshot test failures
+            3. Approve visual changes if they are intentional
+            
+            ### 📚 Resources
+            - [Chromatic Build](https://www.chromatic.com/builds?appId=${process.env.CHROMATIC_PROJECT_TOKEN})
+            - [Visual Testing Guide](./packages/ui-web/__tests__/visual/VISUAL_TESTING.md)
+            
+            ---
+            *This comment is automatically updated on each push.*`;
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body
+              });
+            }
+
+  mobile-visual-regression:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [20]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.12.0
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Build packages
+        run: pnpm build:packages
+      
+      - name: Build Mobile Storybook
+        run: |
+          cd packages/ui-mobile
+          pnpm build-storybook
+        env:
+          NODE_ENV: production
+      
+      - name: Run Mobile Chromatic
+        uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN_MOBILE }}
+          workingDir: packages/ui-mobile
+          buildScriptName: build-storybook
+          exitZeroOnChanges: true
+          exitOnceUploaded: true
+          onlyChanged: true
+        env:
+          NODE_ENV: production
+      
+      - name: Run mobile comprehensive tests
+        run: |
+          cd packages/ui-mobile
+          pnpm test
+        env:
+          CI: true
