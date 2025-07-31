@@ -1,9 +1,8 @@
-import 'react-native-gesture-handler/jestSetup';
-
 // Mock react-native-vector-icons
-jest.mock('react-native-vector-icons/MaterialIcons', () => 'Icon');
-jest.mock('react-native-vector-icons/FontAwesome', () => 'Icon');
-jest.mock('react-native-vector-icons/Ionicons', () => 'Icon');
+const mockIcon = () => 'Icon';
+jest.mock('react-native-vector-icons/MaterialIcons', () => mockIcon);
+jest.mock('react-native-vector-icons/FontAwesome', () => mockIcon);
+jest.mock('react-native-vector-icons/Ionicons', () => mockIcon);
 
 // Mock react-native-svg
 jest.mock('react-native-svg', () => ({
@@ -14,11 +13,19 @@ jest.mock('react-native-svg', () => ({
 }));
 
 // Mock UI Kitten
-jest.mock('@ui-kitten/components', () => ({
-  ApplicationProvider: ({ children }: any) => children,
-  Button: 'Button',
-  Card: 'Card',
-  Input: 'Input',
+jest.mock('@ui-kitten/components', () => require('./__mocks__/ui-kitten.ts'));
+
+// Mock react-native components
+jest.mock('react-native', () => ({
+  View: 'View',
   Text: 'Text',
-  Layout: 'Layout',
+  TouchableOpacity: 'TouchableOpacity',
+  TextInput: 'TextInput',
+  StyleSheet: {
+    create: (styles: any) => styles,
+    flatten: (styles: any) => styles,
+  },
+  Dimensions: {
+    get: () => ({ width: 375, height: 667 }),
+  },
 }));
