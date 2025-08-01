@@ -214,4 +214,148 @@ export class BlockchainError extends Error {
       { originalError, network }
     );
   }
+
+  /**
+   * Create a Moonbeam connection failed error
+   * @param message - Error message
+   * @param originalError - Original error object
+   * @param network - Blockchain network
+   */
+  static moonbeamConnectionFailed(
+    message: string,
+    originalError?: unknown,
+    network?: BlockchainNetwork
+  ): BlockchainError {
+    return new BlockchainError(
+      BlockchainErrorType.MOONBEAM_CONNECTION_FAILED,
+      message,
+      { originalError, network }
+    );
+  }
+
+  /**
+   * Create a Moonbeam Substrate error
+   * @param message - Error message
+   * @param originalError - Original error object
+   * @param network - Blockchain network
+   */
+  static moonbeamSubstrateError(
+    message: string,
+    originalError?: unknown,
+    network?: BlockchainNetwork
+  ): BlockchainError {
+    return new BlockchainError(
+      BlockchainErrorType.MOONBEAM_SUBSTRATE_ERROR,
+      message,
+      { originalError, network }
+    );
+  }
+
+  /**
+   * Create a Moonbeam EVM error
+   * @param message - Error message
+   * @param originalError - Original error object
+   * @param network - Blockchain network
+   */
+  static moonbeamEvmError(
+    message: string,
+    originalError?: unknown,
+    network?: BlockchainNetwork
+  ): BlockchainError {
+    return new BlockchainError(
+      BlockchainErrorType.MOONBEAM_EVM_ERROR,
+      message,
+      { originalError, network }
+    );
+  }
+
+  /**
+   * Create a network switch required error
+   * @param message - Error message
+   * @param network - Blockchain network
+   * @param originalError - Original error object
+   */
+  static networkSwitchRequired(
+    message: string,
+    network?: BlockchainNetwork,
+    originalError?: unknown
+  ): BlockchainError {
+    return new BlockchainError(
+      BlockchainErrorType.NETWORK_SWITCH_REQUIRED,
+      message,
+      { originalError, network }
+    );
+  }
+
+  /**
+   * Create an unsupported wallet error
+   * @param message - Error message
+   * @param network - Blockchain network
+   * @param originalError - Original error object
+   */
+  static unsupportedWallet(
+    message: string,
+    network?: BlockchainNetwork,
+    originalError?: unknown
+  ): BlockchainError {
+    return new BlockchainError(
+      BlockchainErrorType.UNSUPPORTED_WALLET,
+      message,
+      { originalError, network }
+    );
+  }
+
+  /**
+   * Create a Base L2 error
+   * @param message - Error message
+   * @param originalError - Original error object
+   * @param network - Blockchain network
+   */
+  static baseL2Error(
+    message: string,
+    originalError?: unknown,
+    network?: BlockchainNetwork
+  ): BlockchainError {
+    return new BlockchainError(
+      BlockchainErrorType.BASE_L2_ERROR,
+      message,
+      { originalError, network }
+    );
+  }
+
+  /**
+   * Create a Base sequencer error
+   * @param message - Error message
+   * @param originalError - Original error object
+   * @param network - Blockchain network
+   */
+  static baseSequencerError(
+    message: string,
+    originalError?: unknown,
+    network?: BlockchainNetwork
+  ): BlockchainError {
+    return new BlockchainError(
+      BlockchainErrorType.BASE_SEQUENCER_ERROR,
+      message,
+      { originalError, network }
+    );
+  }
+
+  /**
+   * Create a Base bridge error
+   * @param message - Error message
+   * @param originalError - Original error object
+   * @param network - Blockchain network
+   */
+  static baseBridgeError(
+    message: string,
+    originalError?: unknown,
+    network?: BlockchainNetwork
+  ): BlockchainError {
+    return new BlockchainError(
+      BlockchainErrorType.BASE_BRIDGE_ERROR,
+      message,
+      { originalError, network }
+    );
+  }
 }

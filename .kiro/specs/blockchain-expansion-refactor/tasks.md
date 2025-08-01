@@ -32,14 +32,14 @@
   - Create deployment scripts for Base development, testnet, and mainnet
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.6_
 
-- [ ] 6. Implement MoonbeamBlockchainService
+- [x] 6. Implement MoonbeamBlockchainService
   - Create MoonbeamBlockchainService class implementing BlockchainService interface
   - Implement todo CRUD operations for Moonbeam network
   - Add Moonbeam-specific transaction handling and error management
   - Write unit tests for MoonbeamBlockchainService
   - _Requirements: 4.1, 4.3, 4.4_
 
-- [ ] 7. Implement BaseBlockchainService
+- [x] 7. Implement BaseBlockchainService
   - Create BaseBlockchainService class implementing BlockchainService interface
   - Implement todo CRUD operations for Base network
   - Add Base L2-specific transaction handling and error management

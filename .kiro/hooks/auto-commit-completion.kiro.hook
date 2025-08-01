@@ -4,7 +4,7 @@
   "description": "Automatically commits changes to git when a task or subtask is completed, ensuring work is saved and tracked",
   "version": "1",
   "when": {
-    "type": "fileEdited",
+    "type": "userTriggered",
     "patterns": [
       "apps/*/src/**/*.ts",
       "apps/*/src/**/*.tsx",
