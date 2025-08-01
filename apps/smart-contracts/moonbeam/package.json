@@ -6,6 +6,8 @@
   "scripts": {
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
+    "test:coverage": "npx hardhat coverage",
+    "test:gas": "REPORT_GAS=true npx hardhat test",
     "deploy:local": "npx hardhat run scripts/deploy.js --network localhost",
     "deploy:dev": "npx hardhat run scripts/deploy.js --network moonbeam_dev",
     "deploy:moonbase": "npx hardhat run scripts/deploy.js --network moonbase",
@@ -13,10 +15,14 @@
     "verify:moonbase": "npx hardhat verify --network moonbase",
     "verify:moonbeam": "npx hardhat verify --network moonbeam",
     "node": "npx hardhat node",
+    "setup-dev-node": "node scripts/setup-dev-node.js --start",
+    "setup-dev-config": "node scripts/setup-dev-node.js",
     "coverage": "npx hardhat coverage",
     "size": "npx hardhat size-contracts",
     "lint": "solhint 'contracts/**/*.sol'",
-    "format": "prettier --write 'contracts/**/*.sol'"
+    "format": "prettier --write 'contracts/**/*.sol'",
+    "create-todo-list": "npx hardhat run scripts/create-todo-list.js",
+    "create-sample-todos": "npx hardhat run scripts/create-sample-todos.js"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.9.3",

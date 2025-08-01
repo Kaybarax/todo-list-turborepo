@@ -53,7 +53,7 @@
   - Write unit tests for factory with new networks
   - _Requirements: 4.1, 4.2, 4.3_
 
-- [ ] 9. Create smart contract tests for Moonbeam
+- [x] 9. Create smart contract tests for Moonbeam
   - Write comprehensive test suite for Moonbeam TodoList contract
   - Write comprehensive test suite for Moonbeam TodoListFactory contract
   - Implement integration tests for contract deployment and interaction
