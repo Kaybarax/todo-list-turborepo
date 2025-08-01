@@ -60,7 +60,7 @@
   - Set up local Moonbeam development node for testing
   - _Requirements: 2.5_
 
-- [ ] 10. Create smart contract tests for Base
+- [x] 10. Create smart contract tests for Base
   - Write comprehensive test suite for Base TodoList contract
   - Write comprehensive test suite for Base TodoListFactory contract
   - Implement integration tests for contract deployment and interaction
