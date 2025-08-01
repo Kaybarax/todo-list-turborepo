@@ -25,7 +25,7 @@
   - Create deployment scripts for Moonbeam development, testnet, and mainnet
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.6_
 
-- [ ] 5. Create Base smart contracts directory and configuration
+- [x] 5. Create Base smart contracts directory and configuration
   - Create "apps/smart-contracts/base" directory structure
   - Implement Base-specific Hardhat configuration
   - Copy and adapt TodoList.sol and TodoListFactory.sol contracts for Base
