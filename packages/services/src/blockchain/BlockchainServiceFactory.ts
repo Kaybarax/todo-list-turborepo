@@ -1,8 +1,10 @@
-import { BlockchainNetwork, EVMServiceOptions } from './types';
+import { BlockchainNetwork } from './types';
 import { BlockchainService } from './interfaces/BlockchainService';
 import { PolygonBlockchainService, PolygonBlockchainServiceOptions } from './implementations/PolygonBlockchainService';
 import { SolanaBlockchainService } from './implementations/SolanaBlockchainService';
 import { PolkadotBlockchainService } from './implementations/PolkadotBlockchainService';
+import { MoonbeamBlockchainService, MoonbeamBlockchainServiceOptions } from './implementations/MoonbeamBlockchainService';
+import { BaseNetworkBlockchainService, BaseNetworkBlockchainServiceOptions } from './implementations/BaseNetworkBlockchainService';
 import { BlockchainError } from './utils/BlockchainError';
 
 /**
@@ -45,16 +47,16 @@ export interface BlockchainServiceConfig {
   /** Moonbeam configuration */
   moonbeam?: {
     /** Testnet configuration */
-    testnet?: EVMServiceOptions;
+    testnet?: MoonbeamBlockchainServiceOptions;
     /** Mainnet configuration */
-    mainnet?: EVMServiceOptions;
+    mainnet?: MoonbeamBlockchainServiceOptions;
   };
   /** Base configuration */
   base?: {
     /** Testnet configuration */
-    testnet?: EVMServiceOptions;
+    testnet?: BaseNetworkBlockchainServiceOptions;
     /** Mainnet configuration */
-    mainnet?: EVMServiceOptions;
+    mainnet?: BaseNetworkBlockchainServiceOptions;
   };
 }
 
@@ -122,34 +124,54 @@ export class BlockchainServiceFactory {
 
       case BlockchainNetwork.MOONBEAM:
         if (!this.config.moonbeam?.mainnet) {
-          throw new Error('Moonbeam mainnet configuration is missing');
+          throw BlockchainError.networkError(
+            'Moonbeam mainnet configuration is missing',
+            undefined,
+            network
+          );
         }
-        // TODO: Implement MoonbeamBlockchainService in task 6
-        throw new Error('MoonbeamBlockchainService not yet implemented');
+        service = new MoonbeamBlockchainService(this.config.moonbeam.mainnet);
+        break;
 
       case BlockchainNetwork.MOONBEAM_TESTNET:
         if (!this.config.moonbeam?.testnet) {
-          throw new Error('Moonbeam testnet configuration is missing');
+          throw BlockchainError.networkError(
+            'Moonbeam testnet configuration is missing',
+            undefined,
+            network
+          );
         }
-        // TODO: Implement MoonbeamBlockchainService in task 6
-        throw new Error('MoonbeamBlockchainService not yet implemented');
+        service = new MoonbeamBlockchainService(this.config.moonbeam.testnet);
+        break;
 
       case BlockchainNetwork.BASE:
         if (!this.config.base?.mainnet) {
-          throw new Error('Base mainnet configuration is missing');
+          throw BlockchainError.networkError(
+            'Base mainnet configuration is missing',
+            undefined,
+            network
+          );
         }
-        // TODO: Implement BaseBlockchainService in task 7
-        throw new Error('BaseBlockchainService not yet implemented');
+        service = new BaseNetworkBlockchainService(this.config.base.mainnet);
+        break;
 
       case BlockchainNetwork.BASE_TESTNET:
         if (!this.config.base?.testnet) {
-          throw new Error('Base testnet configuration is missing');
+          throw BlockchainError.networkError(
+            'Base testnet configuration is missing',
+            undefined,
+            network
+          );
         }
-        // TODO: Implement BaseBlockchainService in task 7
-        throw new Error('BaseBlockchainService not yet implemented');
+        service = new BaseNetworkBlockchainService(this.config.base.testnet);
+        break;
 
       default:
-        throw new Error(`Unsupported blockchain network: ${network}`);
+        throw BlockchainError.networkError(
+          `Unsupported blockchain network: ${network}`,
+          undefined,
+          network
+        );
     }
 
     // Cache the service
@@ -190,34 +212,18 @@ export class BlockchainServiceFactory {
 
     // Moonbeam
     if (this.config.moonbeam?.mainnet) {
-      try {
-        services.push(this.getService(BlockchainNetwork.MOONBEAM));
-      } catch (error) {
-        // Service not yet implemented, skip for now
-      }
+      services.push(this.getService(BlockchainNetwork.MOONBEAM));
     }
     if (this.config.moonbeam?.testnet) {
-      try {
-        services.push(this.getService(BlockchainNetwork.MOONBEAM_TESTNET));
-      } catch (error) {
-        // Service not yet implemented, skip for now
-      }
+      services.push(this.getService(BlockchainNetwork.MOONBEAM_TESTNET));
     }
 
     // Base
     if (this.config.base?.mainnet) {
-      try {
-        services.push(this.getService(BlockchainNetwork.BASE));
-      } catch (error) {
-        // Service not yet implemented, skip for now
-      }
+      services.push(this.getService(BlockchainNetwork.BASE));
     }
     if (this.config.base?.testnet) {
-      try {
-        services.push(this.getService(BlockchainNetwork.BASE_TESTNET));
-      } catch (error) {
-        // Service not yet implemented, skip for now
-      }
+      services.push(this.getService(BlockchainNetwork.BASE_TESTNET));
     }
 
     return services;

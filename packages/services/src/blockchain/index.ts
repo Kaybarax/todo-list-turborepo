@@ -9,9 +9,10 @@ export * from './implementations/BaseBlockchainService';
 export * from './implementations/PolygonBlockchainService';
 export * from './implementations/SolanaBlockchainService';
 export * from './implementations/PolkadotBlockchainService';
+export * from './implementations/MoonbeamBlockchainService';
+export * from './implementations/BaseNetworkBlockchainService';
 
 // Utils
-export * from './utils/BlockchainError';
 export * from './utils/TransactionMonitor';
 
 // Factory

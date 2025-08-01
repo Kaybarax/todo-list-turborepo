@@ -46,7 +46,7 @@
   - Write unit tests for BaseBlockchainService
   - _Requirements: 4.2, 4.3, 4.4_
 
-- [ ] 8. Update BlockchainServiceFactory for new networks
+- [x] 8. Update BlockchainServiceFactory for new networks
   - Add Moonbeam and Base network support to factory configuration
   - Implement service creation logic for new networks
   - Update getSupportedNetworks and getAllServices methods
