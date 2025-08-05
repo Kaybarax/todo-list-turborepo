@@ -39,6 +39,27 @@ data:
   # Cache Configuration
   CACHE_TTL: "300"
   CACHE_MAX_SIZE: "1000"
+  
+  # Blockchain Network Configuration
+  # Polygon
+  POLYGON_RPC_URL: "https://polygon-rpc.com"
+  POLYGON_TESTNET_RPC_URL: "https://rpc-mumbai.maticvigil.com"
+  
+  # Solana
+  SOLANA_RPC_URL: "https://api.mainnet-beta.solana.com"
+  SOLANA_DEVNET_RPC_URL: "https://api.devnet.solana.com"
+  
+  # Polkadot
+  POLKADOT_RPC_URL: "wss://rpc.polkadot.io"
+  POLKADOT_TESTNET_RPC_URL: "wss://westend-rpc.polkadot.io"
+  
+  # Moonbeam
+  MOONBEAM_RPC_URL: "https://rpc.api.moonbeam.network"
+  MOONBEAM_TESTNET_RPC_URL: "https://rpc.api.moonbase.moonbeam.network"
+  
+  # Base
+  BASE_RPC_URL: "https://mainnet.base.org"
+  BASE_TESTNET_RPC_URL: "https://sepolia.base.org"
 
 ---
 apiVersion: v1

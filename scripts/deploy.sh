@@ -100,19 +100,15 @@ deploy_contracts() {
             ;;
         staging)
             print_status "Deploying to testnets..."
-            # Deploy to testnets (Mumbai, Devnet, Westend)
-            cd apps/smart-contracts/polygon
-            pnpm deploy:mumbai || print_warning "Polygon testnet deployment failed"
-            cd ../solana
-            anchor deploy --provider.cluster devnet || print_warning "Solana devnet deployment failed"
-            cd ../polkadot
-            # Polkadot testnet deployment would go here
-            cd ../../..
+            # Deploy to testnets (Mumbai, Devnet, Westend, Moonbase Alpha, Base Sepolia)
+            ./scripts/deploy-contracts.sh --environment staging --network all || print_warning "Testnet contract deployment failed"
             ;;
         production)
             print_status "Deploying to mainnets..."
             print_warning "Production contract deployment requires manual verification"
             # Production deployments should be done manually with proper verification
+            ./scripts/deploy-contracts.sh --environment production --network all --dry-run
+            print_status "Use './scripts/deploy-contracts.sh --environment production --network <network>' to deploy specific networks"
             ;;
     esac
     

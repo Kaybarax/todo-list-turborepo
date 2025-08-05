@@ -95,7 +95,7 @@
   - Update CI/CD pipeline configurations for new networks
   - _Requirements: 6.1, 6.2, 6.5, 6.6_
 
-- [ ] 15. Update deployment scripts and infrastructure
+- [x] 15. Update deployment scripts and infrastructure
   - Modify deployment scripts to deploy contracts to Moonbeam and Base
   - Update Kubernetes manifests to reference new directory structure
   - Add environment variable configurations for new networks
