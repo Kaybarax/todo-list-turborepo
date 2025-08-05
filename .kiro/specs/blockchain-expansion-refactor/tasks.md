@@ -67,21 +67,21 @@
   - Set up local Base development environment for testing
   - _Requirements: 3.5_
 
-- [ ] 11. Update frontend network selection components
+- [x] 11. Update frontend network selection components
   - Add Moonbeam and Base options to network selection UI
   - Update network configuration constants with new networks
   - Implement network-specific wallet connection logic
   - Update network switching functionality for new networks
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 12. Update web application blockchain integration
+- [x] 12. Update web application blockchain integration
   - Update blockchainService.ts to support Moonbeam and Base networks
   - Modify wallet connection components to handle new networks
   - Update transaction status components for new network types
   - Test wallet connectivity with Moonbeam and Base networks
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 13. Update mobile application blockchain integration
+- [x] 13. Update mobile application blockchain integration
   - Update mobile blockchainService.ts to support new networks
   - Modify WalletConnect integration for Moonbeam and Base
   - Update mobile UI components for network selection

@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import { Button, Badge } from '@todo/ui-web';
+// import { NetworkSelector } from '@todo/ui-web';
 import { useWallet } from './WalletProvider';
+import { getNetworkColor } from '@todo/services';
 
 export function WalletConnect() {
   const {
@@ -16,7 +18,7 @@ export function WalletConnect() {
     switchNetwork,
   } = useWallet();
 
-  const [selectedNetwork, setSelectedNetwork] = useState<'solana' | 'polkadot' | 'polygon'>('solana');
+  const [selectedNetwork, setSelectedNetwork] = useState<'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base'>('solana');
   const [showNetworkSelector, setShowNetworkSelector] = useState(false);
 
   const handleConnect = async () => {
@@ -35,7 +37,7 @@ export function WalletConnect() {
     }
   };
 
-  const handleNetworkSwitch = async (network: 'solana' | 'polkadot' | 'polygon') => {
+  const handleNetworkSwitch = async (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => {
     try {
       await switchNetwork(network);
       setShowNetworkSelector(false);
@@ -44,13 +46,17 @@ export function WalletConnect() {
     }
   };
 
-  const getNetworkColor = (network: string) => {
-    const colors = {
-      solana: 'bg-purple-100 text-purple-800 border-purple-200',
-      polkadot: 'bg-pink-100 text-pink-800 border-pink-200',
-      polygon: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+  const getNetworkColorClasses = (network: string) => {
+    const baseColor = getNetworkColor(network);
+    // Convert hex color to Tailwind classes - this is a simplified mapping
+    const colorMap: Record<string, string> = {
+      '#9333ea': 'bg-purple-100 text-purple-800 border-purple-200',
+      '#ec4899': 'bg-pink-100 text-pink-800 border-pink-200',
+      '#6366f1': 'bg-indigo-100 text-indigo-800 border-indigo-200',
+      '#14b8a6': 'bg-teal-100 text-teal-800 border-teal-200',
+      '#3b82f6': 'bg-blue-100 text-blue-800 border-blue-200',
     };
-    return colors[network as keyof typeof colors] || 'bg-gray-100 text-gray-800 border-gray-200';
+    return colorMap[baseColor] || 'bg-gray-100 text-gray-800 border-gray-200';
   };
 
   const formatAddress = (address: string) => {
@@ -76,7 +82,7 @@ export function WalletConnect() {
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-gray-700">Network:</span>
             <div className="flex items-center space-x-2">
-              <Badge variant="secondary" size="sm">
+              <Badge variant="secondary" className={getNetworkColorClasses(account.network)}>
                 {account.network}
               </Badge>
               <Button
@@ -186,7 +192,7 @@ export function WalletConnect() {
         <div className="text-xs text-gray-500 space-y-1">
           <p>• This is a demo implementation</p>
           <p>• Real wallet integration will be added in production</p>
-          <p>• Supports Solana, Polkadot, and Polygon networks</p>
+          <p>• Supports Solana, Polkadot, Polygon, Moonbeam, and Base networks</p>
         </div>
       </div>
     </div>

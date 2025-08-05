@@ -7,6 +7,7 @@ import {
   Alert,
 } from 'react-native';
 import { Card, CardContent, Badge, Button } from '@todo/ui-mobile';
+import { BlockchainNetwork, getNetworkDisplayInfo } from '@todo/services';
 import type { Todo } from '../store/todoStore';
 
 interface TodoItemProps {
@@ -14,7 +15,7 @@ interface TodoItemProps {
   onToggle: (id: string) => void;
   onEdit: (todo: Todo) => void;
   onDelete: (id: string) => void;
-  onBlockchainSync?: (id: string, network: 'solana' | 'polkadot' | 'polygon') => void;
+  onBlockchainSync?: (id: string, network: BlockchainNetwork) => void;
 }
 
 export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }: TodoItemProps) {
@@ -26,10 +27,8 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
     high: '#ef4444',
   };
 
-  const networkColors = {
-    solana: '#9333ea',
-    polkadot: '#ec4899',
-    polygon: '#6366f1',
+  const getNetworkColor = (network: BlockchainNetwork): string => {
+    return getNetworkDisplayInfo(network).color;
   };
 
   const formatDate = (date: Date) => {
@@ -61,9 +60,11 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
       'Choose a network to sync this todo:',
       [
         { text: 'Cancel', style: 'cancel' },
-        { text: 'Solana', onPress: () => onBlockchainSync(todo.id, 'solana') },
-        { text: 'Polkadot', onPress: () => onBlockchainSync(todo.id, 'polkadot') },
-        { text: 'Polygon', onPress: () => onBlockchainSync(todo.id, 'polygon') },
+        { text: 'Solana', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.SOLANA) },
+        { text: 'Polkadot', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.POLKADOT) },
+        { text: 'Polygon', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.POLYGON) },
+        { text: 'Moonbeam', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.MOONBEAM) },
+        { text: 'Base', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.BASE) },
       ]
     );
   };
@@ -148,10 +149,10 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
               <Badge
                 variant="primary"
                 size="small"
-                text={todo.blockchainNetwork}
+                text={getNetworkDisplayInfo(todo.blockchainNetwork).displayName}
                 style={[
                   styles.networkBadge,
-                  { backgroundColor: networkColors[todo.blockchainNetwork] },
+                  { backgroundColor: getNetworkColor(todo.blockchainNetwork) },
                 ]}
               />
             )}

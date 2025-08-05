@@ -33,11 +33,15 @@ export interface PolygonBlockchainServiceOptions {
  */
 export class PolygonBlockchainService extends BaseBlockchainService {
   private todoListFactoryAddress: string;
-  private rpcUrl: string;
-  private chainId: number;
-  private provider: any; // ethers.providers.Provider
-  private signer: any | null = null; // ethers.Signer
-  private todoListFactory: any | null = null; // Contract
+  // @ts-ignore - Used in real implementation
+  private _rpcUrl: string;
+  private _chainId: number;
+  // @ts-ignore - Used in real implementation
+  private _provider: any; // ethers.providers.Provider
+  // @ts-ignore - Used in real implementation
+  private _signer: any | null = null; // ethers.Signer
+  // @ts-ignore - Used in real implementation
+  private _todoListFactory: any | null = null; // Contract
   private todoLists: Map<string, any> = new Map(); // Map of todoList address to Contract
 
   /**
@@ -52,19 +56,19 @@ export class PolygonBlockchainService extends BaseBlockchainService {
     );
     
     this.todoListFactoryAddress = options.todoListFactoryAddress;
-    this.rpcUrl = options.rpcUrl;
-    this.chainId = options.chainId;
+    this._rpcUrl = options.rpcUrl;
+    this._chainId = options.chainId;
     
     // Note: In a real implementation, we would initialize ethers.js here
-    // this.provider = new ethers.providers.JsonRpcProvider(options.rpcUrl);
-    this.provider = { /* Mock provider */ };
+    // this._provider = new ethers.providers.JsonRpcProvider(options.rpcUrl);
+    this._provider = { /* Mock provider */ };
   }
 
   /**
    * Connect to a wallet using WalletConnect or other provider
    * @param provider - Ethereum provider (e.g., from WalletConnect)
    */
-  async connectWallet(provider: any): Promise<WalletInfo> {
+  async connectWallet(_provider: any): Promise<WalletInfo> {
     try {
       // In a real implementation, we would:
       // 1. Connect to the provider
@@ -73,7 +77,7 @@ export class PolygonBlockchainService extends BaseBlockchainService {
       // 4. Return wallet info
       
       // Mock implementation
-      this.signer = { /* Mock signer */ };
+      this._signer = { /* Mock signer */ };
       
       // Initialize contracts
       await this.initializeContracts();
@@ -82,7 +86,7 @@ export class PolygonBlockchainService extends BaseBlockchainService {
       const address = "0x1234567890123456789012345678901234567890"; // Mock address
       
       // Get chain ID to ensure we're on the right network
-      const chainId = this.chainId;
+      const chainId = this._chainId;
       
       // Create wallet info
       this.walletInfo = {
@@ -106,8 +110,8 @@ export class PolygonBlockchainService extends BaseBlockchainService {
    * Disconnect from the currently connected wallet
    */
   async disconnectWallet(): Promise<void> {
-    this.signer = null;
-    this.todoListFactory = null;
+    this._signer = null;
+    this._todoListFactory = null;
     this.todoLists.clear();
     this.walletInfo = null;
   }
@@ -225,7 +229,7 @@ export class PolygonBlockchainService extends BaseBlockchainService {
    * Create a new todo on the blockchain
    * @param todo - Todo data to create
    */
-  async createTodo(todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
+  async createTodo(_todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
     
     try {
@@ -255,7 +259,7 @@ export class PolygonBlockchainService extends BaseBlockchainService {
    * @param id - Todo ID
    * @param todo - Updated todo data
    */
-  async updateTodo(id: string, todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
+  async updateTodo(id: string, _todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
     
     try {
@@ -392,10 +396,11 @@ export class PolygonBlockchainService extends BaseBlockchainService {
       // 2. Store them for later use
       
       // Mock implementation
-      this.todoListFactory = { /* Mock contract */ };
+      this._todoListFactory = { /* Mock contract */ };
       
       // Get the user's todo list address
-      const todoListAddress = "0x0987654321098765432109876543210987654321";
+      // @ts-ignore - Used in real implementation
+      const _todoListAddress = "0x0987654321098765432109876543210987654321";
       
       // Create a contract instance for the todo list
       const todoList = { /* Mock contract */ };

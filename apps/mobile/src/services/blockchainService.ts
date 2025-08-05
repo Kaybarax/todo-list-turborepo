@@ -1,4 +1,5 @@
 import { Alert } from 'react-native';
+import { BlockchainNetwork } from '@todo/services';
 import type { Todo } from '../store/todoStore';
 
 export interface BlockchainTodo {
@@ -272,18 +273,161 @@ export class PolygonMobileBlockchainService extends MobileBlockchainService {
   }
 }
 
-// Factory function to create mobile blockchain service instances
-export function createMobileBlockchainService(network: 'solana' | 'polkadot' | 'polygon'): BlockchainServiceInterface {
-  switch (network) {
-    case 'solana':
-      return new SolanaMobileBlockchainService('TodoProgramMobile123');
-    case 'polkadot':
-      return new PolkadotMobileBlockchainService();
-    case 'polygon':
-      return new PolygonMobileBlockchainService('0x1234567890123456789012345678901234567890');
-    default:
-      throw new Error(`Unsupported network: ${network}`);
+// Moonbeam mobile blockchain service implementation
+export class MoonbeamMobileBlockchainService extends MobileBlockchainService {
+  private contractAddress: string;
+
+  constructor(contractAddress: string) {
+    super('Moonbeam');
+    this.contractAddress = contractAddress;
   }
+
+  async createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
+    await this.simulateNetworkDelay(1800);
+    
+    const result = {
+      hash: '0x' + this.generateMockTransactionHash(),
+      status: 'pending' as const,
+    };
+
+    this.showTransactionAlert('success', `Todo created on Moonbeam network!\nTransaction: ${result.hash.slice(0, 10)}...`);
+    
+    return result;
+  }
+
+  async updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
+    await this.simulateNetworkDelay(1500);
+    
+    const result = {
+      hash: '0x' + this.generateMockTransactionHash(),
+      status: 'pending' as const,
+    };
+
+    this.showTransactionAlert('success', `Todo updated on Moonbeam network!\nTransaction: ${result.hash.slice(0, 10)}...`);
+    
+    return result;
+  }
+
+  async deleteTodo(id: string): Promise<TransactionResult> {
+    await this.simulateNetworkDelay(1300);
+    
+    const result = {
+      hash: '0x' + this.generateMockTransactionHash(),
+      status: 'pending' as const,
+    };
+
+    this.showTransactionAlert('success', `Todo deleted from Moonbeam network!\nTransaction: ${result.hash.slice(0, 10)}...`);
+    
+    return result;
+  }
+
+  async getTodo(id: string): Promise<BlockchainTodo | null> {
+    await this.simulateNetworkDelay();
+    return null;
+  }
+
+  async getUserTodos(userAddress: string): Promise<BlockchainTodo[]> {
+    await this.simulateNetworkDelay();
+    return [];
+  }
+}
+
+// Base mobile blockchain service implementation
+export class BaseMobileBlockchainService extends MobileBlockchainService {
+  private contractAddress: string;
+
+  constructor(contractAddress: string) {
+    super('Base');
+    this.contractAddress = contractAddress;
+  }
+
+  async createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
+    await this.simulateNetworkDelay(1600);
+    
+    const result = {
+      hash: '0x' + this.generateMockTransactionHash(),
+      status: 'pending' as const,
+    };
+
+    this.showTransactionAlert('success', `Todo created on Base network!\nTransaction: ${result.hash.slice(0, 10)}...`);
+    
+    return result;
+  }
+
+  async updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
+    await this.simulateNetworkDelay(1300);
+    
+    const result = {
+      hash: '0x' + this.generateMockTransactionHash(),
+      status: 'pending' as const,
+    };
+
+    this.showTransactionAlert('success', `Todo updated on Base network!\nTransaction: ${result.hash.slice(0, 10)}...`);
+    
+    return result;
+  }
+
+  async deleteTodo(id: string): Promise<TransactionResult> {
+    await this.simulateNetworkDelay(1100);
+    
+    const result = {
+      hash: '0x' + this.generateMockTransactionHash(),
+      status: 'pending' as const,
+    };
+
+    this.showTransactionAlert('success', `Todo deleted from Base network!\nTransaction: ${result.hash.slice(0, 10)}...`);
+    
+    return result;
+  }
+
+  async getTodo(id: string): Promise<BlockchainTodo | null> {
+    await this.simulateNetworkDelay();
+    return null;
+  }
+
+  async getUserTodos(userAddress: string): Promise<BlockchainTodo[]> {
+    await this.simulateNetworkDelay();
+    return [];
+  }
+}
+
+// Factory function to create mobile blockchain service instances
+export function createMobileBlockchainService(network: BlockchainNetwork): BlockchainServiceInterface {
+  switch (network) {
+    case BlockchainNetwork.SOLANA:
+    case BlockchainNetwork.SOLANA_DEVNET:
+      return new SolanaMobileBlockchainService('TodoProgramMobile123');
+    
+    case BlockchainNetwork.POLKADOT:
+    case BlockchainNetwork.POLKADOT_TESTNET:
+      return new PolkadotMobileBlockchainService();
+    
+    case BlockchainNetwork.POLYGON:
+    case BlockchainNetwork.POLYGON_MUMBAI:
+      return new PolygonMobileBlockchainService('0x1234567890123456789012345678901234567890');
+    
+    case BlockchainNetwork.MOONBEAM:
+    case BlockchainNetwork.MOONBEAM_TESTNET:
+      return new MoonbeamMobileBlockchainService('0x1234567890123456789012345678901234567890');
+    
+    case BlockchainNetwork.BASE:
+    case BlockchainNetwork.BASE_TESTNET:
+      return new BaseMobileBlockchainService('0x1234567890123456789012345678901234567890');
+    
+    default:
+      throw new Error(`Unsupported network: ${network}. Available networks: ${Object.values(BlockchainNetwork).join(', ')}`);
+  }
+}
+
+// Legacy function for backward compatibility
+export function createMobileBlockchainServiceLegacy(network: 'solana' | 'polkadot' | 'polygon'): BlockchainServiceInterface {
+  const networkMap = {
+    'solana': BlockchainNetwork.SOLANA,
+    'polkadot': BlockchainNetwork.POLKADOT,
+    'polygon': BlockchainNetwork.POLYGON,
+  };
+  
+  return createMobileBlockchainService(networkMap[network]);
 }
 
 // Utility function to convert Todo to BlockchainTodo

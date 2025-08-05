@@ -10,7 +10,7 @@ export default function HomePage() {
         </h1>
         <p className="mt-6 text-lg leading-8 text-gray-600">
           A modern todo application with blockchain integration. Manage your tasks
-          and store them securely on Solana, Polkadot, or Polygon networks.
+          and store them securely on Solana, Polkadot, Polygon, Moonbeam, or Base networks.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <Button asChild>
@@ -51,7 +51,7 @@ export default function HomePage() {
               Multi-Network Support
             </h3>
             <p className="text-gray-600">
-              Choose from Solana, Polkadot, or Polygon networks based on your
+              Choose from Solana, Polkadot, Polygon, Moonbeam, or Base networks based on your
               preferences for speed, cost, and features.
             </p>
           </div>

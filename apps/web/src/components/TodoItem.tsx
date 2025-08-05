@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Badge, Button } from '@todo/ui-web';
 import { TransactionStatus } from './TransactionStatus';
+import { BlockchainNetwork, getNetworkDisplayInfo } from '@todo/services';
 
 export interface Todo {
   id: string;
@@ -15,7 +16,7 @@ export interface Todo {
   createdAt: Date;
   updatedAt: Date;
   userId: string;
-  blockchainNetwork?: 'solana' | 'polkadot' | 'polygon';
+  blockchainNetwork?: BlockchainNetwork;
   transactionHash?: string;
   blockchainAddress?: string;
 }
@@ -25,23 +26,15 @@ interface TodoItemProps {
   onToggle: (id: string) => void;
   onEdit: (todo: Todo) => void;
   onDelete: (id: string) => void;
-  onBlockchainSync?: (id: string, network: 'solana' | 'polkadot' | 'polygon') => void;
+  onBlockchainSync?: (id: string, network: BlockchainNetwork) => void;
 }
 
 export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }: TodoItemProps) {
   const [showActions, setShowActions] = useState(false);
 
-  const priorityColors = {
-    low: 'bg-green-100 text-green-800',
-    medium: 'bg-yellow-100 text-yellow-800',
-    high: 'bg-red-100 text-red-800',
-  };
+  // Priority colors are handled by Badge variant prop
 
-  const networkColors = {
-    solana: 'bg-purple-100 text-purple-800',
-    polkadot: 'bg-pink-100 text-pink-800',
-    polygon: 'bg-indigo-100 text-indigo-800',
-  };
+  // Network colors are handled by getNetworkColor from services
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
@@ -114,7 +107,6 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
           <div className="mt-2 flex items-center space-x-2 flex-wrap gap-1">
             <Badge
               variant={todo.priority === 'high' ? 'destructive' : todo.priority === 'medium' ? 'default' : 'secondary'}
-              size="sm"
             >
               {todo.priority}
             </Badge>
@@ -122,7 +114,6 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
             {todo.dueDate && (
               <Badge
                 variant={isOverdue ? 'destructive' : 'outline'}
-                size="sm"
               >
                 Due: {formatDate(todo.dueDate)}
               </Badge>
@@ -131,9 +122,8 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
             {todo.blockchainNetwork && (
               <Badge
                 variant="secondary"
-                size="sm"
               >
-                {todo.blockchainNetwork}
+                {getNetworkDisplayInfo(todo.blockchainNetwork).displayName}
               </Badge>
             )}
 
@@ -141,7 +131,6 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
               <Badge
                 key={tag}
                 variant="outline"
-                size="sm"
               >
                 {tag}
               </Badge>
@@ -163,27 +152,41 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
                 <summary className="cursor-pointer text-primary-600 hover:text-primary-800">
                   Sync to blockchain
                 </summary>
-                <div className="mt-1 flex space-x-2">
+                <div className="mt-1 flex flex-wrap gap-2">
                   <Button
-                    onClick={() => onBlockchainSync(todo.id, 'solana')}
+                    onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.SOLANA)}
                     variant="outline"
                     size="sm"
                   >
                     Solana
                   </Button>
                   <Button
-                    onClick={() => onBlockchainSync(todo.id, 'polkadot')}
+                    onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.POLKADOT)}
                     variant="outline"
                     size="sm"
                   >
                     Polkadot
                   </Button>
                   <Button
-                    onClick={() => onBlockchainSync(todo.id, 'polygon')}
+                    onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.POLYGON)}
                     variant="outline"
                     size="sm"
                   >
                     Polygon
+                  </Button>
+                  <Button
+                    onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.MOONBEAM)}
+                    variant="outline"
+                    size="sm"
+                  >
+                    Moonbeam
+                  </Button>
+                  <Button
+                    onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.BASE)}
+                    variant="outline"
+                    size="sm"
+                  >
+                    Base
                   </Button>
                 </div>
               </details>

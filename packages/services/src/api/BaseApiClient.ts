@@ -7,7 +7,7 @@ import {
   ErrorInterceptor,
   RetryConfig 
 } from './types';
-import { ApiError, ApiErrorType } from './ApiError';
+import { ApiError } from './ApiError';
 
 /**
  * Base API client with authentication, retry logic, and error handling
@@ -331,7 +331,7 @@ export class BaseApiClient {
       const { token, refreshToken } = response.data;
       this.setAuthToken(token, refreshToken);
     } catch (error) {
-      throw ApiError.authenticationError('Failed to refresh token', error);
+      throw ApiError.authenticationError('Failed to refresh token');
     }
   }
 

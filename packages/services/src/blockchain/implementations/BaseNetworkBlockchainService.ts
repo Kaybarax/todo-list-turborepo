@@ -34,10 +34,14 @@ export interface BaseNetworkBlockchainServiceOptions {
  */
 export class BaseNetworkBlockchainService extends BaseBlockchainService {
   private todoListFactoryAddress: string;
+  // @ts-ignore - Used in real implementation
   private rpcUrl: string;
   private chainId: number;
+  // @ts-ignore - Used in real implementation
   private provider: any; // ethers.providers.Provider
+  // @ts-ignore - Used in real implementation
   private signer: any | null = null; // ethers.Signer
+  // @ts-ignore - Used in real implementation
   private todoListFactory: any | null = null; // Contract
   private todoLists: Map<string, any> = new Map(); // Map of todoList address to Contract
 
@@ -65,7 +69,7 @@ export class BaseNetworkBlockchainService extends BaseBlockchainService {
    * Connect to a wallet using WalletConnect or other provider
    * @param provider - Ethereum provider (e.g., from WalletConnect)
    */
-  async connectWallet(provider: any): Promise<WalletInfo> {
+  async connectWallet(_provider: any): Promise<WalletInfo> {
     try {
       // In a real implementation, we would:
       // 1. Connect to the provider
@@ -259,7 +263,7 @@ export class BaseNetworkBlockchainService extends BaseBlockchainService {
    * Create a new todo on the blockchain
    * @param todo - Todo data to create
    */
-  async createTodo(todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
+  async createTodo(_todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
     
     try {
@@ -296,7 +300,7 @@ export class BaseNetworkBlockchainService extends BaseBlockchainService {
    * @param id - Todo ID
    * @param todo - Updated todo data
    */
-  async updateTodo(id: string, todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
+  async updateTodo(id: string, _todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
     
     try {
@@ -452,6 +456,7 @@ export class BaseNetworkBlockchainService extends BaseBlockchainService {
       this.todoListFactory = { /* Mock contract */ };
       
       // Get the user's todo list address
+      // @ts-ignore - Used in real implementation
       const todoListAddress = "0x0987654321098765432109876543210987654321";
       
       // Create a contract instance for the todo list

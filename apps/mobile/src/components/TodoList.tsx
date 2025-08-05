@@ -9,6 +9,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { TodoItem } from './TodoItem';
+import { BlockchainNetwork } from '@todo/services';
 import type { Todo } from '../store/todoStore';
 
 interface TodoListProps {
@@ -16,7 +17,7 @@ interface TodoListProps {
   onToggle: (id: string) => void;
   onEdit: (todo: Todo) => void;
   onDelete: (id: string) => void;
-  onBlockchainSync?: (id: string, network: 'solana' | 'polkadot' | 'polygon') => void;
+  onBlockchainSync?: (id: string, network: BlockchainNetwork) => void;
   onRefresh?: () => void;
   refreshing?: boolean;
 }

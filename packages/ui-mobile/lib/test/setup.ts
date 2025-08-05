@@ -18,7 +18,7 @@ jest.mock('react-native', () => {
   RN.Pressable = 'Pressable';
   
   // Mock methods
-  RN.StyleSheet.create = (styles) => styles;
+  RN.StyleSheet.create = (styles: any) => styles;
   RN.Dimensions.get = jest.fn().mockReturnValue({ width: 375, height: 812 });
   RN.Platform.OS = 'ios';
   RN.Platform.select = jest.fn((obj) => obj.ios || obj.default);

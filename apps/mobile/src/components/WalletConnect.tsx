@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-
   StyleSheet,
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import { Card, CardContent, Button, Badge } from '@todo/ui-mobile';
+import { Card, CardContent, Button, Badge, NetworkSelector } from '@todo/ui-mobile';
 import { useWallet } from '../providers/WalletProvider';
+import { getNetworkColor } from '@todo/services';
 
 export function WalletConnect() {
   const {
@@ -22,7 +22,7 @@ export function WalletConnect() {
     switchNetwork,
   } = useWallet();
 
-  const [selectedNetwork, setSelectedNetwork] = useState<'solana' | 'polkadot' | 'polygon'>('solana');
+  const [selectedNetwork, setSelectedNetwork] = useState<'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base'>('solana');
   const [showNetworkSelector, setShowNetworkSelector] = useState(false);
 
   const handleConnect = async () => {
@@ -54,7 +54,7 @@ export function WalletConnect() {
     );
   };
 
-  const handleNetworkSwitch = async (network: 'solana' | 'polkadot' | 'polygon') => {
+  const handleNetworkSwitch = async (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => {
     try {
       await switchNetwork(network);
       setShowNetworkSelector(false);
@@ -63,14 +63,7 @@ export function WalletConnect() {
     }
   };
 
-  const getNetworkColor = (network: string) => {
-    const colors = {
-      solana: '#9333ea',
-      polkadot: '#ec4899',
-      polygon: '#6366f1',
-    };
-    return colors[network as keyof typeof colors] || '#6b7280';
-  };
+  // Use the centralized network color function
 
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -119,23 +112,13 @@ export function WalletConnect() {
           {showNetworkSelector && (
             <View style={styles.networkSelector}>
               <Text style={styles.selectorTitle}>Select Network:</Text>
-              <View style={styles.networkOptions}>
-                {supportedNetworks.map((network) => (
-                  <Button
-                    key={network}
-                    variant="primary"
-                    size="small"
-                    title={network}
-                    onPress={() => handleNetworkSwitch(network)}
-                    disabled={isConnecting || network === account.network}
-                    style={{
-                      ...styles.networkOption,
-                      backgroundColor: getNetworkColor(network),
-                      ...(network === account.network || isConnecting ? styles.networkOptionDisabled : {}),
-                    }}
-                  />
-                ))}
-              </View>
+              <NetworkSelector
+                selectedNetwork={account.network}
+                onNetworkSelect={handleNetworkSwitch}
+                disabled={isConnecting}
+                variant="list"
+                style={styles.networkSelectorComponent}
+              />
             </View>
           )}
 
@@ -176,21 +159,13 @@ export function WalletConnect() {
 
         <View style={styles.connectSection}>
           <Text style={styles.sectionTitle}>Select Network:</Text>
-          <View style={styles.networkOptions}>
-            {supportedNetworks.map((network) => (
-              <Button
-                key={network}
-                variant={selectedNetwork === network ? "primary" : "outline"}
-                size="small"
-                title={network}
-                onPress={() => setSelectedNetwork(network)}
-                style={{
-                  ...styles.networkOption,
-                  ...(selectedNetwork === network ? { backgroundColor: getNetworkColor(network) } : {}),
-                }}
-              />
-            ))}
-          </View>
+          <NetworkSelector
+            selectedNetwork={selectedNetwork}
+            onNetworkSelect={setSelectedNetwork}
+            disabled={isConnecting}
+            variant="grid"
+            style={styles.networkSelectorComponent}
+          />
 
           <Button
             variant="primary"
@@ -205,7 +180,7 @@ export function WalletConnect() {
           <View style={styles.infoContainer}>
             <Text style={styles.infoText}>• This is a demo implementation</Text>
             <Text style={styles.infoText}>• Real wallet integration will be added in production</Text>
-            <Text style={styles.infoText}>• Supports Solana, Polkadot, and Polygon networks</Text>
+            <Text style={styles.infoText}>• Supports Solana, Polkadot, Polygon, Moonbeam, and Base networks</Text>
           </View>
         </View>
       </CardContent>
@@ -267,16 +242,8 @@ const styles = StyleSheet.create({
     color: '#374151',
     marginBottom: 8,
   },
-  networkOptions: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  networkOption: {
-    minWidth: 80,
-  },
-  networkOptionDisabled: {
-    opacity: 0.5,
+  networkSelectorComponent: {
+    marginTop: 8,
   },
   addressText: {
     fontSize: 14,

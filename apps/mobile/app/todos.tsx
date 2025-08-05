@@ -8,6 +8,7 @@ import { TodoList } from '../src/components/TodoList';
 import { BlockchainStats } from '../src/components/BlockchainStats';
 import { useTodoStore, type Todo } from '../src/store/todoStore';
 import { useWallet } from '../src/providers/WalletProvider';
+import { BlockchainNetwork } from '@todo/services';
 
 export default function TodosScreen() {
   const [showForm, setShowForm] = useState(false);
@@ -55,7 +56,7 @@ export default function TodosScreen() {
     deleteTodo(id);
   };
 
-  const handleBlockchainSync = async (id: string, network: 'solana' | 'polkadot' | 'polygon') => {
+  const handleBlockchainSync = async (id: string, network: BlockchainNetwork) => {
     if (!isConnected) {
       Alert.alert(
         'Wallet Required',

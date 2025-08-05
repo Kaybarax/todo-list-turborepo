@@ -7,6 +7,7 @@ import { TodoList } from '@/components/TodoList';
 import { BlockchainStats } from '@/components/BlockchainStats';
 import { useTodoStore } from '@/store/todoStore';
 import { useWallet } from '@/components/WalletProvider';
+import { BlockchainNetwork } from '@todo/services';
 import type { Todo } from '@/components/TodoItem';
 
 export default function TodosPage() {
@@ -31,12 +32,24 @@ export default function TodosPage() {
     fetchTodos();
   }, [fetchTodos]);
 
-  const handleSubmit = (todoData: Parameters<typeof addTodo>[0]) => {
+  const handleSubmit = (todoData: {
+    title: string;
+    description?: string;
+    priority: 'low' | 'medium' | 'high';
+    dueDate?: string;
+    tags: string[];
+  }) => {
+    const fullTodoData = {
+      ...todoData,
+      completed: editingTodo?.completed || false,
+      dueDate: todoData.dueDate ? new Date(todoData.dueDate) : undefined,
+    };
+    
     if (editingTodo) {
-      updateTodo(editingTodo.id, todoData);
+      updateTodo(editingTodo.id, fullTodoData);
       setEditingTodo(null);
     } else {
-      addTodo(todoData);
+      addTodo(fullTodoData);
     }
     setShowForm(false);
   };
@@ -57,7 +70,7 @@ export default function TodosPage() {
     }
   };
 
-  const handleBlockchainSync = async (id: string, network: 'solana' | 'polkadot' | 'polygon') => {
+  const handleBlockchainSync = async (id: string, network: BlockchainNetwork) => {
     if (!isConnected) {
       alert('Please connect your wallet first to sync todos to blockchain.');
       return;

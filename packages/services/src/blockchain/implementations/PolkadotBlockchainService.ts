@@ -15,7 +15,9 @@ import { BlockchainError } from '../utils/BlockchainError';
  */
 export class PolkadotBlockchainService extends BaseBlockchainService {
   private api: any; // Polkadot API
+  // @ts-ignore - Used in real implementation
   private keyring: any; // Polkadot Keyring
+  // @ts-ignore - Used in real implementation
   private signer: any; // Polkadot Signer
 
   constructor() {
@@ -41,6 +43,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
   }): Promise<WalletInfo> {
     try {
       // Initialize Polkadot API connection
+      // @ts-ignore - Used in real implementation
       const wsEndpoint = options?.wsEndpoint || 'wss://rpc.polkadot.io';
       
       // This would typically use @polkadot/api and wallet extensions
@@ -149,7 +152,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    * Get a specific todo by ID from Polkadot pallet
    * @param id - Todo ID in the pallet storage
    */
-  async getTodoById(id: string): Promise<BlockchainTodo | null> {
+  async getTodoById(_id: string): Promise<BlockchainTodo | null> {
     this.ensureWalletConnected();
     
     try {
@@ -169,7 +172,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    * Create a new todo on Polkadot
    * @param todo - Todo data to create
    */
-  async createTodo(todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
+  async createTodo(_todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
     
     try {
@@ -181,6 +184,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
+        from: this.walletInfo?.address || 'mock_address',
         blockNumber: 987654,
         gasUsed: '150000000', // Weight in Polkadot
         network: this.network,
@@ -200,7 +204,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    * @param id - Todo ID in pallet storage
    * @param todo - Updated todo data
    */
-  async updateTodo(id: string, todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
+  async updateTodo(_id: string, _todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
     
     try {
@@ -211,6 +215,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
+        from: this.walletInfo?.address || 'mock_address',
         blockNumber: 987655,
         gasUsed: '120000000',
         network: this.network,
@@ -229,7 +234,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    * Delete a todo from Polkadot
    * @param id - Todo ID in pallet storage
    */
-  async deleteTodo(id: string): Promise<TransactionReceipt> {
+  async deleteTodo(_id: string): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
     
     try {
@@ -240,6 +245,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
+        from: this.walletInfo?.address || 'mock_address',
         blockNumber: 987656,
         gasUsed: '100000000',
         network: this.network,
@@ -286,6 +292,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
         return {
           transactionHash: txHash,
           status: TransactionStatus.CONFIRMED,
+          from: this.walletInfo?.address || 'mock_address',
           blockNumber: 987654,
           gasUsed: '150000000',
           network: this.network,

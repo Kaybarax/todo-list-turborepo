@@ -2,12 +2,12 @@ import { BaseApiClient } from './BaseApiClient';
 import { 
   ApiClientConfig, 
   ApiResponse, 
-  Todo, 
-  CreateTodoInput, 
-  UpdateTodoInput,
-  todoSchema,
-  createTodoSchema,
-  updateTodoSchema
+  ApiTodo, 
+  CreateApiTodoInput, 
+  UpdateApiTodoInput,
+  apiTodoSchema,
+  createApiTodoSchema,
+  updateApiTodoSchema
 } from './types';
 import { ApiError } from './ApiError';
 
@@ -34,14 +34,14 @@ export class TodoApiClient extends BaseApiClient {
     priority?: 'low' | 'medium' | 'high';
     search?: string;
     tags?: string[];
-  }): Promise<ApiResponse<Todo[]>> {
+  }): Promise<ApiResponse<ApiTodo[]>> {
     try {
-      const response = await this.get<Todo[]>('/todos', { params });
+      const response = await this.get<ApiTodo[]>('/todos', { params });
       
       // Validate response data
       if (response.success && response.data) {
         const validatedData = response.data.map(todo => {
-          const result = todoSchema.safeParse(todo);
+          const result = apiTodoSchema.safeParse(todo);
           if (!result.success) {
             throw ApiError.validationError(`Invalid todo data: ${result.error.message}`);
           }
@@ -67,13 +67,13 @@ export class TodoApiClient extends BaseApiClient {
    * Get a specific todo by ID
    * @param id - Todo ID
    */
-  async getTodoById(id: string): Promise<ApiResponse<Todo>> {
+  async getTodoById(id: string): Promise<ApiResponse<ApiTodo>> {
     try {
-      const response = await this.get<Todo>(`/todos/${id}`);
+      const response = await this.get<ApiTodo>(`/todos/${id}`);
       
       // Validate response data
       if (response.success && response.data) {
-        const result = todoSchema.safeParse(response.data);
+        const result = apiTodoSchema.safeParse(response.data);
         if (!result.success) {
           throw ApiError.validationError(`Invalid todo data: ${result.error.message}`);
         }
@@ -97,19 +97,19 @@ export class TodoApiClient extends BaseApiClient {
    * Create a new todo
    * @param todo - Todo data to create
    */
-  async createTodo(todo: CreateTodoInput): Promise<ApiResponse<Todo>> {
+  async createTodo(todo: CreateApiTodoInput): Promise<ApiResponse<ApiTodo>> {
     try {
       // Validate input data
-      const result = createTodoSchema.safeParse(todo);
+      const result = createApiTodoSchema.safeParse(todo);
       if (!result.success) {
         throw ApiError.validationError(`Invalid todo data: ${result.error.message}`);
       }
 
-      const response = await this.post<Todo>('/todos', result.data);
+      const response = await this.post<ApiTodo>('/todos', result.data);
       
       // Validate response data
       if (response.success && response.data) {
-        const todoResult = todoSchema.safeParse(response.data);
+        const todoResult = apiTodoSchema.safeParse(response.data);
         if (!todoResult.success) {
           throw ApiError.validationError(`Invalid todo response: ${todoResult.error.message}`);
         }
@@ -134,19 +134,19 @@ export class TodoApiClient extends BaseApiClient {
    * @param id - Todo ID
    * @param todo - Updated todo data
    */
-  async updateTodo(id: string, todo: UpdateTodoInput): Promise<ApiResponse<Todo>> {
+  async updateTodo(id: string, todo: UpdateApiTodoInput): Promise<ApiResponse<ApiTodo>> {
     try {
       // Validate input data
-      const result = updateTodoSchema.safeParse(todo);
+      const result = updateApiTodoSchema.safeParse(todo);
       if (!result.success) {
         throw ApiError.validationError(`Invalid todo data: ${result.error.message}`);
       }
 
-      const response = await this.put<Todo>(`/todos/${id}`, result.data);
+      const response = await this.put<ApiTodo>(`/todos/${id}`, result.data);
       
       // Validate response data
       if (response.success && response.data) {
-        const todoResult = todoSchema.safeParse(response.data);
+        const todoResult = apiTodoSchema.safeParse(response.data);
         if (!todoResult.success) {
           throw ApiError.validationError(`Invalid todo response: ${todoResult.error.message}`);
         }
@@ -186,13 +186,13 @@ export class TodoApiClient extends BaseApiClient {
    * Toggle todo completion status
    * @param id - Todo ID
    */
-  async toggleTodo(id: string): Promise<ApiResponse<Todo>> {
+  async toggleTodo(id: string): Promise<ApiResponse<ApiTodo>> {
     try {
-      const response = await this.patch<Todo>(`/todos/${id}/toggle`);
+      const response = await this.patch<ApiTodo>(`/todos/${id}/toggle`);
       
       // Validate response data
       if (response.success && response.data) {
-        const result = todoSchema.safeParse(response.data);
+        const result = apiTodoSchema.safeParse(response.data);
         if (!result.success) {
           throw ApiError.validationError(`Invalid todo response: ${result.error.message}`);
         }
@@ -216,11 +216,11 @@ export class TodoApiClient extends BaseApiClient {
    * Bulk update todos
    * @param updates - Array of todo updates
    */
-  async bulkUpdateTodos(updates: Array<{ id: string; data: UpdateTodoInput }>): Promise<ApiResponse<Todo[]>> {
+  async bulkUpdateTodos(updates: Array<{ id: string; data: UpdateApiTodoInput }>): Promise<ApiResponse<ApiTodo[]>> {
     try {
       // Validate input data
       const validatedUpdates = updates.map(update => {
-        const result = updateTodoSchema.safeParse(update.data);
+        const result = updateApiTodoSchema.safeParse(update.data);
         if (!result.success) {
           throw ApiError.validationError(`Invalid todo data for ID ${update.id}: ${result.error.message}`);
         }
@@ -230,12 +230,12 @@ export class TodoApiClient extends BaseApiClient {
         };
       });
 
-      const response = await this.patch<Todo[]>('/todos/bulk', { updates: validatedUpdates });
+      const response = await this.patch<ApiTodo[]>('/todos/bulk', { updates: validatedUpdates });
       
       // Validate response data
       if (response.success && response.data) {
         const validatedData = response.data.map(todo => {
-          const result = todoSchema.safeParse(todo);
+          const result = apiTodoSchema.safeParse(todo);
           if (!result.success) {
             throw ApiError.validationError(`Invalid todo data: ${result.error.message}`);
           }
@@ -271,19 +271,19 @@ export class TodoApiClient extends BaseApiClient {
       dateFrom?: string;
       dateTo?: string;
     }
-  ): Promise<ApiResponse<Todo[]>> {
+  ): Promise<ApiResponse<ApiTodo[]>> {
     try {
       const params = {
         q: query,
         ...filters,
       };
 
-      const response = await this.get<Todo[]>('/todos/search', { params });
+      const response = await this.get<ApiTodo[]>('/todos/search', { params });
       
       // Validate response data
       if (response.success && response.data) {
         const validatedData = response.data.map(todo => {
-          const result = todoSchema.safeParse(todo);
+          const result = apiTodoSchema.safeParse(todo);
           if (!result.success) {
             throw ApiError.validationError(`Invalid todo data: ${result.error.message}`);
           }

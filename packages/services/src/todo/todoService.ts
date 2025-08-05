@@ -14,7 +14,6 @@ import {
  * Service for interacting with the Todo API
  */
 export class TodoService {
-  private baseUrl: string;
   private apiClient;
 
   /**
@@ -22,7 +21,6 @@ export class TodoService {
    * @param baseUrl - The base URL of the Todo API
    */
   constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
     this.apiClient = axios.create({
       baseURL: baseUrl,
       headers: {

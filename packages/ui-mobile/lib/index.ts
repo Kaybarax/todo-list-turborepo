@@ -29,6 +29,9 @@ export type { InputProps, InputVariant, InputSize, InputStatus } from './compone
 export { Badge } from './components/Badge';
 export type { BadgeProps, BadgeVariant, BadgeSize } from './components/Badge';
 
+export { NetworkSelector } from './components/NetworkSelector';
+export type { NetworkSelectorProps } from './components/NetworkSelector';
+
 export { Avatar } from './components/Avatar';
 export type { AvatarProps, AvatarSize, AvatarShape } from './components/Avatar';
 

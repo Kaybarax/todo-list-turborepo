@@ -39,9 +39,9 @@ export const apiErrorResponseSchema = z.object({
 export type ApiErrorResponse = z.infer<typeof apiErrorResponseSchema>;
 
 /**
- * Todo schema for API responses
+ * API Todo schema for API responses
  */
-export const todoSchema = z.object({
+export const apiTodoSchema = z.object({
   id: z.string(),
   title: z.string(),
   description: z.string().optional(),
@@ -55,14 +55,14 @@ export const todoSchema = z.object({
 });
 
 /**
- * Todo type
+ * API Todo type
  */
-export type Todo = z.infer<typeof todoSchema>;
+export type ApiTodo = z.infer<typeof apiTodoSchema>;
 
 /**
- * Create todo input schema
+ * Create API todo input schema
  */
-export const createTodoSchema = todoSchema.omit({
+export const createApiTodoSchema = apiTodoSchema.omit({
   id: true,
   createdAt: true,
   updatedAt: true,
@@ -70,19 +70,19 @@ export const createTodoSchema = todoSchema.omit({
 });
 
 /**
- * Create todo input type
+ * Create API todo input type
  */
-export type CreateTodoInput = z.infer<typeof createTodoSchema>;
+export type CreateApiTodoInput = z.infer<typeof createApiTodoSchema>;
 
 /**
- * Update todo input schema
+ * Update API todo input schema
  */
-export const updateTodoSchema = createTodoSchema.partial();
+export const updateApiTodoSchema = createApiTodoSchema.partial();
 
 /**
- * Update todo input type
+ * Update API todo input type
  */
-export type UpdateTodoInput = z.infer<typeof updateTodoSchema>;
+export type UpdateApiTodoInput = z.infer<typeof updateApiTodoSchema>;
 
 /**
  * User schema for API responses

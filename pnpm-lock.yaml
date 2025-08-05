@@ -628,6 +628,9 @@ importers:
       '@eva-design/eva':
         specifier: ^2.2.0
         version: 2.2.0
+      '@todo/services':
+        specifier: '*'
+        version: link:../services
       '@ui-kitten/components':
         specifier: ^5.3.1
         version: 5.3.1(react-native-svg@13.14.1(react-native@0.72.6(@babel/core@7.28.0)(@babel/preset-env@7.28.0(@babel/core@7.28.0))(react@18.2.0))(react@18.2.0))
@@ -791,6 +794,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.0.7
         version: 1.2.7(@types/react-dom@18.3.7(@types/react@18.2.79))(@types/react@18.2.79)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      '@todo/services':
+        specifier: '*'
+        version: link:../services
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.1

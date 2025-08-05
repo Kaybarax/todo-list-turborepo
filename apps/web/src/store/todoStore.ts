@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Todo } from '@/components/TodoItem';
 import { createBlockchainService, todoToBlockchainTodo, type TransactionResult } from '@/services/blockchainService';
+import { BlockchainNetwork } from '@todo/services';
 
 interface TodoStore {
   todos: Todo[];
@@ -13,7 +14,7 @@ interface TodoStore {
   updateTodo: (id: string, updates: Partial<Todo>) => void;
   deleteTodo: (id: string) => void;
   toggleTodo: (id: string) => void;
-  syncToBlockchain: (id: string, network: 'solana' | 'polkadot' | 'polygon') => Promise<void>;
+  syncToBlockchain: (id: string, network: BlockchainNetwork) => Promise<void>;
   
   // API actions (will be implemented when API is ready)
   fetchTodos: () => Promise<void>;
@@ -113,7 +114,7 @@ export const useTodoStore = create<TodoStore>()(
           }));
 
           // Wait for transaction confirmation in the background
-          blockchainService.waitForTransaction(result.hash).then((confirmedResult) => {
+          blockchainService.waitForTransaction(result.hash).then((_confirmedResult) => {
             set((state) => ({
               todos: state.todos.map((todo) =>
                 todo.id === id && todo.transactionHash === result.hash
@@ -160,7 +161,7 @@ export const useTodoStore = create<TodoStore>()(
         }
       },
 
-      saveTodo: async (todo) => {
+      saveTodo: async (_todo) => {
         set({ isLoading: true, error: null });
         
         try {

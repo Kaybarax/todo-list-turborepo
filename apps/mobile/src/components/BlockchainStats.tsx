@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card, CardContent, Badge } from '@todo/ui-mobile';
 import type { Todo } from '../store/todoStore';
+import { getNetworkColor } from '@todo/services';
 
 interface BlockchainStatsProps {
   todos: Todo[];
@@ -34,14 +35,7 @@ export function BlockchainStats({ todos }: BlockchainStatsProps) {
     };
   }, [todos]);
 
-  const getNetworkColor = (network: string) => {
-    const colors = {
-      solana: '#9333ea',
-      polkadot: '#ec4899',
-      polygon: '#6366f1',
-    };
-    return colors[network as keyof typeof colors] || '#6b7280';
-  };
+  // Use the centralized network color function
 
   if (stats.total === 0) {
     return null;

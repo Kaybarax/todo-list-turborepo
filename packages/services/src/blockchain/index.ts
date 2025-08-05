@@ -1,6 +1,9 @@
 // Types
 export * from './types';
 
+// Network Configuration
+export * from './networkConfig';
+
 // Interfaces
 export * from './interfaces/BlockchainService';
 

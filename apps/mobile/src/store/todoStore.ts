@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { createMobileBlockchainService, todoToBlockchainTodo, type TransactionResult } from '../services/blockchainService';
+import { BlockchainNetwork } from '@todo/services';
 
 export interface Todo {
   id: string;
@@ -14,7 +15,7 @@ export interface Todo {
   createdAt: Date;
   updatedAt: Date;
   userId: string;
-  blockchainNetwork?: 'solana' | 'polkadot' | 'polygon';
+  blockchainNetwork?: BlockchainNetwork;
   transactionHash?: string;
   blockchainAddress?: string;
 }
@@ -29,7 +30,7 @@ interface TodoStore {
   updateTodo: (id: string, updates: Partial<Todo>) => void;
   deleteTodo: (id: string) => void;
   toggleTodo: (id: string) => void;
-  syncToBlockchain: (id: string, network: 'solana' | 'polkadot' | 'polygon') => Promise<void>;
+  syncToBlockchain: (id: string, network: BlockchainNetwork) => Promise<void>;
   
   // API actions (will be implemented when API is ready)
   fetchTodos: () => Promise<void>;
@@ -186,7 +187,7 @@ export const useTodoStore = create<TodoStore>()(
                 createdAt: new Date('2024-01-08'),
                 updatedAt: new Date('2024-01-12'),
                 userId: MOCK_USER_ID,
-                blockchainNetwork: 'solana',
+                blockchainNetwork: BlockchainNetwork.SOLANA,
                 transactionHash: 'solana-1234567890abcdef',
                 blockchainAddress: 'solana-2',
               },

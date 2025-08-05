@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import type { Todo } from './TodoItem';
+import { getNetworkColor } from '@todo/services';
 
 interface BlockchainStatsProps {
   todos: Todo[];
@@ -34,13 +35,17 @@ export function BlockchainStats({ todos }: BlockchainStatsProps) {
     };
   }, [todos]);
 
-  const getNetworkColor = (network: string) => {
-    const colors = {
-      solana: 'bg-purple-100 text-purple-800',
-      polkadot: 'bg-pink-100 text-pink-800',
-      polygon: 'bg-indigo-100 text-indigo-800',
+  const getNetworkColorClasses = (network: string) => {
+    const baseColor = getNetworkColor(network);
+    // Convert hex color to Tailwind classes - this is a simplified mapping
+    const colorMap: Record<string, string> = {
+      '#9333ea': 'bg-purple-100 text-purple-800',
+      '#ec4899': 'bg-pink-100 text-pink-800',
+      '#6366f1': 'bg-indigo-100 text-indigo-800',
+      '#14b8a6': 'bg-teal-100 text-teal-800',
+      '#3b82f6': 'bg-blue-100 text-blue-800',
     };
-    return colors[network as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+    return colorMap[baseColor] || 'bg-gray-100 text-gray-800';
   };
 
   if (stats.total === 0) {
@@ -77,7 +82,7 @@ export function BlockchainStats({ todos }: BlockchainStatsProps) {
             {Object.entries(stats.networkBreakdown).map(([network, count]) => (
               <span
                 key={network}
-                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getNetworkColor(network)}`}
+                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getNetworkColorClasses(network)}`}
               >
                 {network}: {count}
               </span>

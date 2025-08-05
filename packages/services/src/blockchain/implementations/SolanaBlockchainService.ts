@@ -14,8 +14,10 @@ import { BlockchainError } from '../utils/BlockchainError';
  * Solana blockchain service implementation
  */
 export class SolanaBlockchainService extends BaseBlockchainService {
+  // @ts-ignore - Used in real implementation
   private connection: any; // Solana Connection
   private wallet: any; // Solana Wallet
+  // @ts-ignore - Used in real implementation
   private program: any; // Anchor Program
 
   constructor() {
@@ -40,6 +42,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
   }): Promise<WalletInfo> {
     try {
       // Initialize Solana connection
+      // @ts-ignore - Used in real implementation
       const rpcUrl = options?.rpcUrl || 'https://api.mainnet-beta.solana.com';
       
       // This would typically use @solana/web3.js and wallet adapters
@@ -146,7 +149,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    * Get a specific todo by ID from Solana program
    * @param id - Todo account public key
    */
-  async getTodoById(id: string): Promise<BlockchainTodo | null> {
+  async getTodoById(_id: string): Promise<BlockchainTodo | null> {
     this.ensureWalletConnected();
     
     try {
@@ -166,7 +169,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    * Create a new todo on Solana
    * @param todo - Todo data to create
    */
-  async createTodo(todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
+  async createTodo(_todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
     
     try {
@@ -178,6 +181,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
+        from: this.walletInfo?.address || 'mock_address',
         blockNumber: 123456,
         gasUsed: '5000',
         network: this.network,
@@ -197,7 +201,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    * @param id - Todo account public key
    * @param todo - Updated todo data
    */
-  async updateTodo(id: string, todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
+  async updateTodo(_id: string, _todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
     
     try {
@@ -208,6 +212,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
+        from: this.walletInfo?.address || 'mock_address',
         blockNumber: 123457,
         gasUsed: '3000',
         network: this.network,
@@ -226,7 +231,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    * Delete a todo from Solana
    * @param id - Todo account public key
    */
-  async deleteTodo(id: string): Promise<TransactionReceipt> {
+  async deleteTodo(_id: string): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
     
     try {
@@ -237,6 +242,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
+        from: this.walletInfo?.address || 'mock_address',
         blockNumber: 123458,
         gasUsed: '2000',
         network: this.network,
@@ -283,6 +289,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
         return {
           transactionHash: txHash,
           status: TransactionStatus.CONFIRMED,
+          from: this.walletInfo?.address || 'mock_address',
           blockNumber: 123456,
           gasUsed: '5000',
           network: this.network,

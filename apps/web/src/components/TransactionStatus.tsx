@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { createBlockchainService } from '@/services/blockchainService';
+import { BlockchainNetwork } from '@todo/services';
 
 interface TransactionStatusProps {
   transactionHash: string;
-  network: 'solana' | 'polkadot' | 'polygon';
+  network: BlockchainNetwork;
   onStatusChange?: (status: 'pending' | 'confirmed' | 'failed') => void;
 }
 

@@ -131,7 +131,7 @@ export class AuthApiClient extends BaseApiClient {
   /**
    * Refresh the authentication token
    */
-  async refreshToken(): Promise<ApiResponse<AuthResponse>> {
+  async refreshUserToken(): Promise<ApiResponse<AuthResponse>> {
     try {
       const refreshToken = this.getRefreshToken();
       if (!refreshToken) {

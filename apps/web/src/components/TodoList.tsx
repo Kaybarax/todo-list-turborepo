@@ -3,13 +3,14 @@
 import { useState, useMemo } from 'react';
 import { Input } from '@todo/ui-web';
 import { TodoItem, type Todo } from './TodoItem';
+import { BlockchainNetwork } from '@todo/services';
 
 interface TodoListProps {
   todos: Todo[];
   onToggle: (id: string) => void;
   onEdit: (todo: Todo) => void;
   onDelete: (id: string) => void;
-  onBlockchainSync?: (id: string, network: 'solana' | 'polkadot' | 'polygon') => void;
+  onBlockchainSync?: (id: string, network: BlockchainNetwork) => void;
 }
 
 type FilterType = 'all' | 'active' | 'completed';

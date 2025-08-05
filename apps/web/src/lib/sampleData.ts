@@ -1,4 +1,5 @@
 import type { Todo } from '@/components/TodoItem';
+import { BlockchainNetwork } from '@todo/services';
 
 export const sampleTodos: Todo[] = [
   {
@@ -23,7 +24,7 @@ export const sampleTodos: Todo[] = [
     createdAt: new Date('2024-01-08'),
     updatedAt: new Date('2024-01-12'),
     userId: 'user-1',
-    blockchainNetwork: 'solana',
+    blockchainNetwork: BlockchainNetwork.SOLANA,
     transactionHash: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
     blockchainAddress: 'solana-address-2',
   },
@@ -49,7 +50,7 @@ export const sampleTodos: Todo[] = [
     createdAt: new Date('2024-01-11'),
     updatedAt: new Date('2024-01-11'),
     userId: 'user-1',
-    blockchainNetwork: 'polygon',
+    blockchainNetwork: BlockchainNetwork.POLYGON,
     transactionHash: '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
     blockchainAddress: 'polygon-address-4',
   },
