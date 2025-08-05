@@ -88,7 +88,7 @@
   - Test mobile wallet connectivity with new networks
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 14. Update build scripts for new networks
+- [x] 14. Update build scripts for new networks
   - Extend build-contracts.sh to include Moonbeam and Base compilation
   - Update contract validation logic for new networks
   - Add network-specific build commands to package.json scripts

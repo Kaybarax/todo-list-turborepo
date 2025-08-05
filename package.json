@@ -46,6 +46,8 @@
     "contracts:polygon": "./scripts/build-contracts.sh --network polygon",
     "contracts:solana": "./scripts/build-contracts.sh --network solana",
     "contracts:polkadot": "./scripts/build-contracts.sh --network polkadot",
+    "contracts:moonbeam": "./scripts/build-contracts.sh --network moonbeam",
+    "contracts:base": "./scripts/build-contracts.sh --network base",
     "db:setup": "node db/setup.js",
     "db:migrate": "node db/migrate.js up",
     "db:seed": "node db/seed-todos.js",

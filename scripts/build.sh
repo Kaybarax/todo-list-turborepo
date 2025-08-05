@@ -157,6 +157,22 @@ build_contracts() {
         cd ../../..
     fi
     
+    # Compile Moonbeam contracts
+    if [ -d "apps/smart-contracts/moonbeam" ]; then
+        print_status "Compiling Moonbeam contracts..."
+        cd apps/smart-contracts/moonbeam
+        pnpm compile
+        cd ../../..
+    fi
+    
+    # Compile Base contracts
+    if [ -d "apps/smart-contracts/base" ]; then
+        print_status "Compiling Base contracts..."
+        cd apps/smart-contracts/base
+        pnpm compile
+        cd ../../..
+    fi
+    
     print_success "Blockchain contracts compiled successfully"
 }
 
@@ -343,7 +359,9 @@ EOF
   "contracts": {
     "polygon": $([ -d "apps/smart-contracts/polygon" ] && echo "true" || echo "false"),
     "solana": $([ -d "apps/smart-contracts/solana" ] && echo "true" || echo "false"),
-    "polkadot": $([ -d "apps/smart-contracts/polkadot" ] && echo "true" || echo "false")
+    "polkadot": $([ -d "apps/smart-contracts/polkadot" ] && echo "true" || echo "false"),
+    "moonbeam": $([ -d "apps/smart-contracts/moonbeam" ] && echo "true" || echo "false"),
+    "base": $([ -d "apps/smart-contracts/base" ] && echo "true" || echo "false")
   }
 }
 EOF

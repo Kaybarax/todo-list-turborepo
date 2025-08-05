@@ -195,8 +195,62 @@ build_moonbeam() {
         pnpm test
     fi
     
+    # Generate documentation if requested
+    if [ "$GENERATE_DOCS" = "true" ]; then
+        print_status "Generating Moonbeam contract documentation..."
+        pnpm docgen || print_warning "Documentation generation failed"
+    fi
+    
+    # Verify contracts if requested
+    if [ "$VERIFY_CONTRACTS" = "true" ] && [ -n "$MOONBEAM_API_KEY" ]; then
+        print_status "Verifying Moonbeam contracts..."
+        pnpm verify || print_warning "Contract verification failed"
+    fi
+    
     cd ../../..
     print_success "Moonbeam contracts built successfully"
+}
+
+# Function to build Base contracts
+build_base() {
+    if [ ! -d "apps/smart-contracts/base" ]; then
+        print_warning "Base contracts directory not found, skipping..."
+        return
+    fi
+    
+    print_status "Building Base contracts..."
+    cd apps/smart-contracts/base
+    
+    # Install dependencies if needed
+    if [ ! -d "node_modules" ]; then
+        print_status "Installing Base contract dependencies..."
+        pnpm install
+    fi
+    
+    # Compile Solidity contracts
+    print_status "Compiling Base Solidity contracts..."
+    pnpm compile
+    
+    # Run tests if not skipped
+    if [ "$RUN_TESTS" = "true" ]; then
+        print_status "Running Base contract tests..."
+        pnpm test
+    fi
+    
+    # Generate documentation if requested
+    if [ "$GENERATE_DOCS" = "true" ]; then
+        print_status "Generating Base contract documentation..."
+        pnpm docgen || print_warning "Documentation generation failed"
+    fi
+    
+    # Verify contracts if requested
+    if [ "$VERIFY_CONTRACTS" = "true" ] && [ -n "$BASESCAN_API_KEY" ]; then
+        print_status "Verifying Base contracts..."
+        pnpm verify || print_warning "Contract verification failed"
+    fi
+    
+    cd ../../..
+    print_success "Base contracts built successfully"
 }
 
 # Function to generate contract artifacts
@@ -231,6 +285,12 @@ generate_artifacts() {
     if [ -d "apps/smart-contracts/moonbeam/artifacts" ]; then
         cp -r apps/smart-contracts/moonbeam/artifacts build/contracts/moonbeam
         print_status "Moonbeam artifacts copied"
+    fi
+    
+    # Copy Base artifacts
+    if [ -d "apps/smart-contracts/base/artifacts" ]; then
+        cp -r apps/smart-contracts/base/artifacts build/contracts/base
+        print_status "Base artifacts copied"
     fi
     
     print_success "Contract artifacts generated in build/contracts/"
@@ -274,6 +334,14 @@ validate_builds() {
         fi
     fi
     
+    # Validate Base contracts
+    if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "base" ]; then
+        if [ ! -f "apps/smart-contracts/base/artifacts/contracts/TodoList.sol/TodoList.json" ]; then
+            print_error "Base TodoList contract not found"
+            validation_failed=true
+        fi
+    fi
+    
     if [ "$validation_failed" = "true" ]; then
         print_error "Contract build validation failed"
         exit 1
@@ -310,6 +378,9 @@ show_build_summary() {
     if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "moonbeam" ]; then
         echo "  Moonbeam: cd apps/smart-contracts/moonbeam && pnpm deploy:local"
     fi
+    if [ "$NETWORK" = "all" ] || [ "$NETWORK" = "base" ]; then
+        echo "  Base: cd apps/smart-contracts/base && pnpm deploy:local"
+    fi
 }
 
 # Function to show help
@@ -319,7 +390,7 @@ show_help() {
     echo "Build blockchain contracts for Todo App"
     echo ""
     echo "Options:"
-    echo "  --network NETWORK     Build specific network (polygon, solana, polkadot, all)"
+    echo "  --network NETWORK     Build specific network (polygon, solana, polkadot, moonbeam, base, all)"
     echo "  --skip-tests          Skip running contract tests"
     echo "  --generate-docs       Generate contract documentation"
     echo "  --verify              Verify contracts on block explorers"
@@ -330,11 +401,15 @@ show_help() {
     echo "  RUN_TESTS            Run tests (default: true)"
     echo "  GENERATE_DOCS        Generate documentation (default: false)"
     echo "  VERIFY_CONTRACTS     Verify contracts (default: false)"
-    echo "  ETHERSCAN_API_KEY    API key for contract verification"
+    echo "  ETHERSCAN_API_KEY    API key for Polygon contract verification
+  MOONBEAM_API_KEY     API key for Moonbeam contract verification
+  BASESCAN_API_KEY     API key for Base contract verification"
     echo ""
     echo "Examples:"
     echo "  $0                           # Build all contracts"
-    echo "  $0 --network polygon         # Build only Polygon contracts"
+    echo "  $0 --network polygon         # Build only Polygon contracts
+  $0 --network moonbeam        # Build only Moonbeam contracts
+  $0 --network base            # Build only Base contracts"
     echo "  $0 --skip-tests --verify     # Build without tests but verify"
 }
 
@@ -355,11 +430,15 @@ main_build() {
         moonbeam)
             build_moonbeam
             ;;
+        base)
+            build_base
+            ;;
         all)
             build_polygon
             build_solana
             build_polkadot
             build_moonbeam
+            build_base
             ;;
         *)
             print_error "Unknown network: $NETWORK"

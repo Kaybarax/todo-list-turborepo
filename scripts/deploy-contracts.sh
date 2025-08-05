@@ -83,6 +83,32 @@ validate_environment() {
                     ;;
             esac
             ;;
+        moonbeam)
+            case $ENVIRONMENT in
+                development)
+                    required_vars=("MOONBEAM_LOCAL_RPC_URL")
+                    ;;
+                staging)
+                    required_vars=("MOONBEAM_TESTNET_RPC_URL" "MOONBEAM_PRIVATE_KEY")
+                    ;;
+                production)
+                    required_vars=("MOONBEAM_MAINNET_RPC_URL" "MOONBEAM_PRIVATE_KEY" "MOONBEAM_API_KEY")
+                    ;;
+            esac
+            ;;
+        base)
+            case $ENVIRONMENT in
+                development)
+                    required_vars=("BASE_LOCAL_RPC_URL")
+                    ;;
+                staging)
+                    required_vars=("BASE_TESTNET_RPC_URL" "BASE_PRIVATE_KEY")
+                    ;;
+                production)
+                    required_vars=("BASE_MAINNET_RPC_URL" "BASE_PRIVATE_KEY" "BASESCAN_API_KEY")
+                    ;;
+            esac
+            ;;
     esac
     
     for var in "${required_vars[@]}"; do
@@ -328,6 +354,156 @@ deploy_polkadot() {
     print_success "Polkadot pallets deployment completed"
 }
 
+# Function to deploy Moonbeam contracts
+deploy_moonbeam() {
+    print_status "Deploying Moonbeam contracts..."
+    
+    if ! validate_environment "moonbeam"; then
+        return 1
+    fi
+    
+    cd apps/smart-contracts/moonbeam
+    
+    # Install dependencies if needed
+    if [ ! -d "node_modules" ]; then
+        pnpm install
+    fi
+    
+    # Compile contracts
+    print_status "Compiling Moonbeam contracts..."
+    pnpm compile
+    
+    case $ENVIRONMENT in
+        development)
+            print_status "Deploying to local Hardhat network..."
+            if [ "$DRY_RUN" = "true" ]; then
+                print_status "DRY RUN: Would deploy to localhost:8545"
+            else
+                pnpm deploy:local
+            fi
+            ;;
+        staging)
+            print_status "Deploying to Moonbase Alpha testnet..."
+            if [ "$DRY_RUN" = "true" ]; then
+                print_status "DRY RUN: Would deploy to Moonbase Alpha testnet"
+            else
+                pnpm deploy:testnet
+                
+                if [ "$VERIFY_CONTRACTS" = "true" ]; then
+                    print_status "Verifying contracts on Moonbase Alpha..."
+                    pnpm verify:testnet || print_warning "Contract verification failed"
+                fi
+            fi
+            ;;
+        production)
+            print_status "Deploying to Moonbeam mainnet..."
+            print_warning "Production deployment requires manual confirmation"
+            
+            if [ "$DRY_RUN" = "true" ]; then
+                print_status "DRY RUN: Would deploy to Moonbeam mainnet"
+            else
+                read -p "Are you sure you want to deploy to Moonbeam mainnet? (yes/no): " confirm
+                if [ "$confirm" = "yes" ]; then
+                    pnpm deploy:mainnet
+                    
+                    if [ "$VERIFY_CONTRACTS" = "true" ]; then
+                        print_status "Verifying contracts on Moonscan..."
+                        pnpm verify:mainnet || print_warning "Contract verification failed"
+                    fi
+                else
+                    print_warning "Moonbeam mainnet deployment cancelled"
+                fi
+            fi
+            ;;
+    esac
+    
+    # Save deployment artifacts
+    if [ -d "deployments" ]; then
+        deployment_dir="../../../build/contracts/moonbeam/$ENVIRONMENT"
+        mkdir -p "$deployment_dir"
+        cp -r deployments/* "$deployment_dir/"
+        print_success "Moonbeam deployment artifacts saved to $deployment_dir"
+    fi
+    
+    cd ../../..
+    print_success "Moonbeam contracts deployment completed"
+}
+
+# Function to deploy Base contracts
+deploy_base() {
+    print_status "Deploying Base contracts..."
+    
+    if ! validate_environment "base"; then
+        return 1
+    fi
+    
+    cd apps/smart-contracts/base
+    
+    # Install dependencies if needed
+    if [ ! -d "node_modules" ]; then
+        pnpm install
+    fi
+    
+    # Compile contracts
+    print_status "Compiling Base contracts..."
+    pnpm compile
+    
+    case $ENVIRONMENT in
+        development)
+            print_status "Deploying to local Hardhat network..."
+            if [ "$DRY_RUN" = "true" ]; then
+                print_status "DRY RUN: Would deploy to localhost:8545"
+            else
+                pnpm deploy:local
+            fi
+            ;;
+        staging)
+            print_status "Deploying to Base Sepolia testnet..."
+            if [ "$DRY_RUN" = "true" ]; then
+                print_status "DRY RUN: Would deploy to Base Sepolia testnet"
+            else
+                pnpm deploy:testnet
+                
+                if [ "$VERIFY_CONTRACTS" = "true" ]; then
+                    print_status "Verifying contracts on Base Sepolia..."
+                    pnpm verify:testnet || print_warning "Contract verification failed"
+                fi
+            fi
+            ;;
+        production)
+            print_status "Deploying to Base mainnet..."
+            print_warning "Production deployment requires manual confirmation"
+            
+            if [ "$DRY_RUN" = "true" ]; then
+                print_status "DRY RUN: Would deploy to Base mainnet"
+            else
+                read -p "Are you sure you want to deploy to Base mainnet? (yes/no): " confirm
+                if [ "$confirm" = "yes" ]; then
+                    pnpm deploy:mainnet
+                    
+                    if [ "$VERIFY_CONTRACTS" = "true" ]; then
+                        print_status "Verifying contracts on Basescan..."
+                        pnpm verify:mainnet || print_warning "Contract verification failed"
+                    fi
+                else
+                    print_warning "Base mainnet deployment cancelled"
+                fi
+            fi
+            ;;
+    esac
+    
+    # Save deployment artifacts
+    if [ -d "deployments" ]; then
+        deployment_dir="../../../build/contracts/base/$ENVIRONMENT"
+        mkdir -p "$deployment_dir"
+        cp -r deployments/* "$deployment_dir/"
+        print_success "Base deployment artifacts saved to $deployment_dir"
+    fi
+    
+    cd ../../..
+    print_success "Base contracts deployment completed"
+}
+
 # Function to update application configurations
 update_app_configs() {
     print_status "Updating application configurations with contract addresses..."
@@ -367,6 +543,28 @@ EOF
         fi
     fi
     
+    # Add Moonbeam addresses
+    if [ -f "build/contracts/moonbeam/$ENVIRONMENT/TodoList.json" ]; then
+        moonbeam_address=$(jq -r '.address' "build/contracts/moonbeam/$ENVIRONMENT/TodoList.json")
+        cat >> "$config_file" << EOF
+    "moonbeam": {
+      "todoList": "$moonbeam_address",
+      "network": "$([ "$ENVIRONMENT" = "production" ] && echo "moonbeam" || echo "moonbase-alpha")"
+    },
+EOF
+    fi
+    
+    # Add Base addresses
+    if [ -f "build/contracts/base/$ENVIRONMENT/TodoList.json" ]; then
+        base_address=$(jq -r '.address' "build/contracts/base/$ENVIRONMENT/TodoList.json")
+        cat >> "$config_file" << EOF
+    "base": {
+      "todoList": "$base_address",
+      "network": "$([ "$ENVIRONMENT" = "production" ] && echo "base" || echo "base-sepolia")"
+    },
+EOF
+    fi
+    
     # Add Polkadot configuration
     cat >> "$config_file" << EOF
     "polkadot": {
@@ -391,6 +589,14 @@ EOF
         if [ -n "$solana_program_id" ]; then
             echo "SOLANA_TODO_PROGRAM_ID=$solana_program_id" >> ".env.$ENVIRONMENT"
         fi
+        
+        if [ -n "$moonbeam_address" ]; then
+            echo "MOONBEAM_TODO_CONTRACT_ADDRESS=$moonbeam_address" >> ".env.$ENVIRONMENT"
+        fi
+        
+        if [ -n "$base_address" ]; then
+            echo "BASE_TODO_CONTRACT_ADDRESS=$base_address" >> ".env.$ENVIRONMENT"
+        fi
     fi
 }
 
@@ -413,6 +619,26 @@ run_deployment_tests() {
             if [ -d "apps/smart-contracts/solana" ]; then
                 cd apps/smart-contracts/solana
                 anchor test --skip-local-validator || print_warning "Solana deployment tests failed"
+                cd ../../..
+            fi
+            ;;
+    esac
+    
+    case $NETWORK in
+        moonbeam|all)
+            if [ -d "apps/smart-contracts/moonbeam" ]; then
+                cd apps/smart-contracts/moonbeam
+                pnpm test:deployment || print_warning "Moonbeam deployment tests failed"
+                cd ../../..
+            fi
+            ;;
+    esac
+    
+    case $NETWORK in
+        base|all)
+            if [ -d "apps/smart-contracts/base" ]; then
+                cd apps/smart-contracts/base
+                pnpm test:deployment || print_warning "Base deployment tests failed"
                 cd ../../..
             fi
             ;;
@@ -492,7 +718,7 @@ show_help() {
     echo ""
     echo "Options:"
     echo "  --environment ENV     Deployment environment (development, staging, production)"
-    echo "  --network NETWORK     Target network (polygon, solana, polkadot, all)"
+    echo "  --network NETWORK     Target network (polygon, solana, polkadot, moonbeam, base, all)"
     echo "  --verify              Verify contracts on block explorers"
     echo "  --dry-run             Show what would be deployed without actually deploying"
     echo "  --help                Show this help message"
@@ -530,10 +756,18 @@ main_deploy() {
         polkadot)
             deploy_polkadot
             ;;
+        moonbeam)
+            deploy_moonbeam
+            ;;
+        base)
+            deploy_base
+            ;;
         all)
             deploy_polygon || print_warning "Polygon deployment failed"
             deploy_solana || print_warning "Solana deployment failed"
             deploy_polkadot || print_warning "Polkadot deployment failed"
+            deploy_moonbeam || print_warning "Moonbeam deployment failed"
+            deploy_base || print_warning "Base deployment failed"
             ;;
         *)
             print_error "Unknown network: $NETWORK"

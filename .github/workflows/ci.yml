@@ -129,6 +129,9 @@ jobs:
     name: Smart Contract Tests
     runs-on: ubuntu-latest
     if: hashFiles('apps/smart-contracts/package.json') != ''
+    strategy:
+      matrix:
+        network: [polygon, moonbeam, base, solana, polkadot]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -142,14 +145,47 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Setup Rust (for Solana and Polkadot)
+        if: matrix.network == 'solana' || matrix.network == 'polkadot'
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Install Solana CLI
+        if: matrix.network == 'solana'
+        run: |
+          sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+
+      - name: Install Anchor CLI
+        if: matrix.network == 'solana'
+        run: cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+
+      - name: Start local Hardhat node (for EVM networks)
+        if: matrix.network == 'polygon' || matrix.network == 'moonbeam' || matrix.network == 'base'
+        run: |
+          cd apps/smart-contracts/${{ matrix.network }}
+          npx hardhat node --port 8545 &
+          sleep 10
+
       - name: Start local Moonbeam node
+        if: matrix.network == 'moonbeam'
         run: docker run -d --name moonbeam-node -p 9944:9944 -p 9933:9933 purestake/moonbeam:v0.28.0 --dev --ws-external --rpc-external
 
-      - name: Run contract tests
-        run: npm test
-        working-directory: apps/smart-contracts
+      - name: Start Solana test validator
+        if: matrix.network == 'solana'
+        run: |
+          solana-test-validator --reset &
+          sleep 10
+
+      - name: Run contract tests for ${{ matrix.network }}
+        run: npm run contracts:${{ matrix.network }}
         env:
           MOONBEAM_RPC_URL: http://localhost:9933
+          POLYGON_RPC_URL: http://localhost:8545
+          BASE_RPC_URL: http://localhost:8545
+          SOLANA_RPC_URL: http://localhost:8899
 
   build:
     name: Build
