@@ -1,923 +1,518 @@
 # Troubleshooting Guide
 
-This guide provides solutions to common issues you might encounter while developing, testing, or deploying the Todo App monorepo.
+This guide covers common issues and solutions for the Todo List monorepo, including network-specific blockchain issues.
 
-## 🚨 Common Issues
+## 🔧 General Issues
 
-### Development Environment Issues
+### Build Issues
 
-#### Node.js Version Mismatch
-
-**Problem**: Build or runtime errors due to Node.js version incompatibility.
-
-**Symptoms**:
+#### pnpm Installation Fails
 ```bash
-Error: The engine "node" is incompatible with this module
+# Error: Cannot resolve workspace protocol
+# Solution: Ensure you're using pnpm 9+
+npm install -g pnpm@latest
+pnpm --version  # Should be 9.0.0+
 ```
 
-**Solution**:
+#### Turbo Build Failures
 ```bash
-# Check current Node.js version
-node --version
-
-# Install correct version (see .nvmrc)
-nvm install
-nvm use
-
-# Or using n
-n $(cat .nvmrc)
-
-# Verify version
-node --version  # Should match .nvmrc
+# Error: Turbo command not found
+# Solution: Install turbo globally or use npx
+npm install -g turbo
+# OR
+npx turbo build
 ```
 
-#### pnpm Installation Issues
-
-**Problem**: Package installation fails or dependencies are missing.
-
-**Symptoms**:
+#### TypeScript Compilation Errors
 ```bash
-ERR_PNPM_PEER_DEP_ISSUES
-Module not found errors
+# Error: Cannot find module '@todo/services'
+# Solution: Build packages first
+pnpm build:packages
+pnpm typecheck
 ```
 
-**Solution**:
+### Development Server Issues
+
+#### Port Already in Use
 ```bash
-# Clear pnpm cache
-pnpm store prune
-
-# Remove node_modules and lock file
-rm -rf node_modules pnpm-lock.yaml
-
-# Reinstall dependencies
-pnpm install
-
-# If still failing, try legacy peer deps
-pnpm install --legacy-peer-deps
+# Error: EADDRINUSE: address already in use :::3000
+# Solution: Kill process or use different port
+lsof -ti:3000 | xargs kill -9
+# OR
+PORT=3001 pnpm dev:web
 ```
 
-#### Turborepo Cache Issues
-
-**Problem**: Stale cache causing build inconsistencies.
-
-**Symptoms**:
+#### Database Connection Issues
 ```bash
-Build outputs don't reflect recent changes
-Inconsistent build results
-```
-
-**Solution**:
-```bash
-# Clear Turborepo cache
-pnpm turbo clean
-
-# Or clear specific app cache
-pnpm turbo clean --filter=@todo/web
-
-# Force rebuild without cache
-pnpm build --force
-```
-
-### Database Issues
-
-#### MongoDB Connection Failed
-
-**Problem**: Cannot connect to MongoDB database.
-
-**Symptoms**:
-```bash
-MongoNetworkError: failed to connect to server
-MongooseServerSelectionError
-```
-
-**Solution**:
-```bash
-# Check if MongoDB is running
-brew services list | grep mongodb
-# or
-systemctl status mongod
-
-# Start MongoDB service
-brew services start mongodb-community
-# or
-sudo systemctl start mongod
-
-# Check connection string
-echo $DATABASE_URL
-
-# Test connection manually
-mongosh "mongodb://localhost:27017/todoapp"
-
-# For Docker setup
+# Error: MongoNetworkError: failed to connect to server
+# Solution: Ensure MongoDB is running
 docker-compose up -d mongodb
-docker-compose logs mongodb
-```
-
-#### MongoDB Authentication Issues
-
-**Problem**: Authentication failed when connecting to MongoDB.
-
-**Symptoms**:
-```bash
-MongoServerError: Authentication failed
-```
-
-**Solution**:
-```bash
-# Check credentials in environment
-echo $DATABASE_USER
-echo $DATABASE_PASSWORD
-
-# Connect with admin credentials
-mongosh "mongodb://admin:password@localhost:27017/todoapp?authSource=admin"
-
-# Reset MongoDB authentication (development only)
-docker-compose down mongodb
-docker volume rm todo-list-turborepo_mongodb_data
-docker-compose up -d mongodb
+# OR
+pnpm db:setup
 ```
 
 #### Redis Connection Issues
-
-**Problem**: Cannot connect to Redis server.
-
-**Symptoms**:
 ```bash
-Error: Redis connection to localhost:6379 failed
-ECONNREFUSED
-```
-
-**Solution**:
-```bash
-# Check if Redis is running
-brew services list | grep redis
-# or
-systemctl status redis
-
-# Start Redis service
-brew services start redis
-# or
-sudo systemctl start redis
-
-# Test Redis connection
-redis-cli ping
-# Should return: PONG
-
-# For Docker setup
+# Error: Redis connection failed
+# Solution: Start Redis server
 docker-compose up -d redis
-docker-compose logs redis
-
-# Check Redis configuration
-redis-cli config get "*"
+# OR
+redis-server
 ```
 
-### Application Issues
+## ⛓️ Blockchain Network Issues
 
-#### API Server Won't Start
+### Polygon Network
 
-**Problem**: NestJS API server fails to start.
-
-**Symptoms**:
+#### RPC Connection Issues
 ```bash
-Error: Cannot find module
-TypeError: Cannot read property of undefined
-Port already in use
-```
-
-**Solution**:
-```bash
-# Check for missing environment variables
-cat apps/api/.env
-
-# Kill process using port 3001
-lsof -ti:3001 | xargs kill -9
-
-# Check for TypeScript compilation errors
-cd apps/api
-pnpm typecheck
-
-# Start with debug logging
-DEBUG=* pnpm dev:api
-
-# Check dependencies
-pnpm install --filter @todo/api
-```
-
-#### Web App Build Failures
-
-**Problem**: Next.js build fails with various errors.
-
-**Symptoms**:
-```bash
-Module not found
-Type errors
-Build optimization failed
-```
-
-**Solution**:
-```bash
-# Clear Next.js cache
-cd apps/web
-rm -rf .next
-
-# Check TypeScript errors
-pnpm typecheck
-
-# Check for missing dependencies
-pnpm install --filter @todo/web
-
-# Build with verbose output
-pnpm build --debug
-
-# Check environment variables
-cat apps/web/.env.local
-```
-
-#### Mobile App Issues
-
-**Problem**: Expo/React Native app won't start or build.
-
-**Symptoms**:
-```bash
-Metro bundler errors
-Native module linking issues
-Simulator/device connection problems
-```
-
-**Solution**:
-```bash
-# Clear Metro cache
-cd apps/mobile
-npx expo start --clear
-
-# Reset Expo cache
-npx expo install --fix
-
-# Check Expo CLI version
-npx expo --version
-
-# For iOS simulator issues
-npx expo run:ios --device
-
-# For Android emulator issues
-npx expo run:android --device
-
-# Check native dependencies
-npx expo doctor
-```
-
-### Blockchain Issues
-
-#### Wallet Connection Failed
-
-**Problem**: WalletConnect or wallet integration not working.
-
-**Symptoms**:
-```bash
-Wallet connection timeout
-Invalid project ID
-Network mismatch errors
-```
-
-**Solution**:
-```bash
-# Check WalletConnect project ID
-echo $NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
-
-# Verify project ID at walletconnect.com
-# Check network configuration
-echo $NEXT_PUBLIC_POLYGON_RPC_URL
-echo $NEXT_PUBLIC_SOLANA_RPC_URL
-
-# Test RPC endpoints
+# Error: Could not connect to Polygon RPC
+# Solution: Check RPC URL and network status
 curl -X POST -H "Content-Type: application/json" \
-  --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  $NEXT_PUBLIC_POLYGON_RPC_URL
+  --data '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
+  https://polygon-rpc.com
 
-# Clear wallet cache in browser
-# Disconnect and reconnect wallet
+# Alternative RPC URLs:
+# - https://rpc-mainnet.maticvigil.com
+# - https://polygon-mainnet.infura.io/v3/YOUR-PROJECT-ID
+# - https://polygon-rpc.com
 ```
 
-#### Smart Contract Deployment Failed
-
-**Problem**: Contract deployment to blockchain networks fails.
-
-**Symptoms**:
+#### Gas Estimation Failures
 ```bash
-Insufficient funds for gas
-Network connection timeout
-Contract compilation errors
+# Error: Gas estimation failed
+# Solution: Adjust gas settings in hardhat.config.js
+networks: {
+  polygon: {
+    gasPrice: 30000000000, // 30 gwei
+    gas: 5000000
+  }
+}
 ```
 
-**Solution**:
+#### Contract Verification Issues
 ```bash
-# Check account balance
-# For Polygon
-cast balance $WALLET_ADDRESS --rpc-url $POLYGON_RPC_URL
+# Error: Contract verification failed on Polygonscan
+# Solution: Ensure correct constructor arguments
+pnpm hardhat verify --network polygon CONTRACT_ADDRESS "arg1" "arg2"
 
-# Check gas prices
-cast gas-price --rpc-url $POLYGON_RPC_URL
-
-# Verify private key format
-echo $POLYGON_PRIVATE_KEY | wc -c  # Should be 66 chars
-
-# Test network connection
-curl -X POST -H "Content-Type: application/json" \
-  --data '{"jsonrpc":"2.0","method":"net_version","params":[],"id":1}' \
-  $POLYGON_RPC_URL
-
-# Compile contracts
-cd apps/smart-contracts/polygon
-pnpm compile
-
-# Deploy with verbose logging
-pnpm deploy --network polygon --verbose
+# Check if contract is already verified
+# Visit: https://polygonscan.com/address/CONTRACT_ADDRESS
 ```
 
-#### Transaction Stuck or Failed
+### Solana Network
 
-**Problem**: Blockchain transactions not confirming or failing.
-
-**Symptoms**:
+#### Anchor Build Failures
 ```bash
-Transaction pending for long time
-Transaction reverted
-Nonce too low/high errors
+# Error: Anchor not found
+# Solution: Install Anchor CLI
+cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+avm install latest
+avm use latest
 ```
 
-**Solution**:
+#### Program Deployment Issues
 ```bash
-# Check transaction status
-cast tx $TX_HASH --rpc-url $POLYGON_RPC_URL
+# Error: Insufficient funds for deployment
+# Solution: Ensure wallet has enough SOL
+solana balance
+solana airdrop 2  # For devnet only
 
-# Check account nonce
-cast nonce $WALLET_ADDRESS --rpc-url $POLYGON_RPC_URL
-
-# Speed up transaction (increase gas price)
-# Cancel transaction (send 0 ETH to self with same nonce)
-
-# For Solana
-solana transaction $TX_SIGNATURE
-
-# Check Solana account
-solana account $WALLET_ADDRESS
+# Error: Program deployment failed
+# Solution: Check program size and account limits
+anchor build
+ls -la target/deploy/  # Check program size
 ```
 
-### Testing Issues
-
-#### Tests Failing Unexpectedly
-
-**Problem**: Tests that previously passed are now failing.
-
-**Symptoms**:
+#### RPC Connection Issues
 ```bash
-Timeout errors
-Database connection issues in tests
-Mock function errors
+# Error: Connection refused to Solana RPC
+# Solution: Check RPC endpoint and network status
+solana config get
+solana cluster-version
+
+# Alternative RPC URLs:
+# Mainnet: https://api.mainnet-beta.solana.com
+# Devnet: https://api.devnet.solana.com
+# Testnet: https://api.testnet.solana.com
 ```
 
-**Solution**:
+### Polkadot Network
+
+#### Substrate Node Issues
 ```bash
-# Clear test cache
-pnpm test --clearCache
+# Error: Failed to start Polkadot node
+# Solution: Check Rust installation and build
+rustup update
+cargo build --release
 
-# Run tests with verbose output
-pnpm test --verbose
-
-# Run specific test file
-pnpm test todo.service.spec.ts
-
-# Check test database connection
-# Ensure test database is separate from development
-
-# Reset test database
-pnpm db:reset --env=test
-
-# Check for async/await issues
-# Ensure all promises are properly awaited
+# Error: WebSocket connection failed
+# Solution: Check node is running and ports are open
+./target/release/node-template --dev --ws-external
 ```
 
-#### E2E Tests Failing
-
-**Problem**: End-to-end tests failing in CI or locally.
-
-**Symptoms**:
+#### Runtime Compilation Issues
 ```bash
-Browser launch failures
-Element not found errors
-Timeout waiting for elements
+# Error: Runtime compilation failed
+# Solution: Update Rust and dependencies
+rustup update
+cargo update
+cargo build --release
 ```
 
-**Solution**:
+### Moonbeam Network
+
+#### EVM Compatibility Issues
 ```bash
-# Install browser dependencies
-npx playwright install
-
-# Run tests in headed mode for debugging
-pnpm test:e2e --headed
-
-# Check test environment
-echo $CI
-echo $HEADLESS
-
-# Update browser snapshots
-pnpm test:e2e --update-snapshots
-
-# Run tests with debug output
-DEBUG=pw:api pnpm test:e2e
-
-# Check for race conditions
-# Add proper wait conditions
+# Error: Transaction reverted without reason
+# Solution: Check gas limits and contract state
+# Moonbeam has different gas costs than Ethereum
+networks: {
+  moonbeam: {
+    gasPrice: 1000000000, // 1 gwei
+    gas: 5000000
+  }
+}
 ```
+
+#### Precompile Issues
+```bash
+# Error: Precompile call failed
+# Solution: Check Moonbeam-specific precompiles
+# Moonbeam has unique precompiles for cross-chain functionality
+# See: https://docs.moonbeam.network/builders/pallets-precompiles/
+```
+
+#### Network Configuration Issues
+```bash
+# Error: Wrong chain ID
+# Solution: Verify network configuration
+# Moonbeam Mainnet: Chain ID 1284
+# Moonbase Alpha: Chain ID 1287
+```
+
+### Base Network
+
+#### L2 Transaction Issues
+```bash
+# Error: Transaction not found
+# Solution: L2 transactions may take time to appear
+# Wait 10-30 seconds and check again
+# Use Base block explorer: https://basescan.org
+```
+
+#### Bridge Issues
+```bash
+# Error: Bridge transaction failed
+# Solution: Check bridge status and allowances
+# Visit: https://bridge.base.org
+# Ensure sufficient ETH for gas on both L1 and L2
+```
+
+#### Gas Estimation Issues
+```bash
+# Error: Gas estimation failed on Base
+# Solution: L2 gas estimation can be different
+networks: {
+  base: {
+    gasPrice: 1000000000, // 1 gwei
+    gas: 5000000
+  }
+}
+```
+
+## 🔐 Wallet Connection Issues
+
+### MetaMask Issues
+
+#### Network Not Added
+```bash
+# Solution: Add network manually to MetaMask
+# Polygon: Chain ID 137, RPC: https://polygon-rpc.com
+# Moonbeam: Chain ID 1284, RPC: https://rpc.api.moonbeam.network
+# Base: Chain ID 8453, RPC: https://mainnet.base.org
+```
+
+#### Transaction Stuck
+```bash
+# Solution: Reset account or increase gas price
+# MetaMask > Settings > Advanced > Reset Account
+# OR increase gas price for next transaction
+```
+
+### WalletConnect Issues
+
+#### Connection Timeout
+```bash
+# Error: WalletConnect session timeout
+# Solution: Check network connectivity and try again
+# Ensure firewall allows WebSocket connections
+```
+
+#### QR Code Not Scanning
+```bash
+# Solution: Refresh page and try again
+# Ensure mobile wallet supports WalletConnect v2
+```
+
+## 🐳 Docker Issues
+
+### Container Build Failures
+
+#### Docker Build Context Too Large
+```bash
+# Error: Docker build context is too large
+# Solution: Use .dockerignore to exclude files
+echo "node_modules" >> .dockerignore
+echo ".git" >> .dockerignore
+echo "*.log" >> .dockerignore
+```
+
+#### Multi-stage Build Issues
+```bash
+# Error: Stage not found
+# Solution: Check Dockerfile stage names
+docker build --target development .
+```
+
+### Container Runtime Issues
+
+#### Port Binding Failures
+```bash
+# Error: Port already in use
+# Solution: Stop conflicting containers
+docker ps
+docker stop CONTAINER_ID
+# OR use different ports
+docker run -p 3001:3000 app
+```
+
+#### Volume Mount Issues
+```bash
+# Error: Volume mount failed
+# Solution: Check file permissions and paths
+# On macOS/Windows, ensure Docker has file access permissions
+```
+
+## ☸️ Kubernetes Issues
 
 ### Deployment Issues
 
-#### Docker Build Failures
-
-**Problem**: Docker images fail to build.
-
-**Symptoms**:
+#### Pod Stuck in Pending
 ```bash
-npm install failures in Docker
-File not found errors
-Permission denied errors
+# Check node resources and scheduling
+kubectl describe pod POD_NAME
+kubectl get nodes
+kubectl top nodes
 ```
 
-**Solution**:
+#### ImagePullBackOff
 ```bash
-# Check Dockerfile syntax
-docker build --no-cache -t todo-web ./apps/web
-
-# Check .dockerignore file
-cat apps/web/.dockerignore
-
-# Build with verbose output
-docker build --progress=plain -t todo-web ./apps/web
-
-# Check base image
-docker pull node:20-alpine
-
-# Clear Docker cache
-docker system prune -a
-
-# Check file permissions
-ls -la apps/web/
+# Error: Failed to pull image
+# Solution: Check image name and registry access
+kubectl describe pod POD_NAME
+# Verify image exists in registry
+docker pull IMAGE_NAME
 ```
 
-#### Kubernetes Deployment Issues
-
-**Problem**: Pods failing to start or crashing.
-
-**Symptoms**:
+#### ConfigMap/Secret Issues
 ```bash
-ImagePullBackOff
-CrashLoopBackOff
-Pending pod status
+# Error: ConfigMap not found
+# Solution: Ensure ConfigMaps are created first
+kubectl apply -f configmaps/
+kubectl get configmaps
 ```
 
-**Solution**:
+### Service Issues
+
+#### Service Not Accessible
 ```bash
-# Check pod status
-kubectl get pods -n todo-app
-
-# Describe pod for events
-kubectl describe pod <pod-name> -n todo-app
-
-# Check pod logs
-kubectl logs <pod-name> -n todo-app
-
-# Check resource limits
-kubectl top pods -n todo-app
-
-# Verify secrets and configmaps
-kubectl get secrets -n todo-app
-kubectl get configmaps -n todo-app
-
-# Check service endpoints
-kubectl get endpoints -n todo-app
-
-# Port forward for debugging
-kubectl port-forward pod/<pod-name> 3001:3001 -n todo-app
+# Check service and endpoints
+kubectl get services
+kubectl get endpoints
+kubectl describe service SERVICE_NAME
 ```
 
-#### SSL/TLS Certificate Issues
-
-**Problem**: HTTPS not working or certificate errors.
-
-**Symptoms**:
+#### Ingress Issues
 ```bash
-Certificate expired
-Certificate not trusted
-SSL handshake failures
+# Error: Ingress not working
+# Solution: Check ingress controller and rules
+kubectl get ingress
+kubectl describe ingress INGRESS_NAME
+# Ensure ingress controller is running
+kubectl get pods -n ingress-nginx
 ```
 
-**Solution**:
+## 🧪 Testing Issues
+
+### Unit Test Failures
+
+#### Jest Configuration Issues
 ```bash
-# Check certificate status
-kubectl get certificate -n todo-app
-
-# Check cert-manager logs
-kubectl logs -n cert-manager deployment/cert-manager
-
-# Verify DNS records
-nslookup todo-app.example.com
-
-# Test certificate
-openssl s_client -connect todo-app.example.com:443
-
-# Force certificate renewal
-kubectl delete certificate todo-app-tls -n todo-app
-kubectl apply -f infra/k8s/ingress.yml
+# Error: Jest cannot find modules
+# Solution: Check Jest configuration and module paths
+# Ensure @todo/* packages are built
+pnpm build:packages
 ```
 
-### Performance Issues
-
-#### Slow API Response Times
-
-**Problem**: API endpoints responding slowly.
-
-**Symptoms**:
+#### Mock Issues
 ```bash
-High response times (>2s)
-Database query timeouts
-Memory usage spikes
+# Error: Module mocking failed
+# Solution: Check mock implementations
+# Ensure mocks are in __mocks__ directory
 ```
 
-**Solution**:
+### Integration Test Issues
+
+#### Database Test Issues
 ```bash
-# Check API metrics
-curl http://localhost:3001/metrics
+# Error: Database connection failed in tests
+# Solution: Use test database or containers
+# Set NODE_ENV=test
+export NODE_ENV=test
+pnpm test:integration
+```
 
-# Monitor database queries
-# Enable MongoDB profiling
-mongosh --eval "db.setProfilingLevel(2, {slowms: 100})"
+#### Blockchain Test Issues
+```bash
+# Error: Contract deployment failed in tests
+# Solution: Use local blockchain networks
+# Start local nodes before running tests
+pnpm dev:contracts  # Start local blockchain nodes
+pnpm test:contracts
+```
 
-# Check slow queries
-mongosh --eval "db.system.profile.find().sort({ts: -1}).limit(5)"
+### E2E Test Issues
 
-# Monitor Redis performance
-redis-cli --latency-history
+#### Playwright Issues
+```bash
+# Error: Browser not found
+# Solution: Install Playwright browsers
+npx playwright install
+npx playwright install-deps
+```
 
-# Check memory usage
-kubectl top pods -n todo-app
+#### Test Timeout Issues
+```bash
+# Error: Test timeout
+# Solution: Increase timeout or optimize tests
+# In playwright.config.ts:
+timeout: 60000  // 60 seconds
+```
 
-# Scale up replicas
-kubectl scale deployment api-deployment --replicas=5 -n todo-app
+## 📊 Performance Issues
+
+### Build Performance
+
+#### Slow Builds
+```bash
+# Solution: Use build cache and parallel builds
+# Enable Turbo cache
+export TURBO_TOKEN=your-token
+export TURBO_TEAM=your-team
+
+# Use parallel builds
+pnpm build --parallel
+```
+
+#### Memory Issues
+```bash
+# Error: JavaScript heap out of memory
+# Solution: Increase Node.js memory limit
+export NODE_OPTIONS="--max-old-space-size=4096"
+pnpm build
+```
+
+### Runtime Performance
+
+#### Slow API Responses
+```bash
+# Check database indexes and query performance
+# Monitor with OpenTelemetry traces
+# Visit: http://localhost:16686 (Jaeger UI)
 ```
 
 #### High Memory Usage
-
-**Problem**: Applications consuming excessive memory.
-
-**Symptoms**:
 ```bash
-Out of memory errors
-Pod restarts due to memory limits
-Slow garbage collection
+# Check for memory leaks
+# Use Node.js profiling tools
+node --inspect app.js
+# Visit: chrome://inspect
 ```
 
-**Solution**:
-```bash
-# Check memory usage
-kubectl top pods -n todo-app
-
-# Analyze memory leaks
-node --inspect apps/api/dist/main.js
-
-# Increase memory limits
-# Update Kubernetes resource limits
-
-# Check for memory leaks in code
-# Use heap snapshots and profiling
-
-# Optimize database queries
-# Add proper indexes
-# Use pagination
-```
-
-#### Database Performance Issues
-
-**Problem**: Database queries are slow or timing out.
-
-**Symptoms**:
-```bash
-Query timeout errors
-High database CPU usage
-Slow response times
-```
-
-**Solution**:
-```bash
-# Check database performance
-mongosh --eval "db.runCommand({serverStatus: 1})"
-
-# Analyze slow queries
-mongosh --eval "db.setProfilingLevel(2, {slowms: 100})"
-mongosh --eval "db.system.profile.find().sort({ts: -1}).limit(10)"
-
-# Check indexes
-mongosh --eval "db.todos.getIndexes()"
-
-# Add missing indexes
-mongosh --eval "db.todos.createIndex({userId: 1, createdAt: -1})"
-
-# Check connection pool
-# Increase connection pool size in configuration
-
-# Monitor database metrics
-# Use MongoDB Compass or similar tools
-```
-
-## 🔧 Debug Tools and Commands
-
-### General Debugging
-
-```bash
-# Check all services status
-pnpm health-check
-
-# View all logs
-docker-compose logs -f
-
-# Check environment variables
-printenv | grep -E "(DATABASE|REDIS|JWT|BLOCKCHAIN)"
-
-# Test API endpoints
-curl -H "Authorization: Bearer $TOKEN" http://localhost:3001/todos
-
-# Check network connectivity
-ping google.com
-nslookup todo-app.example.com
-```
-
-### Database Debugging
-
-```bash
-# MongoDB debugging
-mongosh "mongodb://localhost:27017/todoapp"
-> db.todos.find().limit(5)
-> db.users.countDocuments()
-> db.runCommand({serverStatus: 1})
-
-# Redis debugging
-redis-cli
-> ping
-> keys *
-> info memory
-> monitor
-```
+## 🔍 Debugging Tools
 
 ### Blockchain Debugging
 
+#### Transaction Debugging
 ```bash
-# Ethereum/Polygon debugging
-cast block latest --rpc-url $POLYGON_RPC_URL
-cast balance $WALLET_ADDRESS --rpc-url $POLYGON_RPC_URL
-cast nonce $WALLET_ADDRESS --rpc-url $POLYGON_RPC_URL
+# Ethereum/EVM networks
+# Use block explorers:
+# - Polygon: https://polygonscan.com
+# - Moonbeam: https://moonscan.io
+# - Base: https://basescan.org
 
-# Solana debugging
-solana cluster-version
-solana balance $WALLET_ADDRESS
-solana account $WALLET_ADDRESS
+# Solana
+# Use Solana Explorer: https://explorer.solana.com
+solana transaction TRANSACTION_SIGNATURE
+
+# Polkadot
+# Use Subscan: https://polkadot.subscan.io
 ```
 
-### Kubernetes Debugging
-
+#### Contract Debugging
 ```bash
-# Cluster debugging
-kubectl cluster-info
-kubectl get nodes
-kubectl get pods --all-namespaces
+# Hardhat console for EVM networks
+cd apps/smart-contracts/polygon
+npx hardhat console --network polygon
 
-# Application debugging
-kubectl get all -n todo-app
-kubectl describe deployment api-deployment -n todo-app
-kubectl logs -f deployment/api-deployment -n todo-app
-
-# Network debugging
-kubectl get ingress -n todo-app
-kubectl get services -n todo-app
-kubectl get endpoints -n todo-app
+# Solana program debugging
+cd apps/smart-contracts/solana
+anchor test --skip-local-validator
 ```
 
-## 📊 Monitoring and Alerting
+### Application Debugging
 
-### Health Check Endpoints
-
+#### API Debugging
 ```bash
-# API health check
-curl http://localhost:3001/health
+# Enable debug logging
+export LOG_LEVEL=debug
+pnpm dev:api
 
-# Detailed health check
-curl http://localhost:3001/health/detailed
-
-# Database health
-curl http://localhost:3001/health/database
-
-# Redis health
-curl http://localhost:3001/health/redis
-
-# Blockchain health
-curl http://localhost:3001/health/blockchain
+# Use API documentation
+# Visit: http://localhost:3001/api/docs
 ```
 
-### Metrics Collection
-
+#### Frontend Debugging
 ```bash
-# Prometheus metrics
-curl http://localhost:3001/metrics
+# Enable React DevTools
+# Install browser extension
 
-# Application metrics
-curl http://localhost:3001/metrics/app
-
-# Custom business metrics
-curl http://localhost:3001/metrics/todos
-```
-
-### Log Analysis
-
-```bash
-# View application logs
-kubectl logs -f deployment/api-deployment -n todo-app
-
-# Search logs for errors
-kubectl logs deployment/api-deployment -n todo-app | grep ERROR
-
-# View logs from specific time
-kubectl logs deployment/api-deployment -n todo-app --since=1h
-
-# Export logs for analysis
-kubectl logs deployment/api-deployment -n todo-app > api-logs.txt
-```
-
-## 🚨 Emergency Procedures
-
-### Service Recovery
-
-#### API Server Down
-
-```bash
-# Check pod status
-kubectl get pods -n todo-app
-
-# Restart deployment
-kubectl rollout restart deployment/api-deployment -n todo-app
-
-# Scale up replicas
-kubectl scale deployment api-deployment --replicas=3 -n todo-app
-
-# Check recent changes
-kubectl rollout history deployment/api-deployment -n todo-app
-
-# Rollback if needed
-kubectl rollout undo deployment/api-deployment -n todo-app
-```
-
-#### Database Issues
-
-```bash
-# Check database connectivity
-mongosh "mongodb://localhost:27017/todoapp" --eval "db.runCommand({ping: 1})"
-
-# Restart database (development only)
-docker-compose restart mongodb
-
-# Check database disk space
-df -h
-
-# Backup database before recovery
-mongodump --uri="mongodb://localhost:27017/todoapp" --out=/backup/$(date +%Y%m%d)
-
-# Restore from backup if needed
-mongorestore --uri="mongodb://localhost:27017/todoapp" /backup/20240115
-```
-
-#### Complete System Recovery
-
-```bash
-# Stop all services
-docker-compose down
-
-# Clear all data (development only)
-docker-compose down -v
-
-# Rebuild and restart
-docker-compose build --no-cache
-docker-compose up -d
-
-# Verify all services
-curl http://localhost:3001/health
-curl http://localhost:3000
+# Enable Next.js debugging
+export DEBUG=*
+pnpm dev:web
 ```
 
 ## 📞 Getting Help
 
-### Internal Resources
+### Community Support
+- **Discord**: Join our development Discord server
+- **GitHub Issues**: Report bugs and feature requests
+- **Stack Overflow**: Tag questions with relevant technologies
 
-1. **Check Documentation**: Review `/docs` directory for detailed guides
-2. **Search Issues**: Look through GitHub issues for similar problems
-3. **Team Chat**: Ask in the development team chat/Discord
-4. **Code Review**: Request help during code review process
+### Network-Specific Support
+- **Polygon**: [Polygon Discord](https://discord.gg/polygon)
+- **Solana**: [Solana Discord](https://discord.gg/solana)
+- **Polkadot**: [Polkadot Discord](https://discord.gg/polkadot)
+- **Moonbeam**: [Moonbeam Discord](https://discord.gg/PfpUATX)
+- **Base**: [Base Discord](https://discord.gg/buildonbase)
 
-### External Resources
+### Documentation
+- **Project Docs**: Check `/docs` directory
+- **Network Docs**: See network-specific setup guides
+- **API Docs**: Visit `/api/docs` when running the API
 
-1. **Stack Overflow**: Search for framework-specific issues
-2. **GitHub Issues**: Check framework repositories for known issues
-3. **Documentation**: Refer to official framework documentation
-4. **Community Forums**: Ask in relevant community forums
-
-### Escalation Process
-
-1. **Level 1**: Try troubleshooting steps in this guide
-2. **Level 2**: Ask team members or senior developers
-3. **Level 3**: Create detailed issue with reproduction steps
-4. **Level 4**: Contact framework maintainers or external support
-
-### Creating Bug Reports
-
-When reporting issues, include:
-
-```markdown
-## Environment
-- OS: macOS 14.0
-- Node.js: v20.10.0
-- pnpm: 9.12.0
-- Browser: Chrome 120.0
-
-## Steps to Reproduce
-1. Start development server
-2. Navigate to /todos
-3. Click create button
-4. Error occurs
-
-## Expected Behavior
-Todo should be created successfully
-
-## Actual Behavior
-Error: "Cannot read property 'title' of undefined"
-
-## Error Logs
-```
-[Error logs here]
-```
-
-## Additional Context
-- This started happening after updating dependencies
-- Only occurs in development environment
-- Works fine in production
-```
-
-## 🔄 Preventive Measures
-
-### Regular Maintenance
-
-```bash
-# Update dependencies monthly
-pnpm update
-
-# Clear caches weekly
-pnpm turbo clean
-docker system prune
-
-# Run security audits
-pnpm audit
-npm audit fix
-
-# Update Docker images
-docker-compose pull
-```
-
-### Monitoring Setup
-
-```bash
-# Set up health check monitoring
-# Configure alerts for:
-# - API response time > 2s
-# - Error rate > 5%
-# - Memory usage > 80%
-# - Database connection failures
-
-# Set up log monitoring
-# Configure alerts for:
-# - ERROR level logs
-# - Database query timeouts
-# - Authentication failures
-```
-
-### Backup Procedures
-
-```bash
-# Daily database backups
-mongodump --uri="$DATABASE_URL" --out="/backup/$(date +%Y%m%d)"
-
-# Weekly full system backup
-tar -czf "backup-$(date +%Y%m%d).tar.gz" \
-  --exclude=node_modules \
-  --exclude=.git \
-  .
-
-# Test backup restoration monthly
-mongorestore --uri="$TEST_DATABASE_URL" /backup/latest
-```
-
-This troubleshooting guide should help you resolve most common issues. Keep it updated as new issues are discovered and resolved.
+### Emergency Contacts
+- **Critical Issues**: Create GitHub issue with "critical" label
+- **Security Issues**: Follow responsible disclosure in SECURITY.md
+- **Infrastructure Issues**: Check status pages of service providers

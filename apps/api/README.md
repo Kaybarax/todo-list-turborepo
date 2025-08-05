@@ -13,7 +13,7 @@ A modern NestJS API server with MongoDB, Redis, and comprehensive blockchain int
 - **OpenAPI Documentation**: Auto-generated Swagger documentation
 
 ### Blockchain Integration
-- **Multi-Network Support**: Polygon, Solana, and Polkadot integration
+- **Multi-Network Support**: Polygon, Solana, Polkadot, Moonbeam, and Base integration
 - **Wallet Authentication**: WalletConnect-based authentication
 - **Transaction Tracking**: Comprehensive blockchain transaction monitoring
 - **Contract Interaction**: Smart contract integration for decentralized storage
@@ -125,6 +125,8 @@ CORS_ORIGIN=http://localhost:3000
 POLYGON_RPC_URL=http://localhost:8545
 SOLANA_RPC_URL=http://localhost:8899
 POLKADOT_RPC_URL=ws://localhost:9944
+MOONBEAM_RPC_URL=http://localhost:8545
+BASE_RPC_URL=http://localhost:8545
 
 # Monitoring
 JAEGER_ENDPOINT=http://localhost:14268/api/traces
@@ -435,6 +437,10 @@ LOG_LEVEL=info
 POLYGON_RPC_URL=https://polygon-rpc.com
 POLYGON_PRIVATE_KEY=0x...
 SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+MOONBEAM_RPC_URL=https://rpc.api.moonbeam.network
+MOONBEAM_PRIVATE_KEY=0x...
+BASE_RPC_URL=https://mainnet.base.org
+BASE_PRIVATE_KEY=0x...
 
 # Monitoring
 JAEGER_ENDPOINT=http://jaeger-collector:14268/api/traces
@@ -487,6 +493,16 @@ export const blockchainConfig = {
   },
   polkadot: {
     rpcUrl: process.env.POLKADOT_RPC_URL,
+  },
+  moonbeam: {
+    rpcUrl: process.env.MOONBEAM_RPC_URL,
+    contractAddress: process.env.MOONBEAM_CONTRACT_ADDRESS,
+    privateKey: process.env.MOONBEAM_PRIVATE_KEY,
+  },
+  base: {
+    rpcUrl: process.env.BASE_RPC_URL,
+    contractAddress: process.env.BASE_CONTRACT_ADDRESS,
+    privateKey: process.env.BASE_PRIVATE_KEY,
   },
 };
 ```

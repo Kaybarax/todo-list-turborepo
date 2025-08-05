@@ -102,7 +102,7 @@
   - Update Docker configurations for new smart contracts structure
   - _Requirements: 6.2, 6.3, 6.4, 6.5_
 
-- [ ] 16. Update documentation for new structure and networks
+- [x] 16. Update documentation for new structure and networks
   - Update all README files to reflect new "smart-contracts" directory
   - Create setup and deployment guides for Moonbeam network
   - Create setup and deployment guides for Base network

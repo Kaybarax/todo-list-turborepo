@@ -11,8 +11,8 @@ A modern, full-stack Todo application built as a comprehensive monorepo showcasi
 - **Ingestion Service**: Background processing for blockchain data
 
 ### Blockchain Integration
-- **Multi-Network Support**: Polygon, Solana, and Polkadot integration
-- **Smart Contracts**: Solidity, Rust (Anchor), and Substrate pallets
+- **Multi-Network Support**: Polygon, Solana, Polkadot, Moonbeam, and Base integration
+- **Smart Contracts**: Solidity, Rust (Anchor), and Substrate pallets across 5 networks
 - **Wallet Connectivity**: WalletConnect v2 for seamless Web3 integration
 - **Decentralized Storage**: Todo items stored on multiple blockchain networks
 
@@ -33,10 +33,12 @@ A modern, full-stack Todo application built as a comprehensive monorepo showcasi
 │   ├── mobile/              # Expo React Native with TypeScript
 │   ├── api/                 # NestJS with MongoDB and Redis
 │   ├── ingestion/           # Blockchain data processing service
-│   └── smart-contracts/  # Multi-network smart contracts
+│   └── smart-contracts/     # Multi-network smart contracts
 │       ├── polygon/         # Solidity contracts with Hardhat
 │       ├── solana/          # Rust programs with Anchor
-│       └── polkadot/        # Substrate pallets
+│       ├── polkadot/        # Substrate pallets
+│       ├── moonbeam/        # Moonbeam EVM contracts with Hardhat
+│       └── base/            # Base L2 contracts with Hardhat
 ├── packages/
 │   ├── ui-web/              # React component library with Storybook
 │   ├── ui-mobile/           # React Native component library
@@ -137,8 +139,8 @@ This monorepo has been comprehensively modernized with enterprise-grade features
 - **Build System**: Multi-environment build scripts with security scanning and Docker optimization
 
 ### ⛓️ Blockchain Integration
-- **Multi-Network Support**: Integrated Polygon (Solidity), Solana (Rust/Anchor), and Polkadot (Substrate)
-- **Smart Contracts**: Complete contract suites for decentralized todo storage across all networks
+- **Multi-Network Support**: Integrated Polygon (Solidity), Solana (Rust/Anchor), Polkadot (Substrate), Moonbeam (EVM), and Base (L2)
+- **Smart Contracts**: Complete contract suites for decentralized todo storage across 5 blockchain networks
 - **Wallet Integration**: WalletConnect v2 implementation for seamless Web3 connectivity
 - **Transaction Management**: Comprehensive blockchain transaction tracking and status monitoring
 
@@ -278,6 +280,8 @@ pnpm contracts:compile
 pnpm contracts:polygon   # Solidity contracts
 pnpm contracts:solana    # Rust programs
 pnpm contracts:polkadot  # Substrate pallets
+pnpm contracts:moonbeam  # Moonbeam EVM contracts
+pnpm contracts:base      # Base L2 contracts
 
 # Deploy contracts
 pnpm contracts:deploy
@@ -357,6 +361,8 @@ pnpm test:contracts     # All blockchain contract tests
 pnpm contracts:polygon --test
 pnpm contracts:solana --test
 pnpm contracts:polkadot --test
+pnpm contracts:moonbeam --test
+pnpm contracts:base --test
 
 # Watch mode for development
 pnpm test --watch
