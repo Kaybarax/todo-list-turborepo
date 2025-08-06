@@ -1,0 +1,16 @@
+{
+  "extends": "@todo/config-ts/library.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "noEmit": false,
+    "declaration": true,
+    "outDir": "./dist",
+    "incremental": false,
+    "allowImportingTsExtensions": false
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

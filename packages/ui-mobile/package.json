@@ -16,7 +16,7 @@
     }
   },
   "scripts": {
-    "build": "tsc --project tsconfig.json && vite build",
+    "build": "vite build",
     "build:lib": "vite build",
     "dev": "vite build --watch",
     "typecheck": "tsc --project tsconfig.dev.json --noEmit",

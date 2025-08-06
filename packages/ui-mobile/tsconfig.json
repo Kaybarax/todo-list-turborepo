@@ -1,14 +1,22 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "lib": ["dom", "esnext"],
+    "baseUrl": ".",
     "outDir": "./dist",
+    "rootDir": "./lib",
     "declaration": true,
     "jsx": "react-native",
-    "lib": ["dom", "esnext"],
-    "moduleResolution": "node",
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "strict": true
+    "strict": true,
+    "composite": true,
+    "noEmit": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["lib/**/*"],
   "exclude": ["node_modules", "dist", "__tests__", "showcase", "**/*.test.ts", "**/*.stories.tsx"]

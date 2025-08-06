@@ -1,13 +1,6 @@
 {
-  "extends": "@todo/config-ts/node.json",
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "incremental": false,
-    "noEmit": false
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+    "composite": true
+  }
 }
