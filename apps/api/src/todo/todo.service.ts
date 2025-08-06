@@ -6,6 +6,7 @@ import { CacheService } from '../cache/cache.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { QueryTodoDto } from './dto/query-todo.dto';
+import { Trace } from '../telemetry/decorators/trace.decorator';
 
 export interface PaginatedTodos {
   todos: Todo[];
@@ -139,15 +140,12 @@ export class TodoService {
 
   @Trace('TodoService.update')
   async update(id: string, updateTodoDto: UpdateTodoDto, userId: string): Promise<Todo> {
-    const todo = await this.findOne(id, userId);
-    
-    const updateData = {
+    const updateData: Partial<Todo> = {
       ...updateTodoDto,
-      dueDate: updateTodoDto.dueDate ? new Date(updateTodoDto.dueDate) : updateTodoDto.dueDate,
+      dueDate: updateTodoDto.dueDate ? new Date(updateTodoDto.dueDate) : undefined,
     };
     
-    Object.assign(todo, updateData);
-    const updatedTodo = await todo.save();
+    const updatedTodo = await this.todoRepository.updateById(id, updateData);
     
     // Update cache and invalidate user cache
     await Promise.all([
@@ -185,7 +183,14 @@ export class TodoService {
   }> {
     // Try cache first
     const cacheKey = this.cacheService.generateUserStatsKey(userId);
-    const cachedStats = await this.cacheService.get(cacheKey);
+    const cachedStats = await this.cacheService.get<{
+      total: number;
+      completed: number;
+      active: number;
+      overdue: number;
+      byPriority: Record<string, number>;
+      byBlockchainNetwork: Record<string, number>;
+    }>(cacheKey);
     
     if (cachedStats) {
       this.logger.debug(`Cache hit for user ${userId} stats`);
@@ -244,8 +249,7 @@ export class TodoService {
   @Trace('TodoService.toggleComplete')
   async toggleComplete(id: string, userId: string): Promise<Todo> {
     const todo = await this.findOne(id, userId);
-    todo.completed = !todo.completed;
-    const updatedTodo = await todo.save();
+    const updatedTodo = await this.todoRepository.updateById(id, { completed: !todo.completed });
     
     // Update cache and invalidate user cache
     await Promise.all([

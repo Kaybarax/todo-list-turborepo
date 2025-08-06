@@ -40,6 +40,7 @@ module.exports = {
     '/node_modules/',
     '/.next/',
     '/out/',
-    '/build/'
+    '/build/',
+    '/e2e/'
   ]
 };

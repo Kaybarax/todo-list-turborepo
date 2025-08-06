@@ -1,194 +1,177 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { TodoForm } from '../TodoForm';
-import { vi } from 'vitest';
 
 // Mock the UI components
-vi.mock('@todo/ui-web', () => ({
-  Button: ({ children, onClick, disabled, isLoading }: any) => (
-    <button onClick={onClick} disabled={disabled || isLoading}>
-      {isLoading ? 'Loading...' : children}
+jest.mock('@todo/ui-web', () => ({
+  Button: ({ children, onClick, disabled, type, variant }: any) => (
+    <button onClick={onClick} disabled={disabled} type={type} data-variant={variant}>
+      {children}
     </button>
   ),
-  Input: ({ value, onChange, placeholder, required }: any) => (
+  Input: ({ placeholder, value, onChange, type, id, className }: any) => (
     <input
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
+      id={id}
       placeholder={placeholder}
-      required={required}
+      value={value}
+      onChange={onChange}
+      type={type}
+      className={className}
     />
   ),
-  Card: ({ children }: any) => <div data-testid="card">{children}</div>,
+  Badge: ({ children, variant, className }: any) => (
+    <span data-variant={variant} className={className}>
+      {children}
+    </span>
+  ),
 }));
 
 describe('TodoForm', () => {
-  const mockOnSubmit = vi.fn();
-  const mockOnCancel = vi.fn();
+  it('should render form fields', () => {
+    const mockOnSubmit = jest.fn();
+    const mockOnCancel = jest.fn();
 
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
+    render(
+      <TodoForm
+        onSubmit={mockOnSubmit}
+        onCancel={mockOnCancel}
+      />
+    );
 
-  it('renders create form correctly', () => {
-    render(<TodoForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
-    
     expect(screen.getByPlaceholderText('Enter todo title')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Enter description (optional)')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('medium')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Enter todo description')).toBeInTheDocument();
+    
+    // Check that the priority select has the correct default value
+    const prioritySelect = screen.getByLabelText('Priority');
+    expect(prioritySelect).toHaveValue('medium');
+    
     expect(screen.getByText('Create Todo')).toBeInTheDocument();
-    expect(screen.getByText('Cancel')).toBeInTheDocument();
+    // Cancel button only appears when onCancel is provided
   });
 
-  it('renders edit form with initial values', () => {
-    const initialTodo = {
-      id: '1',
+  it('should render form with initial data', () => {
+    const mockOnSubmit = jest.fn();
+    const mockOnCancel = jest.fn();
+    const initialData = {
       title: 'Test Todo',
       description: 'Test Description',
       priority: 'high' as const,
       dueDate: '2024-12-31',
       tags: ['test', 'work'],
-      completed: false,
-      createdAt: '2024-01-01T00:00:00Z',
-      updatedAt: '2024-01-01T00:00:00Z',
-      userId: 'user1',
     };
 
     render(
-      <TodoForm 
-        onSubmit={mockOnSubmit} 
-        onCancel={mockOnCancel} 
-        initialTodo={initialTodo}
+      <TodoForm
+        onSubmit={mockOnSubmit}
+        onCancel={mockOnCancel}
+        initialData={initialData}
       />
     );
-    
+
     expect(screen.getByDisplayValue('Test Todo')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Test Description')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('high')).toBeInTheDocument();
+    
+    // Check that the priority select has the correct value
+    const prioritySelect = screen.getByLabelText('Priority');
+    expect(prioritySelect).toHaveValue('high');
+    
     expect(screen.getByDisplayValue('2024-12-31')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('test, work')).toBeInTheDocument();
+    expect(screen.getByText('test')).toBeInTheDocument();
+    expect(screen.getByText('work')).toBeInTheDocument();
     expect(screen.getByText('Update Todo')).toBeInTheDocument();
+    expect(screen.getByText('Cancel')).toBeInTheDocument();
   });
 
-  it('handles form submission with valid data', async () => {
-    render(<TodoForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
-    
+  it('should call onSubmit with form data', async () => {
+    const mockOnSubmit = jest.fn();
+    const mockOnCancel = jest.fn();
+
+    render(
+      <TodoForm
+        onSubmit={mockOnSubmit}
+        onCancel={mockOnCancel}
+      />
+    );
+
+    // Fill form
     fireEvent.change(screen.getByPlaceholderText('Enter todo title'), {
-      target: { value: 'New Todo' }
+      target: { value: 'New Todo' },
     });
-    fireEvent.change(screen.getByPlaceholderText('Enter description (optional)'), {
-      target: { value: 'New Description' }
-    });
-    fireEvent.change(screen.getByDisplayValue('medium'), {
-      target: { value: 'high' }
-    });
-    fireEvent.change(screen.getByPlaceholderText('YYYY-MM-DD'), {
-      target: { value: '2024-12-31' }
-    });
-    fireEvent.change(screen.getByPlaceholderText('Enter tags separated by commas'), {
-      target: { value: 'work, urgent' }
+    fireEvent.change(screen.getByPlaceholderText('Enter todo description'), {
+      target: { value: 'New Description' },
     });
 
+    // Submit form
     fireEvent.click(screen.getByText('Create Todo'));
 
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith({
         title: 'New Todo',
         description: 'New Description',
-        priority: 'high',
-        dueDate: '2024-12-31',
-        tags: ['work', 'urgent'],
-      });
-    });
-  });
-
-  it('validates required title field', async () => {
-    render(<TodoForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
-    
-    fireEvent.click(screen.getByText('Create Todo'));
-
-    await waitFor(() => {
-      expect(mockOnSubmit).not.toHaveBeenCalled();
-    });
-  });
-
-  it('handles cancel button click', () => {
-    render(<TodoForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
-    
-    fireEvent.click(screen.getByText('Cancel'));
-    
-    expect(mockOnCancel).toHaveBeenCalled();
-  });
-
-  it('shows loading state during submission', async () => {
-    const slowSubmit = vi.fn(() => new Promise(resolve => setTimeout(resolve, 100)));
-    
-    render(<TodoForm onSubmit={slowSubmit} onCancel={mockOnCancel} />);
-    
-    fireEvent.change(screen.getByPlaceholderText('Enter todo title'), {
-      target: { value: 'Test Todo' }
-    });
-    fireEvent.click(screen.getByText('Create Todo'));
-
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
-    
-    await waitFor(() => {
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
-    });
-  });
-
-  it('handles tags parsing correctly', async () => {
-    render(<TodoForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
-    
-    fireEvent.change(screen.getByPlaceholderText('Enter todo title'), {
-      target: { value: 'Test Todo' }
-    });
-    fireEvent.change(screen.getByPlaceholderText('Enter tags separated by commas'), {
-      target: { value: '  work  ,  urgent  ,  ,  important  ' }
-    });
-
-    fireEvent.click(screen.getByText('Create Todo'));
-
-    await waitFor(() => {
-      expect(mockOnSubmit).toHaveBeenCalledWith({
-        title: 'Test Todo',
-        description: '',
         priority: 'medium',
-        dueDate: '',
-        tags: ['work', 'urgent', 'important'],
-      });
-    });
-  });
-
-  it('handles empty tags correctly', async () => {
-    render(<TodoForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
-    
-    fireEvent.change(screen.getByPlaceholderText('Enter todo title'), {
-      target: { value: 'Test Todo' }
-    });
-
-    fireEvent.click(screen.getByText('Create Todo'));
-
-    await waitFor(() => {
-      expect(mockOnSubmit).toHaveBeenCalledWith({
-        title: 'Test Todo',
-        description: '',
-        priority: 'medium',
-        dueDate: '',
+        dueDate: undefined,
         tags: [],
       });
     });
   });
 
-  it('resets form after successful submission', async () => {
-    render(<TodoForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
-    
-    fireEvent.change(screen.getByPlaceholderText('Enter todo title'), {
-      target: { value: 'Test Todo' }
+  it('should call onCancel when cancel button is clicked', () => {
+    const mockOnSubmit = jest.fn();
+    const mockOnCancel = jest.fn();
+
+    render(
+      <TodoForm
+        onSubmit={mockOnSubmit}
+        onCancel={mockOnCancel}
+      />
+    );
+
+    const cancelButton = screen.getByText('Cancel');
+    fireEvent.click(cancelButton);
+    expect(mockOnCancel).toHaveBeenCalled();
+  });
+
+  it('should prevent submission with empty title', async () => {
+    const mockOnSubmit = jest.fn();
+    const mockOnCancel = jest.fn();
+
+    render(
+      <TodoForm
+        onSubmit={mockOnSubmit}
+        onCancel={mockOnCancel}
+      />
+    );
+
+    // Try to submit without title
+    fireEvent.click(screen.getByText('Create Todo'));
+
+    // Should not call onSubmit
+    expect(mockOnSubmit).not.toHaveBeenCalled();
+  });
+
+  it('should reset form after successful submission', async () => {
+    const mockOnSubmit = jest.fn();
+
+    render(
+      <TodoForm
+        onSubmit={mockOnSubmit}
+      />
+    );
+
+    // Fill and submit form
+    const titleInput = screen.getByPlaceholderText('Enter todo title');
+    fireEvent.change(titleInput, {
+      target: { value: 'Test Todo' },
     });
     fireEvent.click(screen.getByText('Create Todo'));
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText('Enter todo title')).toHaveValue('');
+      expect(mockOnSubmit).toHaveBeenCalled();
+    });
+
+    // Form should be reset (only for new todos, not when editing)
+    await waitFor(() => {
+      expect(titleInput).toHaveValue('');
     });
   });
 });

@@ -323,7 +323,7 @@ describe('UserService', () => {
           { email: { $regex: 'test', $options: 'i' } },
         ],
       });
-      expect(result.users).toEqual(users);
+      expect(result).toEqual(users);
     });
 
     it('should handle empty results', async () => {

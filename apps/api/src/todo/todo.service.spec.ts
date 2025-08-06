@@ -84,7 +84,7 @@ describe('TodoService', () => {
         tags: ['new'],
       };
 
-      const expectedTodo = { ...mockTodo, ...createTodoDto };
+      const expectedTodo = { ...mockTodo, ...createTodoDto } as Todo;
       todoRepository.create.mockResolvedValue(expectedTodo);
       cacheService.delPattern.mockResolvedValue(undefined);
       cacheService.del.mockResolvedValue(undefined);
@@ -110,7 +110,7 @@ describe('TodoService', () => {
         priority: 'medium',
       };
 
-      const expectedTodo = { ...mockTodo, ...createTodoDto };
+      const expectedTodo = { ...mockTodo, ...createTodoDto } as Todo;
       todoRepository.create.mockResolvedValue(expectedTodo);
       cacheService.delPattern.mockResolvedValue(undefined);
       cacheService.del.mockResolvedValue(undefined);

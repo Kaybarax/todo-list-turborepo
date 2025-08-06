@@ -79,6 +79,19 @@ export class UserService {
     return this.updateById(id, { isVerified: true });
   }
 
+  @Trace('UserService.deleteById')
+  async deleteById(id: string): Promise<void> {
+    const result = await this.userModel.findByIdAndDelete(id).exec();
+    if (!result) {
+      throw new NotFoundException('User not found');
+    }
+  }
+
+  @Trace('UserService.findAll')
+  async findAll(query: any = {}): Promise<User[]> {
+    return this.userModel.find(query).exec();
+  }
+
   async getUserStats(): Promise<{
     total: number;
     verified: number;

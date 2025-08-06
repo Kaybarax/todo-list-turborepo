@@ -193,7 +193,7 @@ describe('TodoController', () => {
         priority: 'low',
       };
 
-      const updatedTodo = { ...mockTodo, ...updateTodoDto };
+      const updatedTodo = { ...mockTodo, ...updateTodoDto } as Todo;
       todoService.update.mockResolvedValue(updatedTodo);
 
       const result = await controller.update(todoId, updateTodoDto, mockUser);
@@ -224,7 +224,7 @@ describe('TodoController', () => {
         transactionHash: '0xabc123',
       };
 
-      const updatedTodo = { ...mockTodo, ...updateTodoDto };
+      const updatedTodo = { ...mockTodo, ...updateTodoDto } as Todo;
       todoService.update.mockResolvedValue(updatedTodo);
 
       const result = await controller.update(todoId, updateTodoDto, mockUser);

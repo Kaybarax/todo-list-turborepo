@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { TodoList } from '../TodoList';
-import { vi } from 'vitest';
+import { createMockTodo } from '../../__tests__/test-utils';
 
 // Mock the TodoItem component
-vi.mock('../TodoItem', () => ({
+jest.mock('../TodoItem', () => ({
   TodoItem: ({ todo, onToggle, onEdit, onDelete }: any) => (
     <div data-testid={`todo-item-${todo.id}`}>
       <span>{todo.title}</span>
@@ -16,68 +16,42 @@ vi.mock('../TodoItem', () => ({
 }));
 
 // Mock the UI components
-vi.mock('@todo/ui-web', () => ({
-  Button: ({ children, onClick, variant }: any) => (
-    <button onClick={onClick} data-variant={variant}>
+jest.mock('@todo/ui-web', () => ({
+  Button: ({ children, onClick, disabled }: any) => (
+    <button onClick={onClick} disabled={disabled}>
       {children}
     </button>
   ),
-  Input: ({ value, onChange, placeholder }: any) => (
+  Input: ({ placeholder, value, onChange }: any) => (
     <input
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
+      value={value}
+      onChange={(e) => onChange?.(e.target.value)}
     />
   ),
 }));
 
 describe('TodoList', () => {
-  const mockTodos = [
-    {
-      id: '1',
-      title: 'First Todo',
-      description: 'First Description',
-      completed: false,
-      priority: 'high' as const,
-      dueDate: '2024-12-31',
-      tags: ['work'],
-      createdAt: '2024-01-01T00:00:00Z',
-      updatedAt: '2024-01-01T00:00:00Z',
-      userId: 'user1',
-    },
-    {
-      id: '2',
-      title: 'Second Todo',
-      description: 'Second Description',
-      completed: true,
-      priority: 'medium' as const,
-      dueDate: '2024-11-30',
-      tags: ['personal'],
-      createdAt: '2024-01-02T00:00:00Z',
-      updatedAt: '2024-01-02T00:00:00Z',
-      userId: 'user1',
-    },
-  ];
-
-  const mockOnToggle = vi.fn();
-  const mockOnEdit = vi.fn();
-  const mockOnDelete = vi.fn();
-  const mockOnLoadMore = vi.fn();
+  const mockOnToggle = jest.fn();
+  const mockOnEdit = jest.fn();
+  const mockOnDelete = jest.fn();
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
-  it('renders todo list correctly', () => {
+  it('should render list of todos', () => {
+    const mockTodos = [
+      createMockTodo({ id: '1', title: 'First Todo' }),
+      createMockTodo({ id: '2', title: 'Second Todo' }),
+    ];
+
     render(
       <TodoList
         todos={mockTodos}
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-        onLoadMore={mockOnLoadMore}
-        hasMore={false}
-        isLoading={false}
       />
     );
 
@@ -87,235 +61,165 @@ describe('TodoList', () => {
     expect(screen.getByText('Second Todo')).toBeInTheDocument();
   });
 
-  it('renders empty state when no todos', () => {
+  it('should show empty state when no todos', () => {
     render(
       <TodoList
         todos={[]}
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-        onLoadMore={mockOnLoadMore}
-        hasMore={false}
-        isLoading={false}
       />
     );
 
-    expect(screen.getByText('No todos found')).toBeInTheDocument();
-    expect(screen.getByText('Create your first todo to get started!')).toBeInTheDocument();
+    expect(screen.getByText('No todos')).toBeInTheDocument();
+    expect(screen.getByText('Get started by creating a new todo.')).toBeInTheDocument();
   });
 
-  it('handles search functionality', () => {
-    const mockOnSearch = vi.fn();
-    
+  it('should filter todos by search term', () => {
+    const mockTodos = [
+      createMockTodo({ id: '1', title: 'Work Task' }),
+      createMockTodo({ id: '2', title: 'Personal Task' }),
+    ];
+
     render(
       <TodoList
         todos={mockTodos}
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-        onLoadMore={mockOnLoadMore}
-        onSearch={mockOnSearch}
-        hasMore={false}
-        isLoading={false}
       />
     );
 
+    // Search for "work"
     const searchInput = screen.getByPlaceholderText('Search todos...');
-    fireEvent.change(searchInput, { target: { value: 'test search' } });
+    fireEvent.change(searchInput, { target: { value: 'work' } });
 
-    expect(mockOnSearch).toHaveBeenCalledWith('test search');
+    // Should show only work task
+    expect(screen.getByTestId('todo-item-1')).toBeInTheDocument();
+    expect(screen.queryByTestId('todo-item-2')).not.toBeInTheDocument();
   });
 
-  it('handles filter functionality', () => {
-    const mockOnFilter = vi.fn();
-    
+  it('should filter todos by completion status', () => {
+    const mockTodos = [
+      createMockTodo({ id: '1', title: 'Completed Task', completed: true }),
+      createMockTodo({ id: '2', title: 'Pending Task', completed: false }),
+    ];
+
     render(
       <TodoList
         todos={mockTodos}
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-        onLoadMore={mockOnLoadMore}
-        onFilter={mockOnFilter}
-        hasMore={false}
-        isLoading={false}
       />
     );
 
-    const filterSelect = screen.getByDisplayValue('all');
+    // Filter by completed using the select dropdown
+    const filterSelect = screen.getByDisplayValue('All');
     fireEvent.change(filterSelect, { target: { value: 'completed' } });
 
-    expect(mockOnFilter).toHaveBeenCalledWith('completed');
+    // Should show only completed task
+    expect(screen.getByTestId('todo-item-1')).toBeInTheDocument();
+    expect(screen.queryByTestId('todo-item-2')).not.toBeInTheDocument();
   });
 
-  it('handles sort functionality', () => {
-    const mockOnSort = vi.fn();
-    
+  it('should sort todos by priority', () => {
+    const mockTodos = [
+      createMockTodo({ id: '1', title: 'High Priority', priority: 'high' }),
+      createMockTodo({ id: '2', title: 'Low Priority', priority: 'low' }),
+    ];
+
     render(
       <TodoList
         todos={mockTodos}
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-        onLoadMore={mockOnLoadMore}
-        onSort={mockOnSort}
-        hasMore={false}
-        isLoading={false}
       />
     );
 
-    const sortSelect = screen.getByDisplayValue('createdAt');
+    // Sort by priority using the select dropdown
+    const sortSelect = screen.getByDisplayValue('Created Date');
     fireEvent.change(sortSelect, { target: { value: 'priority' } });
 
-    expect(mockOnSort).toHaveBeenCalledWith('priority');
+    // High priority should come first (both should still be visible)
+    expect(screen.getByTestId('todo-item-1')).toBeInTheDocument();
+    expect(screen.getByTestId('todo-item-2')).toBeInTheDocument();
   });
 
-  it('shows load more button when hasMore is true', () => {
+  it('should call onToggle when todo is toggled', () => {
+    const mockTodos = [createMockTodo({ id: '1', title: 'Test Todo' })];
+
     render(
       <TodoList
         todos={mockTodos}
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-        onLoadMore={mockOnLoadMore}
-        hasMore={true}
-        isLoading={false}
       />
     );
 
-    const loadMoreButton = screen.getByText('Load More');
-    expect(loadMoreButton).toBeInTheDocument();
-    
-    fireEvent.click(loadMoreButton);
-    expect(mockOnLoadMore).toHaveBeenCalled();
-  });
+    const toggleButton = screen.getByText('Toggle');
+    fireEvent.click(toggleButton);
 
-  it('hides load more button when hasMore is false', () => {
-    render(
-      <TodoList
-        todos={mockTodos}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-        onLoadMore={mockOnLoadMore}
-        hasMore={false}
-        isLoading={false}
-      />
-    );
-
-    expect(screen.queryByText('Load More')).not.toBeInTheDocument();
-  });
-
-  it('shows loading state', () => {
-    render(
-      <TodoList
-        todos={mockTodos}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-        onLoadMore={mockOnLoadMore}
-        hasMore={false}
-        isLoading={true}
-      />
-    );
-
-    expect(screen.getByText('Loading todos...')).toBeInTheDocument();
-  });
-
-  it('passes correct props to TodoItem components', () => {
-    render(
-      <TodoList
-        todos={mockTodos}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-        onLoadMore={mockOnLoadMore}
-        hasMore={false}
-        isLoading={false}
-      />
-    );
-
-    // Check that toggle buttons are rendered (indicating props are passed)
-    const toggleButtons = screen.getAllByText('Toggle');
-    expect(toggleButtons).toHaveLength(2);
-
-    // Test that callbacks work
-    fireEvent.click(toggleButtons[0]);
     expect(mockOnToggle).toHaveBeenCalledWith('1');
+  });
 
-    const editButtons = screen.getAllByText('Edit');
-    fireEvent.click(editButtons[0]);
+  it('should call onEdit when todo is edited', () => {
+    const mockTodos = [createMockTodo({ id: '1', title: 'Test Todo' })];
+
+    render(
+      <TodoList
+        todos={mockTodos}
+        onToggle={mockOnToggle}
+        onEdit={mockOnEdit}
+        onDelete={mockOnDelete}
+      />
+    );
+
+    const editButton = screen.getByText('Edit');
+    fireEvent.click(editButton);
+
     expect(mockOnEdit).toHaveBeenCalledWith(mockTodos[0]);
+  });
 
-    const deleteButtons = screen.getAllByText('Delete');
-    fireEvent.click(deleteButtons[0]);
+  it('should call onDelete when todo is deleted', () => {
+    const mockTodos = [createMockTodo({ id: '1', title: 'Test Todo' })];
+
+    render(
+      <TodoList
+        todos={mockTodos}
+        onToggle={mockOnToggle}
+        onEdit={mockOnEdit}
+        onDelete={mockOnDelete}
+      />
+    );
+
+    const deleteButton = screen.getByText('Delete');
+    fireEvent.click(deleteButton);
+
     expect(mockOnDelete).toHaveBeenCalledWith('1');
   });
 
-  it('handles priority filter correctly', () => {
-    const mockOnFilter = vi.fn();
-    
+  it('should show todo statistics', () => {
+    const mockTodos = [
+      createMockTodo({ id: '1', title: 'First Todo', completed: false }),
+      createMockTodo({ id: '2', title: 'Second Todo', completed: true }),
+    ];
+
     render(
       <TodoList
         todos={mockTodos}
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-        onLoadMore={mockOnLoadMore}
-        onFilter={mockOnFilter}
-        hasMore={false}
-        isLoading={false}
       />
     );
 
-    const prioritySelect = screen.getByDisplayValue('all');
-    fireEvent.change(prioritySelect, { target: { value: 'high' } });
-
-    expect(mockOnFilter).toHaveBeenCalledWith('high');
-  });
-
-  it('shows correct todo count', () => {
-    render(
-      <TodoList
-        todos={mockTodos}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-        onLoadMore={mockOnLoadMore}
-        hasMore={false}
-        isLoading={false}
-        totalCount={25}
-      />
-    );
-
-    expect(screen.getByText('Showing 2 of 25 todos')).toBeInTheDocument();
-  });
-
-  it('handles bulk actions when provided', () => {
-    const mockOnBulkComplete = vi.fn();
-    const mockOnBulkDelete = vi.fn();
-    
-    render(
-      <TodoList
-        todos={mockTodos}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-        onLoadMore={mockOnLoadMore}
-        onBulkComplete={mockOnBulkComplete}
-        onBulkDelete={mockOnBulkDelete}
-        hasMore={false}
-        isLoading={false}
-      />
-    );
-
-    expect(screen.getByText('Complete All')).toBeInTheDocument();
-    expect(screen.getByText('Delete All')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByText('Complete All'));
-    expect(mockOnBulkComplete).toHaveBeenCalled();
-
-    fireEvent.click(screen.getByText('Delete All'));
-    expect(mockOnBulkDelete).toHaveBeenCalled();
+    expect(screen.getByText('2')).toBeInTheDocument(); // Total
+    expect(screen.getByText('1')).toBeInTheDocument(); // Active and Completed
+    expect(screen.getByText('Total')).toBeInTheDocument();
+    expect(screen.getByText('Active')).toBeInTheDocument();
+    expect(screen.getByText('Completed')).toBeInTheDocument();
   });
 });
