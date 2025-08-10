@@ -37,6 +37,34 @@ VERIFY_CONTRACTS="${VERIFY_CONTRACTS:-false}"
 AUTO_INSTALL="${AUTO_INSTALL:-true}"
 SKIP_DEPS_CHECK="${SKIP_DEPS_CHECK:-false}"
 
+# Version comparison function
+version_compare() {
+    local version1=$1
+    local version2=$2
+    
+    # Remove 'v' prefix if present
+    version1=${version1#v}
+    version2=${version2#v}
+    
+    # Split versions into arrays
+    IFS='.' read -ra V1 <<< "$version1"
+    IFS='.' read -ra V2 <<< "$version2"
+    
+    # Compare each part
+    for i in {0..2}; do
+        local v1_part=${V1[i]:-0}
+        local v2_part=${V2[i]:-0}
+        
+        if (( v1_part > v2_part )); then
+            return 0  # version1 > version2
+        elif (( v1_part < v2_part )); then
+            return 1  # version1 < version2
+        fi
+    done
+    
+    return 0  # versions are equal
+}
+
 # Dependency management configuration
 DEPS_CHECK_SCRIPT="./scripts/blockchain-deps-check.sh"
 INSTALL_SCRIPT="./scripts/install-blockchain-tools.sh"
@@ -137,26 +165,60 @@ validate_environment() {
     
     print_status "Validating build environment for $network"
     
-    # First check dependencies
-    if ! check_dependencies "$network"; then
-        print_warning "Dependencies missing for $network"
-        
-        # Attempt automatic installation
-        if attempt_auto_install "$network"; then
-            print_success "Dependencies installed, re-validating environment"
-            
-            # Re-check dependencies after installation
-            if ! check_dependencies "$network"; then
-                print_error "Environment validation failed even after installation attempt"
-                provide_manual_guidance "$network"
+    # Use network-specific validation functions
+    case "$network" in
+        "polygon")
+            if ! validate_polygon_dependencies; then
                 return 1
             fi
-        else
-            print_error "Automatic installation failed"
-            provide_manual_guidance "$network"
+            ;;
+        "solana")
+            if ! validate_solana_dependencies; then
+                return 1
+            fi
+            ;;
+        "polkadot")
+            if ! validate_polkadot_dependencies; then
+                return 1
+            fi
+            ;;
+        "moonbeam")
+            if ! validate_polygon_dependencies; then
+                return 1
+            fi
+            ;;
+        "base")
+            if ! validate_polygon_dependencies; then
+                return 1
+            fi
+            ;;
+        "all")
+            # For 'all', we'll do a basic check but let individual builds handle detailed validation
+            if ! check_dependencies "$network"; then
+                print_warning "Some dependencies missing for $network"
+                
+                # Attempt automatic installation
+                if attempt_auto_install "$network"; then
+                    print_success "Dependencies installed, re-validating environment"
+                    
+                    # Re-check dependencies after installation
+                    if ! check_dependencies "$network"; then
+                        print_error "Environment validation failed even after installation attempt"
+                        provide_manual_guidance "$network"
+                        return 1
+                    fi
+                else
+                    print_error "Automatic installation failed"
+                    provide_manual_guidance "$network"
+                    return 1
+                fi
+            fi
+            ;;
+        *)
+            print_error "Unknown network for validation: $network"
             return 1
-        fi
-    fi
+            ;;
+    esac
     
     print_success "Environment validation passed for $network"
     return 0
@@ -204,36 +266,467 @@ provide_manual_guidance() {
 
 # This will be printed later in main_build function
 
-# Function to build Polygon contracts
+# Network-specific dependency validation functions
+validate_polygon_dependencies() {
+    local validation_failed=false
+    
+    print_status "Validating Polygon/Hardhat dependencies..."
+    
+    # Check Node.js version
+    if command -v node >/dev/null 2>&1; then
+        local node_version
+        node_version=$(node --version 2>/dev/null | sed 's/v//')
+        if ! version_compare "$node_version" "20.0.0"; then
+            print_error "Node.js version $node_version is too old (Required: 20+)"
+            validation_failed=true
+        fi
+    else
+        print_error "Node.js not found (Required for Hardhat compilation)"
+        validation_failed=true
+    fi
+    
+    # Check pnpm
+    if ! command -v pnpm >/dev/null 2>&1; then
+        print_error "pnpm not found (Required for dependency management)"
+        validation_failed=true
+    fi
+    
+    # Check if we're in the correct directory structure
+    if [ ! -f "apps/smart-contracts/polygon/package.json" ]; then
+        print_error "Polygon package.json not found"
+        validation_failed=true
+    fi
+    
+    # Check for Hardhat configuration
+    if [ ! -f "apps/smart-contracts/polygon/hardhat.config.js" ]; then
+        print_error "Hardhat configuration file not found"
+        validation_failed=true
+    fi
+    
+    if [ "$validation_failed" = "true" ]; then
+        print_error "Polygon dependency validation failed"
+        provide_polygon_guidance
+        return 1
+    fi
+    
+    return 0
+}
+
+validate_solana_dependencies() {
+    local validation_failed=false
+    
+    print_status "Validating Solana/Anchor dependencies..."
+    
+    # Check Rust installation
+    if command -v rustc >/dev/null 2>&1; then
+        local rust_version
+        rust_version=$(rustc --version 2>/dev/null | awk '{print $2}')
+        if ! version_compare "$rust_version" "1.70.0"; then
+            print_error "Rust version $rust_version is too old (Required: 1.70+)"
+            validation_failed=true
+        fi
+    else
+        print_error "Rust not found (Required for Solana program compilation)"
+        validation_failed=true
+    fi
+    
+    # Check Solana CLI
+    if command -v solana >/dev/null 2>&1; then
+        local solana_version
+        solana_version=$(solana --version 2>/dev/null | awk '{print $2}')
+        if ! version_compare "$solana_version" "1.16.0"; then
+            print_error "Solana CLI version $solana_version is too old (Required: 1.16+)"
+            validation_failed=true
+        fi
+    else
+        print_error "Solana CLI not found (Required for program deployment)"
+        validation_failed=true
+    fi
+    
+    # Check Anchor CLI
+    if command -v anchor >/dev/null 2>&1; then
+        local anchor_version
+        anchor_version=$(anchor --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+        if [[ -z "$anchor_version" ]] || ! version_compare "$anchor_version" "0.28.0"; then
+            print_error "Anchor CLI version $anchor_version is too old (Required: 0.28+)"
+            validation_failed=true
+        fi
+    else
+        print_error "Anchor CLI not found (Required for Solana program development)"
+        validation_failed=true
+    fi
+    
+    # Check Anchor.toml configuration
+    if [ ! -f "apps/smart-contracts/solana/Anchor.toml" ]; then
+        print_error "Anchor.toml configuration file not found"
+        validation_failed=true
+    fi
+    
+    # Check Cargo.toml
+    if [ ! -f "apps/smart-contracts/solana/Cargo.toml" ]; then
+        print_error "Cargo.toml file not found"
+        validation_failed=true
+    fi
+    
+    if [ "$validation_failed" = "true" ]; then
+        print_error "Solana dependency validation failed"
+        provide_solana_guidance
+        return 1
+    fi
+    
+    return 0
+}
+
+validate_polkadot_dependencies() {
+    local validation_failed=false
+    
+    print_status "Validating Polkadot/Substrate dependencies..."
+    
+    # Check Rust installation
+    if command -v rustc >/dev/null 2>&1; then
+        local rust_version
+        rust_version=$(rustc --version 2>/dev/null | awk '{print $2}')
+        if ! version_compare "$rust_version" "1.70.0"; then
+            print_error "Rust version $rust_version is too old (Required: 1.70+)"
+            validation_failed=true
+        fi
+    else
+        print_error "Rust not found (Required for Substrate pallet compilation)"
+        validation_failed=true
+    fi
+    
+    # Check for wasm32-unknown-unknown target
+    if command -v rustup >/dev/null 2>&1; then
+        if ! rustup target list --installed | grep -q "wasm32-unknown-unknown"; then
+            print_error "WebAssembly target not installed (Required for Substrate runtime)"
+            print_status "Install with: rustup target add wasm32-unknown-unknown"
+            validation_failed=true
+        fi
+    else
+        print_warning "rustup not found - cannot verify WebAssembly target"
+    fi
+    
+    # Check cargo-contract
+    if ! command -v cargo-contract >/dev/null 2>&1; then
+        print_error "cargo-contract not found (Required for ink! contract development)"
+        print_status "Install with: cargo install cargo-contract"
+        validation_failed=true
+    fi
+    
+    # Check Substrate pallet structure
+    if [ ! -f "apps/smart-contracts/polkadot/pallet-todo/Cargo.toml" ]; then
+        print_error "Substrate pallet Cargo.toml not found"
+        validation_failed=true
+    fi
+    
+    # Check runtime structure
+    if [ ! -f "apps/smart-contracts/polkadot/runtime/Cargo.toml" ]; then
+        print_error "Substrate runtime Cargo.toml not found"
+        validation_failed=true
+    fi
+    
+    if [ "$validation_failed" = "true" ]; then
+        print_error "Polkadot dependency validation failed"
+        provide_polkadot_guidance
+        return 1
+    fi
+    
+    return 0
+}
+
+# Network-specific guidance functions
+provide_polygon_guidance() {
+    echo ""
+    print_error "Polygon/Hardhat Build Environment Issues Detected"
+    echo ""
+    echo "Required Dependencies:"
+    echo "  • Node.js 20+ (https://nodejs.org/)"
+    echo "  • pnpm package manager (npm install -g pnpm)"
+    echo ""
+    echo "Common Issues and Solutions:"
+    echo "  1. Node.js version too old:"
+    echo "     - Update Node.js to version 20 or higher"
+    echo "     - Use nvm: nvm install 20 && nvm use 20"
+    echo ""
+    echo "  2. Missing dependencies:"
+    echo "     - Run: cd apps/smart-contracts/polygon && pnpm install"
+    echo ""
+    echo "  3. Hardhat compilation errors:"
+    echo "     - Check Solidity version compatibility in hardhat.config.js"
+    echo "     - Verify OpenZeppelin contracts version"
+    echo "     - Run: pnpm compile --verbose for detailed errors"
+    echo ""
+    echo "  4. Network configuration issues:"
+    echo "     - Verify RPC URLs in hardhat.config.js"
+    echo "     - Check environment variables in .env file"
+    echo ""
+    echo "Troubleshooting Commands:"
+    echo "  • Check Hardhat: cd apps/smart-contracts/polygon && npx hardhat --version"
+    echo "  • Clean build: cd apps/smart-contracts/polygon && npx hardhat clean"
+    echo "  • Verbose compile: cd apps/smart-contracts/polygon && npx hardhat compile --verbose"
+    echo ""
+}
+
+provide_solana_guidance() {
+    echo ""
+    print_error "Solana/Anchor Build Environment Issues Detected"
+    echo ""
+    echo "Required Dependencies:"
+    echo "  • Rust 1.70+ (https://rustup.rs/)"
+    echo "  • Solana CLI 1.16+ (https://docs.solana.com/cli/install-solana-cli-tools)"
+    echo "  • Anchor CLI 0.28+ (cargo install --git https://github.com/coral-xyz/anchor avm)"
+    echo ""
+    echo "Common Issues and Solutions:"
+    echo "  1. Rust version too old:"
+    echo "     - Update Rust: rustup update"
+    echo "     - Install specific version: rustup install 1.70.0"
+    echo ""
+    echo "  2. Solana CLI issues:"
+    echo "     - Install: sh -c \"\$(curl -sSfL https://release.solana.com/stable/install)\""
+    echo "     - Add to PATH: export PATH=\"\$HOME/.local/share/solana/install/active_release/bin:\$PATH\""
+    echo "     - Configure: solana config set --url devnet"
+    echo ""
+    echo "  3. Anchor CLI issues:"
+    echo "     - Install AVM: cargo install --git https://github.com/coral-xyz/anchor avm"
+    echo "     - Install Anchor: avm install latest && avm use latest"
+    echo ""
+    echo "  4. Build failures:"
+    echo "     - Check Anchor.toml configuration"
+    echo "     - Verify program dependencies in Cargo.toml"
+    echo "     - Run: anchor build --verbose for detailed errors"
+    echo ""
+    echo "  5. Test failures:"
+    echo "     - Start local validator: solana-test-validator"
+    echo "     - Check wallet configuration: solana address"
+    echo "     - Verify test cluster: anchor test --skip-local-validator"
+    echo ""
+    echo "Troubleshooting Commands:"
+    echo "  • Check versions: anchor --version && solana --version && rustc --version"
+    echo "  • Clean build: cd apps/smart-contracts/solana && anchor clean"
+    echo "  • Verbose build: cd apps/smart-contracts/solana && anchor build --verbose"
+    echo ""
+}
+
+provide_polkadot_guidance() {
+    echo ""
+    print_error "Polkadot/Substrate Build Environment Issues Detected"
+    echo ""
+    echo "Required Dependencies:"
+    echo "  • Rust 1.70+ (https://rustup.rs/)"
+    echo "  • WebAssembly target (rustup target add wasm32-unknown-unknown)"
+    echo "  • cargo-contract (cargo install cargo-contract)"
+    echo "  • Protocol Buffers compiler (system package manager)"
+    echo ""
+    echo "Common Issues and Solutions:"
+    echo "  1. Rust version too old:"
+    echo "     - Update Rust: rustup update"
+    echo "     - Install specific version: rustup install 1.70.0"
+    echo ""
+    echo "  2. Missing WebAssembly target:"
+    echo "     - Install: rustup target add wasm32-unknown-unknown"
+    echo "     - Add rust-src: rustup component add rust-src"
+    echo ""
+    echo "  3. cargo-contract missing:"
+    echo "     - Install: cargo install cargo-contract"
+    echo "     - Update: cargo install --force cargo-contract"
+    echo ""
+    echo "  4. Protocol Buffers issues:"
+    echo "     - macOS: brew install protobuf"
+    echo "     - Ubuntu: sudo apt install protobuf-compiler"
+    echo "     - Arch: sudo pacman -S protobuf"
+    echo ""
+    echo "  5. Substrate compilation errors:"
+    echo "     - Check pallet dependencies in Cargo.toml"
+    echo "     - Verify Substrate version compatibility"
+    echo "     - Run: cargo build --verbose for detailed errors"
+    echo ""
+    echo "  6. Runtime build failures:"
+    echo "     - Check feature flags in Cargo.toml"
+    echo "     - Verify pallet integration in runtime/lib.rs"
+    echo "     - Build with: cargo build --release --features runtime-benchmarks"
+    echo ""
+    echo "Troubleshooting Commands:"
+    echo "  • Check versions: rustc --version && cargo --version"
+    echo "  • Check targets: rustup target list --installed"
+    echo "  • Clean build: cd apps/smart-contracts/polkadot && cargo clean"
+    echo "  • Verbose build: cd apps/smart-contracts/polkadot && cargo build --verbose"
+    echo ""
+}
+
+# Enhanced build validation functions
+validate_polygon_build() {
+    local build_dir="${1:-apps/smart-contracts/polygon}"
+    
+    print_status "Validating build artifacts for $build_dir..."
+    
+    # Check if artifacts directory exists and contains contracts
+    if [ ! -d "$build_dir/artifacts" ]; then
+        print_error "Artifacts directory not found: $build_dir/artifacts"
+        return 1
+    fi
+    
+    # Check for compiled contract artifacts
+    local contract_count
+    contract_count=$(find "$build_dir/artifacts" -name "*.json" -not -path "*/build-info/*" | wc -l)
+    
+    if [ "$contract_count" -eq 0 ]; then
+        print_error "No compiled contract artifacts found"
+        return 1
+    fi
+    
+    print_success "Found $contract_count compiled contract artifacts"
+    
+    # Check for TypeChain types if TypeChain is configured
+    if [ -d "$build_dir/typechain-types" ]; then
+        local types_count
+        types_count=$(find "$build_dir/typechain-types" -name "*.ts" | wc -l)
+        print_success "Found $types_count TypeScript type definitions"
+    fi
+    
+    return 0
+}
+
+validate_solana_build() {
+    local build_dir="apps/smart-contracts/solana"
+    
+    print_status "Validating Solana build artifacts..."
+    
+    # Check if target directory exists
+    if [ ! -d "$build_dir/target" ]; then
+        print_error "Solana target directory not found"
+        return 1
+    fi
+    
+    # Check for compiled programs (.so files)
+    local program_count
+    program_count=$(find "$build_dir/target/deploy" -name "*.so" 2>/dev/null | wc -l)
+    
+    if [ "$program_count" -eq 0 ]; then
+        print_error "No compiled Solana programs (.so files) found"
+        return 1
+    fi
+    
+    print_success "Found $program_count compiled Solana programs"
+    
+    # Check for IDL files
+    if [ -d "$build_dir/target/idl" ]; then
+        local idl_count
+        idl_count=$(find "$build_dir/target/idl" -name "*.json" | wc -l)
+        print_success "Found $idl_count IDL files"
+    fi
+    
+    # Check for TypeScript types
+    if [ -d "$build_dir/target/types" ]; then
+        local types_count
+        types_count=$(find "$build_dir/target/types" -name "*.ts" | wc -l)
+        print_success "Found $types_count TypeScript type definitions"
+    fi
+    
+    return 0
+}
+
+validate_polkadot_build() {
+    local build_dir="apps/smart-contracts/polkadot"
+    
+    print_status "Validating Polkadot build artifacts..."
+    
+    # Check if target directory exists
+    if [ ! -d "$build_dir/target" ]; then
+        print_error "Polkadot target directory not found"
+        return 1
+    fi
+    
+    # Check for compiled pallet
+    if [ -d "$build_dir/target/release" ]; then
+        print_success "Release build artifacts found"
+    elif [ -d "$build_dir/target/debug" ]; then
+        print_success "Debug build artifacts found"
+    else
+        print_error "No build artifacts found in target directory"
+        return 1
+    fi
+    
+    # Check for WASM runtime if it should be built
+    local wasm_count
+    wasm_count=$(find "$build_dir/target" -name "*.wasm" 2>/dev/null | wc -l)
+    
+    if [ "$wasm_count" -gt 0 ]; then
+        print_success "Found $wasm_count WebAssembly runtime files"
+    fi
+    
+    return 0
+}
+
+# Function to build Polygon contracts with enhanced validation
 build_polygon() {
     if [ ! -d "apps/smart-contracts/polygon" ]; then
         print_warning "Polygon contracts directory not found, skipping..."
         return 0
     fi
     
-    # Validate environment before building
-    if ! validate_environment "polygon"; then
-        print_error "Environment validation failed for Polygon"
+    # Enhanced dependency validation
+    if ! validate_polygon_dependencies; then
+        print_error "Polygon dependency validation failed"
         return 1
     fi
     
     print_status "Building Polygon contracts..."
     cd apps/smart-contracts/polygon
     
-    # Install dependencies
+    # Install dependencies with error handling
     if [ ! -d "node_modules" ]; then
         print_status "Installing Polygon contract dependencies..."
-        pnpm install
+        if ! pnpm install; then
+            print_error "Failed to install Polygon dependencies"
+            cd ../../..
+            return 1
+        fi
     fi
     
-    # Compile contracts
+    # Clean previous build artifacts
+    print_status "Cleaning previous build artifacts..."
+    npx hardhat clean 2>/dev/null || true
+    
+    # Compile contracts with detailed error handling
     print_status "Compiling Solidity contracts..."
-    pnpm compile
+    if ! npx hardhat --config hardhat.config.js compile; then
+        print_error "Polygon contract compilation failed"
+        echo ""
+        print_status "Common compilation issues:"
+        echo "  • Check Solidity version compatibility"
+        echo "  • Verify import paths in contracts"
+        echo "  • Check for syntax errors in .sol files"
+        echo "  • OpenZeppelin version compatibility issues"
+        echo "  • Run 'npx hardhat compile --verbose' for detailed errors"
+        echo ""
+        print_status "OpenZeppelin 4.9+ specific issues:"
+        echo "  • Ownable constructor changed: use Ownable(initialOwner) instead of Ownable()"
+        echo "  • Counters library deprecated: use manual counter or alternative"
+        echo "  • Check contract documentation syntax"
+        cd ../../..
+        return 1
+    fi
+    
+    # Validate build artifacts
+    cd ../../..
+    if ! validate_polygon_build; then
+        print_error "Polygon build validation failed"
+        return 1
+    fi
+    cd apps/smart-contracts/polygon
     
     # Run tests if requested
     if [ "$RUN_TESTS" = "true" ]; then
         print_status "Running Polygon contract tests..."
-        pnpm test
+        if ! pnpm test; then
+            print_error "Polygon contract tests failed"
+            print_status "Test troubleshooting:"
+            echo "  • Check test file syntax and imports"
+            echo "  • Verify contract deployment in tests"
+            echo "  • Run 'npx hardhat test --verbose' for detailed output"
+            cd ../../..
+            return 1
+        fi
     fi
     
     # Generate documentation if requested
@@ -252,113 +745,306 @@ build_polygon() {
     print_success "Polygon contracts built successfully"
 }
 
-# Function to build Solana programs
+# Function to build Solana programs with enhanced validation
 build_solana() {
     if [ ! -d "apps/smart-contracts/solana" ]; then
         print_warning "Solana programs directory not found, skipping..."
         return 0
     fi
     
-    # Validate environment before building
-    if ! validate_environment "solana"; then
-        print_error "Environment validation failed for Solana"
+    # Enhanced dependency validation
+    if ! validate_solana_dependencies; then
+        print_error "Solana dependency validation failed"
         return 1
     fi
     
     print_status "Building Solana programs..."
     cd apps/smart-contracts/solana
     
-    # Build programs
+    # Check Solana configuration
+    print_status "Checking Solana configuration..."
+    if ! solana config get >/dev/null 2>&1; then
+        print_warning "Solana CLI not configured, setting to devnet"
+        solana config set --url devnet
+    fi
+    
+    # Clean previous build artifacts
+    print_status "Cleaning previous build artifacts..."
+    anchor clean 2>/dev/null || true
+    
+    # Build programs with detailed error handling
     print_status "Building Solana programs with Anchor..."
-    anchor build
+    if ! anchor build; then
+        print_error "Solana program compilation failed"
+        echo ""
+        print_status "Common compilation issues:"
+        echo "  • Check Rust version compatibility (requires 1.70+)"
+        echo "  • Verify Anchor.toml configuration"
+        echo "  • Check program dependencies in Cargo.toml"
+        echo "  • Ensure all required Solana programs are available"
+        echo "  • Run 'anchor build --verbose' for detailed errors"
+        echo ""
+        print_status "Anchor troubleshooting:"
+        echo "  • Update Anchor: avm install latest && avm use latest"
+        echo "  • Check program ID: anchor keys list"
+        echo "  • Verify workspace configuration in Anchor.toml"
+        cd ../../..
+        return 1
+    fi
+    
+    # Validate build artifacts
+    cd ../../..
+    if ! validate_solana_build; then
+        print_error "Solana build validation failed"
+        return 1
+    fi
+    cd apps/smart-contracts/solana
     
     # Run tests if requested
     if [ "$RUN_TESTS" = "true" ]; then
         print_status "Running Solana program tests..."
-        anchor test --skip-local-validator || {
-            print_warning "Solana tests failed. Make sure test validator is running."
-        }
+        
+        # Check if local validator is needed
+        if ! solana cluster-version >/dev/null 2>&1; then
+            print_status "Starting local test validator for tests..."
+            # Start validator in background and give it time to start
+            solana-test-validator --reset --quiet &
+            local validator_pid=$!
+            sleep 5
+            
+            # Run tests
+            if ! anchor test --skip-local-validator; then
+                print_error "Solana program tests failed"
+                print_status "Test troubleshooting:"
+                echo "  • Check test file syntax and imports"
+                echo "  • Verify program deployment in tests"
+                echo "  • Ensure test accounts have sufficient SOL"
+                echo "  • Run 'anchor test --verbose' for detailed output"
+                
+                # Clean up validator
+                kill $validator_pid 2>/dev/null || true
+                cd ../../..
+                return 1
+            fi
+            
+            # Clean up validator
+            kill $validator_pid 2>/dev/null || true
+        else
+            # Use existing cluster
+            if ! anchor test --skip-local-validator; then
+                print_error "Solana program tests failed"
+                print_status "Test troubleshooting:"
+                echo "  • Check network connectivity to configured cluster"
+                echo "  • Verify wallet has sufficient SOL for tests"
+                echo "  • Check program deployment status"
+                cd ../../..
+                return 1
+            fi
+        fi
     fi
     
     # Generate IDL and types
-    print_status "Generating Solana program IDL..."
-    anchor idl parse --file target/idl/todo_program.json > ../../../packages/services/src/blockchain/solana/idl.json || {
-        print_warning "IDL generation failed"
-    }
+    print_status "Generating Solana program IDL and types..."
+    
+    # Create target directories if they don't exist
+    mkdir -p ../../../packages/services/src/blockchain/solana
+    
+    # Copy IDL files
+    if [ -d "target/idl" ]; then
+        for idl_file in target/idl/*.json; do
+            if [ -f "$idl_file" ]; then
+                local idl_name
+                idl_name=$(basename "$idl_file")
+                cp "$idl_file" "../../../packages/services/src/blockchain/solana/$idl_name"
+                print_success "Generated IDL: $idl_name"
+            fi
+        done
+    else
+        print_warning "No IDL files found - this may indicate build issues"
+    fi
+    
+    # Generate TypeScript types if available
+    if [ -d "target/types" ]; then
+        mkdir -p ../../../packages/services/src/blockchain/solana/types
+        cp -r target/types/* ../../../packages/services/src/blockchain/solana/types/ 2>/dev/null || true
+        print_success "Generated TypeScript types"
+    fi
     
     cd ../../..
     print_success "Solana programs built successfully"
 }
 
-# Function to build Polkadot pallets
+# Function to build Polkadot pallets with enhanced validation
 build_polkadot() {
     if [ ! -d "apps/smart-contracts/polkadot" ]; then
         print_warning "Polkadot pallets directory not found, skipping..."
         return 0
     fi
     
-    # Validate environment before building
-    if ! validate_environment "polkadot"; then
-        print_error "Environment validation failed for Polkadot"
+    # Enhanced dependency validation
+    if ! validate_polkadot_dependencies; then
+        print_error "Polkadot dependency validation failed"
         return 1
     fi
     
     print_status "Building Polkadot pallets..."
     cd apps/smart-contracts/polkadot
     
-    # Install Substrate dependencies
+    # Install Substrate dependencies with error handling
     print_status "Installing Substrate dependencies..."
-    rustup target add wasm32-unknown-unknown
-    rustup component add rust-src
     
-    # Build pallets
+    if ! rustup target add wasm32-unknown-unknown; then
+        print_error "Failed to add WebAssembly target"
+        cd ../../..
+        return 1
+    fi
+    
+    if ! rustup component add rust-src; then
+        print_error "Failed to add rust-src component"
+        cd ../../..
+        return 1
+    fi
+    
+    # Clean previous build artifacts
+    print_status "Cleaning previous build artifacts..."
+    cargo clean 2>/dev/null || true
+    
+    # Build pallets with detailed error handling
     print_status "Building Polkadot pallets..."
-    cargo build --release
+    if ! cargo build --release; then
+        print_error "Polkadot pallet compilation failed"
+        echo ""
+        print_status "Common compilation issues:"
+        echo "  • Check Rust version compatibility (requires 1.70+)"
+        echo "  • Verify Substrate dependencies in Cargo.toml"
+        echo "  • Check pallet implementation for syntax errors"
+        echo "  • Ensure all required Substrate crates are available"
+        echo "  • Run 'cargo build --verbose' for detailed errors"
+        echo ""
+        print_status "Substrate troubleshooting:"
+        echo "  • Update Rust: rustup update"
+        echo "  • Check targets: rustup target list --installed"
+        echo "  • Verify cargo-contract: cargo install --force cargo-contract"
+        cd ../../..
+        return 1
+    fi
+    
+    # Validate build artifacts
+    cd ../../..
+    if ! validate_polkadot_build; then
+        print_error "Polkadot build validation failed"
+        return 1
+    fi
+    cd apps/smart-contracts/polkadot
     
     # Run tests if requested
     if [ "$RUN_TESTS" = "true" ]; then
         print_status "Running Polkadot pallet tests..."
-        cargo test
+        if ! cargo test; then
+            print_error "Polkadot pallet tests failed"
+            print_status "Test troubleshooting:"
+            echo "  • Check test module syntax and imports"
+            echo "  • Verify mock runtime configuration"
+            echo "  • Ensure test dependencies are properly configured"
+            echo "  • Run 'cargo test --verbose' for detailed output"
+            cd ../../..
+            return 1
+        fi
     fi
     
-    # Build WASM runtime
+    # Build WASM runtime with error handling
     print_status "Building WASM runtime..."
-    cargo build --release --features runtime-benchmarks
+    if ! cargo build --release --features runtime-benchmarks; then
+        print_error "WASM runtime build failed"
+        print_status "Runtime build troubleshooting:"
+        echo "  • Check runtime configuration in runtime/Cargo.toml"
+        echo "  • Verify all pallets are properly integrated"
+        echo "  • Ensure feature flags are correctly configured"
+        echo "  • Check for missing dependencies in runtime"
+        cd ../../..
+        return 1
+    fi
+    
+    # Additional validation for runtime artifacts
+    if [ -f "target/release/wbuild/todo-runtime/todo_runtime.wasm" ]; then
+        print_success "WASM runtime built successfully"
+    elif [ -f "target/release/wbuild/*/runtime.wasm" ]; then
+        print_success "WASM runtime built successfully"
+    else
+        print_warning "WASM runtime file not found - build may have issues"
+    fi
     
     cd ../../..
     print_success "Polkadot pallets built successfully"
 }
 
-# Function to build Moonbeam contracts
+# Function to build Moonbeam contracts with enhanced validation
 build_moonbeam() {
     if [ ! -d "apps/smart-contracts/moonbeam" ]; then
         print_warning "Moonbeam contracts directory not found, skipping..."
         return 0
     fi
     
-    # Validate environment before building
-    if ! validate_environment "moonbeam"; then
-        print_error "Environment validation failed for Moonbeam"
+    # Enhanced dependency validation (same as Polygon since it uses Hardhat)
+    if ! validate_polygon_dependencies; then
+        print_error "Moonbeam dependency validation failed"
         return 1
     fi
     
     print_status "Building Moonbeam contracts..."
     cd apps/smart-contracts/moonbeam
     
-    # Install dependencies if needed
+    # Install dependencies with error handling
     if [ ! -d "node_modules" ]; then
         print_status "Installing Moonbeam contract dependencies..."
-        pnpm install
+        if ! pnpm install; then
+            print_error "Failed to install Moonbeam dependencies"
+            cd ../../..
+            return 1
+        fi
     fi
     
-    # Compile Solidity contracts
-    print_status "Compiling Moonbeam Solidity contracts..."
-    pnpm compile
+    # Clean previous build artifacts
+    print_status "Cleaning previous build artifacts..."
+    npx hardhat clean 2>/dev/null || true
     
-    # Run tests if not skipped
+    # Compile Solidity contracts with detailed error handling
+    print_status "Compiling Moonbeam Solidity contracts..."
+    if ! npx hardhat --config hardhat.config.js compile; then
+        print_error "Moonbeam contract compilation failed"
+        echo ""
+        print_status "Common Moonbeam compilation issues:"
+        echo "  • Check Solidity version compatibility with Moonbeam"
+        echo "  • Verify Moonbeam-specific imports and dependencies"
+        echo "  • Check for Polkadot API integration issues"
+        echo "  • Ensure @moonbeam-network packages are properly installed"
+        echo "  • OpenZeppelin version compatibility (same as Polygon)"
+        echo "  • Run 'npx hardhat compile --verbose' for detailed errors"
+        cd ../../..
+        return 1
+    fi
+    
+    # Validate build artifacts (reuse Polygon validation since structure is similar)
+    cd ../../..
+    if ! validate_polygon_build "apps/smart-contracts/moonbeam"; then
+        print_error "Moonbeam build validation failed"
+        return 1
+    fi
+    cd apps/smart-contracts/moonbeam
+    
+    # Run tests if requested
     if [ "$RUN_TESTS" = "true" ]; then
         print_status "Running Moonbeam contract tests..."
-        pnpm test
+        if ! pnpm test; then
+            print_error "Moonbeam contract tests failed"
+            print_status "Moonbeam test troubleshooting:"
+            echo "  • Check Moonbeam network configuration in hardhat.config.js"
+            echo "  • Verify test accounts and funding"
+            echo "  • Ensure Moonbeam-specific test setup is correct"
+            echo "  • Check for parachain-specific testing requirements"
+            cd ../../..
+            return 1
+        fi
     fi
     
     # Generate documentation if requested
@@ -377,36 +1063,74 @@ build_moonbeam() {
     print_success "Moonbeam contracts built successfully"
 }
 
-# Function to build Base contracts
+# Function to build Base contracts with enhanced validation
 build_base() {
     if [ ! -d "apps/smart-contracts/base" ]; then
         print_warning "Base contracts directory not found, skipping..."
         return 0
     fi
     
-    # Validate environment before building
-    if ! validate_environment "base"; then
-        print_error "Environment validation failed for Base"
+    # Enhanced dependency validation (same as Polygon since it uses Hardhat)
+    if ! validate_polygon_dependencies; then
+        print_error "Base dependency validation failed"
         return 1
     fi
     
     print_status "Building Base contracts..."
     cd apps/smart-contracts/base
     
-    # Install dependencies if needed
+    # Install dependencies with error handling
     if [ ! -d "node_modules" ]; then
         print_status "Installing Base contract dependencies..."
-        pnpm install
+        if ! pnpm install; then
+            print_error "Failed to install Base dependencies"
+            cd ../../..
+            return 1
+        fi
     fi
     
-    # Compile Solidity contracts
-    print_status "Compiling Base Solidity contracts..."
-    pnpm compile
+    # Clean previous build artifacts
+    print_status "Cleaning previous build artifacts..."
+    npx hardhat clean 2>/dev/null || true
     
-    # Run tests if not skipped
+    # Compile Solidity contracts with detailed error handling
+    print_status "Compiling Base Solidity contracts..."
+    if ! npx hardhat --config hardhat.config.js compile; then
+        print_error "Base contract compilation failed"
+        echo ""
+        print_status "Common Base compilation issues:"
+        echo "  • Check Solidity version compatibility with Base"
+        echo "  • Verify Base-specific imports and dependencies"
+        echo "  • Check for Optimism/Base L2 integration issues"
+        echo "  • Ensure @eth-optimism packages are properly installed"
+        echo "  • OpenZeppelin version compatibility (same as Polygon)"
+        echo "  • Run 'npx hardhat compile --verbose' for detailed errors"
+        cd ../../..
+        return 1
+    fi
+    
+    # Validate build artifacts (reuse Polygon validation since structure is similar)
+    cd ../../..
+    if ! validate_polygon_build "apps/smart-contracts/base"; then
+        print_error "Base build validation failed"
+        return 1
+    fi
+    cd apps/smart-contracts/base
+    
+    # Run tests if requested
     if [ "$RUN_TESTS" = "true" ]; then
         print_status "Running Base contract tests..."
-        pnpm test
+        if ! pnpm test; then
+            print_error "Base contract tests failed"
+            print_status "Base test troubleshooting:"
+            echo "  • Check Base network configuration in hardhat.config.js"
+            echo "  • Verify test accounts and ETH funding"
+            echo "  • Ensure Base-specific test setup is correct"
+            echo "  • Check for L2-specific testing requirements"
+            echo "  • Verify Optimism/Base bridge functionality if used"
+            cd ../../..
+            return 1
+        fi
     fi
     
     # Generate documentation if requested
