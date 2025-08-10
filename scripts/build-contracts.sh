@@ -2,31 +2,32 @@
 
 # Blockchain contracts build script
 # Compiles and tests smart contracts for all supported networks
-# Enhanced with dependency management and automatic installation
+# Enhanced with dependency management, automatic installation, and comprehensive logging
 
 set -e
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m'
+# Source the logging system
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/build-logger.sh"
 
+# Initialize logging
+init_logging
+
+# Legacy function compatibility (redirect to new logging system)
 print_status() {
-    echo -e "${BLUE}[INFO]${NC} $1"
+    log_info "$1"
 }
 
 print_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
+    log_success "$1"
 }
 
 print_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
+    log_warn "$1"
 }
 
 print_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+    log_error "$1"
 }
 
 # Configuration
@@ -659,137 +660,207 @@ validate_polkadot_build() {
 
 # Function to build Polygon contracts with enhanced validation
 build_polygon() {
+    local network="polygon"
+    init_network_report "$network"
+    
     if [ ! -d "apps/smart-contracts/polygon" ]; then
-        print_warning "Polygon contracts directory not found, skipping..."
+        log_warn "Polygon contracts directory not found, skipping..."
+        update_network_status "$network" "skipped"
         return 0
     fi
     
+    log_info "Starting Polygon contract build process..."
+    show_progress "Initializing Polygon build environment" 2
+    
     # Enhanced dependency validation
     if ! validate_polygon_dependencies; then
-        print_error "Polygon dependency validation failed"
+        add_network_error "$network" "Polygon dependency validation failed"
+        update_network_status "$network" "failed"
         return 1
     fi
     
-    print_status "Building Polygon contracts..."
+    log_info "Building Polygon contracts..."
     cd apps/smart-contracts/polygon
     
     # Install dependencies with error handling
     if [ ! -d "node_modules" ]; then
-        print_status "Installing Polygon contract dependencies..."
+        show_progress "Installing Polygon contract dependencies" 3
         if ! pnpm install; then
-            print_error "Failed to install Polygon dependencies"
+            add_network_error "$network" "Failed to install Polygon dependencies"
+            update_network_status "$network" "failed"
             cd ../../..
             return 1
         fi
+        log_success "Polygon dependencies installed successfully"
     fi
     
     # Clean previous build artifacts
-    print_status "Cleaning previous build artifacts..."
+    log_info "Cleaning previous build artifacts..."
     npx hardhat clean 2>/dev/null || true
     
     # Compile contracts with detailed error handling
-    print_status "Compiling Solidity contracts..."
+    log_info "Compiling Solidity contracts..."
+    show_progress "Compiling contracts" 5
+    
     if ! npx hardhat --config hardhat.config.js compile; then
-        print_error "Polygon contract compilation failed"
+        add_network_error "$network" "Polygon contract compilation failed"
+        log_error "Polygon contract compilation failed"
         echo ""
-        print_status "Common compilation issues:"
+        log_info "Common compilation issues:"
         echo "  • Check Solidity version compatibility"
         echo "  • Verify import paths in contracts"
         echo "  • Check for syntax errors in .sol files"
         echo "  • OpenZeppelin version compatibility issues"
         echo "  • Run 'npx hardhat compile --verbose' for detailed errors"
         echo ""
-        print_status "OpenZeppelin 4.9+ specific issues:"
+        log_info "OpenZeppelin 4.9+ specific issues:"
         echo "  • Ownable constructor changed: use Ownable(initialOwner) instead of Ownable()"
         echo "  • Counters library deprecated: use manual counter or alternative"
         echo "  • Check contract documentation syntax"
+        update_network_status "$network" "failed"
         cd ../../..
         return 1
+    fi
+    
+    # Count and report compiled contracts
+    if [ -d "artifacts/contracts" ]; then
+        local contract_files
+        contract_files=$(find artifacts/contracts -name "*.json" -not -path "*/build-info/*" | wc -l)
+        log_success "Compiled $contract_files Solidity contracts"
+        
+        # Add compiled contracts to report
+        find artifacts/contracts -name "*.json" -not -path "*/build-info/*" | while read -r contract_file; do
+            local contract_name
+            contract_name=$(basename "$contract_file" .json)
+            add_compiled_artifact "$network" "contracts_compiled" "$contract_name"
+        done
     fi
     
     # Validate build artifacts
     cd ../../..
     if ! validate_polygon_build; then
-        print_error "Polygon build validation failed"
+        add_network_error "$network" "Polygon build validation failed"
+        update_network_status "$network" "failed"
         return 1
     fi
     cd apps/smart-contracts/polygon
     
     # Run tests if requested
     if [ "$RUN_TESTS" = "true" ]; then
-        print_status "Running Polygon contract tests..."
+        log_info "Running Polygon contract tests..."
+        show_progress "Executing test suite" 10
+        
         if ! pnpm test; then
-            print_error "Polygon contract tests failed"
-            print_status "Test troubleshooting:"
+            add_network_error "$network" "Polygon contract tests failed"
+            log_error "Polygon contract tests failed"
+            log_info "Test troubleshooting:"
             echo "  • Check test file syntax and imports"
             echo "  • Verify contract deployment in tests"
             echo "  • Run 'npx hardhat test --verbose' for detailed output"
+            update_network_status "$network" "failed"
             cd ../../..
             return 1
         fi
+        log_success "All Polygon contract tests passed"
     fi
     
     # Generate documentation if requested
     if [ "$GENERATE_DOCS" = "true" ]; then
-        print_status "Generating Polygon contract documentation..."
-        pnpm docgen || print_warning "Documentation generation failed"
+        log_info "Generating Polygon contract documentation..."
+        if ! pnpm docgen; then
+            add_network_warning "$network" "Documentation generation failed"
+        else
+            log_success "Documentation generated successfully"
+        fi
     fi
     
     # Verify contracts if requested
     if [ "$VERIFY_CONTRACTS" = "true" ] && [ -n "$ETHERSCAN_API_KEY" ]; then
-        print_status "Verifying Polygon contracts..."
-        pnpm verify || print_warning "Contract verification failed"
+        log_info "Verifying Polygon contracts..."
+        if ! pnpm verify; then
+            add_network_warning "$network" "Contract verification failed"
+        else
+            log_success "Contracts verified successfully"
+        fi
     fi
     
     cd ../../..
-    print_success "Polygon contracts built successfully"
+    update_network_status "$network" "success"
+    log_success "Polygon contracts built successfully"
 }
 
 # Function to build Solana programs with enhanced validation
 build_solana() {
+    local network="solana"
+    init_network_report "$network"
+    
     if [ ! -d "apps/smart-contracts/solana" ]; then
-        print_warning "Solana programs directory not found, skipping..."
+        log_warn "Solana programs directory not found, skipping..."
+        update_network_status "$network" "skipped"
         return 0
     fi
     
+    log_info "Starting Solana program build process..."
+    show_progress "Initializing Solana build environment" 2
+    
     # Enhanced dependency validation
     if ! validate_solana_dependencies; then
-        print_error "Solana dependency validation failed"
+        add_network_error "$network" "Solana dependency validation failed"
+        update_network_status "$network" "failed"
         return 1
     fi
     
-    print_status "Building Solana programs..."
+    log_info "Building Solana programs..."
     cd apps/smart-contracts/solana
     
     # Check Solana configuration
-    print_status "Checking Solana configuration..."
+    log_info "Checking Solana configuration..."
     if ! solana config get >/dev/null 2>&1; then
-        print_warning "Solana CLI not configured, setting to devnet"
+        log_warn "Solana CLI not configured, setting to devnet"
         solana config set --url devnet
+        add_network_warning "$network" "Solana CLI was not configured, set to devnet"
     fi
     
     # Clean previous build artifacts
-    print_status "Cleaning previous build artifacts..."
+    log_info "Cleaning previous build artifacts..."
     anchor clean 2>/dev/null || true
     
     # Build programs with detailed error handling
-    print_status "Building Solana programs with Anchor..."
+    log_info "Building Solana programs with Anchor..."
+    show_progress "Compiling Rust programs" 15
+    
     if ! anchor build; then
-        print_error "Solana program compilation failed"
+        add_network_error "$network" "Solana program compilation failed"
+        log_error "Solana program compilation failed"
         echo ""
-        print_status "Common compilation issues:"
+        log_info "Common compilation issues:"
         echo "  • Check Rust version compatibility (requires 1.70+)"
         echo "  • Verify Anchor.toml configuration"
         echo "  • Check program dependencies in Cargo.toml"
         echo "  • Ensure all required Solana programs are available"
         echo "  • Run 'anchor build --verbose' for detailed errors"
         echo ""
-        print_status "Anchor troubleshooting:"
+        log_info "Anchor troubleshooting:"
         echo "  • Update Anchor: avm install latest && avm use latest"
         echo "  • Check program ID: anchor keys list"
         echo "  • Verify workspace configuration in Anchor.toml"
+        update_network_status "$network" "failed"
         cd ../../..
         return 1
+    fi
+    
+    # Count and report compiled programs
+    if [ -d "target/deploy" ]; then
+        local program_files
+        program_files=$(find target/deploy -name "*.so" | wc -l)
+        log_success "Compiled $program_files Solana programs"
+        
+        # Add compiled programs to report
+        find target/deploy -name "*.so" | while read -r program_file; do
+            local program_name
+            program_name=$(basename "$program_file" .so)
+            add_compiled_artifact "$network" "programs_built" "$program_name"
+        done
     fi
     
     # Validate build artifacts
@@ -871,127 +942,168 @@ build_solana() {
     fi
     
     cd ../../..
-    print_success "Solana programs built successfully"
+    update_network_status "$network" "success"
+    log_success "Solana programs built successfully"
 }
 
 # Function to build Polkadot pallets with enhanced validation
 build_polkadot() {
+    local network="polkadot"
+    init_network_report "$network"
+    
     if [ ! -d "apps/smart-contracts/polkadot" ]; then
-        print_warning "Polkadot pallets directory not found, skipping..."
+        log_warn "Polkadot pallets directory not found, skipping..."
+        update_network_status "$network" "skipped"
         return 0
     fi
     
+    log_info "Starting Polkadot pallet build process..."
+    show_progress "Initializing Polkadot build environment" 2
+    
     # Enhanced dependency validation
     if ! validate_polkadot_dependencies; then
-        print_error "Polkadot dependency validation failed"
+        add_network_error "$network" "Polkadot dependency validation failed"
+        update_network_status "$network" "failed"
         return 1
     fi
     
-    print_status "Building Polkadot pallets..."
+    log_info "Building Polkadot pallets..."
     cd apps/smart-contracts/polkadot
     
     # Install Substrate dependencies with error handling
-    print_status "Installing Substrate dependencies..."
+    log_info "Installing Substrate dependencies..."
+    show_progress "Setting up WebAssembly target" 3
     
     if ! rustup target add wasm32-unknown-unknown; then
-        print_error "Failed to add WebAssembly target"
+        add_network_error "$network" "Failed to add WebAssembly target"
+        update_network_status "$network" "failed"
         cd ../../..
         return 1
     fi
     
     if ! rustup component add rust-src; then
-        print_error "Failed to add rust-src component"
-        cd ../../..
-        return 1
+        add_network_warning "$network" "Failed to add rust-src component"
+        log_warn "rust-src component not added - may affect some builds"
     fi
     
     # Clean previous build artifacts
-    print_status "Cleaning previous build artifacts..."
+    log_info "Cleaning previous build artifacts..."
     cargo clean 2>/dev/null || true
     
     # Build pallets with detailed error handling
-    print_status "Building Polkadot pallets..."
+    log_info "Building Polkadot pallets..."
+    show_progress "Compiling Substrate pallets" 20
+    
     if ! cargo build --release; then
-        print_error "Polkadot pallet compilation failed"
+        add_network_error "$network" "Polkadot pallet compilation failed"
+        log_error "Polkadot pallet compilation failed"
         echo ""
-        print_status "Common compilation issues:"
+        log_info "Common compilation issues:"
         echo "  • Check Rust version compatibility (requires 1.70+)"
         echo "  • Verify Substrate dependencies in Cargo.toml"
         echo "  • Check pallet implementation for syntax errors"
         echo "  • Ensure all required Substrate crates are available"
         echo "  • Run 'cargo build --verbose' for detailed errors"
         echo ""
-        print_status "Substrate troubleshooting:"
+        log_info "Substrate troubleshooting:"
         echo "  • Update Rust: rustup update"
         echo "  • Check targets: rustup target list --installed"
         echo "  • Verify cargo-contract: cargo install --force cargo-contract"
+        update_network_status "$network" "failed"
         cd ../../..
         return 1
+    fi
+    
+    # Count and report compiled pallets
+    if [ -d "target/release" ]; then
+        log_success "Polkadot pallets compiled successfully"
+        add_compiled_artifact "$network" "pallets_compiled" "pallet-todo"
     fi
     
     # Validate build artifacts
     cd ../../..
     if ! validate_polkadot_build; then
-        print_error "Polkadot build validation failed"
+        add_network_error "$network" "Polkadot build validation failed"
+        update_network_status "$network" "failed"
         return 1
     fi
     cd apps/smart-contracts/polkadot
     
     # Run tests if requested
     if [ "$RUN_TESTS" = "true" ]; then
-        print_status "Running Polkadot pallet tests..."
+        log_info "Running Polkadot pallet tests..."
+        show_progress "Executing pallet tests" 8
+        
         if ! cargo test; then
-            print_error "Polkadot pallet tests failed"
-            print_status "Test troubleshooting:"
+            add_network_error "$network" "Polkadot pallet tests failed"
+            log_error "Polkadot pallet tests failed"
+            log_info "Test troubleshooting:"
             echo "  • Check test module syntax and imports"
             echo "  • Verify mock runtime configuration"
             echo "  • Ensure test dependencies are properly configured"
             echo "  • Run 'cargo test --verbose' for detailed output"
+            update_network_status "$network" "failed"
             cd ../../..
             return 1
         fi
+        log_success "All Polkadot pallet tests passed"
     fi
     
     # Build WASM runtime with error handling
-    print_status "Building WASM runtime..."
+    log_info "Building WASM runtime..."
+    show_progress "Compiling runtime" 12
+    
     if ! cargo build --release --features runtime-benchmarks; then
-        print_error "WASM runtime build failed"
-        print_status "Runtime build troubleshooting:"
+        add_network_error "$network" "WASM runtime build failed"
+        log_error "WASM runtime build failed"
+        log_info "Runtime build troubleshooting:"
         echo "  • Check runtime configuration in runtime/Cargo.toml"
         echo "  • Verify all pallets are properly integrated"
         echo "  • Ensure feature flags are correctly configured"
         echo "  • Check for missing dependencies in runtime"
+        update_network_status "$network" "failed"
         cd ../../..
         return 1
     fi
     
     # Additional validation for runtime artifacts
     if [ -f "target/release/wbuild/todo-runtime/todo_runtime.wasm" ]; then
-        print_success "WASM runtime built successfully"
+        log_success "WASM runtime built successfully"
+        add_compiled_artifact "$network" "pallets_compiled" "todo-runtime.wasm"
     elif [ -f "target/release/wbuild/*/runtime.wasm" ]; then
-        print_success "WASM runtime built successfully"
+        log_success "WASM runtime built successfully"
+        add_compiled_artifact "$network" "pallets_compiled" "runtime.wasm"
     else
-        print_warning "WASM runtime file not found - build may have issues"
+        add_network_warning "$network" "WASM runtime file not found - build may have issues"
     fi
     
     cd ../../..
-    print_success "Polkadot pallets built successfully"
+    update_network_status "$network" "success"
+    log_success "Polkadot pallets built successfully"
 }
 
 # Function to build Moonbeam contracts with enhanced validation
 build_moonbeam() {
+    local network="moonbeam"
+    init_network_report "$network"
+    
     if [ ! -d "apps/smart-contracts/moonbeam" ]; then
-        print_warning "Moonbeam contracts directory not found, skipping..."
+        log_warn "Moonbeam contracts directory not found, skipping..."
+        update_network_status "$network" "skipped"
         return 0
     fi
     
+    log_info "Starting Moonbeam contract build process..."
+    show_progress "Initializing Moonbeam build environment" 2
+    
     # Enhanced dependency validation (same as Polygon since it uses Hardhat)
     if ! validate_polygon_dependencies; then
-        print_error "Moonbeam dependency validation failed"
+        add_network_error "$network" "Moonbeam dependency validation failed"
+        update_network_status "$network" "failed"
         return 1
     fi
     
-    print_status "Building Moonbeam contracts..."
+    log_info "Building Moonbeam contracts..."
     cd apps/smart-contracts/moonbeam
     
     # Install dependencies with error handling
@@ -1065,18 +1177,26 @@ build_moonbeam() {
 
 # Function to build Base contracts with enhanced validation
 build_base() {
+    local network="base"
+    init_network_report "$network"
+    
     if [ ! -d "apps/smart-contracts/base" ]; then
-        print_warning "Base contracts directory not found, skipping..."
+        log_warn "Base contracts directory not found, skipping..."
+        update_network_status "$network" "skipped"
         return 0
     fi
     
+    log_info "Starting Base contract build process..."
+    show_progress "Initializing Base build environment" 2
+    
     # Enhanced dependency validation (same as Polygon since it uses Hardhat)
     if ! validate_polygon_dependencies; then
-        print_error "Base dependency validation failed"
+        add_network_error "$network" "Base dependency validation failed"
+        update_network_status "$network" "failed"
         return 1
     fi
     
-    print_status "Building Base contracts..."
+    log_info "Building Base contracts..."
     cd apps/smart-contracts/base
     
     # Install dependencies with error handling
@@ -1407,133 +1527,117 @@ show_help() {
     echo "    Install tools:      $INSTALL_SCRIPT --all"
 }
 
-# Main build function with enhanced error handling
+# Main build function with enhanced error handling and comprehensive reporting
 main_build() {
-    local start_time=$(date +%s)
-    local build_results=()
     local overall_success=true
     
-    print_status "Building blockchain contracts..."
-    print_status "Network: $NETWORK"
-    print_status "Run tests: $RUN_TESTS"
-    print_status "Auto-install: $AUTO_INSTALL"
-    print_status "Skip deps check: $SKIP_DEPS_CHECK"
+    log_info "=== BLOCKCHAIN CONTRACT BUILD STARTED ==="
+    log_info "Network: $NETWORK"
+    log_info "Run tests: $RUN_TESTS"
+    log_info "Auto-install: $AUTO_INSTALL"
+    log_info "Skip deps check: $SKIP_DEPS_CHECK"
+    log_info "Log level: $LOG_LEVEL"
     echo ""
+    
+    # Set environment check status
+    BUILD_REPORT_ENVIRONMENT_CHECK="success"
     
     # Pre-build validation for all networks if building all
     if [ "$NETWORK" = "all" ] && [ "$SKIP_DEPS_CHECK" != "true" ]; then
-        print_status "Running pre-build validation for all networks..."
+        log_info "Running pre-build validation for all networks..."
+        show_progress "Validating build environment" 3
+        
         if ! validate_environment "all"; then
-            print_error "Pre-build validation failed. Some networks may not build successfully."
-            print_status "Continuing with individual network validation..."
+            BUILD_REPORT_ENVIRONMENT_CHECK="failed"
+            log_error "Pre-build validation failed. Some networks may not build successfully."
+            log_info "Continuing with individual network validation..."
+        else
+            log_success "Pre-build validation completed successfully"
         fi
     fi
     
     case $NETWORK in
         polygon)
-            if build_polygon; then
-                build_results+=("polygon:success")
-            else
-                build_results+=("polygon:failed")
+            log_info "Building Polygon network contracts..."
+            if ! build_polygon; then
                 overall_success=false
             fi
             ;;
         solana)
-            if build_solana; then
-                build_results+=("solana:success")
-            else
-                build_results+=("solana:failed")
+            log_info "Building Solana network programs..."
+            if ! build_solana; then
                 overall_success=false
             fi
             ;;
         polkadot)
-            if build_polkadot; then
-                build_results+=("polkadot:success")
-            else
-                build_results+=("polkadot:failed")
+            log_info "Building Polkadot network pallets..."
+            if ! build_polkadot; then
                 overall_success=false
             fi
             ;;
         moonbeam)
-            if build_moonbeam; then
-                build_results+=("moonbeam:success")
-            else
-                build_results+=("moonbeam:failed")
+            log_info "Building Moonbeam network contracts..."
+            if ! build_moonbeam; then
                 overall_success=false
             fi
             ;;
         base)
-            if build_base; then
-                build_results+=("base:success")
-            else
-                build_results+=("base:failed")
+            log_info "Building Base network contracts..."
+            if ! build_base; then
                 overall_success=false
             fi
             ;;
         all)
+            log_info "Building contracts for all supported networks..."
+            
             # Build each network individually and track results
-            if build_polygon; then
-                build_results+=("polygon:success")
-            else
-                build_results+=("polygon:failed")
+            log_info "=== Building Polygon Contracts ==="
+            if ! build_polygon; then
                 overall_success=false
             fi
             
-            if build_solana; then
-                build_results+=("solana:success")
-            else
-                build_results+=("solana:failed")
+            log_info "=== Building Solana Programs ==="
+            if ! build_solana; then
                 overall_success=false
             fi
             
-            if build_polkadot; then
-                build_results+=("polkadot:success")
-            else
-                build_results+=("polkadot:failed")
+            log_info "=== Building Polkadot Pallets ==="
+            if ! build_polkadot; then
                 overall_success=false
             fi
             
-            if build_moonbeam; then
-                build_results+=("moonbeam:success")
-            else
-                build_results+=("moonbeam:failed")
+            log_info "=== Building Moonbeam Contracts ==="
+            if ! build_moonbeam; then
                 overall_success=false
             fi
             
-            if build_base; then
-                build_results+=("base:success")
-            else
-                build_results+=("base:failed")
+            log_info "=== Building Base Contracts ==="
+            if ! build_base; then
                 overall_success=false
             fi
             ;;
         *)
-            print_error "Unknown network: $NETWORK"
+            log_error "Unknown network: $NETWORK"
             show_help
             exit 1
             ;;
     esac
     
-    # Generate artifacts only for successful builds
-    if [ ${#build_results[@]} -gt 0 ]; then
+    # Generate artifacts for successful builds
+    log_info "Generating build artifacts and documentation..."
+    if command -v generate_artifacts >/dev/null 2>&1; then
         generate_artifacts
-        
-        # Validate builds that succeeded
-        validate_builds "${build_results[@]}"
     fi
     
-    local end_time=$(date +%s)
-    local duration=$((end_time - start_time))
-    
-    # Show build summary with results
-    show_build_summary_with_results "${build_results[@]}"
+    # Cleanup and generate final reports
+    cleanup_logging
     
     if [ "$overall_success" = "true" ]; then
-        print_success "Contract build completed successfully in ${duration}s"
+        log_success "=== CONTRACT BUILD COMPLETED SUCCESSFULLY ==="
         return 0
     else
-        print_error "Contract build completed with some failures in ${duration}s"
-        print_status "Check the build summary above for details"
+        log_error "=== CONTRACT BUILD COMPLETED WITH FAILURES ==="
+        log_info "Check the build summary and report files for details"
         return 1
     fi
 }
