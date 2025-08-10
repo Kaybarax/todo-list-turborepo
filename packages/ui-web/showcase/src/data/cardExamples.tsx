@@ -1,4 +1,4 @@
-import React from 'react'
+// React import removed as it's not used in this file
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Badge } from '../../../lib'
 import type { ComponentExample } from '../App'
 

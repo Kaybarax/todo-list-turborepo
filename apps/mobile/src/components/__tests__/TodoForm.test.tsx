@@ -12,7 +12,7 @@ jest.mock('@todo/ui-mobile', () => ({
       </TouchableOpacity>
     );
   },
-  Input: ({ value, onChangeText, placeholder, required }: any) => {
+  Input: ({ value, onChangeText, placeholder }: any) => {
     const { TextInput } = require('react-native');
     return (
       <TextInput
@@ -49,24 +49,19 @@ describe('TodoForm', () => {
   });
 
   it('renders edit form with initial values', () => {
-    const initialTodo = {
-      id: '1',
+    const initialData = {
       title: 'Test Todo',
       description: 'Test Description',
       priority: 'high' as const,
       dueDate: '2024-12-31',
       tags: ['test', 'work'],
-      completed: false,
-      createdAt: '2024-01-01T00:00:00Z',
-      updatedAt: '2024-01-01T00:00:00Z',
-      userId: 'user1',
     };
 
     const { getByDisplayValue, getByText } = render(
       <TodoForm 
         onSubmit={mockOnSubmit} 
         onCancel={mockOnCancel} 
-        initialTodo={initialTodo}
+        initialData={initialData}
       />
     );
     

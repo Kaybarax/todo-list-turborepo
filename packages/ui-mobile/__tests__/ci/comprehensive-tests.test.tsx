@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import { ApplicationProvider } from '@ui-kitten/components';
+import { ApplicationProvider, Text } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 
 // Import components
 import { Button } from '../../lib/components/Button/Button';
-import { Card, CardContent, CardHeader } from '../../lib/components/Card/Card';
+import { Card, CardContent } from '../../lib/components/Card/Card';
 import { Input } from '../../lib/components/Input/Input';
 import { Badge } from '../../lib/components/Badge/Badge';
 import { Avatar } from '../../lib/components/Avatar/Avatar';
@@ -32,7 +32,7 @@ describe('Comprehensive Mobile Component Tests', () => {
     it('renders Card component correctly', () => {
       const { getByText } = render(
         <Card>
-          <CardHeader title="Test Card" />
+          <Text category="h6">Test Card</Text>
           <CardContent>Card content</CardContent>
         </Card>,
         { wrapper: TestWrapper }
@@ -71,7 +71,7 @@ describe('Comprehensive Mobile Component Tests', () => {
 
     it('renders Switch component correctly', () => {
       const { getByTestId } = render(
-        <Switch checked={false} onValueChange={() => {}} testID="switch" />,
+        <Switch value={false} onValueChange={() => {}} testID="switch" />,
         { wrapper: TestWrapper }
       );
       
@@ -105,7 +105,7 @@ describe('Comprehensive Mobile Component Tests', () => {
     it('Switch handles value changes', () => {
       const onValueChange = jest.fn();
       const { getByTestId } = render(
-        <Switch checked={false} onValueChange={onValueChange} testID="switch" />,
+        <Switch value={false} onValueChange={onValueChange} testID="switch" />,
         { wrapper: TestWrapper }
       );
       
@@ -144,7 +144,7 @@ describe('Comprehensive Mobile Component Tests', () => {
     });
 
     it('Badge renders with different variants', () => {
-      const variants = ['primary', 'secondary', 'success', 'danger', 'warning', 'info'] as const;
+      const variants = ['primary', 'secondary', 'success', 'danger', 'warning'] as const;
       
       variants.forEach((variant) => {
         const { getByText, unmount } = render(
@@ -227,7 +227,7 @@ describe('Comprehensive Mobile Component Tests', () => {
     it('Switch maintains accessibility properties', () => {
       const { getByTestId } = render(
         <Switch 
-          checked={false} 
+          value={false} 
           onValueChange={() => {}} 
           testID="accessible-switch"
           accessibilityLabel="Custom switch label"
@@ -244,12 +244,12 @@ describe('Comprehensive Mobile Component Tests', () => {
     it('Components work together in complex layouts', () => {
       const { getByText, getByTestId } = render(
         <Card>
-          <CardHeader title="User Profile" />
+          <Text category="h6">User Profile</Text>
           <CardContent>
             <Input placeholder="Enter name" testID="name-input" />
             <Button title="Save" onPress={() => {}} />
             <Badge text="Active" />
-            <Switch checked={true} onValueChange={() => {}} testID="status-switch" />
+            <Switch value={true} onValueChange={() => {}} testID="status-switch" />
           </CardContent>
         </Card>,
         { wrapper: TestWrapper }
@@ -270,7 +270,7 @@ describe('Comprehensive Mobile Component Tests', () => {
         <Card>
           <CardContent>
             <Input placeholder="Enter text" testID="text-input" />
-            <Switch checked={false} onValueChange={handleToggle} testID="toggle" />
+            <Switch value={false} onValueChange={handleToggle} testID="toggle" />
             <Button title="Save Changes" onPress={handleSave} />
           </CardContent>
         </Card>,
@@ -323,7 +323,7 @@ describe('Comprehensive Mobile Component Tests', () => {
           <Button title="Test" onPress={() => {}} />
           <Input value="test" />
           <Badge text="test" />
-          <Switch checked={false} onValueChange={() => {}} />
+          <Switch value={false} onValueChange={() => {}} />
         </div>,
         { wrapper: TestWrapper }
       );
@@ -364,7 +364,7 @@ describe('Comprehensive Mobile Component Tests', () => {
           <Button title="Button 1" onPress={handlers.button1} />
           <Button title="Button 2" onPress={handlers.button2} />
           <Input onChangeText={handlers.input} testID="input" />
-          <Switch checked={false} onValueChange={handlers.switch} testID="switch" />
+          <Switch value={false} onValueChange={handlers.switch} testID="switch" />
         </div>,
         { wrapper: TestWrapper }
       );

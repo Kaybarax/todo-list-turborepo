@@ -90,8 +90,7 @@ const preview: Preview = {
       </div>
     ),
   ],
-  // Tags for organizing stories
-  tags: ['autodocs'],
+  // Tags for organizing stories - moved to individual stories
 };
 
 export default preview;

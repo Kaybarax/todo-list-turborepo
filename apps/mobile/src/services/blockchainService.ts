@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Alert } from 'react-native';
 import { BlockchainNetwork } from '@todo/services';
 import type { Todo } from '../store/todoStore';
@@ -49,7 +50,7 @@ abstract class MobileBlockchainService implements BlockchainServiceInterface {
   abstract getTodo(id: string): Promise<BlockchainTodo | null>;
   abstract getUserTodos(userAddress: string): Promise<BlockchainTodo[]>;
 
-  async getTransactionStatus(hash: string): Promise<'pending' | 'confirmed' | 'failed'> {
+  async getTransactionStatus(_hash: string): Promise<'pending' | 'confirmed' | 'failed'> {
     await this.simulateNetworkDelay(500);
     
     // Mock status - randomly return confirmed after some time
@@ -101,11 +102,11 @@ abstract class MobileBlockchainService implements BlockchainServiceInterface {
 
 // Solana mobile blockchain service implementation
 export class SolanaMobileBlockchainService extends MobileBlockchainService {
-  private programId: string;
+  private _programId: string;
 
   constructor(programId: string) {
     super('Solana');
-    this.programId = programId;
+    this._programId = programId;
   }
 
   async createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {

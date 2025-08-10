@@ -51,9 +51,9 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             ref={ref}
             style={[
               styles.input,
-              leftIcon && styles.inputWithLeftIcon,
-              rightIcon && styles.inputWithRightIcon,
-              error && styles.inputError,
+              leftIcon ? styles.inputWithLeftIcon : null,
+              rightIcon ? styles.inputWithRightIcon : null,
+              error ? styles.inputError : null,
               inputStyle,
               style,
             ]}
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: theme.fontSizes.sm,
-    fontWeight: theme.fontWeights.medium,
+    fontWeight: theme.fontWeights.medium as '500',
     marginBottom: theme.spacing.xs,
     color: theme.colors.text,
   },

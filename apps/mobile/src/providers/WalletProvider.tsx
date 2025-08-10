@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Linking, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { getSupportedWalletNetworks, getWalletConnectionUrls, generateMockAddress } from '@todo/services';
 
 // Types for wallet connection
@@ -54,7 +54,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
     try {
       // Simulate wallet app opening with deep linking
-      const walletUrls = getWalletConnectionUrls();
+      // const walletUrls = getWalletConnectionUrls();
 
       // In a real implementation, this would open the wallet app
       // await Linking.openURL(walletUrls[network]);
@@ -190,7 +190,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
     });
   };
 
-  const sendTransaction = async (to: string, amount: string, data?: string): Promise<string> => {
+  const sendTransaction = async (to: string, amount: string, _data?: string): Promise<string> => {
     if (!account) {
       throw new Error('No wallet connected');
     }

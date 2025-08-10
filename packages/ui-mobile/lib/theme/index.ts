@@ -39,9 +39,9 @@ export const fontSizes = {
 };
 
 export const fontWeights = {
-  regular: '400',
-  medium: '500',
-  bold: '700',
+  regular: '400' as '400',
+  medium: '500' as '500',
+  bold: '700' as '700',
 };
 
 export const borderRadius = {

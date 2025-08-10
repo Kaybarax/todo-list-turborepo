@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { Layout, Text, Card, CardHeader, Button } from '@ui-kitten/components';
+import { Layout, Text, Card, Button } from '@ui-kitten/components';
 import { Badge } from '@todo/ui-mobile';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 
@@ -69,9 +69,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
               style={styles.componentCard}
               onPress={() => navigation.navigate(component.screen)}
             >
-              <CardHeader>
+              <Layout style={styles.cardHeader}>
                 <Text category="h6">{component.name}</Text>
-              </CardHeader>
+              </Layout>
               <Layout style={styles.cardContent}>
                 <Text category="p2" appearance="hint">
                   {component.description}
@@ -128,6 +128,10 @@ const styles = StyleSheet.create({
   },
   componentCard: {
     marginBottom: 16,
+  },
+  cardHeader: {
+    padding: 16,
+    paddingBottom: 8,
   },
   cardContent: {
     paddingHorizontal: 16,

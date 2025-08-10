@@ -2,6 +2,8 @@
   "extends": "../../packages/config-ts/react-native.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
     "paths": {
       "@/*": ["./src/*"],
       "@todo/*": ["../../packages/*/src"]

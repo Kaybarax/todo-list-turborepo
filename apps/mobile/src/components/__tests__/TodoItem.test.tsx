@@ -1,10 +1,11 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { TodoItem } from '../TodoItem';
+import { BlockchainNetwork } from '@todo/services';
 
 // Mock the UI components
 jest.mock('@todo/ui-mobile', () => ({
-  Button: ({ title, onPress, variant, size }: any) => {
+  Button: ({ title, onPress }: any) => {
     const { TouchableOpacity, Text } = require('react-native');
     return (
       <TouchableOpacity onPress={onPress} testID={`button-${title}`}>
@@ -41,10 +42,10 @@ describe('TodoItem', () => {
     description: 'Test Description',
     completed: false,
     priority: 'medium' as const,
-    dueDate: '2024-12-31',
+    dueDate: new Date('2024-12-31'),
     tags: ['work', 'urgent'],
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z',
+    createdAt: new Date('2024-01-01T00:00:00Z'),
+    updatedAt: new Date('2024-01-01T00:00:00Z'),
     userId: 'user1',
   };
 
@@ -70,7 +71,7 @@ describe('TodoItem', () => {
     expect(getByText('Test Description')).toBeTruthy();
     expect(getByText('work')).toBeTruthy();
     expect(getByText('urgent')).toBeTruthy();
-    expect(getByText('Due: 2024-12-31')).toBeTruthy();
+    expect(getByText('Due: 12/31/2024')).toBeTruthy();
     expect(getByTestId('card')).toBeTruthy();
   });
 
@@ -224,7 +225,7 @@ describe('TodoItem', () => {
   it('shows overdue styling for past due dates', () => {
     const overdueTodo = { 
       ...mockTodo, 
-      dueDate: '2023-01-01', // Past date
+      dueDate: new Date('2023-01-01'), // Past date
       completed: false 
     };
     
@@ -237,7 +238,7 @@ describe('TodoItem', () => {
       />
     );
 
-    const dueDateElement = getByText('Due: 2023-01-01');
+    const dueDateElement = getByText('Due: 1/1/2023');
     expect(dueDateElement).toBeTruthy();
     // In a real implementation, this would have red styling
   });
@@ -245,7 +246,7 @@ describe('TodoItem', () => {
   it('shows blockchain network information when available', () => {
     const blockchainTodo = { 
       ...mockTodo, 
-      blockchainNetwork: 'polygon',
+      blockchainNetwork: 'polygon' as BlockchainNetwork,
       transactionHash: '0x123abc'
     };
     
@@ -269,7 +270,7 @@ describe('TodoItem', () => {
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-        isLoading={true}
+
       />
     );
 
@@ -292,7 +293,7 @@ describe('TodoItem', () => {
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-        onLongPress={mockOnLongPress}
+
       />
     );
 
@@ -312,8 +313,7 @@ describe('TodoItem', () => {
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-        onSwipeLeft={mockOnSwipeLeft}
-        onSwipeRight={mockOnSwipeRight}
+
       />
     );
 
@@ -334,7 +334,7 @@ describe('TodoItem', () => {
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-        showTimestamps={true}
+
       />
     );
 

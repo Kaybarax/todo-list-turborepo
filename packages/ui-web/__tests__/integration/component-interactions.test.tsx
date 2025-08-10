@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { vi } from 'vitest';
 import { Button } from '../../lib/components/Button/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../lib/components/Card/Card';
 import { Input } from '../../lib/components/Input/Input';

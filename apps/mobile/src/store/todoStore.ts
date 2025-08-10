@@ -130,7 +130,7 @@ export const useTodoStore = create<TodoStore>()(
           }));
 
           // Wait for transaction confirmation in the background
-          blockchainService.waitForTransaction(result.hash).then((confirmedResult) => {
+          blockchainService.waitForTransaction(result.hash).then((_confirmedResult) => {
             set((state) => ({
               todos: state.todos.map((todo) =>
                 todo.id === id && todo.transactionHash === result.hash
@@ -215,7 +215,7 @@ export const useTodoStore = create<TodoStore>()(
         }
       },
 
-      saveTodo: async (todo) => {
+      saveTodo: async (_todo) => {
         set({ isLoading: true, error: null });
         
         try {

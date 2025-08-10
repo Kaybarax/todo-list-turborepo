@@ -14,8 +14,9 @@ interface TodoFormProps {
   onSubmit: (todo: {
     title: string;
     description?: string;
+    completed: boolean;
     priority: 'low' | 'medium' | 'high';
-    dueDate?: string;
+    dueDate?: Date;
     tags: string[];
   }) => void;
   onCancel?: () => void;
@@ -47,8 +48,9 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
     onSubmit({
       title: title.trim(),
       description: description.trim() || undefined,
+      completed: false,
       priority,
-      dueDate: dueDate || undefined,
+      dueDate: dueDate ? new Date(dueDate) : undefined,
       tags,
     });
 

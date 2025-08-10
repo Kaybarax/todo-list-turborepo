@@ -21,8 +21,8 @@
     "@react-navigation/stack": "^6.3.17",
     "@todo/services": "*",
     "@todo/ui-mobile": "*",
-    "@walletconnect/react-native-compat": "^2.11.0",
     "@walletconnect/modal-react-native": "^1.0.0",
+    "@walletconnect/react-native-compat": "^2.11.0",
     "expo": "~49.0.15",
     "expo-constants": "~14.4.2",
     "expo-linking": "~5.0.2",
@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^12.4.0",
     "@todo/config-eslint": "*",
     "@todo/config-jest": "*",

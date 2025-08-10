@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   text: {
-    fontWeight: theme.fontWeights.medium,
+    fontWeight: theme.fontWeights.medium as '500',
   },
   // Variant styles
   defaultBadge: {

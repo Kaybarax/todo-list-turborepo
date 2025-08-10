@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
+
   transpilePackages: ['@todo/ui-web', '@todo/services'],
   webpack: (config) => {
     config.resolve.fallback = {

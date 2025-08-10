@@ -1,4 +1,4 @@
-import React from 'react';
+// React import removed as it's not used in this test file
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
 

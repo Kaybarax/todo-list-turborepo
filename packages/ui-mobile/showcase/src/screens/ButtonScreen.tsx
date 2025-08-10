@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Layout, Text, Card, CardHeader, Divider } from '@ui-kitten/components';
+import { Layout, Text, Card } from '@ui-kitten/components';
 import { Button } from '@todo/ui-mobile';
 import ComponentExample from '../components/ComponentExample';
 
@@ -17,9 +17,9 @@ const ButtonScreen: React.FC = () => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Component Description */}
         <Card style={styles.descriptionCard}>
-          <CardHeader>
+          <Layout style={styles.cardHeaderLayout}>
             <Text category="h5">Button Component</Text>
-          </CardHeader>
+          </Layout>
           <Layout style={styles.cardContent}>
             <Text category="p1">
               Interactive button component with multiple variants, sizes, and states. 
@@ -140,6 +140,10 @@ const styles = StyleSheet.create({
   },
   descriptionCard: {
     marginBottom: 16,
+  },
+  cardHeaderLayout: {
+    padding: 16,
+    paddingBottom: 8,
   },
   cardContent: {
     paddingHorizontal: 16,

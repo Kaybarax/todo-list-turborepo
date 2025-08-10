@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Card, CardHeader, CardTitle, CardContent, Input, Badge } from '../../lib'
+import { Button, Badge } from '../../lib'
 import ComponentShowcase from './components/ComponentShowcase'
 import Navigation from './components/Navigation'
 import './App.css'
@@ -66,7 +66,7 @@ function App() {
                 Interactive showcase of Radix UI-based components
               </p>
             </div>
-            <Badge variant="primary" size="sm">
+            <Badge variant="default" size="sm">
               v0.1.0
             </Badge>
           </div>

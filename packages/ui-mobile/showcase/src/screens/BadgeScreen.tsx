@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Layout, Text, Card, CardHeader } from '@ui-kitten/components';
+import { Layout, Text, Card } from '@ui-kitten/components';
 import { Badge } from '@todo/ui-mobile';
 import ComponentExample from '../components/ComponentExample';
 
@@ -10,9 +10,9 @@ const BadgeScreen: React.FC = () => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Component Description */}
         <Card style={styles.descriptionCard}>
-          <CardHeader>
+          <Layout style={styles.cardHeaderLayout}>
             <Text category="h5">Badge Component</Text>
-          </CardHeader>
+          </Layout>
           <Layout style={styles.cardContent}>
             <Text category="p1">
               Small status indicator component with color variants. Built with UI Kitten Text 
@@ -181,6 +181,10 @@ const styles = StyleSheet.create({
   },
   descriptionCard: {
     marginBottom: 16,
+  },
+  cardHeaderLayout: {
+    padding: 16,
+    paddingBottom: 8,
   },
   cardContent: {
     paddingHorizontal: 16,

@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: theme.fontSizes.lg,
-    fontWeight: theme.fontWeights.bold,
+    fontWeight: theme.fontWeights.bold as '700',
     color: theme.colors.text,
     marginBottom: theme.spacing.xs,
   },

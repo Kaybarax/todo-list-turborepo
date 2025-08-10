@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Layout, Text, Card, CardHeader } from '@ui-kitten/components';
+import { Layout, Text, Card } from '@ui-kitten/components';
 import { Avatar } from '@todo/ui-mobile';
 import ComponentExample from '../components/ComponentExample';
 
@@ -12,10 +12,8 @@ const AvatarScreen: React.FC = () => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Component Description */}
         <Card style={styles.descriptionCard}>
-          <CardHeader>
-            <Text category="h5">Avatar Component</Text>
-          </CardHeader>
           <Layout style={styles.cardContent}>
+            <Text category="h5" style={styles.cardTitle}>Avatar Component</Text>
             <Text category="p1">
               User avatar component with image and initials support. Built on UI Kitten Avatar 
               primitive with custom fallback for initials display.
@@ -175,8 +173,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   cardContent: {
-    paddingHorizontal: 16,
-    paddingBottom: 16,
+    padding: 16,
+  },
+  cardTitle: {
+    marginBottom: 8,
   },
   avatarRow: {
     flexDirection: 'row',

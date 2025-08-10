@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontWeight: theme.fontWeights.medium,
+    fontWeight: theme.fontWeights.medium as '500',
     textAlign: 'center',
   },
   leftIcon: {

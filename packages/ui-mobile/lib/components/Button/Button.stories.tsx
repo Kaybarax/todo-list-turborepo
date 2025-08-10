@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-native';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
 import { ApplicationProvider } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
@@ -10,7 +10,7 @@ const UIKittenWrapper = ({ children }: { children: React.ReactNode }) => (
   </ApplicationProvider>
 );
 
-const meta = {
+const meta: Meta<typeof Button> = {
   title: 'Mobile/Button',
   component: Button,
   decorators: [
@@ -176,6 +176,9 @@ export const WithBothIcons: Story = {
 
 // Visual regression test: All variants
 export const AllVariants: Story = {
+  args: {
+    title: 'Button',
+  },
   render: () => (
     <UIKittenWrapper>
       <div style={{ padding: 16, gap: 8 }}>
@@ -210,6 +213,9 @@ export const AllVariants: Story = {
 
 // Complex button combinations
 export const ComplexButtons: Story = {
+  args: {
+    title: 'Button',
+  },
   render: () => (
     <UIKittenWrapper>
       <div style={{ padding: 16, gap: 12 }}>
@@ -244,6 +250,9 @@ export const ComplexButtons: Story = {
 
 // Dark theme test
 export const DarkTheme: Story = {
+  args: {
+    title: 'Button',
+  },
   render: () => (
     <ApplicationProvider {...eva} theme={eva.dark}>
       <div style={{ padding: 16, backgroundColor: '#1a1a1a' }}>
@@ -260,6 +269,9 @@ export const DarkTheme: Story = {
 
 // Button group
 export const ButtonGroup: Story = {
+  args: {
+    title: 'Button',
+  },
   render: () => (
     <UIKittenWrapper>
       <div style={{ padding: 16, flexDirection: 'row', gap: 8 }}>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Layout, Text, Card, CardHeader } from '@ui-kitten/components';
+import { Layout, Text, Card } from '@ui-kitten/components';
 import { Input, Button } from '@todo/ui-mobile';
 import ComponentExample from '../components/ComponentExample';
 
@@ -59,9 +59,9 @@ const InputScreen: React.FC = () => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Component Description */}
         <Card style={styles.descriptionCard}>
-          <CardHeader>
+          <Layout style={styles.cardHeaderLayout}>
             <Text category="h5">Input Component</Text>
-          </CardHeader>
+          </Layout>
           <Layout style={styles.cardContent}>
             <Text category="p1">
               Form input component with validation and error states. Built on UI Kitten Input 
@@ -279,6 +279,10 @@ const styles = StyleSheet.create({
   },
   descriptionCard: {
     marginBottom: 16,
+  },
+  cardHeaderLayout: {
+    padding: 16,
+    paddingBottom: 8,
   },
   cardContent: {
     paddingHorizontal: 16,

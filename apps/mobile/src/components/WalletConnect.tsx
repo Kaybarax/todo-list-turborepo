@@ -6,7 +6,7 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import { Card, CardContent, Button, Badge, NetworkSelector } from '@todo/ui-mobile';
+import { Card, CardContent, Button, Badge } from '@todo/ui-mobile';
 import { useWallet } from '../providers/WalletProvider';
 import { getNetworkColor } from '@todo/services';
 
@@ -16,13 +16,13 @@ export function WalletConnect() {
     isConnecting,
     account,
     error,
-    supportedNetworks,
+    // supportedNetworks, // TODO: Re-enable when NetworkSelector is fixed
     connect,
     disconnect,
     switchNetwork,
   } = useWallet();
 
-  const [selectedNetwork, setSelectedNetwork] = useState<'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base'>('solana');
+  const [selectedNetwork] = useState<'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base'>('solana');
   const [showNetworkSelector, setShowNetworkSelector] = useState(false);
 
   const handleConnect = async () => {
@@ -54,14 +54,15 @@ export function WalletConnect() {
     );
   };
 
-  const handleNetworkSwitch = async (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => {
-    try {
-      await switchNetwork(network);
-      setShowNetworkSelector(false);
-    } catch (err) {
-      console.error('Network switch failed:', err);
-    }
-  };
+  // TODO: Re-enable when NetworkSelector is fixed
+  // const handleNetworkSwitch = async (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => {
+  //   try {
+  //     await switchNetwork(network);
+  //     setShowNetworkSelector(false);
+  //   } catch (err) {
+  //     console.error('Network switch failed:', err);
+  //   }
+  // };
 
   // Use the centralized network color function
 
@@ -112,13 +113,14 @@ export function WalletConnect() {
           {showNetworkSelector && (
             <View style={styles.networkSelector}>
               <Text style={styles.selectorTitle}>Select Network:</Text>
-              <NetworkSelector
+              {/* TODO: Re-enable NetworkSelector when export issue is fixed */}
+              {/* <NetworkSelector
                 selectedNetwork={account.network}
                 onNetworkSelect={handleNetworkSwitch}
                 disabled={isConnecting}
                 variant="list"
                 style={styles.networkSelectorComponent}
-              />
+              /> */}
             </View>
           )}
 
@@ -159,13 +161,14 @@ export function WalletConnect() {
 
         <View style={styles.connectSection}>
           <Text style={styles.sectionTitle}>Select Network:</Text>
-          <NetworkSelector
+          {/* TODO: Re-enable NetworkSelector when export issue is fixed */}
+          {/* <NetworkSelector
             selectedNetwork={selectedNetwork}
             onNetworkSelect={setSelectedNetwork}
             disabled={isConnecting}
             variant="grid"
             style={styles.networkSelectorComponent}
-          />
+          /> */}
 
           <Button
             variant="primary"

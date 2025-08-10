@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Layout, Text, Card, CardHeader } from '@ui-kitten/components';
+import { Layout, Text, Card } from '@ui-kitten/components';
 import { Switch } from '@todo/ui-mobile';
 import ComponentExample from '../components/ComponentExample';
 
@@ -24,9 +24,9 @@ const SwitchScreen: React.FC = () => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Component Description */}
         <Card style={styles.descriptionCard}>
-          <CardHeader>
+          <Layout style={styles.cardHeaderLayout}>
             <Text category="h5">Switch Component</Text>
-          </CardHeader>
+          </Layout>
           <Layout style={styles.cardContent}>
             <Text category="p1">
               Toggle switch component for boolean values. Built on UI Kitten Toggle 
@@ -243,6 +243,10 @@ const styles = StyleSheet.create({
   },
   descriptionCard: {
     marginBottom: 16,
+  },
+  cardHeaderLayout: {
+    padding: 16,
+    paddingBottom: 8,
   },
   cardContent: {
     paddingHorizontal: 16,

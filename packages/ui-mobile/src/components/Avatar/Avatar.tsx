@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   text: {
-    fontWeight: theme.fontWeights.medium,
+    fontWeight: theme.fontWeights.medium as '500',
   },
 });
 

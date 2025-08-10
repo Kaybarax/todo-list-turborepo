@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: theme.fontSizes.md,
-    fontWeight: theme.fontWeights.medium,
+    fontWeight: theme.fontWeights.medium as '500',
     color: theme.colors.text,
     flex: 1,
   },

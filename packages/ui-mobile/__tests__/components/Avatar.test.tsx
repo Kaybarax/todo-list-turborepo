@@ -90,7 +90,7 @@ describe('Avatar', () => {
 
   it('applies custom styles', () => {
     const customContainerStyle = { margin: 10 };
-    const customTextStyle = { fontWeight: 'bold' };
+    const customTextStyle = { fontWeight: 'bold' as const };
     const { getByText } = render(
       <Avatar 
         initials="CS" 

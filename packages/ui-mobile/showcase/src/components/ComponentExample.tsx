@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Card, CardHeader, Layout, Text } from '@ui-kitten/components';
+import { Card, Layout, Text } from '@ui-kitten/components';
 
 interface ComponentExampleProps {
   title: string;
@@ -15,16 +15,14 @@ const ComponentExample: React.FC<ComponentExampleProps> = ({
 }) => {
   return (
     <Card style={styles.card}>
-      <CardHeader>
-        <View>
-          <Text category="h6" style={styles.title}>
-            {title}
-          </Text>
-          <Text category="p2" appearance="hint" style={styles.description}>
-            {description}
-          </Text>
-        </View>
-      </CardHeader>
+      <View style={styles.header}>
+        <Text category="h6" style={styles.title}>
+          {title}
+        </Text>
+        <Text category="p2" appearance="hint" style={styles.description}>
+          {description}
+        </Text>
+      </View>
       <Layout style={styles.content}>
         {children}
       </Layout>
@@ -35,6 +33,9 @@ const ComponentExample: React.FC<ComponentExampleProps> = ({
 const styles = StyleSheet.create({
   card: {
     marginBottom: 16,
+  },
+  header: {
+    padding: 16,
   },
   title: {
     marginBottom: 4,
