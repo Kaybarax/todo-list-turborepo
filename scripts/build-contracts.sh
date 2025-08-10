@@ -30,6 +30,11 @@ print_error() {
     log_error "$1"
 }
 
+# Source interactive help system
+if [[ -f "$SCRIPT_DIR/interactive-help.sh" ]]; then
+    source "$SCRIPT_DIR/interactive-help.sh"
+fi
+
 # Configuration
 NETWORK="${NETWORK:-all}"
 RUN_TESTS="${RUN_TESTS:-true}"
@@ -37,6 +42,9 @@ GENERATE_DOCS="${GENERATE_DOCS:-false}"
 VERIFY_CONTRACTS="${VERIFY_CONTRACTS:-false}"
 AUTO_INSTALL="${AUTO_INSTALL:-true}"
 SKIP_DEPS_CHECK="${SKIP_DEPS_CHECK:-false}"
+VERBOSE_MODE=false
+INTERACTIVE_MODE=false
+DIAGNOSE_MODE=false
 
 # Version comparison function
 version_compare() {
@@ -64,6 +72,153 @@ version_compare() {
     done
     
     return 0  # versions are equal
+}
+
+# Show comprehensive usage information
+show_usage() {
+    cat << EOF
+$(echo -e "${CYAN}=== Blockchain Contracts Build System ===${NC}")
+
+$(echo -e "${YELLOW}DESCRIPTION:${NC}")
+  Comprehensive build system for multi-network blockchain smart contracts.
+  Supports Polygon, Solana, Polkadot with automatic dependency management,
+  testing, documentation generation, and contract verification.
+
+$(echo -e "${YELLOW}USAGE:${NC}")
+  $0 [OPTIONS]
+
+$(echo -e "${YELLOW}OPTIONS:${NC}")
+  --network=NETWORK     Build contracts for specific network
+                        (polygon|solana|polkadot|moonbeam|base|all)
+  --skip-tests          Skip running contract tests
+  --skip-deps           Skip dependency checking
+  --no-auto-install     Disable automatic dependency installation
+  --generate-docs       Generate contract documentation
+  --verify              Verify contracts on block explorers (requires API keys)
+  --verbose             Enable verbose output and debugging
+  --interactive         Enable interactive troubleshooting prompts
+  --diagnose            Run comprehensive environment diagnosis
+  --help, -h            Show this help message
+
+$(echo -e "${YELLOW}NETWORKS:${NC}")
+  polygon               Polygon/Hardhat smart contracts (Solidity)
+  solana                Solana/Anchor programs (Rust)
+  polkadot              Polkadot/Substrate pallets (Rust)
+  moonbeam              Moonbeam (Ethereum-compatible on Polkadot)
+  base                  Base L2 (Ethereum-compatible)
+  all                   All supported networks (default)
+
+$(echo -e "${YELLOW}EXAMPLES:${NC}")
+  $0                              # Build all networks with tests
+  $0 --network=solana             # Build only Solana programs
+  $0 --network=polygon --verify   # Build and verify Polygon contracts
+  $0 --skip-tests --generate-docs # Build without tests, generate docs
+  $0 --verbose --interactive      # Verbose build with interactive help
+  $0 --diagnose                   # Diagnose build environment
+
+$(echo -e "${YELLOW}ENVIRONMENT VARIABLES:${NC}")
+  NETWORK               Target network (polygon|solana|polkadot|all)
+  RUN_TESTS             Run tests after compilation (true|false)
+  GENERATE_DOCS         Generate documentation (true|false)
+  VERIFY_CONTRACTS      Verify contracts on explorers (true|false)
+  AUTO_INSTALL          Attempt automatic dependency installation (true|false)
+  SKIP_DEPS_CHECK       Skip dependency validation (true|false)
+  ETHERSCAN_API_KEY     API key for Polygon contract verification
+  CI                    Automatically detected - disables interactive features
+
+$(echo -e "${YELLOW}BUILD PROCESS:${NC}")
+  1. Environment validation and dependency checking
+  2. Automatic installation of missing dependencies (if enabled)
+  3. Network-specific contract compilation
+  4. Test execution (if enabled)
+  5. Documentation generation (if enabled)
+  6. Contract verification (if enabled and configured)
+  7. Build report generation with success/failure status
+
+$(echo -e "${YELLOW}DEPENDENCY MANAGEMENT:${NC}")
+  The build system automatically:
+  • Checks for required tools before compilation
+  • Attempts to install missing dependencies
+  • Provides detailed error messages and troubleshooting guidance
+  • Validates build environment for each network
+
+$(echo -e "${YELLOW}NETWORK-SPECIFIC DETAILS:${NC}")
+
+$(echo -e "${CYAN}Polygon/Hardhat:${NC}")
+  • Requires: Node.js 20+, pnpm, Hardhat
+  • Compiles: Solidity contracts with TypeScript generation
+  • Tests: Hardhat test framework with Waffle/Ethers
+  • Verification: Etherscan/Polygonscan (requires API key)
+
+$(echo -e "${CYAN}Solana/Anchor:${NC}")
+  • Requires: Rust 1.70+, Solana CLI 1.16+, Anchor CLI 0.28+
+  • Compiles: Rust programs with IDL generation
+  • Tests: Anchor test framework with TypeScript client
+  • Deployment: Local validator or devnet
+
+$(echo -e "${CYAN}Polkadot/Substrate:${NC}")
+  • Requires: Rust 1.70+, cargo-contract, WebAssembly target
+  • Compiles: Substrate pallets and runtime
+  • Tests: Rust unit tests and integration tests
+  • Deployment: Local Substrate node
+
+$(echo -e "${YELLOW}TROUBLESHOOTING:${NC}")
+  If builds fail:
+  • Use --verbose for detailed error information
+  • Use --interactive for step-by-step troubleshooting
+  • Use --diagnose for comprehensive environment analysis
+  • Check dependency status: scripts/blockchain-deps-check.sh
+  • Install missing tools: scripts/install-blockchain-tools.sh
+
+$(echo -e "${YELLOW}EXIT CODES:${NC}")
+  0    All builds completed successfully
+  1    Some builds failed
+  2    Invalid command line arguments
+  3    Environment validation failed
+  4    Dependency installation failed
+
+$(echo -e "${YELLOW}RELATED SCRIPTS:${NC}")
+  scripts/blockchain-deps-check.sh    Verify build dependencies
+  scripts/install-blockchain-tools.sh Automated dependency installation
+  scripts/interactive-help.sh         Interactive troubleshooting system
+
+$(echo -e "${YELLOW}LOGGING AND REPORTS:${NC}")
+  Build logs and reports are generated in:
+  • Console output with color-coded status indicators
+  • Structured logging with different levels (INFO, WARN, ERROR)
+  • Build summary with success/failure status per network
+  • Detailed error messages with actionable recommendations
+
+EOF
+}
+
+# Enhanced help function
+show_help() {
+    show_usage
+}
+
+# Interactive troubleshooting wrapper for build issues
+run_interactive_build_troubleshooting() {
+    if command -v interactive_troubleshooting >/dev/null 2>&1; then
+        log_info "Starting interactive build troubleshooting..."
+        interactive_troubleshooting "build-failure"
+    else
+        log_error "Interactive help system not available"
+        log_info "Please check that scripts/interactive-help.sh exists"
+        return 1
+    fi
+}
+
+# Environment diagnosis wrapper
+run_build_environment_diagnosis() {
+    if command -v diagnose_environment >/dev/null 2>&1; then
+        log_info "Running comprehensive build environment diagnosis..."
+        diagnose_environment "${NETWORK:-all}"
+    else
+        log_error "Environment diagnosis not available"
+        log_info "Please check that scripts/interactive-help.sh exists"
+        return 1
+    fi
 }
 
 # Dependency management configuration
@@ -1482,50 +1637,7 @@ show_build_summary() {
     show_build_summary_with_results
 }
 
-# Function to show help
-show_help() {
-    echo "Usage: $0 [OPTIONS]"
-    echo ""
-    echo "Build blockchain contracts for Todo App with dependency management"
-    echo ""
-    echo "Options:"
-    echo "  --network NETWORK     Build specific network (polygon, solana, polkadot, moonbeam, base, all)"
-    echo "  --skip-tests          Skip running contract tests"
-    echo "  --generate-docs       Generate contract documentation"
-    echo "  --verify              Verify contracts on block explorers"
-    echo "  --no-auto-install     Disable automatic installation of missing dependencies"
-    echo "  --skip-deps-check     Skip dependency validation (not recommended)"
-    echo "  --help                Show this help message"
-    echo ""
-    echo "Environment Variables:"
-    echo "  NETWORK               Target network (default: all)"
-    echo "  RUN_TESTS            Run tests (default: true)"
-    echo "  GENERATE_DOCS        Generate documentation (default: false)"
-    echo "  VERIFY_CONTRACTS     Verify contracts (default: false)"
-    echo "  AUTO_INSTALL         Auto-install missing dependencies (default: true)"
-    echo "  SKIP_DEPS_CHECK      Skip dependency validation (default: false)"
-    echo "  ETHERSCAN_API_KEY    API key for Polygon contract verification"
-    echo "  MOONBEAM_API_KEY     API key for Moonbeam contract verification"
-    echo "  BASESCAN_API_KEY     API key for Base contract verification"
-    echo ""
-    echo "Examples:"
-    echo "  $0                           # Build all contracts with dependency management"
-    echo "  $0 --network polygon         # Build only Polygon contracts"
-    echo "  $0 --network moonbeam        # Build only Moonbeam contracts"
-    echo "  $0 --network base            # Build only Base contracts"
-    echo "  $0 --skip-tests --verify     # Build without tests but verify"
-    echo "  $0 --no-auto-install        # Build without automatic dependency installation"
-    echo "  $0 --skip-deps-check         # Build without dependency validation"
-    echo ""
-    echo "Dependency Management:"
-    echo "  The script automatically checks for required blockchain development tools"
-    echo "  and attempts to install missing dependencies. You can control this behavior"
-    echo "  using the --no-auto-install and --skip-deps-check options."
-    echo ""
-    echo "  Manual dependency management:"
-    echo "    Check dependencies: $DEPS_CHECK_SCRIPT --verbose"
-    echo "    Install tools:      $INSTALL_SCRIPT --all"
-}
+# Remove old show_help function - using enhanced version defined earlier
 
 # Main build function with enhanced error handling and comprehensive reporting
 main_build() {
@@ -1643,47 +1755,112 @@ main_build() {
 }
 
 # Parse command line arguments
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        --network)
-            NETWORK="$2"
-            shift 2
-            ;;
-        --skip-tests)
-            RUN_TESTS="false"
-            shift
-            ;;
-        --generate-docs)
-            GENERATE_DOCS="true"
-            shift
-            ;;
-        --verify)
-            VERIFY_CONTRACTS="true"
-            shift
-            ;;
-        --no-auto-install)
-            AUTO_INSTALL="false"
-            shift
-            ;;
-        --skip-deps-check)
-            SKIP_DEPS_CHECK="true"
-            shift
-            ;;
-        --help)
-            show_help
-            exit 0
+parse_build_arguments() {
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --network=*)
+                NETWORK="${1#*=}"
+                shift
+                ;;
+            --network)
+                NETWORK="$2"
+                shift 2
+                ;;
+            --skip-tests)
+                RUN_TESTS="false"
+                shift
+                ;;
+            --generate-docs)
+                GENERATE_DOCS="true"
+                shift
+                ;;
+            --verify)
+                VERIFY_CONTRACTS="true"
+                shift
+                ;;
+            --no-auto-install)
+                AUTO_INSTALL="false"
+                shift
+                ;;
+            --skip-deps|--skip-deps-check)
+                SKIP_DEPS_CHECK="true"
+                shift
+                ;;
+            --verbose)
+                VERBOSE_MODE=true
+                shift
+                ;;
+            --interactive)
+                INTERACTIVE_MODE=true
+                shift
+                ;;
+            --diagnose)
+                DIAGNOSE_MODE=true
+                shift
+                ;;
+            --help|-h)
+                show_help
+                exit 0
+                ;;
+            *)
+                print_error "Unknown option: $1"
+                echo "Use --help for usage information"
+                exit 2
+                ;;
+        esac
+    done
+    
+    # Validate network argument
+    case "$NETWORK" in
+        polygon|solana|polkadot|moonbeam|base|all)
             ;;
         *)
-            print_error "Unknown option: $1"
-            show_help
-            exit 1
+            print_error "Invalid network: $NETWORK"
+            print_error "Supported networks: polygon, solana, polkadot, moonbeam, base, all"
+            exit 2
             ;;
     esac
-done
+}
 
-# Execute main build with proper exit code handling
-if main_build; then
-    exit 0
-else
-    exit 1
+# Initialize and execute build
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    # Initialize help system if available
+    if command -v init_help_system >/dev/null 2>&1; then
+        init_help_system "$(basename "$0")"
+    fi
+    
+    # Parse command line arguments
+    parse_build_arguments "$@"
+    
+    # Handle special modes first
+    if [[ "$DIAGNOSE_MODE" == true ]]; then
+        run_build_environment_diagnosis
+        exit $?
+    fi
+    
+    if [[ "$INTERACTIVE_MODE" == true ]]; then
+        run_interactive_build_troubleshooting
+        exit $?
+    fi
+    
+    # Set verbose mode if requested
+    if [[ "$VERBOSE_MODE" == true ]]; then
+        set -x  # Enable bash debugging
+    fi
+    
+    # Execute main build with proper exit code handling
+    if main_build; then
+        exit 0
+    else
+        # If build failed and not in interactive mode, offer help
+        if [[ "$INTERACTIVE_MODE" != true ]] && [[ -t 0 ]] && [[ -z "${CI:-}" ]]; then
+            echo ""
+            log_info "Build failed. For troubleshooting assistance:"
+            echo "  • Run: $0 --interactive"
+            echo "  • Run: $0 --diagnose"
+            echo "  • Run: $0 --verbose (for detailed output)"
+            echo "  • Check build logs and error messages above"
+        fi
+        exit 1
+    fi
 fi

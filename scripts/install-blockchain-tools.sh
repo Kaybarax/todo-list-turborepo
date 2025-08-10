@@ -801,6 +801,32 @@ install_node_deps() {
     return 0
 }
 
+# Additional global variables for enhanced help
+INTERACTIVE_MODE=false
+SKIP_VALIDATION=false
+FORCE_INSTALL=false
+
+# Enhanced help function
+show_help() {
+    if command -v show_comprehensive_help >/dev/null 2>&1; then
+        show_comprehensive_help "$(basename "$0")"
+    else
+        show_usage
+    fi
+}
+
+# Interactive installation guidance
+run_interactive_installation() {
+    if command -v interactive_troubleshooting >/dev/null 2>&1; then
+        log_info "Starting interactive installation guidance..."
+        interactive_troubleshooting "dependency-missing"
+    else
+        log_error "Interactive help system not available"
+        log_info "Please check that scripts/interactive-help.sh exists"
+        return 1
+    fi
+}
+
 # Main installation function
 install_tool() {
     local tool="$1"
@@ -829,14 +855,128 @@ install_tool() {
     esac
 }
 
-# Show usage information
+# Source interactive help system
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ -f "$SCRIPT_DIR/interactive-help.sh" ]]; then
+    source "$SCRIPT_DIR/interactive-help.sh"
+fi
+
+# Show comprehensive usage information
 show_usage() {
-    echo "Usage: $0 [OPTIONS]"
-    echo ""
-    echo "Options:"
-    echo "  --tool=<tool>     Install specific tool (rust|solana|anchor|substrate|node)"
-    echo "  --all             Install all tools"
-    echo "  --force           Force reinstallation even if tool exists"
+    cat << EOF
+$(echo -e "${CYAN}=== Automated Blockchain Tools Installer ===${NC}")
+
+$(echo -e "${YELLOW}DESCRIPTION:${NC}")
+  Automated installation of blockchain development dependencies with enhanced
+  error handling, retry mechanisms, and cross-platform support.
+
+$(echo -e "${YELLOW}USAGE:${NC}")
+  $0 [OPTIONS]
+
+$(echo -e "${YELLOW}OPTIONS:${NC}")
+  --tool=TOOL           Install specific tool (rust|solana|anchor|substrate|node)
+  --all                 Install all blockchain development tools
+  --force               Force reinstallation even if tool exists
+  --verbose             Enable verbose output and debugging information
+  --interactive         Enable interactive prompts and guidance
+  --skip-validation     Skip post-installation validation checks
+  --help, -h            Show this help message
+
+$(echo -e "${YELLOW}SUPPORTED TOOLS:${NC}")
+  rust                  Rust programming language (via rustup)
+  solana                Solana CLI tools for program deployment
+  anchor                Anchor framework for Solana development
+  substrate             Substrate tools for Polkadot development (cargo-contract)
+  node                  Node.js dependencies verification
+
+$(echo -e "${YELLOW}EXAMPLES:${NC}")
+  $0 --tool=rust               # Install only Rust
+  $0 --tool=solana --verbose   # Install Solana CLI with verbose output
+  $0 --all                     # Install all tools
+  $0 --all --force             # Reinstall all tools
+  $0 --interactive             # Interactive installation with guidance
+
+$(echo -e "${YELLOW}INSTALLATION DETAILS:${NC}")
+
+$(echo -e "${CYAN}Rust Installation:${NC}")
+  • Uses official rustup installer
+  • Installs stable toolchain by default
+  • Adds WebAssembly target for Substrate development
+  • Includes clippy and rustfmt components
+  • Updates PATH in shell profiles
+
+$(echo -e "${CYAN}Solana CLI Installation:${NC}")
+  • Uses official Solana installer
+  • Installs specific version ($SOLANA_VERSION)
+  • Configures for development use
+  • Updates PATH in shell profiles
+  • Validates installation with timeout
+
+$(echo -e "${CYAN}Anchor CLI Installation:${NC}")
+  • Requires Rust and Solana CLI
+  • Uses Anchor Version Manager (AVM)
+  • Installs specific version ($ANCHOR_VERSION)
+  • Compiles from source (may take time)
+  • Validates with Solana integration
+
+$(echo -e "${CYAN}Substrate Tools Installation:${NC}")
+  • Requires Rust and Protocol Buffers compiler
+  • Installs cargo-contract for ink! contracts
+  • Adds WebAssembly compilation target
+  • Platform-specific protobuf installation
+
+$(echo -e "${YELLOW}RETRY MECHANISM:${NC}")
+  • Automatic retry with exponential backoff
+  • Network failure handling
+  • Maximum $MAX_RETRIES attempts per operation
+  • Fallback to manual installation instructions
+
+$(echo -e "${YELLOW}VALIDATION:${NC}")
+  • Post-installation validation with timeout
+  • Version verification
+  • Functionality testing
+  • PATH configuration verification
+
+$(echo -e "${YELLOW}PLATFORM SUPPORT:${NC}")
+  • macOS (Intel and Apple Silicon)
+  • Linux (x86_64 and ARM64)
+  • Windows (limited support via WSL/Git Bash)
+  • Automatic platform detection
+
+$(echo -e "${YELLOW}ENVIRONMENT VARIABLES:${NC}")
+  MAX_RETRIES           Maximum retry attempts (default: $MAX_RETRIES)
+  VALIDATION_TIMEOUT    Validation timeout in seconds (default: $VALIDATION_TIMEOUT)
+  CI                    Automatically detected - disables interactive features
+  SKIP_NETWORK_CHECK    Set to 'true' to skip network connectivity checks
+
+$(echo -e "${YELLOW}EXIT CODES:${NC}")
+  0    Installation completed successfully
+  1    Installation failed
+  2    Invalid command line arguments
+  3    Network connectivity issues
+  4    Permission issues
+  5    Platform not supported
+
+$(echo -e "${YELLOW}TROUBLESHOOTING:${NC}")
+  If installation fails:
+  • Check network connectivity
+  • Verify sufficient disk space
+  • Ensure proper permissions
+  • Try with --verbose for detailed output
+  • Use --interactive for step-by-step guidance
+  • Check manual installation instructions
+
+$(echo -e "${YELLOW}MANUAL INSTALLATION:${NC}")
+  If automatic installation fails, the script provides detailed
+  manual installation instructions for each tool and platform.
+
+$(echo -e "${YELLOW}RELATED SCRIPTS:${NC}")
+  scripts/blockchain-deps-check.sh    Verify installed dependencies
+  scripts/build-contracts.sh          Build contracts with dependency checks
+  scripts/interactive-help.sh         Interactive troubleshooting system
+
+EOF
+}nstallation even if tool exists"
     echo "  --help            Show this help message"
     echo ""
     echo "Available tools:"
@@ -964,6 +1104,59 @@ report_installation_summary() {
     fi
 }
 
+# Parse command line arguments
+parse_arguments() {
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --tool=*)
+                SPECIFIC_TOOL="${1#*=}"
+                shift
+                ;;
+            --all)
+                INSTALL_ALL=true
+                shift
+                ;;
+            --force)
+                FORCE_INSTALL=true
+                shift
+                ;;
+            --verbose)
+                VERBOSE=true
+                shift
+                ;;
+            --interactive)
+                INTERACTIVE_MODE=true
+                shift
+                ;;
+            --skip-validation)
+                SKIP_VALIDATION=true
+                shift
+                ;;
+            --help|-h)
+                show_help
+                exit 0
+                ;;
+            *)
+                log_error "Unknown option: $1"
+                echo "Use --help for usage information"
+                exit 2
+                ;;
+        esac
+    done
+    
+    # Validate arguments
+    if [[ -n "$SPECIFIC_TOOL" ]] && [[ "$INSTALL_ALL" == true ]]; then
+        log_error "Cannot specify both --tool and --all options"
+        exit 2
+    fi
+    
+    if [[ -z "$SPECIFIC_TOOL" ]] && [[ "$INSTALL_ALL" != true ]] && [[ "$INTERACTIVE_MODE" != true ]]; then
+        log_error "Must specify either --tool=<tool>, --all, or --interactive"
+        show_usage
+        exit 2
+    fi
+}
+
 # Main execution
 main() {
     log_info "Blockchain Tools Installer"
@@ -1049,5 +1242,22 @@ main() {
     fi
 }
 
-# Run main function
-main "$@"
+# Initialize and run
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    # Initialize help system if available
+    if command -v init_help_system >/dev/null 2>&1; then
+        init_help_system "$(basename "$0")"
+    fi
+    
+    # Parse arguments
+    parse_arguments "$@"
+    
+    # Handle interactive mode
+    if [[ "$INTERACTIVE_MODE" == true ]]; then
+        run_interactive_installation
+        exit $?
+    fi
+    
+    # Run main installation
+    main
+fi

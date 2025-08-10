@@ -30,25 +30,87 @@ RUST_MIN_VERSION="1.70.0"
 SOLANA_MIN_VERSION="1.16.0"
 ANCHOR_MIN_VERSION="0.28.0"
 
+# Source interactive help system
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ -f "$SCRIPT_DIR/interactive-help.sh" ]]; then
+    source "$SCRIPT_DIR/interactive-help.sh"
+fi
+
 # Usage information
 usage() {
     cat << EOF
-Usage: $0 [OPTIONS]
+$(echo -e "${CYAN}=== Blockchain Development Environment Dependency Checker ===${NC}")
 
-Comprehensive blockchain development environment dependency checker.
+$(echo -e "${YELLOW}DESCRIPTION:${NC}")
+  Comprehensive verification of blockchain development tools and dependencies.
+  Supports cross-platform detection, version validation, and automatic fixing.
 
-OPTIONS:
-    --fix                   Attempt to install missing dependencies
-    --verbose              Show detailed output and debug information
-    --network=NETWORK      Check dependencies for specific network only
-                          (polygon|solana|polkadot|all)
-    --help                 Show this help message
+$(echo -e "${YELLOW}USAGE:${NC}")
+  $0 [OPTIONS]
 
-EXAMPLES:
-    $0                     # Check all dependencies
-    $0 --verbose           # Check with detailed output
-    $0 --network=solana    # Check only Solana dependencies
-    $0 --fix               # Check and attempt to fix missing dependencies
+$(echo -e "${YELLOW}OPTIONS:${NC}")
+  --fix                   Attempt to install missing dependencies automatically
+  --verbose              Show detailed output and debug information
+  --network=NETWORK      Check dependencies for specific network only
+                          (polygon|solana|polkadot|moonbeam|base|all)
+  --interactive          Enable interactive troubleshooting prompts
+  --diagnose             Run comprehensive environment diagnosis
+  --help, -h             Show this help message
+
+$(echo -e "${YELLOW}NETWORKS:${NC}")
+  polygon               Polygon/Hardhat smart contracts (Node.js, Hardhat)
+  solana                Solana/Anchor programs (Rust, Solana CLI, Anchor CLI)
+  polkadot              Polkadot/Substrate pallets (Rust, cargo-contract, WASM)
+  moonbeam              Moonbeam (same as Polygon)
+  base                  Base L2 (same as Polygon)
+  all                   All supported networks (default)
+
+$(echo -e "${YELLOW}EXAMPLES:${NC}")
+  $0                           # Check all dependencies
+  $0 --verbose                 # Check with detailed output
+  $0 --network=solana          # Check only Solana dependencies
+  $0 --fix                     # Check and attempt to fix missing dependencies
+  $0 --interactive             # Interactive troubleshooting mode
+  $0 --diagnose                # Comprehensive environment diagnosis
+  $0 --network=polygon --fix   # Fix Polygon-specific dependencies
+
+$(echo -e "${YELLOW}VERBOSE MODE:${NC}")
+  When --verbose is enabled, the script will show:
+  • Detailed version information for all tools
+  • Debug information about detection process
+  • Configuration details (Solana RPC URL, etc.)
+  • Platform-specific installation paths
+  • Troubleshooting hints for failed checks
+
+$(echo -e "${YELLOW}INTERACTIVE MODE:${NC}")
+  When --interactive is enabled, the script will:
+  • Prompt for user input on failed checks
+  • Offer step-by-step troubleshooting guidance
+  • Provide installation options for missing tools
+  • Allow selective fixing of specific issues
+
+$(echo -e "${YELLOW}EXIT CODES:${NC}")
+  0    All dependencies are properly installed and configured
+  1    Some dependencies are missing or outdated
+  2    Invalid command line arguments
+  3    Network connectivity issues (when using --fix)
+
+$(echo -e "${YELLOW}ENVIRONMENT VARIABLES:${NC}")
+  SKIP_NETWORK_CHECK    Set to 'true' to skip network connectivity checks
+  AUTO_INSTALL          Set to 'false' to disable automatic installation prompts
+  CI                    Automatically detected - disables interactive features
+
+$(echo -e "${YELLOW}RELATED SCRIPTS:${NC}")
+  scripts/install-blockchain-tools.sh    Automated dependency installation
+  scripts/build-contracts.sh             Contract compilation with dependency checks
+  scripts/interactive-help.sh            Interactive troubleshooting system
+
+$(echo -e "${YELLOW}TROUBLESHOOTING:${NC}")
+  If you encounter issues, try:
+  • Run with --verbose for detailed information
+  • Use --interactive for step-by-step guidance
+  • Run --diagnose for comprehensive environment analysis
+  • Check the troubleshooting documentation in docs/
 
 EOF
 }
@@ -364,6 +426,43 @@ check_dependencies() {
     return $EXIT_CODE
 }
 
+# Additional global variables for enhanced help
+INTERACTIVE_MODE=false
+DIAGNOSE_MODE=false
+
+# Enhanced help function
+show_help() {
+    if command -v show_comprehensive_help >/dev/null 2>&1; then
+        show_comprehensive_help "$(basename "$0")"
+    else
+        usage
+    fi
+}
+
+# Interactive troubleshooting wrapper
+run_interactive_troubleshooting() {
+    if command -v interactive_troubleshooting >/dev/null 2>&1; then
+        log_info "Starting interactive troubleshooting..."
+        interactive_troubleshooting "dependency-missing"
+    else
+        log_error "Interactive help system not available"
+        log_info "Please check that scripts/interactive-help.sh exists"
+        return 1
+    fi
+}
+
+# Environment diagnosis wrapper
+run_environment_diagnosis() {
+    if command -v diagnose_environment >/dev/null 2>&1; then
+        log_info "Running comprehensive environment diagnosis..."
+        diagnose_environment "${NETWORK_FILTER:-all}"
+    else
+        log_error "Environment diagnosis not available"
+        log_info "Please check that scripts/interactive-help.sh exists"
+        return 1
+    fi
+}
+
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -379,27 +478,80 @@ while [[ $# -gt 0 ]]; do
             NETWORK_FILTER="${1#*=}"
             shift
             ;;
-        --help)
-            usage
+        --interactive)
+            INTERACTIVE_MODE=true
+            shift
+            ;;
+        --diagnose)
+            DIAGNOSE_MODE=true
+            shift
+            ;;
+        --help|-h)
+            show_help
             exit 0
             ;;
         *)
             echo "Unknown option: $1"
-            usage
-            exit 1
+            echo "Use --help for usage information"
+            exit 2
             ;;
     esac
 done
 
-# Main execution
+# Enhanced main execution with interactive features
 main() {
+    # Initialize help system if available
+    if command -v init_help_system >/dev/null 2>&1; then
+        init_help_system "$(basename "$0")"
+    fi
+    
+    # Handle special modes first
+    if [[ "$DIAGNOSE_MODE" == true ]]; then
+        run_environment_diagnosis
+        exit $?
+    fi
+    
+    if [[ "$INTERACTIVE_MODE" == true ]]; then
+        run_interactive_troubleshooting
+        exit $?
+    fi
+    
+    # Standard dependency checking
     if [[ "$FIX_MODE" == true ]]; then
         log_info "Fix mode enabled - will attempt to install missing dependencies"
-        log_warning "Automatic installation not yet implemented. Please install manually."
+        
+        # Check if installer script exists
+        if [[ -f "$SCRIPT_DIR/install-blockchain-tools.sh" ]]; then
+            log_info "Automatic installation available via install-blockchain-tools.sh"
+        else
+            log_warning "Automatic installation script not found. Please install manually."
+        fi
         echo ""
     fi
     
+    # Run dependency check
     check_dependencies
+    
+    # If there were failures and interactive mode is available, offer help
+    if [[ $EXIT_CODE -ne 0 ]] && [[ "$INTERACTIVE_MODE" != true ]] && [[ -t 0 ]] && [[ -z "${CI:-}" ]]; then
+        echo ""
+        log_info "Some dependencies are missing or outdated."
+        
+        if command -v prompt_yes_no >/dev/null 2>&1; then
+            if prompt_yes_no "Would you like to run interactive troubleshooting?"; then
+                run_interactive_troubleshooting
+                exit $?
+            fi
+        fi
+        
+        echo ""
+        log_info "For help with resolving these issues:"
+        echo "  • Run: $0 --interactive"
+        echo "  • Run: $0 --diagnose"
+        echo "  • Run: $0 --fix (to attempt automatic installation)"
+        echo "  • Check documentation in docs/ directory"
+    fi
+    
     exit $EXIT_CODE
 }
 
