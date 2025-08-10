@@ -1,15 +1,31 @@
 {
-  "extends": "@todo/config-ts/library.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM"],
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
     "baseUrl": ".",
+    "strict": true,
+    "noEmit": false,
+    "emitDeclarationOnly": false,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "resolveJsonModule": true,
+    "incremental": true,
+    "allowImportingTsExtensions": false,
     "paths": {
       "@/*": ["./src/*"]
-    },
-    "noEmit": false,
-    "declaration": true,
-    "outDir": "./dist",
-    "incremental": false,
-    "allowImportingTsExtensions": false
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]

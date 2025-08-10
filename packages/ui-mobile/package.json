@@ -36,7 +36,7 @@
     "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
-    "@todo/services": "*",
+    "@todo/services": "workspace:*",
     "@ui-kitten/components": "^5.3.1",
     "@eva-design/eva": "^2.2.0",
     "react-native-svg": "^13.4.0",
@@ -55,8 +55,8 @@
 
     "@storybook/test": "^7.6.10",
     "@testing-library/react-native": "^12.4.1",
-    "@todo/config-eslint": "*",
-    "@todo/config-ts": "*",
+    "@todo/config-eslint": "workspace:*",
+    "@todo/config-ts": "workspace:*",
     "@types/jest": "^29.5.11",
     "@types/react": "~18.2.14",
     "@types/react-native": "~0.72.6",

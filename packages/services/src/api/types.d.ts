@@ -10,16 +10,16 @@ export declare const apiResponseSchema: z.ZodObject<{
     timestamp: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     success: boolean;
-    error?: string | undefined;
     message?: string | undefined;
     data?: unknown;
     timestamp?: string | undefined;
+    error?: string | undefined;
 }, {
     success: boolean;
-    error?: string | undefined;
     message?: string | undefined;
     data?: unknown;
     timestamp?: string | undefined;
+    error?: string | undefined;
 }>;
 /**
  * API response type
@@ -74,7 +74,7 @@ export declare const apiTodoSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     id: string;
     title: string;
-    priority: "medium" | "low" | "high";
+    priority: "low" | "medium" | "high";
     createdAt: string;
     updatedAt: string;
     userId: string;
@@ -89,7 +89,7 @@ export declare const apiTodoSchema: z.ZodObject<{
     updatedAt: string;
     userId: string;
     description?: string | undefined;
-    priority?: "medium" | "low" | "high" | undefined;
+    priority?: "low" | "medium" | "high" | undefined;
     dueDate?: string | undefined;
     tags?: string[] | undefined;
     completed?: boolean | undefined;
@@ -114,7 +114,7 @@ export declare const createApiTodoSchema: z.ZodObject<Omit<{
     userId: z.ZodString;
 }, "id" | "createdAt" | "updatedAt" | "userId">, "strip", z.ZodTypeAny, {
     title: string;
-    priority: "medium" | "low" | "high";
+    priority: "low" | "medium" | "high";
     tags: string[];
     completed: boolean;
     description?: string | undefined;
@@ -122,7 +122,7 @@ export declare const createApiTodoSchema: z.ZodObject<Omit<{
 }, {
     title: string;
     description?: string | undefined;
-    priority?: "medium" | "low" | "high" | undefined;
+    priority?: "low" | "medium" | "high" | undefined;
     dueDate?: string | undefined;
     tags?: string[] | undefined;
     completed?: boolean | undefined;
@@ -144,14 +144,14 @@ export declare const updateApiTodoSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     title?: string | undefined;
     description?: string | undefined;
-    priority?: "medium" | "low" | "high" | undefined;
+    priority?: "low" | "medium" | "high" | undefined;
     dueDate?: string | undefined;
     tags?: string[] | undefined;
     completed?: boolean | undefined;
 }, {
     title?: string | undefined;
     description?: string | undefined;
-    priority?: "medium" | "low" | "high" | undefined;
+    priority?: "low" | "medium" | "high" | undefined;
     dueDate?: string | undefined;
     tags?: string[] | undefined;
     completed?: boolean | undefined;
@@ -175,11 +175,11 @@ export declare const userSchema: z.ZodObject<{
     }, "strip", z.ZodTypeAny, {
         theme: "light" | "dark";
         notifications: boolean;
-        defaultPriority: "medium" | "low" | "high";
+        defaultPriority: "low" | "medium" | "high";
     }, {
         theme?: "light" | "dark" | undefined;
         notifications?: boolean | undefined;
-        defaultPriority?: "medium" | "low" | "high" | undefined;
+        defaultPriority?: "low" | "medium" | "high" | undefined;
     }>;
     createdAt: z.ZodString;
     updatedAt: z.ZodString;
@@ -190,7 +190,7 @@ export declare const userSchema: z.ZodObject<{
     settings: {
         theme: "light" | "dark";
         notifications: boolean;
-        defaultPriority: "medium" | "low" | "high";
+        defaultPriority: "low" | "medium" | "high";
     };
     email?: string | undefined;
     walletAddress?: string | undefined;
@@ -202,7 +202,7 @@ export declare const userSchema: z.ZodObject<{
     settings: {
         theme?: "light" | "dark" | undefined;
         notifications?: boolean | undefined;
-        defaultPriority?: "medium" | "low" | "high" | undefined;
+        defaultPriority?: "low" | "medium" | "high" | undefined;
     };
     email?: string | undefined;
     walletAddress?: string | undefined;
@@ -228,11 +228,11 @@ export declare const authResponseSchema: z.ZodObject<{
         }, "strip", z.ZodTypeAny, {
             theme: "light" | "dark";
             notifications: boolean;
-            defaultPriority: "medium" | "low" | "high";
+            defaultPriority: "low" | "medium" | "high";
         }, {
             theme?: "light" | "dark" | undefined;
             notifications?: boolean | undefined;
-            defaultPriority?: "medium" | "low" | "high" | undefined;
+            defaultPriority?: "low" | "medium" | "high" | undefined;
         }>;
         createdAt: z.ZodString;
         updatedAt: z.ZodString;
@@ -243,7 +243,7 @@ export declare const authResponseSchema: z.ZodObject<{
         settings: {
             theme: "light" | "dark";
             notifications: boolean;
-            defaultPriority: "medium" | "low" | "high";
+            defaultPriority: "low" | "medium" | "high";
         };
         email?: string | undefined;
         walletAddress?: string | undefined;
@@ -255,7 +255,7 @@ export declare const authResponseSchema: z.ZodObject<{
         settings: {
             theme?: "light" | "dark" | undefined;
             notifications?: boolean | undefined;
-            defaultPriority?: "medium" | "low" | "high" | undefined;
+            defaultPriority?: "low" | "medium" | "high" | undefined;
         };
         email?: string | undefined;
         walletAddress?: string | undefined;
@@ -272,7 +272,7 @@ export declare const authResponseSchema: z.ZodObject<{
         settings: {
             theme: "light" | "dark";
             notifications: boolean;
-            defaultPriority: "medium" | "low" | "high";
+            defaultPriority: "low" | "medium" | "high";
         };
         email?: string | undefined;
         walletAddress?: string | undefined;
@@ -289,7 +289,7 @@ export declare const authResponseSchema: z.ZodObject<{
         settings: {
             theme?: "light" | "dark" | undefined;
             notifications?: boolean | undefined;
-            defaultPriority?: "medium" | "low" | "high" | undefined;
+            defaultPriority?: "low" | "medium" | "high" | undefined;
         };
         email?: string | undefined;
         walletAddress?: string | undefined;
@@ -312,23 +312,23 @@ export declare const loginInputSchema: z.ZodEffects<z.ZodObject<{
     signature: z.ZodOptional<z.ZodString>;
     message: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    email?: string | undefined;
     message?: string | undefined;
+    email?: string | undefined;
     walletAddress?: string | undefined;
     signature?: string | undefined;
 }, {
-    email?: string | undefined;
     message?: string | undefined;
+    email?: string | undefined;
     walletAddress?: string | undefined;
     signature?: string | undefined;
 }>, {
-    email?: string | undefined;
     message?: string | undefined;
+    email?: string | undefined;
     walletAddress?: string | undefined;
     signature?: string | undefined;
 }, {
-    email?: string | undefined;
     message?: string | undefined;
+    email?: string | undefined;
     walletAddress?: string | undefined;
     signature?: string | undefined;
 }>;

@@ -44,7 +44,25 @@
     },
     "compile": {
       "dependsOn": ["^build"],
+      "outputs": ["artifacts/**", "cache/**", "typechain-types/**", "target/**", "deployments/**"]
+    },
+    "compile:polygon": {
       "outputs": ["artifacts/**", "cache/**", "typechain-types/**"]
+    },
+    "compile:moonbeam": {
+      "outputs": ["artifacts/**", "cache/**", "typechain-types/**"]
+    },
+    "compile:base": {
+      "outputs": ["artifacts/**", "cache/**", "typechain-types/**"]
+    },
+    "compile:solana": {
+      "outputs": ["target/**", "deployments/**"]
+    },
+    "compile:polkadot": {
+      "outputs": ["target/**"]
+    },
+    "compile:all": {
+      "dependsOn": ["compile:polygon", "compile:moonbeam", "compile:base", "compile:solana", "compile:polkadot"]
     },
     "deploy": {
       "dependsOn": ["build", "test", "lint"],

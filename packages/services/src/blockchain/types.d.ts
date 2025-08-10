@@ -119,9 +119,9 @@ export declare const blockchainTodoSchema: z.ZodObject<{
     transactionHash: z.ZodOptional<z.ZodString>;
     network: z.ZodNativeEnum<typeof BlockchainNetwork>;
 }, "strip", z.ZodTypeAny, {
-    status: BlockchainTodoStatus;
     id: string;
     title: string;
+    status: BlockchainTodoStatus;
     network: BlockchainNetwork;
     completed: boolean;
     owner: string;
@@ -134,8 +134,8 @@ export declare const blockchainTodoSchema: z.ZodObject<{
     title: string;
     network: BlockchainNetwork;
     owner: string;
-    status?: BlockchainTodoStatus | undefined;
     description?: string | undefined;
+    status?: BlockchainTodoStatus | undefined;
     createdAt?: Date | undefined;
     updatedAt?: Date | undefined;
     transactionHash?: string | undefined;
@@ -160,14 +160,14 @@ export declare const createBlockchainTodoSchema: z.ZodObject<Omit<{
     transactionHash: z.ZodOptional<z.ZodString>;
     network: z.ZodNativeEnum<typeof BlockchainNetwork>;
 }, "id" | "createdAt" | "updatedAt" | "network" | "transactionHash" | "owner">, "strip", z.ZodTypeAny, {
-    status: BlockchainTodoStatus;
     title: string;
+    status: BlockchainTodoStatus;
     completed: boolean;
     description?: string | undefined;
 }, {
     title: string;
-    status?: BlockchainTodoStatus | undefined;
     description?: string | undefined;
+    status?: BlockchainTodoStatus | undefined;
     completed?: boolean | undefined;
 }>;
 /**
@@ -178,19 +178,19 @@ export type CreateBlockchainTodoInput = z.infer<typeof createBlockchainTodoSchem
  * Schema for updating a blockchain todo
  */
 export declare const updateBlockchainTodoSchema: z.ZodObject<{
-    status: z.ZodOptional<z.ZodDefault<z.ZodNativeEnum<typeof BlockchainTodoStatus>>>;
     title: z.ZodOptional<z.ZodString>;
     description: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+    status: z.ZodOptional<z.ZodDefault<z.ZodNativeEnum<typeof BlockchainTodoStatus>>>;
     completed: z.ZodOptional<z.ZodDefault<z.ZodBoolean>>;
 }, "strip", z.ZodTypeAny, {
-    status?: BlockchainTodoStatus | undefined;
     title?: string | undefined;
     description?: string | undefined;
+    status?: BlockchainTodoStatus | undefined;
     completed?: boolean | undefined;
 }, {
-    status?: BlockchainTodoStatus | undefined;
     title?: string | undefined;
     description?: string | undefined;
+    status?: BlockchainTodoStatus | undefined;
     completed?: boolean | undefined;
 }>;
 /**
@@ -228,14 +228,14 @@ export declare const blockchainErrorSchema: z.ZodObject<{
     transactionHash: z.ZodOptional<z.ZodString>;
     network: z.ZodOptional<z.ZodNativeEnum<typeof BlockchainNetwork>>;
 }, "strip", z.ZodTypeAny, {
-    type: BlockchainErrorType;
     message: string;
+    type: BlockchainErrorType;
     network?: BlockchainNetwork | undefined;
     transactionHash?: string | undefined;
     originalError?: unknown;
 }, {
-    type: BlockchainErrorType;
     message: string;
+    type: BlockchainErrorType;
     network?: BlockchainNetwork | undefined;
     transactionHash?: string | undefined;
     originalError?: unknown;
@@ -278,8 +278,8 @@ export declare const networkConfigSchema: z.ZodObject<{
     isTestnet: z.ZodDefault<z.ZodBoolean>;
     isEVM: z.ZodDefault<z.ZodBoolean>;
 }, "strip", z.ZodTypeAny, {
-    name: string;
     chainId: number;
+    name: string;
     rpcUrl: string;
     explorerUrl: string;
     nativeCurrency: {
@@ -294,8 +294,8 @@ export declare const networkConfigSchema: z.ZodObject<{
     isTestnet: boolean;
     isEVM: boolean;
 }, {
-    name: string;
     chainId: number;
+    name: string;
     rpcUrl: string;
     explorerUrl: string;
     nativeCurrency: {

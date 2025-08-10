@@ -2,11 +2,43 @@
   "name": "@todo/smart-contracts",
   "version": "0.0.1",
   "private": true,
+  "description": "Multi-network smart contracts for todo management",
   "scripts": {
     "compile": "hardhat compile",
+    "compile:polygon": "cd polygon && pnpm compile",
+    "compile:moonbeam": "cd moonbeam && pnpm compile",
+    "compile:base": "cd base && pnpm compile",
+    "compile:solana": "cd solana && anchor build",
+    "compile:polkadot": "cd polkadot && cargo build --release",
+    "compile:all": "pnpm compile:polygon && pnpm compile:moonbeam && pnpm compile:base && pnpm compile:solana && pnpm compile:polkadot",
     "test": "hardhat test",
+    "test:polygon": "cd polygon && pnpm test",
+    "test:moonbeam": "cd moonbeam && pnpm test",
+    "test:base": "cd base && pnpm test",
+    "test:solana": "cd solana && anchor test",
+    "test:polkadot": "cd polkadot && cargo test",
+    "test:all": "pnpm test:polygon && pnpm test:moonbeam && pnpm test:base && pnpm test:solana && pnpm test:polkadot",
+    "deploy:polygon:local": "cd polygon && pnpm deploy:local",
+    "deploy:polygon:mumbai": "cd polygon && pnpm deploy:mumbai",
+    "deploy:polygon:mainnet": "cd polygon && pnpm deploy:polygon",
+    "deploy:moonbeam:local": "cd moonbeam && pnpm deploy:local",
+    "deploy:moonbeam:testnet": "cd moonbeam && pnpm deploy:moonbase",
+    "deploy:moonbeam:mainnet": "cd moonbeam && pnpm deploy:moonbeam",
+    "deploy:base:local": "cd base && pnpm deploy:local",
+    "deploy:base:testnet": "cd base && pnpm deploy:sepolia",
+    "deploy:base:mainnet": "cd base && pnpm deploy:base",
+    "deploy:solana:localnet": "cd solana && pnpm deploy:localnet",
+    "deploy:solana:devnet": "cd solana && pnpm deploy:devnet",
+    "deploy:solana:mainnet": "cd solana && pnpm deploy:mainnet",
     "verify": "hardhat verify",
-    "coverage": "hardhat coverage"
+    "coverage": "hardhat coverage",
+    "lint": "solhint 'contracts/**/*.sol' && cd solana && pnpm lint && cd ../polkadot && cargo clippy",
+    "format": "prettier --write 'contracts/**/*.sol' && cd solana && pnpm format && cd ../polkadot && cargo fmt",
+    "clean": "hardhat clean && cd polygon && pnpm clean && cd ../moonbeam && pnpm clean && cd ../base && pnpm clean && cd ../solana && anchor clean && cd ../polkadot && cargo clean"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.3",
+    "@openzeppelin/contracts-upgradeable": "^4.9.3"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
@@ -26,6 +58,14 @@
     "solidity-coverage": "^0.8.5",
     "ts-node": "^10.9.1",
     "typechain": "^8.3.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "prettier": "^3.0.3",
+    "prettier-plugin-solidity": "^1.1.3",
+    "solhint": "^3.6.2"
+  },
+  "optionalDependencies": {
+    "@coral-xyz/anchor": "^0.29.0",
+    "@solana/web3.js": "^1.87.6",
+    "@solana/spl-token": "^0.3.9"
   }
 }

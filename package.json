@@ -4,10 +4,7 @@
   "description": "A modern TODO list monorepo with Next.js, NestJS, React Native, and blockchain integration",
   "private": true,
   "packageManager": "pnpm@9.12.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+
   "scripts": {
     "build": "./scripts/build.sh",
     "build:quick": "./scripts/build-quick.sh",
@@ -71,6 +68,9 @@
     "version-packages": "changeset version",
     "release": "./scripts/build-production.sh && changeset publish",
     "validate-packages": "./scripts/validate-packages.sh",
+    "verify-dependencies": "./scripts/verify-dependencies.sh",
+    "verify-dependencies:install": "./scripts/verify-dependencies.sh --install",
+    "verify-dependencies:test": "./scripts/verify-dependencies.sh --test-builds",
     "publish-packages": "./scripts/publish-packages.sh",
     "publish-packages:dry-run": "./scripts/publish-packages.sh --dry-run"
   },
@@ -84,6 +84,12 @@
     "prettier-plugin-solidity": "^1.2.0",
     "turbo": "^1.13.0",
     "typescript": "~5.1.6"
+  },
+  "optionalDependencies": {
+    "@coral-xyz/anchor": "^0.29.0",
+    "@solana/web3.js": "^1.87.6",
+    "hardhat": "^2.19.2",
+    "ethers": "^6.8.1"
   },
   "engines": {
     "node": ">=18.0.0",

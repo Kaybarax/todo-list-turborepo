@@ -6,6 +6,8 @@
   "scripts": {
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
+    "test:coverage": "npx hardhat coverage",
+    "test:gas": "REPORT_GAS=true npx hardhat test",
     "deploy:local": "npx hardhat run scripts/deploy.js --network localhost",
     "deploy:dev": "npx hardhat run scripts/deploy.js --network base_dev",
     "deploy:sepolia": "npx hardhat run scripts/deploy.js --network base_sepolia",
@@ -16,7 +18,10 @@
     "coverage": "npx hardhat coverage",
     "size": "npx hardhat size-contracts",
     "lint": "solhint 'contracts/**/*.sol'",
-    "format": "prettier --write 'contracts/**/*.sol'"
+    "format": "prettier --write 'contracts/**/*.sol'",
+    "create-todo-list": "npx hardhat run scripts/create-todo-list.js",
+    "create-sample-todos": "npx hardhat run scripts/create-sample-todos.js",
+    "clean": "npx hardhat clean"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.9.3",
@@ -40,6 +45,8 @@
     "prettier-plugin-solidity": "^1.1.3",
     "solhint": "^3.6.2",
     "solidity-coverage": "^0.8.5",
-    "typechain": "^8.3.2"
+    "typechain": "^8.3.2",
+    "@eth-optimism/contracts": "^0.6.0",
+    "@eth-optimism/core-utils": "^0.12.0"
   }
 }
