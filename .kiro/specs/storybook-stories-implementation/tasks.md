@@ -6,7 +6,7 @@
   - Test that Storybook starts correctly on the new port
   - _Requirements: 1.1, 5.1, 6.3, 7.1_
 
-- [ ] 2. Create stories directory structure for ui-web package
+- [x] 2. Create stories directory structure for ui-web package
   - Create src/stories/ directory in ui-web package
   - Move existing stories from lib/components/_/_.stories.tsx to src/stories/
   - Update import paths in moved stories to reference components correctly
