@@ -2,10 +2,8 @@ import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
   stories: [
-    '../lib/**/*.mdx', 
-    '../lib/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../src/**/*.mdx', 
-    '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'
+    '../src/stories/**/*.mdx', 
+    '../src/stories/**/*.stories.@(js|jsx|mjs|ts|tsx)'
   ],
   addons: [
     '@storybook/addon-links',
@@ -28,7 +26,7 @@ const config: StorybookConfig = {
     buildStoriesJson: true,
   },
   // Visual regression testing configuration
-  staticDirs: ['../public'],
+  // staticDirs: ['../public'], // Commented out as public directory doesn't exist
   typescript: {
     check: false,
     reactDocgen: 'react-docgen-typescript',

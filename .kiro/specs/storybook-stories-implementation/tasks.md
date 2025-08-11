@@ -1,6 +1,6 @@
 # Implementation Plan
 
-- [ ] 1. Update ui-web Storybook configuration and port settings
+- [x] 1. Update ui-web Storybook configuration and port settings
   - Update package.json script to use port 6007 instead of 6006
   - Update .storybook/main.ts to look for stories in dedicated stories/ directory
   - Test that Storybook starts correctly on the new port
