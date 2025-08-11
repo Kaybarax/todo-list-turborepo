@@ -1,5 +1,5 @@
 # Multi-stage build for NestJS API
-FROM node:18-alpine AS base
+FROM node:24-alpine AS base
 
 # Install pnpm
 RUN npm install -g pnpm
@@ -46,7 +46,7 @@ COPY . .
 RUN pnpm build:api
 
 # Production stage
-FROM node:18-alpine AS production
+FROM node:24-alpine AS production
 
 # Install pnpm
 RUN npm install -g pnpm
