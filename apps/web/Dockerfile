@@ -1,5 +1,5 @@
 # Multi-stage build for Next.js Web Application
-FROM node:18-alpine AS base
+FROM node:24-alpine AS base
 
 # Install pnpm
 RUN npm install -g pnpm
@@ -50,7 +50,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build:web
 
 # Production stage
-FROM node:18-alpine AS production
+FROM node:24-alpine AS production
 
 # Install pnpm
 RUN npm install -g pnpm
