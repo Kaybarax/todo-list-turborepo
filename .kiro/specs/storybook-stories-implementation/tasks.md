@@ -13,7 +13,7 @@
   - Verify all existing stories still work after the move
   - _Requirements: 3.1, 3.3_
 
-- [ ] 3. Update ui-mobile Storybook configuration
+- [x] 3. Update ui-mobile Storybook configuration
   - Update .storybook/main.js to look for stories in dedicated stories/ directory
   - Enhance .storybook/preview.js with proper React Native context and UI Kitten theme provider
   - Verify Storybook configuration is valid and starts on port 6006
