@@ -26,7 +26,7 @@
   - Test story renders correctly with UI Kitten theming
   - _Requirements: 2.2, 3.2, 4.2_
 
-- [ ] 5. Create Badge component story for ui-mobile
+- [x] 5. Create Badge component story for ui-mobile
   - Implement Badge.stories.tsx with multiple badge variants and states
   - Include stories for different colors, sizes, and content types
   - Add proper documentation and prop controls
