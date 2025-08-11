@@ -1,518 +1,520 @@
 # Troubleshooting Guide
 
-This guide covers common issues and solutions for the Todo List monorepo, including network-specific blockchain issues.
+This guide provides solutions to common issues encountered when developing with the Todo List Monorepo.
 
-## 🔧 General Issues
+## 🚀 Quick Diagnostics
 
-### Build Issues
+Before diving into specific issues, run our automated diagnostic tools:
 
-#### pnpm Installation Fails
 ```bash
-# Error: Cannot resolve workspace protocol
-# Solution: Ensure you're using pnpm 9+
-npm install -g pnpm@latest
-pnpm --version  # Should be 9.0.0+
+# Check blockchain development environment
+pnpm blockchain:deps:check --verbose
+
+# Run comprehensive environment diagnosis
+pnpm blockchain:deps:diagnose
+
+# Interactive troubleshooting
+pnpm blockchain:deps:fix:interactive
 ```
 
-#### Turbo Build Failures
+## 🔧 Blockchain Development Issues
+
+### Smart Contract Compilation Failures
+
+#### Issue: "anchor: command not found"
+**Symptoms**: Anchor CLI commands fail with "command not found"
+
+**Solutions**:
 ```bash
-# Error: Turbo command not found
-# Solution: Install turbo globally or use npx
-npm install -g turbo
-# OR
-npx turbo build
-```
+# Option 1: Automated installation
+pnpm blockchain:tools:install:anchor
 
-#### TypeScript Compilation Errors
-```bash
-# Error: Cannot find module '@todo/services'
-# Solution: Build packages first
-pnpm build:packages
-pnpm typecheck
-```
-
-### Development Server Issues
-
-#### Port Already in Use
-```bash
-# Error: EADDRINUSE: address already in use :::3000
-# Solution: Kill process or use different port
-lsof -ti:3000 | xargs kill -9
-# OR
-PORT=3001 pnpm dev:web
-```
-
-#### Database Connection Issues
-```bash
-# Error: MongoNetworkError: failed to connect to server
-# Solution: Ensure MongoDB is running
-docker-compose up -d mongodb
-# OR
-pnpm db:setup
-```
-
-#### Redis Connection Issues
-```bash
-# Error: Redis connection failed
-# Solution: Start Redis server
-docker-compose up -d redis
-# OR
-redis-server
-```
-
-## ⛓️ Blockchain Network Issues
-
-### Polygon Network
-
-#### RPC Connection Issues
-```bash
-# Error: Could not connect to Polygon RPC
-# Solution: Check RPC URL and network status
-curl -X POST -H "Content-Type: application/json" \
-  --data '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
-  https://polygon-rpc.com
-
-# Alternative RPC URLs:
-# - https://rpc-mainnet.maticvigil.com
-# - https://polygon-mainnet.infura.io/v3/YOUR-PROJECT-ID
-# - https://polygon-rpc.com
-```
-
-#### Gas Estimation Failures
-```bash
-# Error: Gas estimation failed
-# Solution: Adjust gas settings in hardhat.config.js
-networks: {
-  polygon: {
-    gasPrice: 30000000000, // 30 gwei
-    gas: 5000000
-  }
-}
-```
-
-#### Contract Verification Issues
-```bash
-# Error: Contract verification failed on Polygonscan
-# Solution: Ensure correct constructor arguments
-pnpm hardhat verify --network polygon CONTRACT_ADDRESS "arg1" "arg2"
-
-# Check if contract is already verified
-# Visit: https://polygonscan.com/address/CONTRACT_ADDRESS
-```
-
-### Solana Network
-
-#### Anchor Build Failures
-```bash
-# Error: Anchor not found
-# Solution: Install Anchor CLI
+# Option 2: Manual installation
 cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
-avm install latest
-avm use latest
+avm install 0.29.0
+avm use 0.29.0
+
+# Option 3: Check PATH
+export PATH="$HOME/.cargo/bin:$PATH"
+source ~/.bashrc  # or ~/.zshrc
 ```
 
-#### Program Deployment Issues
-```bash
-# Error: Insufficient funds for deployment
-# Solution: Ensure wallet has enough SOL
-solana balance
-solana airdrop 2  # For devnet only
+#### Issue: "solana: command not found"
+**Symptoms**: Solana CLI commands fail
 
-# Error: Program deployment failed
-# Solution: Check program size and account limits
-anchor build
-ls -la target/deploy/  # Check program size
+**Solutions**:
+```bash
+# Option 1: Automated installation
+pnpm blockchain:tools:install:solana
+
+# Option 2: Manual installation
+sh -c "$(curl -sSfL https://release.solana.com/v1.18.0/install)"
+export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+
+# Option 3: Update existing installation
+solana-install update
 ```
 
-#### RPC Connection Issues
+#### Issue: "rustc: command not found"
+**Symptoms**: Rust compilation fails
+
+**Solutions**:
 ```bash
-# Error: Connection refused to Solana RPC
-# Solution: Check RPC endpoint and network status
+# Option 1: Automated installation
+pnpm blockchain:tools:install:rust
+
+# Option 2: Manual installation
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env
+
+# Option 3: Update existing installation
+rustup update stable
+```
+
+#### Issue: "cargo-contract: command not found"
+**Symptoms**: Polkadot/Substrate contract compilation fails
+
+**Solutions**:
+```bash
+# Option 1: Automated installation
+pnpm blockchain:tools:install:substrate
+
+# Option 2: Manual installation
+rustup target add wasm32-unknown-unknown
+cargo install cargo-contract --force
+
+# Option 3: Install protobuf (required dependency)
+# macOS:
+brew install protobuf
+# Ubuntu/Debian:
+sudo apt-get install protobuf-compiler
+```
+
+### Version Compatibility Issues
+
+#### Issue: Outdated tool versions
+**Symptoms**: Tools are installed but versions are too old
+
+**Check versions**:
+```bash
+pnpm blockchain:deps:check --verbose
+```
+
+**Update tools**:
+```bash
+# Update all tools
+pnpm blockchain:deps:fix
+
+# Update specific tools
+rustup update stable
+solana-install update
+avm install latest && avm use latest
+cargo install cargo-contract --force
+```
+
+### Network Configuration Issues
+
+#### Issue: Solana CLI not configured
+**Symptoms**: Solana commands work but network errors occur
+
+**Solutions**:
+```bash
+# Configure for development
+solana config set --url devnet
+
+# Generate keypair for testing
+solana-keygen new --outfile ~/.config/solana/id.json
+
+# Check configuration
 solana config get
-solana cluster-version
 
-# Alternative RPC URLs:
-# Mainnet: https://api.mainnet-beta.solana.com
-# Devnet: https://api.devnet.solana.com
-# Testnet: https://api.testnet.solana.com
+# Test connection
+solana balance
 ```
 
-### Polkadot Network
+#### Issue: Hardhat network issues
+**Symptoms**: Polygon/Moonbeam/Base contract deployment fails
 
-#### Substrate Node Issues
+**Solutions**:
 ```bash
-# Error: Failed to start Polkadot node
-# Solution: Check Rust installation and build
-rustup update
-cargo build --release
+# Check Node.js version (must be 20+)
+node --version
 
-# Error: WebSocket connection failed
-# Solution: Check node is running and ports are open
-./target/release/node-template --dev --ws-external
+# Reinstall Hardhat dependencies
+cd apps/smart-contracts/polygon
+pnpm install
+
+# Reset Hardhat cache
+npx hardhat clean
+
+# Test local network
+npx hardhat node
 ```
 
-#### Runtime Compilation Issues
+## 🏗️ Development Environment Issues
+
+### Package Management Issues
+
+#### Issue: pnpm workspace resolution failures
+**Symptoms**: Packages can't find each other, import errors
+
+**Solutions**:
 ```bash
-# Error: Runtime compilation failed
-# Solution: Update Rust and dependencies
-rustup update
-cargo update
-cargo build --release
+# Clean and reinstall
+pnpm clean
+rm -rf node_modules
+rm -rf apps/*/node_modules
+rm -rf packages/*/node_modules
+pnpm install
+
+# Verify workspace configuration
+cat pnpm-workspace.yaml
+
+# Check package linking
+pnpm list --depth=0
 ```
 
-### Moonbeam Network
+#### Issue: "Cannot find module" errors
+**Symptoms**: TypeScript/JavaScript import errors
 
-#### EVM Compatibility Issues
+**Solutions**:
 ```bash
-# Error: Transaction reverted without reason
-# Solution: Check gas limits and contract state
-# Moonbeam has different gas costs than Ethereum
-networks: {
-  moonbeam: {
-    gasPrice: 1000000000, // 1 gwei
-    gas: 5000000
-  }
-}
+# Rebuild TypeScript references
+pnpm build:packages
+
+# Check TypeScript configuration
+pnpm typecheck
+
+# Verify package exports
+cat packages/*/package.json | grep -A 5 "exports"
 ```
 
-#### Precompile Issues
+### Docker and Container Issues
+
+#### Issue: Docker containers won't start
+**Symptoms**: docker-compose up fails
+
+**Solutions**:
 ```bash
-# Error: Precompile call failed
-# Solution: Check Moonbeam-specific precompiles
-# Moonbeam has unique precompiles for cross-chain functionality
-# See: https://docs.moonbeam.network/builders/pallets-precompiles/
+# Clean Docker environment
+docker-compose down -v
+docker system prune -f
+docker volume prune -f
+
+# Rebuild containers
+docker-compose build --no-cache
+
+# Check Docker resources
+docker system df
 ```
 
-#### Network Configuration Issues
+#### Issue: Development container issues
+**Symptoms**: VS Code devcontainer fails to start
+
+**Solutions**:
 ```bash
-# Error: Wrong chain ID
-# Solution: Verify network configuration
-# Moonbeam Mainnet: Chain ID 1284
-# Moonbase Alpha: Chain ID 1287
+# Rebuild container
+# In VS Code: Cmd/Ctrl+Shift+P > "Dev Containers: Rebuild Container"
+
+# Check container logs
+docker logs <container-id>
+
+# Manual container build
+docker build -f .devcontainer/Dockerfile -t todo-devcontainer .
 ```
 
-### Base Network
+### Database Issues
 
-#### L2 Transaction Issues
+#### Issue: MongoDB connection failures
+**Symptoms**: API can't connect to database
+
+**Solutions**:
 ```bash
-# Error: Transaction not found
-# Solution: L2 transactions may take time to appear
-# Wait 10-30 seconds and check again
-# Use Base block explorer: https://basescan.org
+# Reset database
+pnpm db:reset
+pnpm db:setup
+
+# Check MongoDB container
+docker-compose logs mongodb
+
+# Verify connection string
+cat apps/api/.env.example
 ```
 
-#### Bridge Issues
+#### Issue: Migration failures
+**Symptoms**: Database migrations fail to run
+
+**Solutions**:
 ```bash
-# Error: Bridge transaction failed
-# Solution: Check bridge status and allowances
-# Visit: https://bridge.base.org
-# Ensure sufficient ETH for gas on both L1 and L2
-```
+# Check migration status
+pnpm db:migrate status
 
-#### Gas Estimation Issues
-```bash
-# Error: Gas estimation failed on Base
-# Solution: L2 gas estimation can be different
-networks: {
-  base: {
-    gasPrice: 1000000000, // 1 gwei
-    gas: 5000000
-  }
-}
-```
+# Reset and re-run migrations
+pnpm db:reset
+pnpm db:migrate
 
-## 🔐 Wallet Connection Issues
-
-### MetaMask Issues
-
-#### Network Not Added
-```bash
-# Solution: Add network manually to MetaMask
-# Polygon: Chain ID 137, RPC: https://polygon-rpc.com
-# Moonbeam: Chain ID 1284, RPC: https://rpc.api.moonbeam.network
-# Base: Chain ID 8453, RPC: https://mainnet.base.org
-```
-
-#### Transaction Stuck
-```bash
-# Solution: Reset account or increase gas price
-# MetaMask > Settings > Advanced > Reset Account
-# OR increase gas price for next transaction
-```
-
-### WalletConnect Issues
-
-#### Connection Timeout
-```bash
-# Error: WalletConnect session timeout
-# Solution: Check network connectivity and try again
-# Ensure firewall allows WebSocket connections
-```
-
-#### QR Code Not Scanning
-```bash
-# Solution: Refresh page and try again
-# Ensure mobile wallet supports WalletConnect v2
-```
-
-## 🐳 Docker Issues
-
-### Container Build Failures
-
-#### Docker Build Context Too Large
-```bash
-# Error: Docker build context is too large
-# Solution: Use .dockerignore to exclude files
-echo "node_modules" >> .dockerignore
-echo ".git" >> .dockerignore
-echo "*.log" >> .dockerignore
-```
-
-#### Multi-stage Build Issues
-```bash
-# Error: Stage not found
-# Solution: Check Dockerfile stage names
-docker build --target development .
-```
-
-### Container Runtime Issues
-
-#### Port Binding Failures
-```bash
-# Error: Port already in use
-# Solution: Stop conflicting containers
-docker ps
-docker stop CONTAINER_ID
-# OR use different ports
-docker run -p 3001:3000 app
-```
-
-#### Volume Mount Issues
-```bash
-# Error: Volume mount failed
-# Solution: Check file permissions and paths
-# On macOS/Windows, ensure Docker has file access permissions
-```
-
-## ☸️ Kubernetes Issues
-
-### Deployment Issues
-
-#### Pod Stuck in Pending
-```bash
-# Check node resources and scheduling
-kubectl describe pod POD_NAME
-kubectl get nodes
-kubectl top nodes
-```
-
-#### ImagePullBackOff
-```bash
-# Error: Failed to pull image
-# Solution: Check image name and registry access
-kubectl describe pod POD_NAME
-# Verify image exists in registry
-docker pull IMAGE_NAME
-```
-
-#### ConfigMap/Secret Issues
-```bash
-# Error: ConfigMap not found
-# Solution: Ensure ConfigMaps are created first
-kubectl apply -f configmaps/
-kubectl get configmaps
-```
-
-### Service Issues
-
-#### Service Not Accessible
-```bash
-# Check service and endpoints
-kubectl get services
-kubectl get endpoints
-kubectl describe service SERVICE_NAME
-```
-
-#### Ingress Issues
-```bash
-# Error: Ingress not working
-# Solution: Check ingress controller and rules
-kubectl get ingress
-kubectl describe ingress INGRESS_NAME
-# Ensure ingress controller is running
-kubectl get pods -n ingress-nginx
+# Manual migration
+cd db && node migrate.js up
 ```
 
 ## 🧪 Testing Issues
 
-### Unit Test Failures
+### Test Failures
 
-#### Jest Configuration Issues
+#### Issue: Contract tests failing
+**Symptoms**: Smart contract tests fail to run
+
+**Solutions**:
 ```bash
-# Error: Jest cannot find modules
-# Solution: Check Jest configuration and module paths
-# Ensure @todo/* packages are built
-pnpm build:packages
+# Check blockchain dependencies first
+pnpm blockchain:deps:check
+
+# Run tests with verbose output
+pnpm test:contracts --verbose
+
+# Test specific networks
+pnpm contracts:polygon --test
+pnpm contracts:solana --test
+pnpm contracts:polkadot --test
 ```
 
-#### Mock Issues
+#### Issue: E2E tests failing
+**Symptoms**: Playwright or React Native tests fail
+
+**Solutions**:
 ```bash
-# Error: Module mocking failed
-# Solution: Check mock implementations
-# Ensure mocks are in __mocks__ directory
-```
-
-### Integration Test Issues
-
-#### Database Test Issues
-```bash
-# Error: Database connection failed in tests
-# Solution: Use test database or containers
-# Set NODE_ENV=test
-export NODE_ENV=test
-pnpm test:integration
-```
-
-#### Blockchain Test Issues
-```bash
-# Error: Contract deployment failed in tests
-# Solution: Use local blockchain networks
-# Start local nodes before running tests
-pnpm dev:contracts  # Start local blockchain nodes
-pnpm test:contracts
-```
-
-### E2E Test Issues
-
-#### Playwright Issues
-```bash
-# Error: Browser not found
-# Solution: Install Playwright browsers
+# Install browser dependencies
 npx playwright install
-npx playwright install-deps
+
+# Check test environment
+pnpm test:e2e --debug
+
+# Reset test database
+NODE_ENV=test pnpm db:reset
+NODE_ENV=test pnpm db:setup
 ```
 
-#### Test Timeout Issues
+### Performance Issues
+
+#### Issue: Slow builds
+**Symptoms**: Build process takes too long
+
+**Solutions**:
 ```bash
-# Error: Test timeout
-# Solution: Increase timeout or optimize tests
-# In playwright.config.ts:
-timeout: 60000  // 60 seconds
-```
+# Use quick build for development
+pnpm build:quick
 
-## 📊 Performance Issues
+# Enable Turborepo caching
+export TURBO_CACHE_DIR=.turbo
 
-### Build Performance
-
-#### Slow Builds
-```bash
-# Solution: Use build cache and parallel builds
-# Enable Turbo cache
-export TURBO_TOKEN=your-token
-export TURBO_TEAM=your-team
-
-# Use parallel builds
+# Parallel builds
 pnpm build --parallel
+
+# Check build cache
+turbo run build --dry-run
 ```
 
-#### Memory Issues
+#### Issue: Memory issues during compilation
+**Symptoms**: Out of memory errors during builds
+
+**Solutions**:
 ```bash
-# Error: JavaScript heap out of memory
-# Solution: Increase Node.js memory limit
-export NODE_OPTIONS="--max-old-space-size=4096"
-pnpm build
+# Increase Node.js memory limit
+export NODE_OPTIONS="--max-old-space-size=8192"
+
+# Use swap space (Linux)
+sudo fallocate -l 4G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+
+# Build in stages
+pnpm build:packages
+pnpm build:apps
+pnpm build:contracts
 ```
 
-### Runtime Performance
+## 🌐 Network and Connectivity Issues
 
-#### Slow API Responses
+### Internet Connectivity
+
+#### Issue: Installation failures due to network issues
+**Symptoms**: Downloads fail, timeouts occur
+
+**Solutions**:
 ```bash
-# Check database indexes and query performance
-# Monitor with OpenTelemetry traces
-# Visit: http://localhost:16686 (Jaeger UI)
+# Test connectivity
+curl -I https://github.com
+curl -I https://sh.rustup.rs
+curl -I https://release.solana.com
+
+# Use different mirrors
+export RUSTUP_DIST_SERVER=https://forge.rust-lang.org
+export RUSTUP_UPDATE_ROOT=https://forge.rust-lang.org/rustup
+
+# Configure proxy (if behind corporate firewall)
+export HTTP_PROXY=http://proxy.company.com:8080
+export HTTPS_PROXY=http://proxy.company.com:8080
 ```
 
-#### High Memory Usage
+### Firewall Issues
+
+#### Issue: Corporate firewall blocking downloads
+**Symptoms**: SSL/TLS errors, connection refused
+
+**Solutions**:
 ```bash
-# Check for memory leaks
-# Use Node.js profiling tools
-node --inspect app.js
-# Visit: chrome://inspect
+# Configure git to use HTTPS instead of SSH
+git config --global url."https://github.com/".insteadOf git@github.com:
+
+# Use alternative installation methods
+# For Rust: Download rustup-init directly
+# For Solana: Use GitHub releases instead of installer script
+# For Node.js: Use official installers instead of package managers
 ```
 
-## 🔍 Debugging Tools
+## 🔍 Platform-Specific Issues
 
-### Blockchain Debugging
+### macOS Issues
 
-#### Transaction Debugging
+#### Issue: Xcode command line tools missing
+**Symptoms**: Compilation fails with missing headers
+
+**Solutions**:
 ```bash
-# Ethereum/EVM networks
-# Use block explorers:
-# - Polygon: https://polygonscan.com
-# - Moonbeam: https://moonscan.io
-# - Base: https://basescan.org
+# Install Xcode command line tools
+xcode-select --install
 
-# Solana
-# Use Solana Explorer: https://explorer.solana.com
-solana transaction TRANSACTION_SIGNATURE
-
-# Polkadot
-# Use Subscan: https://polkadot.subscan.io
+# Accept license
+sudo xcodebuild -license accept
 ```
 
-#### Contract Debugging
+#### Issue: Homebrew permission issues
+**Symptoms**: brew commands fail with permission errors
+
+**Solutions**:
 ```bash
-# Hardhat console for EVM networks
-cd apps/smart-contracts/polygon
-npx hardhat console --network polygon
+# Fix Homebrew permissions
+sudo chown -R $(whoami) $(brew --prefix)/*
 
-# Solana program debugging
-cd apps/smart-contracts/solana
-anchor test --skip-local-validator
+# Reinstall Homebrew if necessary
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-### Application Debugging
+### Linux Issues
 
-#### API Debugging
+#### Issue: Missing system dependencies
+**Symptoms**: Compilation fails with missing libraries
+
+**Solutions**:
 ```bash
-# Enable debug logging
-export LOG_LEVEL=debug
-pnpm dev:api
+# Ubuntu/Debian
+sudo apt-get update
+sudo apt-get install -y build-essential pkg-config libssl-dev protobuf-compiler
 
-# Use API documentation
-# Visit: http://localhost:3001/api/docs
+# CentOS/RHEL/Fedora
+sudo yum groupinstall "Development Tools"
+sudo yum install -y openssl-devel protobuf-compiler
+
+# Arch Linux
+sudo pacman -S base-devel openssl protobuf
 ```
 
-#### Frontend Debugging
+### Windows Issues
+
+#### Issue: WSL not configured properly
+**Symptoms**: Linux commands don't work on Windows
+
+**Solutions**:
 ```bash
-# Enable React DevTools
-# Install browser extension
+# Install WSL2
+wsl --install
 
-# Enable Next.js debugging
-export DEBUG=*
-pnpm dev:web
+# Set WSL2 as default
+wsl --set-default-version 2
+
+# Install Ubuntu
+wsl --install -d Ubuntu
+
+# Update WSL
+wsl --update
 ```
 
-## 📞 Getting Help
+## 🆘 Getting Additional Help
 
-### Community Support
-- **Discord**: Join our development Discord server
-- **GitHub Issues**: Report bugs and feature requests
-- **Stack Overflow**: Tag questions with relevant technologies
+### Automated Help Systems
 
-### Network-Specific Support
-- **Polygon**: [Polygon Discord](https://discord.gg/polygon)
-- **Solana**: [Solana Discord](https://discord.gg/solana)
-- **Polkadot**: [Polkadot Discord](https://discord.gg/polkadot)
-- **Moonbeam**: [Moonbeam Discord](https://discord.gg/PfpUATX)
-- **Base**: [Base Discord](https://discord.gg/buildonbase)
+```bash
+# Interactive troubleshooting
+pnpm blockchain:deps:fix:interactive
 
-### Documentation
-- **Project Docs**: Check `/docs` directory
-- **Network Docs**: See network-specific setup guides
-- **API Docs**: Visit `/api/docs` when running the API
+# Comprehensive diagnosis
+pnpm blockchain:deps:diagnose
 
-### Emergency Contacts
-- **Critical Issues**: Create GitHub issue with "critical" label
-- **Security Issues**: Follow responsible disclosure in SECURITY.md
-- **Infrastructure Issues**: Check status pages of service providers
+# Interactive help system
+pnpm blockchain:help:interactive
+```
+
+### Manual Diagnostics
+
+```bash
+# Check all tool versions
+node --version
+pnpm --version
+rustc --version
+cargo --version
+solana --version
+anchor --version
+cargo-contract --version
+
+# Check environment variables
+echo $PATH
+echo $CARGO_HOME
+echo $RUSTUP_HOME
+echo $SOLANA_ROOT
+
+# Check network connectivity
+ping github.com
+curl -I https://api.github.com
+```
+
+### Log Analysis
+
+```bash
+# Check build logs
+cat build.log
+
+# Check container logs
+docker-compose logs
+
+# Check application logs
+tail -f apps/api/logs/app.log
+tail -f apps/web/.next/trace
+```
+
+### Community Resources
+
+- **GitHub Issues**: Check existing issues and create new ones
+- **Discord/Slack**: Join community channels for real-time help
+- **Documentation**: Review official documentation for each tool
+- **Stack Overflow**: Search for specific error messages
+
+### Creating Bug Reports
+
+When reporting issues, include:
+
+1. **Environment Information**:
+   ```bash
+   pnpm blockchain:deps:check --verbose > environment.txt
+   ```
+
+2. **Error Messages**: Full error output with stack traces
+
+3. **Steps to Reproduce**: Exact commands that cause the issue
+
+4. **System Information**: OS, architecture, versions
+
+5. **Logs**: Relevant log files and output
+
+This comprehensive troubleshooting guide should help resolve most common issues. For issues not covered here, use the automated diagnostic tools or reach out to the community for support.

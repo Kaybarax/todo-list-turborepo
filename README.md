@@ -171,10 +171,14 @@ This monorepo has been comprehensively modernized with enterprise-grade features
 - **pnpm 9+** (required for workspace management)
 - **Git** for version control
 
-### Optional (for blockchain development)
+### For Blockchain Development (Optional)
+The project includes automated setup for blockchain development tools:
 - **Rust** and Cargo for Solana/Polkadot development
-- **Solana CLI** for Solana program deployment
+- **Solana CLI** for Solana program deployment  
 - **Anchor CLI** for Solana program development
+- **Substrate tools** for Polkadot development
+
+**Quick blockchain setup**: Run `pnpm blockchain:deps:fix` after project installation
 
 ### Quick Start
 
@@ -190,7 +194,16 @@ This monorepo has been comprehensively modernized with enterprise-grade features
    pnpm install
    ```
 
-3. **Start development environment**
+3. **Setup blockchain development (optional)**
+   ```bash
+   # Automated blockchain tools installation
+   pnpm blockchain:deps:fix
+   
+   # Or check what's needed first
+   pnpm blockchain:deps:check
+   ```
+
+4. **Start development environment**
    ```bash
    # Option 1: Use development container (recommended)
    # Open in VS Code and select "Reopen in Container"
@@ -201,7 +214,7 @@ This monorepo has been comprehensively modernized with enterprise-grade features
    pnpm dev       # Start all development servers
    ```
 
-4. **Access applications**
+5. **Access applications**
    - **Web App**: http://localhost:3000
    - **API**: http://localhost:3001
    - **Mobile (Expo)**: http://localhost:19000
@@ -272,6 +285,46 @@ pnpm test:contracts   # Blockchain contract tests
 ```
 
 #### Blockchain Development
+
+**Dependency Management**:
+```bash
+# Check blockchain development environment
+pnpm blockchain:deps:check
+
+# Check with detailed output
+pnpm blockchain:deps:check:verbose
+
+# Check specific networks
+pnpm blockchain:deps:check:polygon
+pnpm blockchain:deps:check:solana
+pnpm blockchain:deps:check:polkadot
+
+# Automatically install missing dependencies
+pnpm blockchain:deps:fix
+
+# Interactive dependency installation
+pnpm blockchain:deps:fix:interactive
+
+# Comprehensive environment diagnosis
+pnpm blockchain:deps:diagnose
+```
+
+**Tool Installation**:
+```bash
+# Install all blockchain tools
+pnpm blockchain:tools:install
+
+# Install specific tools
+pnpm blockchain:tools:install:rust
+pnpm blockchain:tools:install:solana
+pnpm blockchain:tools:install:anchor
+pnpm blockchain:tools:install:substrate
+
+# Interactive installation guidance
+pnpm blockchain:tools:install:interactive
+```
+
+**Contract Compilation** (with automatic dependency checking):
 ```bash
 # Compile all contracts
 pnpm contracts:compile
@@ -285,6 +338,15 @@ pnpm contracts:base      # Base L2 contracts
 
 # Deploy contracts
 pnpm contracts:deploy
+```
+
+**Help and Troubleshooting**:
+```bash
+# Get blockchain development help
+pnpm blockchain:help
+
+# Interactive help system
+pnpm blockchain:help:interactive
 ```
 
 #### Database Management
@@ -376,13 +438,25 @@ pnpm test --watch
 
 ## 📚 Documentation
 
+### Component Documentation
 - Component documentation is available through Storybook
   ```bash
   # Start Storybook for web components
   pnpm --filter @todo/ui-web storybook
   ```
 
+### API Documentation
 - API documentation is available at `/api/docs` when running the API server
+
+### Blockchain Development
+- **[Blockchain Setup Guide](docs/BLOCKCHAIN_SETUP.md)** - Comprehensive setup instructions for blockchain development
+- **[Blockchain Commands Reference](docs/BLOCKCHAIN_COMMANDS.md)** - Quick reference for dependency management commands
+- **[Troubleshooting Guide](docs/TROUBLESHOOTING.md)** - Solutions to common development issues
+
+### Additional Guides
+- **[Contributing Guidelines](CONTRIBUTING.md)** - How to contribute to the project
+- **[Security Policy](SECURITY.md)** - Security guidelines and reporting
+- **[Deployment Guide](docs/DEPLOYMENT.md)** - Production deployment instructions
 
 ## 🚢 Production Deployment
 
@@ -459,6 +533,146 @@ anchor deploy --provider.cluster mainnet
 cd ../polkadot
 ./target/release/node-template --chain=polkadot
 ```
+
+## 🚨 Troubleshooting
+
+### Blockchain Development Environment Issues
+
+If you encounter issues with blockchain development tools, use our automated troubleshooting system:
+
+```bash
+# Check all blockchain dependencies
+pnpm blockchain:deps:check
+
+# Automatically fix missing dependencies
+pnpm blockchain:deps:fix
+
+# Interactive troubleshooting with guided setup
+pnpm blockchain:deps:fix:interactive
+
+# Comprehensive environment diagnosis
+pnpm blockchain:deps:diagnose
+```
+
+### Common Issues and Solutions
+
+#### Smart Contract Compilation Failures
+
+**Problem**: Contract compilation fails with missing dependencies
+```bash
+# Solution: Check and install missing blockchain tools
+pnpm blockchain:deps:check --verbose
+pnpm blockchain:deps:fix
+```
+
+**Problem**: Anchor CLI not found or outdated
+```bash
+# Solution: Install/update Anchor CLI
+pnpm blockchain:tools:install:anchor
+# Or manually:
+cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+avm install 0.29.0 && avm use 0.29.0
+```
+
+**Problem**: Solana CLI configuration issues
+```bash
+# Solution: Configure Solana CLI
+solana config set --url devnet
+solana-keygen new --outfile ~/.config/solana/id.json
+```
+
+#### Development Environment Issues
+
+**Problem**: pnpm workspace dependencies not resolving
+```bash
+# Solution: Clean and reinstall dependencies
+pnpm clean
+rm -rf node_modules
+pnpm install
+```
+
+**Problem**: Docker containers failing to start
+```bash
+# Solution: Reset Docker environment
+docker-compose down -v
+docker system prune -f
+pnpm db:setup
+docker-compose -f docker-compose.dev.yml up -d
+```
+
+**Problem**: Database connection issues
+```bash
+# Solution: Reset and setup database
+pnpm db:reset
+pnpm db:setup
+```
+
+#### Network-Specific Issues
+
+**Polygon/Hardhat Issues**:
+```bash
+# Check Node.js version (requires 20+)
+node --version
+# Reinstall Hardhat dependencies
+cd apps/smart-contracts/polygon && pnpm install
+```
+
+**Solana Issues**:
+```bash
+# Check Rust and Solana CLI versions
+pnpm blockchain:deps:check:solana
+# Update Solana CLI
+solana-install update
+```
+
+**Polkadot Issues**:
+```bash
+# Install missing Substrate tools
+pnpm blockchain:tools:install:substrate
+# Add WebAssembly target
+rustup target add wasm32-unknown-unknown
+```
+
+### Getting Help
+
+1. **Automated Diagnostics**: Run `pnpm blockchain:deps:diagnose` for detailed environment analysis
+2. **Interactive Help**: Use `pnpm blockchain:help:interactive` for guided troubleshooting
+3. **Documentation**: Check [BLOCKCHAIN_SETUP.md](docs/BLOCKCHAIN_SETUP.md) for detailed setup instructions
+4. **Platform-Specific Guides**: Review guides in `scripts/troubleshooting/` directory
+
+### Development Container Issues
+
+If you're using the development container and encounter issues:
+
+```bash
+# Rebuild the container
+# In VS Code: Command Palette > "Dev Containers: Rebuild Container"
+
+# Or manually rebuild
+docker build -f .devcontainer/Dockerfile -t todo-devcontainer .
+```
+
+### Performance Issues
+
+**Slow builds**:
+```bash
+# Use quick build for development
+pnpm build:quick
+
+# Enable Turborepo caching
+export TURBO_CACHE_DIR=.turbo
+```
+
+**Memory issues during contract compilation**:
+```bash
+# Increase Node.js memory limit
+export NODE_OPTIONS="--max-old-space-size=8192"
+```
+
+For more detailed troubleshooting information, see:
+- [BLOCKCHAIN_SETUP.md](docs/BLOCKCHAIN_SETUP.md) - Blockchain environment setup
+- [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) - General troubleshooting guide
+- `scripts/troubleshooting/` - Platform-specific troubleshooting guides
 
 ## 📝 License
 
