@@ -14,7 +14,7 @@
     "node": "npx hardhat node",
     "coverage": "npx hardhat coverage",
     "size": "npx hardhat size-contracts",
-    "lint": "solhint 'contracts/**/*.sol'",
+    "lint": "solhint --config .solhint.json 'contracts/**/*.sol'",
     "format": "prettier --write 'contracts/**/*.sol'"
   },
   "dependencies": {

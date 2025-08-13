@@ -17,7 +17,7 @@
     "node": "npx hardhat node",
     "coverage": "npx hardhat coverage",
     "size": "npx hardhat size-contracts",
-    "lint": "solhint 'contracts/**/*.sol'",
+    "lint": "solhint --config .solhint.json 'contracts/**/*.sol'",
     "format": "prettier --write 'contracts/**/*.sol'",
     "create-todo-list": "npx hardhat run scripts/create-todo-list.js",
     "create-sample-todos": "npx hardhat run scripts/create-sample-todos.js",
