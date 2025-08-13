@@ -32,57 +32,57 @@
   - Add proper documentation and prop controls
   - _Requirements: 2.2, 3.2, 4.2_
 
-- [ ] 6. Create Button component story for ui-mobile
+- [x] 6. Create Button component story for ui-mobile
   - Implement Button.stories.tsx with comprehensive button variants
   - Include stories for different button types, sizes, states (disabled, loading)
   - Add interaction examples and accessibility considerations
   - _Requirements: 2.2, 3.2, 4.2_
 
-- [ ] 7. Create Card component story for ui-mobile
+- [x] 7. Create Card component story for ui-mobile
   - Implement Card.stories.tsx with various card layouts and content
   - Include stories for different card styles and interactive states
   - Demonstrate proper mobile card usage patterns
   - _Requirements: 2.2, 3.2, 4.2_
 
-- [ ] 8. Create Checkbox component story for ui-mobile
+- [x] 8. Create Checkbox component story for ui-mobile
   - Implement Checkbox.stories.tsx with checked, unchecked, and indeterminate states
   - Include disabled and error states
   - Add proper accessibility documentation
   - _Requirements: 2.2, 3.2, 4.2_
 
-- [ ] 9. Create Input component story for ui-mobile
+- [x] 9. Create Input component story for ui-mobile
   - Implement Input.stories.tsx with various input types and states
   - Include stories for validation states, placeholders, and different input modes
   - Add mobile-specific input considerations
   - _Requirements: 2.2, 3.2, 4.2_
 
-- [ ] 10. Create Switch component story for ui-mobile
+- [x] 10. Create Switch component story for ui-mobile
   - Implement Switch.stories.tsx with on/off states and disabled variants
   - Include proper mobile touch interaction examples
   - Add accessibility and theming considerations
   - _Requirements: 2.2, 3.2, 4.2_
 
-- [ ] 11. Create TodoItem component story for ui-mobile
+- [x] 11. Create TodoItem component story for ui-mobile
   - Implement TodoItem.stories.tsx with complete, incomplete, and editing states
   - Include interactive examples showing todo item functionality
   - Demonstrate mobile-specific interactions and gestures
   - _Requirements: 2.2, 3.2, 4.2_
 
-- [ ] 12. Add root-level package.json scripts for Storybook management
+- [x] 12. Add root-level package.json scripts for Storybook management
   - Add storybook:web script to run ui-web Storybook from root
   - Add storybook:mobile script to run ui-mobile Storybook from root
   - Add build scripts for both Storybook instances
   - Test all scripts work correctly from monorepo root
   - _Requirements: 7.1, 7.2, 7.3, 7.4_
 
-- [ ] 13. Create story template documentation and guidelines
+- [x] 13. Create story template documentation and guidelines
   - Create template files for both web and mobile component stories
   - Document story creation guidelines and best practices
   - Include TypeScript type examples and control configuration patterns
   - Add accessibility and documentation requirements
   - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-- [ ] 14. Verify both Storybook instances run simultaneously without conflicts
+- [x] 14. Verify both Storybook instances run simultaneously without conflicts
   - Test starting ui-web Storybook on port 6007
   - Test starting ui-mobile Storybook on port 6006
   - Verify both can run at the same time without port conflicts
