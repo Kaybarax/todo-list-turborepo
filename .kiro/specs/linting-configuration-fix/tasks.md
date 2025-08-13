@@ -13,7 +13,7 @@
   - Update package.json lint scripts to use proper solhint configuration paths
   - _Requirements: 2.1, 2.2, 2.3_
 
-- [ ] 3. Fix application-level ESLint configurations
+- [x] 3. Fix application-level ESLint configurations
   - Update apps/api/.eslintrc.js to properly resolve @todo/config-eslint/nestjs
   - Update apps/web/.eslintrc.js to properly resolve @todo/config-eslint/nextjs
   - Update apps/mobile/.eslintrc.js to properly resolve @todo/config-eslint/react-native

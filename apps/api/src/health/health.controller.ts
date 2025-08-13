@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+
 import { HealthService } from './health.service';
 import { Public } from '../auth/decorators/public.decorator';
 import { Trace } from '../telemetry/decorators/trace.decorator';

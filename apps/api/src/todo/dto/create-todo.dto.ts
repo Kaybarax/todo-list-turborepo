@@ -1,6 +1,6 @@
-import { IsString, IsOptional, IsEnum, IsArray, IsDateString, MaxLength, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
+import { IsString, IsOptional, IsEnum, IsArray, IsDateString, MaxLength, MinLength } from 'class-validator';
 
 export class CreateTodoDto {
   @ApiProperty({ description: 'Todo title', example: 'Complete project documentation', minLength: 1, maxLength: 200 })

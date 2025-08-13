@@ -1,11 +1,12 @@
 import { Injectable, UnauthorizedException, ConflictException, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from '../user/user.service';
-import { Trace } from '../telemetry/decorators/trace.decorator';
+
+import { AuthResponseDto } from './dto/auth-response.dto';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { AuthResponseDto } from './dto/auth-response.dto';
+import { Trace } from '../telemetry/decorators/trace.decorator';
 import { User } from '../user/schemas/user.schema';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -61,7 +62,7 @@ export class AuthService {
   async validateUser(userId: string): Promise<User | null> {
     const user = await this.userService.findById(userId);
 
-    if (!user || !user.isActive) {
+    if (!user?.isActive) {
       return null;
     }
 

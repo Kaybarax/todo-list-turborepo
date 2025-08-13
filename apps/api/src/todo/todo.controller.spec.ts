@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
+import { CreateTodoDto } from './dto/create-todo.dto';
+import { QueryTodoDto } from './dto/query-todo.dto';
+import { UpdateTodoDto } from './dto/update-todo.dto';
+import { Todo } from './schemas/todo.schema';
 import { TodoController } from './todo.controller';
 import { TodoService } from './todo.service';
-import { CreateTodoDto } from './dto/create-todo.dto';
-import { UpdateTodoDto } from './dto/update-todo.dto';
-import { QueryTodoDto } from './dto/query-todo.dto';
-import { Todo } from './schemas/todo.schema';
 
 describe('TodoController', () => {
   let controller: TodoController;

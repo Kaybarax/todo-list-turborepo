@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['@todo/config-eslint/nestjs'],
+  extends: ['@todo/eslint-config/nestjs'],
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,

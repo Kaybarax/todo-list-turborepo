@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['@todo/config-eslint/nextjs'],
+  extends: ['@todo/eslint-config/nextjs'],
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,

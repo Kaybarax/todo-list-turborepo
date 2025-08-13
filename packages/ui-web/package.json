@@ -83,7 +83,7 @@
     "@storybook/test": "^7.6.4",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",
-    "@todo/config-eslint": "workspace:*",
+    "@todo/eslint-config": "workspace:*",
     "@todo/config-ts": "workspace:*",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",

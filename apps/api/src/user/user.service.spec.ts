@@ -1,9 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { getModelToken } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { UserService } from './user.service';
+import { getModelToken } from '@nestjs/mongoose';
+import { Test, TestingModule } from '@nestjs/testing';
+import { Model } from 'mongoose';
+
 import { User } from './schemas/user.schema';
+import { UserService } from './user.service';
 
 describe('UserService', () => {
   let service: UserService;

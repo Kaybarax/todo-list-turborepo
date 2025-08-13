@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['@todo/config-eslint/react'],
+  extends: ['@todo/eslint-config/react'],
   parserOptions: {
     project: './tsconfig.dev.json',
   },

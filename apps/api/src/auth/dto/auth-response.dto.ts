@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import { User } from '../../user/schemas/user.schema';
 
 export class AuthResponseDto {

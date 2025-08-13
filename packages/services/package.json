@@ -16,7 +16,7 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@todo/config-eslint": "workspace:*",
+    "@todo/eslint-config": "workspace:*",
     "@todo/config-jest": "workspace:*",
     "@todo/config-ts": "workspace:*",
     "@types/node": "^20.10.4",
