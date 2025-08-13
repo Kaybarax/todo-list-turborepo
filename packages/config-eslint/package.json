@@ -3,7 +3,17 @@
   "version": "0.0.1",
   "private": true,
   "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./base": "./base.js",
+    "./react": "./react.js",
+    "./nextjs": "./nextjs.js",
+    "./nestjs": "./nestjs.js",
+    "./react-native": "./react-native.js",
+    "./solidity": "./solidity.js"
+  },
   "files": [
+    "index.js",
     "base.js",
     "nextjs.js",
     "nestjs.js",
@@ -31,6 +41,12 @@
   },
   "peerDependencies": {
     "eslint": "^8.0.0",
-    "typescript": ">=5.0.0"
+    "typescript": ">=5.0.0",
+    "next": ">=13.0.0"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    }
   }
 }

@@ -1,7 +1,6 @@
 module.exports = {
-  extends: ['./base.js'],
-  plugins: ['node'],
   extends: ['./base.js', 'plugin:node/recommended'],
+  plugins: ['node'],
   parserOptions: {
     ecmaVersion: 2022,
     sourceType: 'module',
