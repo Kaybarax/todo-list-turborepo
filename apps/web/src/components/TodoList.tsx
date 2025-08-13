@@ -27,10 +27,10 @@ export function TodoList({ todos, onToggle, onEdit, onDelete, onBlockchainSync }
     // Apply filter
     switch (filter) {
       case 'active':
-        filtered = todos.filter((todo) => !todo.completed);
+        filtered = todos.filter(todo => !todo.completed);
         break;
       case 'completed':
-        filtered = todos.filter((todo) => todo.completed);
+        filtered = todos.filter(todo => todo.completed);
         break;
       default:
         filtered = todos;
@@ -39,10 +39,10 @@ export function TodoList({ todos, onToggle, onEdit, onDelete, onBlockchainSync }
     // Apply search
     if (searchTerm) {
       filtered = filtered.filter(
-        (todo) =>
+        todo =>
           todo.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           todo.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          todo.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+          todo.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())),
       );
     }
 
@@ -69,11 +69,9 @@ export function TodoList({ todos, onToggle, onEdit, onDelete, onBlockchainSync }
 
   const stats = useMemo(() => {
     const total = todos.length;
-    const completed = todos.filter((todo) => todo.completed).length;
+    const completed = todos.filter(todo => todo.completed).length;
     const active = total - completed;
-    const overdue = todos.filter(
-      (todo) => todo.dueDate && new Date(todo.dueDate) < new Date() && !todo.completed
-    ).length;
+    const overdue = todos.filter(todo => todo.dueDate && new Date(todo.dueDate) < new Date() && !todo.completed).length;
 
     return { total, completed, active, overdue };
   }, [todos]);
@@ -81,12 +79,7 @@ export function TodoList({ todos, onToggle, onEdit, onDelete, onBlockchainSync }
   if (todos.length === 0) {
     return (
       <div className="text-center py-12">
-        <svg
-          className="mx-auto h-12 w-12 text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
+        <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -130,24 +123,24 @@ export function TodoList({ todos, onToggle, onEdit, onDelete, onBlockchainSync }
               type="text"
               placeholder="Search todos..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
           </div>
-          
+
           <div className="flex space-x-3">
             <select
               value={filter}
-              onChange={(e) => setFilter(e.target.value as FilterType)}
+              onChange={e => setFilter(e.target.value as FilterType)}
               className="rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
             >
               <option value="all">All</option>
               <option value="active">Active</option>
               <option value="completed">Completed</option>
             </select>
-            
+
             <select
               value={sort}
-              onChange={(e) => setSort(e.target.value as SortType)}
+              onChange={e => setSort(e.target.value as SortType)}
               className="rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
             >
               <option value="created">Created Date</option>
@@ -163,12 +156,10 @@ export function TodoList({ todos, onToggle, onEdit, onDelete, onBlockchainSync }
       <div className="space-y-3">
         {filteredAndSortedTodos.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-sm text-gray-500">
-              No todos match your current filter and search criteria.
-            </p>
+            <p className="text-sm text-gray-500">No todos match your current filter and search criteria.</p>
           </div>
         ) : (
-          filteredAndSortedTodos.map((todo) => (
+          filteredAndSortedTodos.map(todo => (
             <TodoItem
               key={todo.id}
               todo={todo}

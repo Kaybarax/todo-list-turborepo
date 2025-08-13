@@ -17,7 +17,9 @@ async function main() {
   console.log(`Using account: ${alice.address}`);
 
   // Check account balance
-  const { data: { free: balance } } = await api.query.system.account(alice.address);
+  const {
+    data: { free: balance },
+  } = await api.query.system.account(alice.address);
   console.log(`Free balance: ${balance.toHuman()}`);
 
   try {

@@ -107,7 +107,7 @@ describe('AuthService', () => {
       userService.findByEmail.mockResolvedValue(mockUser);
 
       await expect(service.register(registerDto)).rejects.toThrow(
-        new ConflictException('User with this email already exists')
+        new ConflictException('User with this email already exists'),
       );
 
       expect(userService.findByEmail).toHaveBeenCalledWith(registerDto.email);
@@ -176,9 +176,7 @@ describe('AuthService', () => {
 
       userService.findByEmail.mockResolvedValue(null);
 
-      await expect(service.login(loginDto)).rejects.toThrow(
-        new UnauthorizedException('Invalid credentials')
-      );
+      await expect(service.login(loginDto)).rejects.toThrow(new UnauthorizedException('Invalid credentials'));
 
       expect(userService.findByEmail).toHaveBeenCalledWith(loginDto.email);
       expect(mockedBcrypt.compare).not.toHaveBeenCalled();
@@ -193,9 +191,7 @@ describe('AuthService', () => {
       userService.findByEmail.mockResolvedValue(mockUser);
       mockedBcrypt.compare.mockResolvedValue(false as never);
 
-      await expect(service.login(loginDto)).rejects.toThrow(
-        new UnauthorizedException('Invalid credentials')
-      );
+      await expect(service.login(loginDto)).rejects.toThrow(new UnauthorizedException('Invalid credentials'));
 
       expect(userService.findByEmail).toHaveBeenCalledWith(loginDto.email);
       expect(mockedBcrypt.compare).toHaveBeenCalledWith(loginDto.password, mockUser.password);
@@ -233,7 +229,7 @@ describe('AuthService', () => {
       userService.findByWalletAddress.mockResolvedValue(null);
 
       await expect(service.loginWithWallet(walletAddress)).rejects.toThrow(
-        new UnauthorizedException('Wallet address not registered')
+        new UnauthorizedException('Wallet address not registered'),
       );
 
       expect(userService.findByWalletAddress).toHaveBeenCalledWith(walletAddress);
@@ -305,9 +301,7 @@ describe('AuthService', () => {
         throw new Error('Invalid token');
       });
 
-      await expect(service.refreshToken(invalidToken)).rejects.toThrow(
-        new UnauthorizedException('Invalid token')
-      );
+      await expect(service.refreshToken(invalidToken)).rejects.toThrow(new UnauthorizedException('Invalid token'));
 
       expect(jwtService.verify).toHaveBeenCalledWith(invalidToken);
     });
@@ -319,9 +313,7 @@ describe('AuthService', () => {
       jwtService.verify.mockReturnValue(payload);
       userService.findByEmail.mockResolvedValue(null);
 
-      await expect(service.refreshToken(oldToken)).rejects.toThrow(
-        new UnauthorizedException('User not found')
-      );
+      await expect(service.refreshToken(oldToken)).rejects.toThrow(new UnauthorizedException('User not found'));
 
       expect(jwtService.verify).toHaveBeenCalledWith(oldToken);
       expect(userService.findByEmail).toHaveBeenCalledWith(payload.email);

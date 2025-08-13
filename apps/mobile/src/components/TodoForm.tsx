@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { Input, Button } from '@todo/ui-mobile';
 // import { Picker } from '@react-native-picker/picker';
 
@@ -32,9 +25,7 @@ interface TodoFormProps {
 export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
   const [title, setTitle] = useState(initialData?.title || '');
   const [description, setDescription] = useState(initialData?.description || '');
-  const [priority, setPriority] = useState<'low' | 'medium' | 'high'>(
-    initialData?.priority || 'medium'
-  );
+  const [priority, setPriority] = useState<'low' | 'medium' | 'high'>(initialData?.priority || 'medium');
   const [dueDate, setDueDate] = useState(initialData?.dueDate || '');
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState<string[]>(initialData?.tags || []);
@@ -73,21 +64,14 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
   };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove));
+    setTags(tags.filter(tag => tag !== tagToRemove));
   };
-
-
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.form}>
         <View style={styles.inputGroup}>
-          <Input
-            label="Title"
-            value={title}
-            onChangeText={setTitle}
-            placeholder="Enter todo title"
-          />
+          <Input label="Title" value={title} onChangeText={setTitle} placeholder="Enter todo title" />
         </View>
 
         <View style={styles.inputGroup}>
@@ -104,7 +88,7 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
           <View style={[styles.inputGroup, styles.halfWidth]}>
             <Text style={styles.label}>Priority</Text>
             <View style={styles.priorityContainer}>
-              {(['low', 'medium', 'high'] as const).map((level) => (
+              {(['low', 'medium', 'high'] as const).map(level => (
                 <Button
                   key={level}
                   title={level.charAt(0).toUpperCase() + level.slice(1)}
@@ -118,12 +102,7 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
           </View>
 
           <View style={[styles.inputGroup, styles.halfWidth]}>
-            <Input
-              label="Due Date"
-              value={dueDate}
-              onChangeText={setDueDate}
-              placeholder="YYYY-MM-DD"
-            />
+            <Input label="Due Date" value={dueDate} onChangeText={setDueDate} placeholder="YYYY-MM-DD" />
           </View>
         </View>
 
@@ -139,15 +118,11 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
             />
             <Button variant="outline" size="small" title="Add" onPress={addTag} style={styles.addTagButton} />
           </View>
-          
+
           {tags.length > 0 && (
             <View style={styles.tagsContainer}>
-              {tags.map((tag) => (
-                <TouchableOpacity
-                  key={tag}
-                  style={styles.tag}
-                  onPress={() => removeTag(tag)}
-                >
+              {tags.map(tag => (
+                <TouchableOpacity key={tag} style={styles.tag} onPress={() => removeTag(tag)}>
                   <Text style={styles.tagText}>{tag}</Text>
                   <Text style={styles.tagRemove}>×</Text>
                 </TouchableOpacity>
@@ -160,7 +135,13 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
           {onCancel && (
             <Button variant="outline" size="large" title="Cancel" onPress={onCancel} style={styles.cancelButton} />
           )}
-          <Button variant="primary" size="large" title={initialData ? 'Update Todo' : 'Create Todo'} onPress={handleSubmit} style={styles.submitButton} />
+          <Button
+            variant="primary"
+            size="large"
+            title={initialData ? 'Update Todo' : 'Create Todo'}
+            onPress={handleSubmit}
+            style={styles.submitButton}
+          />
         </View>
       </View>
     </ScrollView>

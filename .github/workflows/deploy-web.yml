@@ -76,4 +76,4 @@ jobs:
           SLACK_COLOR: ${{ job.status }}
           SLACK_TITLE: Web App Deployment
           SLACK_MESSAGE: ${{ job.status == 'success' && 'Web app deployed successfully! :rocket:' || 'Web app deployment failed! :x:' }}
-          SLACK_FOOTER: "GitHub Actions"
+          SLACK_FOOTER: 'GitHub Actions'

@@ -1,7 +1,7 @@
 // Script to create a TodoList for the deployer on Base
-const hre = require("hardhat");
-const fs = require("fs");
-const path = require("path");
+const hre = require('hardhat');
+const fs = require('fs');
+const path = require('path');
 
 async function main() {
   // Get the network name
@@ -16,15 +16,15 @@ async function main() {
   const deploymentPath = path.join(__dirname, `../deployments/${network}.json`);
   if (!fs.existsSync(deploymentPath)) {
     console.error(`Deployment info not found for ${network}`);
-    console.log("Please run the deploy script first");
+    console.log('Please run the deploy script first');
     process.exit(1);
   }
 
-  const deploymentInfo = JSON.parse(fs.readFileSync(deploymentPath, "utf8"));
+  const deploymentInfo = JSON.parse(fs.readFileSync(deploymentPath, 'utf8'));
   const todoListFactoryAddress = deploymentInfo.todoListFactory;
 
   // Connect to TodoListFactory
-  const TodoListFactory = await hre.ethers.getContractFactory("TodoListFactory");
+  const TodoListFactory = await hre.ethers.getContractFactory('TodoListFactory');
   const todoListFactory = TodoListFactory.attach(todoListFactoryAddress);
 
   // Check if TodoList already exists
@@ -35,7 +35,7 @@ async function main() {
   }
 
   // Create TodoList
-  console.log("Creating TodoList...");
+  console.log('Creating TodoList...');
   const tx = await todoListFactory.createTodoList();
   const receipt = await tx.wait();
 
@@ -57,7 +57,7 @@ async function main() {
 
 main()
   .then(() => process.exit(0))
-  .catch((error) => {
+  .catch(error => {
     console.error(error);
     process.exit(1);
   });

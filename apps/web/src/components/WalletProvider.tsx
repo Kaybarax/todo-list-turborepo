@@ -16,7 +16,7 @@ export interface WalletContextType {
   account: WalletAccount | null;
   error: string | null;
   supportedNetworks: ('solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base')[];
-  
+
   // Actions
   connect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => Promise<void>;
   disconnect: () => Promise<void>;
@@ -54,7 +54,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
     try {
       // Simulate connection delay
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Mock wallet connection
       const mockAccount: WalletAccount = {
@@ -65,7 +65,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
       setAccount(mockAccount);
       setIsConnected(true);
-      
+
       // Store connection state
       localStorage.setItem('wallet-connected', 'true');
       localStorage.setItem('wallet-account', JSON.stringify(mockAccount));
@@ -78,15 +78,15 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
   const disconnect = async () => {
     setIsConnecting(true);
-    
+
     try {
       // Simulate disconnection delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
       setAccount(null);
       setIsConnected(false);
       setError(null);
-      
+
       // Clear stored connection state
       localStorage.removeItem('wallet-connected');
       localStorage.removeItem('wallet-account');
@@ -107,7 +107,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
     try {
       // Simulate network switch delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
       const updatedAccount: WalletAccount = {
         ...account,
@@ -131,7 +131,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
     }
 
     // Simulate signing delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     // Mock signature
     return `0x${Math.random().toString(16).substr(2, 128)}`;
@@ -143,7 +143,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
     }
 
     // Simulate transaction delay
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
     // Mock transaction hash
     return `0x${Math.random().toString(16).substr(2, 64)}`;
@@ -180,11 +180,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
     sendTransaction,
   };
 
-  return (
-    <WalletContext.Provider value={value}>
-      {children}
-    </WalletContext.Provider>
-  );
+  return <WalletContext.Provider value={value}>{children}</WalletContext.Provider>;
 }
 
 // Helper functions for mock data

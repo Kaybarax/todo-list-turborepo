@@ -45,7 +45,8 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'This is a template for creating component stories. Replace ComponentName with your actual component and update all the props and stories accordingly.',
+        component:
+          'This is a template for creating component stories. Replace ComponentName with your actual component and update all the props and stories accordingly.',
       },
     },
   },
@@ -101,7 +102,7 @@ const meta = {
         defaultValue: { summary: 'undefined' },
       },
     },
-    onClick: { 
+    onClick: {
       action: 'clicked',
       description: 'Function called when component is clicked',
       table: {
@@ -110,7 +111,7 @@ const meta = {
       },
     },
   },
-  args: { 
+  args: {
     onClick: fn(),
   },
 } satisfies Meta<typeof ComponentName>;
@@ -231,10 +232,7 @@ export const Interactive: Story = {
     return (
       <div className="space-y-4 text-center">
         <p>Clicked {clickCount} times</p>
-        <ComponentName 
-          onClick={handleClick}
-          isLoading={isLoading}
-        >
+        <ComponentName onClick={handleClick} isLoading={isLoading}>
           {isLoading ? 'Processing...' : 'Click Me'}
         </ComponentName>
       </div>
@@ -255,18 +253,15 @@ export const AccessibilityDemo: Story = {
     'aria-label': 'Accessible component example',
     children: 'Accessible Component',
   },
-  render: (args) => (
+  render: args => (
     <div>
       <label htmlFor="component-demo" className="block mb-2">
         Component with proper labeling:
       </label>
-      <ComponentName 
-        {...args}
-        id="component-demo"
-      />
+      <ComponentName {...args} id="component-demo" />
       <p className="mt-2 text-sm text-gray-600">
-        This component includes proper ARIA labels and can be navigated with keyboard.
-        Try using Tab to focus and Enter/Space to activate.
+        This component includes proper ARIA labels and can be navigated with keyboard. Try using Tab to focus and
+        Enter/Space to activate.
       </p>
     </div>
   ),
@@ -326,12 +321,10 @@ export const WithError: Story = {
     // Add error-related props here
     className: 'border-red-500 text-red-600',
   },
-  render: (args) => (
+  render: args => (
     <div>
       <ComponentName {...args} />
-      <p className="mt-1 text-sm text-red-600">
-        Error message would appear here
-      </p>
+      <p className="mt-1 text-sm text-red-600">Error message would appear here</p>
     </div>
   ),
   parameters: {

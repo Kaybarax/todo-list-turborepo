@@ -49,9 +49,10 @@ const server = setupServer(
 
     // Apply filters
     if (search) {
-      todos = todos.filter(todo => 
-        todo.title.toLowerCase().includes(search.toLowerCase()) ||
-        (todo.description && todo.description.toLowerCase().includes(search.toLowerCase()))
+      todos = todos.filter(
+        todo =>
+          todo.title.toLowerCase().includes(search.toLowerCase()) ||
+          (todo.description && todo.description.toLowerCase().includes(search.toLowerCase())),
       );
     }
 
@@ -84,7 +85,7 @@ const server = setupServer(
           success: false,
           error: 'Todo not found',
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -95,13 +96,13 @@ const server = setupServer(
   }),
 
   http.post('http://localhost:3001/api/v1/todos', async ({ request }) => {
-    const body = await request.json() as any;
+    const body = (await request.json()) as any;
     const newTodo = {
       id: `todo-${Date.now()}`,
       title: body.title,
       description: body.description,
       completed: body.completed || false,
-      priority: body.priority || 'medium' as const,
+      priority: body.priority || ('medium' as const),
       dueDate: body.dueDate,
       tags: body.tags || [],
       createdAt: new Date().toISOString(),
@@ -116,13 +117,13 @@ const server = setupServer(
         success: true,
         data: newTodo,
       },
-      { status: 201 }
+      { status: 201 },
     );
   }),
 
   http.put('http://localhost:3001/api/v1/todos/:id', async ({ params, request }) => {
     const { id } = params;
-    const body = await request.json() as any;
+    const body = (await request.json()) as any;
     const todoIndex = mockApiTodos.findIndex(t => t.id === id);
 
     if (todoIndex === -1) {
@@ -131,7 +132,7 @@ const server = setupServer(
           success: false,
           error: 'Todo not found',
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -157,7 +158,7 @@ const server = setupServer(
           success: false,
           error: 'Todo not found',
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -183,7 +184,7 @@ const server = setupServer(
           success: false,
           error: 'Todo not found',
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -192,7 +193,7 @@ const server = setupServer(
     return HttpResponse.json({
       success: true,
     });
-  })
+  }),
 );
 
 beforeAll(() => server.listen());
@@ -284,14 +285,7 @@ describe('API Integration Tests', () => {
       const mockOnEdit = jest.fn();
       const mockOnDelete = jest.fn();
 
-      render(
-        <TodoList
-          todos={mockTodos}
-          onToggle={mockOnToggle}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-        />
-      );
+      render(<TodoList todos={mockTodos} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
       expect(screen.getByTestId('todo-item-1')).toBeInTheDocument();
       expect(screen.getByTestId('todo-item-2')).toBeInTheDocument();
@@ -304,14 +298,7 @@ describe('API Integration Tests', () => {
       const mockOnEdit = jest.fn();
       const mockOnDelete = jest.fn();
 
-      render(
-        <TodoList
-          todos={[]}
-          onToggle={mockOnToggle}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-        />
-      );
+      render(<TodoList todos={[]} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
       expect(screen.getByText('No todos')).toBeInTheDocument();
       expect(screen.getByText('Get started by creating a new todo.')).toBeInTheDocument();
@@ -323,12 +310,7 @@ describe('API Integration Tests', () => {
       const mockOnSubmit = jest.fn();
       const mockOnCancel = jest.fn();
 
-      render(
-        <TodoForm
-          onSubmit={mockOnSubmit}
-          onCancel={mockOnCancel}
-        />
-      );
+      render(<TodoForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />);
 
       // Fill form
       fireEvent.change(screen.getByPlaceholderText('Enter todo title'), {
@@ -351,7 +333,5 @@ describe('API Integration Tests', () => {
         });
       });
     });
-
-
   });
 });

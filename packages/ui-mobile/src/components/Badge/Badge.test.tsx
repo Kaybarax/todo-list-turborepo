@@ -9,45 +9,30 @@ describe('Badge Component', () => {
   });
 
   it('renders with different variants', () => {
-    const { getByTestId } = render(
-      <Badge text="Primary" variant="primary" testID="primary-badge" />
-    );
+    const { getByTestId } = render(<Badge text="Primary" variant="primary" testID="primary-badge" />);
     const badge = getByTestId('primary-badge');
-    
+
     // Check that the style array contains an object with the primary background color
-    expect(badge.props.style).toContainEqual(
-      expect.objectContaining({ backgroundColor: expect.any(String) })
-    );
+    expect(badge.props.style).toContainEqual(expect.objectContaining({ backgroundColor: expect.any(String) }));
   });
 
   it('renders with different sizes', () => {
-    const { getByTestId: getSmall } = render(
-      <Badge text="Small" size="small" testID="small-badge" />
-    );
-    const { getByTestId: getLarge } = render(
-      <Badge text="Large" size="large" testID="large-badge" />
-    );
-    
+    const { getByTestId: getSmall } = render(<Badge text="Small" size="small" testID="small-badge" />);
+    const { getByTestId: getLarge } = render(<Badge text="Large" size="large" testID="large-badge" />);
+
     const smallBadge = getSmall('small-badge');
     const largeBadge = getLarge('large-badge');
-    
+
     // Check that the style arrays contain different padding values
     expect(smallBadge.props.style).not.toEqual(largeBadge.props.style);
   });
 
   it('applies custom styles', () => {
     const { getByTestId } = render(
-      <Badge 
-        text="Custom" 
-        style={{ marginTop: 10 }} 
-        textStyle={{ fontWeight: 'bold' }}
-        testID="custom-badge" 
-      />
+      <Badge text="Custom" style={{ marginTop: 10 }} textStyle={{ fontWeight: 'bold' }} testID="custom-badge" />,
     );
-    
+
     const badge = getByTestId('custom-badge');
-    expect(badge.props.style).toContainEqual(
-      expect.objectContaining({ marginTop: 10 })
-    );
+    expect(badge.props.style).toContainEqual(expect.objectContaining({ marginTop: 10 }));
   });
 });

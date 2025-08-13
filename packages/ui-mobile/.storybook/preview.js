@@ -1,11 +1,7 @@
 import React from 'react';
 
 // Custom theme provider wrapper for stories using the existing custom theme
-const ThemeProvider = ({ children }) => (
-  <div style={styles.container}>
-    {children}
-  </div>
-);
+const ThemeProvider = ({ children }) => <div style={styles.container}>{children}</div>;
 
 const styles = {
   container: {
@@ -21,14 +17,14 @@ const styles = {
 /** @type { import('@storybook/react').Preview } */
 const preview = {
   decorators: [
-    (Story) => (
+    Story => (
       <ThemeProvider>
         <Story />
       </ThemeProvider>
     ),
   ],
   parameters: {
-    actions: { argTypesRegex: "^on[A-Z].*" },
+    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,

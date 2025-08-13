@@ -1,12 +1,6 @@
 import React from 'react';
 import { CheckBox, CheckBoxProps as KittenCheckBoxProps, Text } from '@ui-kitten/components';
-import { 
-  View, 
-  StyleSheet, 
-  ViewStyle, 
-  TextStyle, 
-  StyleProp 
-} from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
 
 export type CheckboxStatus = 'basic' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
 
@@ -47,35 +41,19 @@ const Checkbox: React.FC<CheckboxProps> = ({
   // Render label text
   const renderLabel = () => {
     if (!label) return undefined;
-    
+
     return (
-      <Text
-        category="p1"
-        style={[
-          styles.label,
-          disabled && styles.labelDisabled,
-          labelStyle,
-        ]}
-      >
+      <Text category="p1" style={[styles.label, disabled && styles.labelDisabled, labelStyle]}>
         {label}
       </Text>
     );
   };
 
   // Combine checkbox styles
-  const checkboxStyles = [
-    styles.checkbox,
-    style,
-  ];
+  const checkboxStyles = [styles.checkbox, style];
 
   return (
-    <View
-      style={[
-        styles.container,
-        disabled && styles.containerDisabled,
-        containerStyle,
-      ]}
-    >
+    <View style={[styles.container, disabled && styles.containerDisabled, containerStyle]}>
       <CheckBox
         checked={checked}
         onChange={handleChange}

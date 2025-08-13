@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from '@jest/test-globals';
-import { 
-  BlockchainServiceFactory, 
-  BlockchainNetwork, 
-  BlockchainTodo, 
+import {
+  BlockchainServiceFactory,
+  BlockchainNetwork,
+  BlockchainTodo,
   TransactionStatus,
   CreateBlockchainTodoInput,
   UpdateBlockchainTodoInput,
   WalletInfo,
-  BlockchainTodoStatus
+  BlockchainTodoStatus,
 } from '../../packages/services/src/blockchain';
 
 /**
@@ -22,7 +22,7 @@ describe('Blockchain Expansion Integration Tests', () => {
   beforeAll(async () => {
     // Initialize test environment
     testWalletAddress = '0x1234567890123456789012345678901234567890';
-    
+
     // Mock wallet provider
     mockWalletProvider = {
       request: jest.fn(),
@@ -159,9 +159,8 @@ describe('Blockchain Expansion Integration Tests', () => {
         expect(todos.length).toBeGreaterThan(0);
 
         // Verify Moonbeam-specific todo content
-        const moonbeamTodo = todos.find(todo => 
-          todo.title.toLowerCase().includes('moonbeam') || 
-          todo.description.toLowerCase().includes('parachain')
+        const moonbeamTodo = todos.find(
+          todo => todo.title.toLowerCase().includes('moonbeam') || todo.description.toLowerCase().includes('parachain'),
         );
         expect(moonbeamTodo).toBeDefined();
         expect(moonbeamTodo!.network).toBe(BlockchainNetwork.MOONBEAM);
@@ -269,9 +268,7 @@ describe('Blockchain Expansion Integration Tests', () => {
           removeListener: jest.fn(),
         };
 
-        await expect(moonbeamService.connectWallet(invalidProvider))
-          .rejects
-          .toThrow(/moonbeam.*connection.*failed/i);
+        await expect(moonbeamService.connectWallet(invalidProvider)).rejects.toThrow(/moonbeam.*connection.*failed/i);
       });
 
       it('should handle Substrate-specific errors', async () => {
@@ -288,9 +285,7 @@ describe('Blockchain Expansion Integration Tests', () => {
           completed: false,
         };
 
-        await expect(moonbeamService.createTodo(todoInput))
-          .rejects
-          .toThrow(/substrate.*runtime.*error/i);
+        await expect(moonbeamService.createTodo(todoInput)).rejects.toThrow(/substrate.*runtime.*error/i);
       });
     });
   });
@@ -330,7 +325,7 @@ describe('Blockchain Expansion Integration Tests', () => {
 
         const todoInput: CreateBlockchainTodoInput = {
           title: 'Deploy on Base L2',
-          description: 'Leverage Coinbase\'s optimistic rollup for fast, cheap transactions',
+          description: "Leverage Coinbase's optimistic rollup for fast, cheap transactions",
           status: BlockchainTodoStatus.TODO,
           completed: false,
         };
@@ -341,11 +336,11 @@ describe('Blockchain Expansion Integration Tests', () => {
         expect(receipt.network).toBe(BlockchainNetwork.BASE);
         expect(receipt.status).toBe(TransactionStatus.CONFIRMED);
         expect(receipt.transactionHash).toMatch(/^0x[a-fA-F0-9]{64}$/);
-        
+
         // Verify L2 optimizations (lower gas costs)
         const gasUsed = parseInt(receipt.gasUsed || '0');
         expect(gasUsed).toBeLessThan(100000); // Base should have lower gas usage
-        
+
         const gasPrice = parseInt(receipt.effectiveGasPrice || '0');
         expect(gasPrice).toBeLessThan(1000000000); // Base should have lower gas prices
       });
@@ -360,10 +355,11 @@ describe('Blockchain Expansion Integration Tests', () => {
         expect(todos.length).toBeGreaterThan(0);
 
         // Verify Base-specific todo content
-        const baseTodo = todos.find(todo => 
-          todo.title.toLowerCase().includes('base') || 
-          todo.description.toLowerCase().includes('l2') ||
-          todo.description.toLowerCase().includes('optimistic rollup')
+        const baseTodo = todos.find(
+          todo =>
+            todo.title.toLowerCase().includes('base') ||
+            todo.description.toLowerCase().includes('l2') ||
+            todo.description.toLowerCase().includes('optimistic rollup'),
         );
         expect(baseTodo).toBeDefined();
         expect(baseTodo!.network).toBe(BlockchainNetwork.BASE);
@@ -375,7 +371,7 @@ describe('Blockchain Expansion Integration Tests', () => {
 
         const updateInput: UpdateBlockchainTodoInput = {
           title: 'Updated: Base L2 Deployment Complete',
-          description: 'Successfully deployed and optimized for Base\'s L2 environment',
+          description: "Successfully deployed and optimized for Base's L2 environment",
           status: BlockchainTodoStatus.DONE,
           completed: true,
         };
@@ -401,7 +397,7 @@ describe('Blockchain Expansion Integration Tests', () => {
         await baseService.connectWallet(mockWalletProvider);
 
         const startTime = Date.now();
-        
+
         // Perform multiple operations to test L2 efficiency
         const operations = [
           baseService.createTodo({
@@ -490,9 +486,7 @@ describe('Blockchain Expansion Integration Tests', () => {
           removeListener: jest.fn(),
         };
 
-        await expect(baseService.connectWallet(invalidProvider))
-          .rejects
-          .toThrow(/base.*sequencer/i);
+        await expect(baseService.connectWallet(invalidProvider)).rejects.toThrow(/base.*sequencer/i);
       });
 
       it('should handle optimistic rollup errors', async () => {
@@ -509,9 +503,7 @@ describe('Blockchain Expansion Integration Tests', () => {
           completed: false,
         };
 
-        await expect(baseService.createTodo(todoInput))
-          .rejects
-          .toThrow(/optimistic rollup.*reverted/i);
+        await expect(baseService.createTodo(todoInput)).rejects.toThrow(/optimistic rollup.*reverted/i);
       });
     });
   });
@@ -641,13 +633,13 @@ describe('Blockchain Expansion Integration Tests', () => {
         for (const network of networks) {
           const service = factory.getService(network);
           const walletInfo = await service.connectWallet(mockWalletProvider);
-          
+
           expect(walletInfo.network).toBe(network);
-          
+
           // Perform a quick operation
           const todos = await service.getTodos();
           expect(Array.isArray(todos)).toBe(true);
-          
+
           await service.disconnectWallet();
         }
       }
@@ -776,21 +768,15 @@ describe('Blockchain Expansion Integration Tests', () => {
       const moonbeamTodos = await moonbeamService.getTodos();
       const baseTodos = await baseService.getTodos();
 
-      const polygonTodoInMoonbeam = moonbeamTodos.find(todo => 
-        todo.title === 'Polygon Isolated Todo'
-      );
-      const polygonTodoInBase = baseTodos.find(todo => 
-        todo.title === 'Polygon Isolated Todo'
-      );
+      const polygonTodoInMoonbeam = moonbeamTodos.find(todo => todo.title === 'Polygon Isolated Todo');
+      const polygonTodoInBase = baseTodos.find(todo => todo.title === 'Polygon Isolated Todo');
 
       expect(polygonTodoInMoonbeam).toBeUndefined();
       expect(polygonTodoInBase).toBeUndefined();
 
       // Verify it exists on Polygon
       const polygonTodos = await polygonService.getTodos();
-      const actualPolygonTodo = polygonTodos.find(todo => 
-        todo.title === 'Polygon Isolated Todo'
-      );
+      const actualPolygonTodo = polygonTodos.find(todo => todo.title === 'Polygon Isolated Todo');
 
       expect(actualPolygonTodo).toBeDefined();
       expect(actualPolygonTodo!.network).toBe(BlockchainNetwork.POLYGON);
@@ -824,11 +810,7 @@ describe('Blockchain Expansion Integration Tests', () => {
       });
 
       // Wait for all promises to settle
-      const results = await Promise.allSettled([
-        polygonPromise,
-        moonbeamPromise,
-        basePromise,
-      ]);
+      const results = await Promise.allSettled([polygonPromise, moonbeamPromise, basePromise]);
 
       // Verify Polygon and Base succeeded
       expect(results[0].status).toBe('fulfilled');
@@ -836,8 +818,9 @@ describe('Blockchain Expansion Integration Tests', () => {
 
       // Verify Moonbeam failed
       expect(results[1].status).toBe('rejected');
-      expect((results[1] as PromiseRejectedResult).reason.message)
-        .toContain('Moonbeam network temporarily unavailable');
+      expect((results[1] as PromiseRejectedResult).reason.message).toContain(
+        'Moonbeam network temporarily unavailable',
+      );
 
       // Verify successful operations have correct network assignments
       if (results[0].status === 'fulfilled') {
@@ -977,7 +960,7 @@ describe('Blockchain Expansion Integration Tests', () => {
               description: `Bulk operation test for ${network.name}`,
               status: BlockchainTodoStatus.TODO,
               completed: false,
-            })
+            }),
           );
         }
       }

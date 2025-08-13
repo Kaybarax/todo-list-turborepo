@@ -5,18 +5,21 @@ This directory contains a comprehensive database management system for the Todo 
 ## 🎯 Key Accomplishments
 
 ### Advanced Database Management
+
 - **Schema Validation**: Comprehensive MongoDB schema validation with proper constraints
 - **Migration System**: Professional migration system with rollback capabilities
 - **Automated Seeding**: Intelligent seeding with sample data and user accounts
 - **Multi-Environment Support**: Separate configurations for development, staging, and production
 
 ### Blockchain Integration
+
 - **Multi-Network Collections**: Support for Polygon, Solana, and Polkadot transactions
 - **Transaction Tracking**: Comprehensive blockchain transaction monitoring
 - **Wallet Management**: Multi-wallet support per user with network-specific addresses
 - **Network Status**: Real-time blockchain network health monitoring
 
 ### Developer Experience
+
 - **CLI Tools**: Comprehensive command-line tools for all database operations
 - **Automated Setup**: One-command database setup with validation
 - **Error Handling**: Robust error handling with helpful troubleshooting guides
@@ -50,16 +53,18 @@ db/
 ### Environment Setup
 
 1. **Copy environment file**:
+
    ```bash
    cp db/.env.example .env.development
    ```
 
 2. **Update environment variables**:
+
    ```bash
    # Development (Docker)
    MONGODB_URI=mongodb://admin:password@localhost:27017/todo-app?authSource=admin
    MONGODB_DATABASE=todo-app
-   
+
    # Production (update with actual values)
    # MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/todo-app
    ```
@@ -77,6 +82,7 @@ pnpm db:setup
 ```
 
 This will:
+
 1. Test database connection
 2. Run all migrations
 3. Seed the database with sample data
@@ -87,6 +93,7 @@ This will:
 ### Collections
 
 #### Users Collection
+
 Stores user account information with authentication data.
 
 ```javascript
@@ -107,6 +114,7 @@ Stores user account information with authentication data.
 ```
 
 #### Todos Collection
+
 Stores todo items with blockchain integration support.
 
 ```javascript
@@ -128,6 +136,7 @@ Stores todo items with blockchain integration support.
 ```
 
 #### Blockchain Transactions Collection
+
 Tracks blockchain operations and their status.
 
 ```javascript
@@ -152,6 +161,7 @@ Tracks blockchain operations and their status.
 ```
 
 #### User Wallets Collection
+
 Manages multiple wallet addresses per user.
 
 ```javascript
@@ -172,6 +182,7 @@ Manages multiple wallet addresses per user.
 ```
 
 #### Network Status Collection
+
 Tracks blockchain network health and status.
 
 ```javascript
@@ -232,7 +243,7 @@ module.exports = {
     // Rollback logic (backward)
     await db.collection('new_collection').drop();
     await db.collection('existing').dropIndex('field_1');
-  }
+  },
 };
 ```
 
@@ -254,6 +265,7 @@ node db/setup.js seed
 ### Sample Data
 
 The seeding script creates:
+
 - **2 users**: Admin and regular user accounts
 - **7 todos**: Various priority levels and completion states
 - **Sample credentials**:
@@ -265,19 +277,21 @@ The seeding script creates:
 ### Daily Development
 
 1. **Start development environment**:
+
    ```bash
    # Start all services including MongoDB
    docker-compose -f docker-compose.dev.yml up -d
-   
+
    # Verify database setup
    node db/setup.js validate
    ```
 
 2. **Make schema changes**:
+
    ```bash
    # Create migration for schema changes
    node db/migrate.js create your-change-description
-   
+
    # Edit the migration file
    # Run the migration
    node db/migrate.js up
@@ -307,6 +321,7 @@ NODE_ENV=test node db/seed-todos.js clear
 ### Pre-deployment Checklist
 
 1. **Environment Variables**:
+
    ```bash
    # Production MongoDB connection
    MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/todo-app
@@ -360,6 +375,7 @@ node db/migrate.js status
 ### Performance Monitoring
 
 The database includes indexes for:
+
 - **User queries**: email, wallet address, role
 - **Todo queries**: userId, completed, priority, due date
 - **Blockchain queries**: transaction hash, network, status
@@ -383,44 +399,48 @@ mongorestore --uri="$MONGODB_URI" backup-20240101/
 ### Common Issues
 
 1. **Connection Failed**:
+
    ```bash
    # Check if MongoDB is running
    docker-compose -f docker-compose.dev.yml ps mongodb
-   
+
    # Check connection string
    echo $MONGODB_URI
-   
+
    # Test connection manually
    mongosh "$MONGODB_URI"
    ```
 
 2. **Migration Errors**:
+
    ```bash
    # Check migration status
    node db/migrate.js status
-   
+
    # View migration logs
    node db/migrate.js up --verbose
-   
+
    # Rollback problematic migration
    node db/migrate.js down
    ```
 
 3. **Seeding Issues**:
+
    ```bash
    # Clear and reseed
    node db/seed-todos.js clear
    node db/seed-todos.js
-   
+
    # Check data
    node db/setup.js validate
    ```
 
 4. **Index Problems**:
+
    ```bash
    # Rebuild indexes
    mongosh "$MONGODB_URI" --eval "db.todos.reIndex()"
-   
+
    # Check index usage
    mongosh "$MONGODB_URI" --eval "db.todos.getIndexes()"
    ```
@@ -428,10 +448,11 @@ mongorestore --uri="$MONGODB_URI" backup-20240101/
 ### Performance Issues
 
 1. **Slow Queries**:
+
    ```bash
    # Enable profiling
    mongosh "$MONGODB_URI" --eval "db.setProfilingLevel(2)"
-   
+
    # Check slow queries
    mongosh "$MONGODB_URI" --eval "db.system.profile.find().sort({ts:-1}).limit(5)"
    ```
@@ -445,6 +466,7 @@ mongorestore --uri="$MONGODB_URI" backup-20240101/
 ### Error Recovery
 
 1. **Corrupted Migration State**:
+
    ```bash
    # Reset migration state (DANGEROUS - backup first!)
    mongosh "$MONGODB_URI" --eval "db.migrations_changelog.drop()"
@@ -452,31 +474,32 @@ mongorestore --uri="$MONGODB_URI" backup-20240101/
    ```
 
 2. **Schema Validation Errors**:
+
    ```bash
    # Disable validation temporarily
    mongosh "$MONGODB_URI" --eval "db.runCommand({collMod: 'todos', validator: {}})"
-   
+
    # Fix data, then re-enable validation
    node db/migrate.js up
    ```
 
 ## Scripts Reference
 
-| Script | Purpose | Usage |
-|--------|---------|-------|
-| `setup.js` | Complete database setup | `node db/setup.js [command]` |
-| `migrate.js` | Migration management | `node db/migrate.js [command]` |
-| `seed-todos.js` | Data seeding | `node db/seed-todos.js [clear]` |
-| `init-mongo.js` | Docker initialization | Automatic (Docker) |
+| Script          | Purpose                 | Usage                           |
+| --------------- | ----------------------- | ------------------------------- |
+| `setup.js`      | Complete database setup | `node db/setup.js [command]`    |
+| `migrate.js`    | Migration management    | `node db/migrate.js [command]`  |
+| `seed-todos.js` | Data seeding            | `node db/seed-todos.js [clear]` |
+| `init-mongo.js` | Docker initialization   | Automatic (Docker)              |
 
 ## Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `MONGODB_URI` | MongoDB connection string | `mongodb://admin:password@localhost:27017/todo-app?authSource=admin` |
-| `MONGODB_DATABASE` | Database name | `todo-app` |
-| `NODE_ENV` | Environment | `development` |
-| `MIGRATION_COLLECTION` | Migration tracking collection | `migrations_changelog` |
+| Variable               | Description                   | Default                                                              |
+| ---------------------- | ----------------------------- | -------------------------------------------------------------------- |
+| `MONGODB_URI`          | MongoDB connection string     | `mongodb://admin:password@localhost:27017/todo-app?authSource=admin` |
+| `MONGODB_DATABASE`     | Database name                 | `todo-app`                                                           |
+| `NODE_ENV`             | Environment                   | `development`                                                        |
+| `MIGRATION_COLLECTION` | Migration tracking collection | `migrations_changelog`                                               |
 
 ## Best Practices
 

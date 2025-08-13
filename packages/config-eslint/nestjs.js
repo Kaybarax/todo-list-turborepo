@@ -1,14 +1,11 @@
 module.exports = {
   extends: ['./base.js'],
   plugins: ['node'],
-  extends: [
-    './base.js',
-    'plugin:node/recommended'
-  ],
+  extends: ['./base.js', 'plugin:node/recommended'],
   parserOptions: {
     ecmaVersion: 2022,
     sourceType: 'module',
-    project: './tsconfig.json'
+    project: './tsconfig.json',
   },
   rules: {
     // NestJS specific rules
@@ -16,10 +13,13 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-unused-vars': ['error', {
-      argsIgnorePattern: '^_',
-      varsIgnorePattern: '^_'
-    }],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      },
+    ],
 
     // Node.js specific rules
     'node/no-missing-import': 'off', // TypeScript handles this
@@ -32,19 +32,19 @@ module.exports = {
 
     // API development rules
     'no-console': 'off', // Allow console in server applications
-    'security/detect-object-injection': 'warn'
+    'security/detect-object-injection': 'warn',
   },
   env: {
     node: true,
     jest: true,
-    es2022: true
+    es2022: true,
   },
   settings: {
     'import/resolver': {
       typescript: {
         alwaysTryTypes: true,
-        project: './tsconfig.json'
-      }
-    }
-  }
+        project: './tsconfig.json',
+      },
+    },
+  },
 };

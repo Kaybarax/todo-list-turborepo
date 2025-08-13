@@ -1,11 +1,11 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { 
-  ApiClientConfig, 
-  ApiResponse, 
-  RequestInterceptor, 
-  ResponseInterceptor, 
+import {
+  ApiClientConfig,
+  ApiResponse,
+  RequestInterceptor,
+  ResponseInterceptor,
   ErrorInterceptor,
-  RetryConfig 
+  RetryConfig,
 } from './types';
 import { ApiError } from './ApiError';
 
@@ -156,7 +156,7 @@ export class BaseApiClient {
     url: string,
     data?: any,
     config?: AxiosRequestConfig,
-    retryConfig?: RetryConfig
+    retryConfig?: RetryConfig,
   ): Promise<ApiResponse<T>> {
     const retry = {
       attempts: this.config.retryAttempts,
@@ -192,9 +192,7 @@ export class BaseApiClient {
         }
 
         // Calculate delay
-        const delay = retry.backoff === 'exponential' 
-          ? retry.delay * Math.pow(2, attempt)
-          : retry.delay;
+        const delay = retry.backoff === 'exponential' ? retry.delay * Math.pow(2, attempt) : retry.delay;
 
         // Wait before retrying
         await this.sleep(delay);
@@ -210,7 +208,7 @@ export class BaseApiClient {
   private setupInterceptors(): void {
     // Request interceptor for authentication
     this.client.interceptors.request.use(
-      async (config) => {
+      async config => {
         // Add authentication header
         if (this.authToken) {
           config.headers = config.headers || {};
@@ -225,12 +223,12 @@ export class BaseApiClient {
 
         return modifiedConfig;
       },
-      (error) => Promise.reject(error)
+      error => Promise.reject(error),
     );
 
     // Response interceptor
     this.client.interceptors.response.use(
-      async (response) => {
+      async response => {
         // Apply custom response interceptors
         let modifiedResponse = response;
         for (const interceptor of this.responseInterceptors) {
@@ -239,7 +237,7 @@ export class BaseApiClient {
 
         return modifiedResponse;
       },
-      async (error) => {
+      async error => {
         // Handle token refresh for 401 errors
         if (error.response?.status === 401 && this.refreshToken) {
           try {
@@ -260,7 +258,7 @@ export class BaseApiClient {
         }
 
         return Promise.reject(modifiedError);
-      }
+      },
     );
   }
 
@@ -270,7 +268,7 @@ export class BaseApiClient {
    */
   private handleResponse<T>(response: AxiosResponse): ApiResponse<T> {
     const data = response.data;
-    
+
     // If the response is already in our ApiResponse format
     if (data && typeof data === 'object' && 'success' in data) {
       return data as ApiResponse<T>;

@@ -40,12 +40,10 @@ export const coverageConfig = {
       statements: 100,
     },
   },
-  
+
   // Files to include in coverage
-  include: [
-    'lib/**/*.{ts,tsx}',
-  ],
-  
+  include: ['lib/**/*.{ts,tsx}'],
+
   // Files to exclude from coverage
   exclude: [
     'lib/**/*.test.{ts,tsx}',
@@ -56,22 +54,16 @@ export const coverageConfig = {
     'dist/**/*',
     'node_modules/**/*',
   ],
-  
+
   // Coverage reporters
-  reporters: [
-    'text',
-    'text-summary',
-    'html',
-    'json',
-    'lcov',
-  ],
-  
+  reporters: ['text', 'text-summary', 'html', 'json', 'lcov'],
+
   // Coverage output directory
   reportsDirectory: './coverage',
-  
+
   // Fail build if coverage is below thresholds
   skipFull: false,
-  
+
   // Additional configuration for CI/CD
   ci: {
     // Fail CI if any file is below individual threshold

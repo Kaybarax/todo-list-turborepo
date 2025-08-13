@@ -9,21 +9,14 @@ export type { ButtonProps } from './components/Button/Button';
 export { default as TodoItem } from './components/TodoItem/TodoItem';
 export type { TodoItemProps } from './components/TodoItem/TodoItem';
 
-export { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent, 
-  CardFooter 
-} from './components/Card/Card';
-export type { 
-  CardProps, 
-  CardHeaderProps, 
-  CardTitleProps, 
-  CardDescriptionProps, 
-  CardContentProps, 
-  CardFooterProps 
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/Card/Card';
+export type {
+  CardProps,
+  CardHeaderProps,
+  CardTitleProps,
+  CardDescriptionProps,
+  CardContentProps,
+  CardFooterProps,
 } from './components/Card/Card';
 
 export { default as Input } from './components/Input/Input';
@@ -43,11 +36,4 @@ export type { CheckboxProps } from './components/Checkbox/Checkbox';
 
 // Theme
 export { default as theme } from './theme';
-export {
-  colors,
-  spacing,
-  fontSizes,
-  fontWeights,
-  borderRadius,
-  shadows,
-} from './theme';
+export { colors, spacing, fontSizes, fontWeights, borderRadius, shadows } from './theme';

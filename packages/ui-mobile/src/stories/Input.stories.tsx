@@ -115,30 +115,32 @@ const Input: React.FC<InputProps> = ({
   const renderIcon = (iconName: string) => {
     // Simple icon representation for web preview
     const iconMap: Record<string, string> = {
-      'search': '🔍',
-      'email': '✉️',
-      'lock': '🔒',
-      'user': '👤',
-      'phone': '📞',
-      'eye': '👁',
+      search: '🔍',
+      email: '✉️',
+      lock: '🔒',
+      user: '👤',
+      phone: '📞',
+      eye: '👁',
       'eye-off': '🙈',
-      'check': '✓',
-      'close': '✕',
-      'calendar': '📅',
-      'location': '📍',
-      'camera': '📷',
-      'attachment': '📎',
-      'send': '➤',
-      'edit': '✎',
+      check: '✓',
+      close: '✕',
+      calendar: '📅',
+      location: '📍',
+      camera: '📷',
+      attachment: '📎',
+      send: '➤',
+      edit: '✎',
     };
 
     return (
-      <span style={{ 
-        fontSize: 16,
-        color: colors.medium,
-        lineHeight: 1,
-        userSelect: 'none',
-      }}>
+      <span
+        style={{
+          fontSize: 16,
+          color: colors.medium,
+          lineHeight: 1,
+          userSelect: 'none',
+        }}
+      >
         {iconMap[iconName] || iconName}
       </span>
     );
@@ -170,7 +172,7 @@ const Input: React.FC<InputProps> = ({
     minHeight: multiline ? numberOfLines * 20 + 20 : 40,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: error ? colors.danger : (focused ? colors.primary : colors.border),
+    borderColor: error ? colors.danger : focused ? colors.primary : colors.border,
     borderRadius: borderRadius.sm,
     paddingTop: multiline ? spacing.sm : 0,
     paddingBottom: multiline ? spacing.sm : 0,
@@ -230,31 +232,30 @@ const Input: React.FC<InputProps> = ({
     <div style={containerStyle}>
       {label && <label style={labelStyle}>{label}</label>}
       <div style={inputContainerStyle}>
-        {leftIcon && (
-          <div style={leftIconStyle}>
-            {renderIcon(leftIcon)}
-          </div>
-        )}
+        {leftIcon && <div style={leftIconStyle}>{renderIcon(leftIcon)}</div>}
         {multiline ? (
-          <textarea
-            {...inputProps}
-            rows={numberOfLines}
-          />
+          <textarea {...inputProps} rows={numberOfLines} />
         ) : (
           <input
             {...inputProps}
-            type={secureTextEntry ? 'password' : keyboardType === 'email-address' ? 'email' : keyboardType === 'numeric' || keyboardType === 'number-pad' ? 'number' : keyboardType === 'phone-pad' ? 'tel' : keyboardType === 'url' ? 'url' : 'text'}
+            type={
+              secureTextEntry
+                ? 'password'
+                : keyboardType === 'email-address'
+                  ? 'email'
+                  : keyboardType === 'numeric' || keyboardType === 'number-pad'
+                    ? 'number'
+                    : keyboardType === 'phone-pad'
+                      ? 'tel'
+                      : keyboardType === 'url'
+                        ? 'url'
+                        : 'text'
+            }
           />
         )}
-        {rightIcon && (
-          <div style={rightIconStyle}>
-            {renderIcon(rightIcon)}
-          </div>
-        )}
+        {rightIcon && <div style={rightIconStyle}>{renderIcon(rightIcon)}</div>}
       </div>
-      {error && errorMessage && (
-        <span style={errorStyle}>{errorMessage}</span>
-      )}
+      {error && errorMessage && <span style={errorStyle}>{errorMessage}</span>}
     </div>
   );
 };
@@ -266,9 +267,10 @@ const meta: Meta<typeof Input> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A versatile input component with support for various input types, validation states, icons, and mobile-specific features (web preview)'
-      }
-    }
+        component:
+          'A versatile input component with support for various input types, validation states, icons, and mobile-specific features (web preview)',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -544,13 +546,13 @@ export const FormInputs: Story = {
         label="First Name"
         placeholder="Enter first name"
         returnKeyType="next"
-        onChangeText={(text) => console.log('First name:', text)}
+        onChangeText={text => console.log('First name:', text)}
       />
       <Input
         label="Last Name"
         placeholder="Enter last name"
         returnKeyType="next"
-        onChangeText={(text) => console.log('Last name:', text)}
+        onChangeText={text => console.log('Last name:', text)}
       />
       <Input
         label="Email"
@@ -560,7 +562,7 @@ export const FormInputs: Story = {
         autoCapitalize="none"
         returnKeyType="done"
         leftIcon="email"
-        onChangeText={(text) => console.log('Email:', text)}
+        onChangeText={text => console.log('Email:', text)}
       />
     </div>
   ),
@@ -568,9 +570,9 @@ export const FormInputs: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Form inputs with different return key types for better mobile UX'
-      }
-    }
+        story: 'Form inputs with different return key types for better mobile UX',
+      },
+    },
   },
 };
 
@@ -585,7 +587,7 @@ export const LoginForm: Story = {
         autoCapitalize="none"
         leftIcon="user"
         returnKeyType="next"
-        onChangeText={(text) => console.log('Username:', text)}
+        onChangeText={text => console.log('Username:', text)}
       />
       <Input
         label="Password"
@@ -596,7 +598,7 @@ export const LoginForm: Story = {
         leftIcon="lock"
         rightIcon="eye"
         returnKeyType="done"
-        onChangeText={(text) => console.log('Password:', text)}
+        onChangeText={text => console.log('Password:', text)}
       />
     </div>
   ),
@@ -604,9 +606,9 @@ export const LoginForm: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Login form with username and password inputs'
-      }
-    }
+        story: 'Login form with username and password inputs',
+      },
+    },
   },
 };
 
@@ -619,7 +621,7 @@ export const ContactForm: Story = {
         autoComplete="name"
         leftIcon="user"
         returnKeyType="next"
-        onChangeText={(text) => console.log('Name:', text)}
+        onChangeText={text => console.log('Name:', text)}
       />
       <Input
         label="Email"
@@ -629,7 +631,7 @@ export const ContactForm: Story = {
         autoCapitalize="none"
         leftIcon="email"
         returnKeyType="next"
-        onChangeText={(text) => console.log('Email:', text)}
+        onChangeText={text => console.log('Email:', text)}
       />
       <Input
         label="Phone"
@@ -638,7 +640,7 @@ export const ContactForm: Story = {
         autoComplete="tel"
         leftIcon="phone"
         returnKeyType="next"
-        onChangeText={(text) => console.log('Phone:', text)}
+        onChangeText={text => console.log('Phone:', text)}
       />
       <Input
         label="Message"
@@ -646,7 +648,7 @@ export const ContactForm: Story = {
         multiline={true}
         numberOfLines={4}
         leftIcon="edit"
-        onChangeText={(text) => console.log('Message:', text)}
+        onChangeText={text => console.log('Message:', text)}
       />
     </div>
   ),
@@ -654,9 +656,9 @@ export const ContactForm: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Contact form with various input types and proper mobile keyboard types'
-      }
-    }
+        story: 'Contact form with various input types and proper mobile keyboard types',
+      },
+    },
   },
 };
 
@@ -667,7 +669,7 @@ export const TodoForm: Story = {
         label="Todo Title"
         placeholder="What needs to be done?"
         returnKeyType="next"
-        onChangeText={(text) => console.log('Title:', text)}
+        onChangeText={text => console.log('Title:', text)}
       />
       <Input
         label="Description"
@@ -675,13 +677,13 @@ export const TodoForm: Story = {
         multiline={true}
         numberOfLines={3}
         leftIcon="edit"
-        onChangeText={(text) => console.log('Description:', text)}
+        onChangeText={text => console.log('Description:', text)}
       />
       <Input
         label="Due Date"
         placeholder="Select due date"
         leftIcon="calendar"
-        onChangeText={(text) => console.log('Due date:', text)}
+        onChangeText={text => console.log('Due date:', text)}
       />
     </div>
   ),
@@ -689,9 +691,9 @@ export const TodoForm: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Todo creation form with title, description, and due date inputs'
-      }
-    }
+        story: 'Todo creation form with title, description, and due date inputs',
+      },
+    },
   },
 };
 
@@ -704,7 +706,7 @@ export const ValidationStates: Story = {
         placeholder="This field is required"
         error={true}
         errorMessage="This field is required"
-        onChangeText={(text) => console.log('Required field:', text)}
+        onChangeText={text => console.log('Required field:', text)}
       />
       <Input
         label="Email Validation"
@@ -714,7 +716,7 @@ export const ValidationStates: Story = {
         leftIcon="email"
         error={true}
         errorMessage="Please enter a valid email address"
-        onChangeText={(text) => console.log('Email:', text)}
+        onChangeText={text => console.log('Email:', text)}
       />
       <Input
         label="Password Strength"
@@ -723,7 +725,7 @@ export const ValidationStates: Story = {
         leftIcon="lock"
         error={true}
         errorMessage="Password must be at least 8 characters long"
-        onChangeText={(text) => console.log('Password:', text)}
+        onChangeText={text => console.log('Password:', text)}
       />
       <Input
         label="Valid Input"
@@ -732,7 +734,7 @@ export const ValidationStates: Story = {
         keyboardType="email-address"
         leftIcon="email"
         rightIcon="check"
-        onChangeText={(text) => console.log('Valid email:', text)}
+        onChangeText={text => console.log('Valid email:', text)}
       />
     </div>
   ),
@@ -740,9 +742,9 @@ export const ValidationStates: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Various validation states showing error and success feedback'
-      }
-    }
+        story: 'Various validation states showing error and success feedback',
+      },
+    },
   },
 };
 
@@ -754,33 +756,33 @@ export const MobileKeyboardTypes: Story = {
         label="Default Keyboard"
         placeholder="Default text input"
         keyboardType="default"
-        onChangeText={(text) => console.log('Default:', text)}
+        onChangeText={text => console.log('Default:', text)}
       />
       <Input
         label="Email Keyboard"
         placeholder="email@example.com"
         keyboardType="email-address"
         leftIcon="email"
-        onChangeText={(text) => console.log('Email:', text)}
+        onChangeText={text => console.log('Email:', text)}
       />
       <Input
         label="Numeric Keyboard"
         placeholder="123456"
         keyboardType="numeric"
-        onChangeText={(text) => console.log('Numeric:', text)}
+        onChangeText={text => console.log('Numeric:', text)}
       />
       <Input
         label="Phone Keyboard"
         placeholder="+1 (555) 123-4567"
         keyboardType="phone-pad"
         leftIcon="phone"
-        onChangeText={(text) => console.log('Phone:', text)}
+        onChangeText={text => console.log('Phone:', text)}
       />
       <Input
         label="URL Keyboard"
         placeholder="https://example.com"
         keyboardType="url"
-        onChangeText={(text) => console.log('URL:', text)}
+        onChangeText={text => console.log('URL:', text)}
       />
     </div>
   ),
@@ -788,9 +790,9 @@ export const MobileKeyboardTypes: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Different keyboard types optimized for mobile input'
-      }
-    }
+        story: 'Different keyboard types optimized for mobile input',
+      },
+    },
   },
 };
 
@@ -832,17 +834,17 @@ export const InteractiveExample: Story = {
 
     const handleSubmit = () => {
       const newErrors: Record<string, string> = {};
-      
+
       if (!formData.name.trim()) {
         newErrors.name = 'Name is required';
       }
-      
+
       if (!formData.email.trim()) {
         newErrors.email = 'Email is required';
       } else if (!validateEmail(formData.email)) {
         newErrors.email = 'Please enter a valid email';
       }
-      
+
       if (!formData.message.trim()) {
         newErrors.message = 'Message is required';
       }
@@ -907,9 +909,7 @@ export const InteractiveExample: Story = {
         </button>
         <div style={{ fontSize: '14px', color: '#8E8E93' }}>
           <strong>Form Data:</strong>
-          <pre style={{ fontSize: '12px', marginTop: '4px' }}>
-            {JSON.stringify(formData, null, 2)}
-          </pre>
+          <pre style={{ fontSize: '12px', marginTop: '4px' }}>{JSON.stringify(formData, null, 2)}</pre>
         </div>
       </div>
     );
@@ -918,8 +918,8 @@ export const InteractiveExample: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Interactive form with real-time validation and state management'
-      }
-    }
+        story: 'Interactive form with real-time validation and state management',
+      },
+    },
   },
 };

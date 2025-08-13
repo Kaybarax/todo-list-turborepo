@@ -9,23 +9,27 @@ The build logging system provides structured logging, progress indicators, and d
 ## Features
 
 ### Structured Logging
+
 - **Multiple Log Levels**: DEBUG, INFO, WARN, ERROR
 - **Colored Output**: Visual distinction between log levels
 - **Timestamps**: Configurable timestamp inclusion
 - **File Logging**: Persistent log files for debugging
 
 ### Progress Indicators
+
 - **Progress Messages**: Visual feedback for long-running operations
 - **Spinner Animation**: Animated progress indicators
 - **Duration Tracking**: Automatic timing of operations
 
 ### Build Reporting
+
 - **Network-Specific Reports**: Individual tracking for each blockchain network
 - **Artifact Tracking**: Record of compiled contracts, programs, and pallets
 - **Error and Warning Collection**: Comprehensive issue tracking
 - **Performance Metrics**: Build duration and timing analysis
 
 ### Report Generation
+
 - **JSON Reports**: Machine-readable build reports
 - **Human-Readable Summaries**: Console-friendly build summaries
 - **Recommendations**: Automated suggestions based on build results
@@ -83,14 +87,14 @@ show_spinner "Processing..." $!
 
 ### Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `LOG_LEVEL` | `INFO` | Minimum log level (DEBUG, INFO, WARN, ERROR) |
-| `LOG_FILE` | `build.log` | Path to log file |
-| `REPORT_FILE` | `build-report.json` | Path to JSON report file |
-| `ENABLE_COLORS` | `true` | Enable colored console output |
-| `ENABLE_TIMESTAMPS` | `true` | Include timestamps in log messages |
-| `ENABLE_PROGRESS` | `true` | Show progress indicators |
+| Variable            | Default             | Description                                  |
+| ------------------- | ------------------- | -------------------------------------------- |
+| `LOG_LEVEL`         | `INFO`              | Minimum log level (DEBUG, INFO, WARN, ERROR) |
+| `LOG_FILE`          | `build.log`         | Path to log file                             |
+| `REPORT_FILE`       | `build-report.json` | Path to JSON report file                     |
+| `ENABLE_COLORS`     | `true`              | Enable colored console output                |
+| `ENABLE_TIMESTAMPS` | `true`              | Include timestamps in log messages           |
+| `ENABLE_PROGRESS`   | `true`              | Show progress indicators                     |
 
 ### Example Configuration
 
@@ -104,21 +108,25 @@ export ENABLE_COLORS="true"
 ## Log Levels
 
 ### DEBUG
+
 - Detailed debugging information
 - Variable values and internal state
 - Only shown when LOG_LEVEL=DEBUG
 
 ### INFO
+
 - General information about build progress
 - Status updates and milestones
 - Default minimum log level
 
 ### WARN
+
 - Non-critical issues that don't stop the build
 - Deprecated features or configurations
 - Performance warnings
 
 ### ERROR
+
 - Critical failures that stop the build
 - Missing dependencies or configuration errors
 - Compilation failures
@@ -205,6 +213,7 @@ cleanup_logging
 ### Common Issues
 
 1. **Permission Errors**
+
    ```bash
    # Ensure log directory is writable
    mkdir -p logs
@@ -212,10 +221,11 @@ cleanup_logging
    ```
 
 2. **Missing Dependencies**
+
    ```bash
    # Check bash version (requires 4.0+)
    bash --version
-   
+
    # Check date command availability
    which date
    ```
@@ -238,15 +248,18 @@ export LOG_LEVEL="DEBUG"
 ## Performance Considerations
 
 ### Log File Management
+
 - Log files can grow large during extensive builds
 - Consider log rotation for production environments
 - Use appropriate LOG_LEVEL to control verbosity
 
 ### Progress Indicators
+
 - Disable progress indicators in CI/CD environments
 - Set `ENABLE_PROGRESS="false"` for non-interactive builds
 
 ### Report Generation
+
 - JSON reports are generated at build completion
 - Large builds may produce substantial report files
 - Consider archiving old reports
@@ -266,7 +279,7 @@ log_info "Starting blockchain build process"
 for network in polygon solana polkadot; do
     init_network_report "$network"
     log_info "Building $network contracts"
-    
+
     if build_network "$network"; then
         update_network_status "$network" "success"
     else
@@ -290,7 +303,7 @@ cleanup_logging
 if [ -f "build-report.json" ]; then
     # Extract failed networks
     failed_networks=$(jq -r '.networks | to_entries[] | select(.value.status == "failed") | .key' build-report.json)
-    
+
     if [ -n "$failed_networks" ]; then
         echo "Failed networks: $failed_networks"
         # Send notification, update CI status, etc.
@@ -303,7 +316,7 @@ fi
 ### Logging Functions
 
 - `log_debug(message)` - Log debug message
-- `log_info(message)` - Log info message  
+- `log_info(message)` - Log info message
 - `log_warn(message)` - Log warning message
 - `log_error(message)` - Log error message
 - `log_success(message)` - Log success message with checkmark

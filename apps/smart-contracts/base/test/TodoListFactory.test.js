@@ -13,10 +13,10 @@ describe('Base TodoListFactory Contract Tests', function () {
 
   beforeEach(async function () {
     [owner, user1, user2, user3, ...addrs] = await ethers.getSigners();
-    
+
     // Deploy TodoList contract for factory to use
     TodoList = await ethers.getContractFactory('TodoList');
-    
+
     // Deploy TodoListFactory
     TodoListFactory = await ethers.getContractFactory('TodoListFactory');
     todoListFactory = await TodoListFactory.deploy();
@@ -55,14 +55,14 @@ describe('Base TodoListFactory Contract Tests', function () {
 
     it('Should increment user count after creation', async function () {
       await todoListFactory.connect(user1).createTodoList();
-      
+
       const userCount = await todoListFactory.getUserCount();
       expect(userCount).to.equal(1);
     });
 
     it('Should add user to users array', async function () {
       await todoListFactory.connect(user1).createTodoList();
-      
+
       const users = await todoListFactory.getUsers(0, 10);
       expect(users.length).to.equal(1);
       expect(users[0]).to.equal(user1.address);
@@ -70,9 +70,10 @@ describe('Base TodoListFactory Contract Tests', function () {
 
     it('Should prevent duplicate TodoList creation for same user', async function () {
       await todoListFactory.connect(user1).createTodoList();
-      
-      await expect(todoListFactory.connect(user1).createTodoList())
-        .to.be.revertedWith('TodoList already exists for this user');
+
+      await expect(todoListFactory.connect(user1).createTodoList()).to.be.revertedWith(
+        'TodoList already exists for this user',
+      );
     });
 
     it('Should allow multiple users to create TodoLists', async function () {
@@ -98,26 +99,22 @@ describe('Base TodoListFactory Contract Tests', function () {
 
     it('Should create TodoList with correct owner', async function () {
       await todoListFactory.connect(user1).createTodoList();
-      
+
       const todoListAddress = await todoListFactory.getTodoListForUser(user1.address);
       const todoListContract = TodoList.attach(todoListAddress);
-      
+
       const todoListOwner = await todoListContract.owner();
       expect(todoListOwner).to.equal(user1.address);
     });
 
     it('Should create functional TodoList contract', async function () {
       await todoListFactory.connect(user1).createTodoList();
-      
+
       const todoListAddress = await todoListFactory.getTodoListForUser(user1.address);
       const todoListContract = TodoList.attach(todoListAddress);
-      
+
       // Test basic functionality
-      await todoListContract.connect(user1).createTodo(
-        'Factory Test Todo',
-        'Created via factory',
-        1
-      );
+      await todoListContract.connect(user1).createTodo('Factory Test Todo', 'Created via factory', 1);
 
       const todos = await todoListContract.connect(user1).getTodos();
       expect(todos.length).to.equal(1);
@@ -127,7 +124,7 @@ describe('Base TodoListFactory Contract Tests', function () {
     it('Should return correct TodoList address', async function () {
       const tx = await todoListFactory.connect(user1).createTodoList();
       const receipt = await tx.wait();
-      
+
       // Get the TodoList address from the event
       const event = receipt.logs.find(log => {
         try {
@@ -137,10 +134,10 @@ describe('Base TodoListFactory Contract Tests', function () {
           return false;
         }
       });
-      
+
       const parsedEvent = todoListFactory.interface.parseLog(event);
       const todoListAddress = parsedEvent.args.todoList;
-      
+
       const storedAddress = await todoListFactory.getTodoListForUser(user1.address);
       expect(storedAddress).to.equal(todoListAddress);
     });
@@ -156,7 +153,7 @@ describe('Base TodoListFactory Contract Tests', function () {
     it('Should return correct TodoList address for user', async function () {
       const user1TodoList = await todoListFactory.getTodoListForUser(user1.address);
       const user2TodoList = await todoListFactory.getTodoListForUser(user2.address);
-      
+
       expect(user1TodoList).to.be.properAddress;
       expect(user2TodoList).to.be.properAddress;
       expect(user1TodoList).to.not.equal(user2TodoList);
@@ -170,7 +167,7 @@ describe('Base TodoListFactory Contract Tests', function () {
     it('Should return correct TodoList for caller', async function () {
       const user1TodoList = await todoListFactory.connect(user1).getTodoList();
       const user2TodoList = await todoListFactory.connect(user2).getTodoList();
-      
+
       expect(user1TodoList).to.be.properAddress;
       expect(user2TodoList).to.be.properAddress;
       expect(user1TodoList).to.not.equal(user2TodoList);
@@ -225,21 +222,21 @@ describe('Base TodoListFactory Contract Tests', function () {
       // Any user should be able to create a TodoList
       await todoListFactory.connect(user1).createTodoList();
       await todoListFactory.connect(user2).createTodoList();
-      
+
       const user1TodoList = await todoListFactory.getTodoListForUser(user1.address);
       const user2TodoList = await todoListFactory.getTodoListForUser(user2.address);
-      
+
       expect(user1TodoList).to.not.equal(ethers.ZeroAddress);
       expect(user2TodoList).to.not.equal(ethers.ZeroAddress);
     });
 
     it('Should allow read access to anyone', async function () {
       await todoListFactory.connect(user1).createTodoList();
-      
+
       // Anyone should be able to read TodoList addresses
       const todoListAddress = await todoListFactory.connect(user2).getTodoListForUser(user1.address);
       expect(todoListAddress).to.not.equal(ethers.ZeroAddress);
-      
+
       const userCount = await todoListFactory.connect(user2).getUserCount();
       expect(userCount).to.equal(1);
     });
@@ -247,10 +244,10 @@ describe('Base TodoListFactory Contract Tests', function () {
     it('Should handle ownership transfer', async function () {
       // Transfer factory ownership
       await todoListFactory.transferOwnership(user1.address);
-      
+
       // Verify new owner
       expect(await todoListFactory.owner()).to.equal(user1.address);
-      
+
       // Factory should still work normally
       await todoListFactory.connect(user2).createTodoList();
       const todoListAddress = await todoListFactory.getTodoListForUser(user2.address);
@@ -258,8 +255,10 @@ describe('Base TodoListFactory Contract Tests', function () {
     });
 
     it('Should prevent ownership transfer to zero address', async function () {
-      await expect(todoListFactory.transferOwnership(ethers.ZeroAddress))
-        .to.be.revertedWithCustomError(todoListFactory, 'OwnableInvalidOwner');
+      await expect(todoListFactory.transferOwnership(ethers.ZeroAddress)).to.be.revertedWithCustomError(
+        todoListFactory,
+        'OwnableInvalidOwner',
+      );
     });
 
     it('Should emit ownership transfer event', async function () {
@@ -271,7 +270,7 @@ describe('Base TodoListFactory Contract Tests', function () {
     it('Should handle malicious input gracefully', async function () {
       // Test with contract addresses as users (should work)
       await todoListFactory.connect(user1).createTodoList();
-      
+
       const userTodoList = await todoListFactory.getTodoListForUser(user1.address);
       expect(userTodoList).to.not.equal(ethers.ZeroAddress);
     });
@@ -281,7 +280,7 @@ describe('Base TodoListFactory Contract Tests', function () {
     it('Should emit TodoListCreated event with correct parameters', async function () {
       const tx = await todoListFactory.connect(user1).createTodoList();
       const receipt = await tx.wait();
-      
+
       const event = receipt.logs.find(log => {
         try {
           const parsed = todoListFactory.interface.parseLog(log);
@@ -290,7 +289,7 @@ describe('Base TodoListFactory Contract Tests', function () {
           return false;
         }
       });
-      
+
       expect(event).to.not.be.undefined;
       const parsedEvent = todoListFactory.interface.parseLog(event);
       expect(parsedEvent.args.user).to.equal(user1.address);
@@ -300,10 +299,10 @@ describe('Base TodoListFactory Contract Tests', function () {
     it('Should emit events in correct order for multiple operations', async function () {
       const tx1 = await todoListFactory.connect(user1).createTodoList();
       const receipt1 = await tx1.wait();
-      
+
       const tx2 = await todoListFactory.connect(user2).createTodoList();
       const receipt2 = await tx2.wait();
-      
+
       // Verify events were emitted
       const events1 = receipt1.logs.filter(log => {
         try {
@@ -312,7 +311,7 @@ describe('Base TodoListFactory Contract Tests', function () {
           return false;
         }
       });
-      
+
       const events2 = receipt2.logs.filter(log => {
         try {
           return todoListFactory.interface.parseLog(log).name === 'TodoListCreated';
@@ -320,13 +319,13 @@ describe('Base TodoListFactory Contract Tests', function () {
           return false;
         }
       });
-      
+
       expect(events1).to.have.length(1);
       expect(events2).to.have.length(1);
-      
+
       const parsedEvent1 = todoListFactory.interface.parseLog(events1[0]);
       const parsedEvent2 = todoListFactory.interface.parseLog(events2[0]);
-      
+
       expect(parsedEvent1.args.user).to.equal(user1.address);
       expect(parsedEvent2.args.user).to.equal(user2.address);
     });
@@ -336,14 +335,14 @@ describe('Base TodoListFactory Contract Tests', function () {
     it('Should have reasonable gas costs for TodoList creation', async function () {
       const tx = await todoListFactory.connect(user1).createTodoList();
       const receipt = await tx.wait();
-      
+
       // TodoList creation should be reasonably efficient on Base L2
       expect(receipt.gasUsed).to.be.lessThan(2000000n); // 2M gas limit
     });
 
     it('Should scale efficiently with number of TodoLists', async function () {
       const gasUsages = [];
-      
+
       // Create multiple TodoLists and measure gas usage
       for (let i = 0; i < 5; i++) {
         const user = addrs[i];
@@ -351,12 +350,12 @@ describe('Base TodoListFactory Contract Tests', function () {
         const receipt = await tx.wait();
         gasUsages.push(Number(receipt.gasUsed));
       }
-      
+
       // Gas usage should not increase significantly with number of TodoLists
       const firstGas = gasUsages[0];
       const lastGas = gasUsages[gasUsages.length - 1];
       const increase = (lastGas - firstGas) / firstGas;
-      
+
       expect(increase).to.be.lessThan(0.2); // Less than 20% increase
     });
 
@@ -366,12 +365,12 @@ describe('Base TodoListFactory Contract Tests', function () {
       for (let i = 0; i < numTodoLists; i++) {
         await todoListFactory.connect(addrs[i]).createTodoList();
       }
-      
+
       // Test retrieval performance
       const startTime = Date.now();
       const users = await todoListFactory.getUsers(0, numTodoLists);
       const endTime = Date.now();
-      
+
       expect(users.length).to.equal(numTodoLists);
       expect(endTime - startTime).to.be.lessThan(1000); // Should complete within 1 second
     });
@@ -381,7 +380,7 @@ describe('Base TodoListFactory Contract Tests', function () {
     it('Should handle empty state queries correctly', async function () {
       const userCount = await todoListFactory.getUserCount();
       const users = await todoListFactory.getUsers(0, 10);
-      
+
       expect(userCount).to.equal(0);
       expect(users.length).to.equal(0);
     });
@@ -398,9 +397,9 @@ describe('Base TodoListFactory Contract Tests', function () {
         todoListFactory.connect(user2).createTodoList(),
         todoListFactory.connect(user3).createTodoList(),
       ];
-      
+
       await Promise.all(promises);
-      
+
       const userCount = await todoListFactory.getUserCount();
       expect(userCount).to.equal(3);
     });
@@ -412,25 +411,25 @@ describe('Base TodoListFactory Contract Tests', function () {
         todoListFactory.connect(user2).createTodoList(),
         todoListFactory.connect(user3).createTodoList(),
       ];
-      
+
       await Promise.all(promises);
-      
+
       // Verify final state is consistent
       const userCount = await todoListFactory.getUserCount();
       const users = await todoListFactory.getUsers(0, 10);
-      
+
       expect(userCount).to.equal(3);
       expect(users.length).to.equal(3);
-      
+
       // Verify each user has their own TodoList
       const user1TodoList = await todoListFactory.getTodoListForUser(user1.address);
       const user2TodoList = await todoListFactory.getTodoListForUser(user2.address);
       const user3TodoList = await todoListFactory.getTodoListForUser(user3.address);
-      
+
       expect(user1TodoList).to.not.equal(ethers.ZeroAddress);
       expect(user2TodoList).to.not.equal(ethers.ZeroAddress);
       expect(user3TodoList).to.not.equal(ethers.ZeroAddress);
-      
+
       expect(user1TodoList).to.not.equal(user2TodoList);
       expect(user2TodoList).to.not.equal(user3TodoList);
       expect(user1TodoList).to.not.equal(user3TodoList);
@@ -438,14 +437,14 @@ describe('Base TodoListFactory Contract Tests', function () {
 
     it('Should handle pagination with zero limit', async function () {
       await todoListFactory.connect(user1).createTodoList();
-      
+
       const users = await todoListFactory.getUsers(0, 0);
       expect(users.length).to.equal(0);
     });
 
     it('Should handle pagination with large offset', async function () {
       await todoListFactory.connect(user1).createTodoList();
-      
+
       const users = await todoListFactory.getUsers(1000, 10);
       expect(users.length).to.equal(0);
     });
@@ -454,17 +453,13 @@ describe('Base TodoListFactory Contract Tests', function () {
   describe('Integration and Interoperability', function () {
     it('Should work with external contracts', async function () {
       await todoListFactory.connect(user1).createTodoList();
-      
+
       const todoListAddress = await todoListFactory.getTodoListForUser(user1.address);
       const todoListContract = TodoList.attach(todoListAddress);
-      
+
       // Test that the created TodoList works with external interactions
-      await todoListContract.connect(user1).createTodo(
-        'Integration Test',
-        'Testing external interaction',
-        1
-      );
-      
+      await todoListContract.connect(user1).createTodo('Integration Test', 'Testing external interaction', 1);
+
       const todos = await todoListContract.connect(user1).getTodos();
       expect(todos.length).to.equal(1);
       expect(todos[0].title).to.equal('Integration Test');
@@ -474,22 +469,22 @@ describe('Base TodoListFactory Contract Tests', function () {
       // Create multiple TodoLists
       await todoListFactory.connect(user1).createTodoList();
       await todoListFactory.connect(user2).createTodoList();
-      
+
       // Verify they are independent instances
       const user1TodoListAddress = await todoListFactory.getTodoListForUser(user1.address);
       const user2TodoListAddress = await todoListFactory.getTodoListForUser(user2.address);
-      
+
       const user1TodoList = TodoList.attach(user1TodoListAddress);
       const user2TodoList = TodoList.attach(user2TodoListAddress);
-      
+
       // Add different todos to each list
       await user1TodoList.connect(user1).createTodo('User1 Todo', 'Description', 1);
       await user2TodoList.connect(user2).createTodo('User2 Todo', 'Description', 2);
-      
+
       // Verify independence
       const user1Todos = await user1TodoList.connect(user1).getTodos();
       const user2Todos = await user2TodoList.connect(user2).getTodos();
-      
+
       expect(user1Todos.length).to.equal(1);
       expect(user2Todos.length).to.equal(1);
       expect(user1Todos[0].title).to.equal('User1 Todo');
@@ -504,7 +499,7 @@ describe('Base TodoListFactory Contract Tests', function () {
       // Base L2 should have lower gas costs than mainnet
       const tx = await todoListFactory.connect(user1).createTodoList();
       const receipt = await tx.wait();
-      
+
       // Base L2 transactions should be very efficient
       expect(receipt.gasUsed).to.be.lessThan(1500000n);
     });
@@ -518,14 +513,14 @@ describe('Base TodoListFactory Contract Tests', function () {
     it('Should be compatible with Base ecosystem', async function () {
       // Test that the factory is compatible with Base's EVM implementation
       await todoListFactory.connect(user1).createTodoList();
-      
+
       const todoListAddress = await todoListFactory.getTodoListForUser(user1.address);
       expect(todoListAddress).to.not.equal(ethers.ZeroAddress);
-      
+
       // Verify the created TodoList works on Base
       const todoListContract = TodoList.attach(todoListAddress);
       await todoListContract.connect(user1).createTodo('Base Ecosystem Test', 'Testing compatibility', 2);
-      
+
       const todos = await todoListContract.connect(user1).getTodos();
       expect(todos[0].title).to.equal('Base Ecosystem Test');
       expect(todos[0].priority).to.equal(2);
@@ -537,14 +532,14 @@ describe('Base TodoListFactory Contract Tests', function () {
       for (let i = 0; i < 5; i++) {
         promises.push(todoListFactory.connect(addrs[i]).createTodoList());
       }
-      
+
       const startTime = Date.now();
       await Promise.all(promises);
       const endTime = Date.now();
-      
+
       // Should complete quickly on Base L2
       expect(endTime - startTime).to.be.lessThan(5000); // 5 seconds
-      
+
       const userCount = await todoListFactory.getUserCount();
       expect(userCount).to.equal(5);
     });
@@ -555,26 +550,26 @@ describe('Base TodoListFactory Contract Tests', function () {
       // Create TodoLists with data
       await todoListFactory.connect(user1).createTodoList();
       await todoListFactory.connect(user2).createTodoList();
-      
+
       const user1TodoListAddress = await todoListFactory.getTodoListForUser(user1.address);
       const user2TodoListAddress = await todoListFactory.getTodoListForUser(user2.address);
-      
+
       const user1TodoList = TodoList.attach(user1TodoListAddress);
       const user2TodoList = TodoList.attach(user2TodoListAddress);
-      
+
       await user1TodoList.connect(user1).createTodo('Migration Test 1', 'Description', 1);
       await user2TodoList.connect(user2).createTodo('Migration Test 2', 'Description', 2);
-      
+
       // Export data for migration
       const users = await todoListFactory.getUsers(0, 10);
       const userCount = await todoListFactory.getUserCount();
-      
+
       // Verify export data completeness
       expect(users.length).to.equal(2);
       expect(userCount).to.equal(2);
       expect(users).to.include(user1.address);
       expect(users).to.include(user2.address);
-      
+
       // Verify TodoList addresses are valid
       expect(user1TodoListAddress).to.be.properAddress;
       expect(user2TodoListAddress).to.be.properAddress;
@@ -583,31 +578,31 @@ describe('Base TodoListFactory Contract Tests', function () {
     it('Should maintain data integrity for migration', async function () {
       // Create comprehensive test data
       const testUsers = [user1, user2, user3];
-      
+
       for (const user of testUsers) {
         await todoListFactory.connect(user).createTodoList();
-        
+
         const todoListAddress = await todoListFactory.getTodoListForUser(user.address);
         const todoListContract = TodoList.attach(todoListAddress);
-        
+
         // Add todos with different properties
         await todoListContract.connect(user).createTodo(`${user.address} Todo 1`, 'Description 1', 0);
         await todoListContract.connect(user).createTodo(`${user.address} Todo 2`, 'Description 2', 1);
         await todoListContract.connect(user).toggleTodoCompletion(1); // Complete first todo
       }
-      
+
       // Verify all data is accessible for migration
       const allUsers = await todoListFactory.getUsers(0, 10);
       expect(allUsers.length).to.equal(3);
-      
+
       for (const userAddress of allUsers) {
         const todoListAddress = await todoListFactory.getTodoListForUser(userAddress);
         expect(todoListAddress).to.not.equal(ethers.ZeroAddress);
-        
+
         const todoListContract = TodoList.attach(todoListAddress);
         const todos = await todoListContract.getTodos();
         expect(todos.length).to.equal(2);
-        
+
         const stats = await todoListContract.getTodoStats();
         expect(stats.total).to.equal(2);
         expect(stats.completed).to.equal(1);

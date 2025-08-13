@@ -20,10 +20,10 @@ export class HealthController {
   @Trace('HealthController.getHealth')
   async getHealth() {
     const health = await this.healthService.getHealth();
-    
+
     // Add telemetry information
     const telemetryEnabled = this.configService.get<string>('TELEMETRY_ENABLED') === 'true';
-    
+
     return {
       ...health,
       telemetry: {

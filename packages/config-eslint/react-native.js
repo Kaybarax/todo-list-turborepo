@@ -1,12 +1,9 @@
 module.exports = {
-  extends: [
-    './react.js',
-    'plugin:react-native/all'
-  ],
+  extends: ['./react.js', 'plugin:react-native/all'],
   plugins: ['react-native'],
   env: {
     'react-native/react-native': true,
-    node: true
+    node: true,
   },
   rules: {
     // React Native specific rules
@@ -26,27 +23,30 @@ module.exports = {
     'jsx-a11y/alt-text': 'off', // Different accessibility model in RN
 
     // Performance
-    'react/jsx-no-bind': ['warn', {
-      ignoreDOMComponents: true,
-      ignoreRefs: true,
-      allowArrowFunctions: true,
-      allowFunctions: false,
-      allowBind: false
-    }],
+    'react/jsx-no-bind': [
+      'warn',
+      {
+        ignoreDOMComponents: true,
+        ignoreRefs: true,
+        allowArrowFunctions: true,
+        allowFunctions: false,
+        allowBind: false,
+      },
+    ],
 
     // Expo specific
     'import/no-unresolved': ['error', { ignore: ['expo'] }],
-    
+
     // React Native Metro bundler
-    'import/no-nodejs-modules': 'off' // Allow Node.js modules in React Native
+    'import/no-nodejs-modules': 'off', // Allow Node.js modules in React Native
   },
   settings: {
     'import/resolver': {
       'react-native': {},
       typescript: {
         alwaysTryTypes: true,
-        project: './tsconfig.json'
-      }
-    }
-  }
+        project: './tsconfig.json',
+      },
+    },
+  },
 };

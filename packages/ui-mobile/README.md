@@ -65,15 +65,7 @@ export default function App() {
 ```tsx
 import React from 'react';
 import { View } from 'react-native';
-import { 
-  Button, 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Input, 
-  Badge,
-  Switch 
-} from '@todo/ui-mobile';
+import { Button, Card, CardContent, CardHeader, Input, Badge, Switch } from '@todo/ui-mobile';
 
 function ProfileScreen() {
   const [notifications, setNotifications] = React.useState(true);
@@ -83,25 +75,13 @@ function ProfileScreen() {
       <Card>
         <CardHeader title="Profile Settings" />
         <CardContent>
-          <Input 
-            placeholder="Enter your name"
-            label="Display Name"
-            leftIcon="person"
-          />
-          <Input 
-            placeholder="Enter your email"
-            label="Email Address"
-            leftIcon="email"
-            keyboardType="email-address"
-          />
+          <Input placeholder="Enter your name" label="Display Name" leftIcon="person" />
+          <Input placeholder="Enter your email" label="Email Address" leftIcon="email" keyboardType="email-address" />
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 16 }}>
-            <Switch 
-              checked={notifications}
-              onValueChange={setNotifications}
-            />
+            <Switch checked={notifications} onValueChange={setNotifications} />
             <Badge text="Notifications" style={{ marginLeft: 8 }} />
           </View>
-          <Button 
+          <Button
             title="Save Changes"
             variant="primary"
             size="large"
@@ -120,15 +100,15 @@ function ProfileScreen() {
 
 ### Core Components
 
-| Component | Description | UI Kitten Base |
-|-----------|-------------|----------------|
-| **Button** | Versatile button with variants, sizes, and states | `Button` |
-| **Card** | Flexible container with header and content sections | `Card` |
-| **Input** | Form input with validation, icons, and labels | `Input` |
-| **Badge** | Status indicators and labels | `Text` with styling |
-| **Avatar** | User profile images and placeholders | `Avatar` |
-| **Switch** | Toggle switch for boolean values | `Toggle` |
-| **Checkbox** | Checkbox input for multiple selections | `CheckBox` |
+| Component    | Description                                         | UI Kitten Base      |
+| ------------ | --------------------------------------------------- | ------------------- |
+| **Button**   | Versatile button with variants, sizes, and states   | `Button`            |
+| **Card**     | Flexible container with header and content sections | `Card`              |
+| **Input**    | Form input with validation, icons, and labels       | `Input`             |
+| **Badge**    | Status indicators and labels                        | `Text` with styling |
+| **Avatar**   | User profile images and placeholders                | `Avatar`            |
+| **Switch**   | Toggle switch for boolean values                    | `Toggle`            |
+| **Checkbox** | Checkbox input for multiple selections              | `CheckBox`          |
 
 ### Button Component
 
@@ -166,7 +146,7 @@ import { Button } from '@todo/ui-mobile';
 import { Card, CardContent, CardHeader } from '@todo/ui-mobile';
 
 <Card>
-  <CardHeader 
+  <CardHeader
     title="Card Title"
     subtitle="Card subtitle or description"
   />
@@ -189,13 +169,13 @@ import { Card, CardContent, CardHeader } from '@todo/ui-mobile';
 import { Input } from '@todo/ui-mobile';
 
 // Basic input
-<Input 
+<Input
   placeholder="Enter text..."
   onChangeText={(text) => console.log(text)}
 />
 
 // With label and validation
-<Input 
+<Input
   label="Email Address"
   placeholder="Enter your email"
   keyboardType="email-address"
@@ -206,7 +186,7 @@ import { Input } from '@todo/ui-mobile';
 />
 
 // Password input
-<Input 
+<Input
   label="Password"
   placeholder="Enter password"
   secureTextEntry
@@ -231,7 +211,7 @@ import { Badge } from '@todo/ui-mobile';
 <Badge text="Info" variant="info" />
 
 // With custom styling
-<Badge 
+<Badge
   text="Custom"
   style={{ backgroundColor: '#FF6B6B' }}
   textStyle={{ color: 'white' }}
@@ -244,13 +224,13 @@ import { Badge } from '@todo/ui-mobile';
 import { Avatar } from '@todo/ui-mobile';
 
 // With image
-<Avatar 
+<Avatar
   source={{ uri: 'https://example.com/avatar.jpg' }}
   size="large"
 />
 
 // With initials
-<Avatar 
+<Avatar
   initials="JD"
   size="medium"
   backgroundColor="#FF6B6B"
@@ -269,14 +249,14 @@ import { Switch } from '@todo/ui-mobile';
 
 const [enabled, setEnabled] = React.useState(false);
 
-<Switch 
+<Switch
   checked={enabled}
   onValueChange={setEnabled}
   text="Enable notifications"
 />
 
 // With custom styling
-<Switch 
+<Switch
   checked={enabled}
   onValueChange={setEnabled}
   status="success"
@@ -315,10 +295,7 @@ import { default as customTheme } from './custom-theme.json';
 
 export default function App() {
   return (
-    <ApplicationProvider 
-      {...eva} 
-      theme={{ ...eva.light, ...customTheme }}
-    >
+    <ApplicationProvider {...eva} theme={{ ...eva.light, ...customTheme }}>
       {/* Your app */}
     </ApplicationProvider>
   );
@@ -487,28 +464,32 @@ export const Button: React.FC<ButtonProps> = ({
   // Map custom variants to UI Kitten status
   const getStatus = () => {
     switch (variant) {
-      case 'primary': return 'primary';
-      case 'secondary': return 'basic';
-      case 'danger': return 'danger';
-      case 'success': return 'success';
-      default: return 'basic';
+      case 'primary':
+        return 'primary';
+      case 'secondary':
+        return 'basic';
+      case 'danger':
+        return 'danger';
+      case 'success':
+        return 'success';
+      default:
+        return 'basic';
     }
   };
 
   // Map custom sizes to UI Kitten sizes
   const getSize = () => {
     switch (size) {
-      case 'small': return 'small';
-      case 'large': return 'large';
-      default: return 'medium';
+      case 'small':
+        return 'small';
+      case 'large':
+        return 'large';
+      default:
+        return 'medium';
     }
   };
 
-  const buttonStyle = [
-    fullWidth && styles.fullWidth,
-    rounded && styles.rounded,
-    style,
-  ];
+  const buttonStyle = [fullWidth && styles.fullWidth, rounded && styles.rounded, style];
 
   return (
     <UIKittenButton

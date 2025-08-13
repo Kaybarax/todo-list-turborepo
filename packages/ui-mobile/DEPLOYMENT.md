@@ -82,6 +82,7 @@ pnpm run validate-packages
 ```
 
 This validates:
+
 - TypeScript configurations
 - Build outputs
 - Package imports
@@ -151,24 +152,27 @@ pnpm run showcase:build
 #### Expo Application Services (EAS)
 
 1. Install EAS CLI:
+
    ```bash
    npm install -g @expo/eas-cli
    ```
 
 2. Configure EAS:
+
    ```bash
    cd packages/ui-mobile/showcase
    eas build:configure
    ```
 
 3. Build for platforms:
+
    ```bash
    # Build for iOS
    eas build --platform ios
-   
+
    # Build for Android
    eas build --platform android
-   
+
    # Build for both
    eas build --platform all
    ```
@@ -266,6 +270,7 @@ pnpm run visual-test:ci
 #### Build Failures
 
 **TypeScript Errors:**
+
 ```bash
 # Check TypeScript configuration
 pnpm run typecheck
@@ -277,6 +282,7 @@ pnpm run typecheck
 ```
 
 **Vite Build Errors:**
+
 ```bash
 # Check Vite configuration
 cat vite.config.ts
@@ -290,6 +296,7 @@ cat vite.config.ts
 #### Publishing Issues
 
 **React Native Compatibility:**
+
 ```bash
 # Verify peer dependencies
 npm ls --depth=0
@@ -299,6 +306,7 @@ npm ls --depth=0
 ```
 
 **Metro Bundler Issues:**
+
 ```bash
 # Clear Metro cache
 npx react-native start --reset-cache
@@ -309,6 +317,7 @@ npx react-native start --reset-cache
 #### Import Issues
 
 **Module Resolution in React Native:**
+
 ```bash
 # Verify package.json main field
 cat package.json | jq '.main'
@@ -318,6 +327,7 @@ cat package.json | jq '.main'
 ```
 
 **UI Kitten Integration:**
+
 ```bash
 # Verify UI Kitten is properly configured
 # Check ApplicationProvider setup in consuming app
@@ -325,6 +335,7 @@ cat package.json | jq '.main'
 ```
 
 **Vector Icons Issues:**
+
 ```bash
 # Verify react-native-vector-icons is linked
 # Check if fonts are properly installed
@@ -421,40 +432,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 9
-          
+
       - name: Setup Expo
         uses: expo/expo-github-action@v8
         with:
           expo-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
-          
+
       - name: Install dependencies
         run: pnpm install
-        
+
       - name: Validate packages
         run: pnpm run validate-packages
-        
+
       - name: Build packages
         run: pnpm run build:packages
-        
+
       - name: Test package installation
         run: pnpm run test:packages
-        
+
       - name: Build showcase
         run: |
           cd packages/ui-mobile
           pnpm run showcase:build
-          
+
       - name: Publish packages
         run: pnpm run publish-packages
         env:
@@ -476,24 +487,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          
+
       - name: Setup Expo and EAS
         uses: expo/expo-github-action@v8
         with:
           expo-version: latest
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
-          
+
       - name: Install dependencies
         run: |
           cd packages/ui-mobile/showcase
           npm install
-          
+
       - name: Build on EAS
         run: |
           cd packages/ui-mobile/showcase
@@ -528,4 +539,4 @@ echo "registry=https://your-private-registry.com" > .npmrc
 
 ---
 
-*This deployment guide should be updated as the build and deployment processes evolve.*
+_This deployment guide should be updated as the build and deployment processes evolve._

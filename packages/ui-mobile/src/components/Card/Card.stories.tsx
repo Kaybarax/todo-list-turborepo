@@ -1,13 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput } from 'react-native';
-import { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent, 
-  CardFooter 
-} from './Card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './Card';
 import { Button } from '../Button/Button';
 
 export default {
@@ -79,8 +72,6 @@ export const WithActions = () => (
 
 export const SimpleCard = () => (
   <Card style={{ width: 300, padding: 16 }}>
-    <Text style={{ fontSize: 16 }}>
-      This is a simple card with just some text content and no header or footer.
-    </Text>
+    <Text style={{ fontSize: 16 }}>This is a simple card with just some text content and no header or footer.</Text>
   </Card>
 );

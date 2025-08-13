@@ -25,8 +25,8 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        'react', 
-        'react-dom', 
+        'react',
+        'react-dom',
         'react/jsx-runtime',
         '@radix-ui/react-accordion',
         '@radix-ui/react-alert-dialog',
@@ -50,7 +50,7 @@ export default defineConfig({
         'class-variance-authority',
         'clsx',
         'lucide-react',
-        'tailwind-merge'
+        'tailwind-merge',
       ],
       output: {
         globals: {
@@ -63,5 +63,4 @@ export default defineConfig({
     sourcemap: true,
     emptyOutDir: true,
   },
-
 });

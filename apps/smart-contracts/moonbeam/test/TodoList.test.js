@@ -13,10 +13,10 @@ describe('Moonbeam TodoList Contract Tests', function () {
   // Deploy fixture for reuse
   async function deployTodoListFixture() {
     const [owner, user1, user2, ...addrs] = await ethers.getSigners();
-    
+
     const TodoList = await ethers.getContractFactory('TodoList');
     const todoList = await TodoList.deploy();
-    
+
     return { TodoList, todoList, owner, user1, user2, addrs };
   }
 
@@ -47,22 +47,18 @@ describe('Moonbeam TodoList Contract Tests', function () {
   describe('Todo Creation', function () {
     const validTodo = {
       title: 'Deploy on Moonbeam parachain',
-      description: 'Successfully deploy todo contracts on Moonbeam\'s EVM-compatible parachain',
+      description: "Successfully deploy todo contracts on Moonbeam's EVM-compatible parachain",
       priority: 1, // Medium
     };
 
     it('Should create a todo successfully', async function () {
-      await expect(todoList.createTodo(
-        validTodo.title,
-        validTodo.description,
-        validTodo.priority
-      ))
+      await expect(todoList.createTodo(validTodo.title, validTodo.description, validTodo.priority))
         .to.emit(todoList, 'TodoCreated')
         .withArgs(owner.address, 1, validTodo.title, validTodo.priority);
 
       const todos = await todoList.getTodos();
       expect(todos.length).to.equal(1);
-      
+
       const todo = todos[0];
       expect(todo.id).to.equal(1);
       expect(todo.title).to.equal(validTodo.title);
@@ -87,39 +83,29 @@ describe('Moonbeam TodoList Contract Tests', function () {
     });
 
     it('Should fail with empty title', async function () {
-      await expect(todoList.createTodo(
-        '',
-        validTodo.description,
-        validTodo.priority
-      )).to.be.revertedWith('Title cannot be empty');
+      await expect(todoList.createTodo('', validTodo.description, validTodo.priority)).to.be.revertedWith(
+        'Title cannot be empty',
+      );
     });
 
     it('Should fail with title too long', async function () {
       const longTitle = 'a'.repeat(101); // 101 characters
-      
-      await expect(todoList.createTodo(
-        longTitle,
-        validTodo.description,
-        validTodo.priority
-      )).to.be.revertedWith('Title is too long');
+
+      await expect(todoList.createTodo(longTitle, validTodo.description, validTodo.priority)).to.be.revertedWith(
+        'Title is too long',
+      );
     });
 
     it('Should fail with description too long', async function () {
       const longDescription = 'a'.repeat(501); // 501 characters
-      
-      await expect(todoList.createTodo(
-        validTodo.title,
-        longDescription,
-        validTodo.priority
-      )).to.be.revertedWith('Description is too long');
+
+      await expect(todoList.createTodo(validTodo.title, longDescription, validTodo.priority)).to.be.revertedWith(
+        'Description is too long',
+      );
     });
 
     it('Should allow empty description', async function () {
-      await expect(todoList.createTodo(
-        validTodo.title,
-        '',
-        validTodo.priority
-      )).to.not.be.reverted;
+      await expect(todoList.createTodo(validTodo.title, '', validTodo.priority)).to.not.be.reverted;
     });
 
     it('Should handle all priority levels', async function () {
@@ -140,11 +126,7 @@ describe('Moonbeam TodoList Contract Tests', function () {
       }
 
       // Try to create one more
-      await expect(todoList.createTodo(
-        'Extra Todo',
-        'Extra Description',
-        0
-      )).to.be.revertedWith('Todo list is full');
+      await expect(todoList.createTodo('Extra Todo', 'Extra Description', 0)).to.be.revertedWith('Todo list is full');
     });
 
     it('Should work for different users independently', async function () {
@@ -204,7 +186,7 @@ describe('Moonbeam TodoList Contract Tests', function () {
 
     it('Should update todo title', async function () {
       const newTitle = 'Updated Title';
-      
+
       await expect(todoList.updateTodo(1, newTitle, '', ethers.MaxUint256))
         .to.emit(todoList, 'TodoUpdated')
         .withArgs(owner.address, 1, newTitle, 1);
@@ -217,7 +199,7 @@ describe('Moonbeam TodoList Contract Tests', function () {
 
     it('Should update todo description', async function () {
       const newDescription = 'Updated Description';
-      
+
       await todoList.updateTodo(1, '', newDescription, ethers.MaxUint256);
 
       const todo = await todoList.getTodo(1);
@@ -246,19 +228,18 @@ describe('Moonbeam TodoList Contract Tests', function () {
 
     it('Should update timestamp on update', async function () {
       const todoBefore = await todoList.getTodo(1);
-      
+
       // Wait a bit to ensure timestamp difference
       await time.increase(1);
-      
+
       await todoList.updateTodo(1, 'Updated Title', '', ethers.MaxUint256);
-      
+
       const todoAfter = await todoList.getTodo(1);
       expect(todoAfter.updatedAt).to.be.above(todoBefore.updatedAt);
     });
 
     it('Should fail to update non-existent todo', async function () {
-      await expect(todoList.updateTodo(999, 'Title', 'Description', 1))
-        .to.be.revertedWith('Todo not found');
+      await expect(todoList.updateTodo(999, 'Title', 'Description', 1)).to.be.revertedWith('Todo not found');
     });
 
     it('Should fail with invalid priority', async function () {
@@ -268,16 +249,16 @@ describe('Moonbeam TodoList Contract Tests', function () {
 
     it('Should fail with title too long', async function () {
       const longTitle = 'a'.repeat(101);
-      
-      await expect(todoList.updateTodo(1, longTitle, '', ethers.MaxUint256))
-        .to.be.revertedWith('Title is too long');
+
+      await expect(todoList.updateTodo(1, longTitle, '', ethers.MaxUint256)).to.be.revertedWith('Title is too long');
     });
 
     it('Should fail with description too long', async function () {
       const longDescription = 'a'.repeat(501);
-      
-      await expect(todoList.updateTodo(1, '', longDescription, ethers.MaxUint256))
-        .to.be.revertedWith('Description is too long');
+
+      await expect(todoList.updateTodo(1, '', longDescription, ethers.MaxUint256)).to.be.revertedWith(
+        'Description is too long',
+      );
     });
   });
 
@@ -299,7 +280,7 @@ describe('Moonbeam TodoList Contract Tests', function () {
     it('Should toggle todo completion from true to false', async function () {
       // First complete it
       await todoList.toggleTodoCompletion(1);
-      
+
       // Then uncomplete it
       await expect(todoList.toggleTodoCompletion(1))
         .to.emit(todoList, 'TodoCompletionToggled')
@@ -312,18 +293,17 @@ describe('Moonbeam TodoList Contract Tests', function () {
 
     it('Should update timestamp on completion toggle', async function () {
       const todoBefore = await todoList.getTodo(1);
-      
+
       await time.increase(1);
-      
+
       await todoList.toggleTodoCompletion(1);
-      
+
       const todoAfter = await todoList.getTodo(1);
       expect(todoAfter.updatedAt).to.be.above(todoBefore.updatedAt);
     });
 
     it('Should fail to toggle non-existent todo', async function () {
-      await expect(todoList.toggleTodoCompletion(999))
-        .to.be.revertedWith('Todo not found');
+      await expect(todoList.toggleTodoCompletion(999)).to.be.revertedWith('Todo not found');
     });
   });
 
@@ -335,13 +315,11 @@ describe('Moonbeam TodoList Contract Tests', function () {
     });
 
     it('Should delete todo successfully', async function () {
-      await expect(todoList.deleteTodo(2))
-        .to.emit(todoList, 'TodoDeleted')
-        .withArgs(owner.address, 2);
+      await expect(todoList.deleteTodo(2)).to.emit(todoList, 'TodoDeleted').withArgs(owner.address, 2);
 
       const todos = await todoList.getTodos();
       expect(todos.length).to.equal(2);
-      
+
       // Should not find the deleted todo
       await expect(todoList.getTodo(2)).to.be.revertedWith('Todo not found');
     });
@@ -351,11 +329,11 @@ describe('Moonbeam TodoList Contract Tests', function () {
 
       const todos = await todoList.getTodos();
       expect(todos.length).to.equal(2);
-      
+
       // Remaining todos should still be accessible
       const todo2 = await todoList.getTodo(2);
       const todo3 = await todoList.getTodo(3);
-      
+
       expect(todo2.title).to.equal('Todo 2');
       expect(todo3.title).to.equal('Todo 3');
     });
@@ -365,28 +343,27 @@ describe('Moonbeam TodoList Contract Tests', function () {
 
       const todos = await todoList.getTodos();
       expect(todos.length).to.equal(2);
-      
+
       // First two todos should still exist
       const todo1 = await todoList.getTodo(1);
       const todo2 = await todoList.getTodo(2);
-      
+
       expect(todo1.title).to.equal('Todo 1');
       expect(todo2.title).to.equal('Todo 2');
     });
 
     it('Should fail to delete non-existent todo', async function () {
-      await expect(todoList.deleteTodo(999))
-        .to.be.revertedWith('Todo not found');
+      await expect(todoList.deleteTodo(999)).to.be.revertedWith('Todo not found');
     });
 
     it('Should allow creating new todo after deletion', async function () {
       await todoList.deleteTodo(2);
-      
+
       await todoList.createTodo('New Todo', 'New Description', 1);
-      
+
       const todos = await todoList.getTodos();
       expect(todos.length).to.equal(3);
-      
+
       // New todo should have ID 4 (next in sequence)
       const newTodo = todos[2];
       expect(newTodo.id).to.equal(4);
@@ -413,14 +390,14 @@ describe('Moonbeam TodoList Contract Tests', function () {
     it('Should not allow users to access other users todos by ID', async function () {
       // User1 creates a todo with ID 1
       // User2 tries to access it - should fail because it doesn't exist in user2's list
-      await expect(todoList.connect(user2).getTodo(1))
-        .to.be.revertedWith('Todo not found');
+      await expect(todoList.connect(user2).getTodo(1)).to.be.revertedWith('Todo not found');
     });
 
     it('Should not allow users to modify other users todos', async function () {
       // User2 tries to update User1's todo - should fail
-      await expect(todoList.connect(user2).updateTodo(1, 'Hacked', '', ethers.MaxUint256))
-        .to.be.revertedWith('Todo not found');
+      await expect(todoList.connect(user2).updateTodo(1, 'Hacked', '', ethers.MaxUint256)).to.be.revertedWith(
+        'Todo not found',
+      );
     });
   });
 
@@ -455,24 +432,24 @@ describe('Moonbeam TodoList Contract Tests', function () {
   });
 
   describe('Moonbeam-Specific Features', function () {
-    it('Should work with Moonbeam\'s EVM compatibility', async function () {
+    it("Should work with Moonbeam's EVM compatibility", async function () {
       // Test that standard EVM features work on Moonbeam
       const blockNumber = await ethers.provider.getBlockNumber();
       expect(blockNumber).to.be.above(0);
 
       // Create a todo and verify it works with Moonbeam's block structure
       await todoList.createTodo('Moonbeam Todo', 'Testing EVM compatibility', 2);
-      
+
       const todos = await todoList.getTodos();
       expect(todos.length).to.equal(1);
       expect(todos[0].createdAt).to.be.above(0);
     });
 
-    it('Should handle Moonbeam\'s gas pricing efficiently', async function () {
+    it("Should handle Moonbeam's gas pricing efficiently", async function () {
       // Create a todo and check that it doesn't consume excessive gas
       const tx = await todoList.createTodo('Gas Test', 'Testing gas efficiency', 1);
       const receipt = await tx.wait();
-      
+
       // Moonbeam should have reasonable gas costs
       expect(receipt.gasUsed).to.be.below(200000); // Should be well under 200k gas
     });

@@ -13,18 +13,9 @@ import { BlockchainNetwork } from '@todo/services';
 export default function TodosScreen() {
   const [showForm, setShowForm] = useState(false);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
-  
-  const {
-    todos,
-    isLoading,
-    error,
-    addTodo,
-    updateTodo,
-    deleteTodo,
-    toggleTodo,
-    syncToBlockchain,
-    fetchTodos,
-  } = useTodoStore();
+
+  const { todos, isLoading, error, addTodo, updateTodo, deleteTodo, toggleTodo, syncToBlockchain, fetchTodos } =
+    useTodoStore();
 
   const { isConnected } = useWallet();
 
@@ -58,16 +49,15 @@ export default function TodosScreen() {
 
   const handleBlockchainSync = async (id: string, network: BlockchainNetwork) => {
     if (!isConnected) {
-      Alert.alert(
-        'Wallet Required',
-        'Please connect your wallet first to sync todos to blockchain.',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Connect Wallet', onPress: () => {
+      Alert.alert('Wallet Required', 'Please connect your wallet first to sync todos to blockchain.', [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Connect Wallet',
+          onPress: () => {
             // Navigation will be handled by the Link component
-          }},
-        ]
-      );
+          },
+        },
+      ]);
       return;
     }
 
@@ -75,7 +65,10 @@ export default function TodosScreen() {
       await syncToBlockchain(id, network);
       // Success alert is handled by the blockchain service
     } catch (error) {
-      Alert.alert('Error', 'Failed to sync to blockchain: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      Alert.alert(
+        'Error',
+        'Failed to sync to blockchain: ' + (error instanceof Error ? error.message : 'Unknown error'),
+      );
     }
   };
 
@@ -96,11 +89,15 @@ export default function TodosScreen() {
           <Card style={styles.walletWarningContainer}>
             <CardContent>
               <Text style={styles.walletWarningTitle}>Wallet Not Connected</Text>
-              <Text style={styles.walletWarningText}>
-                Connect your wallet to sync todos to blockchain networks.
-              </Text>
+              <Text style={styles.walletWarningText}>Connect your wallet to sync todos to blockchain networks.</Text>
               <Link href="/wallet" asChild>
-                <Button variant="primary" size="small" title="Connect Wallet" onPress={() => {}} style={styles.walletWarningButton} />
+                <Button
+                  variant="primary"
+                  size="small"
+                  title="Connect Wallet"
+                  onPress={() => {}}
+                  style={styles.walletWarningButton}
+                />
               </Link>
             </CardContent>
           </Card>
@@ -120,38 +117,30 @@ export default function TodosScreen() {
           />
         </View>
 
-        <Button
-          variant="primary"
-          size="large"
-          title="+"
-          style={styles.fab}
-          onPress={() => setShowForm(true)}
-        />
+        <Button variant="primary" size="large" title="+" style={styles.fab} onPress={() => setShowForm(true)} />
 
-        <Modal
-          visible={showForm}
-          animationType="slide"
-          presentationStyle="pageSheet"
-        >
+        <Modal visible={showForm} animationType="slide" presentationStyle="pageSheet">
           <SafeAreaView style={styles.modalContainer}>
             <View style={styles.modalHeader}>
               <Button variant="outline" size="small" title="Cancel" onPress={handleCancel} />
-              <Text style={styles.modalTitle}>
-                {editingTodo ? 'Edit Todo' : 'New Todo'}
-              </Text>
+              <Text style={styles.modalTitle}>{editingTodo ? 'Edit Todo' : 'New Todo'}</Text>
               <View style={styles.modalHeaderSpacer} />
             </View>
-            
+
             <TodoForm
               onSubmit={handleSubmit}
               onCancel={handleCancel}
-              initialData={editingTodo ? {
-                title: editingTodo.title,
-                description: editingTodo.description,
-                priority: editingTodo.priority,
-                dueDate: editingTodo.dueDate ? editingTodo.dueDate.toISOString().split('T')[0] : undefined,
-                tags: editingTodo.tags,
-              } : undefined}
+              initialData={
+                editingTodo
+                  ? {
+                      title: editingTodo.title,
+                      description: editingTodo.description,
+                      priority: editingTodo.priority,
+                      dueDate: editingTodo.dueDate ? editingTodo.dueDate.toISOString().split('T')[0] : undefined,
+                      tags: editingTodo.tags,
+                    }
+                  : undefined
+              }
             />
           </SafeAreaView>
         </Modal>

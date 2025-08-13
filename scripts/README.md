@@ -5,18 +5,21 @@ This directory contains a comprehensive build system for the Todo App monorepo, 
 ## 🎯 Key Accomplishments
 
 ### Enterprise Build System
+
 - **Multi-Environment Support**: Seamless builds for development, staging, and production
 - **Security Integration**: Vulnerability scanning, container security, and code quality enforcement
 - **Performance Optimization**: Parallel builds, caching, and resource management
 - **Build Validation**: Comprehensive artifact validation and reporting
 
 ### Blockchain Build Integration
+
 - **Multi-Network Compilation**: Automated compilation for Polygon, Solana, and Polkadot
 - **Contract Testing**: Integrated testing for all smart contracts and programs
 - **Deployment Preparation**: Contract artifact generation and deployment scripts
 - **Network Validation**: Cross-network contract validation and verification
 
 ### Developer Productivity
+
 - **Quick Builds**: Fast development builds for rapid iteration
 - **Comprehensive Logging**: Detailed build logs with error categorization
 - **CLI Interface**: User-friendly command-line interface with help system
@@ -27,6 +30,7 @@ This directory contains a comprehensive build system for the Todo App monorepo, 
 ### Main Build Scripts
 
 #### `build.sh`
+
 The primary build script that handles the complete build process.
 
 ```bash
@@ -47,6 +51,7 @@ The primary build script that handles the complete build process.
 ```
 
 **Features:**
+
 - Builds all packages and applications
 - Compiles blockchain contracts
 - Runs comprehensive tests
@@ -56,6 +61,7 @@ The primary build script that handles the complete build process.
 - Build reporting and validation
 
 **Options:**
+
 - `--environment ENV`: Set build environment (development, staging, production)
 - `--version VERSION`: Set version tag for Docker images
 - `--skip-docker`: Skip Docker image builds
@@ -67,6 +73,7 @@ The primary build script that handles the complete build process.
 - `--registry REGISTRY`: Docker registry URL
 
 #### `build-quick.sh`
+
 Fast build script for development iteration.
 
 ```bash
@@ -74,12 +81,14 @@ Fast build script for development iteration.
 ```
 
 **Features:**
+
 - Builds only packages and applications
 - Skips Docker images, contracts, and tests
 - Optimized for development speed
 - Parallel builds enabled
 
 #### `build-production.sh`
+
 Production-ready build script with security checks and optimizations.
 
 ```bash
@@ -91,6 +100,7 @@ export DOCKER_REGISTRY=my.registry.com
 ```
 
 **Features:**
+
 - Security vulnerability scanning
 - Lint and type checking enforcement
 - Production optimizations
@@ -99,6 +109,7 @@ export DOCKER_REGISTRY=my.registry.com
 - Deployment preparation
 
 #### `build-contracts.sh`
+
 Specialized script for blockchain contract compilation.
 
 ```bash
@@ -116,6 +127,7 @@ Specialized script for blockchain contract compilation.
 ```
 
 **Features:**
+
 - Multi-network support (Polygon, Solana, Polkadot)
 - Contract testing
 - Documentation generation
@@ -127,6 +139,7 @@ Specialized script for blockchain contract compilation.
 The root `package.json` includes convenient npm/pnpm scripts:
 
 ### Build Scripts
+
 ```bash
 # Main builds
 pnpm build                    # Full build
@@ -140,6 +153,7 @@ pnpm build:contracts         # Build blockchain contracts
 ```
 
 ### Development Scripts
+
 ```bash
 # Start development servers
 pnpm dev                     # All applications
@@ -151,6 +165,7 @@ pnpm dev:contracts           # Hardhat node
 ```
 
 ### Contract Scripts
+
 ```bash
 # Contract operations
 pnpm contracts:compile       # Compile all contracts
@@ -162,6 +177,7 @@ pnpm contracts:polkadot      # Polkadot-specific build
 ```
 
 ### Database Scripts
+
 ```bash
 # Database operations
 pnpm db:setup               # Complete database setup
@@ -171,6 +187,7 @@ pnpm db:reset               # Reset database
 ```
 
 ### Docker Scripts
+
 ```bash
 # Docker operations
 pnpm docker:build           # Build Docker images
@@ -179,6 +196,7 @@ pnpm docker:clean           # Clean Docker resources
 ```
 
 ### Utility Scripts
+
 ```bash
 # Code quality
 pnpm lint                   # Run linting
@@ -201,45 +219,53 @@ pnpm clean:docker           # Clean Docker resources
 ## Build Process Overview
 
 ### 1. Prerequisites Check
+
 - Validates Node.js version (≥18.0.0)
 - Checks pnpm availability
 - Verifies Turbo installation
 - Validates Docker (if building images)
 
 ### 2. Dependency Installation
+
 - Installs all workspace dependencies
 - Uses frozen lockfile for production
 - Optimizes for environment
 
 ### 3. Package Building
+
 - Builds shared packages first
 - Respects dependency order
 - Supports parallel builds
 
 ### 4. Contract Compilation
+
 - **Polygon**: Solidity contracts with Hardhat
 - **Solana**: Rust programs with Anchor
 - **Polkadot**: Substrate pallets with Cargo
 
 ### 5. Application Building
+
 - **API**: NestJS with TypeScript compilation
 - **Web**: Next.js with static optimization
 - **Mobile**: React Native/Expo bundle
 - **Ingestion**: Node.js service compilation
 
 ### 6. Testing
+
 - Unit tests for all components
 - Integration tests for APIs
 - Contract tests for blockchain code
 - E2E tests for user flows
 
 ### 7. Docker Image Creation
+
 - Multi-stage builds for optimization
 - Security-hardened base images
 - Environment-specific configurations
 - Registry tagging and pushing
 
 ### 8. Validation & Reporting
+
 - Build artifact verification
 - Security scanning
 - Performance analysis
@@ -248,6 +274,7 @@ pnpm clean:docker           # Clean Docker resources
 ## Environment Configuration
 
 ### Development
+
 ```bash
 export ENVIRONMENT=development
 export BUILD_DOCKER=true
@@ -256,6 +283,7 @@ export SKIP_TESTS=false
 ```
 
 ### Staging
+
 ```bash
 export ENVIRONMENT=staging
 export BUILD_DOCKER=true
@@ -265,6 +293,7 @@ export DOCKER_REGISTRY=staging.registry.com
 ```
 
 ### Production
+
 ```bash
 export ENVIRONMENT=production
 export BUILD_DOCKER=true
@@ -278,6 +307,7 @@ export PUSH_IMAGES=true
 ## CI/CD Integration
 
 ### GitHub Actions Example
+
 ```yaml
 name: Build and Deploy
 on:
@@ -292,19 +322,19 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '20'
-      
+
       - name: Install pnpm
         run: npm install -g pnpm
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
       - name: Build production
         env:
           VERSION: ${{ github.sha }}
           DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
         run: ./scripts/build-production.sh
-      
+
       - name: Push images
         env:
           PUSH_IMAGES: true
@@ -312,6 +342,7 @@ jobs:
 ```
 
 ### GitLab CI Example
+
 ```yaml
 stages:
   - build
@@ -336,6 +367,7 @@ build:
 ### Common Issues
 
 #### Build Failures
+
 ```bash
 # Check prerequisites
 node --version
@@ -348,6 +380,7 @@ pnpm clean
 ```
 
 #### Docker Issues
+
 ```bash
 # Check Docker daemon
 docker info
@@ -360,6 +393,7 @@ pnpm docker:clean
 ```
 
 #### Contract Compilation Issues
+
 ```bash
 # Check blockchain tools
 anchor --version
@@ -371,6 +405,7 @@ cargo --version
 ```
 
 #### Memory Issues
+
 ```bash
 # Increase Node.js memory
 export NODE_OPTIONS="--max-old-space-size=8192"
@@ -382,16 +417,19 @@ export NODE_OPTIONS="--max-old-space-size=8192"
 ### Performance Optimization
 
 #### Parallel Builds
+
 - Enabled by default for faster builds
 - Can be disabled with `--no-parallel`
 - Respects dependency order
 
 #### Caching
+
 - Turbo cache for incremental builds
 - Docker layer caching
 - pnpm store caching
 
 #### Resource Management
+
 - Memory limits for Node.js processes
 - CPU core utilization
 - Disk space monitoring
@@ -399,18 +437,21 @@ export NODE_OPTIONS="--max-old-space-size=8192"
 ## Security Considerations
 
 ### Production Builds
+
 - Security vulnerability scanning
 - Container security analysis
 - Dependency audit
 - Code quality enforcement
 
 ### Secrets Management
+
 - Environment variables for sensitive data
 - Docker registry authentication
 - API key management
 - Certificate handling
 
 ### Image Security
+
 - Non-root user execution
 - Minimal base images
 - Security patches
@@ -419,12 +460,14 @@ export NODE_OPTIONS="--max-old-space-size=8192"
 ## Monitoring and Logging
 
 ### Build Metrics
+
 - Build duration tracking
 - Resource usage monitoring
 - Success/failure rates
 - Performance trends
 
 ### Logging
+
 - Structured log output
 - Error categorization
 - Debug information
@@ -444,6 +487,7 @@ export NODE_OPTIONS="--max-old-space-size=8192"
 ## Support
 
 For build-related issues:
+
 1. Check this documentation
 2. Review build logs for errors
 3. Validate environment configuration
@@ -453,6 +497,7 @@ For build-related issues:
 ## Contributing
 
 When modifying build scripts:
+
 1. Test changes thoroughly
 2. Update documentation
 3. Consider backward compatibility

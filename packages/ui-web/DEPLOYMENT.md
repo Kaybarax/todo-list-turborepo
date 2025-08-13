@@ -81,6 +81,7 @@ pnpm run validate-packages
 ```
 
 This validates:
+
 - TypeScript configurations
 - Build outputs
 - Package imports
@@ -147,6 +148,7 @@ pnpm run showcase:build
 #### Static Hosting (Vercel, Netlify, etc.)
 
 1. Build the showcase:
+
    ```bash
    pnpm run showcase:build
    ```
@@ -227,6 +229,7 @@ pnpm run visual-test:ci
 #### Build Failures
 
 **TypeScript Errors:**
+
 ```bash
 # Check TypeScript configuration
 pnpm run typecheck
@@ -238,6 +241,7 @@ pnpm run typecheck
 ```
 
 **Vite Build Errors:**
+
 ```bash
 # Check Vite configuration
 cat vite.config.ts
@@ -251,6 +255,7 @@ cat vite.config.ts
 #### Publishing Issues
 
 **Authentication Errors:**
+
 ```bash
 # Login to npm
 npm login
@@ -260,6 +265,7 @@ npm whoami
 ```
 
 **Version Conflicts:**
+
 ```bash
 # Check current version
 npm view @todo/ui-web version
@@ -270,6 +276,7 @@ pnpm version-packages
 ```
 
 **Package Size Issues:**
+
 ```bash
 # Analyze bundle size
 npx bundlephobia @todo/ui-web
@@ -281,6 +288,7 @@ npm pack --dry-run
 #### Import Issues
 
 **Module Resolution:**
+
 ```bash
 # Verify package.json exports
 cat package.json | jq '.exports'
@@ -293,6 +301,7 @@ node -e "console.log(require('@todo/ui-web'))"
 ```
 
 **TypeScript Declaration Issues:**
+
 ```bash
 # Verify .d.ts files are generated
 ls -la dist/*.d.ts
@@ -355,29 +364,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 9
-          
+
       - name: Install dependencies
         run: pnpm install
-        
+
       - name: Validate packages
         run: pnpm run validate-packages
-        
+
       - name: Build packages
         run: pnpm run build:packages
-        
+
       - name: Test package installation
         run: pnpm run test:packages
-        
+
       - name: Publish packages
         run: pnpm run publish-packages
         env:
@@ -386,4 +395,4 @@ jobs:
 
 ---
 
-*This deployment guide should be updated as the build and deployment processes evolve.*
+_This deployment guide should be updated as the build and deployment processes evolve._

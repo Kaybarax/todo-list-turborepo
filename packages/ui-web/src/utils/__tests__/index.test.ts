@@ -33,12 +33,10 @@ describe('cn utility', () => {
   it('handles complex combinations', () => {
     const condition = true;
     expect(
-      cn(
-        'class1',
-        condition && 'class2',
-        ['class3', condition ? 'class4' : 'class5'],
-        { class6: condition, class7: !condition }
-      )
+      cn('class1', condition && 'class2', ['class3', condition ? 'class4' : 'class5'], {
+        class6: condition,
+        class7: !condition,
+      }),
     ).toBe('class1 class2 class3 class4 class6');
   });
 });

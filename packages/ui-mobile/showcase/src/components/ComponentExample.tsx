@@ -8,11 +8,7 @@ interface ComponentExampleProps {
   children: React.ReactNode;
 }
 
-const ComponentExample: React.FC<ComponentExampleProps> = ({
-  title,
-  description,
-  children,
-}) => {
+const ComponentExample: React.FC<ComponentExampleProps> = ({ title, description, children }) => {
   return (
     <Card style={styles.card}>
       <View style={styles.header}>
@@ -23,9 +19,7 @@ const ComponentExample: React.FC<ComponentExampleProps> = ({
           {description}
         </Text>
       </View>
-      <Layout style={styles.content}>
-        {children}
-      </Layout>
+      <Layout style={styles.content}>{children}</Layout>
     </Card>
   );
 };

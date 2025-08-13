@@ -76,6 +76,7 @@ Chromatic tests run automatically on GitHub Actions when changes are pushed to t
 Smart contract tests are located in the `apps/smart-contracts/test` directory and use Hardhat to test the smart contracts in a local blockchain environment.
 
 The test structure follows the standard Hardhat testing pattern:
+
 - `apps/smart-contracts/test/TodoList.test.ts` - Tests for the TodoList smart contract
 
 To run smart contract tests:
@@ -159,52 +160,53 @@ The project uses various mocking strategies:
 
 ## Best Practices
 
-1. Write tests before or alongside code (TDD/BDD approach)
-2. Keep tests simple and focused on a single behavior
-3. Use descriptive test names that explain the expected behavior
-4. Avoid testing implementation details; focus on behavior
-5. Maintain high test coverage, especially for critical paths
-6. Use the testing pyramid: more unit tests, fewer E2E tests
-7. Keep tests fast and reliable to encourage frequent running
-        .get('/todos')
-        .set('Authorization', `Bearer ${authToken}`)
-        .expect(200)
-        .expect((res) => {
-          expect(res.body.success).toBe(true);
-          expect(res.body.data.todos).toEqual([]);
-        });
+1.  Write tests before or alongside code (TDD/BDD approach)
+2.  Keep tests simple and focused on a single behavior
+3.  Use descriptive test names that explain the expected behavior
+4.  Avoid testing implementation details; focus on behavior
+5.  Maintain high test coverage, especially for critical paths
+6.  Use the testing pyramid: more unit tests, fewer E2E tests
+7.  Keep tests fast and reliable to encourage frequent running
+    .get('/todos')
+    .set('Authorization', `Bearer ${authToken}`)
+    .expect(200)
+    .expect((res) => {
+    expect(res.body.success).toBe(true);
+    expect(res.body.data.todos).toEqual([]);
+    });
     });
 
     it('should return todos for authenticated user', async () => {
-      // Create test todo
-      await request(app.getHttpServer())
-        .post('/todos')
-        .set('Authorization', `Bearer ${authToken}`)
-        .send({
-          title: 'Test Todo',
-          priority: 'high',
-        })
-        .expect(201);
+    // Create test todo
+    await request(app.getHttpServer())
+    .post('/todos')
+    .set('Authorization', `Bearer ${authToken}`)
+    .send({
+    title: 'Test Todo',
+    priority: 'high',
+    })
+    .expect(201);
 
-      return request(app.getHttpServer())
-        .get('/todos')
-        .set('Authorization', `Bearer ${authToken}`)
-        .expect(200)
-        .expect((res) => {
-          expect(res.body.success).toBe(true);
-          expect(res.body.data.todos).toHaveLength(1);
-          expect(res.body.data.todos[0].title).toBe('Test Todo');
-        });
+        return request(app.getHttpServer())
+          .get('/todos')
+          .set('Authorization', `Bearer ${authToken}`)
+          .expect(200)
+          .expect((res) => {
+            expect(res.body.success).toBe(true);
+            expect(res.body.data.todos).toHaveLength(1);
+            expect(res.body.data.todos[0].title).toBe('Test Todo');
+          });
+
     });
-  });
+    });
 
-  describe('/todos (POST)', () => {
-    it('should create a new todo', () => {
-      const createTodoDto = {
-        title: 'New Todo',
-        description: 'Test description',
-        priority: 'high',
-      };
+describe('/todos (POST)', () => {
+it('should create a new todo', () => {
+const createTodoDto = {
+title: 'New Todo',
+description: 'Test description',
+priority: 'high',
+};
 
       return request(app.getHttpServer())
         .post('/todos')
@@ -228,9 +230,11 @@ The project uses various mocking strategies:
         })
         .expect(400);
     });
-  });
+
 });
-```
+});
+
+````
 
 ### Database Integration Tests
 
@@ -250,7 +254,7 @@ describe('Database Integration', () => {
     mongod = await MongoMemoryServer.create();
     const uri = mongod.getUri();
     mongoConnection = (await connect(uri)).connection;
-    
+
     const todoModel = mongoConnection.model(Todo.name, TodoSchema);
     todoService = new TodoService(todoModel);
   });
@@ -277,7 +281,7 @@ describe('Database Integration', () => {
 
     const userId = '507f1f77bcf86cd799439012';
     const createdTodo = await todoService.create(todoData, userId);
-    
+
     expect(createdTodo.title).toBe(todoData.title);
     expect(createdTodo.userId).toBe(userId);
 
@@ -286,7 +290,7 @@ describe('Database Integration', () => {
     expect(todos[0].title).toBe(todoData.title);
   });
 });
-```
+````
 
 ## 🎭 End-to-End Testing
 
@@ -304,15 +308,15 @@ test.describe('Todo App', () => {
   test('should allow user to register and login', async ({ page }) => {
     // Navigate to register page
     await page.click('text=Sign Up');
-    
+
     // Fill registration form
     await page.fill('[data-testid=name-input]', 'Test User');
     await page.fill('[data-testid=email-input]', 'test@example.com');
     await page.fill('[data-testid=password-input]', 'password123');
-    
+
     // Submit form
     await page.click('[data-testid=register-button]');
-    
+
     // Should redirect to dashboard
     await expect(page).toHaveURL('/dashboard');
     await expect(page.locator('text=Welcome, Test User')).toBeVisible();
@@ -321,20 +325,20 @@ test.describe('Todo App', () => {
   test('should create and manage todos', async ({ page }) => {
     // Login first
     await loginUser(page);
-    
+
     // Create new todo
     await page.click('[data-testid=add-todo-button]');
     await page.fill('[data-testid=todo-title-input]', 'Test Todo');
     await page.selectOption('[data-testid=priority-select]', 'high');
     await page.click('[data-testid=save-todo-button]');
-    
+
     // Verify todo appears in list
     await expect(page.locator('[data-testid=todo-item]')).toContainText('Test Todo');
-    
+
     // Mark todo as complete
     await page.click('[data-testid=todo-checkbox]');
     await expect(page.locator('[data-testid=todo-item]')).toHaveClass(/completed/);
-    
+
     // Delete todo
     await page.click('[data-testid=delete-todo-button]');
     await page.click('[data-testid=confirm-delete-button]');
@@ -343,18 +347,18 @@ test.describe('Todo App', () => {
 
   test('should handle blockchain integration', async ({ page }) => {
     await loginUser(page);
-    
+
     // Create todo with blockchain
     await page.click('[data-testid=add-todo-button]');
     await page.fill('[data-testid=todo-title-input]', 'Blockchain Todo');
     await page.check('[data-testid=blockchain-enabled-checkbox]');
     await page.selectOption('[data-testid=network-select]', 'polygon');
     await page.click('[data-testid=save-todo-button]');
-    
+
     // Wait for blockchain transaction
     await expect(page.locator('[data-testid=transaction-status]')).toContainText('Pending');
     await expect(page.locator('[data-testid=transaction-status]')).toContainText('Confirmed', { timeout: 30000 });
-    
+
     // Verify transaction hash is displayed
     await expect(page.locator('[data-testid=transaction-hash]')).toBeVisible();
   });
@@ -390,30 +394,30 @@ describe('Todo Mobile App', () => {
 
   it('should allow user registration', async () => {
     await element(by.id('register-button')).tap();
-    
+
     await element(by.id('name-input')).typeText('Test User');
     await element(by.id('email-input')).typeText('test@example.com');
     await element(by.id('password-input')).typeText('password123');
-    
+
     await element(by.id('submit-register-button')).tap();
-    
+
     await expect(element(by.text('Registration successful'))).toBeVisible();
   });
 
   it('should create and manage todos', async () => {
     // Login first
     await loginUser();
-    
+
     // Create todo
     await element(by.id('add-todo-fab')).tap();
     await element(by.id('todo-title-input')).typeText('Mobile Todo');
     await element(by.id('priority-picker')).tap();
     await element(by.text('High')).tap();
     await element(by.id('save-todo-button')).tap();
-    
+
     // Verify todo in list
     await expect(element(by.text('Mobile Todo'))).toBeVisible();
-    
+
     // Toggle completion
     await element(by.id('todo-checkbox')).tap();
     await expect(element(by.id('todo-item'))).toHaveValue('completed');
@@ -445,7 +449,7 @@ describe('TodoContract', () => {
 
   beforeEach(async () => {
     [owner, user1] = await ethers.getSigners();
-    
+
     const TodoContractFactory = await ethers.getContractFactory('TodoContract');
     todoContract = await TodoContractFactory.deploy();
     await todoContract.deployed();
@@ -455,11 +459,11 @@ describe('TodoContract', () => {
     it('should create a new todo', async () => {
       const title = 'Test Todo';
       const description = 'Test Description';
-      
+
       await expect(todoContract.connect(user1).createTodo(title, description))
         .to.emit(todoContract, 'TodoCreated')
         .withArgs(1, user1.address, title, description);
-      
+
       const todo = await todoContract.getTodo(1);
       expect(todo.title).to.equal(title);
       expect(todo.description).to.equal(description);
@@ -468,9 +472,9 @@ describe('TodoContract', () => {
     });
 
     it('should not allow empty title', async () => {
-      await expect(
-        todoContract.connect(user1).createTodo('', 'Description')
-      ).to.be.revertedWith('Title cannot be empty');
+      await expect(todoContract.connect(user1).createTodo('', 'Description')).to.be.revertedWith(
+        'Title cannot be empty',
+      );
     });
   });
 
@@ -483,24 +487,21 @@ describe('TodoContract', () => {
       await expect(todoContract.connect(user1).completeTodo(1))
         .to.emit(todoContract, 'TodoCompleted')
         .withArgs(1, user1.address);
-      
+
       const todo = await todoContract.getTodo(1);
       expect(todo.completed).to.be.true;
     });
 
     it('should not allow non-owner to complete todo', async () => {
-      await expect(
-        todoContract.connect(owner).completeTodo(1)
-      ).to.be.revertedWith('Only owner can modify todo');
+      await expect(todoContract.connect(owner).completeTodo(1)).to.be.revertedWith('Only owner can modify todo');
     });
 
     it('should allow owner to delete todo', async () => {
       await expect(todoContract.connect(user1).deleteTodo(1))
         .to.emit(todoContract, 'TodoDeleted')
         .withArgs(1, user1.address);
-      
-      await expect(todoContract.getTodo(1))
-        .to.be.revertedWith('Todo does not exist');
+
+      await expect(todoContract.getTodo(1)).to.be.revertedWith('Todo does not exist');
     });
   });
 
@@ -508,7 +509,7 @@ describe('TodoContract', () => {
     it('should use reasonable gas for todo creation', async () => {
       const tx = await todoContract.connect(user1).createTodo('Test', 'Description');
       const receipt = await tx.wait();
-      
+
       expect(receipt.gasUsed).to.be.below(100000);
     });
   });
@@ -527,10 +528,10 @@ use todo_program::{TodoProgram, Todo, CreateTodo, UpdateTodo};
 async fn test_create_todo() {
     let program = TodoProgram::id();
     let mut context = ProgramTestContext::new().await;
-    
+
     let user = Keypair::new();
     let todo_account = Keypair::new();
-    
+
     // Airdrop SOL to user
     context.banks_client
         .process_transaction(Transaction::new_signed_with_payer(
@@ -595,74 +596,74 @@ config:
   phases:
     - duration: 60
       arrivalRate: 10
-      name: "Warm up"
+      name: 'Warm up'
     - duration: 120
       arrivalRate: 50
-      name: "Load test"
+      name: 'Load test'
     - duration: 60
       arrivalRate: 100
-      name: "Stress test"
+      name: 'Stress test'
   variables:
-    testEmail: "test-{{ $randomString() }}@example.com"
-    testPassword: "password123"
+    testEmail: 'test-{{ $randomString() }}@example.com'
+    testPassword: 'password123'
 
 scenarios:
-  - name: "User Registration and Todo Management"
+  - name: 'User Registration and Todo Management'
     weight: 70
     flow:
       - post:
-          url: "/auth/register"
+          url: '/auth/register'
           json:
-            name: "Test User"
-            email: "{{ testEmail }}"
-            password: "{{ testPassword }}"
+            name: 'Test User'
+            email: '{{ testEmail }}'
+            password: '{{ testPassword }}'
           capture:
-            - json: "$.data.tokens.accessToken"
-              as: "authToken"
+            - json: '$.data.tokens.accessToken'
+              as: 'authToken'
       - post:
-          url: "/todos"
+          url: '/todos'
           headers:
-            Authorization: "Bearer {{ authToken }}"
+            Authorization: 'Bearer {{ authToken }}'
           json:
-            title: "Load Test Todo"
-            priority: "medium"
+            title: 'Load Test Todo'
+            priority: 'medium'
           capture:
-            - json: "$.data.id"
-              as: "todoId"
+            - json: '$.data.id'
+              as: 'todoId'
       - get:
-          url: "/todos"
+          url: '/todos'
           headers:
-            Authorization: "Bearer {{ authToken }}"
+            Authorization: 'Bearer {{ authToken }}'
       - put:
-          url: "/todos/{{ todoId }}"
+          url: '/todos/{{ todoId }}'
           headers:
-            Authorization: "Bearer {{ authToken }}"
+            Authorization: 'Bearer {{ authToken }}'
           json:
             completed: true
       - delete:
-          url: "/todos/{{ todoId }}"
+          url: '/todos/{{ todoId }}'
           headers:
-            Authorization: "Bearer {{ authToken }}"
+            Authorization: 'Bearer {{ authToken }}'
 
-  - name: "Read-only Operations"
+  - name: 'Read-only Operations'
     weight: 30
     flow:
       - post:
-          url: "/auth/login"
+          url: '/auth/login'
           json:
-            email: "existing@example.com"
-            password: "password123"
+            email: 'existing@example.com'
+            password: 'password123'
           capture:
-            - json: "$.data.tokens.accessToken"
-              as: "authToken"
+            - json: '$.data.tokens.accessToken'
+              as: 'authToken'
       - get:
-          url: "/todos"
+          url: '/todos'
           headers:
-            Authorization: "Bearer {{ authToken }}"
+            Authorization: 'Bearer {{ authToken }}'
       - get:
-          url: "/analytics/stats"
+          url: '/analytics/stats'
           headers:
-            Authorization: "Bearer {{ authToken }}"
+            Authorization: 'Bearer {{ authToken }}'
 ```
 
 ### Performance Benchmarks
@@ -684,10 +685,15 @@ describe('Performance Benchmarks', () => {
     const promises = [];
 
     for (let i = 0; i < 1000; i++) {
-      promises.push(todoService.create({
-        title: `Todo ${i}`,
-        priority: 'medium',
-      }, 'test-user-id'));
+      promises.push(
+        todoService.create(
+          {
+            title: `Todo ${i}`,
+            priority: 'medium',
+          },
+          'test-user-id',
+        ),
+      );
     }
 
     await Promise.all(promises);
@@ -724,19 +730,11 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   roots: ['<rootDir>/src'],
-  testMatch: [
-    '**/__tests__/**/*.+(ts|tsx|js)',
-    '**/*.(test|spec).+(ts|tsx|js)',
-  ],
+  testMatch: ['**/__tests__/**/*.+(ts|tsx|js)', '**/*.(test|spec).+(ts|tsx|js)'],
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
-  collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/*.interface.ts',
-    '!src/**/*.enum.ts',
-  ],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/*.interface.ts', '!src/**/*.enum.ts'],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
   setupFilesAfterEnv: ['<rootDir>/src/test/setup.ts'],
@@ -901,12 +899,14 @@ jobs:
 ## 📚 Resources
 
 ### Documentation
+
 - [Jest Documentation](https://jestjs.io/docs/getting-started)
 - [Testing Library](https://testing-library.com/docs/)
 - [Playwright Documentation](https://playwright.dev/docs/intro)
 - [Hardhat Testing](https://hardhat.org/tutorial/testing-contracts)
 
 ### Tools
+
 - [Test Coverage Reports](https://codecov.io/)
 - [Visual Regression Testing](https://www.chromatic.com/)
 - [Load Testing](https://artillery.io/)

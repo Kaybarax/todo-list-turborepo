@@ -84,7 +84,7 @@ const preview: Preview = {
   },
   // Global decorators for consistent styling
   decorators: [
-    (Story) => (
+    Story => (
       <div className="font-sans antialiased">
         <Story />
       </div>

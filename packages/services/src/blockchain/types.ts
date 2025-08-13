@@ -210,8 +210,6 @@ export const evmServiceOptionsSchema = z.object({
  */
 export type EVMServiceOptions = z.infer<typeof evmServiceOptionsSchema>;
 
-
-
 /**
  * All network configurations
  */
@@ -374,8 +372,8 @@ export function isTestnetNetwork(network: BlockchainNetwork): boolean {
  * Helper function to get all EVM networks
  */
 export function getEVMNetworks(): BlockchainNetwork[] {
-  return Object.keys(NETWORK_CONFIGS).filter(network => 
-    NETWORK_CONFIGS[network as BlockchainNetwork].isEVM
+  return Object.keys(NETWORK_CONFIGS).filter(
+    network => NETWORK_CONFIGS[network as BlockchainNetwork].isEVM,
   ) as BlockchainNetwork[];
 }
 
@@ -383,8 +381,8 @@ export function getEVMNetworks(): BlockchainNetwork[] {
  * Helper function to get all mainnet networks
  */
 export function getMainnetNetworks(): BlockchainNetwork[] {
-  return Object.keys(NETWORK_CONFIGS).filter(network => 
-    !NETWORK_CONFIGS[network as BlockchainNetwork].isTestnet
+  return Object.keys(NETWORK_CONFIGS).filter(
+    network => !NETWORK_CONFIGS[network as BlockchainNetwork].isTestnet,
   ) as BlockchainNetwork[];
 }
 
@@ -392,7 +390,7 @@ export function getMainnetNetworks(): BlockchainNetwork[] {
  * Helper function to get all testnet networks
  */
 export function getTestnetNetworks(): BlockchainNetwork[] {
-  return Object.keys(NETWORK_CONFIGS).filter(network => 
-    NETWORK_CONFIGS[network as BlockchainNetwork].isTestnet
+  return Object.keys(NETWORK_CONFIGS).filter(
+    network => NETWORK_CONFIGS[network as BlockchainNetwork].isTestnet,
   ) as BlockchainNetwork[];
 }

@@ -21,11 +21,8 @@ const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 describe('Comprehensive Mobile Component Tests', () => {
   describe('Component Rendering', () => {
     it('renders Button component correctly', () => {
-      const { getByText } = render(
-        <Button title="Test Button" onPress={() => {}} />,
-        { wrapper: TestWrapper }
-      );
-      
+      const { getByText } = render(<Button title="Test Button" onPress={() => {}} />, { wrapper: TestWrapper });
+
       expect(getByText('Test Button')).toBeTruthy();
     });
 
@@ -35,46 +32,40 @@ describe('Comprehensive Mobile Component Tests', () => {
           <Text category="h6">Test Card</Text>
           <CardContent>Card content</CardContent>
         </Card>,
-        { wrapper: TestWrapper }
+        { wrapper: TestWrapper },
       );
-      
+
       expect(getByText('Test Card')).toBeTruthy();
       expect(getByText('Card content')).toBeTruthy();
     });
 
     it('renders Input component correctly', () => {
-      const { getByDisplayValue } = render(
-        <Input value="test value" onChangeText={() => {}} />,
-        { wrapper: TestWrapper }
-      );
-      
+      const { getByDisplayValue } = render(<Input value="test value" onChangeText={() => {}} />, {
+        wrapper: TestWrapper,
+      });
+
       expect(getByDisplayValue('test value')).toBeTruthy();
     });
 
     it('renders Badge component correctly', () => {
-      const { getByText } = render(
-        <Badge text="Test Badge" />,
-        { wrapper: TestWrapper }
-      );
-      
+      const { getByText } = render(<Badge text="Test Badge" />, { wrapper: TestWrapper });
+
       expect(getByText('Test Badge')).toBeTruthy();
     });
 
     it('renders Avatar component correctly', () => {
-      const { getByTestId } = render(
-        <Avatar source={{ uri: 'https://example.com/avatar.jpg' }} testID="avatar" />,
-        { wrapper: TestWrapper }
-      );
-      
+      const { getByTestId } = render(<Avatar source={{ uri: 'https://example.com/avatar.jpg' }} testID="avatar" />, {
+        wrapper: TestWrapper,
+      });
+
       expect(getByTestId('avatar')).toBeTruthy();
     });
 
     it('renders Switch component correctly', () => {
-      const { getByTestId } = render(
-        <Switch value={false} onValueChange={() => {}} testID="switch" />,
-        { wrapper: TestWrapper }
-      );
-      
+      const { getByTestId } = render(<Switch value={false} onValueChange={() => {}} testID="switch" />, {
+        wrapper: TestWrapper,
+      });
+
       expect(getByTestId('switch')).toBeTruthy();
     });
   });
@@ -82,33 +73,26 @@ describe('Comprehensive Mobile Component Tests', () => {
   describe('Component Interactions', () => {
     it('Button handles press events', () => {
       const onPress = jest.fn();
-      const { getByText } = render(
-        <Button title="Press Me" onPress={onPress} />,
-        { wrapper: TestWrapper }
-      );
-      
+      const { getByText } = render(<Button title="Press Me" onPress={onPress} />, { wrapper: TestWrapper });
+
       fireEvent.press(getByText('Press Me'));
       expect(onPress).toHaveBeenCalledTimes(1);
     });
 
     it('Input handles text changes', () => {
       const onChangeText = jest.fn();
-      const { getByTestId } = render(
-        <Input onChangeText={onChangeText} testID="input" />,
-        { wrapper: TestWrapper }
-      );
-      
+      const { getByTestId } = render(<Input onChangeText={onChangeText} testID="input" />, { wrapper: TestWrapper });
+
       fireEvent.changeText(getByTestId('input'), 'new text');
       expect(onChangeText).toHaveBeenCalledWith('new text');
     });
 
     it('Switch handles value changes', () => {
       const onValueChange = jest.fn();
-      const { getByTestId } = render(
-        <Switch value={false} onValueChange={onValueChange} testID="switch" />,
-        { wrapper: TestWrapper }
-      );
-      
+      const { getByTestId } = render(<Switch value={false} onValueChange={onValueChange} testID="switch" />, {
+        wrapper: TestWrapper,
+      });
+
       fireEvent(getByTestId('switch'), 'valueChange', true);
       expect(onValueChange).toHaveBeenCalledWith(true);
     });
@@ -117,13 +101,13 @@ describe('Comprehensive Mobile Component Tests', () => {
   describe('Component Variants and Props', () => {
     it('Button renders with different variants', () => {
       const variants = ['primary', 'secondary', 'outline', 'danger', 'success', 'ghost'] as const;
-      
-      variants.forEach((variant) => {
+
+      variants.forEach(variant => {
         const { getByText, unmount } = render(
           <Button title={`${variant} Button`} variant={variant} onPress={() => {}} />,
-          { wrapper: TestWrapper }
+          { wrapper: TestWrapper },
         );
-        
+
         expect(getByText(`${variant} Button`)).toBeTruthy();
         unmount();
       });
@@ -131,13 +115,12 @@ describe('Comprehensive Mobile Component Tests', () => {
 
     it('Button renders with different sizes', () => {
       const sizes = ['small', 'medium', 'large'] as const;
-      
-      sizes.forEach((size) => {
-        const { getByText, unmount } = render(
-          <Button title={`${size} Button`} size={size} onPress={() => {}} />,
-          { wrapper: TestWrapper }
-        );
-        
+
+      sizes.forEach(size => {
+        const { getByText, unmount } = render(<Button title={`${size} Button`} size={size} onPress={() => {}} />, {
+          wrapper: TestWrapper,
+        });
+
         expect(getByText(`${size} Button`)).toBeTruthy();
         unmount();
       });
@@ -145,13 +128,12 @@ describe('Comprehensive Mobile Component Tests', () => {
 
     it('Badge renders with different variants', () => {
       const variants = ['primary', 'secondary', 'success', 'danger', 'warning'] as const;
-      
-      variants.forEach((variant) => {
-        const { getByText, unmount } = render(
-          <Badge text={`${variant} Badge`} variant={variant} />,
-          { wrapper: TestWrapper }
-        );
-        
+
+      variants.forEach(variant => {
+        const { getByText, unmount } = render(<Badge text={`${variant} Badge`} variant={variant} />, {
+          wrapper: TestWrapper,
+        });
+
         expect(getByText(`${variant} Badge`)).toBeTruthy();
         unmount();
       });
@@ -161,11 +143,10 @@ describe('Comprehensive Mobile Component Tests', () => {
   describe('Component States', () => {
     it('Button handles disabled state', () => {
       const onPress = jest.fn();
-      const { getByText } = render(
-        <Button title="Disabled Button" disabled onPress={onPress} />,
-        { wrapper: TestWrapper }
-      );
-      
+      const { getByText } = render(<Button title="Disabled Button" disabled onPress={onPress} />, {
+        wrapper: TestWrapper,
+      });
+
       const button = getByText('Disabled Button');
       fireEvent.press(button);
       expect(onPress).not.toHaveBeenCalled();
@@ -174,23 +155,20 @@ describe('Comprehensive Mobile Component Tests', () => {
     it('Button handles loading state', () => {
       const { queryByText, getByTestId } = render(
         <Button title="Loading Button" loading onPress={() => {}} testID="loading-button" />,
-        { wrapper: TestWrapper }
+        { wrapper: TestWrapper },
       );
-      
+
       // Title should not be visible when loading
       expect(queryByText('Loading Button')).toBeNull();
-      
+
       // Button should be present
       const button = getByTestId('loading-button');
       expect(button).toBeTruthy();
     });
 
     it('Input handles disabled state', () => {
-      const { getByTestId } = render(
-        <Input disabled testID="disabled-input" />,
-        { wrapper: TestWrapper }
-      );
-      
+      const { getByTestId } = render(<Input disabled testID="disabled-input" />, { wrapper: TestWrapper });
+
       const input = getByTestId('disabled-input');
       expect(input.props.editable).toBe(false);
     });
@@ -199,42 +177,34 @@ describe('Comprehensive Mobile Component Tests', () => {
   describe('Component Accessibility', () => {
     it('Button maintains accessibility properties', () => {
       const { getByLabelText } = render(
-        <Button 
-          title="Accessible Button" 
-          onPress={() => {}} 
-          accessibilityLabel="Custom accessibility label"
-        />,
-        { wrapper: TestWrapper }
+        <Button title="Accessible Button" onPress={() => {}} accessibilityLabel="Custom accessibility label" />,
+        { wrapper: TestWrapper },
       );
-      
+
       const button = getByLabelText('Custom accessibility label');
       expect(button).toBeTruthy();
     });
 
     it('Input maintains accessibility properties', () => {
-      const { getByTestId } = render(
-        <Input 
-          testID="accessible-input"
-          accessibilityLabel="Custom input label"
-        />,
-        { wrapper: TestWrapper }
-      );
-      
+      const { getByTestId } = render(<Input testID="accessible-input" accessibilityLabel="Custom input label" />, {
+        wrapper: TestWrapper,
+      });
+
       const input = getByTestId('accessible-input');
       expect(input.props.accessibilityLabel).toBe('Custom input label');
     });
 
     it('Switch maintains accessibility properties', () => {
       const { getByTestId } = render(
-        <Switch 
-          value={false} 
-          onValueChange={() => {}} 
+        <Switch
+          value={false}
+          onValueChange={() => {}}
           testID="accessible-switch"
           accessibilityLabel="Custom switch label"
         />,
-        { wrapper: TestWrapper }
+        { wrapper: TestWrapper },
       );
-      
+
       const switchComponent = getByTestId('accessible-switch');
       expect(switchComponent.props.accessibilityLabel).toBe('Custom switch label');
     });
@@ -252,7 +222,7 @@ describe('Comprehensive Mobile Component Tests', () => {
             <Switch value={true} onValueChange={() => {}} testID="status-switch" />
           </CardContent>
         </Card>,
-        { wrapper: TestWrapper }
+        { wrapper: TestWrapper },
       );
 
       expect(getByText('User Profile')).toBeTruthy();
@@ -265,7 +235,7 @@ describe('Comprehensive Mobile Component Tests', () => {
     it('Components handle complex interaction flows', () => {
       const handleSave = jest.fn();
       const handleToggle = jest.fn();
-      
+
       const { getByText, getByTestId } = render(
         <Card>
           <CardContent>
@@ -274,16 +244,16 @@ describe('Comprehensive Mobile Component Tests', () => {
             <Button title="Save Changes" onPress={handleSave} />
           </CardContent>
         </Card>,
-        { wrapper: TestWrapper }
+        { wrapper: TestWrapper },
       );
 
       // Interact with input
       fireEvent.changeText(getByTestId('text-input'), 'test text');
-      
+
       // Toggle switch
       fireEvent(getByTestId('toggle'), 'valueChange', true);
       expect(handleToggle).toHaveBeenCalledWith(true);
-      
+
       // Press save button
       fireEvent.press(getByText('Save Changes'));
       expect(handleSave).toHaveBeenCalledTimes(1);
@@ -299,7 +269,7 @@ describe('Comprehensive Mobile Component Tests', () => {
             <Badge text="" />
             <Input value="" />
           </div>,
-          { wrapper: TestWrapper }
+          { wrapper: TestWrapper },
         );
       }).not.toThrow();
     });
@@ -312,7 +282,7 @@ describe('Comprehensive Mobile Component Tests', () => {
             <Badge text={undefined as any} />
             <Input value={null as any} />
           </div>,
-          { wrapper: TestWrapper }
+          { wrapper: TestWrapper },
         );
       }).not.toThrow();
     });
@@ -325,7 +295,7 @@ describe('Comprehensive Mobile Component Tests', () => {
           <Badge text="test" />
           <Switch value={false} onValueChange={() => {}} />
         </div>,
-        { wrapper: TestWrapper }
+        { wrapper: TestWrapper },
       );
 
       expect(() => unmount()).not.toThrow();
@@ -366,7 +336,7 @@ describe('Comprehensive Mobile Component Tests', () => {
           <Input onChangeText={handlers.input} testID="input" />
           <Switch value={false} onValueChange={handlers.switch} testID="switch" />
         </div>,
-        { wrapper: TestWrapper }
+        { wrapper: TestWrapper },
       );
 
       // Trigger multiple interactions simultaneously

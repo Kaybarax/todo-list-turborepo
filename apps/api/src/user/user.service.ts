@@ -7,9 +7,7 @@ import { RegisterDto } from '../auth/dto/register.dto';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
-  ) {}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   @Trace('UserService.create')
   async create(registerDto: RegisterDto): Promise<User> {
@@ -47,11 +45,9 @@ export class UserService {
 
   @Trace('UserService.updateById')
   async updateById(id: string, updateData: Partial<User>): Promise<User> {
-    const user = await this.userModel.findByIdAndUpdate(
-      id,
-      { ...updateData, updatedAt: new Date() },
-      { new: true }
-    ).exec();
+    const user = await this.userModel
+      .findByIdAndUpdate(id, { ...updateData, updatedAt: new Date() }, { new: true })
+      .exec();
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -61,10 +57,7 @@ export class UserService {
   }
 
   async updateLastLogin(id: string): Promise<void> {
-    await this.userModel.findByIdAndUpdate(
-      id,
-      { lastLoginAt: new Date() }
-    ).exec();
+    await this.userModel.findByIdAndUpdate(id, { lastLoginAt: new Date() }).exec();
   }
 
   async deactivateUser(id: string): Promise<User> {
@@ -102,9 +95,11 @@ export class UserService {
       this.userModel.countDocuments().exec(),
       this.userModel.countDocuments({ isVerified: true }).exec(),
       this.userModel.countDocuments({ isActive: true }).exec(),
-      this.userModel.countDocuments({
-        createdAt: { $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) }
-      }).exec(),
+      this.userModel
+        .countDocuments({
+          createdAt: { $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) },
+        })
+        .exec(),
     ]);
 
     return {

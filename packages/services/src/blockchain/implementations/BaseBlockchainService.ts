@@ -1,11 +1,11 @@
-import { 
-  BlockchainNetwork, 
-  TransactionStatus, 
-  TransactionReceipt, 
-  BlockchainTodo, 
-  CreateBlockchainTodoInput, 
+import {
+  BlockchainNetwork,
+  TransactionStatus,
+  TransactionReceipt,
+  BlockchainTodo,
+  CreateBlockchainTodoInput,
   UpdateBlockchainTodoInput,
-  WalletInfo
+  WalletInfo,
 } from '../types';
 import { BlockchainService } from '../interfaces/BlockchainService';
 import { BlockchainError } from '../utils/BlockchainError';
@@ -27,11 +27,7 @@ export abstract class BaseBlockchainService implements BlockchainService {
    * @param explorerBaseUrl - Base URL for the blockchain explorer
    * @param monitorOptions - Transaction monitoring options
    */
-  constructor(
-    network: BlockchainNetwork,
-    explorerBaseUrl: string,
-    monitorOptions?: TransactionMonitorOptions
-  ) {
+  constructor(network: BlockchainNetwork, explorerBaseUrl: string, monitorOptions?: TransactionMonitorOptions) {
     this.network = network;
     this.explorerBaseUrl = explorerBaseUrl;
     this.transactionMonitor = new TransactionMonitor(monitorOptions);
@@ -141,7 +137,7 @@ export abstract class BaseBlockchainService implements BlockchainService {
     if (!this.walletInfo || !this.walletInfo.isConnected) {
       throw BlockchainError.walletNotConnected(
         'Wallet is not connected. Please connect a wallet before performing this operation.',
-        this.network
+        this.network,
       );
     }
   }
@@ -151,15 +147,12 @@ export abstract class BaseBlockchainService implements BlockchainService {
    * @param txHash - Transaction hash
    * @param options - Transaction monitoring options
    */
-  protected monitorTransaction(
-    txHash: string,
-    options?: TransactionMonitorOptions
-  ): Promise<TransactionReceipt> {
+  protected monitorTransaction(txHash: string, options?: TransactionMonitorOptions): Promise<TransactionReceipt> {
     return this.transactionMonitor.monitorTransaction(
       txHash,
       this.network,
-      (hash) => this.getTransactionReceipt(hash),
-      options
+      hash => this.getTransactionReceipt(hash),
+      options,
     );
   }
 }

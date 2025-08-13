@@ -29,7 +29,7 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-process.on('uncaughtException', (error) => {
+process.on('uncaughtException', error => {
   logger.error('Uncaught exception', { error });
   process.exit(1);
 });

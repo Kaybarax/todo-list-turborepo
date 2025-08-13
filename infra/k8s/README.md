@@ -35,6 +35,7 @@ infra/k8s/
 Before deploying, update the following files with your actual values:
 
 **Secrets (`secrets/app-secrets.yaml`)**:
+
 ```bash
 # Generate base64 encoded values
 echo -n "your-actual-jwt-secret" | base64
@@ -42,6 +43,7 @@ echo -n "your-mongodb-password" | base64
 ```
 
 **ConfigMaps (`configmaps/app-config.yaml`)**:
+
 - Update domain names
 - Configure RPC URLs
 - Set environment-specific values
@@ -91,6 +93,7 @@ export DRY_RUN=false                # Set to true for dry run
 #### Resource Limits
 
 Edit `resource-management.yaml` to adjust:
+
 - CPU and memory limits
 - Storage quotas
 - Pod disruption budgets
@@ -98,6 +101,7 @@ Edit `resource-management.yaml` to adjust:
 #### Scaling
 
 Horizontal Pod Autoscaler (HPA) is configured for:
+
 - API: 3-10 replicas
 - Web: 2-8 replicas
 - Ingestion: 2-6 replicas
@@ -151,6 +155,7 @@ Horizontal Pod Autoscaler (HPA) is configured for:
 ### Metrics
 
 Access Grafana dashboard:
+
 ```bash
 kubectl port-forward -n todo-app service/grafana-service 3000:3000
 # Open http://localhost:3000 (admin/admin123)
@@ -159,6 +164,7 @@ kubectl port-forward -n todo-app service/grafana-service 3000:3000
 ### Logs
 
 View application logs:
+
 ```bash
 # API logs
 kubectl logs -f deployment/todo-api -n todo-app
@@ -173,6 +179,7 @@ kubectl logs -f deployment/mongodb -n todo-app
 ### Health Checks
 
 All services include health check endpoints:
+
 - API: `/health`
 - Web: `/api/health`
 - Databases: Built-in health checks
@@ -182,25 +189,28 @@ All services include health check endpoints:
 ### Common Issues
 
 1. **Pods stuck in Pending**:
+
    ```bash
    kubectl describe pod <pod-name> -n todo-app
    # Check resource constraints and node capacity
    ```
 
 2. **Database connection issues**:
+
    ```bash
    # Check database pod logs
    kubectl logs deployment/mongodb -n todo-app
-   
+
    # Test connectivity from API pod
    kubectl exec -it deployment/todo-api -n todo-app -- nc -zv mongodb-service 27017
    ```
 
 3. **Ingress not working**:
+
    ```bash
    # Check ingress controller
    kubectl get pods -n ingress-nginx
-   
+
    # Check ingress configuration
    kubectl describe ingress todo-app-ingress -n todo-app
    ```
@@ -237,6 +247,7 @@ kubectl scale deployment todo-web --replicas=3 -n todo-app
 ### Auto Scaling
 
 HPA automatically scales based on:
+
 - CPU utilization (70% threshold)
 - Memory utilization (80% threshold)
 
@@ -284,6 +295,7 @@ kubectl delete namespace todo-app
 ## Support
 
 For issues and questions:
+
 1. Check the troubleshooting section
 2. Review Kubernetes events and logs
 3. Consult the application documentation

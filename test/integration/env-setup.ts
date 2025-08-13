@@ -30,7 +30,8 @@ process.env.JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 process.env.POLYGON_RPC_URL = process.env.POLYGON_RPC_URL || 'https://polygon-rpc.com';
 process.env.POLYGON_MUMBAI_RPC_URL = process.env.POLYGON_MUMBAI_RPC_URL || 'https://rpc-mumbai.maticvigil.com';
 process.env.MOONBEAM_RPC_URL = process.env.MOONBEAM_RPC_URL || 'https://rpc.api.moonbeam.network';
-process.env.MOONBEAM_TESTNET_RPC_URL = process.env.MOONBEAM_TESTNET_RPC_URL || 'https://rpc.api.moonbase.moonbeam.network';
+process.env.MOONBEAM_TESTNET_RPC_URL =
+  process.env.MOONBEAM_TESTNET_RPC_URL || 'https://rpc.api.moonbase.moonbeam.network';
 process.env.BASE_RPC_URL = process.env.BASE_RPC_URL || 'https://mainnet.base.org';
 process.env.BASE_TESTNET_RPC_URL = process.env.BASE_TESTNET_RPC_URL || 'https://sepolia.base.org';
 process.env.SOLANA_RPC_URL = process.env.SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com';
@@ -39,16 +40,23 @@ process.env.POLKADOT_RPC_URL = process.env.POLKADOT_RPC_URL || 'wss://rpc.polkad
 process.env.POLKADOT_TESTNET_RPC_URL = process.env.POLKADOT_TESTNET_RPC_URL || 'wss://westend-rpc.polkadot.io';
 
 // Contract addresses (use test/mock addresses)
-process.env.POLYGON_TODO_FACTORY_ADDRESS = process.env.POLYGON_TODO_FACTORY_ADDRESS || '0x1234567890123456789012345678901234567890';
-process.env.POLYGON_MUMBAI_TODO_FACTORY_ADDRESS = process.env.POLYGON_MUMBAI_TODO_FACTORY_ADDRESS || '0x2345678901234567890123456789012345678901';
-process.env.MOONBEAM_TODO_FACTORY_ADDRESS = process.env.MOONBEAM_TODO_FACTORY_ADDRESS || '0x3456789012345678901234567890123456789012';
-process.env.MOONBEAM_TESTNET_TODO_FACTORY_ADDRESS = process.env.MOONBEAM_TESTNET_TODO_FACTORY_ADDRESS || '0x4567890123456789012345678901234567890123';
-process.env.BASE_TODO_FACTORY_ADDRESS = process.env.BASE_TODO_FACTORY_ADDRESS || '0x5678901234567890123456789012345678901234';
-process.env.BASE_TESTNET_TODO_FACTORY_ADDRESS = process.env.BASE_TESTNET_TODO_FACTORY_ADDRESS || '0x6789012345678901234567890123456789012345';
+process.env.POLYGON_TODO_FACTORY_ADDRESS =
+  process.env.POLYGON_TODO_FACTORY_ADDRESS || '0x1234567890123456789012345678901234567890';
+process.env.POLYGON_MUMBAI_TODO_FACTORY_ADDRESS =
+  process.env.POLYGON_MUMBAI_TODO_FACTORY_ADDRESS || '0x2345678901234567890123456789012345678901';
+process.env.MOONBEAM_TODO_FACTORY_ADDRESS =
+  process.env.MOONBEAM_TODO_FACTORY_ADDRESS || '0x3456789012345678901234567890123456789012';
+process.env.MOONBEAM_TESTNET_TODO_FACTORY_ADDRESS =
+  process.env.MOONBEAM_TESTNET_TODO_FACTORY_ADDRESS || '0x4567890123456789012345678901234567890123';
+process.env.BASE_TODO_FACTORY_ADDRESS =
+  process.env.BASE_TODO_FACTORY_ADDRESS || '0x5678901234567890123456789012345678901234';
+process.env.BASE_TESTNET_TODO_FACTORY_ADDRESS =
+  process.env.BASE_TESTNET_TODO_FACTORY_ADDRESS || '0x6789012345678901234567890123456789012345';
 
 // Solana program IDs
 process.env.SOLANA_PROGRAM_ID = process.env.SOLANA_PROGRAM_ID || 'TodoProgram1111111111111111111111111111111';
-process.env.SOLANA_DEVNET_PROGRAM_ID = process.env.SOLANA_DEVNET_PROGRAM_ID || 'TodoProgramDev111111111111111111111111111';
+process.env.SOLANA_DEVNET_PROGRAM_ID =
+  process.env.SOLANA_DEVNET_PROGRAM_ID || 'TodoProgramDev111111111111111111111111111';
 
 // Explorer API keys (use test keys or leave empty)
 process.env.POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || 'test-polygonscan-key';
@@ -144,40 +152,40 @@ export const testConfig = {
       rpcUrl: process.env.POLKADOT_TESTNET_RPC_URL!,
     },
   },
-  
+
   // Test configuration
   timeouts: {
     default: parseInt(process.env.TEST_TIMEOUT!),
     blockchainOperation: parseInt(process.env.BLOCKCHAIN_OPERATION_TIMEOUT!),
     networkSwitch: parseInt(process.env.NETWORK_SWITCH_TIMEOUT!),
   },
-  
+
   // Mock configuration
   mocks: {
     useBlockchainServices: process.env.USE_MOCK_BLOCKCHAIN_SERVICES === 'true',
     useWalletProviders: process.env.USE_MOCK_WALLET_PROVIDERS === 'true',
     transactionDelay: parseInt(process.env.MOCK_TRANSACTION_DELAY!),
   },
-  
+
   // Feature flags
   features: {
     blockchainTests: process.env.ENABLE_BLOCKCHAIN_TESTS === 'true',
     e2eTests: process.env.ENABLE_E2E_TESTS === 'true',
     performanceTests: process.env.ENABLE_PERFORMANCE_TESTS === 'true',
   },
-  
+
   // Application URLs
   urls: {
     api: process.env.API_URL!,
     web: process.env.WEB_APP_URL!,
   },
-  
+
   // Database configuration
   database: {
     mongodb: process.env.MONGODB_URI!,
     redis: process.env.REDIS_URL!,
   },
-  
+
   // Authentication
   auth: {
     jwtSecret: process.env.JWT_SECRET!,

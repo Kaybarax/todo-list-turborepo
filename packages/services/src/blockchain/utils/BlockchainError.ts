@@ -22,7 +22,7 @@ export class BlockchainError extends Error {
       originalError?: unknown;
       transactionHash?: string;
       network?: BlockchainNetwork;
-    }
+    },
   ) {
     super(message);
     this.name = 'BlockchainError';
@@ -44,13 +44,9 @@ export class BlockchainError extends Error {
   static walletConnectionFailed(
     message: string,
     originalError?: unknown,
-    network?: BlockchainNetwork
+    network?: BlockchainNetwork,
   ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.WALLET_CONNECTION_FAILED,
-      message,
-      { originalError, network }
-    );
+    return new BlockchainError(BlockchainErrorType.WALLET_CONNECTION_FAILED, message, { originalError, network });
   }
 
   /**
@@ -58,15 +54,8 @@ export class BlockchainError extends Error {
    * @param message - Error message
    * @param network - Blockchain network
    */
-  static walletNotConnected(
-    message = 'Wallet is not connected',
-    network?: BlockchainNetwork
-  ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.WALLET_NOT_CONNECTED,
-      message,
-      { network }
-    );
+  static walletNotConnected(message = 'Wallet is not connected', network?: BlockchainNetwork): BlockchainError {
+    return new BlockchainError(BlockchainErrorType.WALLET_NOT_CONNECTED, message, { network });
   }
 
   /**
@@ -80,13 +69,13 @@ export class BlockchainError extends Error {
     message: string,
     transactionHash?: string,
     originalError?: unknown,
-    network?: BlockchainNetwork
+    network?: BlockchainNetwork,
   ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.TRANSACTION_FAILED,
-      message,
-      { originalError, transactionHash, network }
-    );
+    return new BlockchainError(BlockchainErrorType.TRANSACTION_FAILED, message, {
+      originalError,
+      transactionHash,
+      network,
+    });
   }
 
   /**
@@ -95,16 +84,8 @@ export class BlockchainError extends Error {
    * @param originalError - Original error object
    * @param network - Blockchain network
    */
-  static networkError(
-    message: string,
-    originalError?: unknown,
-    network?: BlockchainNetwork
-  ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.NETWORK_ERROR,
-      message,
-      { originalError, network }
-    );
+  static networkError(message: string, originalError?: unknown, network?: BlockchainNetwork): BlockchainError {
+    return new BlockchainError(BlockchainErrorType.NETWORK_ERROR, message, { originalError, network });
   }
 
   /**
@@ -113,16 +94,8 @@ export class BlockchainError extends Error {
    * @param originalError - Original error object
    * @param network - Blockchain network
    */
-  static contractError(
-    message: string,
-    originalError?: unknown,
-    network?: BlockchainNetwork
-  ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.CONTRACT_ERROR,
-      message,
-      { originalError, network }
-    );
+  static contractError(message: string, originalError?: unknown, network?: BlockchainNetwork): BlockchainError {
+    return new BlockchainError(BlockchainErrorType.CONTRACT_ERROR, message, { originalError, network });
   }
 
   /**
@@ -134,13 +107,9 @@ export class BlockchainError extends Error {
   static insufficientFunds(
     message = 'Insufficient funds for transaction',
     originalError?: unknown,
-    network?: BlockchainNetwork
+    network?: BlockchainNetwork,
   ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.INSUFFICIENT_FUNDS,
-      message,
-      { originalError, network }
-    );
+    return new BlockchainError(BlockchainErrorType.INSUFFICIENT_FUNDS, message, { originalError, network });
   }
 
   /**
@@ -152,13 +121,9 @@ export class BlockchainError extends Error {
   static userRejected(
     message = 'User rejected the transaction',
     originalError?: unknown,
-    network?: BlockchainNetwork
+    network?: BlockchainNetwork,
   ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.USER_REJECTED,
-      message,
-      { originalError, network }
-    );
+    return new BlockchainError(BlockchainErrorType.USER_REJECTED, message, { originalError, network });
   }
 
   /**
@@ -167,16 +132,8 @@ export class BlockchainError extends Error {
    * @param network - Blockchain network
    * @param originalError - Original error object
    */
-  static walletNotFound(
-    message: string,
-    network?: BlockchainNetwork,
-    originalError?: unknown
-  ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.WALLET_CONNECTION_FAILED,
-      message,
-      { originalError, network }
-    );
+  static walletNotFound(message: string, network?: BlockchainNetwork, originalError?: unknown): BlockchainError {
+    return new BlockchainError(BlockchainErrorType.WALLET_CONNECTION_FAILED, message, { originalError, network });
   }
 
   /**
@@ -188,13 +145,12 @@ export class BlockchainError extends Error {
   static connectionFailed(
     message: string,
     network?: BlockchainNetwork,
-    options?: { originalError?: unknown }
+    options?: { originalError?: unknown },
   ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.WALLET_CONNECTION_FAILED,
-      message,
-      { originalError: options?.originalError, network }
-    );
+    return new BlockchainError(BlockchainErrorType.WALLET_CONNECTION_FAILED, message, {
+      originalError: options?.originalError,
+      network,
+    });
   }
 
   /**
@@ -206,13 +162,9 @@ export class BlockchainError extends Error {
   static unknownError(
     message = 'An unknown error occurred',
     originalError?: unknown,
-    network?: BlockchainNetwork
+    network?: BlockchainNetwork,
   ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.UNKNOWN_ERROR,
-      message,
-      { originalError, network }
-    );
+    return new BlockchainError(BlockchainErrorType.UNKNOWN_ERROR, message, { originalError, network });
   }
 
   /**
@@ -224,13 +176,9 @@ export class BlockchainError extends Error {
   static moonbeamConnectionFailed(
     message: string,
     originalError?: unknown,
-    network?: BlockchainNetwork
+    network?: BlockchainNetwork,
   ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.MOONBEAM_CONNECTION_FAILED,
-      message,
-      { originalError, network }
-    );
+    return new BlockchainError(BlockchainErrorType.MOONBEAM_CONNECTION_FAILED, message, { originalError, network });
   }
 
   /**
@@ -242,13 +190,9 @@ export class BlockchainError extends Error {
   static moonbeamSubstrateError(
     message: string,
     originalError?: unknown,
-    network?: BlockchainNetwork
+    network?: BlockchainNetwork,
   ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.MOONBEAM_SUBSTRATE_ERROR,
-      message,
-      { originalError, network }
-    );
+    return new BlockchainError(BlockchainErrorType.MOONBEAM_SUBSTRATE_ERROR, message, { originalError, network });
   }
 
   /**
@@ -257,16 +201,8 @@ export class BlockchainError extends Error {
    * @param originalError - Original error object
    * @param network - Blockchain network
    */
-  static moonbeamEvmError(
-    message: string,
-    originalError?: unknown,
-    network?: BlockchainNetwork
-  ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.MOONBEAM_EVM_ERROR,
-      message,
-      { originalError, network }
-    );
+  static moonbeamEvmError(message: string, originalError?: unknown, network?: BlockchainNetwork): BlockchainError {
+    return new BlockchainError(BlockchainErrorType.MOONBEAM_EVM_ERROR, message, { originalError, network });
   }
 
   /**
@@ -275,16 +211,8 @@ export class BlockchainError extends Error {
    * @param network - Blockchain network
    * @param originalError - Original error object
    */
-  static networkSwitchRequired(
-    message: string,
-    network?: BlockchainNetwork,
-    originalError?: unknown
-  ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.NETWORK_SWITCH_REQUIRED,
-      message,
-      { originalError, network }
-    );
+  static networkSwitchRequired(message: string, network?: BlockchainNetwork, originalError?: unknown): BlockchainError {
+    return new BlockchainError(BlockchainErrorType.NETWORK_SWITCH_REQUIRED, message, { originalError, network });
   }
 
   /**
@@ -293,16 +221,8 @@ export class BlockchainError extends Error {
    * @param network - Blockchain network
    * @param originalError - Original error object
    */
-  static unsupportedWallet(
-    message: string,
-    network?: BlockchainNetwork,
-    originalError?: unknown
-  ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.UNSUPPORTED_WALLET,
-      message,
-      { originalError, network }
-    );
+  static unsupportedWallet(message: string, network?: BlockchainNetwork, originalError?: unknown): BlockchainError {
+    return new BlockchainError(BlockchainErrorType.UNSUPPORTED_WALLET, message, { originalError, network });
   }
 
   /**
@@ -311,16 +231,8 @@ export class BlockchainError extends Error {
    * @param originalError - Original error object
    * @param network - Blockchain network
    */
-  static baseL2Error(
-    message: string,
-    originalError?: unknown,
-    network?: BlockchainNetwork
-  ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.BASE_L2_ERROR,
-      message,
-      { originalError, network }
-    );
+  static baseL2Error(message: string, originalError?: unknown, network?: BlockchainNetwork): BlockchainError {
+    return new BlockchainError(BlockchainErrorType.BASE_L2_ERROR, message, { originalError, network });
   }
 
   /**
@@ -329,16 +241,8 @@ export class BlockchainError extends Error {
    * @param originalError - Original error object
    * @param network - Blockchain network
    */
-  static baseSequencerError(
-    message: string,
-    originalError?: unknown,
-    network?: BlockchainNetwork
-  ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.BASE_SEQUENCER_ERROR,
-      message,
-      { originalError, network }
-    );
+  static baseSequencerError(message: string, originalError?: unknown, network?: BlockchainNetwork): BlockchainError {
+    return new BlockchainError(BlockchainErrorType.BASE_SEQUENCER_ERROR, message, { originalError, network });
   }
 
   /**
@@ -347,15 +251,7 @@ export class BlockchainError extends Error {
    * @param originalError - Original error object
    * @param network - Blockchain network
    */
-  static baseBridgeError(
-    message: string,
-    originalError?: unknown,
-    network?: BlockchainNetwork
-  ): BlockchainError {
-    return new BlockchainError(
-      BlockchainErrorType.BASE_BRIDGE_ERROR,
-      message,
-      { originalError, network }
-    );
+  static baseBridgeError(message: string, originalError?: unknown, network?: BlockchainNetwork): BlockchainError {
+    return new BlockchainError(BlockchainErrorType.BASE_BRIDGE_ERROR, message, { originalError, network });
   }
 }

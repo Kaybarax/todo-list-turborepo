@@ -47,52 +47,24 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   };
 
   return (
-    <TouchableOpacity
-      style={[styles.container, style]}
-      onPress={handlePress}
-      activeOpacity={onPress ? 0.7 : 1}
-    >
+    <TouchableOpacity style={[styles.container, style]} onPress={handlePress} activeOpacity={onPress ? 0.7 : 1}>
       <TouchableOpacity style={styles.checkboxContainer} onPress={handleToggle}>
-        <View
-          style={[
-            styles.checkbox,
-            completed && styles.checkboxChecked,
-          ]}
-        >
+        <View style={[styles.checkbox, completed && styles.checkboxChecked]}>
           {completed && <View style={styles.checkmark} />}
         </View>
       </TouchableOpacity>
 
       <View style={styles.contentContainer}>
         <View style={styles.titleRow}>
-          <Text
-            style={[
-              styles.title,
-              completed && styles.completedText,
-            ]}
-            numberOfLines={1}
-          >
+          <Text style={[styles.title, completed && styles.completedText]} numberOfLines={1}>
             {title}
           </Text>
 
-          {priority && (
-            <View
-              style={[
-                styles.priorityIndicator,
-                { backgroundColor: getPriorityColor() },
-              ]}
-            />
-          )}
+          {priority && <View style={[styles.priorityIndicator, { backgroundColor: getPriorityColor() }]} />}
         </View>
 
         {description ? (
-          <Text
-            style={[
-              styles.description,
-              completed && styles.completedText,
-            ]}
-            numberOfLines={2}
-          >
+          <Text style={[styles.description, completed && styles.completedText]} numberOfLines={2}>
             {description}
           </Text>
         ) : null}

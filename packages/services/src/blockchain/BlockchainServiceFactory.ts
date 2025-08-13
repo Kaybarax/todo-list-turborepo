@@ -3,8 +3,14 @@ import { BlockchainService } from './interfaces/BlockchainService';
 import { PolygonBlockchainService, PolygonBlockchainServiceOptions } from './implementations/PolygonBlockchainService';
 import { SolanaBlockchainService } from './implementations/SolanaBlockchainService';
 import { PolkadotBlockchainService } from './implementations/PolkadotBlockchainService';
-import { MoonbeamBlockchainService, MoonbeamBlockchainServiceOptions } from './implementations/MoonbeamBlockchainService';
-import { BaseNetworkBlockchainService, BaseNetworkBlockchainServiceOptions } from './implementations/BaseNetworkBlockchainService';
+import {
+  MoonbeamBlockchainService,
+  MoonbeamBlockchainServiceOptions,
+} from './implementations/MoonbeamBlockchainService';
+import {
+  BaseNetworkBlockchainService,
+  BaseNetworkBlockchainServiceOptions,
+} from './implementations/BaseNetworkBlockchainService';
 import { BlockchainError } from './utils/BlockchainError';
 
 /**
@@ -124,54 +130,34 @@ export class BlockchainServiceFactory {
 
       case BlockchainNetwork.MOONBEAM:
         if (!this.config.moonbeam?.mainnet) {
-          throw BlockchainError.networkError(
-            'Moonbeam mainnet configuration is missing',
-            undefined,
-            network
-          );
+          throw BlockchainError.networkError('Moonbeam mainnet configuration is missing', undefined, network);
         }
         service = new MoonbeamBlockchainService(this.config.moonbeam.mainnet);
         break;
 
       case BlockchainNetwork.MOONBEAM_TESTNET:
         if (!this.config.moonbeam?.testnet) {
-          throw BlockchainError.networkError(
-            'Moonbeam testnet configuration is missing',
-            undefined,
-            network
-          );
+          throw BlockchainError.networkError('Moonbeam testnet configuration is missing', undefined, network);
         }
         service = new MoonbeamBlockchainService(this.config.moonbeam.testnet);
         break;
 
       case BlockchainNetwork.BASE:
         if (!this.config.base?.mainnet) {
-          throw BlockchainError.networkError(
-            'Base mainnet configuration is missing',
-            undefined,
-            network
-          );
+          throw BlockchainError.networkError('Base mainnet configuration is missing', undefined, network);
         }
         service = new BaseNetworkBlockchainService(this.config.base.mainnet);
         break;
 
       case BlockchainNetwork.BASE_TESTNET:
         if (!this.config.base?.testnet) {
-          throw BlockchainError.networkError(
-            'Base testnet configuration is missing',
-            undefined,
-            network
-          );
+          throw BlockchainError.networkError('Base testnet configuration is missing', undefined, network);
         }
         service = new BaseNetworkBlockchainService(this.config.base.testnet);
         break;
 
       default:
-        throw BlockchainError.networkError(
-          `Unsupported blockchain network: ${network}`,
-          undefined,
-          network
-        );
+        throw BlockchainError.networkError(`Unsupported blockchain network: ${network}`, undefined, network);
     }
 
     // Cache the service

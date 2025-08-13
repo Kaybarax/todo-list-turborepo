@@ -122,11 +122,7 @@ export const PasswordToggle: Story = {
         type={showPassword ? 'text' : 'password'}
         placeholder="Enter your password"
         rightIcon={
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="pointer-events-auto"
-          >
+          <button type="button" onClick={() => setShowPassword(!showPassword)} className="pointer-events-auto">
             {showPassword ? (
               <EyeOff className="h-4 w-4 text-muted-foreground" />
             ) : (

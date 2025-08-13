@@ -13,11 +13,11 @@ describe('Base Smart Contracts Integration Tests', function () {
 
   beforeEach(async function () {
     [owner, user1, user2, user3, ...addrs] = await ethers.getSigners();
-    
+
     // Deploy contracts
     TodoList = await ethers.getContractFactory('TodoList');
     TodoListFactory = await ethers.getContractFactory('TodoListFactory');
-    
+
     todoListFactory = await TodoListFactory.deploy();
     await todoListFactory.waitForDeployment();
   });
@@ -27,13 +27,13 @@ describe('Base Smart Contracts Integration Tests', function () {
       // Verify factory deployment
       expect(await todoListFactory.getAddress()).to.be.properAddress;
       expect(await todoListFactory.owner()).to.equal(owner.address);
-      
+
       // Create TodoList via factory
       await todoListFactory.connect(user1).createTodoList();
-      
+
       const todoListAddress = await todoListFactory.getTodoListForUser(user1.address);
       expect(todoListAddress).to.not.equal(ethers.ZeroAddress);
-      
+
       // Verify TodoList deployment
       const todoListContract = TodoList.attach(todoListAddress);
       expect(await todoListContract.owner()).to.equal(user1.address);
@@ -160,10 +160,8 @@ describe('Base Smart Contracts Integration Tests', function () {
       expect(user2Todos[0].title).to.equal('User2 Todo');
 
       // Verify users cannot access each other's todos
-      await expect(user1TodoList.connect(user2).getTodo(1))
-        .to.be.revertedWith('Todo not found');
-      await expect(user2TodoList.connect(user1).getTodo(1))
-        .to.be.revertedWith('Todo not found');
+      await expect(user1TodoList.connect(user2).getTodo(1)).to.be.revertedWith('Todo not found');
+      await expect(user2TodoList.connect(user1).getTodo(1)).to.be.revertedWith('Todo not found');
     });
   });
 
@@ -181,7 +179,7 @@ describe('Base Smart Contracts Integration Tests', function () {
       await todoList.connect(user1).createTodo('Base L2 Todo 1', 'Testing Base efficiency', 1);
       await todoList.connect(user1).createTodo('Base L2 Todo 2', 'Testing Base efficiency', 2);
       await todoList.connect(user1).createTodo('Base L2 Todo 3', 'Testing Base efficiency', 0);
-      
+
       await todoList.connect(user1).toggleTodoCompletion(1);
       await todoList.connect(user1).updateTodo(2, 'Updated on Base', 'Updated description', 1);
 
@@ -201,7 +199,7 @@ describe('Base Smart Contracts Integration Tests', function () {
       // Create TodoList
       const createTx = await todoListFactory.connect(user1).createTodoList();
       const createReceipt = await createTx.wait();
-      
+
       // Base L2 should have efficient contract creation
       expect(createReceipt.gasUsed).to.be.lessThan(2000000n);
 
@@ -246,21 +244,21 @@ describe('Base Smart Contracts Integration Tests', function () {
   describe('Error Handling and Edge Cases', function () {
     it('Should handle factory and TodoList errors consistently', async function () {
       // Test factory errors
-      await expect(todoListFactory.connect(user1).createTodoList())
-        .to.emit(todoListFactory, 'TodoListCreated');
+      await expect(todoListFactory.connect(user1).createTodoList()).to.emit(todoListFactory, 'TodoListCreated');
 
-      await expect(todoListFactory.connect(user1).createTodoList())
-        .to.be.revertedWith('TodoList already exists for this user');
+      await expect(todoListFactory.connect(user1).createTodoList()).to.be.revertedWith(
+        'TodoList already exists for this user',
+      );
 
       // Test TodoList errors
       const todoListAddress = await todoListFactory.getTodoListForUser(user1.address);
       const todoList = TodoList.attach(todoListAddress);
 
-      await expect(todoList.connect(user1).getTodo(999))
-        .to.be.revertedWith('Todo not found');
+      await expect(todoList.connect(user1).getTodo(999)).to.be.revertedWith('Todo not found');
 
-      await expect(todoList.connect(user1).createTodo('', 'Description', 1))
-        .to.be.revertedWith('Title cannot be empty');
+      await expect(todoList.connect(user1).createTodo('', 'Description', 1)).to.be.revertedWith(
+        'Title cannot be empty',
+      );
     });
 
     it('Should handle concurrent operations across multiple contracts', async function () {
@@ -314,9 +312,7 @@ describe('Base Smart Contracts Integration Tests', function () {
       // Create many todos rapidly
       const createPromises = [];
       for (let i = 0; i < 20; i++) {
-        createPromises.push(
-          todoList.connect(user1).createTodo(`Stress Test Todo ${i}`, `Description ${i}`, i % 3)
-        );
+        createPromises.push(todoList.connect(user1).createTodo(`Stress Test Todo ${i}`, `Description ${i}`, i % 3));
       }
 
       await Promise.all(createPromises);
@@ -379,11 +375,9 @@ describe('Base Smart Contracts Integration Tests', function () {
       for (let i = 0; i < numUsers; i++) {
         const todoListAddress = await todoListFactory.getTodoListForUser(addrs[i].address);
         const todoList = TodoList.attach(todoListAddress);
-        
+
         for (let j = 0; j < 5; j++) {
-          todoPromises.push(
-            todoList.connect(addrs[i]).createTodo(`User ${i} Todo ${j}`, `Description ${j}`, j % 3)
-          );
+          todoPromises.push(todoList.connect(addrs[i]).createTodo(`User ${i} Todo ${j}`, `Description ${j}`, j % 3));
         }
       }
 
@@ -463,24 +457,24 @@ describe('Base Smart Contracts Integration Tests', function () {
       const migrationData = {
         factory: {},
         todoLists: {},
-        todos: {}
+        todos: {},
       };
 
       // Create TodoLists and todos
       for (const user of testUsers) {
         await todoListFactory.connect(user).createTodoList();
-        
+
         const todoListAddress = await todoListFactory.getTodoListForUser(user.address);
         const todoList = TodoList.attach(todoListAddress);
-        
+
         // Create various todos
         await todoList.connect(user).createTodo(`${user.address} High Priority`, 'Important task', 2);
         await todoList.connect(user).createTodo(`${user.address} Medium Priority`, 'Regular task', 1);
         await todoList.connect(user).createTodo(`${user.address} Low Priority`, 'Optional task', 0);
-        
+
         // Complete some todos
         await todoList.connect(user).toggleTodoCompletion(1);
-        
+
         // Store migration data
         migrationData.todoLists[user.address] = todoListAddress;
         migrationData.todos[user.address] = await todoList.connect(user).getTodos();

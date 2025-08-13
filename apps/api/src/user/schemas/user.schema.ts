@@ -22,7 +22,11 @@ export class User {
   @Prop({ sparse: true })
   walletAddress?: string;
 
-  @ApiProperty({ description: 'Preferred blockchain network', enum: ['solana', 'polkadot', 'polygon'], required: false })
+  @ApiProperty({
+    description: 'Preferred blockchain network',
+    enum: ['solana', 'polkadot', 'polygon'],
+    required: false,
+  })
   @Prop({ enum: ['solana', 'polkadot', 'polygon'] })
   preferredNetwork?: 'solana' | 'polkadot' | 'polygon';
 

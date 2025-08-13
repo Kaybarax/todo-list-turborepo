@@ -13,10 +13,10 @@ console.log('=====================================');
 
 // Check if Docker is available
 function checkDockerAvailability() {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const docker = spawn('docker', ['--version']);
-    
-    docker.on('close', (code) => {
+
+    docker.on('close', code => {
       if (code === 0) {
         console.log('✅ Docker is available');
         resolve(true);
@@ -26,7 +26,7 @@ function checkDockerAvailability() {
         resolve(false);
       }
     });
-    
+
     docker.on('error', () => {
       console.log('❌ Docker is not available or not installed');
       resolve(false);
@@ -37,11 +37,11 @@ function checkDockerAvailability() {
 // Setup local Moonbeam development node using Docker
 async function setupMoonbeamDevNode() {
   console.log('\n📦 Setting up Moonbeam development node...');
-  
+
   const dockerAvailable = await checkDockerAvailability();
   if (!dockerAvailable) {
     console.log('\n🔧 Alternative: Use Hardhat Network');
-    console.log('You can use Hardhat\'s built-in network for testing:');
+    console.log("You can use Hardhat's built-in network for testing:");
     console.log('  npm run node');
     console.log('  npm run test');
     return;
@@ -49,20 +49,25 @@ async function setupMoonbeamDevNode() {
 
   console.log('\n🚀 Starting Moonbeam development node with Docker...');
   console.log('This will start a local Moonbeam node compatible with Ethereum tools');
-  
+
   // Moonbeam development node Docker command
   const dockerCommand = [
     'run',
     '--rm',
-    '--name', 'moonbeam-dev',
-    '-p', '9944:9944',
-    '-p', '9933:9933',
+    '--name',
+    'moonbeam-dev',
+    '-p',
+    '9944:9944',
+    '-p',
+    '9933:9933',
     'purestake/moonbeam:latest',
     '--dev',
     '--ws-external',
     '--rpc-external',
-    '--rpc-cors', 'all',
-    '--rpc-methods', 'unsafe'
+    '--rpc-cors',
+    'all',
+    '--rpc-methods',
+    'unsafe',
   ];
 
   console.log('Docker command:', 'docker', dockerCommand.join(' '));
@@ -70,25 +75,25 @@ async function setupMoonbeamDevNode() {
   console.log('  WebSocket: ws://localhost:9944');
   console.log('  HTTP RPC: http://localhost:9933');
   console.log('  Chain ID: 1281 (Moonbeam Development)');
-  
+
   console.log('\n⚠️  Note: This will run in the foreground. Press Ctrl+C to stop.');
   console.log('To run in background, add -d flag to the docker command.');
-  
+
   console.log('\n🔑 Development Accounts:');
   console.log('The node comes with pre-funded development accounts:');
   console.log('  Alith: 0xf24FF3a9CF04c71Dbc94D0b566f7A27B94566cac');
   console.log('  Baltathar: 0x3Cd0A705a2DC65e5b1E1205896BaA2be8A07c6e0');
   console.log('  Charleth: 0x798d4Ba9baf0064Ec19eB4F0a1a45785ae9D6DFc');
-  
+
   console.log('\n▶️  Starting node...');
-  
+
   const dockerProcess = spawn('docker', dockerCommand, { stdio: 'inherit' });
-  
-  dockerProcess.on('close', (code) => {
+
+  dockerProcess.on('close', code => {
     console.log(`\n🛑 Moonbeam development node stopped with code ${code}`);
   });
-  
-  dockerProcess.on('error', (error) => {
+
+  dockerProcess.on('error', error => {
     console.error('❌ Error starting Moonbeam node:', error.message);
     console.log('\n🔧 Troubleshooting:');
     console.log('1. Make sure Docker is running');
@@ -106,7 +111,7 @@ async function setupMoonbeamDevNode() {
 // Create development configuration file
 function createDevConfig() {
   const configPath = path.join(__dirname, '../.env.dev');
-  
+
   const devConfig = `# Moonbeam Development Node Configuration
 # This file is created automatically by setup-dev-node.js
 
@@ -145,12 +150,12 @@ async function main() {
   try {
     // Create development configuration
     createDevConfig();
-    
+
     console.log('\n🎯 Setup Options:');
     console.log('1. Start local Moonbeam development node (Docker required)');
     console.log('2. Use Hardhat network for testing');
     console.log('3. Exit');
-    
+
     // For now, we'll provide instructions for both options
     console.log('\n📋 Instructions:');
     console.log('\n🐳 Option 1: Local Moonbeam Node (Recommended)');
@@ -158,33 +163,32 @@ async function main() {
     console.log('  2. Run: npm run setup-dev-node');
     console.log('  3. In another terminal: npm run test');
     console.log('  4. Deploy contracts: npm run deploy:dev');
-    
+
     console.log('\n⚡ Option 2: Hardhat Network (Faster for testing)');
     console.log('  1. Run: npm run node');
     console.log('  2. In another terminal: npm run test');
     console.log('  3. Deploy contracts: npm run deploy:local');
-    
+
     console.log('\n🧪 Running Tests:');
     console.log('  npm run test              # Run all tests');
     console.log('  npm run test:coverage     # Run tests with coverage');
     console.log('  npm run test:gas          # Run tests with gas reporting');
-    
+
     console.log('\n📊 Additional Commands:');
     console.log('  npm run compile           # Compile contracts');
     console.log('  npm run size              # Check contract sizes');
     console.log('  npm run lint              # Lint Solidity code');
-    
+
     // If Docker is available, offer to start the node
     const dockerAvailable = await checkDockerAvailability();
     if (dockerAvailable) {
       console.log('\n🚀 Would you like to start the Moonbeam development node now?');
       console.log('Run this script with --start flag to begin: node scripts/setup-dev-node.js --start');
-      
+
       if (process.argv.includes('--start')) {
         await setupMoonbeamDevNode();
       }
     }
-    
   } catch (error) {
     console.error('❌ Setup failed:', error.message);
     process.exit(1);
@@ -199,5 +203,5 @@ if (require.main === module) {
 module.exports = {
   setupMoonbeamDevNode,
   createDevConfig,
-  checkDockerAvailability
+  checkDockerAvailability,
 };

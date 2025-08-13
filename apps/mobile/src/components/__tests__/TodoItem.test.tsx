@@ -59,12 +59,7 @@ describe('TodoItem', () => {
 
   it('renders todo item correctly', () => {
     const { getByText, getByTestId } = render(
-      <TodoItem
-        todo={mockTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={mockTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     expect(getByText('Test Todo')).toBeTruthy();
@@ -77,14 +72,9 @@ describe('TodoItem', () => {
 
   it('renders completed todo with different styling', () => {
     const completedTodo = { ...mockTodo, completed: true };
-    
+
     const { getByText, getByTestId } = render(
-      <TodoItem
-        todo={completedTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={completedTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     const checkbox = getByTestId('checkbox');
@@ -95,12 +85,7 @@ describe('TodoItem', () => {
 
   it('handles toggle completion', () => {
     const { getByTestId } = render(
-      <TodoItem
-        todo={mockTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={mockTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     const checkbox = getByTestId('checkbox');
@@ -111,12 +96,7 @@ describe('TodoItem', () => {
 
   it('handles edit button press', () => {
     const { getByTestId } = render(
-      <TodoItem
-        todo={mockTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={mockTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     const editButton = getByTestId('button-Edit');
@@ -127,12 +107,7 @@ describe('TodoItem', () => {
 
   it('handles delete button press', () => {
     const { getByTestId } = render(
-      <TodoItem
-        todo={mockTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={mockTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     const deleteButton = getByTestId('button-Delete');
@@ -148,7 +123,7 @@ describe('TodoItem', () => {
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-      />
+      />,
     );
 
     expect(getByTestId('badge-danger')).toBeTruthy();
@@ -159,7 +134,7 @@ describe('TodoItem', () => {
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-      />
+      />,
     );
 
     expect(getByTestId('badge-primary')).toBeTruthy();
@@ -170,7 +145,7 @@ describe('TodoItem', () => {
         onToggle={mockOnToggle}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-      />
+      />,
     );
 
     expect(getByTestId('badge-secondary')).toBeTruthy();
@@ -178,14 +153,9 @@ describe('TodoItem', () => {
 
   it('renders without due date when not provided', () => {
     const todoWithoutDueDate = { ...mockTodo, dueDate: undefined };
-    
+
     const { queryByText } = render(
-      <TodoItem
-        todo={todoWithoutDueDate}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={todoWithoutDueDate} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     expect(queryByText(/Due:/)).toBeNull();
@@ -193,14 +163,9 @@ describe('TodoItem', () => {
 
   it('renders without description when not provided', () => {
     const todoWithoutDescription = { ...mockTodo, description: undefined };
-    
+
     const { queryByText } = render(
-      <TodoItem
-        todo={todoWithoutDescription}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={todoWithoutDescription} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     expect(queryByText('Test Description')).toBeNull();
@@ -208,14 +173,9 @@ describe('TodoItem', () => {
 
   it('renders without tags when empty', () => {
     const todoWithoutTags = { ...mockTodo, tags: [] };
-    
+
     const { queryByText } = render(
-      <TodoItem
-        todo={todoWithoutTags}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={todoWithoutTags} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     expect(queryByText('work')).toBeNull();
@@ -223,19 +183,14 @@ describe('TodoItem', () => {
   });
 
   it('shows overdue styling for past due dates', () => {
-    const overdueTodo = { 
-      ...mockTodo, 
+    const overdueTodo = {
+      ...mockTodo,
       dueDate: new Date('2023-01-01'), // Past date
-      completed: false 
+      completed: false,
     };
-    
+
     const { getByText } = render(
-      <TodoItem
-        todo={overdueTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={overdueTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     const dueDateElement = getByText('Due: 1/1/2023');
@@ -244,19 +199,14 @@ describe('TodoItem', () => {
   });
 
   it('shows blockchain network information when available', () => {
-    const blockchainTodo = { 
-      ...mockTodo, 
+    const blockchainTodo = {
+      ...mockTodo,
       blockchainNetwork: 'polygon' as BlockchainNetwork,
-      transactionHash: '0x123abc'
+      transactionHash: '0x123abc',
     };
-    
+
     const { getByText } = render(
-      <TodoItem
-        todo={blockchainTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={blockchainTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     expect(getByText('polygon')).toBeTruthy();
@@ -265,13 +215,7 @@ describe('TodoItem', () => {
 
   it('handles loading states correctly', () => {
     const { getByTestId } = render(
-      <TodoItem
-        todo={mockTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-
-      />
+      <TodoItem todo={mockTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     const checkbox = getByTestId('checkbox');
@@ -286,15 +230,9 @@ describe('TodoItem', () => {
 
   it('handles long press for context menu', () => {
     const mockOnLongPress = jest.fn();
-    
-    const { getByTestId } = render(
-      <TodoItem
-        todo={mockTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
 
-      />
+    const { getByTestId } = render(
+      <TodoItem todo={mockTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     const card = getByTestId('card');
@@ -306,36 +244,24 @@ describe('TodoItem', () => {
   it('handles swipe actions', () => {
     const mockOnSwipeLeft = jest.fn();
     const mockOnSwipeRight = jest.fn();
-    
-    const { getByTestId } = render(
-      <TodoItem
-        todo={mockTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
 
-      />
+    const { getByTestId } = render(
+      <TodoItem todo={mockTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     const card = getByTestId('card');
-    
+
     // Simulate swipe gestures
     fireEvent(card, 'onSwipeLeft');
     expect(mockOnSwipeLeft).toHaveBeenCalledWith(mockTodo);
-    
+
     fireEvent(card, 'onSwipeRight');
     expect(mockOnSwipeRight).toHaveBeenCalledWith(mockTodo);
   });
 
   it('shows creation and update timestamps', () => {
     const { getByText } = render(
-      <TodoItem
-        todo={mockTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-
-      />
+      <TodoItem todo={mockTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     expect(getByText(/Created:/)).toBeTruthy();

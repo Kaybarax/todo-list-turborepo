@@ -7,12 +7,14 @@ This guide covers setting up and deploying smart contracts to the Moonbeam netwo
 Moonbeam is a Polkadot parachain that provides an Ethereum-compatible smart contract platform. It allows developers to deploy existing Solidity smart contracts and DApp frontends to Moonbeam with minimal changes.
 
 ### Key Features
+
 - **Ethereum Compatibility**: Full Web3 RPC API compatibility
 - **Polkadot Integration**: Cross-chain interoperability through Polkadot
 - **EVM Support**: Run existing Ethereum smart contracts
 - **Cross-Chain Assets**: Native cross-chain token transfers
 
 ### Networks
+
 - **Moonbeam**: Mainnet (Chain ID: 1284)
 - **Moonbase Alpha**: Testnet (Chain ID: 1287)
 - **Moonriver**: Kusama parachain (Chain ID: 1285)
@@ -20,23 +22,28 @@ Moonbeam is a Polkadot parachain that provides an Ethereum-compatible smart cont
 ## 🛠️ Prerequisites
 
 ### Required Tools
+
 - **Node.js 20+** and **pnpm**
 - **Hardhat** (installed via project dependencies)
 - **MetaMask** or compatible Ethereum wallet
 
 ### Environment Setup
+
 1. **Install dependencies**
+
    ```bash
    cd apps/smart-contracts/moonbeam
    pnpm install
    ```
 
 2. **Configure environment variables**
+
    ```bash
    cp .env.example .env
    ```
 
    Update `.env` with your configuration:
+
    ```bash
    # Moonbeam Mainnet
    MOONBEAM_RPC_URL=https://rpc.api.moonbeam.network
@@ -54,6 +61,7 @@ Moonbeam is a Polkadot parachain that provides an Ethereum-compatible smart cont
 ## 🔧 Development Setup
 
 ### Local Development Node
+
 For local development, you can use Hardhat's built-in network or run a local Moonbeam node:
 
 ```bash
@@ -69,9 +77,11 @@ docker run -d --name moonbeam-node \
 ```
 
 ### Wallet Configuration
+
 Add Moonbeam networks to your wallet:
 
 #### Moonbeam Mainnet
+
 - **Network Name**: Moonbeam
 - **RPC URL**: https://rpc.api.moonbeam.network
 - **Chain ID**: 1284
@@ -79,6 +89,7 @@ Add Moonbeam networks to your wallet:
 - **Block Explorer**: https://moonscan.io
 
 #### Moonbase Alpha Testnet
+
 - **Network Name**: Moonbase Alpha
 - **RPC URL**: https://rpc.api.moonbase.moonbeam.network
 - **Chain ID**: 1287
@@ -88,6 +99,7 @@ Add Moonbeam networks to your wallet:
 ## 📝 Smart Contract Development
 
 ### Contract Structure
+
 The Moonbeam contracts are located in `apps/smart-contracts/moonbeam/`:
 
 ```
@@ -107,6 +119,7 @@ moonbeam/
 ```
 
 ### Compiling Contracts
+
 ```bash
 cd apps/smart-contracts/moonbeam
 
@@ -119,6 +132,7 @@ pnpm compile
 ```
 
 ### Running Tests
+
 ```bash
 # Run all tests
 pnpm test
@@ -136,17 +150,19 @@ pnpm test:coverage
 ## 🚀 Deployment
 
 ### Testnet Deployment (Moonbase Alpha)
+
 1. **Get testnet tokens**
    - Visit [Moonbase Alpha Faucet](https://apps.moonbeam.network/moonbase-alpha/faucet/)
    - Request DEV tokens for your wallet address
 
 2. **Deploy to testnet**
+
    ```bash
    cd apps/smart-contracts/moonbeam
-   
+
    # Deploy contracts
    pnpm deploy:testnet
-   
+
    # Verify contracts (optional)
    pnpm verify:testnet
    ```
@@ -158,6 +174,7 @@ pnpm test:coverage
    ```
 
 ### Mainnet Deployment (Moonbeam)
+
 ⚠️ **Warning**: Mainnet deployment requires real GLMR tokens and careful testing.
 
 1. **Prepare for mainnet**
@@ -166,17 +183,19 @@ pnpm test:coverage
    - Double-check all configuration values
 
 2. **Deploy to mainnet**
+
    ```bash
    cd apps/smart-contracts/moonbeam
-   
+
    # Deploy contracts (with confirmation prompts)
    pnpm deploy:mainnet
-   
+
    # Verify contracts on Moonscan
    pnpm verify:mainnet
    ```
 
 ### Local Development Deployment
+
 ```bash
 cd apps/smart-contracts/moonbeam
 
@@ -190,6 +209,7 @@ pnpm deploy:local
 ## 🔍 Contract Verification
 
 ### Automatic Verification
+
 Contracts are automatically verified during deployment if you have a Moonscan API key:
 
 ```bash
@@ -201,6 +221,7 @@ pnpm deploy:testnet --verify
 ```
 
 ### Manual Verification
+
 ```bash
 # Verify specific contract
 pnpm hardhat verify --network moonbase CONTRACT_ADDRESS "Constructor Arg 1" "Constructor Arg 2"
@@ -212,32 +233,36 @@ pnpm verify:testnet
 ## 🔗 Integration with Frontend
 
 ### Contract Addresses
+
 After deployment, contract addresses are saved to:
+
 - `deployments/moonbase/TodoList.json` (testnet)
 - `deployments/moonbeam/TodoList.json` (mainnet)
 
 ### Frontend Integration
+
 Update your frontend configuration with the deployed contract addresses:
 
 ```typescript
 // In your frontend app
 const MOONBEAM_CONTRACTS = {
   testnet: {
-    todoList: "0x...", // From deployments/moonbase/TodoList.json
+    todoList: '0x...', // From deployments/moonbase/TodoList.json
     chainId: 1287,
-    rpcUrl: "https://rpc.api.moonbase.moonbeam.network"
+    rpcUrl: 'https://rpc.api.moonbase.moonbeam.network',
   },
   mainnet: {
-    todoList: "0x...", // From deployments/moonbeam/TodoList.json
+    todoList: '0x...', // From deployments/moonbeam/TodoList.json
     chainId: 1284,
-    rpcUrl: "https://rpc.api.moonbeam.network"
-  }
+    rpcUrl: 'https://rpc.api.moonbeam.network',
+  },
 };
 ```
 
 ## 🧪 Testing Strategy
 
 ### Unit Tests
+
 ```bash
 # Run unit tests
 pnpm test
@@ -247,6 +272,7 @@ pnpm test:gas
 ```
 
 ### Integration Tests
+
 ```bash
 # Run integration tests
 pnpm test:integration
@@ -256,6 +282,7 @@ pnpm test:testnet
 ```
 
 ### Load Testing
+
 ```bash
 # Run load tests (requires deployed contracts)
 pnpm test:load
@@ -264,10 +291,12 @@ pnpm test:load
 ## 📊 Monitoring and Analytics
 
 ### Block Explorer
+
 - **Mainnet**: https://moonscan.io
 - **Testnet**: https://moonbase.moonscan.io
 
 ### Useful Tools
+
 - **Moonbeam DApp**: https://apps.moonbeam.network
 - **Subscan**: https://moonbeam.subscan.io
 - **DeFiLlama**: Track TVL and analytics
@@ -277,6 +306,7 @@ pnpm test:load
 ### Common Issues
 
 #### 1. RPC Connection Issues
+
 ```bash
 # Test RPC connection
 curl -H "Content-Type: application/json" \
@@ -285,6 +315,7 @@ curl -H "Content-Type: application/json" \
 ```
 
 #### 2. Gas Estimation Failures
+
 ```javascript
 // In hardhat.config.js, adjust gas settings
 networks: {
@@ -296,6 +327,7 @@ networks: {
 ```
 
 #### 3. Contract Verification Failures
+
 ```bash
 # Check contract bytecode matches
 pnpm hardhat verify --list-networks
@@ -303,11 +335,13 @@ pnpm hardhat verify --show-stack-traces CONTRACT_ADDRESS
 ```
 
 #### 4. Insufficient Funds
+
 - Ensure wallet has enough GLMR/DEV tokens
 - Check gas price and limit settings
 - Use faucet for testnet tokens
 
 ### Getting Help
+
 - **Moonbeam Discord**: https://discord.gg/PfpUATX
 - **Documentation**: https://docs.moonbeam.network
 - **GitHub**: https://github.com/moonbeam-foundation/moonbeam
@@ -315,16 +349,19 @@ pnpm hardhat verify --show-stack-traces CONTRACT_ADDRESS
 ## 📚 Additional Resources
 
 ### Documentation
+
 - [Moonbeam Documentation](https://docs.moonbeam.network)
 - [Hardhat Documentation](https://hardhat.org/docs)
 - [Solidity Documentation](https://docs.soliditylang.org)
 
 ### Tutorials
+
 - [Moonbeam Getting Started](https://docs.moonbeam.network/getting-started/)
 - [Deploy Smart Contracts](https://docs.moonbeam.network/builders/build/eth-api/dev-env/hardhat/)
 - [Cross-Chain Integration](https://docs.moonbeam.network/builders/interoperability/)
 
 ### Tools
+
 - [Moonbeam Network Status](https://status.moonbeam.network)
 - [Gas Tracker](https://moonbeam.moonscan.io/gastracker)
 - [Faucet](https://apps.moonbeam.network/moonbase-alpha/faucet/)

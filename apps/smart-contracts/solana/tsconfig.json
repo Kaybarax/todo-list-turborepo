@@ -20,9 +20,5 @@
       "*": ["./node_modules/*"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "target"
-  ]
+  "exclude": ["node_modules", "dist", "target"]
 }

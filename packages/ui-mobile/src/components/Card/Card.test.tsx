@@ -1,14 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 import { Text } from 'react-native';
-import { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent, 
-  CardFooter 
-} from './Card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './Card';
 
 describe('Card Component', () => {
   it('renders correctly', () => {
@@ -29,9 +22,9 @@ describe('Card Component', () => {
         <CardFooter>
           <Text>Card Footer</Text>
         </CardFooter>
-      </Card>
+      </Card>,
     );
-    
+
     expect(getByText('Card Title')).toBeTruthy();
     expect(getByText('Card Description')).toBeTruthy();
     expect(getByText('Card Content')).toBeTruthy();
@@ -39,16 +32,9 @@ describe('Card Component', () => {
   });
 
   it('applies custom styles', () => {
-    const { getByTestId } = render(
-      <Card 
-        testID="styled-card" 
-        style={{ backgroundColor: 'red' }} 
-      />
-    );
-    
+    const { getByTestId } = render(<Card testID="styled-card" style={{ backgroundColor: 'red' }} />);
+
     const card = getByTestId('styled-card');
-    expect(card.props.style).toContainEqual(
-      expect.objectContaining({ backgroundColor: 'red' })
-    );
+    expect(card.props.style).toContainEqual(expect.objectContaining({ backgroundColor: 'red' }));
   });
 });

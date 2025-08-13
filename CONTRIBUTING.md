@@ -21,21 +21,24 @@ Before contributing, ensure you have:
 ### Development Setup
 
 1. **Fork and Clone**
+
    ```bash
    git clone https://github.com/your-username/todo-list-turborepo.git
    cd todo-list-turborepo
    ```
 
 2. **Install Dependencies**
+
    ```bash
    pnpm install
    ```
 
 3. **Setup Development Environment**
+
    ```bash
    # Option 1: Use development container (recommended)
    # Open in VS Code and select "Reopen in Container"
-   
+
    # Option 2: Local development
    docker-compose -f docker-compose.dev.yml up -d
    pnpm db:setup
@@ -128,6 +131,7 @@ git commit -m "test(contracts): add polygon contract tests"
 ```
 
 **Commit Types:**
+
 - `feat`: New features
 - `fix`: Bug fixes
 - `docs`: Documentation changes
@@ -158,6 +162,7 @@ Then create a Pull Request on GitHub with:
 ### Code Style
 
 #### TypeScript
+
 - Use **strict mode** TypeScript
 - Prefer **interfaces** over types for object shapes
 - Use **explicit return types** for functions
@@ -183,6 +188,7 @@ function createTodo(data: any): any {
 ```
 
 #### React Components
+
 - Use **functional components** with hooks
 - Implement **proper prop types** with TypeScript
 - Use **custom hooks** for reusable logic
@@ -206,6 +212,7 @@ export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
 ```
 
 #### API Development
+
 - Use **NestJS decorators** properly
 - Implement **proper validation** with class-validator
 - Use **DTOs** for request/response types
@@ -226,6 +233,7 @@ export class TodoController {
 ### Testing Guidelines
 
 #### Unit Tests
+
 - **Test behavior, not implementation**
 - Use **descriptive test names**
 - Follow **AAA pattern** (Arrange, Act, Assert)
@@ -238,10 +246,10 @@ describe('TodoService', () => {
       // Arrange
       const createTodoDto = { title: 'Test Todo', priority: 'high' };
       const expectedTodo = { id: '1', ...createTodoDto, completed: false };
-      
+
       // Act
       const result = await todoService.create(createTodoDto);
-      
+
       // Assert
       expect(result).toEqual(expectedTodo);
     });
@@ -250,12 +258,14 @@ describe('TodoService', () => {
 ```
 
 #### Integration Tests
+
 - Test **complete workflows**
 - Use **test databases**
 - **Clean up** after tests
 - Test **error scenarios**
 
 #### E2E Tests
+
 - Test **user journeys**
 - Use **page object pattern**
 - Test **cross-browser compatibility**
@@ -264,12 +274,13 @@ describe('TodoService', () => {
 ### Documentation
 
 #### Code Documentation
+
 - Use **JSDoc** for functions and classes
 - Document **complex business logic**
 - Include **usage examples**
 - Keep documentation **up to date**
 
-```typescript
+````typescript
 /**
  * Creates a new todo item with blockchain integration
  * @param createTodoDto - The todo data to create
@@ -294,9 +305,10 @@ async create(
 ): Promise<TodoItem> {
   // implementation
 }
-```
+````
 
 #### README Updates
+
 - Update **feature lists** when adding functionality
 - Include **setup instructions** for new dependencies
 - Add **usage examples** for new features
@@ -305,6 +317,7 @@ async create(
 ### Blockchain Development
 
 #### Smart Contracts
+
 - Follow **security best practices**
 - Use **established patterns** (OpenZeppelin)
 - **Test thoroughly** including edge cases
@@ -327,6 +340,7 @@ contract TodoContract is Ownable, ReentrancyGuard {
 ```
 
 #### Rust Programs (Solana)
+
 - Follow **Anchor conventions**
 - Use **proper error handling**
 - **Optimize for compute units**
@@ -339,7 +353,7 @@ use anchor_lang::prelude::*;
 #[program]
 pub mod todo_program {
     use super::*;
-    
+
     /// Creates a new todo item
     pub fn create_todo(
         ctx: Context<CreateTodo>,
@@ -401,6 +415,7 @@ We follow [Semantic Versioning](https://semver.org/):
 ## 🎯 Areas for Contribution
 
 ### High Priority
+
 - **Performance optimizations**
 - **Security enhancements**
 - **Test coverage improvements**
@@ -408,6 +423,7 @@ We follow [Semantic Versioning](https://semver.org/):
 - **Accessibility features**
 
 ### Medium Priority
+
 - **New blockchain integrations**
 - **Mobile app enhancements**
 - **Developer experience improvements**
@@ -415,6 +431,7 @@ We follow [Semantic Versioning](https://semver.org/):
 - **Internationalization**
 
 ### Good First Issues
+
 Look for issues labeled `good first issue` or `help wanted`:
 
 - **Documentation fixes**

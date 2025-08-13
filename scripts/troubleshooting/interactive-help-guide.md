@@ -5,6 +5,7 @@ This document provides comprehensive information about the interactive help and 
 ## Overview
 
 The interactive help system provides:
+
 - Command-line help options for all blockchain development scripts
 - Interactive troubleshooting prompts with step-by-step guidance
 - Environment diagnosis with actionable recommendations
@@ -15,6 +16,7 @@ The interactive help system provides:
 ### 1. Interactive Help System (`scripts/interactive-help.sh`)
 
 Core library providing:
+
 - Interactive prompts and user input handling
 - Environment diagnosis functions
 - Troubleshooting workflows
@@ -23,6 +25,7 @@ Core library providing:
 ### 2. Enhanced Scripts
 
 All blockchain development scripts now include:
+
 - `--help` / `-h` options with comprehensive documentation
 - `--verbose` mode for detailed debugging output
 - `--interactive` mode for step-by-step guidance
@@ -31,6 +34,7 @@ All blockchain development scripts now include:
 ### 3. Unified Help System (`scripts/blockchain-help.sh`)
 
 Central help system providing:
+
 - Unified access to all script help
 - Quick start guide for new developers
 - Common usage examples
@@ -94,6 +98,7 @@ Central help system providing:
 ### User Prompts
 
 The system provides various types of interactive prompts:
+
 - Yes/No questions for confirmation
 - Multiple choice selections
 - Text input for configuration
@@ -102,6 +107,7 @@ The system provides various types of interactive prompts:
 ### Environment Diagnosis
 
 Comprehensive analysis including:
+
 - Core dependency verification (Node.js, pnpm, Git)
 - Network-specific tool checking (Rust, Solana CLI, Anchor CLI)
 - Project structure validation
@@ -111,6 +117,7 @@ Comprehensive analysis including:
 ### Troubleshooting Workflows
 
 Step-by-step guidance for:
+
 - Build failure resolution
 - Missing dependency installation
 - Network-specific issues
@@ -129,6 +136,7 @@ Step-by-step guidance for:
 ### Non-Interactive Mode
 
 All scripts automatically detect CI/CD environments and disable interactive features:
+
 - Environment variable `CI` detection
 - Non-TTY input detection
 - `--non-interactive` flag support
@@ -136,6 +144,7 @@ All scripts automatically detect CI/CD environments and disable interactive feat
 ### Error Handling
 
 Comprehensive error handling with:
+
 - Graceful fallbacks when interactive features unavailable
 - Clear error messages with actionable guidance
 - Exit codes indicating specific failure types
@@ -144,18 +153,21 @@ Comprehensive error handling with:
 ## Troubleshooting Categories
 
 ### Build Failures
+
 - Contract compilation errors
 - Dependency version conflicts
 - Configuration issues
 - Network-specific problems
 
 ### Missing Dependencies
+
 - Tool installation guidance
 - Version requirement checking
 - Platform-specific instructions
 - Automated installation options
 
 ### Environment Issues
+
 - PATH configuration problems
 - Permission issues
 - Platform compatibility
@@ -180,6 +192,7 @@ Comprehensive error handling with:
 ## Future Enhancements
 
 Potential improvements:
+
 - Web-based interactive troubleshooting interface
 - Integration with project documentation system
 - Automated issue reporting and resolution tracking

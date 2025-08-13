@@ -38,20 +38,24 @@ Use the pre-configured development container with all tools pre-installed:
 ### Blockchain-Specific Requirements
 
 #### For All Networks
+
 - **Node.js 20+** with npm/pnpm
 
 #### For Solana Development
+
 - **Rust 1.70+** with Cargo
 - **Solana CLI 1.16+**
 - **Anchor CLI 0.28+**
 
 #### For Polkadot Development
+
 - **Rust 1.70+** with Cargo
 - **cargo-contract** for ink! smart contracts
 - **WebAssembly target** (wasm32-unknown-unknown)
 - **Protocol Buffers compiler** (protoc)
 
 #### For Polygon/Moonbeam/Base Development
+
 - **Node.js 20+** with npm/pnpm
 - **Hardhat** (installed via project dependencies)
 
@@ -62,11 +66,13 @@ If you prefer to install dependencies manually or the automated setup fails, fol
 ### macOS
 
 #### Install Homebrew (if not already installed)
+
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
 #### Install Core Dependencies
+
 ```bash
 # Node.js and pnpm
 brew install node@20 pnpm
@@ -80,12 +86,14 @@ brew install protobuf
 ```
 
 #### Install Solana CLI
+
 ```bash
 sh -c "$(curl -sSfL https://release.solana.com/v1.18.0/install)"
 export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 ```
 
 #### Install Anchor CLI
+
 ```bash
 # Install Anchor Version Manager
 cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
@@ -96,6 +104,7 @@ avm use 0.29.0
 ```
 
 #### Install Substrate Tools
+
 ```bash
 # Add WebAssembly target
 rustup target add wasm32-unknown-unknown
@@ -107,11 +116,13 @@ cargo install cargo-contract --force
 ### Linux (Ubuntu/Debian)
 
 #### Update Package Manager
+
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
 
 #### Install Core Dependencies
+
 ```bash
 # Node.js 20
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
@@ -129,12 +140,14 @@ source ~/.cargo/env
 ```
 
 #### Install Solana CLI
+
 ```bash
 sh -c "$(curl -sSfL https://release.solana.com/v1.18.0/install)"
 export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 ```
 
 #### Install Anchor CLI
+
 ```bash
 # Install Anchor Version Manager
 cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
@@ -145,6 +158,7 @@ avm use 0.29.0
 ```
 
 #### Install Substrate Tools
+
 ```bash
 # Add WebAssembly target
 rustup target add wasm32-unknown-unknown
@@ -156,10 +170,12 @@ cargo install cargo-contract --force
 ### Windows
 
 #### Using Windows Subsystem for Linux (WSL) - Recommended
+
 1. Install WSL2 with Ubuntu
 2. Follow the Linux installation instructions above
 
 #### Native Windows Installation
+
 1. **Node.js**: Download from [nodejs.org](https://nodejs.org/)
 2. **pnpm**: `npm install -g pnpm@9.12.0`
 3. **Rust**: Download from [rustup.rs](https://rustup.rs/)
@@ -238,6 +254,7 @@ pnpm contracts:compile
 ## 🧪 Testing Your Setup
 
 ### Verify All Dependencies
+
 ```bash
 # Comprehensive dependency check
 pnpm blockchain:deps:check --verbose
@@ -249,6 +266,7 @@ pnpm blockchain:deps:check:polkadot
 ```
 
 ### Test Contract Compilation
+
 ```bash
 # Test all networks
 pnpm contracts:test
@@ -260,6 +278,7 @@ pnpm contracts:polkadot
 ```
 
 ### Run Development Environment
+
 ```bash
 # Start all services
 pnpm dev
@@ -273,6 +292,7 @@ pnpm dev:contracts
 ### Common Issues
 
 #### Rust Installation Issues
+
 ```bash
 # If rustup fails, try manual installation
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --help
@@ -283,6 +303,7 @@ cargo --version
 ```
 
 #### Solana CLI Issues
+
 ```bash
 # If Solana CLI is not found after installation
 export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
@@ -292,6 +313,7 @@ solana-install update
 ```
 
 #### Anchor CLI Issues
+
 ```bash
 # If Anchor installation fails, try specific version
 cargo install --git https://github.com/coral-xyz/anchor anchor-cli --tag v0.29.0 --locked
@@ -301,6 +323,7 @@ anchor --version
 ```
 
 #### Permission Issues
+
 ```bash
 # Fix cargo permissions
 sudo chown -R $(whoami) ~/.cargo
@@ -334,17 +357,20 @@ pnpm blockchain:deps:diagnose
 ## 📚 Additional Resources
 
 ### Documentation
+
 - [Solana Documentation](https://docs.solana.com/)
 - [Anchor Framework](https://www.anchor-lang.com/)
 - [Substrate Documentation](https://docs.substrate.io/)
 - [Hardhat Documentation](https://hardhat.org/docs)
 
 ### Network-Specific Guides
+
 - [Polygon Development](https://docs.polygon.technology/)
 - [Moonbeam Development](https://docs.moonbeam.network/)
 - [Base Development](https://docs.base.org/)
 
 ### Tools and IDEs
+
 - [VS Code Solana Extension](https://marketplace.visualstudio.com/items?itemName=solana-labs.solana)
 - [Rust Analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
 - [Hardhat VS Code Extension](https://marketplace.visualstudio.com/items?itemName=NomicFoundation.hardhat-solidity)
@@ -352,6 +378,7 @@ pnpm blockchain:deps:diagnose
 ## 🔄 Keeping Dependencies Updated
 
 ### Regular Updates
+
 ```bash
 # Update Rust
 rustup update
@@ -368,6 +395,7 @@ pnpm update
 ```
 
 ### Version Management
+
 ```bash
 # Check current versions
 pnpm blockchain:deps:check --verbose

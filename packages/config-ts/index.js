@@ -7,6 +7,6 @@ module.exports = {
     react: require('./react.json'),
     nextjs: require('./nextjs.json'),
     reactNative: require('./react-native.json'),
-    node: require('./node.json')
-  }
+    node: require('./node.json'),
+  },
 };

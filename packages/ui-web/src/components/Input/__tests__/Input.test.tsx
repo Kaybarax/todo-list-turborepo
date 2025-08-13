@@ -43,12 +43,7 @@ describe('Input', () => {
   });
 
   it('renders with both icons', () => {
-    render(
-      <Input 
-        leftIcon={<span data-testid="left-icon" />}
-        rightIcon={<span data-testid="right-icon" />}
-      />
-    );
+    render(<Input leftIcon={<span data-testid="left-icon" />} rightIcon={<span data-testid="right-icon" />} />);
     expect(screen.getByTestId('left-icon')).toBeInTheDocument();
     expect(screen.getByTestId('right-icon')).toBeInTheDocument();
     expect(screen.getByRole('textbox')).toHaveClass('pl-10');
@@ -56,15 +51,7 @@ describe('Input', () => {
   });
 
   it('passes through HTML attributes', () => {
-    render(
-      <Input 
-        id="test-id"
-        name="test-name"
-        value="test-value"
-        readOnly
-        aria-label="test-label"
-      />
-    );
+    render(<Input id="test-id" name="test-name" value="test-value" readOnly aria-label="test-label" />);
     const input = screen.getByRole('textbox');
     expect(input).toHaveAttribute('id', 'test-id');
     expect(input).toHaveAttribute('name', 'test-name');

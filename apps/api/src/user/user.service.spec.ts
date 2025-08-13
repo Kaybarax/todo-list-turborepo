@@ -79,7 +79,7 @@ describe('UserService', () => {
       userModel.findOne.mockResolvedValue(mockUser as any);
 
       await expect(service.create(createUserDto)).rejects.toThrow(
-        new ConflictException('User with this email already exists')
+        new ConflictException('User with this email already exists'),
       );
 
       expect(userModel.findOne).toHaveBeenCalledWith({ email: createUserDto.email });
@@ -169,9 +169,7 @@ describe('UserService', () => {
 
       userModel.findById.mockResolvedValue(null);
 
-      await expect(service.findById(userId)).rejects.toThrow(
-        new NotFoundException(`User with ID ${userId} not found`)
-      );
+      await expect(service.findById(userId)).rejects.toThrow(new NotFoundException(`User with ID ${userId} not found`));
 
       expect(userModel.findById).toHaveBeenCalledWith(userId);
     });
@@ -190,11 +188,7 @@ describe('UserService', () => {
 
       const result = await service.updateById(userId, updateData);
 
-      expect(userModel.findByIdAndUpdate).toHaveBeenCalledWith(
-        userId,
-        updateData,
-        { new: true, runValidators: true }
-      );
+      expect(userModel.findByIdAndUpdate).toHaveBeenCalledWith(userId, updateData, { new: true, runValidators: true });
       expect(result).toEqual(updatedUser);
     });
 
@@ -205,14 +199,10 @@ describe('UserService', () => {
       userModel.findByIdAndUpdate.mockResolvedValue(null);
 
       await expect(service.updateById(userId, updateData)).rejects.toThrow(
-        new NotFoundException(`User with ID ${userId} not found`)
+        new NotFoundException(`User with ID ${userId} not found`),
       );
 
-      expect(userModel.findByIdAndUpdate).toHaveBeenCalledWith(
-        userId,
-        updateData,
-        { new: true, runValidators: true }
-      );
+      expect(userModel.findByIdAndUpdate).toHaveBeenCalledWith(userId, updateData, { new: true, runValidators: true });
     });
 
     it('should handle email uniqueness during update', async () => {
@@ -225,7 +215,7 @@ describe('UserService', () => {
       });
 
       await expect(service.updateById(userId, updateData)).rejects.toThrow(
-        new ConflictException('User with this email already exists')
+        new ConflictException('User with this email already exists'),
       );
     });
 
@@ -239,7 +229,7 @@ describe('UserService', () => {
       });
 
       await expect(service.updateById(userId, updateData)).rejects.toThrow(
-        new ConflictException('User with this wallet address already exists')
+        new ConflictException('User with this wallet address already exists'),
       );
     });
   });
@@ -262,7 +252,7 @@ describe('UserService', () => {
       userModel.findByIdAndDelete.mockResolvedValue(null);
 
       await expect(service.deleteById(userId)).rejects.toThrow(
-        new NotFoundException(`User with ID ${userId} not found`)
+        new NotFoundException(`User with ID ${userId} not found`),
       );
 
       expect(userModel.findByIdAndDelete).toHaveBeenCalledWith(userId);
@@ -318,10 +308,7 @@ describe('UserService', () => {
       const result = await service.findAll(query);
 
       expect(userModel.find).toHaveBeenCalledWith({
-        $or: [
-          { name: { $regex: 'test', $options: 'i' } },
-          { email: { $regex: 'test', $options: 'i' } },
-        ],
+        $or: [{ name: { $regex: 'test', $options: 'i' } }, { email: { $regex: 'test', $options: 'i' } }],
       });
       expect(result).toEqual(users);
     });
@@ -426,7 +413,7 @@ describe('UserService', () => {
       });
 
       await expect(service.updateById(userId, updateData)).rejects.toThrow(
-        new ConflictException('Duplicate key error')
+        new ConflictException('Duplicate key error'),
       );
     });
   });

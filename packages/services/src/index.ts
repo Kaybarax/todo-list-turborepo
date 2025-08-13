@@ -8,11 +8,11 @@ export {
   TransactionStatus,
   BlockchainTodoStatus,
   BlockchainErrorType,
-  
+
   // Constants and configs
   NETWORK_CONFIGS,
   NETWORK_DISPLAY_INFO,
-  
+
   // Functions
   getNetworkConfig,
   isEVMNetwork,
@@ -30,7 +30,7 @@ export {
   mapBlockchainNetworkToWalletNetwork,
   getWalletConnectionUrls,
   generateMockAddress,
-  
+
   // Classes
   BaseBlockchainService,
   PolygonBlockchainService,

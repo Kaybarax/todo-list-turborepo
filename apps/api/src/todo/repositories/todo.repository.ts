@@ -5,9 +5,7 @@ import { Todo, TodoDocument } from '../schemas/todo.schema';
 
 @Injectable()
 export class TodoRepository {
-  constructor(
-    @InjectModel(Todo.name) private todoModel: Model<TodoDocument>,
-  ) {}
+  constructor(@InjectModel(Todo.name) private todoModel: Model<TodoDocument>) {}
 
   async create(todoData: Partial<Todo>): Promise<Todo> {
     const todo = new this.todoModel(todoData);
@@ -52,9 +50,7 @@ export class TodoRepository {
   }
 
   async updateById(id: string, updateData: Partial<Todo>): Promise<Todo | null> {
-    return this.todoModel
-      .findByIdAndUpdate(id, updateData, { new: true })
-      .exec();
+    return this.todoModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
   }
 
   async deleteById(id: string): Promise<boolean> {
@@ -107,9 +103,6 @@ export class TodoRepository {
       filter.blockchainNetwork = network;
     }
 
-    return this.todoModel
-      .find(filter)
-      .sort({ createdAt: -1 })
-      .exec();
+    return this.todoModel.find(filter).sort({ createdAt: -1 }).exec();
   }
 }

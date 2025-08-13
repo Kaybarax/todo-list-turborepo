@@ -12,11 +12,7 @@ export default function WalletScreen() {
     try {
       const message = 'Hello from Todo App Mobile!';
       const signature = await signMessage(message);
-      Alert.alert(
-        'Message Signed',
-        `Signature: ${signature.slice(0, 20)}...`,
-        [{ text: 'OK' }]
-      );
+      Alert.alert('Message Signed', `Signature: ${signature.slice(0, 20)}...`, [{ text: 'OK' }]);
     } catch (error) {
       if (error instanceof Error && error.message !== 'User cancelled signing') {
         Alert.alert('Error', 'Failed to sign message: ' + error.message);
@@ -29,13 +25,9 @@ export default function WalletScreen() {
       const txHash = await sendTransaction(
         '0x742d35Cc6634C0532925a3b8D4C9db96C4b4Df8',
         '0.001',
-        'Todo app mobile transaction'
+        'Todo app mobile transaction',
       );
-      Alert.alert(
-        'Transaction Sent',
-        `Hash: ${txHash.slice(0, 20)}...`,
-        [{ text: 'OK' }]
-      );
+      Alert.alert('Transaction Sent', `Hash: ${txHash.slice(0, 20)}...`, [{ text: 'OK' }]);
     } catch (error) {
       if (error instanceof Error && error.message !== 'User cancelled transaction') {
         Alert.alert('Error', 'Failed to send transaction: ' + error.message);
@@ -47,9 +39,7 @@ export default function WalletScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.pageTitle}>Wallet Connection</Text>
-        <Text style={styles.pageSubtitle}>
-          Connect your wallet to enable blockchain features for your todos.
-        </Text>
+        <Text style={styles.pageSubtitle}>Connect your wallet to enable blockchain features for your todos.</Text>
 
         <WalletConnect />
 
@@ -57,7 +47,7 @@ export default function WalletScreen() {
           <Card style={styles.actionsContainer}>
             <CardContent>
               <Text style={styles.actionsTitle}>Wallet Actions</Text>
-              
+
               <Button
                 variant="outline"
                 size="large"
@@ -65,7 +55,7 @@ export default function WalletScreen() {
                 style={styles.actionButton}
                 onPress={handleSignMessage}
               />
-              
+
               <Button
                 variant="primary"
                 size="large"
@@ -89,9 +79,7 @@ export default function WalletScreen() {
           <Card style={styles.disconnectedContainer}>
             <CardContent>
               <Text style={styles.disconnectedTitle}>No wallet connected</Text>
-              <Text style={styles.disconnectedSubtitle}>
-                Connect your wallet to access blockchain features.
-              </Text>
+              <Text style={styles.disconnectedSubtitle}>Connect your wallet to access blockchain features.</Text>
             </CardContent>
           </Card>
         )}
@@ -99,7 +87,7 @@ export default function WalletScreen() {
         <Card style={styles.networksContainer}>
           <CardContent>
             <Text style={styles.networksTitle}>Supported Networks</Text>
-            
+
             <View style={styles.networksList}>
               <View style={styles.networkItem}>
                 <View style={[styles.networkDot, { backgroundColor: '#9333ea' }]} />
@@ -108,7 +96,7 @@ export default function WalletScreen() {
                   <Text style={styles.networkDescription}>Fast and low-cost transactions</Text>
                 </View>
               </View>
-              
+
               <View style={styles.networkItem}>
                 <View style={[styles.networkDot, { backgroundColor: '#ec4899' }]} />
                 <View style={styles.networkInfo}>
@@ -116,7 +104,7 @@ export default function WalletScreen() {
                   <Text style={styles.networkDescription}>Interoperable blockchain network</Text>
                 </View>
               </View>
-              
+
               <View style={styles.networkItem}>
                 <View style={[styles.networkDot, { backgroundColor: '#6366f1' }]} />
                 <View style={styles.networkInfo}>

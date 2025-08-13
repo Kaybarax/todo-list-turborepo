@@ -38,6 +38,6 @@ export function createTodo(data: Partial<Todo>): Todo {
     priority: data.priority,
     dueDate: data.dueDate,
     tags: data.tags || [],
-    schemaVersion: CURRENT_SCHEMA_VERSION
+    schemaVersion: CURRENT_SCHEMA_VERSION,
   };
 }

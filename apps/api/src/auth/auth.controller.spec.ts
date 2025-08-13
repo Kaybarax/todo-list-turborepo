@@ -360,7 +360,9 @@ describe('AuthController', () => {
 
       authService.login.mockResolvedValue(mockAuthResponse);
 
-      const promises = Array(5).fill(null).map(() => controller.login(loginDto));
+      const promises = Array(5)
+        .fill(null)
+        .map(() => controller.login(loginDto));
       const results = await Promise.all(promises);
 
       expect(authService.login).toHaveBeenCalledTimes(5);

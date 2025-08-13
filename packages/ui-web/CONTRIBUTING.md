@@ -13,27 +13,31 @@ Thank you for your interest in contributing to the `@todo/ui-web` component libr
 ### Development Setup
 
 1. **Clone the repository**:
+
    ```bash
    git clone <repository-url>
    cd todo-list-turborepo
    ```
 
 2. **Install dependencies**:
+
    ```bash
    pnpm install
    ```
 
 3. **Build packages**:
+
    ```bash
    pnpm build:packages
    ```
 
 4. **Start development**:
+
    ```bash
    # Start the web UI package in development mode
    cd packages/ui-web
    pnpm dev
-   
+
    # In another terminal, start Storybook
    pnpm storybook
    ```
@@ -41,6 +45,7 @@ Thank you for your interest in contributing to the `@todo/ui-web` component libr
 ### Development Workflow
 
 1. **Create a feature branch**:
+
    ```bash
    git checkout -b feature/component-name
    ```
@@ -48,6 +53,7 @@ Thank you for your interest in contributing to the `@todo/ui-web` component libr
 2. **Make your changes** following the guidelines in [DEVELOPMENT.md](./DEVELOPMENT.md)
 
 3. **Test your changes**:
+
    ```bash
    pnpm test
    pnpm test:visual
@@ -55,6 +61,7 @@ Thank you for your interest in contributing to the `@todo/ui-web` component libr
    ```
 
 4. **Commit your changes**:
+
    ```bash
    git add .
    git commit -m "feat: add new component"
@@ -187,21 +194,25 @@ test(input): add accessibility tests
 
 ```markdown
 ## Description
+
 Brief description of changes made.
 
 ## Type of Change
+
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 - [ ] Documentation update
 
 ## Testing
+
 - [ ] Unit tests pass
 - [ ] Visual regression tests pass
 - [ ] Manual testing completed
 - [ ] Accessibility testing completed
 
 ## Checklist
+
 - [ ] Code follows style guidelines
 - [ ] Self-review completed
 - [ ] Code is commented where necessary
@@ -295,10 +306,10 @@ Each component should have:
 
 #### JSDoc Example
 
-```tsx
+````tsx
 /**
  * A versatile button component with multiple variants and states.
- * 
+ *
  * @example
  * ```tsx
  * <Button variant="primary" size="lg" onClick={handleClick}>
@@ -316,7 +327,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   /** Text to show when loading */
   loadingText?: string;
 }
-```
+````
 
 ### Storybook Stories
 
@@ -372,17 +383,14 @@ Use design tokens consistently:
 
 ```tsx
 // Good: Using design tokens
-const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium',
-  {
-    variants: {
-      variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-      },
+const buttonVariants = cva('inline-flex items-center justify-center rounded-md text-sm font-medium', {
+  variants: {
+    variant: {
+      default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+      secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
     },
-  }
-);
+  },
+});
 
 // Avoid: Hard-coded values
 const styles = {

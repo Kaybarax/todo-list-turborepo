@@ -13,17 +13,18 @@ export function BlockchainStats({ todos }: BlockchainStatsProps) {
     const total = todos.length;
     const onChain = todos.filter(todo => todo.blockchainNetwork).length;
     const offChain = total - onChain;
-    
-    const networkBreakdown = todos.reduce((acc, todo) => {
-      if (todo.blockchainNetwork) {
-        acc[todo.blockchainNetwork] = (acc[todo.blockchainNetwork] || 0) + 1;
-      }
-      return acc;
-    }, {} as Record<string, number>);
 
-    const pendingTransactions = todos.filter(
-      todo => todo.transactionHash && !todo.blockchainAddress
-    ).length;
+    const networkBreakdown = todos.reduce(
+      (acc, todo) => {
+        if (todo.blockchainNetwork) {
+          acc[todo.blockchainNetwork] = (acc[todo.blockchainNetwork] || 0) + 1;
+        }
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+
+    const pendingTransactions = todos.filter(todo => todo.transactionHash && !todo.blockchainAddress).length;
 
     return {
       total,
@@ -45,54 +46,52 @@ export function BlockchainStats({ todos }: BlockchainStatsProps) {
     <Card style={styles.container}>
       <CardContent>
         <Text style={styles.title}>Blockchain Integration</Text>
-      
-      <View style={styles.statsGrid}>
-        <View style={styles.statItem}>
-          <Text style={[styles.statNumber, { color: '#2563eb' }]}>{stats.onChain}</Text>
-          <Text style={styles.statLabel}>On-Chain</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={[styles.statNumber, { color: '#6b7280' }]}>{stats.offChain}</Text>
-          <Text style={styles.statLabel}>Off-Chain</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={[styles.statNumber, { color: '#10b981' }]}>{stats.syncPercentage}%</Text>
-          <Text style={styles.statLabel}>Synced</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={[styles.statNumber, { color: '#f59e0b' }]}>{stats.pendingTransactions}</Text>
-          <Text style={styles.statLabel}>Pending</Text>
-        </View>
-      </View>
 
-      {Object.keys(stats.networkBreakdown).length > 0 && (
-        <View style={styles.networksSection}>
-          <Text style={styles.sectionTitle}>Network Distribution</Text>
-          <View style={styles.networkBadges}>
-            {Object.entries(stats.networkBreakdown).map(([network, count]) => (
-              <Badge
-                key={network}
-                variant="primary"
-                size="small"
-                text={`${network}: ${count}`}
-                style={[
-                  styles.networkBadge,
-                  { backgroundColor: getNetworkColor(network) },
-                ]}
-              />
-            ))}
+        <View style={styles.statsGrid}>
+          <View style={styles.statItem}>
+            <Text style={[styles.statNumber, { color: '#2563eb' }]}>{stats.onChain}</Text>
+            <Text style={styles.statLabel}>On-Chain</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={[styles.statNumber, { color: '#6b7280' }]}>{stats.offChain}</Text>
+            <Text style={styles.statLabel}>Off-Chain</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={[styles.statNumber, { color: '#10b981' }]}>{stats.syncPercentage}%</Text>
+            <Text style={styles.statLabel}>Synced</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={[styles.statNumber, { color: '#f59e0b' }]}>{stats.pendingTransactions}</Text>
+            <Text style={styles.statLabel}>Pending</Text>
           </View>
         </View>
-      )}
 
-      {stats.syncPercentage < 100 && (
-        <View style={styles.infoSection}>
-          <Text style={styles.infoTitle}>💡 Tip</Text>
-          <Text style={styles.infoText}>
-            You have {stats.offChain} todo{stats.offChain !== 1 ? 's' : ''} that can be synced to blockchain networks for decentralized storage.
-          </Text>
-        </View>
-      )}
+        {Object.keys(stats.networkBreakdown).length > 0 && (
+          <View style={styles.networksSection}>
+            <Text style={styles.sectionTitle}>Network Distribution</Text>
+            <View style={styles.networkBadges}>
+              {Object.entries(stats.networkBreakdown).map(([network, count]) => (
+                <Badge
+                  key={network}
+                  variant="primary"
+                  size="small"
+                  text={`${network}: ${count}`}
+                  style={[styles.networkBadge, { backgroundColor: getNetworkColor(network) }]}
+                />
+              ))}
+            </View>
+          </View>
+        )}
+
+        {stats.syncPercentage < 100 && (
+          <View style={styles.infoSection}>
+            <Text style={styles.infoTitle}>💡 Tip</Text>
+            <Text style={styles.infoText}>
+              You have {stats.offChain} todo{stats.offChain !== 1 ? 's' : ''} that can be synced to blockchain networks
+              for decentralized storage.
+            </Text>
+          </View>
+        )}
       </CardContent>
     </Card>
   );

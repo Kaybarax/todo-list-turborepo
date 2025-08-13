@@ -128,11 +128,7 @@ export const Large: Story = {
 export const Clickable: Story = {
   args: {
     asChild: true,
-    children: (
-      <button onClick={() => alert('Badge clicked!')}>
-        Clickable
-      </button>
-    ),
+    children: <button onClick={() => alert('Badge clicked!')}>Clickable</button>,
   },
 };
 
@@ -142,10 +138,7 @@ export const WithCloseButton: Story = {
     children: (
       <>
         Tag Name
-        <button 
-          className="ml-1 hover:bg-black/10 rounded-full p-0.5"
-          onClick={() => alert('Remove tag')}
-        >
+        <button className="ml-1 hover:bg-black/10 rounded-full p-0.5" onClick={() => alert('Remove tag')}>
           ×
         </button>
       </>
@@ -161,16 +154,14 @@ export const AllVariants: Story = {
       <Badge variant="secondary">Secondary</Badge>
       <Badge variant="destructive">Destructive</Badge>
       <Badge variant="outline">Outline</Badge>
-      
+
       <Badge>123</Badge>
       <Badge variant="secondary">
         <span className="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
         Online
       </Badge>
-      <Badge variant="outline">
-        🔥 Hot
-      </Badge>
-      
+      <Badge variant="outline">🔥 Hot</Badge>
+
       <Badge className="border-green-500 text-green-700" variant="outline">
         Success
       </Badge>
@@ -201,13 +192,13 @@ export const BadgeGroup: Story = {
         <Badge variant="outline">Tailwind</Badge>
         <Badge variant="outline">Storybook</Badge>
       </div>
-      
+
       <div className="flex flex-wrap gap-1">
         <Badge>New</Badge>
         <Badge variant="secondary">Updated</Badge>
         <Badge variant="destructive">Deprecated</Badge>
       </div>
-      
+
       <div className="flex items-center gap-2">
         <span>Status:</span>
         <Badge className="border-green-500 text-green-700" variant="outline">
@@ -227,13 +218,17 @@ export const InCard: Story = {
         <h3 className="font-semibold">Project Name</h3>
         <Badge>Active</Badge>
       </div>
-      <p className="text-sm text-gray-600 mb-3">
-        This is a sample project description.
-      </p>
+      <p className="text-sm text-gray-600 mb-3">This is a sample project description.</p>
       <div className="flex flex-wrap gap-1">
-        <Badge variant="outline" className="text-xs">React</Badge>
-        <Badge variant="outline" className="text-xs">TypeScript</Badge>
-        <Badge variant="outline" className="text-xs">Tailwind</Badge>
+        <Badge variant="outline" className="text-xs">
+          React
+        </Badge>
+        <Badge variant="outline" className="text-xs">
+          TypeScript
+        </Badge>
+        <Badge variant="outline" className="text-xs">
+          Tailwind
+        </Badge>
       </div>
     </div>
   ),

@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Switch as RNSwitch,
-  Text,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-  TextStyle,
-} from 'react-native';
+import { View, Switch as RNSwitch, Text, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import theme from '../../theme';
 
 export interface SwitchProps {
@@ -46,25 +38,8 @@ export const Switch: React.FC<SwitchProps> = ({
   testID,
 }) => {
   return (
-    <View
-      style={[
-        styles.container,
-        disabled && styles.containerDisabled,
-        containerStyle,
-      ]}
-      testID={testID}
-    >
-      {label && (
-        <Text
-          style={[
-            styles.label,
-            disabled && styles.labelDisabled,
-            labelStyle,
-          ]}
-        >
-          {label}
-        </Text>
-      )}
+    <View style={[styles.container, disabled && styles.containerDisabled, containerStyle]} testID={testID}>
+      {label && <Text style={[styles.label, disabled && styles.labelDisabled, labelStyle]}>{label}</Text>}
       <RNSwitch
         value={value}
         onValueChange={disabled ? undefined : onValueChange}

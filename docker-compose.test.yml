@@ -6,7 +6,7 @@ services:
     image: mongo:7
     container_name: todo-mongodb-test
     ports:
-      - "27018:27017"
+      - '27018:27017'
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
@@ -16,7 +16,7 @@ services:
     tmpfs:
       - /data/db
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -25,13 +25,13 @@ services:
     image: redis:7-alpine
     container_name: todo-redis-test
     ports:
-      - "6380:6379"
+      - '6380:6379'
     networks:
       - test-network
     tmpfs:
       - /data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 10s
       timeout: 5s
       retries: 3
@@ -163,13 +163,13 @@ services:
       target: development
     container_name: todo-e2e-api
     ports:
-      - "3001:3001"
+      - '3001:3001'
     environment:
       NODE_ENV: test
       MONGODB_URI: mongodb://admin:password@mongodb-test:27017/todo-app-test?authSource=admin
       REDIS_URI: redis://redis-test:6379
       JWT_SECRET: test-jwt-secret
-      CORS_ORIGIN: "*"
+      CORS_ORIGIN: '*'
     depends_on:
       mongodb-test:
         condition: service_healthy
@@ -186,7 +186,7 @@ services:
       target: development
     container_name: todo-e2e-web
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       NODE_ENV: test
       NEXT_PUBLIC_API_URL: http://e2e-api:3001

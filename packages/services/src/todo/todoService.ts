@@ -7,7 +7,7 @@ import {
   todoSchema,
   createTodoSchema,
   updateTodoSchema,
-  todoQuerySchema
+  todoQuerySchema,
 } from './types';
 
 /**
@@ -37,9 +37,7 @@ export class TodoService {
   async getTodos(params?: Partial<TodoQueryParams>): Promise<Todo[]> {
     try {
       // Validate query parameters if provided
-      const validParams = params
-        ? todoQuerySchema.partial().parse(params)
-        : {};
+      const validParams = params ? todoQuerySchema.partial().parse(params) : {};
 
       const response = await this.apiClient.get('/todos', { params: validParams });
       return response.data.map((todo: unknown) => todoSchema.parse(todo));

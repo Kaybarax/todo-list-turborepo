@@ -11,7 +11,7 @@ describe('Base TodoList Contract Tests', function () {
 
   beforeEach(async function () {
     [owner, user1, user2, ...addrs] = await ethers.getSigners();
-    
+
     TodoList = await ethers.getContractFactory('TodoList');
     todoList = await TodoList.deploy();
     await todoList.waitForDeployment();
@@ -42,17 +42,13 @@ describe('Base TodoList Contract Tests', function () {
     };
 
     it('Should create a todo successfully', async function () {
-      await expect(todoList.createTodo(
-        validTodo.title,
-        validTodo.description,
-        validTodo.priority
-      ))
+      await expect(todoList.createTodo(validTodo.title, validTodo.description, validTodo.priority))
         .to.emit(todoList, 'TodoCreated')
         .withArgs(owner.address, 1, validTodo.title, validTodo.priority);
 
       const todos = await todoList.getTodos();
       expect(todos.length).to.equal(1);
-      
+
       const todo = todos[0];
       expect(todo.id).to.equal(1);
       expect(todo.title).to.equal(validTodo.title);
@@ -65,39 +61,29 @@ describe('Base TodoList Contract Tests', function () {
     });
 
     it('Should fail with empty title', async function () {
-      await expect(todoList.createTodo(
-        '',
-        validTodo.description,
-        validTodo.priority
-      )).to.be.revertedWith('Title cannot be empty');
+      await expect(todoList.createTodo('', validTodo.description, validTodo.priority)).to.be.revertedWith(
+        'Title cannot be empty',
+      );
     });
 
     it('Should fail with title too long', async function () {
       const longTitle = 'a'.repeat(101); // Exceeds MAX_TITLE_LENGTH
-      
-      await expect(todoList.createTodo(
-        longTitle,
-        validTodo.description,
-        validTodo.priority
-      )).to.be.revertedWith('Title is too long');
+
+      await expect(todoList.createTodo(longTitle, validTodo.description, validTodo.priority)).to.be.revertedWith(
+        'Title is too long',
+      );
     });
 
     it('Should fail with description too long', async function () {
       const longDescription = 'a'.repeat(501); // Exceeds MAX_DESCRIPTION_LENGTH
-      
-      await expect(todoList.createTodo(
-        validTodo.title,
-        longDescription,
-        validTodo.priority
-      )).to.be.revertedWith('Description is too long');
+
+      await expect(todoList.createTodo(validTodo.title, longDescription, validTodo.priority)).to.be.revertedWith(
+        'Description is too long',
+      );
     });
 
     it('Should allow empty description', async function () {
-      await todoList.createTodo(
-        validTodo.title,
-        '',
-        validTodo.priority
-      );
+      await todoList.createTodo(validTodo.title, '', validTodo.priority);
 
       const todos = await todoList.getTodos();
       expect(todos[0].description).to.equal('');
@@ -124,8 +110,7 @@ describe('Base TodoList Contract Tests', function () {
       }
 
       // Try to create one more
-      await expect(todoList.createTodo('Overflow Todo', 'Description', 1))
-        .to.be.revertedWith('Todo list is full');
+      await expect(todoList.createTodo('Overflow Todo', 'Description', 1)).to.be.revertedWith('Todo list is full');
     });
 
     it('Should increment todo IDs correctly', async function () {
@@ -251,25 +236,23 @@ describe('Base TodoList Contract Tests', function () {
     });
 
     it('Should fail to update non-existent todo', async function () {
-      await expect(todoList.updateTodo(999, 'Title', 'Description', 1))
-        .to.be.revertedWith('Todo not found');
+      await expect(todoList.updateTodo(999, 'Title', 'Description', 1)).to.be.revertedWith('Todo not found');
     });
 
     it('Should fail to update with title too long', async function () {
       const longTitle = 'a'.repeat(101);
-      await expect(todoList.updateTodo(1, longTitle, '', ethers.MaxUint256))
-        .to.be.revertedWith('Title is too long');
+      await expect(todoList.updateTodo(1, longTitle, '', ethers.MaxUint256)).to.be.revertedWith('Title is too long');
     });
 
     it('Should fail to update with description too long', async function () {
       const longDescription = 'a'.repeat(501);
-      await expect(todoList.updateTodo(1, '', longDescription, ethers.MaxUint256))
-        .to.be.revertedWith('Description is too long');
+      await expect(todoList.updateTodo(1, '', longDescription, ethers.MaxUint256)).to.be.revertedWith(
+        'Description is too long',
+      );
     });
 
     it('Should fail to update with invalid priority', async function () {
-      await expect(todoList.updateTodo(1, '', '', 3))
-        .to.be.revertedWith('Invalid priority value');
+      await expect(todoList.updateTodo(1, '', '', 3)).to.be.revertedWith('Invalid priority value');
     });
 
     it('Should update timestamp on update', async function () {
@@ -287,8 +270,9 @@ describe('Base TodoList Contract Tests', function () {
     });
 
     it('Should allow only todo owner to update', async function () {
-      await expect(todoList.connect(user1).updateTodo(1, 'Hacked', '', ethers.MaxUint256))
-        .to.be.revertedWith('Todo not found'); // user1 doesn't have this todo
+      await expect(todoList.connect(user1).updateTodo(1, 'Hacked', '', ethers.MaxUint256)).to.be.revertedWith(
+        'Todo not found',
+      ); // user1 doesn't have this todo
     });
   });
 
@@ -323,8 +307,7 @@ describe('Base TodoList Contract Tests', function () {
     });
 
     it('Should fail to toggle non-existent todo', async function () {
-      await expect(todoList.toggleTodoCompletion(999))
-        .to.be.revertedWith('Todo not found');
+      await expect(todoList.toggleTodoCompletion(999)).to.be.revertedWith('Todo not found');
     });
 
     it('Should update timestamps on toggle', async function () {
@@ -339,8 +322,7 @@ describe('Base TodoList Contract Tests', function () {
     });
 
     it('Should allow only todo owner to toggle', async function () {
-      await expect(todoList.connect(user1).toggleTodoCompletion(1))
-        .to.be.revertedWith('Todo not found'); // user1 doesn't have this todo
+      await expect(todoList.connect(user1).toggleTodoCompletion(1)).to.be.revertedWith('Todo not found'); // user1 doesn't have this todo
     });
   });
 
@@ -352,9 +334,7 @@ describe('Base TodoList Contract Tests', function () {
     });
 
     it('Should delete todo successfully', async function () {
-      await expect(todoList.deleteTodo(2))
-        .to.emit(todoList, 'TodoDeleted')
-        .withArgs(owner.address, 2);
+      await expect(todoList.deleteTodo(2)).to.emit(todoList, 'TodoDeleted').withArgs(owner.address, 2);
 
       // Verify todo is deleted
       await expect(todoList.getTodo(2)).to.be.revertedWith('Todo not found');
@@ -365,8 +345,7 @@ describe('Base TodoList Contract Tests', function () {
     });
 
     it('Should fail to delete non-existent todo', async function () {
-      await expect(todoList.deleteTodo(999))
-        .to.be.revertedWith('Todo not found');
+      await expect(todoList.deleteTodo(999)).to.be.revertedWith('Todo not found');
     });
 
     it('Should maintain array integrity after deletion', async function () {
@@ -376,7 +355,7 @@ describe('Base TodoList Contract Tests', function () {
       // Verify remaining todos are accessible
       const todos = await todoList.getTodos();
       expect(todos.length).to.equal(2);
-      
+
       // Check that we can still access remaining todos by their IDs
       const todo1 = await todoList.getTodo(1);
       const todo3 = await todoList.getTodo(3);
@@ -386,8 +365,7 @@ describe('Base TodoList Contract Tests', function () {
     });
 
     it('Should allow only todo owner to delete', async function () {
-      await expect(todoList.connect(user1).deleteTodo(1))
-        .to.be.revertedWith('Todo not found'); // user1 doesn't have this todo
+      await expect(todoList.connect(user1).deleteTodo(1)).to.be.revertedWith('Todo not found'); // user1 doesn't have this todo
     });
 
     it('Should update statistics after deletion', async function () {
@@ -479,8 +457,10 @@ describe('Base TodoList Contract Tests', function () {
     });
 
     it('Should prevent ownership transfer to zero address', async function () {
-      await expect(todoList.transferOwnership(ethers.ZeroAddress))
-        .to.be.revertedWithCustomError(todoList, 'OwnableInvalidOwner');
+      await expect(todoList.transferOwnership(ethers.ZeroAddress)).to.be.revertedWithCustomError(
+        todoList,
+        'OwnableInvalidOwner',
+      );
     });
 
     it('Should emit ownership transfer event', async function () {
@@ -493,7 +473,7 @@ describe('Base TodoList Contract Tests', function () {
   describe('Edge Cases and Error Handling', function () {
     it('Should handle maximum title length', async function () {
       const maxTitle = 'a'.repeat(100); // Exactly MAX_TITLE_LENGTH
-      
+
       await todoList.createTodo(maxTitle, 'Description', 1);
 
       const todo = await todoList.getTodo(1);
@@ -502,7 +482,7 @@ describe('Base TodoList Contract Tests', function () {
 
     it('Should handle maximum description length', async function () {
       const maxDescription = 'a'.repeat(500); // Exactly MAX_DESCRIPTION_LENGTH
-      
+
       await todoList.createTodo('Title', maxDescription, 1);
 
       const todo = await todoList.getTodo(1);
@@ -528,7 +508,7 @@ describe('Base TodoList Contract Tests', function () {
       }
 
       await Promise.all(promises);
-      
+
       const todos = await todoList.getTodos();
       expect(todos.length).to.equal(10);
     });
@@ -555,7 +535,7 @@ describe('Base TodoList Contract Tests', function () {
       expect(todo1.completed).to.be.true;
       expect(todo2.title).to.equal('Updated Todo 2');
       expect(todo3.title).to.equal('Todo 3');
-      
+
       const todos = await todoList.getTodos();
       expect(todos.length).to.equal(3);
     });
@@ -598,7 +578,7 @@ describe('Base TodoList Contract Tests', function () {
       const firstGas = gasUsages[0];
       const lastGas = gasUsages[gasUsages.length - 1];
       const increase = (lastGas - firstGas) / firstGas;
-      
+
       expect(increase).to.be.lessThan(0.1); // Less than 10% increase
     });
   });
@@ -621,9 +601,7 @@ describe('Base TodoList Contract Tests', function () {
         .withArgs(owner.address, 1, true);
 
       // Test TodoDeleted event
-      await expect(todoList.deleteTodo(1))
-        .to.emit(todoList, 'TodoDeleted')
-        .withArgs(owner.address, 1);
+      await expect(todoList.deleteTodo(1)).to.emit(todoList, 'TodoDeleted').withArgs(owner.address, 1);
     });
 
     it('Should emit events in correct order for batch operations', async function () {
@@ -638,7 +616,7 @@ describe('Base TodoList Contract Tests', function () {
           return false;
         }
       });
-      
+
       expect(events).to.have.length(1);
       const parsedEvent = todoList.interface.parseLog(events[0]);
       expect(parsedEvent.args.user).to.equal(owner.address);
@@ -652,7 +630,7 @@ describe('Base TodoList Contract Tests', function () {
       // Base L2 should have lower gas costs than mainnet
       const tx = await todoList.createTodo('Base L2 Test', 'Testing on Base', 1);
       const receipt = await tx.wait();
-      
+
       // Base L2 transactions should be very efficient
       expect(receipt.gasUsed).to.be.lessThan(150000n);
     });
@@ -666,7 +644,7 @@ describe('Base TodoList Contract Tests', function () {
     it('Should be compatible with Base ecosystem', async function () {
       // Test that the contract is compatible with Base's EVM implementation
       await todoList.createTodo('Base Ecosystem Test', 'Testing compatibility', 2);
-      
+
       const todo = await todoList.getTodo(1);
       expect(todo.title).to.equal('Base Ecosystem Test');
       expect(todo.priority).to.equal(2);

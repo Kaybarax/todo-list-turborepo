@@ -31,7 +31,7 @@ const meta: Meta<typeof Button> = {
     loading: false,
   },
   decorators: [
-    (Story) => (
+    Story => (
       <View style={{ padding: 16, alignItems: 'center' }}>
         <Story />
       </View>

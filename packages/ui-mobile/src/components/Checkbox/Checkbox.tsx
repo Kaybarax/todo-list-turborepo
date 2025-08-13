@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-  TextStyle,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import theme from '../../theme';
 
@@ -46,11 +38,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
   return (
     <TouchableOpacity
-      style={[
-        styles.container,
-        disabled && styles.containerDisabled,
-        containerStyle,
-      ]}
+      style={[styles.container, disabled && styles.containerDisabled, containerStyle]}
       onPress={handlePress}
       disabled={disabled}
       activeOpacity={0.7}
@@ -70,26 +58,9 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         ]}
         testID={`${testID}-box`}
       >
-        {checked && (
-          <MaterialIcons
-            name="check"
-            size={16}
-            color={checkColor}
-            testID={`${testID}-check`}
-          />
-        )}
+        {checked && <MaterialIcons name="check" size={16} color={checkColor} testID={`${testID}-check`} />}
       </View>
-      {label && (
-        <Text
-          style={[
-            styles.label,
-            disabled && styles.labelDisabled,
-            labelStyle,
-          ]}
-        >
-          {label}
-        </Text>
-      )}
+      {label && <Text style={[styles.label, disabled && styles.labelDisabled, labelStyle]}>{label}</Text>}
     </TouchableOpacity>
   );
 };

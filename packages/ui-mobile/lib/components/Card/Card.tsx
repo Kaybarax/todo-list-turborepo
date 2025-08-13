@@ -1,16 +1,6 @@
 import React from 'react';
-import { 
-  Card as KittenCard, 
-  CardProps as KittenCardProps,
-  Text
-} from '@ui-kitten/components';
-import { 
-  View, 
-  StyleSheet, 
-  ViewStyle, 
-  TextStyle, 
-  StyleProp 
-} from 'react-native';
+import { Card as KittenCard, CardProps as KittenCardProps, Text } from '@ui-kitten/components';
+import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
 
 export interface CardProps extends Omit<KittenCardProps, 'children'> {
   children?: React.ReactNode;
@@ -46,13 +36,7 @@ export interface CardFooterProps {
   alignment?: 'left' | 'center' | 'right' | 'space-between';
 }
 
-const Card: React.FC<CardProps> = ({ 
-  children, 
-  variant = 'default',
-  elevation = 'medium',
-  style,
-  ...props 
-}) => {
+const Card: React.FC<CardProps> = ({ children, variant = 'default', elevation = 'medium', style, ...props }) => {
   // Map our variants to UI Kitten appearance
   const getKittenAppearance = (): KittenCardProps['appearance'] => {
     switch (variant) {
@@ -81,74 +65,40 @@ const Card: React.FC<CardProps> = ({
     }
   };
 
-  const cardStyles = [
-    getElevationStyle(),
-    style,
-  ];
+  const cardStyles = [getElevationStyle(), style];
 
   return (
-    <KittenCard
-      appearance={getKittenAppearance()}
-      style={cardStyles}
-      {...props}
-    >
+    <KittenCard appearance={getKittenAppearance()} style={cardStyles} {...props}>
       {children}
     </KittenCard>
   );
 };
 
 const CardHeader: React.FC<CardHeaderProps> = ({ style, children }) => {
-  return (
-    <View style={[styles.header, style]}>
-      {children}
-    </View>
-  );
+  return <View style={[styles.header, style]}>{children}</View>;
 };
 
-const CardTitle: React.FC<CardTitleProps> = ({ 
-  style, 
-  children, 
-  category = 'h5' 
-}) => {
+const CardTitle: React.FC<CardTitleProps> = ({ style, children, category = 'h5' }) => {
   return (
-    <Text 
-      category={category}
-      style={[styles.title, style]}
-    >
+    <Text category={category} style={[styles.title, style]}>
       {typeof children === 'string' ? children : String(children)}
     </Text>
   );
 };
 
-const CardDescription: React.FC<CardDescriptionProps> = ({ 
-  style, 
-  children, 
-  category = 'p2' 
-}) => {
+const CardDescription: React.FC<CardDescriptionProps> = ({ style, children, category = 'p2' }) => {
   return (
-    <Text 
-      category={category}
-      appearance="hint"
-      style={[styles.description, style]}
-    >
+    <Text category={category} appearance="hint" style={[styles.description, style]}>
       {typeof children === 'string' ? children : String(children)}
     </Text>
   );
 };
 
 const CardContent: React.FC<CardContentProps> = ({ style, children }) => {
-  return (
-    <View style={[styles.content, style]}>
-      {children}
-    </View>
-  );
+  return <View style={[styles.content, style]}>{children}</View>;
 };
 
-const CardFooter: React.FC<CardFooterProps> = ({ 
-  style, 
-  children, 
-  alignment = 'right' 
-}) => {
+const CardFooter: React.FC<CardFooterProps> = ({ style, children, alignment = 'right' }) => {
   const getAlignmentStyle = () => {
     switch (alignment) {
       case 'left':
@@ -163,11 +113,7 @@ const CardFooter: React.FC<CardFooterProps> = ({
     }
   };
 
-  return (
-    <View style={[styles.footer, getAlignmentStyle(), style]}>
-      {children}
-    </View>
-  );
+  return <View style={[styles.footer, getAlignmentStyle(), style]}>{children}</View>;
 };
 
 const styles = StyleSheet.create({
@@ -194,7 +140,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 8,
   },
-  
+
   // Component styles
   header: {
     paddingHorizontal: 16,
@@ -240,14 +186,7 @@ CardDescription.displayName = 'CardDescription';
 CardContent.displayName = 'CardContent';
 CardFooter.displayName = 'CardFooter';
 
-export { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent, 
-  CardFooter 
-};
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter };
 
 export default {
   Card,

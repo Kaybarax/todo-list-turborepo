@@ -3,15 +3,15 @@ import { BlockchainNetwork } from './types';
  * Network display information for UI components
  */
 export interface NetworkDisplayInfo {
-    id: BlockchainNetwork;
-    name: string;
-    displayName: string;
-    icon?: string;
-    color: string;
-    isTestnet: boolean;
-    isEVM: boolean;
-    chainId: number;
-    description: string;
+  id: BlockchainNetwork;
+  name: string;
+  displayName: string;
+  icon?: string;
+  color: string;
+  isTestnet: boolean;
+  isEVM: boolean;
+  chainId: number;
+  description: string;
 }
 /**
  * Network display configurations for UI components
@@ -44,11 +44,15 @@ export declare function getSupportedWalletNetworks(): ('solana' | 'polkadot' | '
 /**
  * Map wallet network name to BlockchainNetwork enum
  */
-export declare function mapWalletNetworkToBlockchainNetwork(walletNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base'): BlockchainNetwork;
+export declare function mapWalletNetworkToBlockchainNetwork(
+  walletNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base',
+): BlockchainNetwork;
 /**
  * Map BlockchainNetwork enum to wallet network name
  */
-export declare function mapBlockchainNetworkToWalletNetwork(blockchainNetwork: BlockchainNetwork): 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base' | null;
+export declare function mapBlockchainNetworkToWalletNetwork(
+  blockchainNetwork: BlockchainNetwork,
+): 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base' | null;
 /**
  * Get wallet connection URLs for different networks
  */

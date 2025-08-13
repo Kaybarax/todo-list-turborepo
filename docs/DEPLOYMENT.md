@@ -102,7 +102,7 @@ services:
       context: ./apps/web
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NODE_ENV=development
       - NEXT_PUBLIC_API_URL=http://localhost:3001
@@ -117,7 +117,7 @@ services:
       context: ./apps/api
       dockerfile: Dockerfile
     ports:
-      - "3001:3001"
+      - '3001:3001'
     environment:
       - NODE_ENV=development
       - DATABASE_URL=mongodb://mongodb:27017/todoapp
@@ -135,9 +135,9 @@ services:
       context: ./apps/mobile
       dockerfile: Dockerfile
     ports:
-      - "19000:19000"
-      - "19001:19001"
-      - "19002:19002"
+      - '19000:19000'
+      - '19001:19001'
+      - '19002:19002'
     environment:
       - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
     volumes:
@@ -161,7 +161,7 @@ services:
   mongodb:
     image: mongo:5.0
     ports:
-      - "27017:27017"
+      - '27017:27017'
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=password
@@ -173,15 +173,15 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - redis_data:/data
 
   nginx:
     image: nginx:alpine
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
       - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./infra/nginx/ssl:/etc/nginx/ssl
@@ -227,14 +227,14 @@ metadata:
   name: todo-app-config
   namespace: todo-app
 data:
-  NODE_ENV: "production"
-  API_URL: "https://api.todo-app.example.com"
-  WEB_URL: "https://todo-app.example.com"
-  REDIS_HOST: "redis-service"
-  REDIS_PORT: "6379"
-  MONGODB_HOST: "mongodb-service"
-  MONGODB_PORT: "27017"
-  MONGODB_DATABASE: "todoapp"
+  NODE_ENV: 'production'
+  API_URL: 'https://api.todo-app.example.com'
+  WEB_URL: 'https://todo-app.example.com'
+  REDIS_HOST: 'redis-service'
+  REDIS_PORT: '6379'
+  MONGODB_HOST: 'mongodb-service'
+  MONGODB_PORT: '27017'
+  MONGODB_DATABASE: 'todoapp'
 ---
 apiVersion: v1
 kind: Secret
@@ -273,40 +273,40 @@ spec:
         app: web
     spec:
       containers:
-      - name: web
-        image: todo-app/web:latest
-        ports:
-        - containerPort: 3000
-        env:
-        - name: NODE_ENV
-          valueFrom:
-            configMapKeyRef:
-              name: todo-app-config
-              key: NODE_ENV
-        - name: NEXT_PUBLIC_API_URL
-          valueFrom:
-            configMapKeyRef:
-              name: todo-app-config
-              key: API_URL
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        livenessProbe:
-          httpGet:
-            path: /api/health
-            port: 3000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /api/health
-            port: 3000
-          initialDelaySeconds: 5
-          periodSeconds: 5
+        - name: web
+          image: todo-app/web:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-config
+                  key: NODE_ENV
+            - name: NEXT_PUBLIC_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-config
+                  key: API_URL
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
 ---
 apiVersion: v1
 kind: Service
@@ -317,9 +317,9 @@ spec:
   selector:
     app: web
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 3000
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
   type: ClusterIP
 ```
 
@@ -345,79 +345,79 @@ spec:
         app: api
     spec:
       containers:
-      - name: api
-        image: todo-app/api:latest
-        ports:
-        - containerPort: 3001
-        env:
-        - name: NODE_ENV
-          valueFrom:
-            configMapKeyRef:
-              name: todo-app-config
-              key: NODE_ENV
-        - name: DATABASE_URL
-          value: "mongodb://$(MONGODB_USERNAME):$(MONGODB_PASSWORD)@$(MONGODB_HOST):$(MONGODB_PORT)/$(MONGODB_DATABASE)"
-        - name: MONGODB_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: todo-app-config
-              key: MONGODB_HOST
-        - name: MONGODB_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: todo-app-config
-              key: MONGODB_PORT
-        - name: MONGODB_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: todo-app-config
-              key: MONGODB_DATABASE
-        - name: MONGODB_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: todo-app-secrets
-              key: MONGODB_USERNAME
-        - name: MONGODB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: todo-app-secrets
-              key: MONGODB_PASSWORD
-        - name: JWT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: todo-app-secrets
-              key: JWT_SECRET
-        - name: REDIS_URL
-          value: "redis://$(REDIS_HOST):$(REDIS_PORT)"
-        - name: REDIS_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: todo-app-config
-              key: REDIS_HOST
-        - name: REDIS_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: todo-app-config
-              key: REDIS_PORT
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "500m"
-          limits:
-            memory: "1Gi"
-            cpu: "1000m"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 3001
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 3001
-          initialDelaySeconds: 5
-          periodSeconds: 5
+        - name: api
+          image: todo-app/api:latest
+          ports:
+            - containerPort: 3001
+          env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-config
+                  key: NODE_ENV
+            - name: DATABASE_URL
+              value: 'mongodb://$(MONGODB_USERNAME):$(MONGODB_PASSWORD)@$(MONGODB_HOST):$(MONGODB_PORT)/$(MONGODB_DATABASE)'
+            - name: MONGODB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-config
+                  key: MONGODB_HOST
+            - name: MONGODB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-config
+                  key: MONGODB_PORT
+            - name: MONGODB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-config
+                  key: MONGODB_DATABASE
+            - name: MONGODB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: todo-app-secrets
+                  key: MONGODB_USERNAME
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: todo-app-secrets
+                  key: MONGODB_PASSWORD
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: todo-app-secrets
+                  key: JWT_SECRET
+            - name: REDIS_URL
+              value: 'redis://$(REDIS_HOST):$(REDIS_PORT)'
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-config
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-config
+                  key: REDIS_PORT
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '500m'
+            limits:
+              memory: '1Gi'
+              cpu: '1000m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3001
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3001
+            initialDelaySeconds: 5
+            periodSeconds: 5
 ---
 apiVersion: v1
 kind: Service
@@ -428,9 +428,9 @@ spec:
   selector:
     app: api
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 3001
+    - protocol: TCP
+      port: 80
+      targetPort: 3001
   type: ClusterIP
 ```
 
@@ -455,44 +455,44 @@ spec:
         app: mongodb
     spec:
       containers:
-      - name: mongodb
-        image: mongo:5.0
-        ports:
-        - containerPort: 27017
-        env:
-        - name: MONGO_INITDB_ROOT_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: todo-app-secrets
-              key: MONGODB_USERNAME
-        - name: MONGO_INITDB_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: todo-app-secrets
-              key: MONGODB_PASSWORD
-        - name: MONGO_INITDB_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: todo-app-config
-              key: MONGODB_DATABASE
-        volumeMounts:
-        - name: mongodb-storage
-          mountPath: /data/db
+        - name: mongodb
+          image: mongo:5.0
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: todo-app-secrets
+                  key: MONGODB_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: todo-app-secrets
+                  key: MONGODB_PASSWORD
+            - name: MONGO_INITDB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-app-config
+                  key: MONGODB_DATABASE
+          volumeMounts:
+            - name: mongodb-storage
+              mountPath: /data/db
+          resources:
+            requests:
+              memory: '1Gi'
+              cpu: '500m'
+            limits:
+              memory: '2Gi'
+              cpu: '1000m'
+  volumeClaimTemplates:
+    - metadata:
+        name: mongodb-storage
+      spec:
+        accessModes: ['ReadWriteOnce']
         resources:
           requests:
-            memory: "1Gi"
-            cpu: "500m"
-          limits:
-            memory: "2Gi"
-            cpu: "1000m"
-  volumeClaimTemplates:
-  - metadata:
-      name: mongodb-storage
-    spec:
-      accessModes: ["ReadWriteOnce"]
-      resources:
-        requests:
-          storage: 10Gi
+            storage: 10Gi
 ---
 apiVersion: v1
 kind: Service
@@ -503,9 +503,9 @@ spec:
   selector:
     app: mongodb
   ports:
-  - protocol: TCP
-    port: 27017
-    targetPort: 27017
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
   clusterIP: None
 ```
 
@@ -529,24 +529,24 @@ spec:
         app: redis
     spec:
       containers:
-      - name: redis
-        image: redis:7-alpine
-        ports:
-        - containerPort: 6379
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        volumeMounts:
-        - name: redis-storage
-          mountPath: /data
+        - name: redis
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+          volumeMounts:
+            - name: redis-storage
+              mountPath: /data
       volumes:
-      - name: redis-storage
-        persistentVolumeClaim:
-          claimName: redis-pvc
+        - name: redis-storage
+          persistentVolumeClaim:
+            claimName: redis-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -557,9 +557,9 @@ spec:
   selector:
     app: redis
   ports:
-  - protocol: TCP
-    port: 6379
-    targetPort: 6379
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
   type: ClusterIP
 ---
 apiVersion: v1
@@ -587,36 +587,36 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   tls:
-  - hosts:
-    - todo-app.example.com
-    - api.todo-app.example.com
-    secretName: todo-app-tls
+    - hosts:
+        - todo-app.example.com
+        - api.todo-app.example.com
+      secretName: todo-app-tls
   rules:
-  - host: todo-app.example.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: web-service
-            port:
-              number: 80
-  - host: api.todo-app.example.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: api-service
-            port:
-              number: 80
+    - host: todo-app.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-service
+                port:
+                  number: 80
+    - host: api.todo-app.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api-service
+                port:
+                  number: 80
 ```
 
 ## 🚀 CI/CD Pipeline
@@ -642,22 +642,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run tests
         run: npm run test
-      
+
       - name: Run E2E tests
         run: npm run test:e2e
-      
+
       - name: Upload coverage
         uses: codecov/codecov-action@v3
 
@@ -669,14 +669,14 @@ jobs:
         app: [web, api, mobile, ingestion]
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Log in to Container Registry
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v4
@@ -687,7 +687,7 @@ jobs:
             type=ref,event=pr
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
-      
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
@@ -703,17 +703,17 @@ jobs:
     environment: staging
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup kubectl
         uses: azure/setup-kubectl@v3
         with:
           version: 'v1.24.0'
-      
+
       - name: Configure kubectl
         run: |
           echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > kubeconfig
           export KUBECONFIG=kubeconfig
-      
+
       - name: Deploy to staging
         run: |
           export KUBECONFIG=kubeconfig
@@ -729,17 +729,17 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup kubectl
         uses: azure/setup-kubectl@v3
         with:
           version: 'v1.24.0'
-      
+
       - name: Configure kubectl
         run: |
           echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > kubeconfig
           export KUBECONFIG=kubeconfig
-      
+
       - name: Deploy to production
         run: |
           export KUBECONFIG=kubeconfig
@@ -747,7 +747,7 @@ jobs:
           kubectl set image deployment/api-deployment api=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ github.sha }} -n todo-app
           kubectl rollout status deployment/web-deployment -n todo-app
           kubectl rollout status deployment/api-deployment -n todo-app
-      
+
       - name: Run smoke tests
         run: |
           curl -f https://todo-app.example.com/api/health
@@ -759,17 +759,17 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-      
+
       - name: Install dependencies
         run: |
           cd apps/smart-contracts/polygon
           npm ci
-      
+
       - name: Deploy Polygon contracts
         run: |
           cd apps/smart-contracts/polygon
@@ -777,7 +777,7 @@ jobs:
         env:
           POLYGON_PRIVATE_KEY: ${{ secrets.POLYGON_PRIVATE_KEY }}
           POLYGON_RPC_URL: ${{ secrets.POLYGON_RPC_URL }}
-      
+
       - name: Deploy Solana programs
         run: |
           cd apps/smart-contracts/solana
@@ -883,43 +883,44 @@ global:
   evaluation_interval: 15s
 
 rule_files:
-  - "alert_rules.yml"
+  - 'alert_rules.yml'
 
 scrape_configs:
   - job_name: 'kubernetes-apiservers'
     kubernetes_sd_configs:
-    - role: endpoints
+      - role: endpoints
     scheme: https
     tls_config:
       ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
     bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
     relabel_configs:
-    - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
-      action: keep
-      regex: default;kubernetes;https
+      - source_labels:
+          [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: default;kubernetes;https
 
   - job_name: 'todo-app'
     kubernetes_sd_configs:
-    - role: pod
+      - role: pod
     relabel_configs:
-    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-      action: keep
-      regex: true
-    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
-      action: replace
-      target_label: __metrics_path__
-      regex: (.+)
-    - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
-      action: replace
-      regex: ([^:]+)(?::\d+)?;(\d+)
-      replacement: $1:$2
-      target_label: __address__
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
 
 alerting:
   alertmanagers:
-  - static_configs:
-    - targets:
-      - alertmanager:9093
+    - static_configs:
+        - targets:
+            - alertmanager:9093
 ```
 
 ### Grafana Dashboards
@@ -997,43 +998,43 @@ metadata:
 spec:
   podSelector: {}
   policyTypes:
-  - Ingress
-  - Egress
+    - Ingress
+    - Egress
   ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          name: ingress-nginx
-    ports:
-    - protocol: TCP
-      port: 3000
-    - protocol: TCP
-      port: 3001
-  - from:
-    - podSelector:
-        matchLabels:
-          app: api
-    - podSelector:
-        matchLabels:
-          app: web
-    ports:
-    - protocol: TCP
-      port: 27017
-    - protocol: TCP
-      port: 6379
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 3000
+        - protocol: TCP
+          port: 3001
+    - from:
+        - podSelector:
+            matchLabels:
+              app: api
+        - podSelector:
+            matchLabels:
+              app: web
+      ports:
+        - protocol: TCP
+          port: 27017
+        - protocol: TCP
+          port: 6379
   egress:
-  - to: []
-    ports:
-    - protocol: TCP
-      port: 53
-    - protocol: UDP
-      port: 53
-  - to: []
-    ports:
-    - protocol: TCP
-      port: 443
-    - protocol: TCP
-      port: 80
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 53
+        - protocol: UDP
+          port: 53
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 443
+        - protocol: TCP
+          port: 80
 ```
 
 ## 🔄 Backup and Recovery
@@ -1126,6 +1127,7 @@ echo "Restore completed from backup: $BACKUP_DATE"
 ### Common Issues
 
 #### Pod Startup Issues
+
 ```bash
 # Check pod status
 kubectl get pods -n todo-app
@@ -1138,6 +1140,7 @@ kubectl describe pod <pod-name> -n todo-app
 ```
 
 #### Database Connection Issues
+
 ```bash
 # Test MongoDB connection
 kubectl exec -it mongodb-0 -n todo-app -- mongo --eval "db.adminCommand('ismaster')"
@@ -1147,6 +1150,7 @@ kubectl exec -it redis-deployment-xxx -n todo-app -- redis-cli ping
 ```
 
 #### SSL Certificate Issues
+
 ```bash
 # Check certificate status
 kubectl get certificate -n todo-app
@@ -1158,6 +1162,7 @@ kubectl logs -n cert-manager deployment/cert-manager
 ### Performance Issues
 
 #### High Memory Usage
+
 ```bash
 # Check resource usage
 kubectl top pods -n todo-app
@@ -1167,6 +1172,7 @@ kubectl scale deployment api-deployment --replicas=5 -n todo-app
 ```
 
 #### Database Performance
+
 ```bash
 # Check MongoDB performance
 kubectl exec -it mongodb-0 -n todo-app -- mongo --eval "db.runCommand({serverStatus: 1})"

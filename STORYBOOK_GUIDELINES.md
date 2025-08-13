@@ -5,6 +5,7 @@ This document provides comprehensive guidelines for creating and maintaining Sto
 ## Overview
 
 Our Storybook setup consists of two separate instances:
+
 - **ui-web**: Web components using React + Tailwind CSS (Port 6007)
 - **ui-mobile**: React Native components with web-compatible previews (Port 6006)
 
@@ -13,11 +14,12 @@ Our Storybook setup consists of two separate instances:
 ### Running Storybook
 
 From the monorepo root:
+
 ```bash
 # Start web Storybook
 pnpm storybook:web
 
-# Start mobile Storybook  
+# Start mobile Storybook
 pnpm storybook:mobile
 
 # Build Storybook for deployment
@@ -36,6 +38,7 @@ pnpm storybook:build:mobile
 Every component story MUST include:
 
 ### Required Stories
+
 - [ ] **Default**: Component with minimal required props
 - [ ] **All Variants**: Each visual variant (primary, secondary, etc.)
 - [ ] **All Sizes**: Each size option (small, medium, large)
@@ -43,6 +46,7 @@ Every component story MUST include:
 - [ ] **Accessibility**: Proper accessibility demonstration
 
 ### Optional but Recommended Stories
+
 - [ ] **Interactive**: Demonstrates user interactions
 - [ ] **Composition**: Multiple components together
 - [ ] **Real-world Usage**: Common usage patterns
@@ -70,16 +74,19 @@ packages/
 ## Naming Conventions
 
 ### Story Files
+
 - Use PascalCase: `ComponentName.stories.tsx`
 - Match component name exactly
 - Place in `src/stories/` directory
 
 ### Story Names
+
 - Use PascalCase: `Default`, `Primary`, `WithIcon`
 - Be descriptive: `LoadingWithText` not `Loading1`
 - Group related: `SmallPrimary`, `LargePrimary`
 
 ### Story Titles
+
 - Format: `Components/ComponentName`
 - Use consistent categorization
 - Group related components: `Forms/Input`, `Navigation/Button`
@@ -87,6 +94,7 @@ packages/
 ## TypeScript Standards
 
 ### Meta Configuration
+
 ```typescript
 const meta = {
   title: 'Components/ComponentName',
@@ -95,15 +103,15 @@ const meta = {
     layout: 'centered', // or 'fullscreen', 'padded'
     docs: {
       description: {
-        component: 'Clear, concise component description'
-      }
-    }
+        component: 'Clear, concise component description',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
     // Comprehensive prop controls
   },
-  args: { 
+  args: {
     onClick: fn(), // Mock functions for testing
   },
 } satisfies Meta<typeof ComponentName>;
@@ -127,26 +135,26 @@ argTypes: {
       defaultValue: { summary: 'undefined' },
     },
   },
-  
+
   // Boolean toggles
   disabled: {
     control: { type: 'boolean' },
     description: 'Whether the component is disabled',
   },
-  
+
   // Select dropdowns
   variant: {
     control: { type: 'select' },
     options: ['primary', 'secondary', 'outline'],
     description: 'Visual variant of the component',
   },
-  
+
   // Number inputs
   maxLength: {
     control: { type: 'number', min: 0, max: 100, step: 1 },
     description: 'Maximum number of characters',
   },
-  
+
   // Event handlers
   onClick: { action: 'clicked' },
   onSubmit: { action: 'submitted' },
@@ -158,6 +166,7 @@ argTypes: {
 Every story must demonstrate accessibility:
 
 ### Required Accessibility Features
+
 - [ ] Proper ARIA labels and descriptions
 - [ ] Keyboard navigation support
 - [ ] Screen reader compatibility
@@ -165,6 +174,7 @@ Every story must demonstrate accessibility:
 - [ ] Color contrast compliance
 
 ### Accessibility Story Example
+
 ```typescript
 export const AccessibilityDemo: Story = {
   args: {
@@ -192,6 +202,7 @@ export const AccessibilityDemo: Story = {
 ## Web vs Mobile Differences
 
 ### Web Components (ui-web)
+
 - Use actual React components
 - Leverage Tailwind CSS classes
 - Support standard web interactions
@@ -199,6 +210,7 @@ export const AccessibilityDemo: Story = {
 - Standard HTML attributes
 
 ### Mobile Components (ui-mobile)
+
 - Create web-compatible versions for Storybook
 - Convert React Native styles to CSS-in-JS
 - Map mobile props to web equivalents:
@@ -209,6 +221,7 @@ export const AccessibilityDemo: Story = {
 - Include mobile-specific patterns
 
 ### Mobile Web Conversion Example
+
 ```typescript
 // React Native component conversion for web preview
 const MobileComponent: React.FC<Props> = ({ onPress, accessibilityLabel, ...props }) => {
@@ -237,6 +250,7 @@ const MobileComponent: React.FC<Props> = ({ onPress, accessibilityLabel, ...prop
 Stories should support multiple testing approaches:
 
 ### Visual Regression Testing
+
 ```typescript
 export const AllVariants: Story = {
   render: () => (
@@ -257,6 +271,7 @@ export const AllVariants: Story = {
 ```
 
 ### Interaction Testing
+
 ```typescript
 import { userEvent, within } from '@storybook/test';
 
@@ -271,6 +286,7 @@ export const InteractionTest: Story = {
 ```
 
 ### Accessibility Testing
+
 - Use `@storybook/addon-a11y` for automated testing
 - Include manual keyboard navigation tests
 - Test with screen readers when possible
@@ -278,12 +294,14 @@ export const InteractionTest: Story = {
 ## Performance Guidelines
 
 ### Story Optimization
+
 - Keep render functions lightweight
 - Use mock data instead of real API calls
 - Avoid heavy computations in stories
 - Use dynamic imports for heavy components
 
 ### Image Optimization
+
 - Use optimized images in stories
 - Provide alt text for all images
 - Consider different screen densities for mobile
@@ -291,14 +309,15 @@ export const InteractionTest: Story = {
 ## Common Patterns
 
 ### Form Components
+
 ```typescript
 export const FormExample: Story = {
   render: () => {
     const [value, setValue] = React.useState('');
-    
+
     return (
       <form onSubmit={(e) => e.preventDefault()}>
-        <ComponentName 
+        <ComponentName
           value={value}
           onChange={setValue}
           label="Example Input"
@@ -311,6 +330,7 @@ export const FormExample: Story = {
 ```
 
 ### Loading States
+
 ```typescript
 export const Loading: Story = {
   args: {
@@ -321,6 +341,7 @@ export const Loading: Story = {
 ```
 
 ### Error States
+
 ```typescript
 export const WithError: Story = {
   args: {
@@ -331,17 +352,18 @@ export const WithError: Story = {
 ```
 
 ### Interactive Examples
+
 ```typescript
 export const Interactive: Story = {
   render: () => {
     const [state, setState] = React.useState(initialState);
-    
+
     const handleAction = () => {
       setState(newState);
     };
-    
+
     return (
-      <ComponentName 
+      <ComponentName
         value={state}
         onAction={handleAction}
       />
@@ -353,24 +375,26 @@ export const Interactive: Story = {
 ## Documentation Standards
 
 ### Component Descriptions
+
 Provide clear, comprehensive descriptions:
 
 ```typescript
 docs: {
   description: {
-    component: 'A versatile button component built on Radix UI with multiple variants, sizes, and states. Supports icons, loading states, and full accessibility compliance. Used throughout the application for user interactions.'
+    component: 'A versatile button component built on Radix UI with multiple variants, sizes, and states. Supports icons, loading states, and full accessibility compliance. Used throughout the application for user interactions.';
   }
 }
 ```
 
 ### Story Descriptions
+
 Add context for complex stories:
 
 ```typescript
 parameters: {
   docs: {
     description: {
-      story: 'This story demonstrates how the component behaves with different prop combinations and user interactions. Use the controls panel to experiment with different configurations.'
+      story: 'This story demonstrates how the component behaves with different prop combinations and user interactions. Use the controls panel to experiment with different configurations.';
     }
   }
 }
@@ -381,6 +405,7 @@ parameters: {
 Before submitting a story, verify:
 
 ### Functionality
+
 - [ ] All stories render without errors
 - [ ] Controls work correctly
 - [ ] Event handlers are properly mocked
@@ -388,6 +413,7 @@ Before submitting a story, verify:
 - [ ] No console warnings or errors
 
 ### Completeness
+
 - [ ] All required stories are present
 - [ ] All component variants are covered
 - [ ] All states are demonstrated
@@ -395,6 +421,7 @@ Before submitting a story, verify:
 - [ ] Documentation is clear and helpful
 
 ### Standards Compliance
+
 - [ ] Follows naming conventions
 - [ ] Uses proper TypeScript types
 - [ ] Includes proper descriptions
@@ -402,6 +429,7 @@ Before submitting a story, verify:
 - [ ] Passes linting and formatting checks
 
 ### Testing
+
 - [ ] Visual regression tests pass
 - [ ] Accessibility tests pass
 - [ ] Interactive tests work correctly
@@ -413,21 +441,25 @@ Before submitting a story, verify:
 ### Common Issues
 
 **Stories not appearing in Storybook:**
+
 - Check file naming (must end with `.stories.tsx`)
 - Verify file is in correct directory (`src/stories/`)
 - Check Storybook configuration in `.storybook/main.ts`
 
 **TypeScript errors:**
+
 - Ensure proper imports and types
 - Use `satisfies Meta<typeof Component>` for meta
 - Type story objects as `Story = StoryObj<typeof meta>`
 
 **Controls not working:**
+
 - Verify `argTypes` configuration
 - Check prop names match component interface
 - Ensure event handlers use `action()` or `fn()`
 
 **Mobile components not rendering:**
+
 - Check web-compatible conversion
 - Verify CSS-in-JS styles are correct
 - Ensure touch targets meet minimum size requirements
@@ -442,12 +474,14 @@ Before submitting a story, verify:
 ## Maintenance
 
 ### Regular Tasks
+
 - Update stories when components change
 - Review and improve existing stories
 - Add new stories for new components
 - Update documentation as needed
 
 ### Version Updates
+
 - Keep Storybook dependencies up to date
 - Test stories after Storybook updates
 - Update templates and guidelines as needed

@@ -5,6 +5,7 @@ Quick reference for blockchain development dependency management and troubleshoo
 ## 🔍 Dependency Checking
 
 ### Basic Checks
+
 ```bash
 # Check all blockchain dependencies
 pnpm blockchain:deps:check
@@ -19,6 +20,7 @@ pnpm blockchain:deps:check:polkadot   # Rust, cargo-contract, WASM target
 ```
 
 ### Advanced Diagnostics
+
 ```bash
 # Comprehensive environment diagnosis
 pnpm blockchain:deps:diagnose
@@ -30,6 +32,7 @@ pnpm blockchain:deps:check:interactive
 ## 🛠️ Automated Installation
 
 ### Fix Missing Dependencies
+
 ```bash
 # Automatically install all missing dependencies
 pnpm blockchain:deps:fix
@@ -39,6 +42,7 @@ pnpm blockchain:deps:fix:interactive
 ```
 
 ### Install Specific Tools
+
 ```bash
 # Install all blockchain tools
 pnpm blockchain:tools:install
@@ -85,6 +89,7 @@ pnpm blockchain:help:interactive
 ## 🚨 Troubleshooting Workflows
 
 ### Quick Fix Workflow
+
 ```bash
 # 1. Check what's missing
 pnpm blockchain:deps:check
@@ -100,6 +105,7 @@ pnpm contracts:compile
 ```
 
 ### Interactive Troubleshooting Workflow
+
 ```bash
 # 1. Start interactive mode
 pnpm blockchain:deps:fix:interactive
@@ -111,6 +117,7 @@ pnpm blockchain:deps:diagnose
 ```
 
 ### Manual Troubleshooting Workflow
+
 ```bash
 # 1. Get detailed environment information
 pnpm blockchain:deps:check:verbose > environment.txt
@@ -129,6 +136,7 @@ pnpm contracts:solana
 ## 🔧 Advanced Usage
 
 ### Environment Variables
+
 ```bash
 # Skip network connectivity checks
 SKIP_NETWORK_CHECK=true pnpm blockchain:deps:check
@@ -141,6 +149,7 @@ DEBUG=true pnpm blockchain:deps:check:verbose
 ```
 
 ### CI/CD Usage
+
 ```bash
 # Non-interactive dependency installation for CI
 CI=true pnpm blockchain:deps:fix
@@ -153,6 +162,7 @@ pnpm blockchain:tools:install:rust --non-interactive
 ```
 
 ### Development Container
+
 ```bash
 # All tools are pre-installed in the development container
 # Just verify they're working:
@@ -162,6 +172,7 @@ pnpm blockchain:deps:check:verbose
 ## 📋 Command Options Reference
 
 ### blockchain:deps:check Options
+
 - `--verbose`: Show detailed version information and debug output
 - `--network=<network>`: Check dependencies for specific network only
 - `--interactive`: Enable interactive troubleshooting prompts
@@ -169,12 +180,14 @@ pnpm blockchain:deps:check:verbose
 - `--fix`: Attempt to install missing dependencies automatically
 
 ### blockchain:tools:install Options
+
 - `--tool=<tool>`: Install specific tool (rust, solana, anchor, substrate)
 - `--interactive`: Enable interactive installation guidance
 - `--force`: Force reinstallation even if tool exists
 - `--non-interactive`: Disable all prompts (for CI/CD)
 
-### contracts:* Options (Enhanced)
+### contracts:\* Options (Enhanced)
+
 - `--check-deps`: Verify dependencies before compilation (now default)
 - `--skip-deps`: Skip dependency checking
 - `--network=<network>`: Compile for specific network only
@@ -183,6 +196,7 @@ pnpm blockchain:deps:check:verbose
 ## 🎯 Common Use Cases
 
 ### New Developer Setup
+
 ```bash
 # Complete setup for new developer
 git clone <repo>
@@ -194,6 +208,7 @@ pnpm dev
 ```
 
 ### CI/CD Pipeline
+
 ```bash
 # Automated CI setup
 pnpm install
@@ -204,6 +219,7 @@ pnpm build
 ```
 
 ### Troubleshooting Build Failures
+
 ```bash
 # When contract compilation fails
 pnpm blockchain:deps:check:verbose
@@ -212,6 +228,7 @@ pnpm contracts:compile --verbose
 ```
 
 ### Network-Specific Development
+
 ```bash
 # Solana development setup
 pnpm blockchain:deps:check:solana
@@ -226,6 +243,7 @@ pnpm contracts:polkadot
 ```
 
 ### Environment Validation
+
 ```bash
 # Before important deployments
 pnpm blockchain:deps:check:verbose

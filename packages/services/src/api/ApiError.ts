@@ -36,7 +36,7 @@ export class ApiError extends Error {
     message: string,
     statusCode?: number,
     originalError?: unknown,
-    response?: ApiErrorResponse
+    response?: ApiErrorResponse,
   ) {
     super(message);
     this.name = 'ApiError';
@@ -55,12 +55,7 @@ export class ApiError extends Error {
    * @param originalError - Original error object
    */
   static networkError(message: string, originalError?: unknown): ApiError {
-    return new ApiError(
-      ApiErrorType.NETWORK_ERROR,
-      message,
-      undefined,
-      originalError
-    );
+    return new ApiError(ApiErrorType.NETWORK_ERROR, message, undefined, originalError);
   }
 
   /**
@@ -69,12 +64,7 @@ export class ApiError extends Error {
    * @param originalError - Original error object
    */
   static timeoutError(message: string, originalError?: unknown): ApiError {
-    return new ApiError(
-      ApiErrorType.TIMEOUT_ERROR,
-      message,
-      408,
-      originalError
-    );
+    return new ApiError(ApiErrorType.TIMEOUT_ERROR, message, 408, originalError);
   }
 
   /**
@@ -83,13 +73,7 @@ export class ApiError extends Error {
    * @param response - API error response
    */
   static authenticationError(message: string, response?: ApiErrorResponse): ApiError {
-    return new ApiError(
-      ApiErrorType.AUTHENTICATION_ERROR,
-      message,
-      401,
-      undefined,
-      response
-    );
+    return new ApiError(ApiErrorType.AUTHENTICATION_ERROR, message, 401, undefined, response);
   }
 
   /**
@@ -98,13 +82,7 @@ export class ApiError extends Error {
    * @param response - API error response
    */
   static authorizationError(message: string, response?: ApiErrorResponse): ApiError {
-    return new ApiError(
-      ApiErrorType.AUTHORIZATION_ERROR,
-      message,
-      403,
-      undefined,
-      response
-    );
+    return new ApiError(ApiErrorType.AUTHORIZATION_ERROR, message, 403, undefined, response);
   }
 
   /**
@@ -113,13 +91,7 @@ export class ApiError extends Error {
    * @param response - API error response
    */
   static validationError(message: string, response?: ApiErrorResponse): ApiError {
-    return new ApiError(
-      ApiErrorType.VALIDATION_ERROR,
-      message,
-      400,
-      undefined,
-      response
-    );
+    return new ApiError(ApiErrorType.VALIDATION_ERROR, message, 400, undefined, response);
   }
 
   /**
@@ -128,13 +100,7 @@ export class ApiError extends Error {
    * @param response - API error response
    */
   static notFoundError(message: string, response?: ApiErrorResponse): ApiError {
-    return new ApiError(
-      ApiErrorType.NOT_FOUND_ERROR,
-      message,
-      404,
-      undefined,
-      response
-    );
+    return new ApiError(ApiErrorType.NOT_FOUND_ERROR, message, 404, undefined, response);
   }
 
   /**
@@ -144,13 +110,7 @@ export class ApiError extends Error {
    * @param response - API error response
    */
   static serverError(message: string, statusCode = 500, response?: ApiErrorResponse): ApiError {
-    return new ApiError(
-      ApiErrorType.SERVER_ERROR,
-      message,
-      statusCode,
-      undefined,
-      response
-    );
+    return new ApiError(ApiErrorType.SERVER_ERROR, message, statusCode, undefined, response);
   }
 
   /**
@@ -159,12 +119,7 @@ export class ApiError extends Error {
    * @param originalError - Original error object
    */
   static unknownError(message: string, originalError?: unknown): ApiError {
-    return new ApiError(
-      ApiErrorType.UNKNOWN_ERROR,
-      message,
-      undefined,
-      originalError
-    );
+    return new ApiError(ApiErrorType.UNKNOWN_ERROR, message, undefined, originalError);
   }
 
   /**

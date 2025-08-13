@@ -93,7 +93,7 @@ const Button: React.FC<ButtonProps> = ({
   // Get icon color based on variant and UI Kitten theme
   const getIconColor = () => {
     if (iconColor) return iconColor;
-    
+
     // UI Kitten will handle the color based on status and appearance
     // We'll use a default that works with most themes
     switch (variant) {
@@ -108,39 +108,22 @@ const Button: React.FC<ButtonProps> = ({
   // Render left icon
   const renderLeftIcon = () => {
     if (!leftIcon) return null;
-    
-    return (
-      <MaterialIcons 
-        name={leftIcon} 
-        size={getIconSize()} 
-        color={getIconColor()} 
-        style={styles.leftIcon} 
-      />
-    );
+
+    return <MaterialIcons name={leftIcon} size={getIconSize()} color={getIconColor()} style={styles.leftIcon} />;
   };
 
   // Render right icon
   const renderRightIcon = () => {
     if (!rightIcon) return null;
-    
-    return (
-      <MaterialIcons 
-        name={rightIcon} 
-        size={getIconSize()} 
-        color={getIconColor()} 
-        style={styles.rightIcon} 
-      />
-    );
+
+    return <MaterialIcons name={rightIcon} size={getIconSize()} color={getIconColor()} style={styles.rightIcon} />;
   };
 
   // Render button content
   const renderContent = () => {
     if (loading) {
       return (
-        <ActivityIndicator
-          size="small"
-          color={variant === 'outline' || variant === 'ghost' ? '#3366FF' : '#FFFFFF'}
-        />
+        <ActivityIndicator size="small" color={variant === 'outline' || variant === 'ghost' ? '#3366FF' : '#FFFFFF'} />
       );
     }
 
@@ -154,11 +137,7 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   // Combine styles
-  const buttonStyles = [
-    fullWidth && styles.fullWidth,
-    rounded && styles.rounded,
-    style,
-  ];
+  const buttonStyles = [fullWidth && styles.fullWidth, rounded && styles.rounded, style];
 
   return (
     <KittenButton

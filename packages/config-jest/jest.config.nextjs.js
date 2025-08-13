@@ -4,9 +4,7 @@ module.exports = {
   ...baseConfig,
   displayName: 'Next.js',
   testEnvironment: 'jest-environment-jsdom',
-  setupFilesAfterEnv: [
-    '<rootDir>/../../packages/config-jest/setup-tests.js'
-  ],
+  setupFilesAfterEnv: ['<rootDir>/../../packages/config-jest/setup-tests.js'],
   moduleNameMapper: {
     ...baseConfig.moduleNameMapper,
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -16,15 +14,12 @@ module.exports = {
     // Handle CSS imports (without CSS modules)
     '^.+\\.(css|sass|scss)$': 'identity-obj-proxy',
     // Handle image imports
-    '^.+\\.(jpg|jpeg|png|gif|webp|avif|ico|bmp|svg)$/i': '<rootDir>/../../packages/config-jest/mocks/fileMock.js'
+    '^.+\\.(jpg|jpeg|png|gif|webp|avif|ico|bmp|svg)$/i': '<rootDir>/../../packages/config-jest/mocks/fileMock.js',
   },
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }]
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
   },
-  transformIgnorePatterns: [
-    '/node_modules/(?!.pnpm)/',
-    '^.+\\.module\\.(css|sass|scss)$'
-  ],
+  transformIgnorePatterns: ['/node_modules/(?!.pnpm)/', '^.+\\.module\\.(css|sass|scss)$'],
   moduleDirectories: ['node_modules', '<rootDir>/'],
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
@@ -34,13 +29,7 @@ module.exports = {
     '!app/**/layout.{js,jsx,ts,tsx}',
     '!app/**/loading.{js,jsx,ts,tsx}',
     '!app/**/not-found.{js,jsx,ts,tsx}',
-    '!app/**/error.{js,jsx,ts,tsx}'
+    '!app/**/error.{js,jsx,ts,tsx}',
   ],
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/.next/',
-    '/out/',
-    '/build/',
-    '/e2e/'
-  ]
+  testPathIgnorePatterns: ['/node_modules/', '/.next/', '/out/', '/build/', '/e2e/'],
 };

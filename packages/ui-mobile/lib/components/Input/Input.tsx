@@ -1,16 +1,6 @@
 import React from 'react';
-import { 
-  Input as KittenInput, 
-  InputProps as KittenInputProps,
-  Text
-} from '@ui-kitten/components';
-import { 
-  View, 
-  StyleSheet, 
-  ViewStyle, 
-  TextStyle, 
-  StyleProp 
-} from 'react-native';
+import { Input as KittenInput, InputProps as KittenInputProps, Text } from '@ui-kitten/components';
+import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export type InputVariant = 'default' | 'outline' | 'filled';
@@ -113,40 +103,25 @@ const Input: React.FC<InputProps> = ({
   // Render left accessory (icon)
   const renderLeftAccessory = () => {
     if (!leftIcon) return undefined;
-    
-    return (
-      <MaterialIcons 
-        name={leftIcon} 
-        size={getIconSize()} 
-        color={getIconColor()} 
-      />
-    );
+
+    return <MaterialIcons name={leftIcon} size={getIconSize()} color={getIconColor()} />;
   };
 
   // Render right accessory (icon)
   const renderRightAccessory = () => {
     if (!rightIcon) return undefined;
-    
-    return (
-      <MaterialIcons 
-        name={rightIcon} 
-        size={getIconSize()} 
-        color={getIconColor()} 
-      />
-    );
+
+    return <MaterialIcons name={rightIcon} size={getIconSize()} color={getIconColor()} />;
   };
 
   // Render label with required indicator
   const renderLabel = () => {
     if (!label) return null;
-    
+
     const labelText = required ? `${label} *` : label;
-    
+
     return (
-      <Text 
-        category="label" 
-        style={[styles.label, labelStyle]}
-      >
+      <Text category="label" style={[styles.label, labelStyle]}>
         {labelText}
       </Text>
     );
@@ -155,13 +130,9 @@ const Input: React.FC<InputProps> = ({
   // Render error message
   const renderError = () => {
     if (!error || !errorMessage) return null;
-    
+
     return (
-      <Text 
-        category="c2" 
-        status="danger"
-        style={[styles.errorText, errorStyle]}
-      >
+      <Text category="c2" status="danger" style={[styles.errorText, errorStyle]}>
         {errorMessage}
       </Text>
     );
@@ -170,23 +141,16 @@ const Input: React.FC<InputProps> = ({
   // Render helper text
   const renderHelper = () => {
     if (!helperText || error) return null;
-    
+
     return (
-      <Text 
-        category="c2" 
-        appearance="hint"
-        style={[styles.helperText, helperStyle]}
-      >
+      <Text category="c2" appearance="hint" style={[styles.helperText, helperStyle]}>
         {helperText}
       </Text>
     );
   };
 
   // Combine input styles
-  const inputStyles = [
-    fullWidth && styles.fullWidth,
-    style,
-  ];
+  const inputStyles = [fullWidth && styles.fullWidth, style];
 
   return (
     <View style={[styles.container, containerStyle]}>

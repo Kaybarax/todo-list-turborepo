@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  View,
-  TextInput,
-  Text,
-  StyleSheet,
-  TextInputProps,
-  StyleProp,
-  ViewStyle,
-  TextStyle,
-} from 'react-native';
+import { View, TextInput, Text, StyleSheet, TextInputProps, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import theme from '../../theme';
 
 export interface InputProps extends TextInputProps {
@@ -38,13 +29,11 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       style,
       ...props
     },
-    ref
+    ref,
   ) => {
     return (
       <View style={[styles.container, containerStyle]}>
-        {label && (
-          <Text style={[styles.label, labelStyle]}>{label}</Text>
-        )}
+        {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
         <View style={styles.inputContainer}>
           {leftIcon && <View style={styles.leftIcon}>{leftIcon}</View>}
           <TextInput
@@ -62,12 +51,10 @@ export const Input = React.forwardRef<TextInput, InputProps>(
           />
           {rightIcon && <View style={styles.rightIcon}>{rightIcon}</View>}
         </View>
-        {error && errorMessage && (
-          <Text style={[styles.errorText, errorStyle]}>{errorMessage}</Text>
-        )}
+        {error && errorMessage && <Text style={[styles.errorText, errorStyle]}>{errorMessage}</Text>}
       </View>
     );
-  }
+  },
 );
 
 Input.displayName = 'Input';

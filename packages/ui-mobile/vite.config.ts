@@ -25,15 +25,15 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        'react', 
-        'react-native', 
+        'react',
+        'react-native',
         'react-native-vector-icons',
         'react-native-vector-icons/MaterialIcons',
         'react-native-vector-icons/FontAwesome',
         'react-native-vector-icons/Ionicons',
         '@ui-kitten/components',
         '@eva-design/eva',
-        'react-native-svg'
+        'react-native-svg',
       ],
       output: {
         globals: {
@@ -46,5 +46,4 @@ export default defineConfig({
     sourcemap: true,
     emptyOutDir: true,
   },
-
 });

@@ -1,6 +1,6 @@
 // React import removed as it's not used in this file
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Badge } from '../../../lib'
-import type { ComponentExample } from '../App'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Badge } from '../../../lib';
+import type { ComponentExample } from '../App';
 
 export const cardExamples: ComponentExample[] = [
   {
@@ -34,9 +34,7 @@ export const cardExamples: ComponentExample[] = [
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle>Card Title</CardTitle>
-          <CardDescription>
-            Card description goes here. This provides additional context.
-          </CardDescription>
+          <CardDescription>Card description goes here. This provides additional context.</CardDescription>
         </CardHeader>
         <CardContent>
           <p>This is the main content of the card.</p>
@@ -89,9 +87,7 @@ export const cardExamples: ComponentExample[] = [
             <CardTitle>Project Status</CardTitle>
             <Badge variant="secondary">Active</Badge>
           </div>
-          <CardDescription>
-            Current project development status and metrics.
-          </CardDescription>
+          <CardDescription>Current project development status and metrics.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
@@ -149,9 +145,7 @@ export const cardExamples: ComponentExample[] = [
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle>User Profile</CardTitle>
-          <CardDescription>
-            Manage your account settings and preferences.
-          </CardDescription>
+          <CardDescription>Manage your account settings and preferences.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -192,12 +186,10 @@ export const cardExamples: ComponentExample[] = [
         <CardContent className="pt-6">
           <div className="text-center">
             <h3 className="text-lg font-semibold">Simple Card</h3>
-            <p className="text-sm text-gray-600 mt-2">
-              This card only contains content without header or footer.
-            </p>
+            <p className="text-sm text-gray-600 mt-2">This card only contains content without header or footer.</p>
           </div>
         </CardContent>
       </Card>
     ),
   },
-]
+];

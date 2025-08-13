@@ -23,33 +23,33 @@ db.createCollection('users', {
         email: {
           bsonType: 'string',
           pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$',
-          description: 'must be a valid email address'
+          description: 'must be a valid email address',
         },
         name: {
           bsonType: 'string',
           minLength: 1,
           maxLength: 100,
-          description: 'must be a string between 1 and 100 characters'
+          description: 'must be a string between 1 and 100 characters',
         },
         password: {
           bsonType: 'string',
-          description: 'hashed password'
+          description: 'hashed password',
         },
         walletAddress: {
           bsonType: 'string',
-          description: 'blockchain wallet address'
+          description: 'blockchain wallet address',
         },
         createdAt: {
           bsonType: 'date',
-          description: 'must be a date'
+          description: 'must be a date',
         },
         updatedAt: {
           bsonType: 'date',
-          description: 'must be a date'
-        }
-      }
-    }
-  }
+          description: 'must be a date',
+        },
+      },
+    },
+  },
 });
 
 db.createCollection('todos', {
@@ -62,57 +62,57 @@ db.createCollection('todos', {
           bsonType: 'string',
           minLength: 1,
           maxLength: 200,
-          description: 'must be a string between 1 and 200 characters'
+          description: 'must be a string between 1 and 200 characters',
         },
         description: {
           bsonType: 'string',
           maxLength: 1000,
-          description: 'must be a string with max 1000 characters'
+          description: 'must be a string with max 1000 characters',
         },
         completed: {
           bsonType: 'bool',
-          description: 'must be a boolean'
+          description: 'must be a boolean',
         },
         priority: {
           bsonType: 'string',
           enum: ['low', 'medium', 'high'],
-          description: 'must be one of: low, medium, high'
+          description: 'must be one of: low, medium, high',
         },
         dueDate: {
           bsonType: 'date',
-          description: 'must be a date'
+          description: 'must be a date',
         },
         tags: {
           bsonType: 'array',
           items: {
-            bsonType: 'string'
+            bsonType: 'string',
           },
-          description: 'must be an array of strings'
+          description: 'must be an array of strings',
         },
         userId: {
           bsonType: 'objectId',
-          description: 'must be a valid ObjectId'
+          description: 'must be a valid ObjectId',
         },
         blockchainNetwork: {
           bsonType: 'string',
           enum: ['polygon', 'solana', 'polkadot'],
-          description: 'must be one of: polygon, solana, polkadot'
+          description: 'must be one of: polygon, solana, polkadot',
         },
         transactionHash: {
           bsonType: 'string',
-          description: 'blockchain transaction hash'
+          description: 'blockchain transaction hash',
         },
         createdAt: {
           bsonType: 'date',
-          description: 'must be a date'
+          description: 'must be a date',
         },
         updatedAt: {
           bsonType: 'date',
-          description: 'must be a date'
-        }
-      }
-    }
-  }
+          description: 'must be a date',
+        },
+      },
+    },
+  },
 });
 
 // Create indexes for better performance
@@ -130,18 +130,21 @@ db.todos.createIndex({ blockchainNetwork: 1 });
 db.todos.createIndex({ transactionHash: 1 }, { sparse: true });
 
 // Text search indexes
-db.todos.createIndex({
-  title: 'text',
-  description: 'text',
-  tags: 'text'
-}, {
-  weights: {
-    title: 10,
-    description: 5,
-    tags: 1
+db.todos.createIndex(
+  {
+    title: 'text',
+    description: 'text',
+    tags: 'text',
   },
-  name: 'todo_text_search'
-});
+  {
+    weights: {
+      title: 10,
+      description: 5,
+      tags: 1,
+    },
+    name: 'todo_text_search',
+  },
+);
 
 // Create a default admin user (for development only)
 if (db.getName() === 'todo-app' && db.users.countDocuments() === 0) {
@@ -150,7 +153,7 @@ if (db.getName() === 'todo-app' && db.users.countDocuments() === 0) {
     name: 'Admin User',
     password: '$2b$10$rQZ8QZ8QZ8QZ8QZ8QZ8QZ8QZ8QZ8QZ8QZ8QZ8QZ8QZ8QZ8QZ8QZ8Q', // hashed 'admin123'
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   });
 
   print('Created default admin user: admin@todo-app.com / admin123');
@@ -159,7 +162,7 @@ if (db.getName() === 'todo-app' && db.users.countDocuments() === 0) {
 // Create sample todos for development
 if (db.getName() === 'todo-app' && db.todos.countDocuments() === 0) {
   const adminUser = db.users.findOne({ email: 'admin@todo-app.com' });
-  
+
   if (adminUser) {
     const sampleTodos = [
       {
@@ -170,7 +173,7 @@ if (db.getName() === 'todo-app' && db.todos.countDocuments() === 0) {
         tags: ['development', 'setup'],
         userId: adminUser._id,
         createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
-        updatedAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000)
+        updatedAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
       },
       {
         title: 'Implement user authentication',
@@ -180,7 +183,7 @@ if (db.getName() === 'todo-app' && db.todos.countDocuments() === 0) {
         tags: ['authentication', 'security'],
         userId: adminUser._id,
         createdAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
-        updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
+        updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
       },
       {
         title: 'Create todo CRUD operations',
@@ -191,7 +194,7 @@ if (db.getName() === 'todo-app' && db.todos.countDocuments() === 0) {
         tags: ['api', 'crud'],
         userId: adminUser._id,
         createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-        updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
+        updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
       },
       {
         title: 'Add blockchain integration',
@@ -202,7 +205,7 @@ if (db.getName() === 'todo-app' && db.todos.countDocuments() === 0) {
         tags: ['blockchain', 'integration'],
         userId: adminUser._id,
         createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
-        updatedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000)
+        updatedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
       },
       {
         title: 'Write comprehensive tests',
@@ -213,7 +216,7 @@ if (db.getName() === 'todo-app' && db.todos.countDocuments() === 0) {
         tags: ['testing', 'quality'],
         userId: adminUser._id,
         createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-        updatedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000)
+        updatedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
       },
       {
         title: 'Deploy to production',
@@ -224,8 +227,8 @@ if (db.getName() === 'todo-app' && db.todos.countDocuments() === 0) {
         tags: ['deployment', 'devops'],
         userId: adminUser._id,
         createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-        updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
-      }
+        updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+      },
     ];
 
     db.todos.insertMany(sampleTodos);

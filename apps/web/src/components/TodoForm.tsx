@@ -24,9 +24,7 @@ interface TodoFormProps {
 export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
   const [title, setTitle] = useState(initialData?.title || '');
   const [description, setDescription] = useState(initialData?.description || '');
-  const [priority, setPriority] = useState<'low' | 'medium' | 'high'>(
-    initialData?.priority || 'medium'
-  );
+  const [priority, setPriority] = useState<'low' | 'medium' | 'high'>(initialData?.priority || 'medium');
   const [dueDate, setDueDate] = useState(initialData?.dueDate || '');
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState<string[]>(initialData?.tags || []);
@@ -62,7 +60,7 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
   };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove));
+    setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -81,7 +79,7 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
         <Input
           id="title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={e => setTitle(e.target.value)}
           placeholder="Enter todo title"
           required
           className="mt-1"
@@ -95,7 +93,7 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
         <textarea
           id="description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={e => setDescription(e.target.value)}
           rows={3}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
           placeholder="Enter todo description"
@@ -110,7 +108,7 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
           <select
             id="priority"
             value={priority}
-            onChange={(e) => setPriority(e.target.value as 'low' | 'medium' | 'high')}
+            onChange={e => setPriority(e.target.value as 'low' | 'medium' | 'high')}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
           >
             <option value="low">Low</option>
@@ -123,13 +121,7 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
           <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700">
             Due Date
           </label>
-          <Input
-            type="date"
-            id="dueDate"
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
-            className="mt-1"
-          />
+          <Input type="date" id="dueDate" value={dueDate} onChange={e => setDueDate(e.target.value)} className="mt-1" />
         </div>
       </div>
 
@@ -142,28 +134,19 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
             type="text"
             id="tags"
             value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
+            onChange={e => setTagInput(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Add a tag"
             className="flex-1 rounded-r-none"
           />
-          <Button
-            type="button"
-            onClick={addTag}
-            variant="outline"
-            className="rounded-l-none border-l-0"
-          >
+          <Button type="button" onClick={addTag} variant="outline" className="rounded-l-none border-l-0">
             Add
           </Button>
         </div>
         {tags.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-2">
-            {tags.map((tag) => (
-              <Badge
-                key={tag}
-                variant="secondary"
-                className="inline-flex items-center gap-1"
-              >
+            {tags.map(tag => (
+              <Badge key={tag} variant="secondary" className="inline-flex items-center gap-1">
                 {tag}
                 <button
                   type="button"
@@ -180,18 +163,11 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
 
       <div className="flex justify-end space-x-3">
         {onCancel && (
-          <Button
-            type="button"
-            onClick={onCancel}
-            variant="outline"
-          >
+          <Button type="button" onClick={onCancel} variant="outline">
             Cancel
           </Button>
         )}
-        <Button
-          type="submit"
-          variant="default"
-        >
+        <Button type="submit" variant="default">
           {initialData ? 'Update Todo' : 'Create Todo'}
         </Button>
       </div>

@@ -8,13 +8,10 @@ beforeAll(() => {
   process.env.NODE_ENV = 'test';
   process.env.CI = 'true'; // Disable interactive features
   process.env.SKIP_NETWORK_CHECK = 'true'; // Skip network checks in tests
-  
+
   // Create temporary directories for testing
-  const testDirs = [
-    'test/dependency-management/tmp',
-    'test/dependency-management/fixtures'
-  ];
-  
+  const testDirs = ['test/dependency-management/tmp', 'test/dependency-management/fixtures'];
+
   testDirs.forEach(dir => {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
@@ -35,18 +32,18 @@ global.executeScript = (scriptPath, args = [], options = {}) => {
   const defaultOptions = {
     encoding: 'utf8',
     env: { ...process.env, ...options.env },
-    cwd: options.cwd || process.cwd()
+    cwd: options.cwd || process.cwd(),
   };
-  
+
   try {
     const result = execSync(`bash ${scriptPath} ${args.join(' ')}`, defaultOptions);
     return { success: true, output: result, exitCode: 0 };
   } catch (error) {
-    return { 
-      success: false, 
-      output: error.stdout || error.message, 
+    return {
+      success: false,
+      output: error.stdout || error.message,
       error: error.stderr || error.message,
-      exitCode: error.status || 1 
+      exitCode: error.status || 1,
     };
   }
 };
@@ -64,11 +61,11 @@ exit 0`;
   const mockPath = `test/dependency-management/tmp/mock-${command}`;
   fs.writeFileSync(mockPath, mockScript);
   fs.chmodSync(mockPath, '755');
-  
+
   if (available) {
     process.env.PATH = `${path.dirname(path.resolve(mockPath))}:${process.env.PATH}`;
   }
-  
+
   return mockPath;
 };
 

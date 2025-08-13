@@ -13,11 +13,11 @@ describe('CI/CD Pipeline Tests', () => {
     it('Button component renders and handles interactions', () => {
       const handleClick = vi.fn();
       render(<Button onClick={handleClick}>Test Button</Button>);
-      
+
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
       expect(button).toHaveTextContent('Test Button');
-      
+
       fireEvent.click(button);
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
@@ -25,10 +25,10 @@ describe('CI/CD Pipeline Tests', () => {
     it('Input component renders and handles value changes', () => {
       const handleChange = vi.fn();
       render(<Input placeholder="Test input" onChange={handleChange} />);
-      
+
       const input = screen.getByPlaceholderText('Test input');
       expect(input).toBeInTheDocument();
-      
+
       fireEvent.change(input, { target: { value: 'test value' } });
       expect(handleChange).toHaveBeenCalled();
     });
@@ -42,7 +42,7 @@ describe('CI/CD Pipeline Tests', () => {
           </CardHeader>
           <CardContent>Test Content</CardContent>
           <CardFooter>Test Footer</CardFooter>
-        </Card>
+        </Card>,
       );
 
       expect(screen.getByTestId('test-card')).toBeInTheDocument();
@@ -61,35 +61,47 @@ describe('CI/CD Pipeline Tests', () => {
   describe('Component Props and Variants', () => {
     it('Button handles different variants', () => {
       const variants = ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'] as const;
-      
+
       variants.forEach((variant, index) => {
-        render(<Button variant={variant} key={variant}>Button {index}</Button>);
+        render(
+          <Button variant={variant} key={variant}>
+            Button {index}
+          </Button>,
+        );
         expect(screen.getByText(`Button ${index}`)).toBeInTheDocument();
       });
     });
 
     it('Button handles different sizes', () => {
       const sizes = ['default', 'sm', 'lg', 'icon'] as const;
-      
+
       sizes.forEach((size, index) => {
-        render(<Button size={size} key={size}>Button {index}</Button>);
+        render(
+          <Button size={size} key={size}>
+            Button {index}
+          </Button>,
+        );
         expect(screen.getByText(`Button ${index}`)).toBeInTheDocument();
       });
     });
 
     it('Badge handles different variants', () => {
       const variants = ['default', 'secondary', 'destructive', 'outline'] as const;
-      
+
       variants.forEach((variant, index) => {
-        render(<Badge variant={variant} key={variant}>Badge {index}</Badge>);
+        render(
+          <Badge variant={variant} key={variant}>
+            Badge {index}
+          </Badge>,
+        );
         expect(screen.getByText(`Badge ${index}`)).toBeInTheDocument();
       });
     });
 
     it('Input handles different types', () => {
       const types = ['text', 'email', 'password', 'number'] as const;
-      
-      types.forEach((type) => {
+
+      types.forEach(type => {
         render(<Input type={type} data-testid={`input-${type}`} key={type} />);
         const input = screen.getByTestId(`input-${type}`);
         expect(input).toHaveAttribute('type', type);
@@ -127,14 +139,11 @@ describe('CI/CD Pipeline Tests', () => {
   describe('Component Accessibility', () => {
     it('Button maintains proper accessibility attributes', () => {
       render(
-        <Button 
-          aria-label="Custom button label"
-          aria-describedby="button-description"
-        >
+        <Button aria-label="Custom button label" aria-describedby="button-description">
           Accessible Button
-        </Button>
+        </Button>,
       );
-      
+
       const button = screen.getByRole('button');
       expect(button).toHaveAttribute('aria-label', 'Custom button label');
       expect(button).toHaveAttribute('aria-describedby', 'button-description');
@@ -142,13 +151,9 @@ describe('CI/CD Pipeline Tests', () => {
 
     it('Input maintains proper accessibility attributes', () => {
       render(
-        <Input 
-          aria-label="Custom input label"
-          aria-describedby="input-description"
-          data-testid="accessible-input"
-        />
+        <Input aria-label="Custom input label" aria-describedby="input-description" data-testid="accessible-input" />,
       );
-      
+
       const input = screen.getByTestId('accessible-input');
       expect(input).toHaveAttribute('aria-label', 'Custom input label');
       expect(input).toHaveAttribute('aria-describedby', 'input-description');
@@ -161,12 +166,12 @@ describe('CI/CD Pipeline Tests', () => {
             <CardTitle>Article Title</CardTitle>
           </CardHeader>
           <CardContent>Article content</CardContent>
-        </Card>
+        </Card>,
       );
 
       const article = screen.getByRole('article');
       expect(article).toBeInTheDocument();
-      
+
       const heading = screen.getByRole('heading');
       expect(heading).toHaveTextContent('Article Title');
     });
@@ -175,12 +180,12 @@ describe('CI/CD Pipeline Tests', () => {
   describe('Component Integration', () => {
     it('Components work together in forms', () => {
       const handleSubmit = vi.fn();
-      
+
       render(
         <form onSubmit={handleSubmit}>
           <Input placeholder="Enter name" data-testid="name-input" />
           <Button type="submit">Submit Form</Button>
-        </form>
+        </form>,
       );
 
       const input = screen.getByTestId('name-input');
@@ -205,7 +210,7 @@ describe('CI/CD Pipeline Tests', () => {
           <CardFooter>
             <Button>Save Changes</Button>
           </CardFooter>
-        </Card>
+        </Card>,
       );
 
       expect(screen.getByText('User Profile')).toBeInTheDocument();
@@ -225,7 +230,7 @@ describe('CI/CD Pipeline Tests', () => {
           <Badge>{null}</Badge>
           <Badge>{undefined}</Badge>
           <Badge>{''}</Badge>
-        </div>
+        </div>,
       );
 
       // Components should render without throwing errors
@@ -240,7 +245,7 @@ describe('CI/CD Pipeline Tests', () => {
           </Button>
           <Badge variant={undefined as any}>Test Badge</Badge>
           <Input type={undefined as any} />
-        </div>
+        </div>,
       );
 
       // Components should render without throwing errors
@@ -266,7 +271,7 @@ describe('CI/CD Pipeline Tests', () => {
               </Button>
             </div>
           </CardContent>
-        </Card>
+        </Card>,
       );
 
       expect(screen.getByText('New')).toBeInTheDocument();
@@ -287,7 +292,7 @@ describe('CI/CD Pipeline Tests', () => {
             <CardContent>Content</CardContent>
           </Card>
           <Badge>Badge</Badge>
-        </div>
+        </div>,
       );
 
       // Should unmount without errors

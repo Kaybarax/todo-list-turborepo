@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-  TextStyle,
-} from 'react-native';
+import { View, Text, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import theme from '../../theme';
 
 export type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
@@ -30,24 +23,8 @@ export const Badge: React.FC<BadgeProps> = ({
   testID,
 }) => {
   return (
-    <View
-      style={[
-        styles.badge,
-        styles[`${variant}Badge`],
-        styles[`${size}Badge`],
-        style,
-      ]}
-      testID={testID}
-    >
-      <Text
-        style={[
-          styles.text,
-          styles[`${variant}Text`],
-          styles[`${size}Text`],
-          textStyle,
-        ]}
-        numberOfLines={1}
-      >
+    <View style={[styles.badge, styles[`${variant}Badge`], styles[`${size}Badge`], style]} testID={testID}>
+      <Text style={[styles.text, styles[`${variant}Text`], styles[`${size}Text`], textStyle]} numberOfLines={1}>
         {text}
       </Text>
     </View>

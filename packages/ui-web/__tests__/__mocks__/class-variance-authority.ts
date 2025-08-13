@@ -2,7 +2,7 @@
 export const cva = (base: string, options?: any) => {
   return (props?: any) => {
     let classes = base;
-    
+
     if (options?.variants && props) {
       Object.keys(props).forEach(key => {
         if (options.variants[key] && options.variants[key][props[key]]) {
@@ -10,7 +10,7 @@ export const cva = (base: string, options?: any) => {
         }
       });
     }
-    
+
     if (options?.defaultVariants) {
       Object.keys(options.defaultVariants).forEach(key => {
         if (!props || props[key] === undefined) {
@@ -21,11 +21,9 @@ export const cva = (base: string, options?: any) => {
         }
       });
     }
-    
+
     return classes;
   };
 };
 
-export type VariantProps<T> = T extends (...args: any[]) => any
-  ? Parameters<T>[0]
-  : never;
+export type VariantProps<T> = T extends (...args: any[]) => any ? Parameters<T>[0] : never;

@@ -139,16 +139,10 @@ const Checkbox: React.FC<CheckboxProps> = ({
         />
       );
     }
-    
+
     if (checked) {
       return (
-        <svg
-          width="12"
-          height="9"
-          viewBox="0 0 12 9"
-          fill="none"
-          style={{ display: 'block' }}
-        >
+        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" style={{ display: 'block' }}>
           <path
             d="M1 4.5L4.5 8L11 1"
             stroke={checkColor}
@@ -159,7 +153,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
         </svg>
       );
     }
-    
+
     return null;
   };
 
@@ -199,9 +193,10 @@ const meta: Meta<typeof Checkbox> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A customizable checkbox component with support for checked, unchecked, indeterminate, disabled, and error states for mobile interfaces (web preview)'
-      }
-    }
+        component:
+          'A customizable checkbox component with support for checked, unchecked, indeterminate, disabled, and error states for mobile interfaces (web preview)',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -257,7 +252,7 @@ export const Default: Story = {
   args: {
     checked: false,
     label: 'Checkbox',
-    onValueChange: (checked) => console.log('Checkbox changed:', checked),
+    onValueChange: checked => console.log('Checkbox changed:', checked),
   },
 };
 
@@ -265,7 +260,7 @@ export const Checked: Story = {
   args: {
     checked: true,
     label: 'Checked Checkbox',
-    onValueChange: (checked) => console.log('Checkbox changed:', checked),
+    onValueChange: checked => console.log('Checkbox changed:', checked),
   },
 };
 
@@ -273,7 +268,7 @@ export const Unchecked: Story = {
   args: {
     checked: false,
     label: 'Unchecked Checkbox',
-    onValueChange: (checked) => console.log('Checkbox changed:', checked),
+    onValueChange: checked => console.log('Checkbox changed:', checked),
   },
 };
 
@@ -282,14 +277,15 @@ export const Indeterminate: Story = {
     checked: false,
     indeterminate: true,
     label: 'Indeterminate Checkbox',
-    onValueChange: (checked) => console.log('Checkbox changed:', checked),
+    onValueChange: checked => console.log('Checkbox changed:', checked),
   },
   parameters: {
     docs: {
       description: {
-        story: 'Checkbox in indeterminate state, typically used for "select all" functionality when some but not all items are selected'
-      }
-    }
+        story:
+          'Checkbox in indeterminate state, typically used for "select all" functionality when some but not all items are selected',
+      },
+    },
   },
 };
 
@@ -299,7 +295,7 @@ export const Disabled: Story = {
     checked: false,
     disabled: true,
     label: 'Disabled Checkbox',
-    onValueChange: (checked) => console.log('This should not be called'),
+    onValueChange: checked => console.log('This should not be called'),
   },
 };
 
@@ -308,7 +304,7 @@ export const DisabledChecked: Story = {
     checked: true,
     disabled: true,
     label: 'Disabled Checked Checkbox',
-    onValueChange: (checked) => console.log('This should not be called'),
+    onValueChange: checked => console.log('This should not be called'),
   },
 };
 
@@ -318,7 +314,7 @@ export const DisabledIndeterminate: Story = {
     indeterminate: true,
     disabled: true,
     label: 'Disabled Indeterminate Checkbox',
-    onValueChange: (checked) => console.log('This should not be called'),
+    onValueChange: checked => console.log('This should not be called'),
   },
 };
 
@@ -329,7 +325,7 @@ export const Error: Story = {
     error: true,
     errorMessage: 'This field is required',
     label: 'Required Checkbox',
-    onValueChange: (checked) => console.log('Checkbox changed:', checked),
+    onValueChange: checked => console.log('Checkbox changed:', checked),
   },
 };
 
@@ -339,7 +335,7 @@ export const ErrorChecked: Story = {
     error: true,
     errorMessage: 'Invalid selection',
     label: 'Invalid Checkbox',
-    onValueChange: (checked) => console.log('Checkbox changed:', checked),
+    onValueChange: checked => console.log('Checkbox changed:', checked),
   },
 };
 
@@ -348,14 +344,14 @@ export const WithoutLabel: Story = {
   args: {
     checked: false,
     accessibilityLabel: 'Select item',
-    onValueChange: (checked) => console.log('Checkbox changed:', checked),
+    onValueChange: checked => console.log('Checkbox changed:', checked),
   },
   parameters: {
     docs: {
       description: {
-        story: 'Checkbox without visible label but with accessibility label for screen readers'
-      }
-    }
+        story: 'Checkbox without visible label but with accessibility label for screen readers',
+      },
+    },
   },
 };
 
@@ -366,7 +362,7 @@ export const CustomColors: Story = {
     label: 'Custom Colors',
     activeColor: '#34C759',
     checkColor: '#FFFFFF',
-    onValueChange: (checked) => console.log('Checkbox changed:', checked),
+    onValueChange: checked => console.log('Checkbox changed:', checked),
   },
 };
 
@@ -376,7 +372,7 @@ export const DangerColor: Story = {
     label: 'Danger Color',
     activeColor: '#FF3B30',
     checkColor: '#FFFFFF',
-    onValueChange: (checked) => console.log('Checkbox changed:', checked),
+    onValueChange: checked => console.log('Checkbox changed:', checked),
   },
 };
 
@@ -386,7 +382,7 @@ export const SecondaryColor: Story = {
     label: 'Secondary Color',
     activeColor: '#5856D6',
     checkColor: '#FFFFFF',
-    onValueChange: (checked) => console.log('Checkbox changed:', checked),
+    onValueChange: checked => console.log('Checkbox changed:', checked),
   },
 };
 
@@ -399,51 +395,57 @@ export const AllStates: Story = {
       <Checkbox checked={false} indeterminate={true} label="Indeterminate" onValueChange={() => {}} />
       <Checkbox checked={false} disabled={true} label="Disabled Unchecked" onValueChange={() => {}} />
       <Checkbox checked={true} disabled={true} label="Disabled Checked" onValueChange={() => {}} />
-      <Checkbox checked={false} indeterminate={true} disabled={true} label="Disabled Indeterminate" onValueChange={() => {}} />
+      <Checkbox
+        checked={false}
+        indeterminate={true}
+        disabled={true}
+        label="Disabled Indeterminate"
+        onValueChange={() => {}}
+      />
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'All checkbox states displayed together for comparison'
-      }
-    }
+        story: 'All checkbox states displayed together for comparison',
+      },
+    },
   },
 };
 
 export const ErrorStates: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <Checkbox 
-        checked={false} 
-        error={true} 
-        errorMessage="This field is required" 
-        label="Required Field" 
-        onValueChange={() => {}} 
+      <Checkbox
+        checked={false}
+        error={true}
+        errorMessage="This field is required"
+        label="Required Field"
+        onValueChange={() => {}}
       />
-      <Checkbox 
-        checked={true} 
-        error={true} 
-        errorMessage="Invalid selection" 
-        label="Invalid Selection" 
-        onValueChange={() => {}} 
+      <Checkbox
+        checked={true}
+        error={true}
+        errorMessage="Invalid selection"
+        label="Invalid Selection"
+        onValueChange={() => {}}
       />
-      <Checkbox 
-        checked={false} 
-        indeterminate={true} 
-        error={true} 
-        errorMessage="Partial selection not allowed" 
-        label="Partial Selection" 
-        onValueChange={() => {}} 
+      <Checkbox
+        checked={false}
+        indeterminate={true}
+        error={true}
+        errorMessage="Partial selection not allowed"
+        label="Partial Selection"
+        onValueChange={() => {}}
       />
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Checkbox error states with error messages'
-      }
-    }
+        story: 'Checkbox error states with error messages',
+      },
+    },
   },
 };
 
@@ -460,9 +462,9 @@ export const ColorVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Checkbox with different color variants'
-      }
-    }
+        story: 'Checkbox with different color variants',
+      },
+    },
   },
 };
 
@@ -477,9 +479,7 @@ export const TodoList: Story = {
     ]);
 
     const toggleTodo = (id: number) => {
-      setTodos(prev => prev.map(todo => 
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      ));
+      setTodos(prev => prev.map(todo => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
     };
 
     const completedCount = todos.filter(todo => todo.completed).length;
@@ -515,9 +515,9 @@ export const TodoList: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Interactive todo list example showing select all functionality with indeterminate state'
-      }
-    }
+        story: 'Interactive todo list example showing select all functionality with indeterminate state',
+      },
+    },
   },
 };
 
@@ -540,7 +540,7 @@ export const FormValidation: Story = {
 
     const handleSubmit = () => {
       const newErrors: Record<string, string> = {};
-      
+
       if (!formData.terms) {
         newErrors.terms = 'You must accept the terms and conditions';
       }
@@ -558,7 +558,7 @@ export const FormValidation: Story = {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: '350px' }}>
         <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600' }}>Account Settings</h3>
-        
+
         <Checkbox
           checked={formData.terms}
           error={!!errors.terms}
@@ -566,7 +566,7 @@ export const FormValidation: Story = {
           label="I accept the terms and conditions"
           onValueChange={handleChange('terms')}
         />
-        
+
         <Checkbox
           checked={formData.privacy}
           error={!!errors.privacy}
@@ -574,7 +574,7 @@ export const FormValidation: Story = {
           label="I accept the privacy policy"
           onValueChange={handleChange('privacy')}
         />
-        
+
         <Checkbox
           checked={formData.newsletter}
           label="Subscribe to newsletter (optional)"
@@ -604,9 +604,9 @@ export const FormValidation: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Form validation example showing required and optional checkboxes with error handling'
-      }
-    }
+        story: 'Form validation example showing required and optional checkboxes with error handling',
+      },
+    },
   },
 };
 
@@ -614,28 +614,26 @@ export const AccessibilityExample: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div>
-        <h4 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: '600' }}>
-          Accessibility Features
-        </h4>
+        <h4 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: '600' }}>Accessibility Features</h4>
         <p style={{ margin: '0 0 16px 0', fontSize: '14px', color: '#666' }}>
           These checkboxes demonstrate proper accessibility implementation:
         </p>
       </div>
-      
+
       <Checkbox
         checked={false}
         label="Enable notifications"
         accessibilityLabel="Enable push notifications for this application"
         onValueChange={() => {}}
       />
-      
+
       <Checkbox
         checked={true}
         label="High contrast mode"
         accessibilityLabel="Enable high contrast mode for better visibility"
         onValueChange={() => {}}
       />
-      
+
       <Checkbox
         checked={false}
         indeterminate={true}
@@ -643,7 +641,7 @@ export const AccessibilityExample: Story = {
         accessibilityLabel="Partially sync settings across devices"
         onValueChange={() => {}}
       />
-      
+
       <Checkbox
         checked={false}
         disabled={true}
@@ -651,7 +649,7 @@ export const AccessibilityExample: Story = {
         accessibilityLabel="Premium feature checkbox, disabled because upgrade is required"
         onValueChange={() => {}}
       />
-      
+
       <Checkbox
         checked={false}
         error={true}
@@ -666,9 +664,9 @@ export const AccessibilityExample: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Accessibility examples showing proper ARIA attributes, labels, and error handling for screen readers'
-      }
-    }
+        story: 'Accessibility examples showing proper ARIA attributes, labels, and error handling for screen readers',
+      },
+    },
   },
 };
 
@@ -689,9 +687,7 @@ export const InteractiveExample: Story = {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', minWidth: '300px' }}>
         <div>
-          <h4 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: '600' }}>
-            Interactive Checkbox Demo
-          </h4>
+          <h4 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: '600' }}>Interactive Checkbox Demo</h4>
           <Checkbox
             checked={state.checked}
             disabled={state.disabled}
@@ -699,35 +695,21 @@ export const InteractiveExample: Story = {
             error={state.error}
             errorMessage={state.error ? 'This is an error message' : undefined}
             label="Demo Checkbox"
-            onValueChange={(checked) => setState(prev => ({ ...prev, checked }))}
+            onValueChange={checked => setState(prev => ({ ...prev, checked }))}
           />
         </div>
 
         <div>
-          <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '600' }}>
-            Controls:
-          </h5>
+          <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '600' }}>Controls:</h5>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <Checkbox
-              checked={state.checked}
-              label="Checked"
-              onValueChange={() => toggleState('checked')}
-            />
-            <Checkbox
-              checked={state.disabled}
-              label="Disabled"
-              onValueChange={() => toggleState('disabled')}
-            />
+            <Checkbox checked={state.checked} label="Checked" onValueChange={() => toggleState('checked')} />
+            <Checkbox checked={state.disabled} label="Disabled" onValueChange={() => toggleState('disabled')} />
             <Checkbox
               checked={state.indeterminate}
               label="Indeterminate"
               onValueChange={() => toggleState('indeterminate')}
             />
-            <Checkbox
-              checked={state.error}
-              label="Error State"
-              onValueChange={() => toggleState('error')}
-            />
+            <Checkbox checked={state.error} label="Error State" onValueChange={() => toggleState('error')} />
           </div>
         </div>
       </div>
@@ -737,8 +719,8 @@ export const InteractiveExample: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Interactive example allowing you to test different checkbox states and combinations'
-      }
-    }
+        story: 'Interactive example allowing you to test different checkbox states and combinations',
+      },
+    },
   },
 };

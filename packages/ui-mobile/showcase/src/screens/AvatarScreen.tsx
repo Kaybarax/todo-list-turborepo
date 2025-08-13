@@ -13,19 +13,18 @@ const AvatarScreen: React.FC = () => {
         {/* Component Description */}
         <Card style={styles.descriptionCard}>
           <Layout style={styles.cardContent}>
-            <Text category="h5" style={styles.cardTitle}>Avatar Component</Text>
+            <Text category="h5" style={styles.cardTitle}>
+              Avatar Component
+            </Text>
             <Text category="p1">
-              User avatar component with image and initials support. Built on UI Kitten Avatar 
-              primitive with custom fallback for initials display.
+              User avatar component with image and initials support. Built on UI Kitten Avatar primitive with custom
+              fallback for initials display.
             </Text>
           </Layout>
         </Card>
 
         {/* Avatar Sizes */}
-        <ComponentExample
-          title="Avatar Sizes"
-          description="Different sizes to fit various layouts."
-        >
+        <ComponentExample title="Avatar Sizes" description="Different sizes to fit various layouts.">
           <View style={styles.avatarRow}>
             <Avatar size="tiny" initials="XS" />
             <Avatar size="small" initials="SM" />
@@ -36,10 +35,7 @@ const AvatarScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Avatar Shapes */}
-        <ComponentExample
-          title="Avatar Shapes"
-          description="Different shapes for various design needs."
-        >
+        <ComponentExample title="Avatar Shapes" description="Different shapes for various design needs.">
           <View style={styles.avatarRow}>
             <Avatar shape="round" initials="RD" size="large" />
             <Avatar shape="rounded" initials="RN" size="large" />
@@ -48,10 +44,7 @@ const AvatarScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Avatar with Images */}
-        <ComponentExample
-          title="Avatar with Images"
-          description="Avatars displaying user profile images."
-        >
+        <ComponentExample title="Avatar with Images" description="Avatars displaying user profile images.">
           <View style={styles.avatarRow}>
             <Avatar source={mockImageSource} size="medium" />
             <Avatar source={mockImageSource} size="large" />
@@ -60,10 +53,7 @@ const AvatarScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Avatar with Initials */}
-        <ComponentExample
-          title="Avatar with Initials"
-          description="Avatars with user initials as fallback."
-        >
+        <ComponentExample title="Avatar with Initials" description="Avatars with user initials as fallback.">
           <View style={styles.avatarRow}>
             <Avatar initials="JD" size="medium" />
             <Avatar initials="AS" size="medium" backgroundColor="#FF6B6B" />
@@ -73,50 +63,26 @@ const AvatarScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Custom Colors */}
-        <ComponentExample
-          title="Custom Colors"
-          description="Avatars with custom background and text colors."
-        >
+        <ComponentExample title="Custom Colors" description="Avatars with custom background and text colors.">
           <View style={styles.avatarRow}>
-            <Avatar 
-              initials="RD" 
-              size="large" 
-              backgroundColor="#FF3B30" 
-              textColor="#FFFFFF" 
-            />
-            <Avatar 
-              initials="GR" 
-              size="large" 
-              backgroundColor="#34C759" 
-              textColor="#FFFFFF" 
-            />
-            <Avatar 
-              initials="BL" 
-              size="large" 
-              backgroundColor="#007AFF" 
-              textColor="#FFFFFF" 
-            />
-            <Avatar 
-              initials="OR" 
-              size="large" 
-              backgroundColor="#FF9500" 
-              textColor="#FFFFFF" 
-            />
+            <Avatar initials="RD" size="large" backgroundColor="#FF3B30" textColor="#FFFFFF" />
+            <Avatar initials="GR" size="large" backgroundColor="#34C759" textColor="#FFFFFF" />
+            <Avatar initials="BL" size="large" backgroundColor="#007AFF" textColor="#FFFFFF" />
+            <Avatar initials="OR" size="large" backgroundColor="#FF9500" textColor="#FFFFFF" />
           </View>
         </ComponentExample>
 
         {/* Avatar in Context */}
-        <ComponentExample
-          title="Avatars in Context"
-          description="Examples of avatars used in real-world scenarios."
-        >
+        <ComponentExample title="Avatars in Context" description="Examples of avatars used in real-world scenarios.">
           <View style={styles.contextContainer}>
             {/* User List Item */}
             <View style={styles.userListItem}>
               <Avatar initials="JD" size="medium" />
               <View style={styles.userInfo}>
                 <Text category="h6">John Doe</Text>
-                <Text category="p2" appearance="hint">Software Engineer</Text>
+                <Text category="p2" appearance="hint">
+                  Software Engineer
+                </Text>
               </View>
             </View>
 
@@ -126,7 +92,9 @@ const AvatarScreen: React.FC = () => {
               <View style={styles.commentContent}>
                 <Text category="s1">Alice Smith</Text>
                 <Text category="p2">Great work on the new feature! Looking forward to testing it.</Text>
-                <Text category="c1" appearance="hint">2 hours ago</Text>
+                <Text category="c1" appearance="hint">
+                  2 hours ago
+                </Text>
               </View>
             </View>
 
@@ -135,20 +103,23 @@ const AvatarScreen: React.FC = () => {
               <Avatar source={mockImageSource} size="large" />
               <View style={styles.memberInfo}>
                 <Text category="h6">Michael Johnson</Text>
-                <Text category="p2" appearance="hint">Product Manager</Text>
-                <Text category="c1" appearance="hint">Online now</Text>
+                <Text category="p2" appearance="hint">
+                  Product Manager
+                </Text>
+                <Text category="c1" appearance="hint">
+                  Online now
+                </Text>
               </View>
             </View>
           </View>
         </ComponentExample>
 
         {/* Avatar Groups */}
-        <ComponentExample
-          title="Avatar Groups"
-          description="Multiple avatars displayed together."
-        >
+        <ComponentExample title="Avatar Groups" description="Multiple avatars displayed together.">
           <View style={styles.groupContainer}>
-            <Text category="s1" style={styles.groupLabel}>Team Members (4)</Text>
+            <Text category="s1" style={styles.groupLabel}>
+              Team Members (4)
+            </Text>
             <View style={styles.avatarGroup}>
               <Avatar initials="JD" size="medium" style={styles.groupAvatar} />
               <Avatar initials="AS" size="medium" backgroundColor="#FF6B6B" style={styles.groupAvatar} />

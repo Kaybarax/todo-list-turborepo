@@ -22,8 +22,8 @@ module.exports = {
         'docs',
         'ci',
         'infra',
-        'db'
-      ]
-    ]
-  }
+        'db',
+      ],
+    ],
+  },
 };

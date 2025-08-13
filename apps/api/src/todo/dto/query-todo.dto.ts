@@ -31,7 +31,11 @@ export class QueryTodoDto {
   @IsEnum(['low', 'medium', 'high'], { message: 'Priority must be low, medium, or high' })
   priority?: 'low' | 'medium' | 'high';
 
-  @ApiProperty({ description: 'Filter by blockchain network', enum: ['solana', 'polkadot', 'polygon'], required: false })
+  @ApiProperty({
+    description: 'Filter by blockchain network',
+    enum: ['solana', 'polkadot', 'polygon'],
+    required: false,
+  })
   @IsOptional()
   @IsEnum(['solana', 'polkadot', 'polygon'], { message: 'Blockchain network must be solana, polkadot, or polygon' })
   blockchainNetwork?: 'solana' | 'polkadot' | 'polygon';
@@ -48,7 +52,11 @@ export class QueryTodoDto {
   @Transform(({ value }) => value?.trim())
   tag?: string;
 
-  @ApiProperty({ description: 'Sort field', enum: ['createdAt', 'updatedAt', 'title', 'priority', 'dueDate'], required: false })
+  @ApiProperty({
+    description: 'Sort field',
+    enum: ['createdAt', 'updatedAt', 'title', 'priority', 'dueDate'],
+    required: false,
+  })
   @IsOptional()
   @IsEnum(['createdAt', 'updatedAt', 'title', 'priority', 'dueDate'], { message: 'Invalid sort field' })
   sortBy?: 'createdAt' | 'updatedAt' | 'title' | 'priority' | 'dueDate' = 'createdAt';

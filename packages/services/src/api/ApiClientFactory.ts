@@ -53,12 +53,12 @@ export class ApiClientFactory {
    */
   getTodoClient(): TodoApiClient {
     const key = 'todo';
-    
+
     if (!this.clients.has(key)) {
       const client = new TodoApiClient(this.config);
       this.clients.set(key, client);
     }
-    
+
     return this.clients.get(key) as TodoApiClient;
   }
 
@@ -67,12 +67,12 @@ export class ApiClientFactory {
    */
   getAuthClient(): AuthApiClient {
     const key = 'auth';
-    
+
     if (!this.clients.has(key)) {
       const client = new AuthApiClient(this.config);
       this.clients.set(key, client);
     }
-    
+
     return this.clients.get(key) as AuthApiClient;
   }
 
@@ -81,12 +81,12 @@ export class ApiClientFactory {
    */
   getBaseClient(): BaseApiClient {
     const key = 'base';
-    
+
     if (!this.clients.has(key)) {
       const client = new BaseApiClient(this.config);
       this.clients.set(key, client);
     }
-    
+
     return this.clients.get(key) as BaseApiClient;
   }
 
@@ -153,7 +153,7 @@ export class ApiClientFactory {
    */
   updateConfig(updates: Partial<ApiClientFactoryConfig>): void {
     this.config = { ...this.config, ...updates };
-    
+
     // Clear existing clients to force recreation with new config
     this.clients.clear();
   }
@@ -167,7 +167,7 @@ export class ApiClientFactory {
   static createForEnvironment(
     environment: 'development' | 'staging' | 'production',
     baseUrl: string,
-    overrides?: Partial<ApiClientFactoryConfig>
+    overrides?: Partial<ApiClientFactoryConfig>,
   ): ApiClientFactory {
     const config: ApiClientFactoryConfig = {
       baseUrl,
@@ -186,14 +186,7 @@ export class ApiClientFactory {
    * @param port - Local server port (default: 3001)
    * @param overrides - Additional configuration overrides
    */
-  static createForDevelopment(
-    port = 3001,
-    overrides?: Partial<ApiClientFactoryConfig>
-  ): ApiClientFactory {
-    return ApiClientFactory.createForEnvironment(
-      'development',
-      `http://localhost:${port}`,
-      overrides
-    );
+  static createForDevelopment(port = 3001, overrides?: Partial<ApiClientFactoryConfig>): ApiClientFactory {
+    return ApiClientFactory.createForEnvironment('development', `http://localhost:${port}`, overrides);
   }
 }

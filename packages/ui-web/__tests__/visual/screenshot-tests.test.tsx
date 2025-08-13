@@ -63,10 +63,10 @@ describe('Visual Regression Tests', () => {
   // Helper function to create consistent screenshots
   const takeScreenshot = async (component: React.ReactElement, _testName: string) => {
     const { container } = render(component);
-    
+
     // Wait for any animations or async operations
     await new Promise(resolve => setTimeout(resolve, 100));
-    
+
     // Take screenshot (using mock for now)
     expect(container.firstChild).toMatchSnapshot();
   };
@@ -96,7 +96,7 @@ describe('Visual Regression Tests', () => {
           </div>
         </div>
       );
-      
+
       await takeScreenshot(component, 'button-variants');
     });
 
@@ -106,10 +106,12 @@ describe('Visual Regression Tests', () => {
           <Button>Normal</Button>
           <Button disabled>Disabled</Button>
           <Button isLoading>Loading</Button>
-          <Button isLoading loadingText="Please wait...">Loading with text</Button>
+          <Button isLoading loadingText="Please wait...">
+            Loading with text
+          </Button>
         </div>
       );
-      
+
       await takeScreenshot(component, 'button-states');
     });
   });
@@ -130,7 +132,7 @@ describe('Visual Regression Tests', () => {
               <Button size="sm">Action</Button>
             </CardFooter>
           </Card>
-          
+
           <Card className="w-80">
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -144,7 +146,7 @@ describe('Visual Regression Tests', () => {
           </Card>
         </div>
       );
-      
+
       await takeScreenshot(component, 'card-layouts');
     });
 
@@ -190,7 +192,7 @@ describe('Visual Regression Tests', () => {
           </Card>
         </div>
       );
-      
+
       await takeScreenshot(component, 'complex-card');
     });
   });
@@ -206,23 +208,14 @@ describe('Visual Regression Tests', () => {
           <Input leftIcon={<span>🔍</span>} placeholder="With left icon" />
           <Input rightIcon={<span>✓</span>} placeholder="With right icon" />
           <div>
-            <Input 
-              label="Complete Input" 
-              placeholder="With label and helper" 
-              helperText="This is helper text" 
-            />
+            <Input label="Complete Input" placeholder="With label and helper" helperText="This is helper text" />
           </div>
           <div>
-            <Input 
-              label="Error Input" 
-              error 
-              placeholder="With error state" 
-              helperText="This is an error message" 
-            />
+            <Input label="Error Input" error placeholder="With error state" helperText="This is an error message" />
           </div>
         </div>
       );
-      
+
       await takeScreenshot(component, 'input-variants');
     });
 
@@ -231,42 +224,33 @@ describe('Visual Regression Tests', () => {
         <div className="p-4 bg-white">
           <form className="space-y-4 w-80">
             <div>
-              <Input 
-                label="First Name" 
-                placeholder="Enter first name..." 
-                value="John"
-              />
+              <Input label="First Name" placeholder="Enter first name..." value="John" />
             </div>
             <div>
-              <Input 
-                label="Email" 
-                type="email" 
-                placeholder="Enter email..." 
+              <Input
+                label="Email"
+                type="email"
+                placeholder="Enter email..."
                 leftIcon={<span>✉️</span>}
                 value="john@example.com"
               />
             </div>
             <div>
-              <Input 
-                label="Phone" 
-                type="tel" 
-                placeholder="Enter phone..." 
-                helperText="Include country code" 
-              />
+              <Input label="Phone" type="tel" placeholder="Enter phone..." helperText="Include country code" />
             </div>
             <div>
-              <Input 
-                label="Password" 
-                type="password" 
-                error 
-                placeholder="Enter password..." 
-                helperText="Password must be at least 8 characters" 
+              <Input
+                label="Password"
+                type="password"
+                error
+                placeholder="Enter password..."
+                helperText="Password must be at least 8 characters"
               />
             </div>
           </form>
         </div>
       );
-      
+
       await takeScreenshot(component, 'input-form');
     });
   });
@@ -280,19 +264,17 @@ describe('Visual Regression Tests', () => {
             <Badge variant="secondary">Secondary</Badge>
             <Badge variant="destructive">Destructive</Badge>
             <Badge variant="outline">Outline</Badge>
-            
+
             <Badge>123</Badge>
             <Badge variant="secondary">
               <span className="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
               Online
             </Badge>
-            <Badge variant="outline">
-              🔥 Hot
-            </Badge>
+            <Badge variant="outline">🔥 Hot</Badge>
           </div>
         </div>
       );
-      
+
       await takeScreenshot(component, 'badge-variants');
     });
 
@@ -305,13 +287,13 @@ describe('Visual Regression Tests', () => {
             <Badge variant="outline">Tailwind</Badge>
             <Badge variant="outline">Storybook</Badge>
           </div>
-          
+
           <div className="flex flex-wrap gap-1">
             <Badge>New</Badge>
             <Badge variant="secondary">Updated</Badge>
             <Badge variant="destructive">Deprecated</Badge>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <span>Status:</span>
             <Badge variant="outline" className="border-green-500 text-green-700">
@@ -321,7 +303,7 @@ describe('Visual Regression Tests', () => {
           </div>
         </div>
       );
-      
+
       await takeScreenshot(component, 'badge-groups');
     });
   });
@@ -340,17 +322,8 @@ describe('Visual Regression Tests', () => {
                 <CardDescription>Manage your account settings</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Input 
-                  label="Display Name" 
-                  value="John Doe" 
-                  leftIcon={<span>👤</span>}
-                />
-                <Input 
-                  label="Email" 
-                  type="email" 
-                  value="john@example.com" 
-                  leftIcon={<span>✉️</span>}
-                />
+                <Input label="Display Name" value="John Doe" leftIcon={<span>👤</span>} />
+                <Input label="Email" type="email" value="john@example.com" leftIcon={<span>✉️</span>} />
               </CardContent>
               <CardFooter className="flex justify-between">
                 <Button variant="outline">Cancel</Button>
@@ -386,7 +359,7 @@ describe('Visual Regression Tests', () => {
           </div>
         </div>
       );
-      
+
       await takeScreenshot(component, 'component-integration');
     });
   });
@@ -401,23 +374,20 @@ describe('Visual Regression Tests', () => {
               <Button variant="destructive">Destructive</Button>
               <Button variant="outline">Outline</Button>
             </div>
-            
+
             <Card className="w-80 bg-slate-800 border-slate-700">
               <CardHeader>
                 <CardTitle className="text-white">Dark Card</CardTitle>
                 <CardDescription className="text-slate-300">Card in dark theme</CardDescription>
               </CardHeader>
               <CardContent>
-                <Input 
-                  placeholder="Dark input..." 
-                  className="bg-slate-700 border-slate-600 text-white"
-                />
+                <Input placeholder="Dark input..." className="bg-slate-700 border-slate-600 text-white" />
               </CardContent>
               <CardFooter>
                 <Button>Dark Action</Button>
               </CardFooter>
             </Card>
-            
+
             <div className="flex gap-2">
               <Badge>Dark Badge</Badge>
               <Badge variant="outline">Dark Outline</Badge>
@@ -425,7 +395,7 @@ describe('Visual Regression Tests', () => {
           </div>
         </div>
       );
-      
+
       await takeScreenshot(component, 'dark-mode-components');
     });
   });

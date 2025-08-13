@@ -34,11 +34,13 @@ scripts/
 **Purpose**: Comprehensive verification of blockchain development environment
 
 **Interface**:
+
 ```bash
 ./scripts/blockchain-deps-check.sh [--fix] [--verbose] [--network=<polygon|solana|polkadot>]
 ```
 
 **Responsibilities**:
+
 - Check Node.js version compatibility
 - Verify Rust installation and version
 - Validate Solana CLI installation
@@ -47,6 +49,7 @@ scripts/
 - Verify Substrate tools for Polkadot
 
 **Output Format**:
+
 ```
 ✓ Node.js v20.x.x (Required: 20+)
 ✓ Rust 1.70.0 (Required: 1.70+)
@@ -60,17 +63,20 @@ scripts/
 **Purpose**: Automated installation of missing blockchain development tools
 
 **Interface**:
+
 ```bash
 ./scripts/install-blockchain-tools.sh [--tool=<anchor|solana|rust>] [--force]
 ```
 
 **Installation Strategy**:
+
 - **Rust**: Use rustup for cross-platform installation
 - **Solana CLI**: Use official installer script
 - **Anchor CLI**: Use cargo install with specific version pinning
 - **Platform Detection**: Adapt commands for macOS, Linux, Windows
 
 **Error Handling**:
+
 - Retry mechanism for network failures
 - Fallback to manual instructions
 - Version conflict resolution
@@ -81,6 +87,7 @@ scripts/
 **Purpose**: Resilient contract compilation with dependency management
 
 **Enhanced Flow**:
+
 1. Run dependency check
 2. Attempt automatic installation of missing tools
 3. Validate environment before compilation
@@ -88,6 +95,7 @@ scripts/
 5. Generate compilation report
 
 **Network-Specific Handling**:
+
 - **Polygon**: Hardhat compilation with TypeScript generation
 - **Solana**: Anchor build with program deployment preparation
 - **Polkadot**: Substrate pallet compilation
@@ -209,21 +217,25 @@ interface BuildReport {
 ## Implementation Phases
 
 ### Phase 1: Dependency Detection
+
 - Create comprehensive dependency checker
 - Implement cross-platform detection logic
 - Add detailed reporting and logging
 
 ### Phase 2: Automated Installation
+
 - Implement installation scripts for each tool
 - Add error handling and retry logic
 - Create platform-specific installation paths
 
 ### Phase 3: Build Script Enhancement
+
 - Integrate dependency management into build process
 - Add pre-compilation validation
 - Implement graceful failure handling
 
 ### Phase 4: Documentation and Troubleshooting
+
 - Create comprehensive setup documentation
 - Add troubleshooting guides for common issues
 - Implement interactive help system

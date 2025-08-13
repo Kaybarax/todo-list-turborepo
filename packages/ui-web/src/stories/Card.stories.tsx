@@ -248,7 +248,9 @@ export const ResponsiveTest: Story = {
         </CardContent>
         <CardFooter className="flex flex-col sm:flex-row gap-2">
           <Button className="w-full sm:w-auto">Primary</Button>
-          <Button variant="outline" className="w-full sm:w-auto">Secondary</Button>
+          <Button variant="outline" className="w-full sm:w-auto">
+            Secondary
+          </Button>
         </CardFooter>
       </Card>
     </div>

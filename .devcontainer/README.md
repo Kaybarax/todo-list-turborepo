@@ -5,18 +5,21 @@ This directory contains a comprehensive development container configuration for 
 ## 🎯 Key Accomplishments
 
 ### Complete Development Environment
+
 - **Multi-Language Support**: Node.js 20, Rust, Python 3.11 for all development needs
 - **Blockchain Tools**: Solana CLI, Anchor framework, and Rust toolchain pre-installed
 - **DevOps Integration**: Docker-in-Docker, kubectl, Helm, and Minikube ready
 - **Database Tools**: MongoDB and Redis clients with connection helpers
 
 ### Advanced IDE Integration
+
 - **50+ VS Code Extensions**: Curated extensions for all technologies in the stack
 - **Debugging Configurations**: Pre-configured debugging for all applications
 - **IntelliSense**: Complete TypeScript, React, Rust, and Solidity support
 - **Testing Integration**: Jest, Playwright, and blockchain testing frameworks
 
 ### Automation & Productivity
+
 - **Post-Create Scripts**: Automated environment setup and dependency installation
 - **Shell Customization**: Enhanced bash/zsh with development aliases and functions
 - **Port Forwarding**: Automatic forwarding for all development services
@@ -25,6 +28,7 @@ This directory contains a comprehensive development container configuration for 
 ## Features
 
 ### 🛠️ Development Tools
+
 - **Node.js 20** with pnpm package manager
 - **TypeScript** with comprehensive configurations
 - **Docker** and Docker Compose for containerized development
@@ -32,17 +36,20 @@ This directory contains a comprehensive development container configuration for 
 - **Git** with useful aliases and configurations
 
 ### ⛓️ Blockchain Development
+
 - **Rust** toolchain with Cargo
 - **Solana CLI** and development tools
 - **Anchor Framework** for Solana program development
 - **Hardhat** for Ethereum/Polygon smart contract development
 
 ### 🗄️ Database Tools
+
 - **MongoDB** client tools
 - **Redis** client tools
 - Pre-configured database connections
 
 ### 🔧 IDE Integration
+
 - **VS Code** extensions for all technologies
 - **ESLint** and **Prettier** configurations
 - **Debugging** configurations for all applications
@@ -50,6 +57,7 @@ This directory contains a comprehensive development container configuration for 
 - **IntelliSense** for TypeScript, React, and blockchain development
 
 ### 📊 Monitoring & Observability
+
 - **Jaeger** for distributed tracing
 - **OpenTelemetry** instrumentation
 - **MailHog** for email testing
@@ -57,12 +65,14 @@ This directory contains a comprehensive development container configuration for 
 ## Quick Start
 
 ### Prerequisites
+
 - **Docker Desktop** or **Docker Engine** with Docker Compose
 - **VS Code** with the **Dev Containers** extension
 
 ### Starting the Development Environment
 
 1. **Open in VS Code**:
+
    ```bash
    code .
    ```
@@ -94,6 +104,7 @@ pnpm dev
 ## Container Structure
 
 ### Base Image
+
 - **Node.js 20** on Debian Bullseye
 - **Non-root user** (node) for security
 - **System dependencies** for all development tools
@@ -101,24 +112,28 @@ pnpm dev
 ### Installed Tools
 
 #### Core Development
+
 - Node.js 20 with npm and pnpm
 - TypeScript and ts-node
 - Git with useful configurations
 - Zsh with Oh My Zsh
 
 #### Blockchain Development
+
 - Rust toolchain with Cargo
 - Solana CLI and test validator
 - Anchor framework for Solana
 - Hardhat for Ethereum development
 
 #### DevOps Tools
+
 - Docker CLI (Docker-in-Docker)
 - Kubernetes CLI (kubectl)
 - Helm package manager
 - Minikube for local Kubernetes
 
 #### Database Clients
+
 - MongoDB shell (mongosh)
 - Redis CLI
 - Connection helpers and aliases
@@ -126,6 +141,7 @@ pnpm dev
 ### VS Code Extensions
 
 The container includes extensions for:
+
 - **Language Support**: TypeScript, JavaScript, Rust, Solidity
 - **Frameworks**: React, Next.js, NestJS, React Native
 - **Blockchain**: Solidity, Rust Analyzer
@@ -207,21 +223,22 @@ npx hardhat console --network localhost
 
 The following ports are automatically forwarded:
 
-| Port  | Service                    | URL                        |
-|-------|----------------------------|----------------------------|
-| 3000  | Next.js Web App           | http://localhost:3000      |
-| 3001  | NestJS API                | http://localhost:3001      |
-| 8081  | React Native Metro        | http://localhost:8081      |
-| 19000 | Expo Dev Tools            | http://localhost:19000     |
-| 27017 | MongoDB                   | mongodb://localhost:27017  |
-| 6379  | Redis                     | redis://localhost:6379     |
-| 8545  | Hardhat Node              | http://localhost:8545      |
-| 16686 | Jaeger UI                 | http://localhost:16686     |
-| 8025  | MailHog UI                | http://localhost:8025      |
+| Port  | Service            | URL                       |
+| ----- | ------------------ | ------------------------- |
+| 3000  | Next.js Web App    | http://localhost:3000     |
+| 3001  | NestJS API         | http://localhost:3001     |
+| 8081  | React Native Metro | http://localhost:8081     |
+| 19000 | Expo Dev Tools     | http://localhost:19000    |
+| 27017 | MongoDB            | mongodb://localhost:27017 |
+| 6379  | Redis              | redis://localhost:6379    |
+| 8545  | Hardhat Node       | http://localhost:8545     |
+| 16686 | Jaeger UI          | http://localhost:16686    |
+| 8025  | MailHog UI         | http://localhost:8025     |
 
 ## Useful Commands
 
 ### Package Management
+
 ```bash
 dev                   # Start all development servers
 test                  # Run all tests
@@ -231,6 +248,7 @@ dev-clean             # Clean and reinstall dependencies
 ```
 
 ### Docker Management
+
 ```bash
 dc <command>          # Docker compose shortcut
 dcu                   # Start all services
@@ -242,6 +260,7 @@ dev-status            # Show environment status
 ```
 
 ### Development Helpers
+
 ```bash
 dev-help              # Show all available commands
 dev-status            # Show development environment status
@@ -254,6 +273,7 @@ redis-cli             # Connect to Redis
 ### VS Code Debugging
 
 The container includes debug configurations for:
+
 - **API**: Debug NestJS application
 - **Web**: Debug Next.js application
 - **Ingestion**: Debug ingestion service
@@ -293,9 +313,7 @@ Edit `.devcontainer/devcontainer.json` to add VS Code extensions:
 {
   "customizations": {
     "vscode": {
-      "extensions": [
-        "your.extension.id"
-      ]
+      "extensions": ["your.extension.id"]
     }
   }
 }
@@ -367,6 +385,7 @@ rm -rf apps/smart-contracts/artifacts
 ### Resource Allocation
 
 The container is configured with:
+
 - **Memory**: Optimized for Node.js development
 - **CPU**: Efficient resource usage
 - **Storage**: Cached volumes for node_modules
@@ -380,11 +399,13 @@ The container is configured with:
 ## Security
 
 ### Container Security
+
 - **Non-root user**: All processes run as the `node` user
 - **Read-only filesystem**: Where possible
 - **Minimal attack surface**: Only necessary tools installed
 
 ### Development Security
+
 - **Environment isolation**: Development secrets don't affect host
 - **Network isolation**: Services communicate through Docker network
 - **Secret management**: Use environment variables for sensitive data

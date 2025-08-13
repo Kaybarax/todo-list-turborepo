@@ -18,26 +18,26 @@ export default function RootLayout() {
             },
           }}
         >
-          <Stack.Screen 
-            name="index" 
-            options={{ 
+          <Stack.Screen
+            name="index"
+            options={{
               title: 'Todo App',
               headerShown: true,
-            }} 
+            }}
           />
-          <Stack.Screen 
-            name="todos" 
-            options={{ 
+          <Stack.Screen
+            name="todos"
+            options={{
               title: 'My Todos',
               headerShown: true,
-            }} 
+            }}
           />
-          <Stack.Screen 
-            name="wallet" 
-            options={{ 
+          <Stack.Screen
+            name="wallet"
+            options={{
               title: 'Wallet',
               headerShown: true,
-            }} 
+            }}
           />
         </Stack>
         <StatusBar style="auto" />

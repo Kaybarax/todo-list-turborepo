@@ -178,25 +178,12 @@ export const AllVariants: Story = {
       <Input error placeholder="Error input" />
       <Input leftIcon={<span>🔍</span>} placeholder="With left icon" />
       <Input rightIcon={<span>✓</span>} placeholder="With right icon" />
-      <Input 
-        leftIcon={<span>👤</span>} 
-        rightIcon={<span>✓</span>} 
-        placeholder="With both icons" 
-      />
+      <Input leftIcon={<span>👤</span>} rightIcon={<span>✓</span>} placeholder="With both icons" />
       <div>
-        <Input 
-          label="Complete Input" 
-          placeholder="With label and helper" 
-          helperText="This is helper text" 
-        />
+        <Input label="Complete Input" placeholder="With label and helper" helperText="This is helper text" />
       </div>
       <div>
-        <Input 
-          label="Error Input" 
-          error 
-          placeholder="With error state" 
-          helperText="This is an error message" 
-        />
+        <Input label="Error Input" error placeholder="With error state" helperText="This is an error message" />
       </div>
     </div>
   ),
@@ -214,35 +201,16 @@ export const InFormContext: Story = {
   render: () => (
     <form className="space-y-4 w-80">
       <div>
-        <Input 
-          label="First Name" 
-          placeholder="Enter first name..." 
-          required 
-        />
+        <Input label="First Name" placeholder="Enter first name..." required />
       </div>
       <div>
-        <Input 
-          label="Last Name" 
-          placeholder="Enter last name..." 
-          required 
-        />
+        <Input label="Last Name" placeholder="Enter last name..." required />
       </div>
       <div>
-        <Input 
-          label="Email" 
-          type="email" 
-          placeholder="Enter email..." 
-          leftIcon={<span>✉️</span>}
-          required 
-        />
+        <Input label="Email" type="email" placeholder="Enter email..." leftIcon={<span>✉️</span>} required />
       </div>
       <div>
-        <Input 
-          label="Phone" 
-          type="tel" 
-          placeholder="Enter phone number..." 
-          helperText="Include country code" 
-        />
+        <Input label="Phone" type="tel" placeholder="Enter phone number..." helperText="Include country code" />
       </div>
     </form>
   ),

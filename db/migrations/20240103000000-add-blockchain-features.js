@@ -17,78 +17,80 @@ module.exports = {
           properties: {
             userId: {
               bsonType: 'objectId',
-              description: 'user who initiated the transaction'
+              description: 'user who initiated the transaction',
             },
             todoId: {
               bsonType: 'objectId',
-              description: 'associated todo item'
+              description: 'associated todo item',
             },
             network: {
               bsonType: 'string',
               enum: ['polygon', 'solana', 'polkadot'],
-              description: 'blockchain network'
+              description: 'blockchain network',
             },
             transactionHash: {
               bsonType: 'string',
-              description: 'blockchain transaction hash'
+              description: 'blockchain transaction hash',
             },
             blockNumber: {
               bsonType: 'long',
-              description: 'block number where transaction was included'
+              description: 'block number where transaction was included',
             },
             gasUsed: {
               bsonType: 'string',
-              description: 'gas used for the transaction'
+              description: 'gas used for the transaction',
             },
             gasPrice: {
               bsonType: 'string',
-              description: 'gas price for the transaction'
+              description: 'gas price for the transaction',
             },
             status: {
               bsonType: 'string',
               enum: ['pending', 'confirmed', 'failed'],
-              description: 'transaction status'
+              description: 'transaction status',
             },
             operation: {
               bsonType: 'string',
               enum: ['create', 'update', 'delete'],
-              description: 'type of operation performed'
+              description: 'type of operation performed',
             },
             contractAddress: {
               bsonType: 'string',
-              description: 'smart contract address'
+              description: 'smart contract address',
             },
             errorMessage: {
               bsonType: 'string',
-              description: 'error message if transaction failed'
+              description: 'error message if transaction failed',
             },
             metadata: {
               bsonType: 'object',
-              description: 'additional transaction metadata'
+              description: 'additional transaction metadata',
             },
             createdAt: {
               bsonType: 'date',
-              description: 'transaction creation timestamp'
+              description: 'transaction creation timestamp',
             },
             updatedAt: {
               bsonType: 'date',
-              description: 'transaction update timestamp'
+              description: 'transaction update timestamp',
             },
             schemaVersion: {
               bsonType: 'int',
               minimum: 1,
-              description: 'schema version for migrations'
-            }
-          }
-        }
-      }
+              description: 'schema version for migrations',
+            },
+          },
+        },
+      },
     });
 
     // Create indexes for blockchain_transactions
     await db.collection('blockchain_transactions').createIndex({ userId: 1 }, { background: true });
     await db.collection('blockchain_transactions').createIndex({ todoId: 1 }, { sparse: true, background: true });
     await db.collection('blockchain_transactions').createIndex({ network: 1 }, { background: true });
-    await db.collection('blockchain_transactions').createIndex({ transactionHash: 1 }, { unique: true, background: true });
+    await db
+      .collection('blockchain_transactions')
+      .createIndex({ transactionHash: 1 }, { unique: true, background: true });
     await db.collection('blockchain_transactions').createIndex({ status: 1 }, { background: true });
     await db.collection('blockchain_transactions').createIndex({ createdAt: 1 }, { background: true });
     await db.collection('blockchain_transactions').createIndex({ userId: 1, network: 1 }, { background: true });
@@ -104,54 +106,54 @@ module.exports = {
           properties: {
             userId: {
               bsonType: 'objectId',
-              description: 'user who owns the wallet'
+              description: 'user who owns the wallet',
             },
             network: {
               bsonType: 'string',
               enum: ['polygon', 'solana', 'polkadot'],
-              description: 'blockchain network'
+              description: 'blockchain network',
             },
             address: {
               bsonType: 'string',
-              description: 'wallet address'
+              description: 'wallet address',
             },
             label: {
               bsonType: 'string',
               maxLength: 50,
-              description: 'user-defined label for the wallet'
+              description: 'user-defined label for the wallet',
             },
             isDefault: {
               bsonType: 'bool',
-              description: 'whether this is the default wallet for the network'
+              description: 'whether this is the default wallet for the network',
             },
             isActive: {
               bsonType: 'bool',
-              description: 'whether the wallet is active'
+              description: 'whether the wallet is active',
             },
             balance: {
               bsonType: 'string',
-              description: 'cached wallet balance'
+              description: 'cached wallet balance',
             },
             lastBalanceUpdate: {
               bsonType: 'date',
-              description: 'timestamp of last balance update'
+              description: 'timestamp of last balance update',
             },
             createdAt: {
               bsonType: 'date',
-              description: 'wallet creation timestamp'
+              description: 'wallet creation timestamp',
             },
             updatedAt: {
               bsonType: 'date',
-              description: 'wallet update timestamp'
+              description: 'wallet update timestamp',
             },
             schemaVersion: {
               bsonType: 'int',
               minimum: 1,
-              description: 'schema version for migrations'
-            }
-          }
-        }
-      }
+              description: 'schema version for migrations',
+            },
+          },
+        },
+      },
     });
 
     // Create indexes for user_wallets
@@ -165,10 +167,12 @@ module.exports = {
 
     // Add blockchain-specific indexes to existing todos collection
     console.log('Adding blockchain indexes to todos collection...');
-    
+
     // These indexes might already exist from the previous migration, so we'll handle errors gracefully
     try {
-      await db.collection('todos').createIndex({ blockchainNetwork: 1, transactionHash: 1 }, { sparse: true, background: true });
+      await db
+        .collection('todos')
+        .createIndex({ blockchainNetwork: 1, transactionHash: 1 }, { sparse: true, background: true });
     } catch (error) {
       if (!error.message.includes('already exists')) {
         throw error;
@@ -185,41 +189,41 @@ module.exports = {
             network: {
               bsonType: 'string',
               enum: ['polygon', 'solana', 'polkadot'],
-              description: 'blockchain network'
+              description: 'blockchain network',
             },
             status: {
               bsonType: 'string',
               enum: ['online', 'offline', 'degraded'],
-              description: 'network status'
+              description: 'network status',
             },
             blockHeight: {
               bsonType: 'long',
-              description: 'current block height'
+              description: 'current block height',
             },
             gasPrice: {
               bsonType: 'string',
-              description: 'current gas price'
+              description: 'current gas price',
             },
             responseTime: {
               bsonType: 'int',
-              description: 'response time in milliseconds'
+              description: 'response time in milliseconds',
             },
             errorMessage: {
               bsonType: 'string',
-              description: 'error message if network is down'
+              description: 'error message if network is down',
             },
             lastChecked: {
               bsonType: 'date',
-              description: 'timestamp of last status check'
+              description: 'timestamp of last status check',
             },
             schemaVersion: {
               bsonType: 'int',
               minimum: 1,
-              description: 'schema version for migrations'
-            }
-          }
-        }
-      }
+              description: 'schema version for migrations',
+            },
+          },
+        },
+      },
     });
 
     // Create indexes for network_status
@@ -233,7 +237,7 @@ module.exports = {
       network,
       status: 'offline',
       lastChecked: new Date(),
-      schemaVersion: 1
+      schemaVersion: 1,
     }));
 
     await db.collection('network_status').insertMany(networkStatusRecords);
@@ -243,19 +247,19 @@ module.exports = {
 
   async down(db, client) {
     console.log('Removing blockchain features...');
-    
+
     // Drop blockchain-specific collections
     await db.collection('blockchain_transactions').drop();
     await db.collection('user_wallets').drop();
     await db.collection('network_status').drop();
-    
+
     // Remove blockchain-specific indexes from todos collection
     try {
       await db.collection('todos').dropIndex('blockchainNetwork_1_transactionHash_1');
     } catch (error) {
       // Index might not exist, ignore error
     }
-    
+
     console.log('Blockchain features removed successfully');
-  }
+  },
 };

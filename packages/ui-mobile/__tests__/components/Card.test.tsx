@@ -2,14 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react-native';
 import { ApplicationProvider } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
-import { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent, 
-  CardFooter 
-} from '../../lib/components/Card/Card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../../lib/components/Card/Card';
 
 // Test wrapper with UI Kitten provider
 const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -24,23 +17,23 @@ describe('Card', () => {
       <Card testID="test-card">
         <CardContent>Card content</CardContent>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     expect(getByTestId('test-card')).toBeTruthy();
   });
 
   it('renders with different variants', () => {
     const variants = ['default', 'outlined', 'filled'] as const;
-    
-    variants.forEach((variant) => {
+
+    variants.forEach(variant => {
       const { getByTestId, unmount } = render(
         <Card variant={variant} testID={`card-${variant}`}>
           <CardContent>Test content</CardContent>
         </Card>,
-        { wrapper: TestWrapper }
+        { wrapper: TestWrapper },
       );
-      
+
       expect(getByTestId(`card-${variant}`)).toBeTruthy();
       unmount();
     });
@@ -48,15 +41,15 @@ describe('Card', () => {
 
   it('renders with different elevation levels', () => {
     const elevations = ['none', 'low', 'medium', 'high'] as const;
-    
-    elevations.forEach((elevation) => {
+
+    elevations.forEach(elevation => {
       const { getByTestId, unmount } = render(
         <Card elevation={elevation} testID={`card-${elevation}`}>
           <CardContent>Test content</CardContent>
         </Card>,
-        { wrapper: TestWrapper }
+        { wrapper: TestWrapper },
       );
-      
+
       expect(getByTestId(`card-${elevation}`)).toBeTruthy();
       unmount();
     });
@@ -68,9 +61,9 @@ describe('Card', () => {
       <Card style={customStyle} testID="styled-card">
         <CardContent>Styled content</CardContent>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     expect(getByTestId('styled-card')).toBeTruthy();
   });
 
@@ -79,9 +72,9 @@ describe('Card', () => {
       <Card testID="props-card" accessibilityLabel="Custom card">
         <CardContent>Props test</CardContent>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     expect(getByTestId('props-card')).toBeTruthy();
   });
 });
@@ -94,9 +87,9 @@ describe('CardHeader', () => {
           <CardTitle>Header Title</CardTitle>
         </CardHeader>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     expect(getByText('Header Title')).toBeTruthy();
   });
 
@@ -108,9 +101,9 @@ describe('CardHeader', () => {
           <CardTitle>Styled Header</CardTitle>
         </CardHeader>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     expect(getByText('Styled Header')).toBeTruthy();
   });
 });
@@ -123,25 +116,25 @@ describe('CardTitle', () => {
           <CardTitle>Default Title</CardTitle>
         </CardHeader>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     expect(getByText('Default Title')).toBeTruthy();
   });
 
   it('renders with different categories', () => {
     const categories = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const;
-    
-    categories.forEach((category) => {
+
+    categories.forEach(category => {
       const { getByText, unmount } = render(
         <Card>
           <CardHeader>
             <CardTitle category={category}>{category} Title</CardTitle>
           </CardHeader>
         </Card>,
-        { wrapper: TestWrapper }
+        { wrapper: TestWrapper },
       );
-      
+
       expect(getByText(`${category} Title`)).toBeTruthy();
       unmount();
     });
@@ -155,9 +148,9 @@ describe('CardTitle', () => {
           <CardTitle style={customStyle}>Styled Title</CardTitle>
         </CardHeader>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     expect(getByText('Styled Title')).toBeTruthy();
   });
 });
@@ -170,25 +163,25 @@ describe('CardDescription', () => {
           <CardDescription>Default description</CardDescription>
         </CardHeader>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     expect(getByText('Default description')).toBeTruthy();
   });
 
   it('renders with different categories', () => {
     const categories = ['p1', 'p2', 's1', 's2', 'c1', 'c2'] as const;
-    
-    categories.forEach((category) => {
+
+    categories.forEach(category => {
       const { getByText, unmount } = render(
         <Card>
           <CardHeader>
             <CardDescription category={category}>{category} description</CardDescription>
           </CardHeader>
         </Card>,
-        { wrapper: TestWrapper }
+        { wrapper: TestWrapper },
       );
-      
+
       expect(getByText(`${category} description`)).toBeTruthy();
       unmount();
     });
@@ -202,9 +195,9 @@ describe('CardDescription', () => {
           <CardDescription style={customStyle}>Styled description</CardDescription>
         </CardHeader>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     expect(getByText('Styled description')).toBeTruthy();
   });
 });
@@ -215,9 +208,9 @@ describe('CardContent', () => {
       <Card>
         <CardContent>Content text</CardContent>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     expect(getByText('Content text')).toBeTruthy();
   });
 
@@ -227,9 +220,9 @@ describe('CardContent', () => {
       <Card>
         <CardContent style={customStyle}>Styled content</CardContent>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     expect(getByText('Styled content')).toBeTruthy();
   });
 });
@@ -242,25 +235,25 @@ describe('CardFooter', () => {
           <CardTitle>Footer content</CardTitle>
         </CardFooter>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     expect(getByText('Footer content')).toBeTruthy();
   });
 
   it('renders with different alignments', () => {
     const alignments = ['left', 'center', 'right', 'space-between'] as const;
-    
-    alignments.forEach((alignment) => {
+
+    alignments.forEach(alignment => {
       const { getByText, unmount } = render(
         <Card>
           <CardFooter alignment={alignment}>
             <CardTitle>{alignment} footer</CardTitle>
           </CardFooter>
         </Card>,
-        { wrapper: TestWrapper }
+        { wrapper: TestWrapper },
       );
-      
+
       expect(getByText(`${alignment} footer`)).toBeTruthy();
       unmount();
     });
@@ -274,9 +267,9 @@ describe('CardFooter', () => {
           <CardTitle>Styled footer</CardTitle>
         </CardFooter>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     expect(getByText('Styled footer')).toBeTruthy();
   });
 });
@@ -296,7 +289,7 @@ describe('Complete Card Structure', () => {
           <CardTitle>Footer Action</CardTitle>
         </CardFooter>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
 
     expect(getByText('Card Title')).toBeTruthy();
@@ -307,11 +300,7 @@ describe('Complete Card Structure', () => {
 
   it('renders complex card with all features', () => {
     const { getByText } = render(
-      <Card 
-        variant="outlined" 
-        elevation="high"
-        testID="complex-card"
-      >
+      <Card variant="outlined" elevation="high" testID="complex-card">
         <CardHeader>
           <CardTitle category="h3">Complex Card</CardTitle>
           <CardDescription category="p1">This is a complex card example</CardDescription>
@@ -324,7 +313,7 @@ describe('Complete Card Structure', () => {
           <CardTitle>Right</CardTitle>
         </CardFooter>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
 
     expect(getByText('Complex Card')).toBeTruthy();
@@ -348,7 +337,7 @@ describe('Complete Card Structure', () => {
           <CardTitle>Footer</CardTitle>
         </CardFooter>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
 
     const card = getByTestId('hierarchy-card');
@@ -366,7 +355,7 @@ describe('Complete Card Structure', () => {
           </Card>
         </CardContent>
       </Card>,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
 
     expect(getByText('Nested card content')).toBeTruthy();

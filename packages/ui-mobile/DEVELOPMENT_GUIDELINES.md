@@ -27,10 +27,7 @@ All components should follow this architectural pattern:
 // 1. Imports
 import React from 'react';
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { 
-  Button as UIKittenButton, 
-  ButtonProps as UIKittenButtonProps 
-} from '@ui-kitten/components';
+import { Button as UIKittenButton, ButtonProps as UIKittenButtonProps } from '@ui-kitten/components';
 
 // 2. TypeScript interface extending UI Kitten props
 export interface ButtonProps extends Omit<UIKittenButtonProps, 'children'> {
@@ -62,31 +59,37 @@ export const Button: React.FC<ButtonProps> = ({
   // 4. Variant mapping to UI Kitten status
   const getStatus = (): string => {
     switch (variant) {
-      case 'primary': return 'primary';
-      case 'secondary': return 'basic';
-      case 'danger': return 'danger';
-      case 'success': return 'success';
-      case 'outline': return 'basic';
-      case 'ghost': return 'basic';
-      default: return 'basic';
+      case 'primary':
+        return 'primary';
+      case 'secondary':
+        return 'basic';
+      case 'danger':
+        return 'danger';
+      case 'success':
+        return 'success';
+      case 'outline':
+        return 'basic';
+      case 'ghost':
+        return 'basic';
+      default:
+        return 'basic';
     }
   };
 
   // 5. Size mapping
   const getSize = (): string => {
     switch (size) {
-      case 'small': return 'small';
-      case 'large': return 'large';
-      default: return 'medium';
+      case 'small':
+        return 'small';
+      case 'large':
+        return 'large';
+      default:
+        return 'medium';
     }
   };
 
   // 6. Style composition
-  const buttonStyle = [
-    fullWidth && styles.fullWidth,
-    rounded && styles.rounded,
-    style,
-  ];
+  const buttonStyle = [fullWidth && styles.fullWidth, rounded && styles.rounded, style];
 
   // 7. Render with UI Kitten component
   return (
@@ -131,14 +134,7 @@ export interface InputProps extends UIKittenInputProps {
   rightIcon?: string;
 }
 
-export const Input: React.FC<InputProps> = ({
-  label,
-  helperText,
-  error,
-  leftIcon,
-  rightIcon,
-  ...props
-}) => {
+export const Input: React.FC<InputProps> = ({ label, helperText, error, leftIcon, rightIcon, ...props }) => {
   return (
     <UIKittenInput
       status={error ? 'danger' : 'basic'}
@@ -279,7 +275,7 @@ import { useTheme } from '@ui-kitten/components';
 
 const Component = () => {
   const theme = useTheme();
-  
+
   const styles = StyleSheet.create({
     container: {
       backgroundColor: theme['background-basic-color-1'],
@@ -290,7 +286,7 @@ const Component = () => {
       fontSize: theme['text-font-size'],
     },
   });
-  
+
   return <View style={styles.container}>/* ... */</View>;
 };
 
@@ -327,11 +323,8 @@ const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 
 describe('Button', () => {
   it('renders with title', () => {
-    const { getByText } = render(
-      <Button title="Test Button" onPress={() => {}} />,
-      { wrapper: TestWrapper }
-    );
-    
+    const { getByText } = render(<Button title="Test Button" onPress={() => {}} />, { wrapper: TestWrapper });
+
     expect(getByText('Test Button')).toBeTruthy();
   });
 });
@@ -366,19 +359,18 @@ const Button = ({ title, onPress, ...props }) => {
 // ✅ Good - Memoized components
 const Badge = React.memo<BadgeProps>(({ text, variant, style }) => {
   const theme = useTheme();
-  
-  const badgeStyle = React.useMemo(() => ([
-    {
-      backgroundColor: theme[`color-${variant}-default`],
-    },
-    style,
-  ]), [theme, variant, style]);
-  
-  return (
-    <UIKittenText style={badgeStyle}>
-      {text}
-    </UIKittenText>
+
+  const badgeStyle = React.useMemo(
+    () => [
+      {
+        backgroundColor: theme[`color-${variant}-default`],
+      },
+      style,
+    ],
+    [theme, variant, style],
   );
+
+  return <UIKittenText style={badgeStyle}>{text}</UIKittenText>;
 });
 ```
 
@@ -439,4 +431,4 @@ const IOSButton = ({ title, onPress }) => {
 
 ---
 
-*This document is a living guide and should be updated as the component library evolves. All contributors are expected to follow these guidelines to maintain consistency and quality across the React Native mobile codebase.*
+_This document is a living guide and should be updated as the component library evolves. All contributors are expected to follow these guidelines to maintain consistency and quality across the React Native mobile codebase._

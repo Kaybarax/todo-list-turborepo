@@ -7,6 +7,7 @@ Anchor is a framework for Solana's Sealevel runtime providing several developer 
 ## Prerequisites
 
 Before installing Anchor CLI, ensure you have:
+
 - Rust 1.70.0 or later
 - Solana CLI 1.16.0 or later
 - Node.js 20+ with npm/yarn/pnpm
@@ -16,6 +17,7 @@ Before installing Anchor CLI, ensure you have:
 ### Automatic Installation (Recommended)
 
 Use our automated installer:
+
 ```bash
 ./scripts/install-blockchain-tools.sh --tool=anchor
 ```
@@ -23,6 +25,7 @@ Use our automated installer:
 ### Manual Installation
 
 #### Method 1: Using Cargo (Recommended)
+
 ```bash
 # Install specific version for compatibility
 cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
@@ -31,6 +34,7 @@ avm use latest
 ```
 
 #### Method 2: Using AVM (Anchor Version Manager)
+
 ```bash
 # Install AVM first
 cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
@@ -41,6 +45,7 @@ avm use latest
 ```
 
 #### Method 3: Building from Source
+
 ```bash
 git clone https://github.com/coral-xyz/anchor
 cd anchor
@@ -51,6 +56,7 @@ cargo install --path cli anchor-cli --locked
 ## Verification
 
 After installation, verify Anchor CLI is working:
+
 ```bash
 anchor --version
 anchor init test-project
@@ -63,12 +69,14 @@ anchor build
 ### Issue 1: "anchor: command not found"
 
 **Symptoms:**
+
 - Command `anchor --version` returns "command not found"
 - Anchor CLI appears to install successfully but is not available
 
 **Solutions:**
 
 1. **Check PATH configuration:**
+
    ```bash
    # Add to ~/.bashrc, ~/.zshrc, or ~/.profile
    export PATH="$HOME/.cargo/bin:$PATH"
@@ -76,6 +84,7 @@ anchor build
    ```
 
 2. **Verify Cargo bin directory:**
+
    ```bash
    ls -la ~/.cargo/bin/anchor*
    which anchor
@@ -89,32 +98,37 @@ anchor build
 ### Issue 2: "failed to compile anchor-cli"
 
 **Symptoms:**
+
 - Compilation errors during `cargo install`
 - Missing dependencies or build failures
 
 **Solutions:**
 
 1. **Update Rust toolchain:**
+
    ```bash
    rustup update stable
    rustup default stable
    ```
 
 2. **Install required system dependencies:**
-   
+
    **macOS:**
+
    ```bash
    xcode-select --install
    brew install pkg-config openssl libuv
    ```
-   
+
    **Ubuntu/Debian:**
+
    ```bash
    sudo apt update
    sudo apt install -y pkg-config build-essential libuv1-dev libssl-dev
    ```
-   
+
    **Windows:**
+
    ```powershell
    # Install Visual Studio Build Tools
    # Or use Windows Subsystem for Linux (WSL)
@@ -130,12 +144,14 @@ anchor build
 ### Issue 3: "Anchor.toml not found"
 
 **Symptoms:**
+
 - Error when running `anchor build` or other commands
 - Working directory doesn't contain Anchor project
 
 **Solutions:**
 
 1. **Initialize new Anchor project:**
+
    ```bash
    anchor init my-project
    cd my-project
@@ -150,18 +166,21 @@ anchor build
 ### Issue 4: Solana CLI version incompatibility
 
 **Symptoms:**
+
 - Build failures with version mismatch errors
 - "unsupported Solana version" messages
 
 **Solutions:**
 
 1. **Check version compatibility:**
+
    ```bash
    anchor --version
    solana --version
    ```
 
 2. **Update Solana CLI to compatible version:**
+
    ```bash
    solana-install update
    ```
@@ -174,21 +193,24 @@ anchor build
 ### Issue 5: "Program failed to complete" during build
 
 **Symptoms:**
+
 - Build process hangs or fails
 - Memory or resource exhaustion errors
 
 **Solutions:**
 
 1. **Increase system resources:**
+
    ```bash
    # Increase stack size
    export RUST_MIN_STACK=8388608
-   
+
    # Build with release mode for better optimization
    anchor build --release
    ```
 
 2. **Clean and rebuild:**
+
    ```bash
    anchor clean
    rm -rf target/
@@ -203,18 +225,21 @@ anchor build
 ### Issue 6: Network connectivity issues
 
 **Symptoms:**
+
 - Timeouts during installation
 - Failed to download dependencies
 
 **Solutions:**
 
 1. **Configure proxy if needed:**
+
    ```bash
    export HTTP_PROXY=http://proxy.company.com:8080
    export HTTPS_PROXY=http://proxy.company.com:8080
    ```
 
 2. **Use alternative registry:**
+
    ```bash
    # Add to ~/.cargo/config.toml
    [source.crates-io]
@@ -229,16 +254,19 @@ anchor build
 ## Platform-Specific Notes
 
 ### macOS
+
 - Ensure Xcode Command Line Tools are installed
 - Use Homebrew for system dependencies when possible
 - M1/M2 Macs may require Rosetta for some dependencies
 
 ### Linux
+
 - Install build-essential package
 - Ensure pkg-config is available
 - Some distributions may need additional SSL libraries
 
 ### Windows
+
 - Consider using WSL for better compatibility
 - Visual Studio Build Tools required for native compilation
 - PowerShell execution policy may need adjustment

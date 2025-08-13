@@ -29,116 +29,46 @@ const SwitchScreen: React.FC = () => {
           </Layout>
           <Layout style={styles.cardContent}>
             <Text category="p1">
-              Toggle switch component for boolean values. Built on UI Kitten Toggle 
-              primitive with custom styling and status mapping.
+              Toggle switch component for boolean values. Built on UI Kitten Toggle primitive with custom styling and
+              status mapping.
             </Text>
           </Layout>
         </Card>
 
         {/* Basic Switches */}
-        <ComponentExample
-          title="Basic Switches"
-          description="Simple on/off toggle switches."
-        >
+        <ComponentExample title="Basic Switches" description="Simple on/off toggle switches.">
           <View style={styles.switchGroup}>
-            <Switch
-              value={switches.basic}
-              onValueChange={(value) => updateSwitch('basic', value)}
-              label="Basic Switch"
-            />
-            <Switch
-              value={true}
-              onValueChange={() => {}}
-              label="Always On"
-            />
-            <Switch
-              value={false}
-              onValueChange={() => {}}
-              label="Always Off"
-            />
+            <Switch value={switches.basic} onValueChange={value => updateSwitch('basic', value)} label="Basic Switch" />
+            <Switch value={true} onValueChange={() => {}} label="Always On" />
+            <Switch value={false} onValueChange={() => {}} label="Always Off" />
           </View>
         </ComponentExample>
 
         {/* Switch Status */}
-        <ComponentExample
-          title="Switch Status"
-          description="Different status colors for various use cases."
-        >
+        <ComponentExample title="Switch Status" description="Different status colors for various use cases.">
           <View style={styles.switchGroup}>
-            <Switch
-              value={true}
-              onValueChange={() => {}}
-              label="Primary Status"
-              status="primary"
-            />
-            <Switch
-              value={true}
-              onValueChange={() => {}}
-              label="Success Status"
-              status="success"
-            />
-            <Switch
-              value={true}
-              onValueChange={() => {}}
-              label="Info Status"
-              status="info"
-            />
-            <Switch
-              value={true}
-              onValueChange={() => {}}
-              label="Warning Status"
-              status="warning"
-            />
-            <Switch
-              value={true}
-              onValueChange={() => {}}
-              label="Danger Status"
-              status="danger"
-            />
+            <Switch value={true} onValueChange={() => {}} label="Primary Status" status="primary" />
+            <Switch value={true} onValueChange={() => {}} label="Success Status" status="success" />
+            <Switch value={true} onValueChange={() => {}} label="Info Status" status="info" />
+            <Switch value={true} onValueChange={() => {}} label="Warning Status" status="warning" />
+            <Switch value={true} onValueChange={() => {}} label="Danger Status" status="danger" />
           </View>
         </ComponentExample>
 
         {/* Disabled Switches */}
-        <ComponentExample
-          title="Disabled Switches"
-          description="Switches in disabled state."
-        >
+        <ComponentExample title="Disabled Switches" description="Switches in disabled state.">
           <View style={styles.switchGroup}>
-            <Switch
-              value={true}
-              onValueChange={() => {}}
-              label="Disabled (On)"
-              disabled
-            />
-            <Switch
-              value={false}
-              onValueChange={() => {}}
-              label="Disabled (Off)"
-              disabled
-            />
+            <Switch value={true} onValueChange={() => {}} label="Disabled (On)" disabled />
+            <Switch value={false} onValueChange={() => {}} label="Disabled (Off)" disabled />
           </View>
         </ComponentExample>
 
         {/* Switches without Labels */}
-        <ComponentExample
-          title="Switches without Labels"
-          description="Standalone switches without text labels."
-        >
+        <ComponentExample title="Switches without Labels" description="Standalone switches without text labels.">
           <View style={styles.switchRow}>
-            <Switch
-              value={switches.basic}
-              onValueChange={(value) => updateSwitch('basic', value)}
-            />
-            <Switch
-              value={true}
-              onValueChange={() => {}}
-              status="success"
-            />
-            <Switch
-              value={false}
-              onValueChange={() => {}}
-              status="danger"
-            />
+            <Switch value={switches.basic} onValueChange={value => updateSwitch('basic', value)} />
+            <Switch value={true} onValueChange={() => {}} status="success" />
+            <Switch value={false} onValueChange={() => {}} status="danger" />
           </View>
         </ComponentExample>
 
@@ -148,10 +78,12 @@ const SwitchScreen: React.FC = () => {
           description="Interactive settings panel with multiple switches."
         >
           <View style={styles.settingsPanel}>
-            <Text category="h6" style={styles.sectionTitle}>Notifications</Text>
+            <Text category="h6" style={styles.sectionTitle}>
+              Notifications
+            </Text>
             <Switch
               value={switches.notifications}
-              onValueChange={(value) => updateSwitch('notifications', value)}
+              onValueChange={value => updateSwitch('notifications', value)}
               label="Push Notifications"
             />
             <Switch
@@ -172,7 +104,7 @@ const SwitchScreen: React.FC = () => {
             </Text>
             <Switch
               value={switches.darkMode}
-              onValueChange={(value) => updateSwitch('darkMode', value)}
+              onValueChange={value => updateSwitch('darkMode', value)}
               label="Dark Mode"
               status="info"
             />
@@ -182,25 +114,25 @@ const SwitchScreen: React.FC = () => {
             </Text>
             <Switch
               value={switches.wifi}
-              onValueChange={(value) => updateSwitch('wifi', value)}
+              onValueChange={value => updateSwitch('wifi', value)}
               label="Wi-Fi"
               status="success"
             />
             <Switch
               value={switches.bluetooth}
-              onValueChange={(value) => updateSwitch('bluetooth', value)}
+              onValueChange={value => updateSwitch('bluetooth', value)}
               label="Bluetooth"
               status="info"
             />
             <Switch
               value={switches.location}
-              onValueChange={(value) => updateSwitch('location', value)}
+              onValueChange={value => updateSwitch('location', value)}
               label="Location Services"
               status="warning"
             />
             <Switch
               value={switches.airplane}
-              onValueChange={(value) => updateSwitch('airplane', value)}
+              onValueChange={value => updateSwitch('airplane', value)}
               label="Airplane Mode"
               status="danger"
             />
@@ -208,10 +140,7 @@ const SwitchScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Custom Styled Switches */}
-        <ComponentExample
-          title="Custom Styling"
-          description="Switches with custom container and label styling."
-        >
+        <ComponentExample title="Custom Styling" description="Switches with custom container and label styling.">
           <View style={styles.customSwitchGroup}>
             <Switch
               value={true}

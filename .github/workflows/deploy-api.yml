@@ -85,4 +85,4 @@ jobs:
           SLACK_COLOR: ${{ job.status }}
           SLACK_TITLE: API Deployment
           SLACK_MESSAGE: ${{ job.status == 'success' && 'API deployed successfully! :rocket:' || 'API deployment failed! :x:' }}
-          SLACK_FOOTER: "GitHub Actions"
+          SLACK_FOOTER: 'GitHub Actions'

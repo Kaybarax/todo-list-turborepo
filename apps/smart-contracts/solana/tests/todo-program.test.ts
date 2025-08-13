@@ -32,7 +32,7 @@ describe('todo-program', () => {
         .rpc();
 
       const todoListData = await program.account.todoList.fetch(todoListAccount.publicKey);
-      
+
       expect(todoListData.owner.toString()).to.equal(user.publicKey.toString());
       expect(todoListData.todos).to.have.length(0);
       expect(todoListData.totalTodos.toNumber()).to.equal(0);
@@ -41,7 +41,7 @@ describe('todo-program', () => {
 
     it('should fail to initialize with invalid owner', async () => {
       const invalidUser = Keypair.generate();
-      
+
       try {
         await program.methods
           .initializeTodoList()
@@ -52,7 +52,7 @@ describe('todo-program', () => {
           })
           .signers([todoListAccount, invalidUser])
           .rpc();
-        
+
         expect.fail('Should have thrown an error');
       } catch (error) {
         expect(error).to.exist;
@@ -100,7 +100,7 @@ describe('todo-program', () => {
       expect(todoData.priority).to.deep.equal(priority);
       expect(todoData.dueDate.toNumber()).to.equal(dueDate.toNumber());
       expect(todoData.owner.toString()).to.equal(user.publicKey.toString());
-      
+
       expect(todoListData.totalTodos.toNumber()).to.equal(1);
       expect(todoListData.completedTodos.toNumber()).to.equal(0);
     });
@@ -123,7 +123,7 @@ describe('todo-program', () => {
         .rpc();
 
       const todoData = await program.account.todo.fetch(todoAccount.publicKey);
-      
+
       expect(todoData.priority).to.deep.equal(priority);
       expect(todoData.title).to.equal(title);
     });
@@ -146,7 +146,7 @@ describe('todo-program', () => {
         .rpc();
 
       const todoData = await program.account.todo.fetch(todoAccount.publicKey);
-      
+
       expect(todoData.priority).to.deep.equal(priority);
     });
 
@@ -167,7 +167,7 @@ describe('todo-program', () => {
           })
           .signers([todoAccount])
           .rpc();
-        
+
         expect.fail('Should have thrown an error for empty title');
       } catch (error) {
         expect(error.message).to.include('Title cannot be empty');
@@ -191,7 +191,7 @@ describe('todo-program', () => {
           })
           .signers([todoAccount])
           .rpc();
-        
+
         expect.fail('Should have thrown an error for past due date');
       } catch (error) {
         expect(error.message).to.include('Due date cannot be in the past');
@@ -239,7 +239,7 @@ describe('todo-program', () => {
         .rpc();
 
       const todoData = await program.account.todo.fetch(todoAccount.publicKey);
-      
+
       expect(todoData.title).to.equal(newTitle);
       expect(todoData.description).to.equal(newDescription);
       expect(todoData.priority).to.deep.equal(newPriority);
@@ -248,7 +248,7 @@ describe('todo-program', () => {
 
     it('should fail to update todo by non-owner', async () => {
       const unauthorizedUser = Keypair.generate();
-      
+
       try {
         await program.methods
           .updateTodo('Hacked Title', 'Hacked Description', { high: {} }, new anchor.BN(Date.now() + 86400000))
@@ -258,7 +258,7 @@ describe('todo-program', () => {
           })
           .signers([unauthorizedUser])
           .rpc();
-        
+
         expect.fail('Should have thrown an error for unauthorized update');
       } catch (error) {
         expect(error.message).to.include('Unauthorized');
@@ -308,7 +308,7 @@ describe('todo-program', () => {
 
       todoData = await program.account.todo.fetch(todoAccount.publicKey);
       let todoListData = await program.account.todoList.fetch(todoListAccount.publicKey);
-      
+
       expect(todoData.completed).to.be.true;
       expect(todoListData.completedTodos.toNumber()).to.equal(1);
 
@@ -324,14 +324,14 @@ describe('todo-program', () => {
 
       todoData = await program.account.todo.fetch(todoAccount.publicKey);
       todoListData = await program.account.todoList.fetch(todoListAccount.publicKey);
-      
+
       expect(todoData.completed).to.be.false;
       expect(todoListData.completedTodos.toNumber()).to.equal(0);
     });
 
     it('should fail to toggle todo by non-owner', async () => {
       const unauthorizedUser = Keypair.generate();
-      
+
       try {
         await program.methods
           .toggleTodo()
@@ -342,7 +342,7 @@ describe('todo-program', () => {
           })
           .signers([unauthorizedUser])
           .rpc();
-        
+
         expect.fail('Should have thrown an error for unauthorized toggle');
       } catch (error) {
         expect(error.message).to.include('Unauthorized');
@@ -400,7 +400,7 @@ describe('todo-program', () => {
 
     it('should fail to delete todo by non-owner', async () => {
       const unauthorizedUser = Keypair.generate();
-      
+
       try {
         await program.methods
           .deleteTodo()
@@ -411,7 +411,7 @@ describe('todo-program', () => {
           })
           .signers([unauthorizedUser])
           .rpc();
-        
+
         expect.fail('Should have thrown an error for unauthorized deletion');
       } catch (error) {
         expect(error.message).to.include('Unauthorized');
@@ -464,7 +464,7 @@ describe('todo-program', () => {
 
     it('should return correct stats for empty todo list', async () => {
       const todoListData = await program.account.todoList.fetch(todoListAccount.publicKey);
-      
+
       expect(todoListData.totalTodos.toNumber()).to.equal(0);
       expect(todoListData.completedTodos.toNumber()).to.equal(0);
     });
@@ -519,7 +519,7 @@ describe('todo-program', () => {
         .rpc();
 
       const todoListData = await program.account.todoList.fetch(todoListAccount.publicKey);
-      
+
       expect(todoListData.totalTodos.toNumber()).to.equal(3);
       expect(todoListData.completedTodos.toNumber()).to.equal(1);
     });
@@ -528,7 +528,7 @@ describe('todo-program', () => {
   describe('error handling', () => {
     it('should handle account not found errors', async () => {
       const nonExistentTodo = Keypair.generate();
-      
+
       try {
         await program.account.todo.fetch(nonExistentTodo.publicKey);
         expect.fail('Should have thrown an error');
@@ -540,7 +540,7 @@ describe('todo-program', () => {
     it('should handle insufficient funds for account creation', async () => {
       const poorUser = Keypair.generate();
       const newTodoList = Keypair.generate();
-      
+
       try {
         await program.methods
           .initializeTodoList()
@@ -551,7 +551,7 @@ describe('todo-program', () => {
           })
           .signers([newTodoList, poorUser])
           .rpc();
-        
+
         expect.fail('Should have thrown an error for insufficient funds');
       } catch (error) {
         expect(error).to.exist;

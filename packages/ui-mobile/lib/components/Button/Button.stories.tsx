@@ -14,7 +14,7 @@ const meta: Meta<typeof Button> = {
   title: 'Mobile/Button',
   component: Button,
   decorators: [
-    (Story) => (
+    Story => (
       <UIKittenWrapper>
         <Story />
       </UIKittenWrapper>
@@ -188,16 +188,16 @@ export const AllVariants: Story = {
         <Button title="Danger" variant="danger" onPress={() => {}} />
         <Button title="Success" variant="success" onPress={() => {}} />
         <Button title="Ghost" variant="ghost" onPress={() => {}} />
-        
+
         <Button title="Small" size="small" onPress={() => {}} />
         <Button title="Medium" size="medium" onPress={() => {}} />
         <Button title="Large" size="large" onPress={() => {}} />
-        
+
         <Button title="Disabled" disabled onPress={() => {}} />
         <Button title="Loading" loading onPress={() => {}} />
         <Button title="Full Width" fullWidth onPress={() => {}} />
         <Button title="Rounded" rounded onPress={() => {}} />
-        
+
         <Button title="With Icon" leftIcon="star" onPress={() => {}} />
       </div>
     </UIKittenWrapper>
@@ -219,29 +219,22 @@ export const ComplexButtons: Story = {
   render: () => (
     <UIKittenWrapper>
       <div style={{ padding: 16, gap: 12 }}>
-        <Button 
-          title="Complex Primary" 
-          variant="primary" 
-          size="large" 
-          leftIcon="check" 
-          rounded 
-          onPress={() => {}} 
+        <Button title="Complex Primary" variant="primary" size="large" leftIcon="check" rounded onPress={() => {}} />
+        <Button
+          title="Complex Secondary"
+          variant="secondary"
+          size="medium"
+          rightIcon="arrow-forward"
+          fullWidth
+          onPress={() => {}}
         />
-        <Button 
-          title="Complex Secondary" 
-          variant="secondary" 
-          size="medium" 
-          rightIcon="arrow-forward" 
-          fullWidth 
-          onPress={() => {}} 
-        />
-        <Button 
-          title="Complex Outline" 
-          variant="outline" 
-          size="small" 
-          leftIcon="star" 
-          rightIcon="heart" 
-          onPress={() => {}} 
+        <Button
+          title="Complex Outline"
+          variant="outline"
+          size="small"
+          leftIcon="star"
+          rightIcon="heart"
+          onPress={() => {}}
         />
       </div>
     </UIKittenWrapper>

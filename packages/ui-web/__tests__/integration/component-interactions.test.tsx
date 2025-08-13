@@ -16,15 +16,11 @@ describe('Component Interactions', () => {
         <div>
           <Input
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={e => setValue(e.target.value)}
             placeholder="Enter text"
             data-testid="form-input"
           />
-          <Button
-            onClick={() => setSubmitted(true)}
-            disabled={!value}
-            data-testid="submit-button"
-          >
+          <Button onClick={() => setSubmitted(true)} disabled={!value} data-testid="submit-button">
             Submit
           </Button>
           {submitted && <div data-testid="success-message">Form submitted!</div>}
@@ -34,25 +30,25 @@ describe('Component Interactions', () => {
 
     it('enables submit button when input has value', () => {
       render(<FormComponent />);
-      
+
       const input = screen.getByTestId('form-input');
       const button = screen.getByTestId('submit-button');
-      
+
       expect(button).toBeDisabled();
-      
+
       fireEvent.change(input, { target: { value: 'test' } });
       expect(button).not.toBeDisabled();
     });
 
     it('shows success message when form is submitted', () => {
       render(<FormComponent />);
-      
+
       const input = screen.getByTestId('form-input');
       const button = screen.getByTestId('submit-button');
-      
+
       fireEvent.change(input, { target: { value: 'test' } });
       fireEvent.click(button);
-      
+
       expect(screen.getByTestId('success-message')).toBeInTheDocument();
     });
   });
@@ -73,14 +69,8 @@ describe('Component Interactions', () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <Badge variant={status === 'success' ? 'default' : 'secondary'}>
-                Status: {status}
-              </Badge>
-              <Button
-                onClick={handleAction}
-                isLoading={status === 'loading'}
-                disabled={status === 'success'}
-              >
+              <Badge variant={status === 'success' ? 'default' : 'secondary'}>Status: {status}</Badge>
+              <Button onClick={handleAction} isLoading={status === 'loading'} disabled={status === 'success'}>
                 {status === 'success' ? 'Completed' : 'Start Action'}
               </Button>
             </div>
@@ -91,21 +81,21 @@ describe('Component Interactions', () => {
 
     it('updates badge and button state during interaction', async () => {
       render(<InteractiveCard />);
-      
+
       const button = screen.getByRole('button');
       const badge = screen.getByText(/Status:/);
-      
+
       expect(badge).toHaveTextContent('Status: idle');
       expect(button).toHaveTextContent('Start Action');
-      
+
       fireEvent.click(button);
-      
+
       expect(button).toBeDisabled();
       expect(button.querySelector('svg')).toBeInTheDocument(); // Loading spinner
-      
+
       // Wait for async operation to complete
       await screen.findByText('Completed');
-      
+
       expect(badge).toHaveTextContent('Status: success');
       expect(button).toHaveTextContent('Completed');
       expect(button).toBeDisabled();
@@ -138,7 +128,7 @@ describe('Component Interactions', () => {
               <div className="flex gap-2">
                 <Input
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  onChange={e => setInputValue(e.target.value)}
                   placeholder="Add new item"
                   data-testid="item-input"
                 />
@@ -161,9 +151,7 @@ describe('Component Interactions', () => {
                   </div>
                 ))}
               </div>
-              {items.length === 0 && (
-                <p data-testid="empty-message">No items added yet</p>
-              )}
+              {items.length === 0 && <p data-testid="empty-message">No items added yet</p>}
             </div>
           </CardContent>
         </Card>
@@ -172,49 +160,49 @@ describe('Component Interactions', () => {
 
     it('manages list of items with add and remove functionality', () => {
       render(<CompositeComponent />);
-      
+
       const input = screen.getByTestId('item-input');
       const addButton = screen.getByTestId('add-button');
-      
+
       expect(screen.getByTestId('empty-message')).toBeInTheDocument();
-      
+
       // Add first item
       fireEvent.change(input, { target: { value: 'First item' } });
       fireEvent.click(addButton);
-      
+
       expect(screen.getByText('First item')).toBeInTheDocument();
       expect(screen.queryByTestId('empty-message')).not.toBeInTheDocument();
       expect(input).toHaveValue('');
-      
+
       // Add second item
       fireEvent.change(input, { target: { value: 'Second item' } });
       fireEvent.click(addButton);
-      
+
       expect(screen.getByText('Second item')).toBeInTheDocument();
-      
+
       // Remove first item
       fireEvent.click(screen.getByTestId('remove-0'));
-      
+
       expect(screen.queryByText('First item')).not.toBeInTheDocument();
       expect(screen.getByText('Second item')).toBeInTheDocument();
-      
+
       // Remove last item
       fireEvent.click(screen.getByTestId('remove-0'));
-      
+
       expect(screen.queryByText('Second item')).not.toBeInTheDocument();
       expect(screen.getByTestId('empty-message')).toBeInTheDocument();
     });
 
     it('does not add empty items', () => {
       render(<CompositeComponent />);
-      
+
       const input = screen.getByTestId('item-input');
       const addButton = screen.getByTestId('add-button');
-      
+
       // Try to add empty item
       fireEvent.click(addButton);
       expect(screen.getByTestId('empty-message')).toBeInTheDocument();
-      
+
       // Try to add whitespace-only item
       fireEvent.change(input, { target: { value: '   ' } });
       fireEvent.click(addButton);
@@ -229,7 +217,7 @@ describe('Component Interactions', () => {
           <Button data-testid="first-button">First</Button>
           <Input data-testid="input" />
           <Button data-testid="second-button">Second</Button>
-        </div>
+        </div>,
       );
 
       const firstButton = screen.getByTestId('first-button');

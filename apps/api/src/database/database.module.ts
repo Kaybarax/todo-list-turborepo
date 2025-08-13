@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config';
       useFactory: async (configService: ConfigService) => {
         const databaseConfig = configService.get('database');
         const uri = configService.get<string>('MONGODB_URI') || 'mongodb://localhost:27017/todos';
-        
+
         return {
           uri,
           ...databaseConfig?.options,

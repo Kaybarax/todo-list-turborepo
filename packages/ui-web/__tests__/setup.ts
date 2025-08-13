@@ -17,12 +17,8 @@ vi.mock('clsx', () => ({
       }
       return '';
     };
-    
-    return args
-      .map(processArg)
-      .filter(Boolean)
-      .join(' ')
-      .trim();
+
+    return args.map(processArg).filter(Boolean).join(' ').trim();
   },
   default: (...args: any[]) => {
     const processArg = (arg: any): string => {
@@ -38,13 +34,9 @@ vi.mock('clsx', () => ({
       }
       return '';
     };
-    
-    return args
-      .map(processArg)
-      .filter(Boolean)
-      .join(' ')
-      .trim();
-  }
+
+    return args.map(processArg).filter(Boolean).join(' ').trim();
+  },
 }));
 
 vi.mock('tailwind-merge', () => ({
@@ -53,16 +45,16 @@ vi.mock('tailwind-merge', () => ({
     const classes = classString.split(' ').filter(Boolean);
     const result: string[] = [];
     const seen = new Set<string>();
-    
+
     // Process classes in reverse to keep the last occurrence
     for (let i = classes.length - 1; i >= 0; i--) {
       const cls = classes[i];
-      
+
       // Simple conflict resolution for common patterns
       const parts = cls.split('-');
       const baseClass = parts[0];
       let conflictKey = cls;
-      
+
       // Handle specific conflict patterns
       if (['p', 'px', 'py', 'pt', 'pb', 'pl', 'pr'].includes(baseClass)) {
         conflictKey = baseClass; // padding conflicts
@@ -70,19 +62,21 @@ vi.mock('tailwind-merge', () => ({
         conflictKey = baseClass; // margin conflicts
       } else if (baseClass === 'text' && parts.length > 1) {
         // text-size vs text-color - only size conflicts with size
-        if (['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl'].includes(parts[1])) {
+        if (
+          ['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl'].includes(parts[1])
+        ) {
           conflictKey = 'text-size';
         } else {
           conflictKey = cls; // colors and other text properties don't conflict
         }
       }
-      
+
       if (!seen.has(conflictKey)) {
         seen.add(conflictKey);
         result.unshift(cls);
       }
     }
-    
+
     return result.join(' ');
   },
   default: (classString: string) => {
@@ -90,16 +84,16 @@ vi.mock('tailwind-merge', () => ({
     const classes = classString.split(' ').filter(Boolean);
     const result: string[] = [];
     const seen = new Set<string>();
-    
+
     // Process classes in reverse to keep the last occurrence
     for (let i = classes.length - 1; i >= 0; i--) {
       const cls = classes[i];
-      
+
       // Simple conflict resolution for common patterns
       const parts = cls.split('-');
       const baseClass = parts[0];
       let conflictKey = cls;
-      
+
       // Handle specific conflict patterns
       if (['p', 'px', 'py', 'pt', 'pb', 'pl', 'pr'].includes(baseClass)) {
         conflictKey = baseClass; // padding conflicts
@@ -107,28 +101,30 @@ vi.mock('tailwind-merge', () => ({
         conflictKey = baseClass; // margin conflicts
       } else if (baseClass === 'text' && parts.length > 1) {
         // text-size vs text-color - only size conflicts with size
-        if (['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl'].includes(parts[1])) {
+        if (
+          ['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl'].includes(parts[1])
+        ) {
           conflictKey = 'text-size';
         } else {
           conflictKey = cls; // colors and other text properties don't conflict
         }
       }
-      
+
       if (!seen.has(conflictKey)) {
         seen.add(conflictKey);
         result.unshift(cls);
       }
     }
-    
+
     return result.join(' ');
-  }
+  },
 }));
 
 vi.mock('class-variance-authority', () => ({
   cva: (base: string, options?: any) => {
     return (props?: any) => {
       let classes = base;
-      
+
       if (options?.variants && props) {
         Object.keys(props).forEach(key => {
           if (options.variants[key] && options.variants[key][props[key]]) {
@@ -136,7 +132,7 @@ vi.mock('class-variance-authority', () => ({
           }
         });
       }
-      
+
       if (options?.defaultVariants) {
         Object.keys(options.defaultVariants).forEach(key => {
           if (!props || props[key] === undefined) {
@@ -147,10 +143,10 @@ vi.mock('class-variance-authority', () => ({
           }
         });
       }
-      
+
       return classes;
     };
-  }
+  },
 }));
 
 // Mock IntersectionObserver
@@ -158,12 +154,14 @@ global.IntersectionObserver = class IntersectionObserver {
   root = null;
   rootMargin = '';
   thresholds = [];
-  
+
   constructor() {}
   disconnect() {}
   observe() {}
   unobserve() {}
-  takeRecords() { return []; }
+  takeRecords() {
+    return [];
+  }
 } as any;
 
 // Mock ResizeObserver

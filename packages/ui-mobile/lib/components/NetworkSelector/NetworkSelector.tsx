@@ -50,11 +50,8 @@ export const NetworkSelector: React.FC<NetworkSelectorProps> = ({
         placeholder="Select Network"
         style={styles.select}
       >
-        {supportedNetworks.map((network) => (
-          <SelectItem
-            key={network}
-            title={NETWORK_OPTIONS[network].label}
-          />
+        {supportedNetworks.map(network => (
+          <SelectItem key={network} title={NETWORK_OPTIONS[network].label} />
         ))}
       </Select>
     </View>

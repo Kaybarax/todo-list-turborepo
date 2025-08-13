@@ -10,7 +10,11 @@ export class Todo {
   @Prop({ required: true, trim: true, maxlength: 200 })
   title: string;
 
-  @ApiProperty({ description: 'Todo description', example: 'Write comprehensive documentation for the todo application', required: false })
+  @ApiProperty({
+    description: 'Todo description',
+    example: 'Write comprehensive documentation for the todo application',
+    required: false,
+  })
   @Prop({ trim: true, maxlength: 1000 })
   description?: string;
 
@@ -34,7 +38,11 @@ export class Todo {
   @Prop({ required: true })
   userId: string;
 
-  @ApiProperty({ description: 'Blockchain network where todo is stored', enum: ['solana', 'polkadot', 'polygon'], required: false })
+  @ApiProperty({
+    description: 'Blockchain network where todo is stored',
+    enum: ['solana', 'polkadot', 'polygon'],
+    required: false,
+  })
   @Prop({ enum: ['solana', 'polkadot', 'polygon'] })
   blockchainNetwork?: 'solana' | 'polkadot' | 'polygon';
 

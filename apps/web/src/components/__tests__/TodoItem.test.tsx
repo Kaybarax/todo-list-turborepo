@@ -12,7 +12,13 @@ jest.mock('@todo/ui-web', () => ({
     </button>
   ),
   Badge: ({ children, variant }: any) => (
-    <span data-testid={`badge-${children?.toString().toLowerCase().replace(/[^a-z0-9]/g, '-')}`} data-variant={variant}>
+    <span
+      data-testid={`badge-${children
+        ?.toString()
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '-')}`}
+      data-variant={variant}
+    >
       {children}
     </span>
   ),
@@ -40,14 +46,7 @@ describe('TodoItem', () => {
   it('should render todo item with all details', () => {
     const mockTodo = createMockTodo();
 
-    render(
-      <TodoItem
-        todo={mockTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoItem todo={mockTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.getByText('Test Todo')).toBeInTheDocument();
     expect(screen.getByText('Test Description')).toBeInTheDocument();
@@ -59,14 +58,7 @@ describe('TodoItem', () => {
   it('should render completed todo with proper styling', () => {
     const completedTodo = createMockTodo({ completed: true });
 
-    render(
-      <TodoItem
-        todo={completedTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoItem todo={completedTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     const titleElement = screen.getByText('Test Todo');
     expect(titleElement).toHaveClass('line-through');
@@ -76,14 +68,7 @@ describe('TodoItem', () => {
   it('should call onToggle when checkbox is clicked', () => {
     const mockTodo = createMockTodo();
 
-    render(
-      <TodoItem
-        todo={mockTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoItem todo={mockTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     const checkbox = screen.getByRole('checkbox');
     fireEvent.click(checkbox);
@@ -95,12 +80,7 @@ describe('TodoItem', () => {
     const mockTodo = createMockTodo();
 
     const { container } = render(
-      <TodoItem
-        todo={mockTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={mockTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     // Simulate mouse enter to show actions
@@ -117,12 +97,7 @@ describe('TodoItem', () => {
     const mockTodo = createMockTodo();
 
     const { container } = render(
-      <TodoItem
-        todo={mockTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={mockTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     // Simulate mouse enter to show actions
@@ -138,14 +113,7 @@ describe('TodoItem', () => {
   it('should render high priority badge with destructive variant', () => {
     const highPriorityTodo = createMockTodo({ priority: 'high' });
 
-    render(
-      <TodoItem
-        todo={highPriorityTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoItem todo={highPriorityTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.getByTestId('badge-high')).toHaveAttribute('data-variant', 'destructive');
   });
@@ -153,14 +121,7 @@ describe('TodoItem', () => {
   it('should render medium priority badge with default variant', () => {
     const mediumPriorityTodo = createMockTodo({ priority: 'medium' });
 
-    render(
-      <TodoItem
-        todo={mediumPriorityTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoItem todo={mediumPriorityTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.getByTestId('badge-medium')).toHaveAttribute('data-variant', 'default');
   });
@@ -168,14 +129,7 @@ describe('TodoItem', () => {
   it('should render low priority badge with secondary variant', () => {
     const lowPriorityTodo = createMockTodo({ priority: 'low' });
 
-    render(
-      <TodoItem
-        todo={lowPriorityTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoItem todo={lowPriorityTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.getByTestId('badge-low')).toHaveAttribute('data-variant', 'secondary');
   });
@@ -183,14 +137,7 @@ describe('TodoItem', () => {
   it('should not render due date when not provided', () => {
     const todoWithoutDueDate = createMockTodo({ dueDate: undefined });
 
-    render(
-      <TodoItem
-        todo={todoWithoutDueDate}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoItem todo={todoWithoutDueDate} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.queryByText(/Due:/)).not.toBeInTheDocument();
   });
@@ -199,12 +146,7 @@ describe('TodoItem', () => {
     const todoWithoutDescription = createMockTodo({ description: undefined });
 
     render(
-      <TodoItem
-        todo={todoWithoutDescription}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={todoWithoutDescription} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     expect(screen.queryByText('Test Description')).not.toBeInTheDocument();
@@ -213,14 +155,7 @@ describe('TodoItem', () => {
   it('should not render tags when empty', () => {
     const todoWithoutTags = createMockTodo({ tags: [] });
 
-    render(
-      <TodoItem
-        todo={todoWithoutTags}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoItem todo={todoWithoutTags} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.queryByText('work')).not.toBeInTheDocument();
     expect(screen.queryByText('urgent')).not.toBeInTheDocument();
@@ -235,18 +170,13 @@ describe('TodoItem', () => {
     });
 
     const { container } = render(
-      <TodoItem
-        todo={overdueTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
+      <TodoItem todo={overdueTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
     );
 
     // Check if the container has the overdue border class
     const todoContainer = container.firstChild as HTMLElement;
     expect(todoContainer).toHaveClass('border-red-200');
-    
+
     // Check if the due date badge has destructive variant
     const dueDateBadge = screen.getByText(/Due:/);
     expect(dueDateBadge.closest('[data-variant="destructive"]')).toBeInTheDocument();
@@ -258,18 +188,11 @@ describe('TodoItem', () => {
       transactionHash: '0x123abc',
     });
 
-    render(
-      <TodoItem
-        todo={blockchainTodo}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoItem todo={blockchainTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     // Check for the network display name (capitalized)
     expect(screen.getByText('Polygon')).toBeInTheDocument();
-    
+
     // Check for transaction status component
     expect(screen.getByTestId('transaction-status')).toBeInTheDocument();
     expect(screen.getByText('Tx: 0x123abc')).toBeInTheDocument();

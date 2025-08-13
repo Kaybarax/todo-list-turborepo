@@ -1,13 +1,5 @@
 import React from 'react';
-import { 
-  TouchableOpacity, 
-  Text, 
-  StyleSheet, 
-  ActivityIndicator, 
-  ViewStyle, 
-  TextStyle,
-  View
-} from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, ViewStyle, TextStyle, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import theme from '../../theme';
 
@@ -67,7 +59,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   const getIconColor = () => {
     if (iconColor) return iconColor;
-    
+
     switch (variant) {
       case 'outline':
       case 'ghost':
@@ -96,22 +88,10 @@ export const Button: React.FC<ButtonProps> = ({
         />
       ) : (
         <View style={styles.contentContainer}>
-          {leftIcon && (
-            <MaterialIcons 
-              name={leftIcon} 
-              size={iconSize} 
-              color={getIconColor()} 
-              style={styles.leftIcon} 
-            />
-          )}
+          {leftIcon && <MaterialIcons name={leftIcon} size={iconSize} color={getIconColor()} style={styles.leftIcon} />}
           <Text style={textStyles}>{title}</Text>
           {rightIcon && (
-            <MaterialIcons 
-              name={rightIcon} 
-              size={iconSize} 
-              color={getIconColor()} 
-              style={styles.rightIcon} 
-            />
+            <MaterialIcons name={rightIcon} size={iconSize} color={getIconColor()} style={styles.rightIcon} />
           )}
         </View>
       )}

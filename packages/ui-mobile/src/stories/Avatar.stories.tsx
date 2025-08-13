@@ -67,12 +67,7 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <div style={containerStyle} data-testid={testID}>
       {source ? (
-        <img
-          src={source}
-          alt="Avatar"
-          style={imageStyle}
-          data-testid={`${testID}-image`}
-        />
+        <img src={source} alt="Avatar" style={imageStyle} data-testid={`${testID}-image`} />
       ) : (
         <span style={textStyle} data-testid={`${testID}-text`}>
           {initials || ''}
@@ -89,9 +84,9 @@ const meta: Meta<typeof Avatar> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A customizable avatar component for displaying user profile images or initials (web preview)'
-      }
-    }
+        component: 'A customizable avatar component for displaying user profile images or initials (web preview)',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {

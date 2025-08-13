@@ -89,36 +89,29 @@ The program defines custom errors for common failure scenarios:
 Here's how to integrate the Todo Program in a TypeScript/JavaScript application:
 
 ```typescript
-import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
-import { TodoProgram } from "./types/todo_program";
+import * as anchor from '@coral-xyz/anchor';
+import { Program } from '@coral-xyz/anchor';
+import { TodoProgram } from './types/todo_program';
 
 // Initialize connection and wallet
-const connection = new anchor.web3.Connection(
-  anchor.web3.clusterApiUrl("devnet"),
-  "confirmed"
-);
+const connection = new anchor.web3.Connection(anchor.web3.clusterApiUrl('devnet'), 'confirmed');
 const wallet = useWallet(); // or any wallet adapter
 
 // Create provider
-const provider = new anchor.AnchorProvider(
-  connection,
-  wallet,
-  { commitment: "confirmed" }
-);
+const provider = new anchor.AnchorProvider(connection, wallet, { commitment: 'confirmed' });
 
 // Load program
-const programId = new anchor.web3.PublicKey("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+const programId = new anchor.web3.PublicKey('Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS');
 const program = new anchor.Program(
   idl, // Load from IDL file
   programId,
-  provider
+  provider,
 ) as Program<TodoProgram>;
 
 // Derive PDA for todo list
 const [todoListPda] = anchor.web3.PublicKey.findProgramAddressSync(
-  [Buffer.from("todo_list"), wallet.publicKey.toBuffer()],
-  program.programId
+  [Buffer.from('todo_list'), wallet.publicKey.toBuffer()],
+  program.programId,
 );
 
 // Initialize todo list
@@ -157,7 +150,7 @@ async function updateTodo(id, title, description, priority) {
       new anchor.BN(id),
       title, // Pass null to keep current value
       description, // Pass null to keep current value
-      priority // Pass null to keep current value
+      priority, // Pass null to keep current value
     )
     .accounts({
       todoList: todoListPda,
@@ -226,30 +219,17 @@ const TodoApp = () => {
   useEffect(() => {
     if (!wallet) return;
 
-    const connection = new anchor.web3.Connection(
-      anchor.web3.clusterApiUrl('devnet'),
-      'confirmed'
-    );
+    const connection = new anchor.web3.Connection(anchor.web3.clusterApiUrl('devnet'), 'confirmed');
 
-    const provider = new anchor.AnchorProvider(
-      connection,
-      wallet,
-      { commitment: 'confirmed' }
-    );
+    const provider = new anchor.AnchorProvider(connection, wallet, { commitment: 'confirmed' });
 
-    const programId = new anchor.web3.PublicKey(
-      'Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS'
-    );
+    const programId = new anchor.web3.PublicKey('Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS');
 
-    const program = new anchor.Program(
-      idl,
-      programId,
-      provider
-    );
+    const program = new anchor.Program(idl, programId, provider);
 
     const [pda] = anchor.web3.PublicKey.findProgramAddressSync(
       [Buffer.from('todo_list'), wallet.publicKey.toBuffer()],
-      programId
+      programId,
     );
 
     setProgram(program);
@@ -263,7 +243,7 @@ const TodoApp = () => {
 
     try {
       setLoading(true);
-      
+
       try {
         const todoList = await program.account.todoList.fetch(pda);
         setTodos(todoList.todos);
@@ -292,7 +272,7 @@ const TodoApp = () => {
           systemProgram: anchor.web3.SystemProgram.programId,
         })
         .rpc();
-      
+
       fetchTodos(program, todoListPda);
     } catch (error) {
       console.error('Error initializing todo list:', error);
@@ -302,16 +282,16 @@ const TodoApp = () => {
   };
 
   // Create todo
-  const createTodo = async (e) => {
+  const createTodo = async e => {
     e.preventDefault();
     if (!program || !wallet) return;
 
     try {
       setLoading(true);
-      
+
       // Convert priority string to Anchor enum format
       const priorityEnum = { [priority]: {} };
-      
+
       await program.methods
         .createTodo(title, description, priorityEnum)
         .accounts({
@@ -319,7 +299,7 @@ const TodoApp = () => {
           owner: wallet.publicKey,
         })
         .rpc();
-      
+
       setTitle('');
       setDescription('');
       setPriority('medium');
@@ -332,7 +312,7 @@ const TodoApp = () => {
   };
 
   // Toggle todo completion
-  const toggleCompletion = async (id) => {
+  const toggleCompletion = async id => {
     if (!program || !wallet) return;
 
     try {
@@ -344,7 +324,7 @@ const TodoApp = () => {
           owner: wallet.publicKey,
         })
         .rpc();
-      
+
       fetchTodos(program, todoListPda);
     } catch (error) {
       console.error('Error toggling todo completion:', error);
@@ -354,7 +334,7 @@ const TodoApp = () => {
   };
 
   // Delete todo
-  const deleteTodo = async (id) => {
+  const deleteTodo = async id => {
     if (!program || !wallet) return;
 
     try {
@@ -366,7 +346,7 @@ const TodoApp = () => {
           owner: wallet.publicKey,
         })
         .rpc();
-      
+
       fetchTodos(program, todoListPda);
     } catch (error) {
       console.error('Error deleting todo:', error);
@@ -382,32 +362,29 @@ const TodoApp = () => {
   return (
     <div>
       <h1>Solana Todo App</h1>
-      
+
       {todos.length === 0 && (
         <button onClick={initializeTodoList} disabled={loading}>
           Initialize Todo List
         </button>
       )}
-      
+
       <form onSubmit={createTodo}>
         <input
           type="text"
           placeholder="Title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={e => setTitle(e.target.value)}
           required
           maxLength={100}
         />
         <textarea
           placeholder="Description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={e => setDescription(e.target.value)}
           maxLength={500}
         />
-        <select
-          value={priority}
-          onChange={(e) => setPriority(e.target.value)}
-        >
+        <select value={priority} onChange={e => setPriority(e.target.value)}>
           <option value="low">Low</option>
           <option value="medium">Medium</option>
           <option value="high">High</option>
@@ -416,20 +393,14 @@ const TodoApp = () => {
           Add Todo
         </button>
       </form>
-      
+
       {loading && <div>Loading...</div>}
-      
+
       <ul>
-        {todos.map((todo) => (
+        {todos.map(todo => (
           <li key={todo.id.toString()}>
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              onChange={() => toggleCompletion(todo.id)}
-            />
-            <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-              {todo.title}
-            </span>
+            <input type="checkbox" checked={todo.completed} onChange={() => toggleCompletion(todo.id)} />
+            <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>{todo.title}</span>
             <span className={`priority priority-${Object.keys(todo.priority)[0]}`}>
               {Object.keys(todo.priority)[0]}
             </span>
@@ -449,27 +420,32 @@ export default TodoApp;
 ### Local Development
 
 1. Install dependencies:
+
 ```bash
 cd apps/smart-contracts/solana
 yarn install
 ```
 
 2. Build the program:
+
 ```bash
 anchor build
 ```
 
 3. Start a local validator:
+
 ```bash
 solana-test-validator
 ```
 
 4. Deploy locally:
+
 ```bash
 anchor deploy
 ```
 
 5. Run tests:
+
 ```bash
 anchor test
 ```
@@ -477,21 +453,25 @@ anchor test
 ### Devnet Deployment
 
 1. Configure Solana CLI for devnet:
+
 ```bash
 solana config set --url devnet
 ```
 
 2. Ensure you have SOL for deployment:
+
 ```bash
 solana airdrop 2
 ```
 
 3. Deploy to devnet:
+
 ```bash
 anchor deploy --provider.cluster devnet
 ```
 
 4. Run the deployment script:
+
 ```bash
 yarn deploy:devnet
 ```
@@ -499,6 +479,7 @@ yarn deploy:devnet
 ### Mainnet Deployment
 
 1. Configure Solana CLI for mainnet:
+
 ```bash
 solana config set --url mainnet-beta
 ```
@@ -506,11 +487,13 @@ solana config set --url mainnet-beta
 2. Ensure you have sufficient SOL (at least 1 SOL recommended)
 
 3. Deploy to mainnet:
+
 ```bash
 anchor deploy --provider.cluster mainnet
 ```
 
 4. Run the deployment script:
+
 ```bash
 yarn deploy:mainnet
 ```
@@ -543,13 +526,15 @@ For custom client integration, you'll need:
 ### Account Size Calculation
 
 The TodoList account size is calculated as:
+
 - 8 bytes (discriminator)
 - 32 bytes (owner public key)
 - 4 bytes (vector length)
-- (50 * Todo size) bytes (todos array)
+- (50 \* Todo size) bytes (todos array)
 - 8 bytes (next_id)
 
 Each Todo item size:
+
 - 8 bytes (id)
 - 4 + 100 bytes (title)
 - 4 + 500 bytes (description)
@@ -562,13 +547,14 @@ Each Todo item size:
 ### Custom PDA Derivation
 
 The program uses a PDA derived from:
+
 - Seed 1: The string "todo_list"
 - Seed 2: The owner's public key
 
 ```typescript
 const [todoListPda] = PublicKey.findProgramAddressSync(
-  [Buffer.from("todo_list"), ownerPublicKey.toBuffer()],
-  programId
+  [Buffer.from('todo_list'), ownerPublicKey.toBuffer()],
+  programId,
 );
 ```
 

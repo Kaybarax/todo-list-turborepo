@@ -58,10 +58,7 @@ describe('Todo Integration Tests', () => {
 
   describe('Authentication Flow', () => {
     it('should register a new user', async () => {
-      const response = await request(app.getHttpServer())
-        .post('/auth/register')
-        .send(testUser)
-        .expect(201);
+      const response = await request(app.getHttpServer()).post('/auth/register').send(testUser).expect(201);
 
       expect(response.body).toHaveProperty('access_token');
       expect(response.body.user).toHaveProperty('id');
@@ -73,10 +70,7 @@ describe('Todo Integration Tests', () => {
     });
 
     it('should not register user with duplicate email', async () => {
-      await request(app.getHttpServer())
-        .post('/auth/register')
-        .send(testUser)
-        .expect(409);
+      await request(app.getHttpServer()).post('/auth/register').send(testUser).expect(409);
     });
 
     it('should login with valid credentials', async () => {
@@ -123,10 +117,7 @@ describe('Todo Integration Tests', () => {
     });
 
     it('should not create todo without authentication', async () => {
-      await request(app.getHttpServer())
-        .post('/todos')
-        .send(testTodo)
-        .expect(401);
+      await request(app.getHttpServer()).post('/todos').send(testTodo).expect(401);
     });
 
     it('should not create todo with invalid data', async () => {
@@ -205,9 +196,9 @@ describe('Todo Integration Tests', () => {
 
       expect(response.body.todos.length).toBeGreaterThan(0);
       expect(
-        response.body.todos.some((todo: any) => 
-          todo.title.includes('Integration') || todo.description.includes('Integration')
-        )
+        response.body.todos.some(
+          (todo: any) => todo.title.includes('Integration') || todo.description.includes('Integration'),
+        ),
       ).toBe(true);
     });
 
@@ -237,9 +228,7 @@ describe('Todo Integration Tests', () => {
         name: 'Another User',
       };
 
-      const registerResponse = await request(app.getHttpServer())
-        .post('/auth/register')
-        .send(anotherUser);
+      const registerResponse = await request(app.getHttpServer()).post('/auth/register').send(anotherUser);
 
       const anotherToken = registerResponse.body.access_token;
 
@@ -313,10 +302,7 @@ describe('Todo Integration Tests', () => {
       ];
 
       for (const todo of todos) {
-        await request(app.getHttpServer())
-          .post('/todos')
-          .set('Authorization', `Bearer ${authToken}`)
-          .send(todo);
+        await request(app.getHttpServer()).post('/todos').set('Authorization', `Bearer ${authToken}`).send(todo);
       }
     });
 
@@ -345,19 +331,13 @@ describe('Todo Integration Tests', () => {
 
   describe('Error Handling', () => {
     it('should handle invalid JWT token', async () => {
-      await request(app.getHttpServer())
-        .get('/todos')
-        .set('Authorization', 'Bearer invalid-token')
-        .expect(401);
+      await request(app.getHttpServer()).get('/todos').set('Authorization', 'Bearer invalid-token').expect(401);
     });
 
     it('should handle expired JWT token', async () => {
       // This would require mocking time or using a very short expiration
       // For now, we'll test with a malformed token
-      await request(app.getHttpServer())
-        .get('/todos')
-        .set('Authorization', 'Bearer expired.token.here')
-        .expect(401);
+      await request(app.getHttpServer()).get('/todos').set('Authorization', 'Bearer expired.token.here').expect(401);
     });
 
     it('should handle malformed request data', async () => {
@@ -392,18 +372,12 @@ describe('Todo Integration Tests', () => {
     it('should cache todo list results', async () => {
       // First request - should hit database
       const start1 = Date.now();
-      await request(app.getHttpServer())
-        .get('/todos')
-        .set('Authorization', `Bearer ${authToken}`)
-        .expect(200);
+      await request(app.getHttpServer()).get('/todos').set('Authorization', `Bearer ${authToken}`).expect(200);
       const time1 = Date.now() - start1;
 
       // Second request - should hit cache (faster)
       const start2 = Date.now();
-      await request(app.getHttpServer())
-        .get('/todos')
-        .set('Authorization', `Bearer ${authToken}`)
-        .expect(200);
+      await request(app.getHttpServer()).get('/todos').set('Authorization', `Bearer ${authToken}`).expect(200);
       const time2 = Date.now() - start2;
 
       // Cache should be faster (though this is not always reliable in tests)
@@ -412,9 +386,7 @@ describe('Todo Integration Tests', () => {
 
     it('should invalidate cache on todo creation', async () => {
       // Get initial todo count
-      const response1 = await request(app.getHttpServer())
-        .get('/todos')
-        .set('Authorization', `Bearer ${authToken}`);
+      const response1 = await request(app.getHttpServer()).get('/todos').set('Authorization', `Bearer ${authToken}`);
 
       const initialCount = response1.body.total;
 
@@ -425,9 +397,7 @@ describe('Todo Integration Tests', () => {
         .send({ ...testTodo, title: 'Cache Test Todo' });
 
       // Get updated todo count
-      const response2 = await request(app.getHttpServer())
-        .get('/todos')
-        .set('Authorization', `Bearer ${authToken}`);
+      const response2 = await request(app.getHttpServer()).get('/todos').set('Authorization', `Bearer ${authToken}`);
 
       expect(response2.body.total).toBe(initialCount + 1);
     });
@@ -457,7 +427,7 @@ describe('Todo Integration Tests', () => {
           .send({
             ...testTodo,
             title: `Concurrent Todo ${i}`,
-          })
+          }),
       );
 
       const responses = await Promise.all(promises);
@@ -469,9 +439,7 @@ describe('Todo Integration Tests', () => {
       });
 
       // Verify all todos were created
-      const listResponse = await request(app.getHttpServer())
-        .get('/todos')
-        .set('Authorization', `Bearer ${authToken}`);
+      const listResponse = await request(app.getHttpServer()).get('/todos').set('Authorization', `Bearer ${authToken}`);
 
       expect(listResponse.body.total).toBeGreaterThanOrEqual(10);
     });
@@ -493,7 +461,7 @@ describe('Todo Integration Tests', () => {
           .send({
             title: `Updated Title ${i}`,
             description: `Updated Description ${i}`,
-          })
+          }),
       );
 
       const responses = await Promise.all(promises);

@@ -1,10 +1,5 @@
 module.exports = {
-  extends: [
-    './base',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:jsx-a11y/recommended'
-  ],
+  extends: ['./base', 'plugin:react/recommended', 'plugin:react-hooks/recommended', 'plugin:jsx-a11y/recommended'],
   plugins: ['react', 'react-hooks', 'jsx-a11y'],
   rules: {
     // React specific rules
@@ -19,14 +14,17 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
 
     // Accessibility rules
-    'jsx-a11y/anchor-is-valid': ['error', {
-      components: ['Link'],
-      specialLink: ['to']
-    }]
+    'jsx-a11y/anchor-is-valid': [
+      'error',
+      {
+        components: ['Link'],
+        specialLink: ['to'],
+      },
+    ],
   },
   settings: {
     react: {
-      version: 'detect'
-    }
-  }
+      version: 'detect',
+    },
+  },
 };

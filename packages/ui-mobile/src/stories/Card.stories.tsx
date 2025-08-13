@@ -162,13 +162,7 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({
-  title,
-  onPress,
-  variant = 'primary',
-  size = 'small',
-  disabled = false,
-}) => {
+const Button: React.FC<ButtonProps> = ({ title, onPress, variant = 'primary', size = 'small', disabled = false }) => {
   const variantStyles = {
     primary: { backgroundColor: colors.primary, color: colors.white, borderColor: colors.primary },
     secondary: { backgroundColor: colors.secondary, color: colors.white, borderColor: colors.secondary },
@@ -204,12 +198,7 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <button
-      style={buttonStyle}
-      onClick={onPress}
-      disabled={disabled}
-      type="button"
-    >
+    <button style={buttonStyle} onClick={onPress} disabled={disabled} type="button">
       {title}
     </button>
   );
@@ -222,11 +211,7 @@ interface BadgeProps {
   size?: 'small' | 'medium';
 }
 
-const Badge: React.FC<BadgeProps> = ({
-  text,
-  variant = 'default',
-  size = 'small',
-}) => {
+const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'small' }) => {
   const variantStyles = {
     default: { backgroundColor: colors.light, color: colors.medium },
     primary: { backgroundColor: colors.primary, color: colors.white },
@@ -269,9 +254,10 @@ const meta: Meta<typeof Card> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A versatile card component with header, content, and footer sections for displaying structured information in mobile interfaces (web preview)'
-      }
-    }
+        component:
+          'A versatile card component with header, content, and footer sections for displaying structured information in mobile interfaces (web preview)',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -379,9 +365,9 @@ export const TodoCard: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Card used for displaying todo items with status, priority, and actions'
-      }
-    }
+        story: 'Card used for displaying todo items with status, priority, and actions',
+      },
+    },
   },
 };
 
@@ -390,18 +376,20 @@ export const UserProfileCard: Story = {
     <Card style={{ width: 280 }}>
       <CardHeader>
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
-          <div style={{
-            width: 48,
-            height: 48,
-            borderRadius: '50%',
-            backgroundColor: colors.primary,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: colors.white,
-            fontSize: fontSizes.lg,
-            fontWeight: fontWeights.bold,
-          }}>
+          <div
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: '50%',
+              backgroundColor: colors.primary,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: colors.white,
+              fontSize: fontSizes.lg,
+              fontWeight: fontWeights.bold,
+            }}
+          >
             JD
           </div>
           <div>
@@ -428,9 +416,9 @@ export const UserProfileCard: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Card used for displaying user profile information with avatar and stats'
-      }
-    }
+        story: 'Card used for displaying user profile information with avatar and stats',
+      },
+    },
   },
 };
 
@@ -447,9 +435,7 @@ export const NotificationCard: Story = {
         <p style={{ margin: 0, color: colors.text, marginBottom: spacing.sm }}>
           You have received a new message from your team member about the project update.
         </p>
-        <p style={{ margin: 0, color: colors.medium, fontSize: fontSizes.sm }}>
-          2 minutes ago
-        </p>
+        <p style={{ margin: 0, color: colors.medium, fontSize: fontSizes.sm }}>2 minutes ago</p>
       </CardContent>
       <CardFooter>
         <Button title="Dismiss" variant="ghost" onPress={() => {}} />
@@ -460,9 +446,9 @@ export const NotificationCard: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Card used for displaying notifications with timestamp and actions'
-      }
-    }
+        story: 'Card used for displaying notifications with timestamp and actions',
+      },
+    },
   },
 };
 
@@ -476,9 +462,7 @@ export const CompactCard: Story = {
             <h4 style={{ margin: 0, fontSize: fontSizes.md, fontWeight: fontWeights.bold, color: colors.text }}>
               Quick Task
             </h4>
-            <p style={{ margin: 0, fontSize: fontSizes.sm, color: colors.medium }}>
-              Review code
-            </p>
+            <p style={{ margin: 0, fontSize: fontSizes.sm, color: colors.medium }}>Review code</p>
           </div>
           <Badge text="Done" variant="success" size="small" />
         </div>
@@ -488,9 +472,9 @@ export const CompactCard: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Compact card layout with minimal padding for dense information display'
-      }
-    }
+        story: 'Compact card layout with minimal padding for dense information display',
+      },
+    },
   },
 };
 
@@ -526,9 +510,9 @@ export const WideCard: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Wide card layout suitable for dashboard widgets and data display'
-      }
-    }
+        story: 'Wide card layout suitable for dashboard widgets and data display',
+      },
+    },
   },
 };
 
@@ -550,15 +534,15 @@ export const InteractiveCard: Story = {
           </p>
         </CardContent>
         <CardFooter>
-          <Button 
-            title={liked ? "❤️ Liked" : "🤍 Like"} 
-            variant={liked ? "danger" : "outline"} 
-            onPress={() => setLiked(!liked)} 
+          <Button
+            title={liked ? '❤️ Liked' : '🤍 Like'}
+            variant={liked ? 'danger' : 'outline'}
+            onPress={() => setLiked(!liked)}
           />
-          <Button 
-            title={saved ? "📌 Saved" : "📋 Save"} 
-            variant={saved ? "success" : "outline"} 
-            onPress={() => setSaved(!saved)} 
+          <Button
+            title={saved ? '📌 Saved' : '📋 Save'}
+            variant={saved ? 'success' : 'outline'}
+            onPress={() => setSaved(!saved)}
           />
         </CardFooter>
       </Card>
@@ -567,9 +551,9 @@ export const InteractiveCard: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Interactive card showing state changes and user feedback'
-      }
-    }
+        story: 'Interactive card showing state changes and user feedback',
+      },
+    },
   },
 };
 
@@ -583,14 +567,16 @@ export const LoadingCard: Story = {
       </CardHeader>
       <CardContent>
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
-          <div style={{
-            width: 20,
-            height: 20,
-            border: `2px solid ${colors.light}`,
-            borderTop: `2px solid ${colors.primary}`,
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-          }} />
+          <div
+            style={{
+              width: 20,
+              height: 20,
+              border: `2px solid ${colors.light}`,
+              borderTop: `2px solid ${colors.primary}`,
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite',
+            }}
+          />
           <span style={{ color: colors.medium }}>Loading...</span>
         </div>
       </CardContent>
@@ -610,9 +596,9 @@ export const LoadingCard: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Card showing loading state with spinner and disabled actions'
-      }
-    }
+        story: 'Card showing loading state with spinner and disabled actions',
+      },
+    },
   },
 };
 
@@ -639,16 +625,23 @@ export const ErrorCard: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Card showing error state with visual indicators and recovery actions'
-      }
-    }
+        story: 'Card showing error state with visual indicators and recovery actions',
+      },
+    },
   },
 };
 
 // Multiple cards layout
 export const CardGrid: Story = {
   render: () => (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: spacing.md, maxWidth: 800 }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        gap: spacing.md,
+        maxWidth: 800,
+      }}
+    >
       <Card>
         <CardHeader>
           <CardTitle>Task 1</CardTitle>
@@ -661,7 +654,7 @@ export const CardGrid: Story = {
           <Button title="View" variant="outline" onPress={() => {}} />
         </CardFooter>
       </Card>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Task 2</CardTitle>
@@ -674,7 +667,7 @@ export const CardGrid: Story = {
           <Button title="View" variant="outline" onPress={() => {}} />
         </CardFooter>
       </Card>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Task 3</CardTitle>
@@ -693,9 +686,9 @@ export const CardGrid: Story = {
     layout: 'padded',
     docs: {
       description: {
-        story: 'Multiple cards in a responsive grid layout'
-      }
-    }
+        story: 'Multiple cards in a responsive grid layout',
+      },
+    },
   },
 };
 
@@ -720,9 +713,9 @@ export const AccessibleCard: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Card with proper accessibility attributes and semantic structure'
-      }
-    }
+        story: 'Card with proper accessibility attributes and semantic structure',
+      },
+    },
   },
 };
 

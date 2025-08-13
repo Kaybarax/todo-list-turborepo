@@ -27,7 +27,7 @@ describe('Blockchain Integration Tests', () => {
     // Create a TodoList for user1
     await todoListFactory.connect(user1).createTodoList();
     const todoListAddress = await todoListFactory.getUserTodoList(user1Address);
-    
+
     // Get TodoList contract instance
     const TodoList = await ethers.getContractFactory('TodoList');
     todoList = TodoList.attach(todoListAddress) as TodoList;
@@ -37,7 +37,7 @@ describe('Blockchain Integration Tests', () => {
     it('should create unique TodoList for each user', async () => {
       // Create TodoList for user2
       await todoListFactory.connect(user2).createTodoList();
-      
+
       const user1TodoListAddress = await todoListFactory.getUserTodoList(user1Address);
       const user2TodoListAddress = await todoListFactory.getUserTodoList(user2Address);
 
@@ -47,20 +47,20 @@ describe('Blockchain Integration Tests', () => {
     });
 
     it('should prevent creating multiple TodoLists for same user', async () => {
-      await expect(
-        todoListFactory.connect(user1).createTodoList()
-      ).to.be.revertedWith('TodoList already exists for this user');
+      await expect(todoListFactory.connect(user1).createTodoList()).to.be.revertedWith(
+        'TodoList already exists for this user',
+      );
     });
 
     it('should track all created TodoLists', async () => {
       await todoListFactory.connect(user2).createTodoList();
-      
+
       const allTodoLists = await todoListFactory.getAllTodoLists();
       expect(allTodoLists).to.have.length(2);
-      
+
       const user1TodoListAddress = await todoListFactory.getUserTodoList(user1Address);
       const user2TodoListAddress = await todoListFactory.getUserTodoList(user2Address);
-      
+
       expect(allTodoLists).to.include(user1TodoListAddress);
       expect(allTodoLists).to.include(user2TodoListAddress);
     });
@@ -74,12 +74,7 @@ describe('Blockchain Integration Tests', () => {
       const priority = 1; // medium
       const dueDate = Math.floor(Date.now() / 1000) + 86400; // tomorrow
 
-      const createTx = await todoList.connect(user1).createTodo(
-        title,
-        description,
-        priority,
-        dueDate
-      );
+      const createTx = await todoList.connect(user1).createTodo(title, description, priority, dueDate);
       await createTx.wait();
 
       // Read todo
@@ -97,13 +92,7 @@ describe('Blockchain Integration Tests', () => {
       const newPriority = 2; // high
       const newDueDate = Math.floor(Date.now() / 1000) + 172800; // day after tomorrow
 
-      const updateTx = await todoList.connect(user1).updateTodo(
-        0,
-        newTitle,
-        newDescription,
-        newPriority,
-        newDueDate
-      );
+      const updateTx = await todoList.connect(user1).updateTodo(0, newTitle, newDescription, newPriority, newDueDate);
       await updateTx.wait();
 
       const updatedTodo = await todoList.getTodo(0);
@@ -135,12 +124,7 @@ describe('Blockchain Integration Tests', () => {
 
       // Create multiple todos
       for (const todo of todos) {
-        const tx = await todoList.connect(user1).createTodo(
-          todo.title,
-          todo.description,
-          todo.priority,
-          todo.dueDate
-        );
+        const tx = await todoList.connect(user1).createTodo(todo.title, todo.description, todo.priority, todo.dueDate);
         await tx.wait();
       }
 
@@ -163,7 +147,7 @@ describe('Blockchain Integration Tests', () => {
 
       // Delete first todo
       await todoList.connect(user1).deleteTodo(0);
-      
+
       // Verify todo count decreased
       const remainingTodos = await todoList.getAllTodos();
       expect(remainingTodos).to.have.length(2);
@@ -173,27 +157,20 @@ describe('Blockchain Integration Tests', () => {
   describe('Access Control Integration', () => {
     it('should prevent unauthorized access to todos', async () => {
       // User1 creates a todo
-      await todoList.connect(user1).createTodo(
-        'Private Todo',
-        'Only user1 should access this',
-        1,
-        Math.floor(Date.now() / 1000) + 86400
-      );
+      await todoList
+        .connect(user1)
+        .createTodo('Private Todo', 'Only user1 should access this', 1, Math.floor(Date.now() / 1000) + 86400);
 
       // User2 should not be able to update user1's todo
-      await expect(
-        todoList.connect(user2).updateTodo(0, 'Hacked', 'Unauthorized update', 2, 0)
-      ).to.be.revertedWith('Not the owner of this todo');
+      await expect(todoList.connect(user2).updateTodo(0, 'Hacked', 'Unauthorized update', 2, 0)).to.be.revertedWith(
+        'Not the owner of this todo',
+      );
 
       // User2 should not be able to delete user1's todo
-      await expect(
-        todoList.connect(user2).deleteTodo(0)
-      ).to.be.revertedWith('Not the owner of this todo');
+      await expect(todoList.connect(user2).deleteTodo(0)).to.be.revertedWith('Not the owner of this todo');
 
       // User2 should not be able to toggle user1's todo
-      await expect(
-        todoList.connect(user2).toggleTodo(0)
-      ).to.be.revertedWith('Not the owner of this todo');
+      await expect(todoList.connect(user2).toggleTodo(0)).to.be.revertedWith('Not the owner of this todo');
     });
 
     it('should allow only owner to manage their TodoList', async () => {
@@ -204,7 +181,9 @@ describe('Blockchain Integration Tests', () => {
 
       // User1 should not be able to create todos in user2's list
       await expect(
-        user2TodoList.connect(user1).createTodo('Unauthorized', 'Should fail', 1, Math.floor(Date.now() / 1000) + 86400)
+        user2TodoList
+          .connect(user1)
+          .createTodo('Unauthorized', 'Should fail', 1, Math.floor(Date.now() / 1000) + 86400),
       ).to.be.revertedWith('Not the owner of this TodoList');
     });
   });
@@ -212,90 +191,66 @@ describe('Blockchain Integration Tests', () => {
   describe('Event Integration', () => {
     it('should emit events for all operations', async () => {
       // Test TodoCreated event
-      const createTx = await todoList.connect(user1).createTodo(
-        'Event Test Todo',
-        'Testing events',
-        1,
-        Math.floor(Date.now() / 1000) + 86400
-      );
-      
-      await expect(createTx)
-        .to.emit(todoList, 'TodoCreated')
-        .withArgs(0, user1Address, 'Event Test Todo');
+      const createTx = await todoList
+        .connect(user1)
+        .createTodo('Event Test Todo', 'Testing events', 1, Math.floor(Date.now() / 1000) + 86400);
+
+      await expect(createTx).to.emit(todoList, 'TodoCreated').withArgs(0, user1Address, 'Event Test Todo');
 
       // Test TodoUpdated event
-      const updateTx = await todoList.connect(user1).updateTodo(
-        0,
-        'Updated Event Test Todo',
-        'Updated description',
-        2,
-        Math.floor(Date.now() / 1000) + 172800
-      );
-      
-      await expect(updateTx)
-        .to.emit(todoList, 'TodoUpdated')
-        .withArgs(0, user1Address);
+      const updateTx = await todoList
+        .connect(user1)
+        .updateTodo(0, 'Updated Event Test Todo', 'Updated description', 2, Math.floor(Date.now() / 1000) + 172800);
+
+      await expect(updateTx).to.emit(todoList, 'TodoUpdated').withArgs(0, user1Address);
 
       // Test TodoToggled event
       const toggleTx = await todoList.connect(user1).toggleTodo(0);
-      
-      await expect(toggleTx)
-        .to.emit(todoList, 'TodoToggled')
-        .withArgs(0, user1Address, true);
+
+      await expect(toggleTx).to.emit(todoList, 'TodoToggled').withArgs(0, user1Address, true);
 
       // Test TodoDeleted event
       const deleteTx = await todoList.connect(user1).deleteTodo(0);
-      
-      await expect(deleteTx)
-        .to.emit(todoList, 'TodoDeleted')
-        .withArgs(0, user1Address);
+
+      await expect(deleteTx).to.emit(todoList, 'TodoDeleted').withArgs(0, user1Address);
     });
 
     it('should emit factory events', async () => {
       // Test TodoListCreated event
       const createTx = await todoListFactory.connect(user2).createTodoList();
-      
-      await expect(createTx)
-        .to.emit(todoListFactory, 'TodoListCreated')
-        .withArgs(user2Address);
+
+      await expect(createTx).to.emit(todoListFactory, 'TodoListCreated').withArgs(user2Address);
     });
   });
 
   describe('Gas Optimization Integration', () => {
     it('should have reasonable gas costs for operations', async () => {
       // Create todo and measure gas
-      const createTx = await todoList.connect(user1).createTodo(
-        'Gas Test Todo',
-        'Testing gas consumption',
-        1,
-        Math.floor(Date.now() / 1000) + 86400
-      );
+      const createTx = await todoList
+        .connect(user1)
+        .createTodo('Gas Test Todo', 'Testing gas consumption', 1, Math.floor(Date.now() / 1000) + 86400);
       const createReceipt = await createTx.wait();
-      
+
       expect(createReceipt.gasUsed.toNumber()).to.be.lessThan(200000); // Reasonable gas limit
 
       // Update todo and measure gas
-      const updateTx = await todoList.connect(user1).updateTodo(
-        0,
-        'Updated Gas Test Todo',
-        'Updated description',
-        2,
-        Math.floor(Date.now() / 1000) + 172800
-      );
+      const updateTx = await todoList
+        .connect(user1)
+        .updateTodo(0, 'Updated Gas Test Todo', 'Updated description', 2, Math.floor(Date.now() / 1000) + 172800);
       const updateReceipt = await updateTx.wait();
-      
+
       expect(updateReceipt.gasUsed.toNumber()).to.be.lessThan(100000);
 
       // Toggle todo and measure gas
       const toggleTx = await todoList.connect(user1).toggleTodo(0);
       const toggleReceipt = await toggleTx.wait();
-      
+
       expect(toggleReceipt.gasUsed.toNumber()).to.be.lessThan(50000);
 
       // Delete todo and measure gas
       const deleteTx = await todoList.connect(user1).deleteTodo(0);
       const deleteReceipt = await deleteTx.wait();
-      
+
       expect(deleteReceipt.gasUsed.toNumber()).to.be.lessThan(50000);
     });
 
@@ -305,12 +260,9 @@ describe('Blockchain Integration Tests', () => {
 
       // Create multiple todos and track gas usage
       for (let i = 0; i < batchSize; i++) {
-        const tx = await todoList.connect(user1).createTodo(
-          `Batch Todo ${i}`,
-          `Description ${i}`,
-          i % 3,
-          Math.floor(Date.now() / 1000) + 86400 + (i * 3600)
-        );
+        const tx = await todoList
+          .connect(user1)
+          .createTodo(`Batch Todo ${i}`, `Description ${i}`, i % 3, Math.floor(Date.now() / 1000) + 86400 + i * 3600);
         const receipt = await tx.wait();
         gasUsages.push(receipt.gasUsed.toNumber());
       }
@@ -333,12 +285,9 @@ describe('Blockchain Integration Tests', () => {
       ];
 
       for (const todo of initialTodos) {
-        await todoList.connect(user1).createTodo(
-          todo.title,
-          todo.description,
-          todo.priority,
-          Math.floor(Date.now() / 1000) + 86400
-        );
+        await todoList
+          .connect(user1)
+          .createTodo(todo.title, todo.description, todo.priority, Math.floor(Date.now() / 1000) + 86400);
       }
 
       // Verify initial state
@@ -378,17 +327,19 @@ describe('Blockchain Integration Tests', () => {
     it('should handle edge cases correctly', async () => {
       // Test with empty strings
       await expect(
-        todoList.connect(user1).createTodo('', 'Empty title', 1, Math.floor(Date.now() / 1000) + 86400)
+        todoList.connect(user1).createTodo('', 'Empty title', 1, Math.floor(Date.now() / 1000) + 86400),
       ).to.be.revertedWith('Title cannot be empty');
 
       // Test with past due date
       await expect(
-        todoList.connect(user1).createTodo('Past Due', 'Past due date', 1, Math.floor(Date.now() / 1000) - 86400)
+        todoList.connect(user1).createTodo('Past Due', 'Past due date', 1, Math.floor(Date.now() / 1000) - 86400),
       ).to.be.revertedWith('Due date cannot be in the past');
 
       // Test with invalid priority
       await expect(
-        todoList.connect(user1).createTodo('Invalid Priority', 'Invalid priority', 5, Math.floor(Date.now() / 1000) + 86400)
+        todoList
+          .connect(user1)
+          .createTodo('Invalid Priority', 'Invalid priority', 5, Math.floor(Date.now() / 1000) + 86400),
       ).to.be.revertedWith('Invalid priority');
 
       // Test operations on non-existent todo
@@ -401,12 +352,9 @@ describe('Blockchain Integration Tests', () => {
   describe('Upgrade and Migration Integration', () => {
     it('should handle contract upgrades gracefully', async () => {
       // Create some todos in the original contract
-      await todoList.connect(user1).createTodo(
-        'Pre-upgrade Todo',
-        'This should survive upgrade',
-        1,
-        Math.floor(Date.now() / 1000) + 86400
-      );
+      await todoList
+        .connect(user1)
+        .createTodo('Pre-upgrade Todo', 'This should survive upgrade', 1, Math.floor(Date.now() / 1000) + 86400);
 
       // Simulate upgrade by deploying new version
       const TodoListV2 = await ethers.getContractFactory('TodoList'); // In real scenario, this would be TodoListV2
@@ -419,12 +367,9 @@ describe('Blockchain Integration Tests', () => {
       // 3. Verify data integrity
 
       // For this test, we'll just verify the new contract works
-      await todoListV2.connect(user1).createTodo(
-        'Post-upgrade Todo',
-        'This is in the new contract',
-        1,
-        Math.floor(Date.now() / 1000) + 86400
-      );
+      await todoListV2
+        .connect(user1)
+        .createTodo('Post-upgrade Todo', 'This is in the new contract', 1, Math.floor(Date.now() / 1000) + 86400);
 
       const newTodo = await todoListV2.getTodo(0);
       expect(newTodo.title).to.equal('Post-upgrade Todo');
@@ -435,19 +380,27 @@ describe('Blockchain Integration Tests', () => {
     it('should handle multiple users creating todos simultaneously', async () => {
       // Create TodoLists for multiple users
       await todoListFactory.connect(user2).createTodoList();
-      
+
       const user1TodoListAddress = await todoListFactory.getUserTodoList(user1Address);
       const user2TodoListAddress = await todoListFactory.getUserTodoList(user2Address);
-      
+
       const user1TodoList = (await ethers.getContractFactory('TodoList')).attach(user1TodoListAddress) as TodoList;
       const user2TodoList = (await ethers.getContractFactory('TodoList')).attach(user2TodoListAddress) as TodoList;
 
       // Create todos simultaneously
       const promises = [
-        user1TodoList.connect(user1).createTodo('User1 Todo 1', 'Description 1', 1, Math.floor(Date.now() / 1000) + 86400),
-        user2TodoList.connect(user2).createTodo('User2 Todo 1', 'Description 1', 1, Math.floor(Date.now() / 1000) + 86400),
-        user1TodoList.connect(user1).createTodo('User1 Todo 2', 'Description 2', 2, Math.floor(Date.now() / 1000) + 172800),
-        user2TodoList.connect(user2).createTodo('User2 Todo 2', 'Description 2', 2, Math.floor(Date.now() / 1000) + 172800),
+        user1TodoList
+          .connect(user1)
+          .createTodo('User1 Todo 1', 'Description 1', 1, Math.floor(Date.now() / 1000) + 86400),
+        user2TodoList
+          .connect(user2)
+          .createTodo('User2 Todo 1', 'Description 1', 1, Math.floor(Date.now() / 1000) + 86400),
+        user1TodoList
+          .connect(user1)
+          .createTodo('User1 Todo 2', 'Description 2', 2, Math.floor(Date.now() / 1000) + 172800),
+        user2TodoList
+          .connect(user2)
+          .createTodo('User2 Todo 2', 'Description 2', 2, Math.floor(Date.now() / 1000) + 172800),
       ];
 
       await Promise.all(promises);
@@ -477,12 +430,14 @@ describe('Blockchain Integration Tests', () => {
         for (let i = 0; i < batchSize; i++) {
           const todoIndex = batch * batchSize + i;
           promises.push(
-            todoList.connect(user1).createTodo(
-              `Todo ${todoIndex}`,
-              `Description ${todoIndex}`,
-              todoIndex % 3,
-              Math.floor(Date.now() / 1000) + 86400 + (todoIndex * 3600)
-            )
+            todoList
+              .connect(user1)
+              .createTodo(
+                `Todo ${todoIndex}`,
+                `Description ${todoIndex}`,
+                todoIndex % 3,
+                Math.floor(Date.now() / 1000) + 86400 + todoIndex * 3600,
+              ),
           );
         }
         await Promise.all(promises);
@@ -499,14 +454,14 @@ describe('Blockchain Integration Tests', () => {
 
       // Test batch operations performance
       const startTime = Date.now();
-      
+
       // Toggle completion for first 10 todos
       const togglePromises = [];
       for (let i = 0; i < 10; i++) {
         togglePromises.push(todoList.connect(user1).toggleTodo(i));
       }
       await Promise.all(togglePromises);
-      
+
       const endTime = Date.now();
       expect(endTime - startTime).to.be.lessThan(5000); // Should complete within 5 seconds
     });

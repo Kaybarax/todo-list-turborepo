@@ -23,12 +23,5 @@
     }
   },
   "include": ["src/**/*", "app/**/*", "index.js", "app.config.js", "babel.config.js", "metro.config.js"],
-  "exclude": [
-    "node_modules",
-    "babel.config.js",
-    "metro.config.js",
-    "jest.config.js",
-    "dist",
-    "coverage"
-  ]
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js", "dist", "coverage"]
 }

@@ -126,12 +126,12 @@ export const NewComponentScreen = () => {
     <Layout style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ padding: 16 }}>
         <Text category="h1">New Component</Text>
-        
+
         <View style={{ marginTop: 20 }}>
           <Text category="h6">Basic Usage</Text>
           <NewComponent prop="value" />
         </View>
-        
+
         <View style={{ marginTop: 20 }}>
           <Text category="h6">Variants</Text>
           <NewComponent variant="primary" />
@@ -146,14 +146,12 @@ export const NewComponentScreen = () => {
 2. Add to the drawer navigator in `App.tsx`:
 
 ```tsx
-<Drawer.Screen 
-  name="NewComponent" 
+<Drawer.Screen
+  name="NewComponent"
   component={NewComponentScreen}
   options={{
     drawerLabel: 'New Component',
-    drawerIcon: ({ color, size }) => (
-      <Icon name="star" fill={color} width={size} height={size} />
-    ),
+    drawerIcon: ({ color, size }) => <Icon name="star" fill={color} width={size} height={size} />,
   }}
 />
 ```
@@ -176,7 +174,7 @@ const customTheme = {
 
 <ApplicationProvider {...eva} theme={customTheme}>
   {/* App content */}
-</ApplicationProvider>
+</ApplicationProvider>;
 ```
 
 ## 🧪 Development
@@ -254,7 +252,7 @@ function ExampleForm() {
   return (
     <Card style={{ margin: 16 }}>
       <CardContent>
-        <Input 
+        <Input
           label="Email Address"
           placeholder="Enter your email"
           value={email}
@@ -262,7 +260,7 @@ function ExampleForm() {
           keyboardType="email-address"
           leftIcon="email"
         />
-        <Button 
+        <Button
           title="Submit"
           variant="primary"
           size="large"
@@ -281,16 +279,7 @@ function ExampleForm() {
 ```tsx
 import React from 'react';
 import { View, ScrollView } from 'react-native';
-import { 
-  Button, 
-  Card, 
-  CardContent, 
-  CardHeader,
-  Input,
-  Badge,
-  Avatar,
-  Switch
-} from '@todo/ui-mobile';
+import { Button, Card, CardContent, CardHeader, Input, Badge, Avatar, Switch } from '@todo/ui-mobile';
 
 function UserProfileScreen() {
   const [name, setName] = React.useState('John Doe');
@@ -303,25 +292,13 @@ function UserProfileScreen() {
         <CardHeader title="Profile Information" />
         <CardContent>
           <View style={{ alignItems: 'center', marginBottom: 20 }}>
-            <Avatar 
-              source={{ uri: 'https://example.com/avatar.jpg' }}
-              size="large"
-            />
-            <Badge 
-              text="Pro User" 
-              variant="success"
-              style={{ marginTop: 8 }}
-            />
+            <Avatar source={{ uri: 'https://example.com/avatar.jpg' }} size="large" />
+            <Badge text="Pro User" variant="success" style={{ marginTop: 8 }} />
           </View>
-          
-          <Input 
-            label="Full Name"
-            value={name}
-            onChangeText={setName}
-            leftIcon="person"
-          />
-          
-          <Input 
+
+          <Input label="Full Name" value={name} onChangeText={setName} leftIcon="person" />
+
+          <Input
             label="Email Address"
             value={email}
             onChangeText={setEmail}
@@ -329,35 +306,24 @@ function UserProfileScreen() {
             leftIcon="email"
             style={{ marginTop: 16 }}
           />
-          
-          <View style={{ 
-            flexDirection: 'row', 
-            alignItems: 'center', 
-            justifyContent: 'space-between',
-            marginTop: 20 
-          }}>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginTop: 20,
+            }}
+          >
             <Text>Push Notifications</Text>
-            <Switch 
-              checked={notifications}
-              onValueChange={setNotifications}
-            />
+            <Switch checked={notifications} onValueChange={setNotifications} />
           </View>
         </CardContent>
       </Card>
-      
+
       <View style={{ flexDirection: 'row', gap: 12 }}>
-        <Button 
-          title="Cancel"
-          variant="outline"
-          style={{ flex: 1 }}
-          onPress={() => console.log('Cancel')}
-        />
-        <Button 
-          title="Save Changes"
-          variant="primary"
-          style={{ flex: 1 }}
-          onPress={() => console.log('Save')}
-        />
+        <Button title="Cancel" variant="outline" style={{ flex: 1 }} onPress={() => console.log('Cancel')} />
+        <Button title="Save Changes" variant="primary" style={{ flex: 1 }} onPress={() => console.log('Save')} />
       </View>
     </ScrollView>
   );
@@ -382,9 +348,7 @@ function UserProfileScreen() {
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.todo.ui-mobile-showcase"
@@ -407,16 +371,19 @@ function UserProfileScreen() {
 
 ```javascript
 // babel.config.js
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      ['module-resolver', {
-        alias: {
-          '@todo/ui-mobile': '../lib',
+      [
+        'module-resolver',
+        {
+          alias: {
+            '@todo/ui-mobile': '../lib',
+          },
         },
-      }],
+      ],
     ],
   };
 };

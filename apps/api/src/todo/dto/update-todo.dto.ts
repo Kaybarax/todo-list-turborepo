@@ -9,7 +9,11 @@ export class UpdateTodoDto extends PartialType(CreateTodoDto) {
   @IsBoolean()
   completed?: boolean;
 
-  @ApiProperty({ description: 'Blockchain network where todo is stored', enum: ['solana', 'polkadot', 'polygon'], required: false })
+  @ApiProperty({
+    description: 'Blockchain network where todo is stored',
+    enum: ['solana', 'polkadot', 'polygon'],
+    required: false,
+  })
   @IsOptional()
   @IsEnum(['solana', 'polkadot', 'polygon'], { message: 'Blockchain network must be solana, polkadot, or polygon' })
   blockchainNetwork?: 'solana' | 'polkadot' | 'polygon';

@@ -13,11 +13,6 @@
       "@/*": ["./lib/*"]
     }
   },
-  "include": [
-    "lib/**/*",
-    "__tests__/**/*",
-    ".storybook/**/*",
-    "showcase/**/*"
-  ],
+  "include": ["lib/**/*", "__tests__/**/*", ".storybook/**/*", "showcase/**/*"],
   "exclude": ["node_modules", "dist"]
 }

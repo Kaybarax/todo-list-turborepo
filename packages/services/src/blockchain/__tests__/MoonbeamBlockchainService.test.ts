@@ -1,4 +1,7 @@
-import { MoonbeamBlockchainService, MoonbeamBlockchainServiceOptions } from '../implementations/MoonbeamBlockchainService';
+import {
+  MoonbeamBlockchainService,
+  MoonbeamBlockchainServiceOptions,
+} from '../implementations/MoonbeamBlockchainService';
 import { BlockchainNetwork, TransactionStatus, BlockchainTodoStatus } from '../types';
 import { BlockchainError } from '../utils/BlockchainError';
 
@@ -61,10 +64,10 @@ describe('MoonbeamBlockchainService', () => {
       const address = '0x1234567890123456789012345678901234567890';
 
       expect(service.getTransactionExplorerUrl(txHash)).toBe(
-        'https://moonscan.io/tx/0x1234567890123456789012345678901234567890123456789012345678901234'
+        'https://moonscan.io/tx/0x1234567890123456789012345678901234567890123456789012345678901234',
       );
       expect(service.getAddressExplorerUrl(address)).toBe(
-        'https://moonscan.io/address/0x1234567890123456789012345678901234567890'
+        'https://moonscan.io/address/0x1234567890123456789012345678901234567890',
       );
     });
   });
@@ -204,7 +207,7 @@ describe('MoonbeamBlockchainService', () => {
         expect(todos[0]).toEqual({
           id: '1',
           title: 'Deploy on Moonbeam parachain',
-          description: 'Successfully deploy todo contracts on Moonbeam\'s EVM-compatible parachain',
+          description: "Successfully deploy todo contracts on Moonbeam's EVM-compatible parachain",
           status: BlockchainTodoStatus.IN_PROGRESS,
           completed: false,
           owner: '0x1234567890123456789012345678901234567890',
@@ -227,7 +230,7 @@ describe('MoonbeamBlockchainService', () => {
         expect(todo).toEqual({
           id: '1',
           title: 'Deploy on Moonbeam parachain',
-          description: 'Successfully deploy todo contracts on Moonbeam\'s EVM-compatible parachain',
+          description: "Successfully deploy todo contracts on Moonbeam's EVM-compatible parachain",
           status: BlockchainTodoStatus.IN_PROGRESS,
           completed: false,
           owner: '0x1234567890123456789012345678901234567890',
@@ -464,7 +467,7 @@ describe('MoonbeamBlockchainService', () => {
 
     it('should handle network errors gracefully', async () => {
       const txHash = '0x1234567890123456789012345678901234567890123456789012345678901234';
-      
+
       // Mock getTransactionReceipt to throw an error
       jest.spyOn(service, 'getTransactionReceipt').mockRejectedValue(new Error('Network error'));
 

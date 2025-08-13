@@ -40,17 +40,8 @@ function LoginForm() {
         <CardTitle>Welcome Back</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Input 
-          type="email"
-          placeholder="Enter your email" 
-          leftIcon={<MailIcon />}
-          label="Email Address"
-        />
-        <Input 
-          type="password"
-          placeholder="Enter your password"
-          label="Password"
-        />
+        <Input type="email" placeholder="Enter your email" leftIcon={<MailIcon />} label="Email Address" />
+        <Input type="password" placeholder="Enter your password" label="Password" />
         <Button className="w-full" size="lg">
           Sign In
         </Button>
@@ -65,12 +56,12 @@ function LoginForm() {
 
 ### Core Components
 
-| Component | Description | Radix Primitive |
-|-----------|-------------|-----------------|
-| **Button** | Versatile button with variants, sizes, and states | `@radix-ui/react-slot` |
-| **Card** | Flexible container with header, content, and footer | Custom implementation |
-| **Input** | Form input with validation, icons, and labels | Custom implementation |
-| **Badge** | Status indicators and labels | Custom implementation |
+| Component  | Description                                         | Radix Primitive        |
+| ---------- | --------------------------------------------------- | ---------------------- |
+| **Button** | Versatile button with variants, sizes, and states   | `@radix-ui/react-slot` |
+| **Card**   | Flexible container with header, content, and footer | Custom implementation  |
+| **Input**  | Form input with validation, icons, and labels       | Custom implementation  |
+| **Badge**  | Status indicators and labels                        | Custom implementation  |
 
 ### Button Component
 
@@ -117,7 +108,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
   <CardFooter>
     <Button>Action</Button>
   </CardFooter>
-</Card>
+</Card>;
 ```
 
 ### Input Component
@@ -129,7 +120,7 @@ import { Input } from '@todo/ui-web';
 <Input placeholder="Enter text..." />
 
 // With label and helper text
-<Input 
+<Input
   label="Email Address"
   placeholder="Enter your email"
   helperText="We'll never share your email"
@@ -137,14 +128,14 @@ import { Input } from '@todo/ui-web';
 />
 
 // With icons
-<Input 
+<Input
   leftIcon={<SearchIcon />}
   rightIcon={<CheckIcon />}
   placeholder="Search..."
 />
 
 // Error state
-<Input 
+<Input
   error
   label="Password"
   helperText="Password must be at least 8 characters"
@@ -198,7 +189,7 @@ The library uses CSS variables for theming. Customize by overriding these variab
   --border: 214.3 31.8% 91.4%;
   --input: 214.3 31.8% 91.4%;
   --ring: 221.2 83.2% 53.3%;
-  
+
   /* Border radius */
   --radius: 0.5rem;
 }
@@ -376,28 +367,25 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../utils';
 
-const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors',
-  {
-    variants: {
-      variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        // ... other variants
-      },
-      size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-9 rounded-md px-3',
-        lg: 'h-11 rounded-md px-8',
-        // ... other sizes
-      },
+const buttonVariants = cva('inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors', {
+  variants: {
+    variant: {
+      default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+      destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+      // ... other variants
     },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
+    size: {
+      default: 'h-10 px-4 py-2',
+      sm: 'h-9 rounded-md px-3',
+      lg: 'h-11 rounded-md px-8',
+      // ... other sizes
     },
-  }
-);
+  },
+  defaultVariants: {
+    variant: 'default',
+    size: 'default',
+  },
+});
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -412,14 +400,8 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
-    return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
-    );
-  }
+    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+  },
 );
 
 Button.displayName = 'Button';

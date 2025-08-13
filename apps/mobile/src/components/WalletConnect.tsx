@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { Card, CardContent, Button, Badge } from '@todo/ui-mobile';
 import { useWallet } from '../providers/WalletProvider';
 import { getNetworkColor } from '@todo/services';
@@ -34,24 +28,20 @@ export function WalletConnect() {
   };
 
   const handleDisconnect = async () => {
-    Alert.alert(
-      'Disconnect Wallet',
-      'Are you sure you want to disconnect your wallet?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Disconnect', 
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await disconnect();
-            } catch (err) {
-              console.error('Disconnection failed:', err);
-            }
+    Alert.alert('Disconnect Wallet', 'Are you sure you want to disconnect your wallet?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Disconnect',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await disconnect();
+          } catch (err) {
+            console.error('Disconnection failed:', err);
           }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   // TODO: Re-enable when NetworkSelector is fixed
@@ -86,63 +76,60 @@ export function WalletConnect() {
             />
           </View>
 
-        <View style={styles.accountInfo}>
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Network:</Text>
-            <View style={styles.networkContainer}>
-              <Badge
-                variant="primary"
-                size="small"
-                text={account.network}
-                style={[
-                  styles.networkBadge,
-                  { backgroundColor: getNetworkColor(account.network) },
-                ]}
-              />
-              <Button
-                variant="outline"
-                size="small"
-                title="Switch"
-                onPress={() => setShowNetworkSelector(!showNetworkSelector)}
-                disabled={isConnecting}
-                style={styles.switchButton}
-              />
+          <View style={styles.accountInfo}>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Network:</Text>
+              <View style={styles.networkContainer}>
+                <Badge
+                  variant="primary"
+                  size="small"
+                  text={account.network}
+                  style={[styles.networkBadge, { backgroundColor: getNetworkColor(account.network) }]}
+                />
+                <Button
+                  variant="outline"
+                  size="small"
+                  title="Switch"
+                  onPress={() => setShowNetworkSelector(!showNetworkSelector)}
+                  disabled={isConnecting}
+                  style={styles.switchButton}
+                />
+              </View>
             </View>
-          </View>
 
-          {showNetworkSelector && (
-            <View style={styles.networkSelector}>
-              <Text style={styles.selectorTitle}>Select Network:</Text>
-              {/* TODO: Re-enable NetworkSelector when export issue is fixed */}
-              {/* <NetworkSelector
+            {showNetworkSelector && (
+              <View style={styles.networkSelector}>
+                <Text style={styles.selectorTitle}>Select Network:</Text>
+                {/* TODO: Re-enable NetworkSelector when export issue is fixed */}
+                {/* <NetworkSelector
                 selectedNetwork={account.network}
                 onNetworkSelect={handleNetworkSwitch}
                 disabled={isConnecting}
                 variant="list"
                 style={styles.networkSelectorComponent}
               /> */}
-            </View>
-          )}
+              </View>
+            )}
 
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Address:</Text>
-            <Text style={styles.addressText}>{formatAddress(account.address)}</Text>
-          </View>
-
-          {account.balance && (
             <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>Balance:</Text>
-              <Text style={styles.balanceText}>{account.balance} ETH</Text>
+              <Text style={styles.infoLabel}>Address:</Text>
+              <Text style={styles.addressText}>{formatAddress(account.address)}</Text>
+            </View>
+
+            {account.balance && (
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>Balance:</Text>
+                <Text style={styles.balanceText}>{account.balance} ETH</Text>
+              </View>
+            )}
+          </View>
+
+          {isConnecting && (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="small" color="#2563eb" />
+              <Text style={styles.loadingText}>Processing...</Text>
             </View>
           )}
-        </View>
-
-        {isConnecting && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="small" color="#2563eb" />
-            <Text style={styles.loadingText}>Processing...</Text>
-          </View>
-        )}
         </CardContent>
       </Card>
     );
@@ -152,7 +139,7 @@ export function WalletConnect() {
     <Card style={styles.container}>
       <CardContent>
         <Text style={styles.title}>Connect Wallet</Text>
-        
+
         {error && (
           <View style={styles.errorContainer}>
             <Text style={styles.errorText}>{error}</Text>
@@ -173,7 +160,7 @@ export function WalletConnect() {
           <Button
             variant="primary"
             size="large"
-            title={isConnecting ? "Connecting..." : `Connect to ${selectedNetwork}`}
+            title={isConnecting ? 'Connecting...' : `Connect to ${selectedNetwork}`}
             onPress={handleConnect}
             disabled={isConnecting}
             loading={isConnecting}

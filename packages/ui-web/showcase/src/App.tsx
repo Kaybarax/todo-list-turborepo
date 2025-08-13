@@ -1,26 +1,26 @@
-import React, { useState } from 'react'
-import { Button, Badge } from '../../lib'
-import ComponentShowcase from './components/ComponentShowcase'
-import Navigation from './components/Navigation'
-import './App.css'
+import React, { useState } from 'react';
+import { Button, Badge } from '../../lib';
+import ComponentShowcase from './components/ComponentShowcase';
+import Navigation from './components/Navigation';
+import './App.css';
 
 // Import component data
-import { buttonExamples } from './data/buttonExamples'
-import { cardExamples } from './data/cardExamples'
-import { inputExamples } from './data/inputExamples'
-import { badgeExamples } from './data/badgeExamples'
+import { buttonExamples } from './data/buttonExamples';
+import { cardExamples } from './data/cardExamples';
+import { inputExamples } from './data/inputExamples';
+import { badgeExamples } from './data/badgeExamples';
 
 export interface ComponentExample {
-  title: string
-  description: string
-  code: string
-  component: React.ReactNode
+  title: string;
+  description: string;
+  code: string;
+  component: React.ReactNode;
 }
 
 export interface ComponentData {
-  name: string
-  description: string
-  examples: ComponentExample[]
+  name: string;
+  description: string;
+  examples: ComponentExample[];
 }
 
 const components: ComponentData[] = [
@@ -44,13 +44,13 @@ const components: ComponentData[] = [
     description: 'Small status indicator component with color variants.',
     examples: badgeExamples,
   },
-]
+];
 
 function App() {
-  const [activeComponent, setActiveComponent] = useState<string>('Button')
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
+  const [activeComponent, setActiveComponent] = useState<string>('Button');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
-  const currentComponent = components.find(comp => comp.name === activeComponent)
+  const currentComponent = components.find(comp => comp.name === activeComponent);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -59,12 +59,8 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                UI Web Components
-              </h1>
-              <p className="text-gray-600 dark:text-gray-300 mt-1">
-                Interactive showcase of Radix UI-based components
-              </p>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">UI Web Components</h1>
+              <p className="text-gray-600 dark:text-gray-300 mt-1">Interactive showcase of Radix UI-based components</p>
             </div>
             <Badge variant="default" size="sm">
               v0.1.0
@@ -93,9 +89,9 @@ function App() {
               <Navigation
                 components={components}
                 activeComponent={activeComponent}
-                onComponentSelect={(component) => {
-                  setActiveComponent(component)
-                  setMobileMenuOpen(false) // Close mobile menu on selection
+                onComponentSelect={component => {
+                  setActiveComponent(component);
+                  setMobileMenuOpen(false); // Close mobile menu on selection
                 }}
               />
             </div>
@@ -123,7 +119,7 @@ function App() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -33,7 +33,7 @@ async function setupIndexes(collection: Collection<Todo>): Promise<void> {
     await collection.createIndex({ completed: 1 });
     await collection.createIndex({ createdAt: 1 });
     await collection.createIndex({ dueDate: 1 });
-    await collection.createIndex({ 'tags': 1 });
+    await collection.createIndex({ tags: 1 });
 
     logger.info('Indexes created successfully');
   } catch (error) {
@@ -79,7 +79,7 @@ async function processIncomingData(collection: Collection<Todo>): Promise<void> 
     title: `Sample Todo ${new Date().toISOString()}`,
     description: 'This is a sample todo created by the ingestion service',
     userId: 'system',
-    priority: 'medium'
+    priority: 'medium',
   });
 
   await collection.insertOne(sampleTodo);

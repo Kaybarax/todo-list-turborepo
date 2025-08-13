@@ -107,7 +107,7 @@ export const NETWORK_DISPLAY_INFO: Record<BlockchainNetwork, NetworkDisplayInfo>
     isTestnet: false,
     isEVM: true,
     chainId: 8453,
-    description: 'Coinbase\'s Layer 2 solution built on Ethereum',
+    description: "Coinbase's Layer 2 solution built on Ethereum",
   },
   [BlockchainNetwork.BASE_TESTNET]: {
     id: BlockchainNetwork.BASE_TESTNET,
@@ -160,20 +160,20 @@ export function getNetworkColor(network: BlockchainNetwork | string): string {
   if (typeof network === 'string') {
     // Handle legacy string network names
     const legacyMapping: Record<string, BlockchainNetwork> = {
-      'solana': BlockchainNetwork.SOLANA,
-      'polkadot': BlockchainNetwork.POLKADOT,
-      'polygon': BlockchainNetwork.POLYGON,
-      'moonbeam': BlockchainNetwork.MOONBEAM,
-      'base': BlockchainNetwork.BASE,
+      solana: BlockchainNetwork.SOLANA,
+      polkadot: BlockchainNetwork.POLKADOT,
+      polygon: BlockchainNetwork.POLYGON,
+      moonbeam: BlockchainNetwork.MOONBEAM,
+      base: BlockchainNetwork.BASE,
     };
-    
+
     const mappedNetwork = legacyMapping[network];
     if (mappedNetwork && NETWORK_DISPLAY_INFO[mappedNetwork]) {
       return NETWORK_DISPLAY_INFO[mappedNetwork].color;
     }
     return '#6b7280'; // Default gray color
   }
-  
+
   const info = NETWORK_DISPLAY_INFO[network as BlockchainNetwork];
   return info ? info.color : '#6b7280';
 }
@@ -189,16 +189,16 @@ export function getSupportedWalletNetworks(): ('solana' | 'polkadot' | 'polygon'
  * Map wallet network name to BlockchainNetwork enum
  */
 export function mapWalletNetworkToBlockchainNetwork(
-  walletNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base'
+  walletNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base',
 ): BlockchainNetwork {
   const mapping: Record<string, BlockchainNetwork> = {
-    'solana': BlockchainNetwork.SOLANA,
-    'polkadot': BlockchainNetwork.POLKADOT,
-    'polygon': BlockchainNetwork.POLYGON,
-    'moonbeam': BlockchainNetwork.MOONBEAM,
-    'base': BlockchainNetwork.BASE,
+    solana: BlockchainNetwork.SOLANA,
+    polkadot: BlockchainNetwork.POLKADOT,
+    polygon: BlockchainNetwork.POLYGON,
+    moonbeam: BlockchainNetwork.MOONBEAM,
+    base: BlockchainNetwork.BASE,
   };
-  
+
   return mapping[walletNetwork];
 }
 
@@ -206,7 +206,7 @@ export function mapWalletNetworkToBlockchainNetwork(
  * Map BlockchainNetwork enum to wallet network name
  */
 export function mapBlockchainNetworkToWalletNetwork(
-  blockchainNetwork: BlockchainNetwork
+  blockchainNetwork: BlockchainNetwork,
 ): 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base' | null {
   const mapping: Record<BlockchainNetwork, string> = {
     [BlockchainNetwork.SOLANA]: 'solana',
@@ -220,7 +220,7 @@ export function mapBlockchainNetworkToWalletNetwork(
     [BlockchainNetwork.BASE]: 'base',
     [BlockchainNetwork.BASE_TESTNET]: 'base',
   };
-  
+
   return mapping[blockchainNetwork] as 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base' | null;
 }
 
@@ -251,6 +251,6 @@ export function generateMockAddress(network: string): string {
 
   const prefix = prefixes[network as keyof typeof prefixes] || '0x';
   const randomPart = Math.random().toString(16).substr(2, 40);
-  
+
   return `${prefix}${randomPart}`;
 }

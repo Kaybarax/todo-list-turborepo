@@ -465,11 +465,13 @@ describe('TodoService', () => {
       const validationError = new Error('Validation failed');
       mockApiClient.createTodo.mockRejectedValue(validationError);
 
-      await expect(todoService.createTodo({
-        title: '',
-        description: 'Test',
-        priority: 'medium',
-      })).rejects.toThrow('Validation failed');
+      await expect(
+        todoService.createTodo({
+          title: '',
+          description: 'Test',
+          priority: 'medium',
+        }),
+      ).rejects.toThrow('Validation failed');
     });
 
     it('should handle blockchain service creation errors', async () => {
@@ -534,10 +536,10 @@ describe('TodoService', () => {
 
       // Get todo (should cache)
       await todoService.getTodoById('1');
-      
+
       // Update todo (should invalidate cache)
       await todoService.updateTodo('1', { title: 'Updated' });
-      
+
       // Get todo again (should fetch fresh data)
       await todoService.getTodoById('1');
 

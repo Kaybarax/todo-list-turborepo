@@ -86,13 +86,11 @@ const componentVariants = cva(
       variant: 'default',
       size: 'default',
     },
-  }
+  },
 );
 
 // Define component props interface
-export interface ComponentNameProps
-  extends React.HTMLAttributes<HTMLElement>,
-    VariantProps<typeof componentVariants> {
+export interface ComponentNameProps extends React.HTMLAttributes<HTMLElement>, VariantProps<typeof componentVariants> {
   asChild?: boolean;
   // ... other custom props
 }
@@ -101,15 +99,9 @@ export interface ComponentNameProps
 const ComponentName = React.forwardRef<HTMLElement, ComponentNameProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'div'; // or appropriate HTML element
-    
-    return (
-      <Comp
-        className={cn(componentVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
-    );
-  }
+
+    return <Comp className={cn(componentVariants({ variant, size, className }))} ref={ref} {...props} />;
+  },
 );
 
 ComponentName.displayName = 'ComponentName';
@@ -148,11 +140,7 @@ const Component = React.forwardRef<
   React.ElementRef<typeof RadixPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof RadixPrimitive.Root> & CustomProps
 >(({ className, ...props }, ref) => (
-  <RadixPrimitive.Root
-    ref={ref}
-    className={cn('base-classes', className)}
-    {...props}
-  />
+  <RadixPrimitive.Root ref={ref} className={cn('base-classes', className)} {...props} />
 ));
 ```
 
@@ -165,13 +153,13 @@ const Component = React.forwardRef<
 
 ```tsx
 // Good: Using Tailwind with CSS variables
-'bg-background text-foreground border-border'
+'bg-background text-foreground border-border';
 
 // Good: Responsive design
-'text-sm md:text-base lg:text-lg'
+'text-sm md:text-base lg:text-lg';
 
 // Good: Dark mode support
-'bg-white dark:bg-slate-900'
+'bg-white dark:bg-slate-900';
 ```
 
 #### TypeScript Best Practices
@@ -183,9 +171,7 @@ const Component = React.forwardRef<
 
 ```tsx
 // Good: Proper interface extension
-interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
 
@@ -206,12 +192,7 @@ interface SelectProps<T> extends React.SelectHTMLAttributes<HTMLSelectElement> {
 
 ```tsx
 // Good: Accessibility attributes
-<button
-  aria-label="Close dialog"
-  aria-expanded={isOpen}
-  aria-controls="dialog-content"
-  onKeyDown={handleKeyDown}
->
+<button aria-label="Close dialog" aria-expanded={isOpen} aria-controls="dialog-content" onKeyDown={handleKeyDown}>
   Close
 </button>
 ```
@@ -379,10 +360,7 @@ export const Interactive: Story = {
   render: () => {
     const [state, setState] = React.useState(false);
     return (
-      <ComponentName
-        onClick={() => setState(!state)}
-        variant={state ? 'active' : 'default'}
-      >
+      <ComponentName onClick={() => setState(!state)} variant={state ? 'active' : 'default'}>
         Click me: {state ? 'Active' : 'Inactive'}
       </ComponentName>
     );
@@ -474,7 +452,7 @@ const componentVariants = cva(
     variants: {
       // Variant styles
     },
-  }
+  },
 );
 ```
 
@@ -482,18 +460,18 @@ const componentVariants = cva(
 
 ```tsx
 // Include responsive variants
-'text-sm md:text-base lg:text-lg'
-'p-2 md:p-4 lg:p-6'
-'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+'text-sm md:text-base lg:text-lg';
+'p-2 md:p-4 lg:p-6';
+'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
 ```
 
 #### 3. State Styles
 
 ```tsx
 // Interactive states
-'hover:bg-primary/90 active:bg-primary/95'
-'focus:ring-2 focus:ring-primary focus:ring-offset-2'
-'disabled:opacity-50 disabled:pointer-events-none'
+'hover:bg-primary/90 active:bg-primary/95';
+'focus:ring-2 focus:ring-primary focus:ring-offset-2';
+'disabled:opacity-50 disabled:pointer-events-none';
 ```
 
 ## 🔧 Build and Development
@@ -606,6 +584,7 @@ const Component = ({ onAction }) => {
 Before submitting a new component, ensure:
 
 ### Implementation
+
 - [ ] Component follows naming conventions (PascalCase)
 - [ ] Uses Radix UI primitive when available
 - [ ] Implements proper TypeScript interfaces
@@ -614,6 +593,7 @@ Before submitting a new component, ensure:
 - [ ] Supports `asChild` prop when appropriate
 
 ### Styling
+
 - [ ] Uses Tailwind CSS classes
 - [ ] Implements CSS variables for theming
 - [ ] Supports dark mode
@@ -621,6 +601,7 @@ Before submitting a new component, ensure:
 - [ ] Follows design system tokens
 
 ### Accessibility
+
 - [ ] Includes proper ARIA attributes
 - [ ] Supports keyboard navigation
 - [ ] Has proper focus management
@@ -628,6 +609,7 @@ Before submitting a new component, ensure:
 - [ ] Passes accessibility tests
 
 ### Testing
+
 - [ ] Has comprehensive unit tests
 - [ ] Includes accessibility tests
 - [ ] Has visual regression tests (Storybook stories)
@@ -635,6 +617,7 @@ Before submitting a new component, ensure:
 - [ ] Achieves required coverage thresholds
 
 ### Documentation
+
 - [ ] Has complete Storybook stories
 - [ ] Includes usage examples
 - [ ] Documents all props and variants
@@ -642,6 +625,7 @@ Before submitting a new component, ensure:
 - [ ] Updates main package exports
 
 ### Quality Assurance
+
 - [ ] Passes ESLint checks
 - [ ] Passes TypeScript compilation
 - [ ] Has no console errors or warnings
@@ -672,17 +656,20 @@ Before submitting a new component, ensure:
 ## 📚 Resources
 
 ### Documentation
+
 - [Radix UI Documentation](https://www.radix-ui.com/docs)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [Class Variance Authority](https://cva.style/docs)
 - [Storybook Documentation](https://storybook.js.org/docs)
 
 ### Tools
+
 - [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
 - [TypeScript Hero](https://marketplace.visualstudio.com/items?itemName=rbbit.typescript-hero)
 - [ES7+ React/Redux/React-Native snippets](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets)
 
 ### Testing
+
 - [Testing Library Documentation](https://testing-library.com/docs/)
 - [Vitest Documentation](https://vitest.dev/guide/)
 - [Jest Axe Documentation](https://github.com/nickcolley/jest-axe)

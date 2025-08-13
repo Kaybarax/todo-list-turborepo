@@ -1,12 +1,6 @@
 import React from 'react';
 import { Text } from '@ui-kitten/components';
-import { 
-  View, 
-  StyleSheet, 
-  ViewStyle, 
-  TextStyle, 
-  StyleProp 
-} from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
 
 export type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
 export type BadgeSize = 'small' | 'medium' | 'large';
@@ -20,14 +14,7 @@ export interface BadgeProps {
   testID?: string;
 }
 
-const Badge: React.FC<BadgeProps> = ({
-  text,
-  variant = 'default',
-  size = 'medium',
-  style,
-  textStyle,
-  testID,
-}) => {
+const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'medium', style, textStyle, testID }) => {
   // Note: UI Kitten doesn't have a Badge component, so we implement our own styling
 
   // Get badge background color based on variant
@@ -91,30 +78,14 @@ const Badge: React.FC<BadgeProps> = ({
   };
 
   // Combine badge styles
-  const badgeStyles = [
-    styles.badge,
-    getBadgeStyle(),
-    getSizeStyle(),
-    style,
-  ];
+  const badgeStyles = [styles.badge, getBadgeStyle(), getSizeStyle(), style];
 
   // Combine text styles
-  const combinedTextStyle = [
-    styles.text,
-    { color: getTextColor() },
-    textStyle,
-  ];
+  const combinedTextStyle = [styles.text, { color: getTextColor() }, textStyle];
 
   return (
-    <View
-      style={badgeStyles}
-      testID={testID}
-    >
-      <Text
-        category={getTextCategory()}
-        style={combinedTextStyle}
-        numberOfLines={1}
-      >
+    <View style={badgeStyles} testID={testID}>
+      <Text category={getTextCategory()} style={combinedTextStyle} numberOfLines={1}>
         {text}
       </Text>
     </View>
@@ -133,7 +104,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
   },
-  
+
   // Variant styles - using UI Kitten color palette
   defaultBadge: {
     backgroundColor: '#F7F9FC', // UI Kitten background-basic-color-2
@@ -153,7 +124,7 @@ const styles = StyleSheet.create({
   dangerBadge: {
     backgroundColor: '#FF3D71', // UI Kitten color-danger-500
   },
-  
+
   // Size styles
   smallBadge: {
     paddingVertical: 2,

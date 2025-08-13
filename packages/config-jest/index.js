@@ -5,7 +5,7 @@ module.exports = {
     base: require('./jest.config.base'),
     react: require('./jest.config.react'),
     nextjs: require('./jest.config.nextjs'),
-    node: require('./jest.config.node')
+    node: require('./jest.config.node'),
   },
-  setupTests: require('./setup-tests')
+  setupTests: require('./setup-tests'),
 };

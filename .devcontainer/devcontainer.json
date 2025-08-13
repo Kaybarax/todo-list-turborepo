@@ -5,7 +5,7 @@
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
   "overrideCommand": false,
-  
+
   "customizations": {
     "vscode": {
       "settings": {
@@ -21,7 +21,7 @@
         "javascript.suggest.autoImports": true,
         "eslint.workingDirectories": [
           "apps/web",
-          "apps/api", 
+          "apps/api",
           "apps/mobile",
           "apps/ingestion",
           "apps/smart-contracts",
@@ -49,80 +49,80 @@
           "typescriptreact": "html"
         }
       },
-      
+
       "extensions": [
         // Core Development
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
         "bradlc.vscode-tailwindcss",
         "ms-vscode.vscode-typescript-next",
-        
+
         // React & Next.js
         "ms-vscode.vscode-react-native",
         "msjsdiag.vscode-react-native",
         "formulahendry.auto-rename-tag",
         "christian-kohler.path-intellisense",
-        
+
         // Node.js & NestJS
         "ms-vscode.vscode-node-azure-pack",
         "firsttris.vscode-jest-runner",
         "orta.vscode-jest",
-        
+
         // Database & Infrastructure
         "mongodb.mongodb-vscode",
         "cweijan.vscode-redis-client",
         "ms-azuretools.vscode-docker",
         "ms-kubernetes-tools.vscode-kubernetes-tools",
-        
+
         // Blockchain Development
         "juanblanco.solidity",
         "tintinweb.solidity-visual-auditor",
         "rust-lang.rust-analyzer",
-        
+
         // DevOps & Monitoring
         "ms-vscode.vscode-json",
         "redhat.vscode-yaml",
         "ms-vscode.vscode-docker",
         "ms-kubernetes-tools.vscode-kubernetes-tools",
-        
+
         // Git & Collaboration
         "eamodio.gitlens",
         "github.vscode-pull-request-github",
         "ms-vscode.vscode-github-issue-notebooks",
-        
+
         // Productivity
         "ms-vscode.vscode-todo-highlight",
         "gruntfuggly.todo-tree",
         "streetsidesoftware.code-spell-checker",
         "ms-vscode.vscode-thunder-client",
-        
+
         // Testing
         "hbenl.vscode-test-explorer",
         "kavod-io.vscode-jest-test-adapter",
-        
+
         // Documentation
         "yzhang.markdown-all-in-one",
         "davidanson.vscode-markdownlint"
       ]
     }
   },
-  
+
   "forwardPorts": [
-    3000,  // Next.js web app
-    3001,  // NestJS API
-    8081,  // React Native Metro bundler
+    3000, // Next.js web app
+    3001, // NestJS API
+    8081, // React Native Metro bundler
     19000, // Expo dev tools
     19001, // Expo dev tools
     19002, // Expo dev tools
     27017, // MongoDB
-    6379,  // Redis
-    8545,  // Hardhat node
+    6379, // Redis
+    8545, // Hardhat node
     16686, // Jaeger UI
-    8025,  // MailHog UI
-    4317,  // OTLP gRPC
-    4318   // OTLP HTTP
+    8025, // MailHog UI
+    4317, // OTLP gRPC
+    4318 // OTLP HTTP
   ],
-  
+
   "portsAttributes": {
     "3000": {
       "label": "Next.js Web App",
@@ -161,13 +161,13 @@
       "onAutoForward": "notify"
     }
   },
-  
+
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "postStartCommand": "bash .devcontainer/post-start.sh",
-  
+
   "remoteUser": "node",
   "containerUser": "node",
-  
+
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
@@ -200,7 +200,7 @@
       "ppa": true
     }
   },
-  
+
   "mounts": [
     "source=${localWorkspaceFolder}/.devcontainer/bashrc,target=/home/node/.bashrc,type=bind,consistency=cached",
     "source=${localWorkspaceFolder}/.devcontainer/zshrc,target=/home/node/.zshrc,type=bind,consistency=cached"

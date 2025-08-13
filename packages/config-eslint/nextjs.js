@@ -1,8 +1,5 @@
 module.exports = {
-  extends: [
-    './react.js',
-    'next/core-web-vitals'
-  ],
+  extends: ['./react.js', 'next/core-web-vitals'],
   rules: {
     // Next.js specific rules
     '@next/next/no-html-link-for-pages': 'error',
@@ -16,18 +13,18 @@ module.exports = {
 
     // Additional rules for Next.js
     'import/no-anonymous-default-export': 'warn',
-    
+
     // App Router specific rules
-    'import/no-default-export': 'off' // Next.js requires default exports for pages
+    'import/no-default-export': 'off', // Next.js requires default exports for pages
   },
   settings: {
     next: {
-      rootDir: ['apps/web/']
-    }
+      rootDir: ['apps/web/'],
+    },
   },
   env: {
     browser: true,
     node: true,
-    es2022: true
-  }
+    es2022: true,
+  },
 };

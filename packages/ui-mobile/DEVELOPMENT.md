@@ -55,9 +55,9 @@ Create `ComponentName.tsx` with this structure:
 
 ```tsx
 import React from 'react';
-import { 
-  ComponentName as UIKittenComponent, 
-  ComponentNameProps as UIKittenComponentProps 
+import {
+  ComponentName as UIKittenComponent,
+  ComponentNameProps as UIKittenComponentProps,
 } from '@ui-kitten/components';
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
 
@@ -84,31 +84,37 @@ export const ComponentName: React.FC<ComponentNameProps> = ({
   // Map custom variants to UI Kitten status
   const getStatus = (): string => {
     switch (variant) {
-      case 'primary': return 'primary';
-      case 'secondary': return 'basic';
-      case 'danger': return 'danger';
-      case 'success': return 'success';
-      case 'outline': return 'basic';
-      case 'ghost': return 'basic';
-      default: return 'basic';
+      case 'primary':
+        return 'primary';
+      case 'secondary':
+        return 'basic';
+      case 'danger':
+        return 'danger';
+      case 'success':
+        return 'success';
+      case 'outline':
+        return 'basic';
+      case 'ghost':
+        return 'basic';
+      default:
+        return 'basic';
     }
   };
 
   // Map custom sizes to UI Kitten sizes
   const getSize = (): string => {
     switch (size) {
-      case 'small': return 'small';
-      case 'large': return 'large';
-      default: return 'medium';
+      case 'small':
+        return 'small';
+      case 'large':
+        return 'large';
+      default:
+        return 'medium';
     }
   };
 
   // Combine styles
-  const componentStyle = [
-    fullWidth && styles.fullWidth,
-    rounded && styles.rounded,
-    style,
-  ];
+  const componentStyle = [fullWidth && styles.fullWidth, rounded && styles.rounded, style];
 
   return (
     <UIKittenComponent
@@ -285,42 +291,32 @@ const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 
 describe('ComponentName', () => {
   it('renders correctly with default props', () => {
-    const { getByTestId } = render(
-      <ComponentName testID="component" />,
-      { wrapper: TestWrapper }
-    );
-    
+    const { getByTestId } = render(<ComponentName testID="component" />, { wrapper: TestWrapper });
+
     expect(getByTestId('component')).toBeTruthy();
   });
 
   it('applies variant styles correctly', () => {
-    const { getByTestId } = render(
-      <ComponentName variant="secondary" testID="component" />,
-      { wrapper: TestWrapper }
-    );
-    
+    const { getByTestId } = render(<ComponentName variant="secondary" testID="component" />, { wrapper: TestWrapper });
+
     const component = getByTestId('component');
     expect(component).toBeTruthy();
   });
 
   it('handles press events correctly', () => {
     const onPress = jest.fn();
-    const { getByTestId } = render(
-      <ComponentName onPress={onPress} testID="component" />,
-      { wrapper: TestWrapper }
-    );
-    
+    const { getByTestId } = render(<ComponentName onPress={onPress} testID="component" />, { wrapper: TestWrapper });
+
     fireEvent.press(getByTestId('component'));
     expect(onPress).toHaveBeenCalledTimes(1);
   });
 
   it('supports disabled state', () => {
     const onPress = jest.fn();
-    const { getByTestId } = render(
-      <ComponentName disabled onPress={onPress} testID="component" />,
-      { wrapper: TestWrapper }
-    );
-    
+    const { getByTestId } = render(<ComponentName disabled onPress={onPress} testID="component" />, {
+      wrapper: TestWrapper,
+    });
+
     fireEvent.press(getByTestId('component'));
     expect(onPress).not.toHaveBeenCalled();
   });
@@ -333,34 +329,33 @@ describe('ComponentName', () => {
 describe('ComponentName Accessibility', () => {
   it('has proper accessibility attributes', () => {
     const { getByTestId } = render(
-      <ComponentName 
+      <ComponentName
         testID="component"
         accessibilityLabel="Test component"
         accessibilityHint="This is a test component"
       />,
-      { wrapper: TestWrapper }
+      { wrapper: TestWrapper },
     );
-    
+
     const component = getByTestId('component');
     expect(component.props.accessibilityLabel).toBe('Test component');
     expect(component.props.accessibilityHint).toBe('This is a test component');
   });
 
   it('supports accessibility state changes', () => {
-    const { getByTestId, rerender } = render(
-      <ComponentName testID="component" disabled={false} />,
-      { wrapper: TestWrapper }
-    );
-    
+    const { getByTestId, rerender } = render(<ComponentName testID="component" disabled={false} />, {
+      wrapper: TestWrapper,
+    });
+
     let component = getByTestId('component');
     expect(component.props.accessibilityState?.disabled).toBeFalsy();
-    
+
     rerender(
       <TestWrapper>
         <ComponentName testID="component" disabled={true} />
-      </TestWrapper>
+      </TestWrapper>,
     );
-    
+
     component = getByTestId('component');
     expect(component.props.accessibilityState?.disabled).toBeTruthy();
   });
@@ -375,11 +370,8 @@ import { Platform } from 'react-native';
 describe('ComponentName Platform Tests', () => {
   it('applies iOS-specific styles', () => {
     Platform.OS = 'ios';
-    const { getByTestId } = render(
-      <ComponentName testID="component" />,
-      { wrapper: TestWrapper }
-    );
-    
+    const { getByTestId } = render(<ComponentName testID="component" />, { wrapper: TestWrapper });
+
     const component = getByTestId('component');
     // Test iOS-specific styling
     expect(component.props.style).toMatchObject({
@@ -389,11 +381,8 @@ describe('ComponentName Platform Tests', () => {
 
   it('applies Android-specific styles', () => {
     Platform.OS = 'android';
-    const { getByTestId } = render(
-      <ComponentName testID="component" />,
-      { wrapper: TestWrapper }
-    );
-    
+    const { getByTestId } = render(<ComponentName testID="component" />, { wrapper: TestWrapper });
+
     const component = getByTestId('component');
     // Test Android-specific styling
     expect(component.props.style).toMatchObject({
@@ -443,7 +432,7 @@ const meta: Meta<typeof ComponentName> = {
   title: 'Mobile/ComponentName',
   component: ComponentName,
   decorators: [
-    (Story) => (
+    Story => (
       <UIKittenWrapper>
         <Story />
       </UIKittenWrapper>
@@ -515,7 +504,7 @@ import { useTheme } from '@ui-kitten/components';
 
 const Component = () => {
   const theme = useTheme();
-  
+
   const styles = StyleSheet.create({
     container: {
       backgroundColor: theme['background-basic-color-1'],
@@ -552,11 +541,11 @@ Create custom themes by extending Eva Design:
   "color-primary-700": "#1A34B8",
   "color-primary-800": "#102694",
   "color-primary-900": "#091C7A",
-  
+
   "text-font-family": "System",
   "text-font-size": 14,
   "text-line-height": 20,
-  
+
   "border-radius": 8,
   "border-width": 1
 }
@@ -812,6 +801,7 @@ const styles = StyleSheet.create({
 Before submitting a new component, ensure:
 
 ### Implementation
+
 - [ ] Component follows naming conventions (PascalCase)
 - [ ] Uses UI Kitten component as foundation
 - [ ] Implements proper TypeScript interfaces
@@ -820,6 +810,7 @@ Before submitting a new component, ensure:
 - [ ] Includes proper error handling
 
 ### Styling
+
 - [ ] Uses Eva Design System variables
 - [ ] Supports light and dark themes
 - [ ] Includes responsive design considerations
@@ -827,6 +818,7 @@ Before submitting a new component, ensure:
 - [ ] Optimizes for performance (StyleSheet vs inline styles)
 
 ### Accessibility
+
 - [ ] Includes proper accessibility labels
 - [ ] Supports screen readers (VoiceOver/TalkBack)
 - [ ] Has appropriate touch target sizes (44x44 points minimum)
@@ -834,6 +826,7 @@ Before submitting a new component, ensure:
 - [ ] Works with accessibility services
 
 ### Testing
+
 - [ ] Has comprehensive unit tests
 - [ ] Includes accessibility tests
 - [ ] Has platform-specific tests when needed
@@ -841,6 +834,7 @@ Before submitting a new component, ensure:
 - [ ] Achieves required coverage thresholds
 
 ### Documentation
+
 - [ ] Has complete Storybook stories
 - [ ] Includes usage examples for React Native
 - [ ] Documents all props and variants
@@ -848,6 +842,7 @@ Before submitting a new component, ensure:
 - [ ] Updates main package exports
 
 ### Quality Assurance
+
 - [ ] Passes ESLint checks
 - [ ] Passes TypeScript compilation
 - [ ] Works on both iOS and Android
@@ -879,21 +874,25 @@ Before submitting a new component, ensure:
 ## 📚 Resources
 
 ### Documentation
+
 - [UI Kitten Documentation](https://akveo.github.io/react-native-ui-kitten/)
 - [Eva Design System](https://eva.design/)
 - [React Native Documentation](https://reactnative.dev/docs/getting-started)
 - [Expo Documentation](https://docs.expo.dev/)
 
 ### Tools
+
 - [React Native Debugger](https://github.com/jhen0409/react-native-debugger)
 - [Flipper](https://fbflipper.com/)
 - [React Native Testing Library](https://callstack.github.io/react-native-testing-library/)
 
 ### Testing
+
 - [Jest Documentation](https://jestjs.io/docs/getting-started)
 - [React Native Testing Library](https://callstack.github.io/react-native-testing-library/docs/getting-started)
 
 ### Performance
+
 - [React Native Performance](https://reactnative.dev/docs/performance)
 - [Flipper Performance Plugin](https://fbflipper.com/docs/features/react-native-plugin/)
 

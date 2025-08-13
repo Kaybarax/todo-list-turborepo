@@ -51,7 +51,7 @@ global.fetch = jest.fn(() =>
     status: 200,
     json: () => Promise.resolve({}),
     text: () => Promise.resolve(''),
-  })
+  }),
 ) as jest.Mock;
 
 // Mock WebSocket for blockchain connections
@@ -106,29 +106,38 @@ Object.defineProperty(global, 'performance', {
 });
 
 // Mock URL constructor
-global.URL = global.URL || class URL {
-  constructor(public href: string, base?: string) {
-    if (base) {
-      this.href = new URL(href, base).href;
+global.URL =
+  global.URL ||
+  class URL {
+    constructor(
+      public href: string,
+      base?: string,
+    ) {
+      if (base) {
+        this.href = new URL(href, base).href;
+      }
     }
-  }
-  toString() {
-    return this.href;
-  }
-};
+    toString() {
+      return this.href;
+    }
+  };
 
 // Mock TextEncoder/TextDecoder for crypto operations
-global.TextEncoder = global.TextEncoder || class TextEncoder {
-  encode(input: string) {
-    return new Uint8Array(Buffer.from(input, 'utf8'));
-  }
-};
+global.TextEncoder =
+  global.TextEncoder ||
+  class TextEncoder {
+    encode(input: string) {
+      return new Uint8Array(Buffer.from(input, 'utf8'));
+    }
+  };
 
-global.TextDecoder = global.TextDecoder || class TextDecoder {
-  decode(input: Uint8Array) {
-    return Buffer.from(input).toString('utf8');
-  }
-};
+global.TextDecoder =
+  global.TextDecoder ||
+  class TextDecoder {
+    decode(input: Uint8Array) {
+      return Buffer.from(input).toString('utf8');
+    }
+  };
 
 // Setup test utilities
 export const testUtils = {
@@ -136,17 +145,17 @@ export const testUtils = {
    * Wait for a specified amount of time
    */
   wait: (ms: number) => new Promise(resolve => setTimeout(resolve, ms)),
-  
+
   /**
    * Generate a mock transaction hash
    */
   generateMockTxHash: () => '0x' + Math.random().toString(16).substr(2, 64),
-  
+
   /**
    * Generate a mock wallet address
    */
   generateMockAddress: () => '0x' + Math.random().toString(16).substr(2, 40),
-  
+
   /**
    * Create a mock blockchain error
    */
@@ -155,7 +164,7 @@ export const testUtils = {
     (error as any).type = type || 'MOCK_ERROR';
     return error;
   },
-  
+
   /**
    * Mock a successful transaction receipt
    */
@@ -177,10 +186,10 @@ export const testUtils = {
 // Global test cleanup
 afterEach(() => {
   jest.clearAllMocks();
-  
+
   // Clear localStorage
   localStorageMock.clear();
-  
+
   // Reset environment variables that might have been modified
   delete process.env.TEST_NETWORK_OVERRIDE;
   delete process.env.TEST_WALLET_ADDRESS;
@@ -192,7 +201,7 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 // Global error handler for uncaught exceptions
-process.on('uncaughtException', (error) => {
+process.on('uncaughtException', error => {
   console.error('Uncaught Exception:', error);
 });
 

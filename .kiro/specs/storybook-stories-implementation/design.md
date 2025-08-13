@@ -9,6 +9,7 @@ This design outlines the implementation of comprehensive Storybook stories for a
 ### Current State Analysis
 
 **ui-web Package:**
+
 - Has existing Storybook configuration with Storybook 7.6.4
 - Currently configured to run on port 6006 (needs to change to 6007)
 - Has some existing stories in the `lib/` directory (Button, Card, Input, Badge)
@@ -16,6 +17,7 @@ This design outlines the implementation of comprehensive Storybook stories for a
 - Stories are located in `lib/components/*/` directories
 
 **ui-mobile Package:**
+
 - Has basic Storybook configuration but appears incomplete
 - Configured for React Native with Storybook 7.6.10
 - Currently set to run on port 6006 (correct)
@@ -95,12 +97,14 @@ packages/
 ### Storybook Configuration Updates
 
 #### ui-web Storybook Configuration
+
 - **Port Change**: Update from 6006 to 6007 in package.json
 - **Story Path**: Update to look for stories in dedicated `stories/` directory instead of component directories
 - **Story Migration**: Move existing stories from `lib/components/*/` to `stories/` directory
 - **Enhanced Preview**: Better Tailwind CSS integration and responsive viewports
 
 #### ui-mobile Storybook Configuration
+
 - **React Native Setup**: Proper React Native Storybook configuration
 - **Story Path**: Configure to look for stories in dedicated `stories/` directory
 - **UI Kitten Integration**: Ensure UI Kitten theme provider is available
@@ -109,6 +113,7 @@ packages/
 ### Story Template Standards
 
 #### Web Component Story Template
+
 ```typescript
 import type { Meta, StoryObj } from '@storybook/react';
 import { ComponentName } from './ComponentName';
@@ -120,14 +125,14 @@ const meta: Meta<typeof ComponentName> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Component description here'
-      }
-    }
+        component: 'Component description here',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
     // Define controls for props
-  }
+  },
 };
 
 export default meta;
@@ -136,17 +141,18 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     // Default props
-  }
+  },
 };
 
 export const Variant: Story = {
   args: {
     // Variant props
-  }
+  },
 };
 ```
 
 #### Mobile Component Story Template
+
 ```typescript
 import type { Meta, StoryObj } from '@storybook/react-native';
 import { ComponentName } from './ComponentName';
@@ -157,14 +163,14 @@ const meta: Meta<typeof ComponentName> = {
   parameters: {
     docs: {
       description: {
-        component: 'Mobile component description here'
-      }
-    }
+        component: 'Mobile component description here',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
     // Define controls for props
-  }
+  },
 };
 
 export default meta;
@@ -173,13 +179,13 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     // Default props
-  }
+  },
 };
 
 export const MobileVariant: Story = {
   args: {
     // Mobile-specific variant props
-  }
+  },
 };
 ```
 
@@ -225,6 +231,7 @@ interface StoryConfig {
 ### Component Story Requirements
 
 Each component story must include:
+
 - **Default Story**: Basic component with default props
 - **Variant Stories**: Different states, sizes, or configurations
 - **Interactive Stories**: Stories demonstrating user interactions
@@ -234,16 +241,19 @@ Each component story must include:
 ## Error Handling
 
 ### Story Loading Errors
+
 - Implement error boundaries in Storybook preview
 - Provide fallback components for failed story renders
 - Clear error messages for missing dependencies
 
 ### Configuration Validation
+
 - Validate Storybook configurations on startup
 - Check for required dependencies and peer dependencies
 - Provide helpful error messages for common configuration issues
 
 ### Port Conflicts
+
 - Implement port conflict detection
 - Provide clear instructions when ports are already in use
 - Fallback port suggestions for development
@@ -251,21 +261,25 @@ Each component story must include:
 ## Testing Strategy
 
 ### Story Validation
+
 - Automated tests to ensure all components have stories
 - Lint rules to enforce story naming conventions
 - CI checks to validate story compilation
 
 ### Visual Regression Testing
+
 - Integration with existing Chromatic setup for ui-web
 - Screenshot comparison tests for story consistency
 - Cross-browser compatibility testing
 
 ### Accessibility Testing
+
 - Automated a11y testing in Storybook
 - Keyboard navigation testing
 - Screen reader compatibility validation
 
 ### Story Template Validation
+
 - Template compliance checking
 - Required story variants validation
 - Documentation completeness checks
@@ -273,6 +287,7 @@ Each component story must include:
 ## Implementation Phases
 
 ### Phase 1: Configuration Updates
+
 1. Update ui-web Storybook to run on port 6007
 2. Update ui-web Storybook configuration to look for stories in `stories/` directory
 3. Move existing ui-web stories from `lib/components/*/` to `stories/` directory
@@ -281,18 +296,21 @@ Each component story must include:
 6. Verify existing ui-web stories work correctly after migration
 
 ### Phase 2: Missing Story Creation
+
 1. Create stories for all ui-mobile components (8 components)
 2. Verify story quality and completeness
 3. Add proper TypeScript types and controls
 4. Implement story templates and documentation
 
 ### Phase 3: Enhancement and Standardization
+
 1. Enhance existing ui-web stories if needed
 2. Standardize story formats across both packages
 3. Add comprehensive documentation
 4. Implement automated validation
 
 ### Phase 4: Integration and Testing
+
 1. Test both Storybook instances running simultaneously
 2. Validate hot-reload functionality
 3. Test root-level script execution
@@ -301,21 +319,25 @@ Each component story must include:
 ## Technical Considerations
 
 ### Dependency Management
+
 - Ensure Storybook versions are compatible across packages
 - Manage React Native specific Storybook dependencies
 - Handle peer dependency requirements
 
 ### Build Performance
+
 - Optimize Storybook build times
 - Implement efficient hot-reload for development
 - Consider story lazy loading for large component libraries
 
 ### Cross-Platform Compatibility
+
 - Ensure stories work across different operating systems
 - Handle React Native specific rendering requirements
 - Manage different styling approaches (Tailwind vs StyleSheet)
 
 ### Monorepo Integration
+
 - Leverage existing Turborepo configuration
 - Ensure proper workspace dependency resolution
 - Maintain consistency with existing development workflows

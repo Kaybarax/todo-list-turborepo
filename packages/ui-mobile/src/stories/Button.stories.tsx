@@ -164,28 +164,28 @@ const Button: React.FC<ButtonProps> = ({
   const renderIcon = (iconName: string, position: 'left' | 'right') => {
     // Simple icon representation for web preview
     const iconMap: Record<string, string> = {
-      'add': '+',
-      'remove': '−',
-      'edit': '✎',
-      'delete': '🗑',
-      'save': '💾',
-      'search': '🔍',
-      'settings': '⚙',
-      'home': '🏠',
-      'user': '👤',
-      'heart': '♥',
-      'star': '★',
-      'check': '✓',
-      'close': '✕',
+      add: '+',
+      remove: '−',
+      edit: '✎',
+      delete: '🗑',
+      save: '💾',
+      search: '🔍',
+      settings: '⚙',
+      home: '🏠',
+      user: '👤',
+      heart: '♥',
+      star: '★',
+      check: '✓',
+      close: '✕',
       'arrow-forward': '→',
       'arrow-back': '←',
-      'download': '⬇',
-      'upload': '⬆',
+      download: '⬇',
+      upload: '⬆',
     };
 
     return (
-      <span 
-        style={{ 
+      <span
+        style={{
           color: getIconColor(),
           fontSize: sizeStyles[size].iconSize,
           lineHeight: 1,
@@ -205,15 +205,17 @@ const Button: React.FC<ButtonProps> = ({
       type="button"
     >
       {loading ? (
-        <span style={{ 
-          display: 'inline-block',
-          width: sizeStyles[size].iconSize,
-          height: sizeStyles[size].iconSize,
-          border: `2px solid ${variant === 'outline' || variant === 'ghost' ? colors.primary : colors.white}`,
-          borderTop: '2px solid transparent',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite',
-        }} />
+        <span
+          style={{
+            display: 'inline-block',
+            width: sizeStyles[size].iconSize,
+            height: sizeStyles[size].iconSize,
+            border: `2px solid ${variant === 'outline' || variant === 'ghost' ? colors.primary : colors.white}`,
+            borderTop: '2px solid transparent',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+          }}
+        />
       ) : (
         <>
           {leftIcon && renderIcon(leftIcon, 'left')}
@@ -240,9 +242,10 @@ const meta: Meta<typeof Button> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A versatile button component with multiple variants, sizes, states, and icon support for mobile interfaces (web preview)'
-      }
-    }
+        component:
+          'A versatile button component with multiple variants, sizes, states, and icon support for mobile interfaces (web preview)',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -270,12 +273,50 @@ const meta: Meta<typeof Button> = {
     },
     leftIcon: {
       control: { type: 'select' },
-      options: ['', 'add', 'remove', 'edit', 'delete', 'save', 'search', 'settings', 'home', 'user', 'heart', 'star', 'check', 'close', 'arrow-forward', 'arrow-back', 'download', 'upload'],
+      options: [
+        '',
+        'add',
+        'remove',
+        'edit',
+        'delete',
+        'save',
+        'search',
+        'settings',
+        'home',
+        'user',
+        'heart',
+        'star',
+        'check',
+        'close',
+        'arrow-forward',
+        'arrow-back',
+        'download',
+        'upload',
+      ],
       description: 'Icon to display on the left side of the button',
     },
     rightIcon: {
       control: { type: 'select' },
-      options: ['', 'add', 'remove', 'edit', 'delete', 'save', 'search', 'settings', 'home', 'user', 'heart', 'star', 'check', 'close', 'arrow-forward', 'arrow-back', 'download', 'upload'],
+      options: [
+        '',
+        'add',
+        'remove',
+        'edit',
+        'delete',
+        'save',
+        'search',
+        'settings',
+        'home',
+        'user',
+        'heart',
+        'star',
+        'check',
+        'close',
+        'arrow-forward',
+        'arrow-back',
+        'download',
+        'upload',
+      ],
       description: 'Icon to display on the right side of the button',
     },
     fullWidth: {
@@ -493,9 +534,9 @@ export const SmallVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'All button variants in small size'
-      }
-    }
+        story: 'All button variants in small size',
+      },
+    },
   },
 };
 
@@ -513,9 +554,9 @@ export const MediumVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'All button variants in medium size'
-      }
-    }
+        story: 'All button variants in medium size',
+      },
+    },
   },
 };
 
@@ -533,9 +574,9 @@ export const LargeVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'All button variants in large size'
-      }
-    }
+        story: 'All button variants in large size',
+      },
+    },
   },
 };
 
@@ -554,9 +595,9 @@ export const DisabledStates: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'All button variants in disabled state'
-      }
-    }
+        story: 'All button variants in disabled state',
+      },
+    },
   },
 };
 
@@ -574,9 +615,9 @@ export const LoadingStates: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'All button variants in loading state'
-      }
-    }
+        story: 'All button variants in loading state',
+      },
+    },
   },
 };
 
@@ -593,9 +634,9 @@ export const TodoActions: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Button usage for todo item actions'
-      }
-    }
+        story: 'Button usage for todo item actions',
+      },
+    },
   },
 };
 
@@ -610,9 +651,9 @@ export const FormActions: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Button usage for form actions'
-      }
-    }
+        story: 'Button usage for form actions',
+      },
+    },
   },
 };
 
@@ -627,9 +668,9 @@ export const NavigationActions: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Button usage for navigation actions'
-      }
-    }
+        story: 'Button usage for navigation actions',
+      },
+    },
   },
 };
 
@@ -637,35 +678,17 @@ export const NavigationActions: Story = {
 export const AccessibilityExamples: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
-      <Button 
-        title="❤️" 
-        variant="ghost" 
-        size="small" 
-        accessibilityLabel="Like this item"
-        onPress={() => {}} 
-      />
-      <Button 
-        title="⭐" 
-        variant="ghost" 
-        size="small" 
-        accessibilityLabel="Add to favorites"
-        onPress={() => {}} 
-      />
-      <Button 
-        title="🔍" 
-        variant="outline" 
-        size="small" 
-        accessibilityLabel="Search for items"
-        onPress={() => {}} 
-      />
+      <Button title="❤️" variant="ghost" size="small" accessibilityLabel="Like this item" onPress={() => {}} />
+      <Button title="⭐" variant="ghost" size="small" accessibilityLabel="Add to favorites" onPress={() => {}} />
+      <Button title="🔍" variant="outline" size="small" accessibilityLabel="Search for items" onPress={() => {}} />
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Buttons with proper accessibility labels for screen readers'
-      }
-    }
+        story: 'Buttons with proper accessibility labels for screen readers',
+      },
+    },
   },
 };
 
@@ -696,26 +719,9 @@ export const InteractiveExample: Story = {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center' }}>
         <div style={{ fontSize: '24px', fontWeight: 'bold' }}>Count: {count}</div>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <Button 
-            title="−" 
-            variant="outline" 
-            size="small" 
-            disabled={count === 0}
-            onPress={handleDecrement} 
-          />
-          <Button 
-            title="+" 
-            variant="primary" 
-            size="small" 
-            onPress={handleIncrement} 
-          />
-          <Button 
-            title="Reset" 
-            variant="danger" 
-            size="small" 
-            loading={loading}
-            onPress={handleReset} 
-          />
+          <Button title="−" variant="outline" size="small" disabled={count === 0} onPress={handleDecrement} />
+          <Button title="+" variant="primary" size="small" onPress={handleIncrement} />
+          <Button title="Reset" variant="danger" size="small" loading={loading} onPress={handleReset} />
         </div>
       </div>
     );
@@ -723,8 +729,8 @@ export const InteractiveExample: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Interactive example showing button states and user interactions'
-      }
-    }
+        story: 'Interactive example showing button states and user interactions',
+      },
+    },
   },
 };

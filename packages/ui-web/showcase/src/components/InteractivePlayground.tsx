@@ -1,50 +1,37 @@
-import React, { useState } from 'react'
-import { Button, Card, CardHeader, CardTitle, CardContent, Input, Badge } from '../../../lib'
+import React, { useState } from 'react';
+import { Button, Card, CardHeader, CardTitle, CardContent, Input, Badge } from '../../../lib';
 
 interface InteractivePlaygroundProps {
-  componentName: string
+  componentName: string;
 }
 
 const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({ componentName }) => {
-  const [props, setProps] = useState<Record<string, any>>(getDefaultProps(componentName))
+  const [props, setProps] = useState<Record<string, any>>(getDefaultProps(componentName));
 
   const updateProp = (key: string, value: any) => {
-    setProps(prev => ({ ...prev, [key]: value }))
-  }
+    setProps(prev => ({ ...prev, [key]: value }));
+  };
 
   const renderComponent = () => {
     switch (componentName) {
       case 'Button':
         return (
-          <Button 
-            variant={props.variant} 
-            size={props.size} 
-            disabled={props.disabled}
-          >
+          <Button variant={props.variant} size={props.size} disabled={props.disabled}>
             {props.children}
           </Button>
-        )
+        );
       case 'Badge':
         return (
-          <Badge 
-            variant={props.variant} 
-            size={props.size}
-          >
+          <Badge variant={props.variant} size={props.size}>
             {props.children}
           </Badge>
-        )
+        );
       case 'Input':
-        return (
-          <Input 
-            placeholder={props.placeholder}
-            disabled={props.disabled}
-            type={props.type}
-          />
-        )
+        return <Input placeholder={props.placeholder} disabled={props.disabled} type={props.type} />;
       default:
-        return <div>Component not supported in playground</div>
+        return <div>Component not supported in playground</div>;
     }
-  }
+  };
 
   const renderControls = () => {
     switch (componentName) {
@@ -53,9 +40,9 @@ const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({ component
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">Variant</label>
-              <select 
-                value={props.variant} 
-                onChange={(e) => updateProp('variant', e.target.value)}
+              <select
+                value={props.variant}
+                onChange={e => updateProp('variant', e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800"
               >
                 <option value="default">Default</option>
@@ -68,9 +55,9 @@ const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({ component
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Size</label>
-              <select 
-                value={props.size} 
-                onChange={(e) => updateProp('size', e.target.value)}
+              <select
+                value={props.size}
+                onChange={e => updateProp('size', e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800"
               >
                 <option value="sm">Small</option>
@@ -80,31 +67,31 @@ const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({ component
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Text</label>
-              <Input 
-                value={props.children} 
-                onChange={(e) => updateProp('children', e.target.value)}
+              <Input
+                value={props.children}
+                onChange={e => updateProp('children', e.target.value)}
                 placeholder="Button text"
               />
             </div>
             <div className="flex items-center">
-              <input 
-                type="checkbox" 
-                checked={props.disabled} 
-                onChange={(e) => updateProp('disabled', e.target.checked)}
+              <input
+                type="checkbox"
+                checked={props.disabled}
+                onChange={e => updateProp('disabled', e.target.checked)}
                 className="mr-2"
               />
               <label className="text-sm font-medium">Disabled</label>
             </div>
           </div>
-        )
+        );
       case 'Badge':
         return (
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">Variant</label>
-              <select 
-                value={props.variant} 
-                onChange={(e) => updateProp('variant', e.target.value)}
+              <select
+                value={props.variant}
+                onChange={e => updateProp('variant', e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800"
               >
                 <option value="default">Default</option>
@@ -115,9 +102,9 @@ const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({ component
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Size</label>
-              <select 
-                value={props.size} 
-                onChange={(e) => updateProp('size', e.target.value)}
+              <select
+                value={props.size}
+                onChange={e => updateProp('size', e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800"
               >
                 <option value="sm">Small</option>
@@ -127,22 +114,22 @@ const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({ component
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Text</label>
-              <Input 
-                value={props.children} 
-                onChange={(e) => updateProp('children', e.target.value)}
+              <Input
+                value={props.children}
+                onChange={e => updateProp('children', e.target.value)}
                 placeholder="Badge text"
               />
             </div>
           </div>
-        )
+        );
       case 'Input':
         return (
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">Type</label>
-              <select 
-                value={props.type} 
-                onChange={(e) => updateProp('type', e.target.value)}
+              <select
+                value={props.type}
+                onChange={e => updateProp('type', e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800"
               >
                 <option value="text">Text</option>
@@ -153,27 +140,27 @@ const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({ component
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Placeholder</label>
-              <Input 
-                value={props.placeholder} 
-                onChange={(e) => updateProp('placeholder', e.target.value)}
+              <Input
+                value={props.placeholder}
+                onChange={e => updateProp('placeholder', e.target.value)}
                 placeholder="Enter placeholder text"
               />
             </div>
             <div className="flex items-center">
-              <input 
-                type="checkbox" 
-                checked={props.disabled} 
-                onChange={(e) => updateProp('disabled', e.target.checked)}
+              <input
+                type="checkbox"
+                checked={props.disabled}
+                onChange={e => updateProp('disabled', e.target.checked)}
                 className="mr-2"
               />
               <label className="text-sm font-medium">Disabled</label>
             </div>
           </div>
-        )
+        );
       default:
-        return <div>No controls available for this component</div>
+        return <div>No controls available for this component</div>;
     }
-  }
+  };
 
   return (
     <Card>
@@ -187,7 +174,7 @@ const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({ component
             <h3 className="text-lg font-semibold mb-4">Controls</h3>
             {renderControls()}
           </div>
-          
+
           {/* Preview */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Preview</h3>
@@ -198,8 +185,8 @@ const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({ component
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
 const getDefaultProps = (componentName: string): Record<string, any> => {
   switch (componentName) {
@@ -208,23 +195,23 @@ const getDefaultProps = (componentName: string): Record<string, any> => {
         variant: 'default',
         size: 'default',
         children: 'Click me',
-        disabled: false
-      }
+        disabled: false,
+      };
     case 'Badge':
       return {
         variant: 'default',
         size: 'default',
-        children: 'Badge'
-      }
+        children: 'Badge',
+      };
     case 'Input':
       return {
         type: 'text',
         placeholder: 'Enter text here',
-        disabled: false
-      }
+        disabled: false,
+      };
     default:
-      return {}
+      return {};
   }
-}
+};
 
-export default InteractivePlayground
+export default InteractivePlayground;

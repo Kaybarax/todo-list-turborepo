@@ -23,11 +23,7 @@ jest.mock('@todo/ui-web', () => ({
     </button>
   ),
   Input: ({ placeholder, value, onChange }: any) => (
-    <input
-      placeholder={placeholder}
-      value={value}
-      onChange={(e) => onChange?.(e.target.value)}
-    />
+    <input placeholder={placeholder} value={value} onChange={e => onChange?.(e.target.value)} />
   ),
 }));
 
@@ -46,14 +42,7 @@ describe('TodoList', () => {
       createMockTodo({ id: '2', title: 'Second Todo' }),
     ];
 
-    render(
-      <TodoList
-        todos={mockTodos}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoList todos={mockTodos} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.getByTestId('todo-item-1')).toBeInTheDocument();
     expect(screen.getByTestId('todo-item-2')).toBeInTheDocument();
@@ -62,14 +51,7 @@ describe('TodoList', () => {
   });
 
   it('should show empty state when no todos', () => {
-    render(
-      <TodoList
-        todos={[]}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoList todos={[]} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.getByText('No todos')).toBeInTheDocument();
     expect(screen.getByText('Get started by creating a new todo.')).toBeInTheDocument();
@@ -81,14 +63,7 @@ describe('TodoList', () => {
       createMockTodo({ id: '2', title: 'Personal Task' }),
     ];
 
-    render(
-      <TodoList
-        todos={mockTodos}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoList todos={mockTodos} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     // Search for "work"
     const searchInput = screen.getByPlaceholderText('Search todos...');
@@ -105,14 +80,7 @@ describe('TodoList', () => {
       createMockTodo({ id: '2', title: 'Pending Task', completed: false }),
     ];
 
-    render(
-      <TodoList
-        todos={mockTodos}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoList todos={mockTodos} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     // Filter by completed using the select dropdown
     const filterSelect = screen.getByDisplayValue('All');
@@ -129,14 +97,7 @@ describe('TodoList', () => {
       createMockTodo({ id: '2', title: 'Low Priority', priority: 'low' }),
     ];
 
-    render(
-      <TodoList
-        todos={mockTodos}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoList todos={mockTodos} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     // Sort by priority using the select dropdown
     const sortSelect = screen.getByDisplayValue('Created Date');
@@ -150,14 +111,7 @@ describe('TodoList', () => {
   it('should call onToggle when todo is toggled', () => {
     const mockTodos = [createMockTodo({ id: '1', title: 'Test Todo' })];
 
-    render(
-      <TodoList
-        todos={mockTodos}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoList todos={mockTodos} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     const toggleButton = screen.getByText('Toggle');
     fireEvent.click(toggleButton);
@@ -168,14 +122,7 @@ describe('TodoList', () => {
   it('should call onEdit when todo is edited', () => {
     const mockTodos = [createMockTodo({ id: '1', title: 'Test Todo' })];
 
-    render(
-      <TodoList
-        todos={mockTodos}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoList todos={mockTodos} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     const editButton = screen.getByText('Edit');
     fireEvent.click(editButton);
@@ -186,14 +133,7 @@ describe('TodoList', () => {
   it('should call onDelete when todo is deleted', () => {
     const mockTodos = [createMockTodo({ id: '1', title: 'Test Todo' })];
 
-    render(
-      <TodoList
-        todos={mockTodos}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoList todos={mockTodos} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     const deleteButton = screen.getByText('Delete');
     fireEvent.click(deleteButton);
@@ -207,14 +147,7 @@ describe('TodoList', () => {
       createMockTodo({ id: '2', title: 'Second Todo', completed: true }),
     ];
 
-    render(
-      <TodoList
-        todos={mockTodos}
-        onToggle={mockOnToggle}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-      />
-    );
+    render(<TodoList todos={mockTodos} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
     expect(screen.getByText('2')).toBeInTheDocument(); // Total
     expect(screen.getByText('1')).toBeInTheDocument(); // Active and Completed

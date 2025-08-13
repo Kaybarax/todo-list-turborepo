@@ -19,12 +19,12 @@ module.exports = {
 
     // Import rules
     'import/no-unresolved': 'off', // Hardhat handles imports differently
-    'import/order': 'off' // Different import patterns in Solidity projects
+    'import/order': 'off', // Different import patterns in Solidity projects
   },
   env: {
     node: true,
     mocha: true, // For Hardhat tests
-    es2022: true
+    es2022: true,
   },
   globals: {
     // Hardhat globals
@@ -34,7 +34,7 @@ module.exports = {
     ethers: 'readonly',
     network: 'readonly',
     deployments: 'readonly',
-    getNamedAccounts: 'readonly'
+    getNamedAccounts: 'readonly',
   },
   overrides: [
     {
@@ -44,8 +44,8 @@ module.exports = {
         // Disable all TypeScript and JavaScript rules for .sol files
         '@typescript-eslint/no-unused-vars': 'off',
         'no-undef': 'off',
-        'no-unused-vars': 'off'
-      }
-    }
-  ]
+        'no-unused-vars': 'off',
+      },
+    },
+  ],
 };

@@ -44,7 +44,7 @@ const meta = {
     },
     onClick: { action: 'clicked' }, // For event handlers
   },
-  args: { 
+  args: {
     onClick: fn(), // Mock function for testing
   },
 } satisfies Meta<typeof ComponentName>;
@@ -110,9 +110,9 @@ export const AllVariants: Story = {
 export const Interactive: Story = {
   render: () => {
     const [state, setState] = React.useState(initialState);
-    
+
     return (
-      <ComponentName 
+      <ComponentName
         value={state}
         onChange={setState}
         // other props
@@ -157,38 +157,38 @@ argTypes: {
     control: { type: 'text' },
     description: 'Label text for the component',
   },
-  
+
   // Boolean toggles
   disabled: {
     control: { type: 'boolean' },
     description: 'Whether the component is disabled',
   },
-  
+
   // Select dropdowns
   variant: {
     control: { type: 'select' },
     options: ['primary', 'secondary', 'outline'],
     description: 'Visual variant of the component',
   },
-  
+
   // Number inputs
   maxLength: {
     control: { type: 'number', min: 0, max: 100, step: 1 },
     description: 'Maximum number of characters',
   },
-  
+
   // Color picker
   color: {
     control: { type: 'color' },
     description: 'Custom color for the component',
   },
-  
+
   // Range slider
   opacity: {
     control: { type: 'range', min: 0, max: 1, step: 0.1 },
     description: 'Opacity level',
   },
-  
+
   // Event handlers
   onClick: { action: 'clicked' },
   onSubmit: { action: 'submitted' },
@@ -297,10 +297,10 @@ Stories should support:
 export const FormExample: Story = {
   render: () => {
     const [value, setValue] = React.useState('');
-    
+
     return (
       <form onSubmit={(e) => e.preventDefault()}>
-        <ComponentName 
+        <ComponentName
           value={value}
           onChange={setValue}
           label="Example Input"

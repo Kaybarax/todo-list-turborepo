@@ -193,29 +193,25 @@ const createTodo = async () => {
 };
 
 // Get todos
-const getTodos = async (address) => {
+const getTodos = async address => {
   const todos = await api.query.todo.todos(address);
   return todos.toHuman();
 };
 
 // Get todo statistics
-const getTodoStats = async (address) => {
+const getTodoStats = async address => {
   const stats = await api.query.todo.todoStats(address);
   return stats.toHuman();
 };
 
 // Toggle todo completion
-const toggleTodoCompletion = async (todoId) => {
-  await api.tx.todo
-    .toggleTodoCompletion(todoId)
-    .signAndSend(account.address, { signer: account.signer });
+const toggleTodoCompletion = async todoId => {
+  await api.tx.todo.toggleTodoCompletion(todoId).signAndSend(account.address, { signer: account.signer });
 };
 
 // Delete todo
-const deleteTodo = async (todoId) => {
-  await api.tx.todo
-    .deleteTodo(todoId)
-    .signAndSend(account.address, { signer: account.signer });
+const deleteTodo = async todoId => {
+  await api.tx.todo.deleteTodo(todoId).signAndSend(account.address, { signer: account.signer });
 };
 ```
 
@@ -277,7 +273,7 @@ const TodoApp = () => {
     }
   };
 
-  const handleCreateTodo = async (e) => {
+  const handleCreateTodo = async e => {
     e.preventDefault();
     if (!api || !account || !title) return;
 
@@ -300,7 +296,7 @@ const TodoApp = () => {
     }
   };
 
-  const handleToggleCompletion = async (id) => {
+  const handleToggleCompletion = async id => {
     if (!api || !account) return;
 
     setLoading(true);
@@ -319,18 +315,16 @@ const TodoApp = () => {
     }
   };
 
-  const handleDeleteTodo = async (id) => {
+  const handleDeleteTodo = async id => {
     if (!api || !account) return;
 
     setLoading(true);
     try {
-      await api.tx.todo
-        .deleteTodo(id)
-        .signAndSend(account.address, { signer: account.signer }, ({ status }) => {
-          if (status.isInBlock) {
-            fetchTodos();
-          }
-        });
+      await api.tx.todo.deleteTodo(id).signAndSend(account.address, { signer: account.signer }, ({ status }) => {
+        if (status.isInBlock) {
+          fetchTodos();
+        }
+      });
     } catch (error) {
       console.error('Error deleting todo:', error);
     } finally {
@@ -345,7 +339,7 @@ const TodoApp = () => {
   return (
     <div>
       <h1>Polkadot Todo App</h1>
-      
+
       <div className="stats">
         <h3>Statistics</h3>
         <p>Total: {stats.total}</p>
@@ -353,26 +347,23 @@ const TodoApp = () => {
         <p>Pending: {stats.pending}</p>
         <p>High Priority: {stats.highPriority}</p>
       </div>
-      
+
       <form onSubmit={handleCreateTodo}>
         <input
           type="text"
           placeholder="Title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={e => setTitle(e.target.value)}
           required
           maxLength={100}
         />
         <textarea
           placeholder="Description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={e => setDescription(e.target.value)}
           maxLength={500}
         />
-        <select
-          value={priority}
-          onChange={(e) => setPriority(e.target.value)}
-        >
+        <select value={priority} onChange={e => setPriority(e.target.value)}>
           <option value="Low">Low</option>
           <option value="Medium">Medium</option>
           <option value="High">High</option>
@@ -381,9 +372,9 @@ const TodoApp = () => {
           Add Todo
         </button>
       </form>
-      
+
       <ul className="todo-list">
-        {todos.map((todo) => (
+        {todos.map(todo => (
           <li key={todo.id} className={todo.completed ? 'completed' : ''}>
             <span className={`priority priority-${Object.keys(todo.priority)[0].toLowerCase()}`}>
               {Object.keys(todo.priority)[0]}

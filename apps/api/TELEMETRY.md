@@ -29,11 +29,13 @@ OTEL_SERVICE_VERSION=1.0.0
 ## Local Development Setup
 
 1. Start the development infrastructure:
+
 ```bash
 docker-compose -f docker-compose.dev.yml up -d
 ```
 
 This will start:
+
 - MongoDB (port 27017)
 - Redis (port 6379)
 - Jaeger UI (port 16686)
@@ -81,7 +83,7 @@ export class MyService {
         // Your code here
         return result;
       },
-      { customAttribute: 'value' }
+      { customAttribute: 'value' },
     );
   }
 }
@@ -90,6 +92,7 @@ export class MyService {
 ## Trace Context
 
 Each HTTP request includes:
+
 - Request ID (x-request-id header)
 - HTTP method, URL, and route
 - Response status code and duration
@@ -99,6 +102,7 @@ Each HTTP request includes:
 ## Service Method Tracing
 
 The following services include method-level tracing:
+
 - `TodoService`: All CRUD operations and statistics
 - `AuthService`: Authentication and token operations
 - `UserService`: User management operations
@@ -116,6 +120,7 @@ The following services include method-level tracing:
 ### Alerts
 
 Consider setting up alerts for:
+
 - High error rates (>5%)
 - Slow response times (>2s for 95th percentile)
 - Database connection issues
@@ -143,6 +148,7 @@ For production environments:
 ### Debug Mode
 
 Enable debug logging:
+
 ```bash
 OTEL_LOG_LEVEL=debug
 ```

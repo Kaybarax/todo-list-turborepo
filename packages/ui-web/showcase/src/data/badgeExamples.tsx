@@ -1,6 +1,6 @@
 // React import removed as it's not used in this file
-import { Badge } from '../../../lib'
-import type { ComponentExample } from '../App'
+import { Badge } from '../../../lib';
+import type { ComponentExample } from '../App';
 
 export const badgeExamples: ComponentExample[] = [
   {
@@ -78,15 +78,21 @@ export const badgeExamples: ComponentExample[] = [
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <span>Messages</span>
-          <Badge variant="destructive" size="sm">3</Badge>
+          <Badge variant="destructive" size="sm">
+            3
+          </Badge>
         </div>
         <div className="flex items-center gap-2">
           <span>Notifications</span>
-          <Badge variant="default" size="sm">12</Badge>
+          <Badge variant="default" size="sm">
+            12
+          </Badge>
         </div>
         <div className="flex items-center gap-2">
           <span>Updates</span>
-          <Badge variant="secondary" size="sm">99+</Badge>
+          <Badge variant="secondary" size="sm">
+            99+
+          </Badge>
         </div>
       </div>
     ),
@@ -107,16 +113,10 @@ export const badgeExamples: ComponentExample[] = [
 </Badge>`,
     component: (
       <>
-        <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">
-          Custom Blue
-        </Badge>
-        <Badge className="bg-green-100 text-green-800 hover:bg-green-200">
-          Custom Green
-        </Badge>
-        <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-200">
-          Custom Purple
-        </Badge>
+        <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">Custom Blue</Badge>
+        <Badge className="bg-green-100 text-green-800 hover:bg-green-200">Custom Green</Badge>
+        <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-200">Custom Purple</Badge>
       </>
     ),
   },
-]
+];

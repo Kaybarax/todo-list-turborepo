@@ -2,8 +2,8 @@ name: NPM Audit Fix
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Run every day at midnight
-  workflow_dispatch:  # Allow manual triggering
+    - cron: '0 0 * * *' # Run every day at midnight
+  workflow_dispatch: # Allow manual triggering
 
 jobs:
   audit-fix:
@@ -37,8 +37,8 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "fix: security vulnerabilities from npm audit fix"
-          title: "fix: security vulnerabilities from npm audit fix"
+          commit-message: 'fix: security vulnerabilities from npm audit fix'
+          title: 'fix: security vulnerabilities from npm audit fix'
           body: |
             This PR fixes security vulnerabilities in dependencies using `npm audit fix`.
 

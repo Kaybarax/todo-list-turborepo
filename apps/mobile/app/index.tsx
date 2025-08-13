@@ -9,9 +9,7 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>Welcome to Todo App</Text>
-        <Text style={styles.subtitle}>
-          A modern todo application with blockchain integration for mobile devices.
-        </Text>
+        <Text style={styles.subtitle}>A modern todo application with blockchain integration for mobile devices.</Text>
 
         <View style={styles.buttonContainer}>
           <Link href="/todos" asChild>

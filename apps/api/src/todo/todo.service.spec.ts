@@ -150,14 +150,14 @@ describe('TodoService', () => {
     });
 
     it('should fetch todos from database when not cached', async () => {
-      const queryDto: QueryTodoDto = { 
-        page: 1, 
-        limit: 10, 
+      const queryDto: QueryTodoDto = {
+        page: 1,
+        limit: 10,
         completed: false,
         priority: 'high',
         search: 'test',
         sortBy: 'createdAt',
-        sortOrder: 'desc'
+        sortOrder: 'desc',
       };
 
       cacheService.generateUserTodosKey.mockReturnValue('cache-key');
@@ -173,16 +173,13 @@ describe('TodoService', () => {
           userId: mockUser.id,
           completed: false,
           priority: 'high',
-          $or: [
-            { title: { $regex: 'test', $options: 'i' } },
-            { description: { $regex: 'test', $options: 'i' } },
-          ],
+          $or: [{ title: { $regex: 'test', $options: 'i' } }, { description: { $regex: 'test', $options: 'i' } }],
         },
         {
           sort: { createdAt: -1 },
           skip: 0,
           limit: 10,
-        }
+        },
       );
       expect(todoRepository.count).toHaveBeenCalled();
       expect(cacheService.set).toHaveBeenCalled();
@@ -196,11 +193,11 @@ describe('TodoService', () => {
     });
 
     it('should handle priority sorting correctly', async () => {
-      const queryDto: QueryTodoDto = { 
-        page: 1, 
-        limit: 10, 
+      const queryDto: QueryTodoDto = {
+        page: 1,
+        limit: 10,
         sortBy: 'priority',
-        sortOrder: 'asc'
+        sortOrder: 'asc',
       };
 
       cacheService.generateUserTodosKey.mockReturnValue('cache-key');
@@ -217,7 +214,7 @@ describe('TodoService', () => {
           sort: { priority: 1 },
           skip: 0,
           limit: 10,
-        }
+        },
       );
     });
   });
@@ -256,14 +253,14 @@ describe('TodoService', () => {
       todoRepository.findByIdAndUserId.mockResolvedValue(null);
 
       await expect(service.findOne(todoId, mockUser.id)).rejects.toThrow(
-        new NotFoundException(`Todo with ID ${todoId} not found or access denied`)
+        new NotFoundException(`Todo with ID ${todoId} not found or access denied`),
       );
     });
 
     it('should not return cached todo for different user', async () => {
       const todoId = 'todo123';
       const differentUserTodo = { ...mockTodo, userId: 'different-user' };
-      
+
       cacheService.generateTodoKey.mockReturnValue('todo-cache-key');
       cacheService.get.mockResolvedValue(differentUserTodo);
       todoRepository.findByIdAndUserId.mockResolvedValue(mockTodo);
@@ -361,7 +358,7 @@ describe('TodoService', () => {
       todoRepository.deleteById.mockResolvedValue(false);
 
       await expect(service.remove(todoId, mockUser.id)).rejects.toThrow(
-        new NotFoundException(`Todo with ID ${todoId} not found`)
+        new NotFoundException(`Todo with ID ${todoId} not found`),
       );
     });
   });
@@ -390,13 +387,13 @@ describe('TodoService', () => {
     it('should calculate stats from database when not cached', async () => {
       cacheService.generateUserStatsKey.mockReturnValue('stats-cache-key');
       cacheService.get.mockResolvedValue(null);
-      
+
       // Mock repository calls
       todoRepository.count
         .mockResolvedValueOnce(10) // total
-        .mockResolvedValueOnce(5)  // completed
+        .mockResolvedValueOnce(5) // completed
         .mockResolvedValueOnce(2); // overdue
-      
+
       todoRepository.aggregate
         .mockResolvedValueOnce([
           { _id: 'high', count: 3 },

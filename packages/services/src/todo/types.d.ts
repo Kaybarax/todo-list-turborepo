@@ -3,22 +3,23 @@ import { z } from 'zod';
  * Todo priority levels
  */
 export declare enum TodoPriority {
-    LOW = "low",
-    MEDIUM = "medium",
-    HIGH = "high"
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
 }
 /**
  * Todo status options
  */
 export declare enum TodoStatus {
-    TODO = "todo",
-    IN_PROGRESS = "in_progress",
-    DONE = "done"
+  TODO = 'todo',
+  IN_PROGRESS = 'in_progress',
+  DONE = 'done',
 }
 /**
  * Schema for validating todo items
  */
-export declare const todoSchema: z.ZodObject<{
+export declare const todoSchema: z.ZodObject<
+  {
     id: z.ZodOptional<z.ZodString>;
     title: z.ZodString;
     description: z.ZodOptional<z.ZodString>;
@@ -28,8 +29,11 @@ export declare const todoSchema: z.ZodObject<{
     createdAt: z.ZodOptional<z.ZodDate>;
     updatedAt: z.ZodOptional<z.ZodDate>;
     userId: z.ZodOptional<z.ZodString>;
-    tags: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
-}, "strip", z.ZodTypeAny, {
+    tags: z.ZodDefault<z.ZodArray<z.ZodString, 'many'>>;
+  },
+  'strip',
+  z.ZodTypeAny,
+  {
     title: string;
     status: TodoStatus;
     priority: TodoPriority;
@@ -40,7 +44,8 @@ export declare const todoSchema: z.ZodObject<{
     createdAt?: Date | undefined;
     updatedAt?: Date | undefined;
     userId?: string | undefined;
-}, {
+  },
+  {
     title: string;
     id?: string | undefined;
     description?: string | undefined;
@@ -51,7 +56,8 @@ export declare const todoSchema: z.ZodObject<{
     updatedAt?: Date | undefined;
     userId?: string | undefined;
     tags?: string[] | undefined;
-}>;
+  }
+>;
 /**
  * Type definition for a todo item
  */
@@ -59,18 +65,25 @@ export type Todo = z.infer<typeof todoSchema>;
 /**
  * Schema for creating a new todo
  */
-export declare const createTodoSchema: z.ZodObject<Omit<{
-    id: z.ZodOptional<z.ZodString>;
-    title: z.ZodString;
-    description: z.ZodOptional<z.ZodString>;
-    status: z.ZodDefault<z.ZodNativeEnum<typeof TodoStatus>>;
-    priority: z.ZodDefault<z.ZodNativeEnum<typeof TodoPriority>>;
-    dueDate: z.ZodOptional<z.ZodDate>;
-    createdAt: z.ZodOptional<z.ZodDate>;
-    updatedAt: z.ZodOptional<z.ZodDate>;
-    userId: z.ZodOptional<z.ZodString>;
-    tags: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
-}, "id" | "createdAt" | "updatedAt">, "strip", z.ZodTypeAny, {
+export declare const createTodoSchema: z.ZodObject<
+  Omit<
+    {
+      id: z.ZodOptional<z.ZodString>;
+      title: z.ZodString;
+      description: z.ZodOptional<z.ZodString>;
+      status: z.ZodDefault<z.ZodNativeEnum<typeof TodoStatus>>;
+      priority: z.ZodDefault<z.ZodNativeEnum<typeof TodoPriority>>;
+      dueDate: z.ZodOptional<z.ZodDate>;
+      createdAt: z.ZodOptional<z.ZodDate>;
+      updatedAt: z.ZodOptional<z.ZodDate>;
+      userId: z.ZodOptional<z.ZodString>;
+      tags: z.ZodDefault<z.ZodArray<z.ZodString, 'many'>>;
+    },
+    'id' | 'createdAt' | 'updatedAt'
+  >,
+  'strip',
+  z.ZodTypeAny,
+  {
     title: string;
     status: TodoStatus;
     priority: TodoPriority;
@@ -78,7 +91,8 @@ export declare const createTodoSchema: z.ZodObject<Omit<{
     description?: string | undefined;
     dueDate?: Date | undefined;
     userId?: string | undefined;
-}, {
+  },
+  {
     title: string;
     description?: string | undefined;
     status?: TodoStatus | undefined;
@@ -86,7 +100,8 @@ export declare const createTodoSchema: z.ZodObject<Omit<{
     dueDate?: Date | undefined;
     userId?: string | undefined;
     tags?: string[] | undefined;
-}>;
+  }
+>;
 /**
  * Type for creating a new todo
  */
@@ -94,15 +109,19 @@ export type CreateTodoInput = z.infer<typeof createTodoSchema>;
 /**
  * Schema for updating an existing todo
  */
-export declare const updateTodoSchema: z.ZodObject<{
+export declare const updateTodoSchema: z.ZodObject<
+  {
     title: z.ZodOptional<z.ZodString>;
     description: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     status: z.ZodOptional<z.ZodDefault<z.ZodNativeEnum<typeof TodoStatus>>>;
     priority: z.ZodOptional<z.ZodDefault<z.ZodNativeEnum<typeof TodoPriority>>>;
     dueDate: z.ZodOptional<z.ZodOptional<z.ZodDate>>;
     userId: z.ZodOptional<z.ZodOptional<z.ZodString>>;
-    tags: z.ZodOptional<z.ZodDefault<z.ZodArray<z.ZodString, "many">>>;
-}, "strip", z.ZodTypeAny, {
+    tags: z.ZodOptional<z.ZodDefault<z.ZodArray<z.ZodString, 'many'>>>;
+  },
+  'strip',
+  z.ZodTypeAny,
+  {
     title?: string | undefined;
     description?: string | undefined;
     status?: TodoStatus | undefined;
@@ -110,7 +129,8 @@ export declare const updateTodoSchema: z.ZodObject<{
     dueDate?: Date | undefined;
     userId?: string | undefined;
     tags?: string[] | undefined;
-}, {
+  },
+  {
     title?: string | undefined;
     description?: string | undefined;
     status?: TodoStatus | undefined;
@@ -118,7 +138,8 @@ export declare const updateTodoSchema: z.ZodObject<{
     dueDate?: Date | undefined;
     userId?: string | undefined;
     tags?: string[] | undefined;
-}>;
+  }
+>;
 /**
  * Type for updating an existing todo
  */
@@ -126,27 +147,32 @@ export type UpdateTodoInput = z.infer<typeof updateTodoSchema>;
 /**
  * Schema for todo query parameters
  */
-export declare const todoQuerySchema: z.ZodObject<{
+export declare const todoQuerySchema: z.ZodObject<
+  {
     status: z.ZodOptional<z.ZodNativeEnum<typeof TodoStatus>>;
     priority: z.ZodOptional<z.ZodNativeEnum<typeof TodoPriority>>;
     userId: z.ZodOptional<z.ZodString>;
-    tags: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    tags: z.ZodOptional<z.ZodArray<z.ZodString, 'many'>>;
     search: z.ZodOptional<z.ZodString>;
     page: z.ZodDefault<z.ZodNumber>;
     limit: z.ZodDefault<z.ZodNumber>;
-    sortBy: z.ZodOptional<z.ZodEnum<["createdAt", "updatedAt", "dueDate", "priority"]>>;
-    sortOrder: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
-}, "strip", z.ZodTypeAny, {
+    sortBy: z.ZodOptional<z.ZodEnum<['createdAt', 'updatedAt', 'dueDate', 'priority']>>;
+    sortOrder: z.ZodDefault<z.ZodEnum<['asc', 'desc']>>;
+  },
+  'strip',
+  z.ZodTypeAny,
+  {
     page: number;
     limit: number;
-    sortOrder: "asc" | "desc";
+    sortOrder: 'asc' | 'desc';
     status?: TodoStatus | undefined;
     priority?: TodoPriority | undefined;
     userId?: string | undefined;
     tags?: string[] | undefined;
     search?: string | undefined;
-    sortBy?: "priority" | "dueDate" | "createdAt" | "updatedAt" | undefined;
-}, {
+    sortBy?: 'priority' | 'dueDate' | 'createdAt' | 'updatedAt' | undefined;
+  },
+  {
     status?: TodoStatus | undefined;
     priority?: TodoPriority | undefined;
     userId?: string | undefined;
@@ -154,9 +180,10 @@ export declare const todoQuerySchema: z.ZodObject<{
     search?: string | undefined;
     page?: number | undefined;
     limit?: number | undefined;
-    sortBy?: "priority" | "dueDate" | "createdAt" | "updatedAt" | undefined;
-    sortOrder?: "asc" | "desc" | undefined;
-}>;
+    sortBy?: 'priority' | 'dueDate' | 'createdAt' | 'updatedAt' | undefined;
+    sortOrder?: 'asc' | 'desc' | undefined;
+  }
+>;
 /**
  * Type for todo query parameters
  */

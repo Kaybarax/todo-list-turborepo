@@ -101,6 +101,7 @@ MOONBEAM_RPC_URL=https://custom-rpc.com pnpm test:integration:blockchain
 The tests use the following environment variables (with defaults):
 
 #### Network RPC URLs
+
 ```bash
 POLYGON_RPC_URL=https://polygon-rpc.com
 POLYGON_MUMBAI_RPC_URL=https://rpc-mumbai.maticvigil.com
@@ -115,6 +116,7 @@ POLKADOT_TESTNET_RPC_URL=wss://westend-rpc.polkadot.io
 ```
 
 #### Contract Addresses
+
 ```bash
 POLYGON_TODO_FACTORY_ADDRESS=0x...
 MOONBEAM_TODO_FACTORY_ADDRESS=0x...
@@ -123,6 +125,7 @@ BASE_TODO_FACTORY_ADDRESS=0x...
 ```
 
 #### Test Configuration
+
 ```bash
 USE_MOCK_BLOCKCHAIN_SERVICES=true    # Use mocked services
 USE_MOCK_WALLET_PROVIDERS=true       # Use mocked wallet providers
@@ -135,11 +138,13 @@ MOCK_TRANSACTION_DELAY=1000          # Mock transaction delay (ms)
 ### Mock Configuration
 
 By default, tests use mocked blockchain services and wallet providers for:
+
 - **Reliability**: No dependency on external networks
 - **Speed**: Faster test execution
 - **CI/CD**: Consistent results in automated environments
 
 To use real blockchain services:
+
 ```bash
 USE_MOCK_BLOCKCHAIN_SERVICES=false USE_MOCK_WALLET_PROVIDERS=false pnpm test:integration:all
 ```
@@ -149,6 +154,7 @@ USE_MOCK_BLOCKCHAIN_SERVICES=false USE_MOCK_WALLET_PROVIDERS=false pnpm test:int
 ### 1. Core Blockchain Service Tests (`blockchain-expansion-integration.test.ts`)
 
 Tests the blockchain service layer directly:
+
 - Service factory configuration
 - Network-specific service implementations
 - CRUD operations on each network
@@ -156,6 +162,7 @@ Tests the blockchain service layer directly:
 - Performance and scalability
 
 **Key Test Scenarios:**
+
 - Moonbeam parachain integration
 - Base L2 optimization features
 - Network switching without conflicts
@@ -165,6 +172,7 @@ Tests the blockchain service layer directly:
 ### 2. Web Application Tests (`web-blockchain-integration.test.ts`)
 
 Tests blockchain integration in the Next.js web application:
+
 - Wallet connection flows
 - Network selection UI
 - Transaction status handling
@@ -172,6 +180,7 @@ Tests blockchain integration in the Next.js web application:
 - Responsive design during blockchain operations
 
 **Key Test Scenarios:**
+
 - MetaMask integration with new networks
 - Network switching prompts
 - Transaction confirmation flows
@@ -181,6 +190,7 @@ Tests blockchain integration in the Next.js web application:
 ### 3. Mobile Application Tests (`mobile-blockchain-integration.test.ts`)
 
 Tests blockchain integration in the React Native mobile application:
+
 - WalletConnect integration
 - Mobile-optimized network switching
 - Touch-friendly transaction flows
@@ -188,6 +198,7 @@ Tests blockchain integration in the React Native mobile application:
 - Background/foreground transitions
 
 **Key Test Scenarios:**
+
 - Mobile wallet connection
 - Network switching on mobile
 - Touch gestures for blockchain operations
@@ -199,6 +210,7 @@ Tests blockchain integration in the React Native mobile application:
 ### Mock Blockchain Services
 
 The tests include comprehensive mocking for:
+
 - **Transaction Receipts**: Realistic transaction data
 - **Network Responses**: Proper RPC response simulation
 - **Wallet Providers**: MetaMask, WalletConnect, etc.
@@ -207,6 +219,7 @@ The tests include comprehensive mocking for:
 ### Test Data Generation
 
 Utility functions for generating:
+
 - Mock wallet addresses
 - Transaction hashes
 - Block numbers and timestamps
@@ -215,6 +228,7 @@ Utility functions for generating:
 ### Performance Testing
 
 When enabled, performance tests measure:
+
 - Transaction confirmation times
 - Network switching speed
 - Concurrent operation handling
@@ -225,12 +239,14 @@ When enabled, performance tests measure:
 ### Common Issues
 
 1. **Test Timeouts**
+
    ```bash
    # Increase timeout for slow operations
    TEST_TIMEOUT=60000 pnpm test:integration:all
    ```
 
 2. **Network Connection Errors**
+
    ```bash
    # Use mocked services
    USE_MOCK_BLOCKCHAIN_SERVICES=true pnpm test:integration:all
@@ -321,6 +337,7 @@ To add tests for a new blockchain network:
 ### Performance Issues
 
 If tests are running slowly:
+
 1. Check if real blockchain services are being used
 2. Reduce mock transaction delays
 3. Disable performance tests
@@ -329,6 +346,7 @@ If tests are running slowly:
 ### Memory Issues
 
 For memory-related problems:
+
 1. Increase Node.js memory limit: `--max-old-space-size=4096`
 2. Run tests in smaller batches
 3. Check for memory leaks in mock services
@@ -336,6 +354,7 @@ For memory-related problems:
 ### Network-Specific Issues
 
 Each network may have unique characteristics:
+
 - **Moonbeam**: Substrate-specific errors
 - **Base**: L2 sequencer issues
 - **Polygon**: High gas price variations

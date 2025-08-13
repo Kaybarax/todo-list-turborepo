@@ -16,7 +16,7 @@ export interface WalletContextType {
   account: WalletAccount | null;
   error: string | null;
   supportedNetworks: ('solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base')[];
-  
+
   // Actions
   connect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => Promise<void>;
   disconnect: () => Promise<void>;
@@ -60,7 +60,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
       // await Linking.openURL(walletUrls[network]);
 
       // Simulate connection delay
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Mock wallet connection
       const mockAccount: WalletAccount = {
@@ -71,16 +71,12 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
       setAccount(mockAccount);
       setIsConnected(true);
-      
+
       // Store connection state
       await AsyncStorage.setItem('wallet-connected', 'true');
       await AsyncStorage.setItem('wallet-account', JSON.stringify(mockAccount));
 
-      Alert.alert(
-        'Wallet Connected',
-        `Successfully connected to ${network} network`,
-        [{ text: 'OK' }]
-      );
+      Alert.alert('Wallet Connected', `Successfully connected to ${network} network`, [{ text: 'OK' }]);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to connect wallet';
       setError(errorMessage);
@@ -92,24 +88,20 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
   const disconnect = async () => {
     setIsConnecting(true);
-    
+
     try {
       // Simulate disconnection delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
       setAccount(null);
       setIsConnected(false);
       setError(null);
-      
+
       // Clear stored connection state
       await AsyncStorage.removeItem('wallet-connected');
       await AsyncStorage.removeItem('wallet-account');
 
-      Alert.alert(
-        'Wallet Disconnected',
-        'Your wallet has been disconnected',
-        [{ text: 'OK' }]
-      );
+      Alert.alert('Wallet Disconnected', 'Your wallet has been disconnected', [{ text: 'OK' }]);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to disconnect wallet';
       setError(errorMessage);
@@ -129,7 +121,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
     try {
       // Simulate network switch delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
       const updatedAccount: WalletAccount = {
         ...account,
@@ -141,11 +133,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
       setAccount(updatedAccount);
       await AsyncStorage.setItem('wallet-account', JSON.stringify(updatedAccount));
 
-      Alert.alert(
-        'Network Switched',
-        `Switched to ${network} network`,
-        [{ text: 'OK' }]
-      );
+      Alert.alert('Network Switched', `Switched to ${network} network`, [{ text: 'OK' }]);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to switch network';
       setError(errorMessage);
@@ -161,32 +149,28 @@ export function WalletProvider({ children }: WalletProviderProps) {
     }
 
     return new Promise((resolve, reject) => {
-      Alert.alert(
-        'Sign Message',
-        `Do you want to sign this message?\n\n"${message}"`,
-        [
-          {
-            text: 'Cancel',
-            style: 'cancel',
-            onPress: () => reject(new Error('User cancelled signing')),
+      Alert.alert('Sign Message', `Do you want to sign this message?\n\n"${message}"`, [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => reject(new Error('User cancelled signing')),
+        },
+        {
+          text: 'Sign',
+          onPress: async () => {
+            try {
+              // Simulate signing delay
+              await new Promise(res => setTimeout(res, 1000));
+
+              // Mock signature
+              const signature = `0x${Math.random().toString(16).substr(2, 128)}`;
+              resolve(signature);
+            } catch (error) {
+              reject(error);
+            }
           },
-          {
-            text: 'Sign',
-            onPress: async () => {
-              try {
-                // Simulate signing delay
-                await new Promise((res) => setTimeout(res, 1000));
-                
-                // Mock signature
-                const signature = `0x${Math.random().toString(16).substr(2, 128)}`;
-                resolve(signature);
-              } catch (error) {
-                reject(error);
-              }
-            },
-          },
-        ]
-      );
+        },
+      ]);
     });
   };
 
@@ -196,32 +180,28 @@ export function WalletProvider({ children }: WalletProviderProps) {
     }
 
     return new Promise((resolve, reject) => {
-      Alert.alert(
-        'Send Transaction',
-        `Send ${amount} to ${to.slice(0, 8)}...${to.slice(-8)}?`,
-        [
-          {
-            text: 'Cancel',
-            style: 'cancel',
-            onPress: () => reject(new Error('User cancelled transaction')),
+      Alert.alert('Send Transaction', `Send ${amount} to ${to.slice(0, 8)}...${to.slice(-8)}?`, [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => reject(new Error('User cancelled transaction')),
+        },
+        {
+          text: 'Send',
+          onPress: async () => {
+            try {
+              // Simulate transaction delay
+              await new Promise(res => setTimeout(res, 3000));
+
+              // Mock transaction hash
+              const txHash = `0x${Math.random().toString(16).substr(2, 64)}`;
+              resolve(txHash);
+            } catch (error) {
+              reject(error);
+            }
           },
-          {
-            text: 'Send',
-            onPress: async () => {
-              try {
-                // Simulate transaction delay
-                await new Promise((res) => setTimeout(res, 3000));
-                
-                // Mock transaction hash
-                const txHash = `0x${Math.random().toString(16).substr(2, 64)}`;
-                resolve(txHash);
-              } catch (error) {
-                reject(error);
-              }
-            },
-          },
-        ]
-      );
+        },
+      ]);
     });
   };
 
@@ -260,11 +240,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
     sendTransaction,
   };
 
-  return (
-    <WalletContext.Provider value={value}>
-      {children}
-    </WalletContext.Provider>
-  );
+  return <WalletContext.Provider value={value}>{children}</WalletContext.Provider>;
 }
 
 // Helper functions for mock data

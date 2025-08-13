@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Card, CardContent, Badge, Button } from '@todo/ui-mobile';
 import { BlockchainNetwork, getNetworkDisplayInfo } from '@todo/services';
 import type { Todo } from '../store/todoStore';
@@ -42,145 +36,100 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
   const isOverdue = todo.dueDate && new Date(todo.dueDate) < new Date() && !todo.completed;
 
   const handleDelete = () => {
-    Alert.alert(
-      'Delete Todo',
-      'Are you sure you want to delete this todo?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Delete', style: 'destructive', onPress: () => onDelete(todo.id) },
-      ]
-    );
+    Alert.alert('Delete Todo', 'Are you sure you want to delete this todo?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Delete', style: 'destructive', onPress: () => onDelete(todo.id) },
+    ]);
   };
 
   const handleBlockchainSync = () => {
     if (!onBlockchainSync) return;
 
-    Alert.alert(
-      'Sync to Blockchain',
-      'Choose a network to sync this todo:',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Solana', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.SOLANA) },
-        { text: 'Polkadot', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.POLKADOT) },
-        { text: 'Polygon', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.POLYGON) },
-        { text: 'Moonbeam', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.MOONBEAM) },
-        { text: 'Base', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.BASE) },
-      ]
-    );
+    Alert.alert('Sync to Blockchain', 'Choose a network to sync this todo:', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Solana', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.SOLANA) },
+      { text: 'Polkadot', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.POLKADOT) },
+      { text: 'Polygon', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.POLYGON) },
+      { text: 'Moonbeam', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.MOONBEAM) },
+      { text: 'Base', onPress: () => onBlockchainSync(todo.id, BlockchainNetwork.BASE) },
+    ]);
   };
 
   return (
-    <TouchableOpacity
-      onPress={() => setShowActions(!showActions)}
-      activeOpacity={0.7}
-    >
+    <TouchableOpacity onPress={() => setShowActions(!showActions)} activeOpacity={0.7}>
       <Card
-        style={[
-          styles.container,
-          todo.completed && styles.completedContainer,
-          isOverdue && styles.overdueContainer,
-        ]}
+        style={[styles.container, todo.completed && styles.completedContainer, isOverdue && styles.overdueContainer]}
       >
         <CardContent>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.checkbox}
-          onPress={() => onToggle(todo.id)}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
-          <View style={[styles.checkboxInner, todo.completed && styles.checkboxChecked]}>
-            {todo.completed && <Text style={styles.checkmark}>✓</Text>}
-          </View>
-        </TouchableOpacity>
-
-        <View style={styles.content}>
-          <Text
-            style={[
-              styles.title,
-              todo.completed && styles.completedTitle,
-            ]}
-            numberOfLines={2}
-          >
-            {todo.title}
-          </Text>
-
-          {todo.description && (
-            <Text
-              style={[
-                styles.description,
-                todo.completed && styles.completedDescription,
-              ]}
-              numberOfLines={2}
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={styles.checkbox}
+              onPress={() => onToggle(todo.id)}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              {todo.description}
-            </Text>
-          )}
-
-          <View style={styles.metadata}>
-            <Badge
-              variant="primary"
-              size="small"
-              text={todo.priority}
-              style={[
-                styles.priorityBadge,
-                { backgroundColor: priorityColors[todo.priority] },
-              ]}
-            />
-
-            {todo.dueDate && (
-              <View
-                style={[
-                  styles.dueDateBadge,
-                  isOverdue && styles.overdueBadge,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.dueDateText,
-                    isOverdue && styles.overdueText,
-                  ]}
-                >
-                  {formatDate(todo.dueDate)}
-                </Text>
+              <View style={[styles.checkboxInner, todo.completed && styles.checkboxChecked]}>
+                {todo.completed && <Text style={styles.checkmark}>✓</Text>}
               </View>
-            )}
+            </TouchableOpacity>
 
-            {todo.blockchainNetwork && (
-              <Badge
-                variant="primary"
-                size="small"
-                text={getNetworkDisplayInfo(todo.blockchainNetwork).displayName}
-                style={[
-                  styles.networkBadge,
-                  { backgroundColor: getNetworkColor(todo.blockchainNetwork) },
-                ]}
-              />
-            )}
-          </View>
+            <View style={styles.content}>
+              <Text style={[styles.title, todo.completed && styles.completedTitle]} numberOfLines={2}>
+                {todo.title}
+              </Text>
 
-          {todo.tags.length > 0 && (
-            <View style={styles.tagsContainer}>
-              {todo.tags.slice(0, 3).map((tag) => (
-                <View key={tag} style={styles.tag}>
-                  <Text style={styles.tagText}>{tag}</Text>
+              {todo.description && (
+                <Text style={[styles.description, todo.completed && styles.completedDescription]} numberOfLines={2}>
+                  {todo.description}
+                </Text>
+              )}
+
+              <View style={styles.metadata}>
+                <Badge
+                  variant="primary"
+                  size="small"
+                  text={todo.priority}
+                  style={[styles.priorityBadge, { backgroundColor: priorityColors[todo.priority] }]}
+                />
+
+                {todo.dueDate && (
+                  <View style={[styles.dueDateBadge, isOverdue && styles.overdueBadge]}>
+                    <Text style={[styles.dueDateText, isOverdue && styles.overdueText]}>
+                      {formatDate(todo.dueDate)}
+                    </Text>
+                  </View>
+                )}
+
+                {todo.blockchainNetwork && (
+                  <Badge
+                    variant="primary"
+                    size="small"
+                    text={getNetworkDisplayInfo(todo.blockchainNetwork).displayName}
+                    style={[styles.networkBadge, { backgroundColor: getNetworkColor(todo.blockchainNetwork) }]}
+                  />
+                )}
+              </View>
+
+              {todo.tags.length > 0 && (
+                <View style={styles.tagsContainer}>
+                  {todo.tags.slice(0, 3).map(tag => (
+                    <View key={tag} style={styles.tag}>
+                      <Text style={styles.tagText}>{tag}</Text>
+                    </View>
+                  ))}
+                  {todo.tags.length > 3 && <Text style={styles.moreTagsText}>+{todo.tags.length - 3}</Text>}
                 </View>
-              ))}
-              {todo.tags.length > 3 && (
-                <Text style={styles.moreTagsText}>+{todo.tags.length - 3}</Text>
+              )}
+
+              {todo.transactionHash && (
+                <View style={styles.transactionContainer}>
+                  <Text style={styles.transactionLabel}>Tx:</Text>
+                  <Text style={styles.transactionHash}>
+                    {todo.transactionHash.slice(0, 8)}...{todo.transactionHash.slice(-8)}
+                  </Text>
+                </View>
               )}
             </View>
-          )}
-
-          {todo.transactionHash && (
-            <View style={styles.transactionContainer}>
-              <Text style={styles.transactionLabel}>Tx:</Text>
-              <Text style={styles.transactionHash}>
-                {todo.transactionHash.slice(0, 8)}...{todo.transactionHash.slice(-8)}
-              </Text>
-            </View>
-          )}
-        </View>
-      </View>
+          </View>
 
           {showActions && (
             <View style={styles.actionsContainer}>

@@ -1,7 +1,7 @@
 // Script to deploy the TodoList contracts
-const hre = require("hardhat");
-const fs = require("fs");
-const path = require("path");
+const hre = require('hardhat');
+const fs = require('fs');
+const path = require('path');
 
 async function main() {
   // Get the network name
@@ -17,8 +17,8 @@ async function main() {
   console.log(`Account balance: ${hre.ethers.formatEther(balance)} MATIC`);
 
   // Deploy TodoListFactory
-  console.log("Deploying TodoListFactory...");
-  const TodoListFactory = await hre.ethers.getContractFactory("TodoListFactory");
+  console.log('Deploying TodoListFactory...');
+  const TodoListFactory = await hre.ethers.getContractFactory('TodoListFactory');
   const todoListFactory = await TodoListFactory.deploy();
   await todoListFactory.waitForDeployment();
 
@@ -26,7 +26,7 @@ async function main() {
   console.log(`TodoListFactory deployed to: ${todoListFactoryAddress}`);
 
   // Save deployment info
-  const deploymentDir = path.join(__dirname, "../deployments");
+  const deploymentDir = path.join(__dirname, '../deployments');
   if (!fs.existsSync(deploymentDir)) {
     fs.mkdirSync(deploymentDir, { recursive: true });
   }
@@ -38,37 +38,34 @@ async function main() {
     timestamp: new Date().toISOString(),
   };
 
-  fs.writeFileSync(
-    path.join(deploymentDir, `${network}.json`),
-    JSON.stringify(deploymentInfo, null, 2)
-  );
+  fs.writeFileSync(path.join(deploymentDir, `${network}.json`), JSON.stringify(deploymentInfo, null, 2));
 
   console.log(`Deployment info saved to deployments/${network}.json`);
 
   // Wait for a few blocks for Polygonscan to index the contract
-  if (network !== "localhost" && network !== "hardhat") {
-    console.log("Waiting for Polygonscan to index the contract...");
-    await new Promise((resolve) => setTimeout(resolve, 60000)); // 60 seconds
+  if (network !== 'localhost' && network !== 'hardhat') {
+    console.log('Waiting for Polygonscan to index the contract...');
+    await new Promise(resolve => setTimeout(resolve, 60000)); // 60 seconds
 
     // Verify contract on Polygonscan
-    console.log("Verifying contract on Polygonscan...");
+    console.log('Verifying contract on Polygonscan...');
     try {
-      await hre.run("verify:verify", {
+      await hre.run('verify:verify', {
         address: todoListFactoryAddress,
         constructorArguments: [],
       });
-      console.log("Contract verified on Polygonscan");
+      console.log('Contract verified on Polygonscan');
     } catch (error) {
-      console.error("Error verifying contract:", error);
+      console.error('Error verifying contract:', error);
     }
   }
 
-  console.log("Deployment completed successfully!");
+  console.log('Deployment completed successfully!');
 }
 
 main()
   .then(() => process.exit(0))
-  .catch((error) => {
+  .catch(error => {
     console.error(error);
     process.exit(1);
   });

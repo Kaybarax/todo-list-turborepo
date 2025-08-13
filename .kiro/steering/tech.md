@@ -10,6 +10,7 @@
 ## Core Technologies
 
 ### Frontend
+
 - **Web**: Next.js 14 with App Router, React 18, TypeScript
 - **Mobile**: Expo React Native with TypeScript
 - **Styling**: Tailwind CSS for web, React Native StyleSheet for mobile
@@ -17,6 +18,7 @@
 - **UI Libraries**: Custom component libraries (@todo/ui-web, @todo/ui-mobile)
 
 ### Backend
+
 - **API**: NestJS with TypeScript
 - **Database**: MongoDB with Mongoose ODM
 - **Caching**: Redis for performance optimization
@@ -24,18 +26,21 @@
 - **Validation**: class-validator and Zod schemas
 
 ### Blockchain
+
 - **Polygon**: Solidity contracts with Hardhat
 - **Solana**: Rust programs with Anchor framework
 - **Polkadot**: Substrate pallets with Rust
 - **Wallet Integration**: WalletConnect v2
 
 ### Testing
+
 - **Unit/Integration**: Jest across all packages
 - **E2E Web**: Playwright
 - **E2E Mobile**: React Native testing frameworks
 - **Contract Testing**: Hardhat (Polygon), Anchor (Solana), Substrate (Polkadot)
 
 ### DevOps & Infrastructure
+
 - **Containerization**: Docker with multi-stage builds
 - **Orchestration**: Kubernetes with production-ready manifests
 - **Monitoring**: OpenTelemetry, Jaeger tracing, Prometheus/Grafana
@@ -44,6 +49,7 @@
 ## Common Commands
 
 ### Development
+
 ```bash
 # Install dependencies
 pnpm install
@@ -60,6 +66,7 @@ pnpm dev:contracts    # Hardhat node for contracts
 ```
 
 ### Building
+
 ```bash
 # Full build (all apps, packages, and contracts)
 pnpm build
@@ -77,6 +84,7 @@ pnpm build:contracts   # Blockchain contracts only
 ```
 
 ### Testing
+
 ```bash
 # Run all tests
 pnpm test
@@ -89,6 +97,7 @@ pnpm test:contracts   # Blockchain contract tests
 ```
 
 ### Code Quality
+
 ```bash
 # Lint and fix issues
 pnpm lint
@@ -102,6 +111,7 @@ pnpm typecheck
 ```
 
 ### Database Management
+
 ```bash
 # Complete database setup
 pnpm db:setup
@@ -117,6 +127,7 @@ pnpm db:reset
 ```
 
 ### Blockchain Development
+
 ```bash
 # Compile all contracts
 pnpm contracts:compile
@@ -133,16 +144,19 @@ pnpm contracts:deploy
 ## Configuration Standards
 
 ### ESLint
+
 - Shared configurations in `packages/config-eslint/`
 - Framework-specific configs: nextjs.js, nestjs.js, react.js, react-native.js, solidity.js
 - Security and accessibility rules enforced
 
 ### TypeScript
+
 - Shared configurations in `packages/config-ts/`
 - Strict mode enabled with comprehensive type checking
 - Path mapping configured for monorepo packages
 
 ### Jest
+
 - Shared configurations in `packages/config-jest/`
 - Framework-specific setups for different environments
 - Coverage thresholds enforced (minimum 80%)

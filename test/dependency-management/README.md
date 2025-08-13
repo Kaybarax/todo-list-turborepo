@@ -86,6 +86,7 @@ npx jest --config=test/dependency-management/jest.config.js --coverage
 **Purpose**: Test individual functions and components in isolation
 
 **Coverage**:
+
 - Node.js version detection and validation
 - Rust toolchain detection (rustc, cargo)
 - Solana CLI version checking
@@ -96,6 +97,7 @@ npx jest --config=test/dependency-management/jest.config.js --coverage
 - Error code handling
 
 **Key Test Cases**:
+
 - Valid tool detection with correct versions
 - Missing tool detection and error reporting
 - Version comparison edge cases (equal, older, newer)
@@ -108,6 +110,7 @@ npx jest --config=test/dependency-management/jest.config.js --coverage
 **Purpose**: Test complete workflows and script interactions
 
 **Coverage**:
+
 - End-to-end installation script execution
 - Build process dependency integration
 - Automatic dependency installation workflows
@@ -117,6 +120,7 @@ npx jest --config=test/dependency-management/jest.config.js --coverage
 - Build artifact validation
 
 **Key Test Cases**:
+
 - Complete Rust installation simulation
 - Solana CLI installation with configuration
 - Anchor CLI installation with prerequisites
@@ -129,6 +133,7 @@ npx jest --config=test/dependency-management/jest.config.js --coverage
 **Purpose**: Validate compatibility across different operating systems
 
 **Coverage**:
+
 - Platform detection (macOS, Linux, Windows/WSL)
 - Architecture detection (x86_64, ARM64)
 - Package manager integration (Homebrew, apt, yum, pacman)
@@ -137,6 +142,7 @@ npx jest --config=test/dependency-management/jest.config.js --coverage
 - File system operations and permissions
 
 **Key Test Cases**:
+
 - macOS-specific Homebrew usage
 - Linux package manager detection
 - Windows/WSL environment handling
@@ -149,6 +155,7 @@ npx jest --config=test/dependency-management/jest.config.js --coverage
 **Purpose**: Test error scenarios and recovery mechanisms
 
 **Coverage**:
+
 - Network failure recovery with retry logic
 - Permission error detection and guidance
 - Version conflict resolution
@@ -158,6 +165,7 @@ npx jest --config=test/dependency-management/jest.config.js --coverage
 - Corrupted installation detection
 
 **Key Test Cases**:
+
 - Network connectivity failures with exponential backoff
 - Permission denied scenarios with alternative solutions
 - Missing prerequisite tools with installation guidance
@@ -226,7 +234,7 @@ The test suite is designed for CI/CD integration:
 - name: Run Dependency Management Tests
   run: |
     ./test/dependency-management/run-tests.sh --coverage --bail
-    
+
 - name: Upload Coverage Reports
   uses: codecov/codecov-action@v3
   with:

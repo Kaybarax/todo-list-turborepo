@@ -77,7 +77,11 @@ describe('Button', () => {
   });
 
   it('shows loading text when provided', () => {
-    render(<Button isLoading loadingText="Loading...">Submit</Button>);
+    render(
+      <Button isLoading loadingText="Loading...">
+        Submit
+      </Button>,
+    );
     expect(screen.getByText('Loading...')).toBeInTheDocument();
     expect(screen.queryByText('Submit')).not.toBeInTheDocument();
   });

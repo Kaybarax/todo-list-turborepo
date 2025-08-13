@@ -107,10 +107,7 @@ export const newComponentExamples = {
 import { newComponentExamples } from './data/componentExamples';
 
 // Add to the component list
-<ComponentShowcase
-  title="New Component"
-  examples={newComponentExamples}
-/>
+<ComponentShowcase title="New Component" examples={newComponentExamples} />;
 ```
 
 ### Theming
@@ -179,14 +176,8 @@ function ExampleForm() {
   return (
     <Card className="w-full max-w-md">
       <CardContent className="space-y-4">
-        <Input 
-          label="Email"
-          type="email"
-          placeholder="Enter your email"
-        />
-        <Button className="w-full">
-          Submit
-        </Button>
+        <Input label="Email" type="email" placeholder="Enter your email" />
+        <Button className="w-full">Submit</Button>
       </CardContent>
     </Card>
   );
@@ -196,16 +187,16 @@ function ExampleForm() {
 ### Advanced Component Combinations
 
 ```tsx
-import { 
-  Button, 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle,
   Input,
-  Badge 
+  Badge,
 } from '@todo/ui-web';
 
 function AdvancedExample() {
@@ -216,22 +207,11 @@ function AdvancedExample() {
           <CardTitle>User Profile</CardTitle>
           <Badge variant="secondary">Pro</Badge>
         </div>
-        <CardDescription>
-          Manage your account settings and preferences
-        </CardDescription>
+        <CardDescription>Manage your account settings and preferences</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Input 
-          label="Display Name"
-          placeholder="Enter your name"
-          leftIcon={<UserIcon />}
-        />
-        <Input 
-          label="Email Address"
-          type="email"
-          placeholder="Enter your email"
-          leftIcon={<MailIcon />}
-        />
+        <Input label="Display Name" placeholder="Enter your name" leftIcon={<UserIcon />} />
+        <Input label="Email Address" type="email" placeholder="Enter your email" leftIcon={<MailIcon />} />
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline">Cancel</Button>
@@ -278,10 +258,7 @@ export default defineConfig({
 ```javascript
 // tailwind.config.js
 module.exports = {
-  content: [
-    './src/**/*.{js,ts,jsx,tsx}',
-    '../lib/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx}', '../lib/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       // Custom showcase styling

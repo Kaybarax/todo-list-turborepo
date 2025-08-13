@@ -16,7 +16,7 @@ This feature modernizes the UI component architecture in the monorepo by establi
 2. WHEN a Radix UI component doesn't need customization THEN the system SHALL create a simple wrapper component with Storybook stories
 3. WHEN a Radix UI component needs customization THEN the system SHALL extend it appropriately while maintaining accessibility
 4. WHEN components are created THEN the system SHALL include TypeScript definitions and proper exports
-5. WHEN components are created THEN the system SHALL include comprehensive tests in __tests__/components directory
+5. WHEN components are created THEN the system SHALL include comprehensive tests in **tests**/components directory
 
 ### Requirement 2
 
@@ -28,7 +28,7 @@ This feature modernizes the UI component architecture in the monorepo by establi
 2. WHEN a UI Kitten component doesn't need customization THEN the system SHALL create a simple wrapper component with Storybook stories
 3. WHEN a UI Kitten component needs customization THEN the system SHALL extend it appropriately while maintaining React Native compatibility
 4. WHEN components are created THEN the system SHALL include TypeScript definitions and proper exports
-5. WHEN components are created THEN the system SHALL include comprehensive tests in __tests__/components directory
+5. WHEN components are created THEN the system SHALL include comprehensive tests in **tests**/components directory
 
 ### Requirement 3
 
@@ -40,7 +40,7 @@ This feature modernizes the UI component architecture in the monorepo by establi
 2. WHEN the mobile application needs UI components THEN it SHALL import them from packages/ui-mobile
 3. WHEN components are duplicated between apps and packages THEN the system SHALL remove duplicates and use package versions
 4. WHEN new components are needed THEN they SHALL be created in the appropriate UI package first
-5. WHEN components are created THEN they SHALL be placed in lib/components directory with tests in __tests__/components
+5. WHEN components are created THEN they SHALL be placed in lib/components directory with tests in **tests**/components
 
 ### Requirement 4
 
@@ -78,4 +78,4 @@ This feature modernizes the UI component architecture in the monorepo by establi
 3. WHEN documentation is updated THEN it SHALL include instructions for running showcase applications
 4. WHEN documentation is updated THEN it SHALL include guidelines for creating new components
 5. WHEN documentation is updated THEN it SHALL include import/usage examples for both packages
-6. WHEN documentation is updated THEN it SHALL reflect the lib/components directory structure and __tests__ testing approach
+6. WHEN documentation is updated THEN it SHALL reflect the lib/components directory structure and **tests** testing approach

@@ -1,11 +1,11 @@
-import { 
-  BlockchainNetwork, 
-  TransactionStatus, 
-  TransactionReceipt, 
-  BlockchainTodo, 
-  CreateBlockchainTodoInput, 
+import {
+  BlockchainNetwork,
+  TransactionStatus,
+  TransactionReceipt,
+  BlockchainTodo,
+  CreateBlockchainTodoInput,
   UpdateBlockchainTodoInput,
-  WalletInfo
+  WalletInfo,
 } from '../types';
 import { BaseBlockchainService } from './BaseBlockchainService';
 import { BlockchainError } from '../utils/BlockchainError';
@@ -21,50 +21,39 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
   private signer: any; // Polkadot Signer
 
   constructor() {
-    super(
-      BlockchainNetwork.POLKADOT,
-      'https://polkadot.subscan.io',
-      {
-        maxAttempts: 25,
-        pollingInterval: 6000,
-        timeout: 300000, // 5 minutes for Polkadot
-      }
-    );
+    super(BlockchainNetwork.POLKADOT, 'https://polkadot.subscan.io', {
+      maxAttempts: 25,
+      pollingInterval: 6000,
+      timeout: 300000, // 5 minutes for Polkadot
+    });
   }
 
   /**
    * Connect to a Polkadot wallet
    * @param options - Polkadot connection options
    */
-  async connectWallet(options?: { 
-    wsEndpoint?: string;
-    walletExtension?: any;
-    account?: any;
-  }): Promise<WalletInfo> {
+  async connectWallet(options?: { wsEndpoint?: string; walletExtension?: any; account?: any }): Promise<WalletInfo> {
     try {
       // Initialize Polkadot API connection
       // @ts-ignore - Used in real implementation
       const wsEndpoint = options?.wsEndpoint || 'wss://rpc.polkadot.io';
-      
+
       // This would typically use @polkadot/api and wallet extensions
       if (!options?.walletExtension || !options?.account) {
         throw BlockchainError.walletNotFound(
           'Wallet extension or account not provided for Polkadot connection',
-          this.network
+          this.network,
         );
       }
 
       // Connect to the API
       // const api = await ApiPromise.create({ provider: new WsProvider(wsEndpoint) });
-      
+
       // Get account from wallet extension
       const account = options.account;
-      
+
       if (!account.address) {
-        throw BlockchainError.connectionFailed(
-          'Failed to get address from Polkadot wallet',
-          this.network
-        );
+        throw BlockchainError.connectionFailed('Failed to get address from Polkadot wallet', this.network);
       }
 
       this.walletInfo = {
@@ -76,11 +65,9 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
 
       return this.walletInfo;
     } catch (error) {
-      throw BlockchainError.connectionFailed(
-        'Failed to connect to Polkadot wallet',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.connectionFailed('Failed to connect to Polkadot wallet', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -96,11 +83,9 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
       this.api = null;
       this.signer = null;
     } catch (error) {
-      throw BlockchainError.connectionFailed(
-        'Failed to disconnect from Polkadot wallet',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.connectionFailed('Failed to disconnect from Polkadot wallet', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -110,7 +95,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    */
   async getWalletBalance(tokenAddress?: string): Promise<string> {
     this.ensureWalletConnected();
-    
+
     try {
       if (tokenAddress) {
         // Get parachain token balance
@@ -121,11 +106,9 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
         return '0'; // Mock implementation
       }
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to get Polkadot wallet balance',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to get Polkadot wallet balance', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -134,17 +117,15 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    */
   async getTodos(): Promise<BlockchainTodo[]> {
     this.ensureWalletConnected();
-    
+
     try {
       // This would query the todos pallet storage
       // Using api.query.todos.todosByOwner()
       return []; // Mock implementation
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to fetch todos from Polkadot',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to fetch todos from Polkadot', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -154,17 +135,15 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    */
   async getTodoById(_id: string): Promise<BlockchainTodo | null> {
     this.ensureWalletConnected();
-    
+
     try {
       // This would query a specific todo from pallet storage
       // Using api.query.todos.todos(id)
       return null; // Mock implementation
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to fetch todo from Polkadot',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to fetch todo from Polkadot', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -174,13 +153,13 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    */
   async createTodo(_todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
-    
+
     try {
       // This would call the todos pallet's create_todo extrinsic
       // Using api.tx.todos.createTodo().signAndSend()
-      
+
       const mockTxHash = 'polkadot_mock_tx_' + Date.now();
-      
+
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
@@ -191,11 +170,9 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
         timestamp: new Date(),
       };
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to create todo on Polkadot',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to create todo on Polkadot', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -206,12 +183,12 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    */
   async updateTodo(_id: string, _todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
-    
+
     try {
       // This would call the todos pallet's update_todo extrinsic
-      
+
       const mockTxHash = 'polkadot_update_tx_' + Date.now();
-      
+
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
@@ -222,11 +199,9 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
         timestamp: new Date(),
       };
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to update todo on Polkadot',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to update todo on Polkadot', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -236,12 +211,12 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    */
   async deleteTodo(_id: string): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
-    
+
     try {
       // This would call the todos pallet's delete_todo extrinsic
-      
+
       const mockTxHash = 'polkadot_delete_tx_' + Date.now();
-      
+
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
@@ -252,11 +227,9 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
         timestamp: new Date(),
       };
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to delete todo on Polkadot',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to delete todo on Polkadot', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -273,11 +246,9 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
       }
       return TransactionStatus.UNKNOWN;
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to get Polkadot transaction status',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to get Polkadot transaction status', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -301,11 +272,9 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
       }
       return null;
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to get Polkadot transaction receipt',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to get Polkadot transaction receipt', this.network, {
+        originalError: error,
+      });
     }
   }
 

@@ -1,13 +1,13 @@
 import { BaseApiClient } from './BaseApiClient';
-import { 
-  ApiClientConfig, 
-  ApiResponse, 
-  User, 
-  AuthResponse, 
+import {
+  ApiClientConfig,
+  ApiResponse,
+  User,
+  AuthResponse,
   LoginInput,
   userSchema,
   authResponseSchema,
-  loginInputSchema
+  loginInputSchema,
 } from './types';
 import { ApiError } from './ApiError';
 
@@ -36,23 +36,23 @@ export class AuthApiClient extends BaseApiClient {
       }
 
       const response = await this.post<AuthResponse>('/auth/login', result.data);
-      
+
       // Validate response data
       if (response.success && response.data) {
         const authResult = authResponseSchema.safeParse(response.data);
         if (!authResult.success) {
           throw ApiError.validationError(`Invalid auth response: ${authResult.error.message}`);
         }
-        
+
         // Set the auth token for future requests
         this.setAuthToken(authResult.data.token, authResult.data.refreshToken);
-        
+
         return {
           ...response,
           data: authResult.data,
         };
       }
-      
+
       return response;
     } catch (error) {
       if (error instanceof ApiError) {
@@ -80,23 +80,23 @@ export class AuthApiClient extends BaseApiClient {
       }
 
       const response = await this.post<AuthResponse>('/auth/register', result.data);
-      
+
       // Validate response data
       if (response.success && response.data) {
         const authResult = authResponseSchema.safeParse(response.data);
         if (!authResult.success) {
           throw ApiError.validationError(`Invalid auth response: ${authResult.error.message}`);
         }
-        
+
         // Set the auth token for future requests
         this.setAuthToken(authResult.data.token, authResult.data.refreshToken);
-        
+
         return {
           ...response,
           data: authResult.data,
         };
       }
-      
+
       return response;
     } catch (error) {
       if (error instanceof ApiError) {
@@ -112,15 +112,15 @@ export class AuthApiClient extends BaseApiClient {
   async logout(): Promise<ApiResponse<void>> {
     try {
       const response = await this.post<void>('/auth/logout');
-      
+
       // Clear the auth token
       this.clearAuthToken();
-      
+
       return response;
     } catch (error) {
       // Clear the auth token even if logout fails
       this.clearAuthToken();
-      
+
       if (error instanceof ApiError) {
         throw error;
       }
@@ -141,23 +141,23 @@ export class AuthApiClient extends BaseApiClient {
       const response = await this.post<AuthResponse>('/auth/refresh', {
         refreshToken,
       });
-      
+
       // Validate response data
       if (response.success && response.data) {
         const authResult = authResponseSchema.safeParse(response.data);
         if (!authResult.success) {
           throw ApiError.validationError(`Invalid auth response: ${authResult.error.message}`);
         }
-        
+
         // Update the auth token
         this.setAuthToken(authResult.data.token, authResult.data.refreshToken);
-        
+
         return {
           ...response,
           data: authResult.data,
         };
       }
-      
+
       return response;
     } catch (error) {
       if (error instanceof ApiError) {
@@ -173,20 +173,20 @@ export class AuthApiClient extends BaseApiClient {
   async getProfile(): Promise<ApiResponse<User>> {
     try {
       const response = await this.get<User>('/auth/profile');
-      
+
       // Validate response data
       if (response.success && response.data) {
         const result = userSchema.safeParse(response.data);
         if (!result.success) {
           throw ApiError.validationError(`Invalid user data: ${result.error.message}`);
         }
-        
+
         return {
           ...response,
           data: result.data,
         };
       }
-      
+
       return response;
     } catch (error) {
       if (error instanceof ApiError) {
@@ -203,20 +203,20 @@ export class AuthApiClient extends BaseApiClient {
   async updateProfile(userData: Partial<User>): Promise<ApiResponse<User>> {
     try {
       const response = await this.put<User>('/auth/profile', userData);
-      
+
       // Validate response data
       if (response.success && response.data) {
         const result = userSchema.safeParse(response.data);
         if (!result.success) {
           throw ApiError.validationError(`Invalid user data: ${result.error.message}`);
         }
-        
+
         return {
           ...response,
           data: result.data,
         };
       }
-      
+
       return response;
     } catch (error) {
       if (error instanceof ApiError) {

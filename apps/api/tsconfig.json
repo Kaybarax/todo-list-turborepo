@@ -9,7 +9,5 @@
   },
   "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules", "dist"],
-  "references": [
-    { "path": "../../packages/services" }
-  ]
+  "references": [{ "path": "../../packages/services" }]
 }

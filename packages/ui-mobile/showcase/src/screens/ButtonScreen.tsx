@@ -22,17 +22,14 @@ const ButtonScreen: React.FC = () => {
           </Layout>
           <Layout style={styles.cardContent}>
             <Text category="p1">
-              Interactive button component with multiple variants, sizes, and states. 
-              Built on UI Kitten Button primitive with custom styling and functionality.
+              Interactive button component with multiple variants, sizes, and states. Built on UI Kitten Button
+              primitive with custom styling and functionality.
             </Text>
           </Layout>
         </Card>
 
         {/* Button Variants */}
-        <ComponentExample
-          title="Button Variants"
-          description="Different visual styles for various use cases."
-        >
+        <ComponentExample title="Button Variants" description="Different visual styles for various use cases.">
           <View style={styles.exampleGrid}>
             <Button title="Primary" variant="primary" onPress={() => {}} />
             <Button title="Secondary" variant="secondary" onPress={() => {}} />
@@ -44,10 +41,7 @@ const ButtonScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Button Sizes */}
-        <ComponentExample
-          title="Button Sizes"
-          description="Different sizes to fit various layouts."
-        >
+        <ComponentExample title="Button Sizes" description="Different sizes to fit various layouts.">
           <View style={styles.exampleColumn}>
             <Button title="Small Button" size="small" onPress={() => {}} />
             <Button title="Medium Button" size="medium" onPress={() => {}} />
@@ -56,74 +50,35 @@ const ButtonScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Button States */}
-        <ComponentExample
-          title="Button States"
-          description="Different button states including disabled and loading."
-        >
+        <ComponentExample title="Button States" description="Different button states including disabled and loading.">
           <View style={styles.exampleColumn}>
             <Button title="Normal Button" onPress={() => {}} />
             <Button title="Disabled Button" disabled onPress={() => {}} />
-            <Button 
-              title={loading ? "Loading..." : "Click to Load"} 
-              loading={loading}
-              onPress={handleLoadingDemo} 
-            />
+            <Button title={loading ? 'Loading...' : 'Click to Load'} loading={loading} onPress={handleLoadingDemo} />
           </View>
         </ComponentExample>
 
         {/* Buttons with Icons */}
-        <ComponentExample
-          title="Buttons with Icons"
-          description="Buttons with left and right icons."
-        >
+        <ComponentExample title="Buttons with Icons" description="Buttons with left and right icons.">
           <View style={styles.exampleColumn}>
-            <Button 
-              title="Download" 
-              leftIcon="download" 
-              variant="primary" 
-              onPress={() => {}} 
-            />
-            <Button 
-              title="Send Message" 
-              rightIcon="arrow-forward" 
-              variant="outline" 
-              onPress={() => {}} 
-            />
-            <Button 
-              title="Save & Continue" 
-              leftIcon="save" 
-              rightIcon="arrow-forward" 
-              variant="success" 
-              onPress={() => {}} 
+            <Button title="Download" leftIcon="download" variant="primary" onPress={() => {}} />
+            <Button title="Send Message" rightIcon="arrow-forward" variant="outline" onPress={() => {}} />
+            <Button
+              title="Save & Continue"
+              leftIcon="save"
+              rightIcon="arrow-forward"
+              variant="success"
+              onPress={() => {}}
             />
           </View>
         </ComponentExample>
 
         {/* Full Width Buttons */}
-        <ComponentExample
-          title="Full Width & Rounded"
-          description="Buttons with full width and rounded styling."
-        >
+        <ComponentExample title="Full Width & Rounded" description="Buttons with full width and rounded styling.">
           <View style={styles.exampleColumn}>
-            <Button 
-              title="Full Width Button" 
-              fullWidth 
-              variant="primary" 
-              onPress={() => {}} 
-            />
-            <Button 
-              title="Rounded Button" 
-              rounded 
-              variant="secondary" 
-              onPress={() => {}} 
-            />
-            <Button 
-              title="Full Width & Rounded" 
-              fullWidth 
-              rounded 
-              variant="success" 
-              onPress={() => {}} 
-            />
+            <Button title="Full Width Button" fullWidth variant="primary" onPress={() => {}} />
+            <Button title="Rounded Button" rounded variant="secondary" onPress={() => {}} />
+            <Button title="Full Width & Rounded" fullWidth rounded variant="success" onPress={() => {}} />
           </View>
         </ComponentExample>
       </ScrollView>

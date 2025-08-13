@@ -9,9 +9,6 @@
     "resolveJsonModule": true,
     "strict": true
   },
-  "include": [
-    "lib/**/*",
-    "__tests__/**/*"
-  ],
+  "include": ["lib/**/*", "__tests__/**/*"],
   "exclude": ["node_modules", "dist", "showcase"]
 }

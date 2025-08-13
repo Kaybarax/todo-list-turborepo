@@ -1,4 +1,4 @@
-import { defineConfig } from 'tsup'
+import { defineConfig } from 'tsup';
 
 export default defineConfig({
   entry: ['src/index.ts'],
@@ -21,13 +21,13 @@ export default defineConfig({
     '@coral-xyz/anchor',
     // Other heavy dependencies
     'axios',
-    'date-fns'
+    'date-fns',
   ],
   esbuildOptions(options) {
     // Increase memory limit for esbuild
     options.define = {
       ...options.define,
-      'process.env.NODE_ENV': '"production"'
-    }
-  }
-})
+      'process.env.NODE_ENV': '"production"',
+    };
+  },
+});

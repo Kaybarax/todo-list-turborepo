@@ -10,14 +10,24 @@ export class CreateTodoDto {
   @Transform(({ value }) => value?.trim())
   title: string;
 
-  @ApiProperty({ description: 'Todo description', example: 'Write comprehensive documentation for the todo application', required: false, maxLength: 1000 })
+  @ApiProperty({
+    description: 'Todo description',
+    example: 'Write comprehensive documentation for the todo application',
+    required: false,
+    maxLength: 1000,
+  })
   @IsOptional()
   @IsString()
   @MaxLength(1000, { message: 'Description must not exceed 1000 characters' })
   @Transform(({ value }) => value?.trim())
   description?: string;
 
-  @ApiProperty({ description: 'Todo priority level', enum: ['low', 'medium', 'high'], example: 'medium', required: false })
+  @ApiProperty({
+    description: 'Todo priority level',
+    enum: ['low', 'medium', 'high'],
+    example: 'medium',
+    required: false,
+  })
   @IsOptional()
   @IsEnum(['low', 'medium', 'high'], { message: 'Priority must be low, medium, or high' })
   priority?: 'low' | 'medium' | 'high';
@@ -31,6 +41,6 @@ export class CreateTodoDto {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  @Transform(({ value }) => Array.isArray(value) ? value.map((tag: string) => tag?.trim()).filter(Boolean) : [])
+  @Transform(({ value }) => (Array.isArray(value) ? value.map((tag: string) => tag?.trim()).filter(Boolean) : []))
   tags?: string[];
 }

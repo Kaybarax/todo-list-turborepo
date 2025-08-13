@@ -15,17 +15,18 @@ describe('Moonbeam Integration Tests', function () {
   // Deploy fixture for integration tests
   async function deployIntegrationFixture() {
     const [owner, user1, user2, user3, ...addrs] = await ethers.getSigners();
-    
+
     const TodoListFactory = await ethers.getContractFactory('TodoListFactory');
     const todoListFactory = await TodoListFactory.deploy();
-    
+
     const TodoList = await ethers.getContractFactory('TodoList');
-    
+
     return { TodoListFactory, todoListFactory, TodoList, owner, user1, user2, user3, addrs };
   }
 
   beforeEach(async function () {
-    ({ TodoListFactory, todoListFactory, TodoList, owner, user1, user2, user3, addrs } = await loadFixture(deployIntegrationFixture));
+    ({ TodoListFactory, todoListFactory, TodoList, owner, user1, user2, user3, addrs } =
+      await loadFixture(deployIntegrationFixture));
   });
 
   describe('End-to-End Workflow', function () {
@@ -39,19 +40,19 @@ describe('Moonbeam Integration Tests', function () {
       await todoListContract.connect(user1).createTodo(
         'Deploy on Moonbeam',
         'Deploy smart contracts on Moonbeam parachain',
-        2 // High priority
+        2, // High priority
       );
-      
+
       await todoListContract.connect(user1).createTodo(
         'Test Polkadot integration',
         'Verify cross-chain functionality',
-        1 // Medium priority
+        1, // Medium priority
       );
-      
+
       await todoListContract.connect(user1).createTodo(
         'Optimize gas costs',
         'Ensure efficient gas usage on Moonbeam',
-        0 // Low priority
+        0, // Low priority
       );
 
       // Step 3: Verify todos were created
@@ -66,7 +67,7 @@ describe('Moonbeam Integration Tests', function () {
         2,
         'Test Polkadot integration - Updated',
         'Verify cross-chain functionality with additional testing',
-        2 // Change to high priority
+        2, // Change to high priority
       );
 
       const updatedTodo = await todoListContract.connect(user1).getTodo(2);
@@ -146,21 +147,19 @@ describe('Moonbeam Integration Tests', function () {
   });
 
   describe('Moonbeam-Specific Integration Tests', function () {
-    it('Should handle Moonbeam\'s EVM compatibility across contracts', async function () {
+    it("Should handle Moonbeam's EVM compatibility across contracts", async function () {
       // Test that both factory and TodoList work together on Moonbeam
       const blockNumberBefore = await ethers.provider.getBlockNumber();
-      
+
       // Create TodoList through factory
       await todoListFactory.connect(user1).createTodoList();
       const todoListAddress = await todoListFactory.getTodoListForUser(user1.address);
       const todoListContract = TodoList.attach(todoListAddress);
 
       // Create a todo with Moonbeam-specific content
-      await todoListContract.connect(user1).createTodo(
-        'Moonbeam Parachain Integration',
-        'Test full EVM compatibility on Polkadot parachain',
-        2
-      );
+      await todoListContract
+        .connect(user1)
+        .createTodo('Moonbeam Parachain Integration', 'Test full EVM compatibility on Polkadot parachain', 2);
 
       const blockNumberAfter = await ethers.provider.getBlockNumber();
       expect(blockNumberAfter).to.be.above(blockNumberBefore);
@@ -185,21 +184,16 @@ describe('Moonbeam Integration Tests', function () {
       const todoListContract = TodoList.attach(todoListAddress);
 
       // Create todo
-      const todoTx = await todoListContract.connect(user1).createTodo(
-        'Gas Optimization Test',
-        'Testing gas efficiency on Moonbeam',
-        1
-      );
+      const todoTx = await todoListContract
+        .connect(user1)
+        .createTodo('Gas Optimization Test', 'Testing gas efficiency on Moonbeam', 1);
       const todoReceipt = await todoTx.wait();
       gasUsages.push({ operation: 'createTodo', gas: todoReceipt.gasUsed });
 
       // Update todo
-      const updateTx = await todoListContract.connect(user1).updateTodo(
-        1,
-        'Updated Gas Test',
-        'Updated description',
-        2
-      );
+      const updateTx = await todoListContract
+        .connect(user1)
+        .updateTodo(1, 'Updated Gas Test', 'Updated description', 2);
       const updateReceipt = await updateTx.wait();
       gasUsages.push({ operation: 'updateTodo', gas: updateReceipt.gasUsed });
 
@@ -216,29 +210,25 @@ describe('Moonbeam Integration Tests', function () {
       });
     });
 
-    it('Should support Moonbeam\'s substrate-based features', async function () {
+    it("Should support Moonbeam's substrate-based features", async function () {
       // Test that the contracts work well with Moonbeam's substrate architecture
       await todoListFactory.connect(user1).createTodoList();
       const todoListAddress = await todoListFactory.getTodoListForUser(user1.address);
       const todoListContract = TodoList.attach(todoListAddress);
 
       // Create todos with substrate-related content
-      await todoListContract.connect(user1).createTodo(
-        'Substrate Integration',
-        'Leverage Moonbeam\'s Substrate-based architecture',
-        2
-      );
+      await todoListContract
+        .connect(user1)
+        .createTodo('Substrate Integration', "Leverage Moonbeam's Substrate-based architecture", 2);
 
-      await todoListContract.connect(user1).createTodo(
-        'Cross-chain Communication',
-        'Test XCM integration with other parachains',
-        1
-      );
+      await todoListContract
+        .connect(user1)
+        .createTodo('Cross-chain Communication', 'Test XCM integration with other parachains', 1);
 
       // Verify both todos were created successfully
       const todos = await todoListContract.connect(user1).getTodos();
       expect(todos.length).to.equal(2);
-      
+
       // Test that we can perform operations on both
       await todoListContract.connect(user1).toggleTodoCompletion(1);
       await todoListContract.connect(user1).updateTodo(2, '', 'Updated XCM testing', ethers.MaxUint256);
@@ -258,7 +248,7 @@ describe('Moonbeam Integration Tests', function () {
 
       for (let i = 0; i < userCount; i++) {
         await todoListFactory.connect(addrs[i]).createTodoList();
-        
+
         const todoListAddress = await todoListFactory.getTodoListForUser(addrs[i].address);
         const todoListContract = TodoList.attach(todoListAddress);
 
@@ -267,7 +257,7 @@ describe('Moonbeam Integration Tests', function () {
           await todoListContract.connect(addrs[i]).createTodo(
             `User ${i} Todo ${j}`,
             `Description for user ${i} todo ${j}`,
-            j % 3 // Rotate through priorities
+            j % 3, // Rotate through priorities
           );
         }
       }
@@ -296,11 +286,9 @@ describe('Moonbeam Integration Tests', function () {
       // Create many todos
       const todoCount = 20;
       for (let i = 0; i < todoCount; i++) {
-        await todoListContract.connect(user1).createTodo(
-          `Performance Test Todo ${i}`,
-          `Testing performance with todo ${i}`,
-          i % 3
-        );
+        await todoListContract
+          .connect(user1)
+          .createTodo(`Performance Test Todo ${i}`, `Testing performance with todo ${i}`, i % 3);
       }
 
       // Perform various operations
@@ -308,12 +296,9 @@ describe('Moonbeam Integration Tests', function () {
 
       // Update several todos
       for (let i = 1; i <= 5; i++) {
-        await todoListContract.connect(user1).updateTodo(
-          i,
-          `Updated Todo ${i}`,
-          `Updated description ${i}`,
-          (i + 1) % 3
-        );
+        await todoListContract
+          .connect(user1)
+          .updateTodo(i, `Updated Todo ${i}`, `Updated description ${i}`, (i + 1) % 3);
       }
 
       // Complete several todos
@@ -350,20 +335,20 @@ describe('Moonbeam Integration Tests', function () {
       const todoListContract = TodoList.attach(todoListAddress);
 
       // Try to access non-existent todo
-      await expect(todoListContract.connect(user1).getTodo(999))
-        .to.be.revertedWith('Todo not found');
+      await expect(todoListContract.connect(user1).getTodo(999)).to.be.revertedWith('Todo not found');
 
       // Try to update non-existent todo
-      await expect(todoListContract.connect(user1).updateTodo(999, 'Title', 'Desc', 1))
-        .to.be.revertedWith('Todo not found');
+      await expect(todoListContract.connect(user1).updateTodo(999, 'Title', 'Desc', 1)).to.be.revertedWith(
+        'Todo not found',
+      );
 
       // Try to delete non-existent todo
-      await expect(todoListContract.connect(user1).deleteTodo(999))
-        .to.be.revertedWith('Todo not found');
+      await expect(todoListContract.connect(user1).deleteTodo(999)).to.be.revertedWith('Todo not found');
 
       // Try to create duplicate TodoList
-      await expect(todoListFactory.connect(user1).createTodoList())
-        .to.be.revertedWith('TodoList already exists for this user');
+      await expect(todoListFactory.connect(user1).createTodoList()).to.be.revertedWith(
+        'TodoList already exists for this user',
+      );
     });
 
     it('Should maintain data integrity across complex operations', async function () {

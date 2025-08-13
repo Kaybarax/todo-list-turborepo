@@ -1,13 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  RefreshControl,
-} from 'react-native';
+import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { TodoItem } from './TodoItem';
 import { BlockchainNetwork } from '@todo/services';
 import type { Todo } from '../store/todoStore';
@@ -45,10 +37,10 @@ export function TodoList({
     // Apply filter
     switch (filter) {
       case 'active':
-        filtered = todos.filter((todo) => !todo.completed);
+        filtered = todos.filter(todo => !todo.completed);
         break;
       case 'completed':
-        filtered = todos.filter((todo) => todo.completed);
+        filtered = todos.filter(todo => todo.completed);
         break;
       default:
         filtered = todos;
@@ -57,10 +49,10 @@ export function TodoList({
     // Apply search
     if (searchTerm) {
       filtered = filtered.filter(
-        (todo) =>
+        todo =>
           todo.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           todo.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          todo.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+          todo.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())),
       );
     }
 
@@ -87,23 +79,15 @@ export function TodoList({
 
   const stats = useMemo(() => {
     const total = todos.length;
-    const completed = todos.filter((todo) => todo.completed).length;
+    const completed = todos.filter(todo => todo.completed).length;
     const active = total - completed;
-    const overdue = todos.filter(
-      (todo) => todo.dueDate && new Date(todo.dueDate) < new Date() && !todo.completed
-    ).length;
+    const overdue = todos.filter(todo => todo.dueDate && new Date(todo.dueDate) < new Date() && !todo.completed).length;
 
     return { total, completed, active, overdue };
   }, [todos]);
 
   const renderTodoItem = ({ item }: { item: Todo }) => (
-    <TodoItem
-      todo={item}
-      onToggle={onToggle}
-      onEdit={onEdit}
-      onDelete={onDelete}
-      onBlockchainSync={onBlockchainSync}
-    />
+    <TodoItem todo={item} onToggle={onToggle} onEdit={onEdit} onDelete={onDelete} onBlockchainSync={onBlockchainSync} />
   );
 
   const renderEmptyState = () => (
@@ -119,55 +103,23 @@ export function TodoList({
     </View>
   );
 
-  const FilterButton = ({ 
-    type, 
-    label, 
-    count 
-  }: { 
-    type: FilterType; 
-    label: string; 
-    count: number;
-  }) => (
+  const FilterButton = ({ type, label, count }: { type: FilterType; label: string; count: number }) => (
     <TouchableOpacity
-      style={[
-        styles.filterButton,
-        filter === type && styles.filterButtonActive,
-      ]}
+      style={[styles.filterButton, filter === type && styles.filterButtonActive]}
       onPress={() => setFilter(type)}
     >
-      <Text
-        style={[
-          styles.filterButtonText,
-          filter === type && styles.filterButtonTextActive,
-        ]}
-      >
+      <Text style={[styles.filterButtonText, filter === type && styles.filterButtonTextActive]}>
         {label} ({count})
       </Text>
     </TouchableOpacity>
   );
 
-  const SortButton = ({ 
-    type, 
-    label 
-  }: { 
-    type: SortType; 
-    label: string;
-  }) => (
+  const SortButton = ({ type, label }: { type: SortType; label: string }) => (
     <TouchableOpacity
-      style={[
-        styles.sortButton,
-        sort === type && styles.sortButtonActive,
-      ]}
+      style={[styles.sortButton, sort === type && styles.sortButtonActive]}
       onPress={() => setSort(type)}
     >
-      <Text
-        style={[
-          styles.sortButtonText,
-          sort === type && styles.sortButtonTextActive,
-        ]}
-      >
-        {label}
-      </Text>
+      <Text style={[styles.sortButtonText, sort === type && styles.sortButtonTextActive]}>{label}</Text>
     </TouchableOpacity>
   );
 
@@ -202,10 +154,7 @@ export function TodoList({
           placeholder="Search todos..."
           placeholderTextColor="#9ca3af"
         />
-        <TouchableOpacity
-          style={styles.filterToggle}
-          onPress={() => setShowFilters(!showFilters)}
-        >
+        <TouchableOpacity style={styles.filterToggle} onPress={() => setShowFilters(!showFilters)}>
           <Text style={styles.filterToggleText}>Filters</Text>
         </TouchableOpacity>
       </View>
@@ -238,13 +187,9 @@ export function TodoList({
       <FlatList
         data={filteredAndSortedTodos}
         renderItem={renderTodoItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         ListEmptyComponent={renderEmptyState}
-        refreshControl={
-          onRefresh ? (
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          ) : undefined
-        }
+        refreshControl={onRefresh ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> : undefined}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
       />

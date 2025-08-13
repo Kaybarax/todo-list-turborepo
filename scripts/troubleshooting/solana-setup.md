@@ -15,6 +15,7 @@ The Solana CLI is the primary tool for interacting with the Solana blockchain, m
 ### Automatic Installation (Recommended)
 
 Use our automated installer:
+
 ```bash
 ./scripts/install-blockchain-tools.sh --tool=solana
 ```
@@ -22,6 +23,7 @@ Use our automated installer:
 ### Manual Installation
 
 #### Method 1: Official Installer (Recommended)
+
 ```bash
 # Download and run the official installer
 sh -c "$(curl -sSfL https://release.solana.com/v1.16.0/install)"
@@ -33,11 +35,13 @@ export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 #### Method 2: Using Package Managers
 
 **macOS (Homebrew):**
+
 ```bash
 brew install solana
 ```
 
 **Ubuntu/Debian:**
+
 ```bash
 # Add Solana repository
 wget -qO - https://release.solana.com/v1.16.0/solana-release-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
@@ -46,6 +50,7 @@ export PATH=$PWD/bin:$PATH
 ```
 
 **Windows:**
+
 ```powershell
 # Download Windows installer from https://github.com/solana-labs/solana/releases
 # Or use Windows Subsystem for Linux (WSL)
@@ -54,12 +59,14 @@ export PATH=$PWD/bin:$PATH
 ## Initial Configuration
 
 ### 1. Verify Installation
+
 ```bash
 solana --version
 solana-keygen --version
 ```
 
 ### 2. Create Wallet
+
 ```bash
 # Generate new keypair
 solana-keygen new --outfile ~/.config/solana/id.json
@@ -69,6 +76,7 @@ solana-keygen recover --outfile ~/.config/solana/id.json
 ```
 
 ### 3. Configure Network
+
 ```bash
 # Set to devnet for development
 solana config set --url https://api.devnet.solana.com
@@ -81,11 +89,13 @@ solana config set --url http://localhost:8899
 ```
 
 ### 4. Set Default Keypair
+
 ```bash
 solana config set --keypair ~/.config/solana/id.json
 ```
 
 ### 5. Verify Configuration
+
 ```bash
 solana config get
 solana balance
@@ -96,22 +106,25 @@ solana balance
 ### Issue 1: "solana: command not found"
 
 **Symptoms:**
+
 - Command `solana --version` returns "command not found"
 - Installation appears successful but CLI is not available
 
 **Solutions:**
 
 1. **Check PATH configuration:**
+
    ```bash
    # Check current PATH
    echo $PATH
-   
+
    # Add Solana to PATH (add to shell profile)
    export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
    source ~/.bashrc  # or ~/.zshrc
    ```
 
 2. **Verify installation directory:**
+
    ```bash
    ls -la ~/.local/share/solana/install/active_release/bin/
    which solana
@@ -125,6 +138,7 @@ solana balance
 ### Issue 2: Network connection timeouts
 
 **Symptoms:**
+
 - "Connection timeout" errors
 - "Failed to get recent blockhash" messages
 - Slow or failed RPC calls
@@ -132,17 +146,19 @@ solana balance
 **Solutions:**
 
 1. **Switch to different RPC endpoint:**
+
    ```bash
    # Try different devnet endpoints
    solana config set --url https://api.devnet.solana.com
    solana config set --url https://devnet.genesysgo.net
-   
+
    # For mainnet
    solana config set --url https://api.mainnet-beta.solana.com
    solana config set --url https://solana-api.projectserum.com
    ```
 
 2. **Check network connectivity:**
+
    ```bash
    curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1, "method":"getHealth"}' https://api.devnet.solana.com
    ```
@@ -156,18 +172,21 @@ solana balance
 ### Issue 3: Insufficient funds for transactions
 
 **Symptoms:**
+
 - "Insufficient funds" errors
 - Transaction failures due to low balance
 
 **Solutions:**
 
 1. **Request airdrop on devnet:**
+
    ```bash
    solana airdrop 2
    solana balance
    ```
 
 2. **Check current balance and address:**
+
    ```bash
    solana balance
    solana address
@@ -182,6 +201,7 @@ solana balance
 ### Issue 4: Keypair/wallet issues
 
 **Symptoms:**
+
 - "No such file or directory" for keypair
 - Permission denied errors
 - Invalid keypair format
@@ -189,12 +209,14 @@ solana balance
 **Solutions:**
 
 1. **Create new keypair:**
+
    ```bash
    mkdir -p ~/.config/solana
    solana-keygen new --outfile ~/.config/solana/id.json
    ```
 
 2. **Fix permissions:**
+
    ```bash
    chmod 600 ~/.config/solana/id.json
    chown $USER ~/.config/solana/id.json
@@ -209,6 +231,7 @@ solana balance
 ### Issue 5: Version compatibility issues
 
 **Symptoms:**
+
 - "Unsupported version" errors
 - Build failures with version mismatches
 - Deprecated command warnings
@@ -216,12 +239,14 @@ solana balance
 **Solutions:**
 
 1. **Update to latest version:**
+
    ```bash
    solana-install update
    solana --version
    ```
 
 2. **Install specific version:**
+
    ```bash
    solana-install init 1.16.0
    ```
@@ -235,6 +260,7 @@ solana balance
 ### Issue 6: Local validator issues
 
 **Symptoms:**
+
 - Local validator fails to start
 - Port conflicts
 - Ledger corruption
@@ -242,16 +268,19 @@ solana balance
 **Solutions:**
 
 1. **Start local validator:**
+
    ```bash
    solana-test-validator
    ```
 
 2. **Reset ledger if corrupted:**
+
    ```bash
    solana-test-validator --reset
    ```
 
 3. **Use different port:**
+
    ```bash
    solana-test-validator --rpc-port 8900
    ```
@@ -265,18 +294,20 @@ solana balance
 ## Configuration Files
 
 ### Main Config File
+
 Location: `~/.config/solana/cli/config.yml`
 
 ```yaml
-json_rpc_url: "https://api.devnet.solana.com"
-websocket_url: ""
+json_rpc_url: 'https://api.devnet.solana.com'
+websocket_url: ''
 keypair_path: /Users/username/.config/solana/id.json
 address_labels:
-  "11111111111111111111111111111111": System Program
+  '11111111111111111111111111111111': System Program
 commitment: confirmed
 ```
 
 ### Environment Variables
+
 ```bash
 # Add to shell profile (~/.bashrc, ~/.zshrc)
 export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
@@ -287,24 +318,29 @@ export SOLANA_URL="https://api.devnet.solana.com"
 ## Network Endpoints
 
 ### Devnet (Development)
+
 - RPC: `https://api.devnet.solana.com`
 - WebSocket: `wss://api.devnet.solana.com/`
 
 ### Testnet (Testing)
+
 - RPC: `https://api.testnet.solana.com`
 - WebSocket: `wss://api.testnet.solana.com/`
 
 ### Mainnet Beta (Production)
+
 - RPC: `https://api.mainnet-beta.solana.com`
 - WebSocket: `wss://api.mainnet-beta.solana.com/`
 
 ### Local Development
+
 - RPC: `http://localhost:8899`
 - WebSocket: `ws://localhost:8900`
 
 ## Useful Commands
 
 ### Wallet Management
+
 ```bash
 # Create new wallet
 solana-keygen new
@@ -320,6 +356,7 @@ solana airdrop 2
 ```
 
 ### Network Operations
+
 ```bash
 # Show current configuration
 solana config get
@@ -333,6 +370,7 @@ solana ping
 ```
 
 ### Program Deployment
+
 ```bash
 # Deploy program
 solana program deploy program.so
@@ -347,16 +385,19 @@ solana program close PROGRAM_ID
 ## Platform-Specific Notes
 
 ### macOS
+
 - Use Homebrew for easier management
 - Ensure Xcode Command Line Tools are installed
 - M1/M2 Macs fully supported
 
 ### Linux
+
 - Most distributions supported
 - May need to install curl and ca-certificates
 - Consider using package manager when available
 
 ### Windows
+
 - Native Windows support available
 - WSL recommended for better compatibility
 - PowerShell or Command Prompt both work
@@ -364,6 +405,7 @@ solana program close PROGRAM_ID
 ## Performance Optimization
 
 ### RPC Configuration
+
 ```bash
 # Use faster RPC endpoints
 solana config set --url https://solana-api.projectserum.com  # Mainnet
@@ -371,6 +413,7 @@ solana config set --url https://devnet.genesysgo.net        # Devnet
 ```
 
 ### Local Development
+
 ```bash
 # Start local validator with optimizations
 solana-test-validator --no-bpf-jit --reset --quiet
@@ -379,11 +422,13 @@ solana-test-validator --no-bpf-jit --reset --quiet
 ## Security Best Practices
 
 1. **Protect your keypair:**
+
    ```bash
    chmod 600 ~/.config/solana/id.json
    ```
 
 2. **Use different keypairs for different environments:**
+
    ```bash
    solana-keygen new --outfile ~/.config/solana/devnet.json
    solana-keygen new --outfile ~/.config/solana/mainnet.json

@@ -5,6 +5,7 @@ This guide covers the comprehensive development workflow for the Todo App monore
 ## 🚀 Quick Start
 
 ### Complete Development Environment
+
 ```bash
 # Start all services with dependencies
 pnpm dev
@@ -14,6 +15,7 @@ pnpm dev
 ```
 
 ### Specific Development Scenarios
+
 ```bash
 # Frontend development only
 pnpm dev:frontend
@@ -33,9 +35,11 @@ pnpm dev:mobile
 ## 📋 Development Scripts Overview
 
 ### Main Development Script (`startDev.sh`)
+
 Comprehensive development environment startup with service dependency management.
 
 **Features:**
+
 - Intelligent service dependency management
 - Flexible service selection
 - Health monitoring and graceful shutdown
@@ -43,6 +47,7 @@ Comprehensive development environment startup with service dependency management
 - Infrastructure service management
 
 **Usage:**
+
 ```bash
 ./scripts/startDev.sh [OPTIONS]
 
@@ -58,21 +63,25 @@ Options:
 ### Specialized Development Scripts
 
 #### Frontend Development (`dev-frontend.sh`)
+
 - **Purpose**: Frontend-focused development
 - **Services**: Web app + Mobile app + API dependency
 - **Features**: Automatic API dependency management
 
 #### Backend Development (`dev-backend.sh`)
+
 - **Purpose**: Backend-focused development
 - **Services**: API + Ingestion + Database dependencies
 - **Features**: Database setup and monitoring integration
 
 #### Blockchain Development (`dev-blockchain.sh`)
+
 - **Purpose**: Blockchain contract development
 - **Services**: Local blockchain networks (Hardhat, Solana, Polkadot)
 - **Features**: Multi-network support and contract deployment
 
 #### Service-Specific Development (`dev-services.sh`)
+
 - **Purpose**: Individual service development
 - **Services**: Any single service with smart dependency management
 - **Features**: Automatic dependency detection and startup
@@ -80,19 +89,21 @@ Options:
 ## 🔧 Service Dependencies
 
 ### Dependency Graph
+
 ```
 Web App ──────┐
               ├─── API ──────┐
 Mobile App ───┘              ├─── MongoDB
                               ├─── Redis
 Ingestion ────────────────────┘
-                              
+
 Contracts ─── Blockchain Networks (Hardhat/Solana/Polkadot)
 
 Storybook ─── UI Packages
 ```
 
 ### Automatic Dependency Management
+
 The development scripts automatically handle service dependencies:
 
 - **Web/Mobile** → Starts API if not running
@@ -102,6 +113,7 @@ The development scripts automatically handle service dependencies:
 ## 🌐 Development URLs
 
 ### Application Services
+
 - **Web App**: http://localhost:3000
 - **API**: http://localhost:3001
 - **API Docs**: http://localhost:3001/api
@@ -109,16 +121,19 @@ The development scripts automatically handle service dependencies:
 - **Mobile (Metro)**: http://localhost:8081
 
 ### Development Tools
+
 - **Jaeger Tracing**: http://localhost:16686
 - **MailHog**: http://localhost:8025
 - **Web Storybook**: http://localhost:6006
 - **Mobile Storybook**: http://localhost:6007
 
 ### Database Access
+
 - **MongoDB**: mongodb://admin:password@localhost:27017/todo-app?authSource=admin
 - **Redis**: redis://localhost:6379
 
 ### Blockchain Networks
+
 - **Polygon (Hardhat)**: http://localhost:8545
 - **Solana (Local)**: http://localhost:8899
 - **Polkadot (Local)**: ws://localhost:9944
@@ -126,6 +141,7 @@ The development scripts automatically handle service dependencies:
 ## 🔄 Development Workflows
 
 ### Full-Stack Development
+
 ```bash
 # Start everything
 pnpm dev
@@ -136,6 +152,7 @@ open http://localhost:19000 # Mobile app
 ```
 
 ### Frontend-Only Development
+
 ```bash
 # Start frontend with API dependency
 pnpm dev:frontend
@@ -145,6 +162,7 @@ pnpm dev:frontend
 ```
 
 ### Backend-Only Development
+
 ```bash
 # Start backend services
 pnpm dev:backend
@@ -155,6 +173,7 @@ curl http://localhost:3001/api/todos
 ```
 
 ### Blockchain Development
+
 ```bash
 # Start blockchain networks
 pnpm dev:blockchain
@@ -168,6 +187,7 @@ pnpm hardhat console --network localhost
 ```
 
 ### Component Development
+
 ```bash
 # Web components
 pnpm dev:storybook:web
@@ -183,6 +203,7 @@ pnpm dev:storybook:mobile
 ### Starting Services
 
 #### All Services
+
 ```bash
 # Complete development environment
 pnpm dev
@@ -192,6 +213,7 @@ pnpm dev
 ```
 
 #### Service Groups
+
 ```bash
 # Frontend applications
 pnpm dev:frontend
@@ -203,6 +225,7 @@ pnpm dev:backend
 ```
 
 #### Individual Services
+
 ```bash
 # API server only
 pnpm dev:api
@@ -220,6 +243,7 @@ pnpm dev:mobile
 ### Service Status Monitoring
 
 #### Health Checks
+
 ```bash
 # API health
 curl http://localhost:3001/health
@@ -232,6 +256,7 @@ pnpm db:test
 ```
 
 #### Service Logs
+
 ```bash
 # Docker service logs
 docker-compose -f docker-compose.dev.yml logs -f api
@@ -243,10 +268,12 @@ docker-compose -f docker-compose.dev.yml logs -f api
 ### Stopping Services
 
 #### Graceful Shutdown
+
 - Press `Ctrl+C` in the terminal running the development script
 - Services will shut down gracefully with cleanup
 
 #### Force Stop
+
 ```bash
 # Stop all Docker services
 docker-compose -f docker-compose.dev.yml down
@@ -258,6 +285,7 @@ docker-compose -f docker-compose.dev.yml stop mongodb redis
 ## 🔧 Development Configuration
 
 ### Environment Variables
+
 Development scripts use these environment variables:
 
 ```bash
@@ -279,6 +307,7 @@ export DEPLOY_CONTRACTS=true           # Deploy contracts on startup
 ```
 
 ### Development Environment Files
+
 ```bash
 # Main environment file
 .env.development
@@ -292,6 +321,7 @@ apps/mobile/.env.development
 ## 🧪 Testing During Development
 
 ### Running Tests
+
 ```bash
 # All tests
 pnpm test
@@ -307,6 +337,7 @@ pnpm --filter @todo/web test
 ```
 
 ### Test Watching
+
 ```bash
 # Watch mode for tests
 pnpm test --watch
@@ -316,6 +347,7 @@ cd apps/api && pnpm test:watch
 ```
 
 ### Contract Testing
+
 ```bash
 # Test blockchain contracts
 pnpm test:contracts
@@ -333,6 +365,7 @@ anchor test --skip-local-validator
 ### Application Debugging
 
 #### API Debugging
+
 ```bash
 # Start API in debug mode
 cd apps/api
@@ -342,6 +375,7 @@ pnpm start:debug
 ```
 
 #### Web App Debugging
+
 ```bash
 # Next.js debugging
 cd apps/web
@@ -351,6 +385,7 @@ NODE_OPTIONS='--inspect' pnpm dev
 ```
 
 #### Mobile App Debugging
+
 ```bash
 # React Native debugging
 cd apps/mobile
@@ -360,6 +395,7 @@ pnpm start
 ```
 
 ### Database Debugging
+
 ```bash
 # MongoDB shell
 mongo-cli
@@ -372,6 +408,7 @@ docker-compose -f docker-compose.dev.yml logs mongodb
 ```
 
 ### Blockchain Debugging
+
 ```bash
 # Hardhat console
 cd apps/smart-contracts/polygon
@@ -389,6 +426,7 @@ solana logs
 ### Common Issues
 
 #### Port Conflicts
+
 ```bash
 # Check what's using a port
 lsof -i :3000
@@ -399,6 +437,7 @@ kill -9 $(lsof -t -i:3000)
 ```
 
 #### Docker Issues
+
 ```bash
 # Restart Docker services
 docker-compose -f docker-compose.dev.yml restart
@@ -411,6 +450,7 @@ docker-compose -f docker-compose.dev.yml build --no-cache
 ```
 
 #### Database Connection Issues
+
 ```bash
 # Reset database
 pnpm db:reset
@@ -423,6 +463,7 @@ docker-compose -f docker-compose.dev.yml logs mongodb
 ```
 
 #### Dependency Issues
+
 ```bash
 # Clean and reinstall
 pnpm clean
@@ -434,6 +475,7 @@ pnpm build:packages
 ```
 
 #### Blockchain Network Issues
+
 ```bash
 # Reset Hardhat network
 cd apps/smart-contracts/polygon
@@ -452,6 +494,7 @@ curl -X POST -H "Content-Type: application/json" \
 ### Performance Issues
 
 #### Slow Startup
+
 ```bash
 # Skip dependency installation
 ./scripts/startDev.sh --skip-deps
@@ -464,6 +507,7 @@ curl -X POST -H "Content-Type: application/json" \
 ```
 
 #### Memory Issues
+
 ```bash
 # Increase Node.js memory
 export NODE_OPTIONS="--max-old-space-size=8192"
@@ -478,12 +522,14 @@ docker-compose -f docker-compose.dev.yml restart
 ## 📈 Development Best Practices
 
 ### Code Quality
+
 - Use ESLint and Prettier for consistent code formatting
 - Run type checking with `pnpm typecheck`
 - Write tests for new features
 - Use conventional commits
 
 ### Development Workflow
+
 1. Start with `pnpm dev` for full environment
 2. Use service-specific scripts for focused development
 3. Run tests frequently during development
@@ -491,12 +537,14 @@ docker-compose -f docker-compose.dev.yml restart
 5. Monitor application health and logs
 
 ### Database Management
+
 - Use `pnpm db:reset` to reset development data
 - Run migrations with `pnpm db:migrate`
 - Seed data with `pnpm db:seed`
 - Backup important development data
 
 ### Blockchain Development
+
 - Test contracts on local networks first
 - Deploy to testnets before mainnet
 - Verify contract deployments
@@ -505,12 +553,14 @@ docker-compose -f docker-compose.dev.yml restart
 ## 🔗 Integration with IDEs
 
 ### VS Code
+
 - Use the development container for consistent environment
 - Install recommended extensions
 - Use debugging configurations in `.vscode/launch.json`
 - Utilize integrated terminal for development scripts
 
 ### Other IDEs
+
 - Configure TypeScript language server
 - Set up ESLint and Prettier integration
 - Configure debugging for Node.js applications
@@ -529,6 +579,7 @@ docker-compose -f docker-compose.dev.yml restart
 ## 🤝 Support
 
 For development issues:
+
 1. Check this documentation
 2. Review service logs and error messages
 3. Check the troubleshooting section

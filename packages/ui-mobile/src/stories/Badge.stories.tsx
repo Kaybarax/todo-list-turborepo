@@ -12,12 +12,7 @@ interface BadgeProps {
   testID?: string;
 }
 
-const Badge: React.FC<BadgeProps> = ({
-  text,
-  variant = 'default',
-  size = 'medium',
-  testID,
-}) => {
+const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'medium', testID }) => {
   // Theme colors matching the React Native theme
   const colors = {
     primary: '#007AFF',
@@ -124,9 +119,10 @@ const meta: Meta<typeof Badge> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A versatile badge component for displaying status, labels, or notifications with multiple variants and sizes (web preview)'
-      }
-    }
+        component:
+          'A versatile badge component for displaying status, labels, or notifications with multiple variants and sizes (web preview)',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -271,9 +267,9 @@ export const SmallVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'All badge variants in small size'
-      }
-    }
+        story: 'All badge variants in small size',
+      },
+    },
   },
 };
 
@@ -291,9 +287,9 @@ export const MediumVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'All badge variants in medium size'
-      }
-    }
+        story: 'All badge variants in medium size',
+      },
+    },
   },
 };
 
@@ -311,9 +307,9 @@ export const LargeVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'All badge variants in large size'
-      }
-    }
+        story: 'All badge variants in large size',
+      },
+    },
   },
 };
 
@@ -330,9 +326,9 @@ export const TodoStatus: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Badge usage for todo item status'
-      }
-    }
+        story: 'Badge usage for todo item status',
+      },
+    },
   },
 };
 
@@ -348,9 +344,9 @@ export const UserRoles: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Badge usage for user roles and permissions'
-      }
-    }
+        story: 'Badge usage for user roles and permissions',
+      },
+    },
   },
 };
 
@@ -366,8 +362,8 @@ export const NotificationCounts: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Badge usage for notification counts'
-      }
-    }
+        story: 'Badge usage for notification counts',
+      },
+    },
   },
 };

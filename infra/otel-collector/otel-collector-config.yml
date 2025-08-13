@@ -18,7 +18,7 @@ processors:
     attributes:
       - key: service.name
         action: upsert
-        value: "todo-monorepo"
+        value: 'todo-monorepo'
 
 exporters:
   prometheus:
@@ -31,11 +31,11 @@ exporters:
   logging:
     loglevel: debug
   otlp:
-    endpoint: "jaeger:4317"
+    endpoint: 'jaeger:4317'
     tls:
       insecure: true
   elasticsearch:
-    endpoints: ["http://elasticsearch:9200"]
+    endpoints: ['http://elasticsearch:9200']
     index: traces
     mapping:
       mode: ecs

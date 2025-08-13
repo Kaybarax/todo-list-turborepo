@@ -30,7 +30,7 @@ const inputVariants = cva(
       size: 'default',
       state: 'default',
     },
-  }
+  },
 );
 
 export interface InputProps
@@ -46,25 +46,28 @@ export interface InputProps
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ 
-    className, 
-    variant,
-    size,
-    state,
-    error, 
-    helperText, 
-    leftIcon, 
-    rightIcon, 
-    label,
-    labelProps,
-    asChild = false,
-    type, 
-    id,
-    ...props 
-  }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      state,
+      error,
+      helperText,
+      leftIcon,
+      rightIcon,
+      label,
+      labelProps,
+      asChild = false,
+      type,
+      id,
+      ...props
+    },
+    ref,
+  ) => {
     const inputId = id || React.useId();
     const helperTextId = helperText ? `${inputId}-helper` : undefined;
-    
+
     // Determine state based on error prop
     const finalState = error ? 'error' : state;
 
@@ -74,7 +77,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           inputVariants({ variant, size, state: finalState }),
           leftIcon && 'pl-10',
           rightIcon && 'pr-10',
-          className
+          className,
         )}
         ref={ref}
         id={inputId}
@@ -88,7 +91,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           inputVariants({ variant, size, state: finalState }),
           leftIcon && 'pl-10',
           rightIcon && 'pr-10',
-          className
+          className,
         )}
         ref={ref}
         id={inputId}
@@ -104,7 +107,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             htmlFor={inputId}
             className={cn(
               'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block',
-              error && 'text-destructive'
+              error && 'text-destructive',
             )}
             {...labelProps}
           >
@@ -114,40 +117,24 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <div className="relative">
           {leftIcon && (
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <span className={cn(
-                'text-muted-foreground',
-                error && 'text-destructive'
-              )}>
-                {leftIcon}
-              </span>
+              <span className={cn('text-muted-foreground', error && 'text-destructive')}>{leftIcon}</span>
             </div>
           )}
           {inputElement}
           {rightIcon && (
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <span className={cn(
-                'text-muted-foreground',
-                error && 'text-destructive'
-              )}>
-                {rightIcon}
-              </span>
+              <span className={cn('text-muted-foreground', error && 'text-destructive')}>{rightIcon}</span>
             </div>
           )}
         </div>
         {helperText && (
-          <p 
-            id={helperTextId}
-            className={cn(
-              'mt-1 text-xs',
-              error ? 'text-destructive' : 'text-muted-foreground'
-            )}
-          >
+          <p id={helperTextId} className={cn('mt-1 text-xs', error ? 'text-destructive' : 'text-muted-foreground')}>
             {helperText}
           </p>
         )}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = 'Input';
@@ -161,7 +148,7 @@ const Label = React.forwardRef<
     ref={ref}
     className={cn(
       'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-      className
+      className,
     )}
     {...props}
   />

@@ -30,13 +30,16 @@ const DEFAULT_OPTIONS: Required<TransactionMonitorOptions> = {
  */
 export class TransactionMonitor {
   private options: Required<TransactionMonitorOptions>;
-  private transactionHashes: Map<string, {
-    status: TransactionStatus;
-    receipt?: TransactionReceipt;
-    attempts: number;
-    startTime: number;
-    timeoutId?: NodeJS.Timeout;
-  }>;
+  private transactionHashes: Map<
+    string,
+    {
+      status: TransactionStatus;
+      receipt?: TransactionReceipt;
+      attempts: number;
+      startTime: number;
+      timeoutId?: NodeJS.Timeout;
+    }
+  >;
 
   /**
    * Create a new TransactionMonitor
@@ -59,10 +62,10 @@ export class TransactionMonitor {
     txHash: string,
     network: BlockchainNetwork,
     getStatusFn: (hash: string) => Promise<TransactionReceipt | null>,
-    options?: TransactionMonitorOptions
+    options?: TransactionMonitorOptions,
   ): Promise<TransactionReceipt> {
     const txOptions = { ...this.options, ...options };
-    
+
     // Initialize transaction tracking
     this.transactionHashes.set(txHash, {
       status: TransactionStatus.PENDING,
@@ -74,13 +77,15 @@ export class TransactionMonitor {
     const timeoutPromise = new Promise<never>((_, reject) => {
       const timeoutId = setTimeout(() => {
         this.transactionHashes.delete(txHash);
-        reject(new BlockchainError(
-          BlockchainErrorType.TRANSACTION_FAILED,
-          `Transaction monitoring timed out after ${txOptions.timeout}ms`,
-          { transactionHash: txHash, network }
-        ));
+        reject(
+          new BlockchainError(
+            BlockchainErrorType.TRANSACTION_FAILED,
+            `Transaction monitoring timed out after ${txOptions.timeout}ms`,
+            { transactionHash: txHash, network },
+          ),
+        );
       }, txOptions.timeout);
-      
+
       // Store timeout ID to clear it later
       const txData = this.transactionHashes.get(txHash);
       if (txData) {
@@ -108,17 +113,19 @@ export class TransactionMonitor {
           // Check if max attempts reached
           if (attempts > txOptions.maxAttempts) {
             this.cleanupTransaction(txHash);
-            reject(new BlockchainError(
-              BlockchainErrorType.TRANSACTION_FAILED,
-              `Transaction monitoring exceeded maximum attempts (${txOptions.maxAttempts})`,
-              { transactionHash: txHash, network }
-            ));
+            reject(
+              new BlockchainError(
+                BlockchainErrorType.TRANSACTION_FAILED,
+                `Transaction monitoring exceeded maximum attempts (${txOptions.maxAttempts})`,
+                { transactionHash: txHash, network },
+              ),
+            );
             return;
           }
 
           // Get transaction status
           const receipt = await getStatusFn(txHash);
-          
+
           if (receipt) {
             // Update status
             this.transactionHashes.set(txHash, {
@@ -138,11 +145,12 @@ export class TransactionMonitor {
               return;
             } else if (receipt.status === TransactionStatus.FAILED) {
               this.cleanupTransaction(txHash);
-              reject(new BlockchainError(
-                BlockchainErrorType.TRANSACTION_FAILED,
-                'Transaction failed on the blockchain',
-                { transactionHash: txHash, network }
-              ));
+              reject(
+                new BlockchainError(BlockchainErrorType.TRANSACTION_FAILED, 'Transaction failed on the blockchain', {
+                  transactionHash: txHash,
+                  network,
+                }),
+              );
               return;
             }
           }
@@ -151,11 +159,13 @@ export class TransactionMonitor {
           setTimeout(checkStatus, txOptions.pollingInterval);
         } catch (error) {
           this.cleanupTransaction(txHash);
-          reject(new BlockchainError(
-            BlockchainErrorType.UNKNOWN_ERROR,
-            'Error monitoring transaction',
-            { originalError: error, transactionHash: txHash, network }
-          ));
+          reject(
+            new BlockchainError(BlockchainErrorType.UNKNOWN_ERROR, 'Error monitoring transaction', {
+              originalError: error,
+              transactionHash: txHash,
+              network,
+            }),
+          );
         }
       };
 

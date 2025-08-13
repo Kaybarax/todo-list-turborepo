@@ -28,10 +28,10 @@ elasticsearch:
   image: docker.elastic.co/elasticsearch/elasticsearch:8.10.4
   environment:
     - discovery.type=single-node
-    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
     - xpack.security.enabled=false
   ports:
-    - "9200:9200"
+    - '9200:9200'
 ```
 
 ## Index Management
@@ -56,20 +56,20 @@ async function createNewIndexVersion(client, version) {
           tags: { type: 'keyword' },
           userId: { type: 'keyword' },
           createdAt: { type: 'date' },
-          updatedAt: { type: 'date' }
-        }
-      }
-    }
+          updatedAt: { type: 'date' },
+        },
+      },
+    },
   });
-  
+
   // Update alias to point to the new index
   await client.indices.updateAliases({
     body: {
       actions: [
         { remove: { index: '_all', alias: 'todos_latest' } },
-        { add: { index: `todos_v${version}`, alias: 'todos_latest' } }
-      ]
-    }
+        { add: { index: `todos_v${version}`, alias: 'todos_latest' } },
+      ],
+    },
   });
 }
 ```
@@ -86,14 +86,14 @@ const logger = pino({
   level: process.env.LOG_LEVEL || 'info',
   base: {
     env: process.env.NODE_ENV,
-    service: 'todo-api'
+    service: 'todo-api',
   },
   timestamp: pino.stdTimeFunctions.isoTime,
   formatters: {
-    level: (label) => {
+    level: label => {
       return { level: label };
-    }
-  }
+    },
+  },
 });
 
 // Example of logging a todo creation event
@@ -105,7 +105,7 @@ function logTodoCreation(todo, userId) {
     title: todo.title,
     priority: todo.priority,
     status: todo.status,
-    tags: todo.tags
+    tags: todo.tags,
   });
 }
 
@@ -116,9 +116,9 @@ function logError(err, context = {}) {
     error: {
       type: err.name,
       message: err.message,
-      stack: err.stack
+      stack: err.stack,
     },
-    ...context
+    ...context,
   });
 }
 ```
@@ -131,7 +131,7 @@ import pino from 'pino';
 import { Client } from '@elastic/elasticsearch';
 
 const esClient = new Client({
-  node: process.env.ELASTICSEARCH_URI || 'http://localhost:9200'
+  node: process.env.ELASTICSEARCH_URI || 'http://localhost:9200',
 });
 
 const esTransport = pino.transport({
@@ -142,15 +142,15 @@ const esTransport = pino.transport({
     node: process.env.ELASTICSEARCH_URI || 'http://localhost:9200',
     'es-version': 8,
     'bulk-size': 200,
-    ecs: true
-  }
+    ecs: true,
+  },
 });
 
 const logger = pino(
   {
-    level: process.env.LOG_LEVEL || 'info'
+    level: process.env.LOG_LEVEL || 'info',
   },
-  esTransport
+  esTransport,
 );
 ```
 
@@ -170,27 +170,24 @@ async function searchTodos(query, userId) {
             {
               multi_match: {
                 query,
-                fields: ['title^2', 'description']
-              }
+                fields: ['title^2', 'description'],
+              },
             },
             {
               term: {
-                userId
-              }
-            }
-          ]
-        }
+                userId,
+              },
+            },
+          ],
+        },
       },
-      sort: [
-        { _score: 'desc' },
-        { updatedAt: 'desc' }
-      ]
-    }
+      sort: [{ _score: 'desc' }, { updatedAt: 'desc' }],
+    },
   });
-  
+
   return result.hits.hits.map(hit => ({
     ...hit._source,
-    score: hit._score
+    score: hit._score,
   }));
 }
 ```
@@ -201,30 +198,30 @@ async function searchTodos(query, userId) {
 // Example of filtered search
 async function searchTodosWithFilters(query, filters) {
   const filterClauses = [];
-  
+
   if (filters.status) {
     filterClauses.push({ term: { status: filters.status } });
   }
-  
+
   if (filters.priority) {
     filterClauses.push({ term: { priority: filters.priority } });
   }
-  
+
   if (filters.tags && filters.tags.length > 0) {
     filterClauses.push({ terms: { tags: filters.tags } });
   }
-  
+
   if (filters.dueDate) {
     filterClauses.push({
       range: {
         dueDate: {
           gte: filters.dueDate.from,
-          lte: filters.dueDate.to
-        }
-      }
+          lte: filters.dueDate.to,
+        },
+      },
     });
   }
-  
+
   const result = await esClient.search({
     index: 'todos_latest',
     body: {
@@ -233,18 +230,18 @@ async function searchTodosWithFilters(query, filters) {
           must: {
             multi_match: {
               query,
-              fields: ['title^2', 'description']
-            }
+              fields: ['title^2', 'description'],
+            },
           },
-          filter: filterClauses
-        }
-      }
-    }
+          filter: filterClauses,
+        },
+      },
+    },
   });
-  
+
   return result.hits.hits.map(hit => ({
     ...hit._source,
-    score: hit._score
+    score: hit._score,
   }));
 }
 ```
@@ -260,11 +257,8 @@ async function searchTodosWithFilters(query, filters) {
 ```typescript
 // Example of bulk indexing
 async function bulkIndexTodos(todos) {
-  const operations = todos.flatMap(todo => [
-    { index: { _index: 'todos_latest', _id: todo.id } },
-    todo
-  ]);
-  
+  const operations = todos.flatMap(todo => [{ index: { _index: 'todos_latest', _id: todo.id } }, todo]);
+
   return await esClient.bulk({ body: operations });
 }
 ```

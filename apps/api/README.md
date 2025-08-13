@@ -5,6 +5,7 @@ A modern NestJS API server with MongoDB, Redis, and comprehensive blockchain int
 ## 🚀 Features
 
 ### Core API Features
+
 - **NestJS Framework**: Modern, scalable Node.js framework with TypeScript
 - **MongoDB Integration**: Document database with Mongoose ODM
 - **Redis Caching**: High-performance caching and session management
@@ -13,12 +14,14 @@ A modern NestJS API server with MongoDB, Redis, and comprehensive blockchain int
 - **OpenAPI Documentation**: Auto-generated Swagger documentation
 
 ### Blockchain Integration
+
 - **Multi-Network Support**: Polygon, Solana, Polkadot, Moonbeam, and Base integration
 - **Wallet Authentication**: WalletConnect-based authentication
 - **Transaction Tracking**: Comprehensive blockchain transaction monitoring
 - **Contract Interaction**: Smart contract integration for decentralized storage
 
 ### Observability & Monitoring
+
 - **OpenTelemetry**: Distributed tracing and metrics
 - **Health Checks**: Comprehensive health monitoring endpoints
 - **Structured Logging**: JSON-structured logging with correlation IDs
@@ -71,6 +74,7 @@ apps/api/
 ## 🛠️ Development
 
 ### Prerequisites
+
 - Node.js 20+
 - MongoDB (local or containerized)
 - Redis (local or containerized)
@@ -79,6 +83,7 @@ apps/api/
 ### Quick Start
 
 #### Using Development Scripts
+
 ```bash
 # Start API with dependencies (recommended)
 pnpm dev:api
@@ -88,6 +93,7 @@ pnpm dev:backend
 ```
 
 #### Manual Setup
+
 ```bash
 # Install dependencies
 pnpm install
@@ -160,12 +166,14 @@ pnpm typecheck            # Run TypeScript type checking
 ## 📚 API Documentation
 
 ### Interactive Documentation
+
 - **Swagger UI**: http://localhost:3001/api
 - **OpenAPI JSON**: http://localhost:3001/api-json
 
 ### Authentication
 
 #### JWT Authentication
+
 ```bash
 # Login
 POST /auth/login
@@ -187,6 +195,7 @@ POST /auth/login
 ```
 
 #### Wallet Authentication
+
 ```bash
 # Wallet login
 POST /auth/wallet/login
@@ -201,6 +210,7 @@ POST /auth/wallet/login
 ### Todo Management
 
 #### Get Todos
+
 ```bash
 GET /todos?page=1&limit=10&completed=false&priority=high
 
@@ -232,6 +242,7 @@ GET /todos?page=1&limit=10&completed=false&priority=high
 ```
 
 #### Create Todo
+
 ```bash
 POST /todos
 {
@@ -245,6 +256,7 @@ POST /todos
 ```
 
 #### Update Todo
+
 ```bash
 PUT /todos/:id
 {
@@ -255,6 +267,7 @@ PUT /todos/:id
 ```
 
 #### Delete Todo
+
 ```bash
 DELETE /todos/:id
 ```
@@ -262,6 +275,7 @@ DELETE /todos/:id
 ### Blockchain Integration
 
 #### Get Blockchain Networks
+
 ```bash
 GET /blockchain/networks
 
@@ -280,6 +294,7 @@ GET /blockchain/networks
 ```
 
 #### Sync Todo to Blockchain
+
 ```bash
 POST /blockchain/sync/:todoId
 {
@@ -297,6 +312,7 @@ POST /blockchain/sync/:todoId
 ### Health & Monitoring
 
 #### Health Check
+
 ```bash
 GET /health
 
@@ -318,6 +334,7 @@ GET /health
 ```
 
 #### Metrics
+
 ```bash
 GET /metrics
 # Prometheus-formatted metrics
@@ -326,6 +343,7 @@ GET /metrics
 ## 🧪 Testing
 
 ### Test Structure
+
 ```
 test/
 ├── unit/                   # Unit tests
@@ -345,6 +363,7 @@ test/
 ### Running Tests
 
 #### Unit Tests
+
 ```bash
 # Run all unit tests
 pnpm test
@@ -357,6 +376,7 @@ pnpm test:cov
 ```
 
 #### Integration Tests
+
 ```bash
 # Run integration tests
 pnpm test:integration
@@ -366,6 +386,7 @@ TEST_DATABASE_URL=mongodb://localhost:27017/todo-app-test pnpm test:integration
 ```
 
 #### E2E Tests
+
 ```bash
 # Run e2e tests
 pnpm test:e2e
@@ -377,6 +398,7 @@ NODE_ENV=test pnpm test:e2e
 ### Test Configuration
 
 #### Jest Configuration
+
 ```javascript
 // jest.config.js
 module.exports = {
@@ -386,9 +408,7 @@ module.exports = {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
-  collectCoverageFrom: [
-    '**/*.(t|j)s',
-  ],
+  collectCoverageFrom: ['**/*.(t|j)s'],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
 };
@@ -397,6 +417,7 @@ module.exports = {
 ## 🚀 Deployment
 
 ### Docker Deployment
+
 ```bash
 # Build Docker image
 docker build -t todo-api:latest -f apps/api/Dockerfile .
@@ -409,6 +430,7 @@ docker run -p 3001:3001 \
 ```
 
 ### Kubernetes Deployment
+
 ```bash
 # Deploy to Kubernetes
 kubectl apply -f infra/k8s/deployments/api.yaml
@@ -421,6 +443,7 @@ kubectl get pods -l app.kubernetes.io/component=api
 ### Environment Variables
 
 #### Production Environment
+
 ```bash
 # Required
 MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/todo-app
@@ -450,6 +473,7 @@ PROMETHEUS_METRICS=true
 ## 🔧 Configuration
 
 ### Database Configuration
+
 ```typescript
 // src/config/database.config.ts
 export const databaseConfig = {
@@ -465,6 +489,7 @@ export const databaseConfig = {
 ```
 
 ### Redis Configuration
+
 ```typescript
 // src/config/redis.config.ts
 export const redisConfig = {
@@ -479,6 +504,7 @@ export const redisConfig = {
 ```
 
 ### Blockchain Configuration
+
 ```typescript
 // src/config/blockchain.config.ts
 export const blockchainConfig = {
@@ -510,6 +536,7 @@ export const blockchainConfig = {
 ## 🔍 Monitoring & Debugging
 
 ### Logging
+
 ```typescript
 // Structured logging example
 this.logger.log('Todo created', {
@@ -520,6 +547,7 @@ this.logger.log('Todo created', {
 ```
 
 ### Metrics
+
 ```typescript
 // Custom metrics example
 @Histogram('todo_creation_duration_seconds', 'Time to create a todo')
@@ -537,6 +565,7 @@ async createTodo(createTodoDto: CreateTodoDto) {
 ```
 
 ### Tracing
+
 ```typescript
 // OpenTelemetry tracing
 import { trace } from '@opentelemetry/api';
@@ -554,6 +583,7 @@ span.setAttributes({
 ### Common Issues
 
 #### Database Connection Issues
+
 ```bash
 # Check MongoDB connection
 mongosh $MONGODB_URI
@@ -566,6 +596,7 @@ docker-compose logs mongodb redis
 ```
 
 #### Authentication Issues
+
 ```bash
 # Verify JWT secret
 echo $JWT_SECRET | base64
@@ -577,6 +608,7 @@ curl -X POST http://localhost:3001/auth/login \
 ```
 
 #### Performance Issues
+
 ```bash
 # Check application metrics
 curl http://localhost:3001/metrics
@@ -589,6 +621,7 @@ redis-cli info memory
 ```
 
 ### Debug Mode
+
 ```bash
 # Start in debug mode
 pnpm start:debug

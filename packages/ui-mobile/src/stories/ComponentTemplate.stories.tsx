@@ -130,29 +130,27 @@ const ComponentName: React.FC<ComponentNameProps> = ({
 
   // Icon mapping for web preview
   const iconMap: Record<string, string> = {
-    'add': '+',
-    'remove': '−',
-    'edit': '✎',
-    'delete': '🗑',
-    'save': '💾',
-    'search': '🔍',
-    'settings': '⚙',
-    'home': '🏠',
-    'user': '👤',
-    'heart': '♥',
-    'star': '★',
-    'check': '✓',
-    'close': '✕',
+    add: '+',
+    remove: '−',
+    edit: '✎',
+    delete: '🗑',
+    save: '💾',
+    search: '🔍',
+    settings: '⚙',
+    home: '🏠',
+    user: '👤',
+    heart: '♥',
+    star: '★',
+    check: '✓',
+    close: '✕',
     'arrow-forward': '→',
     'arrow-back': '←',
-    'download': '⬇',
-    'upload': '⬆',
+    download: '⬇',
+    upload: '⬆',
   };
 
   const renderIcon = (iconName: string) => (
-    <span style={{ fontSize: sizeStyles[size].fontSize }}>
-      {iconMap[iconName] || iconName}
-    </span>
+    <span style={{ fontSize: sizeStyles[size].fontSize }}>{iconMap[iconName] || iconName}</span>
   );
 
   const buttonStyle: React.CSSProperties = {
@@ -199,15 +197,17 @@ const ComponentName: React.FC<ComponentNameProps> = ({
       type="button"
     >
       {loading ? (
-        <span style={{ 
-          display: 'inline-block',
-          width: 16,
-          height: 16,
-          border: `2px solid ${variant === 'outline' || variant === 'ghost' ? colors.primary : colors.white}`,
-          borderTop: '2px solid transparent',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite',
-        }} />
+        <span
+          style={{
+            display: 'inline-block',
+            width: 16,
+            height: 16,
+            border: `2px solid ${variant === 'outline' || variant === 'ghost' ? colors.primary : colors.white}`,
+            borderTop: '2px solid transparent',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+          }}
+        />
       ) : (
         <>
           {leftIcon && renderIcon(leftIcon)}
@@ -234,9 +234,10 @@ const meta: Meta<typeof ComponentName> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'This is a template for creating mobile component stories. Replace ComponentName with your actual React Native component and update all props and stories accordingly. This web version mimics the mobile component appearance for development purposes.'
-      }
-    }
+        component:
+          'This is a template for creating mobile component stories. Replace ComponentName with your actual React Native component and update all props and stories accordingly. This web version mimics the mobile component appearance for development purposes.',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -284,7 +285,26 @@ const meta: Meta<typeof ComponentName> = {
     },
     leftIcon: {
       control: { type: 'select' },
-      options: ['', 'add', 'remove', 'edit', 'delete', 'save', 'search', 'settings', 'home', 'user', 'heart', 'star', 'check', 'close', 'arrow-forward', 'arrow-back', 'download', 'upload'],
+      options: [
+        '',
+        'add',
+        'remove',
+        'edit',
+        'delete',
+        'save',
+        'search',
+        'settings',
+        'home',
+        'user',
+        'heart',
+        'star',
+        'check',
+        'close',
+        'arrow-forward',
+        'arrow-back',
+        'download',
+        'upload',
+      ],
       description: 'Icon to display on the left side',
       table: {
         type: { summary: 'string' },
@@ -293,7 +313,26 @@ const meta: Meta<typeof ComponentName> = {
     },
     rightIcon: {
       control: { type: 'select' },
-      options: ['', 'add', 'remove', 'edit', 'delete', 'save', 'search', 'settings', 'home', 'user', 'heart', 'star', 'check', 'close', 'arrow-forward', 'arrow-back', 'download', 'upload'],
+      options: [
+        '',
+        'add',
+        'remove',
+        'edit',
+        'delete',
+        'save',
+        'search',
+        'settings',
+        'home',
+        'user',
+        'heart',
+        'star',
+        'check',
+        'close',
+        'arrow-forward',
+        'arrow-back',
+        'download',
+        'upload',
+      ],
       description: 'Icon to display on the right side',
       table: {
         type: { summary: 'string' },
@@ -340,7 +379,7 @@ const meta: Meta<typeof ComponentName> = {
         defaultValue: { summary: 'undefined' },
       },
     },
-    onPress: { 
+    onPress: {
       action: 'pressed',
       description: 'Function called when component is pressed',
       table: {
@@ -568,9 +607,9 @@ export const AllVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Visual comparison showing all component variants, sizes, and states in a mobile-optimized layout.'
-      }
-    }
+        story: 'Visual comparison showing all component variants, sizes, and states in a mobile-optimized layout.',
+      },
+    },
   },
 };
 
@@ -594,19 +633,21 @@ export const Interactive: Story = {
     };
 
     return (
-      <div style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        gap: '16px', 
-        alignItems: 'center',
-        padding: '16px',
-        maxWidth: '300px',
-        backgroundColor: '#f5f5f5',
-        borderRadius: '8px'
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+          alignItems: 'center',
+          padding: '16px',
+          maxWidth: '300px',
+          backgroundColor: '#f5f5f5',
+          borderRadius: '8px',
+        }}
+      >
         <div style={{ fontSize: '24px', fontWeight: 'bold' }}>Count: {count}</div>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <ComponentName 
+          <ComponentName
             title="+"
             size="small"
             variant="primary"
@@ -614,7 +655,7 @@ export const Interactive: Story = {
             onPress={handleIncrement}
             accessibilityLabel="Increment counter"
           />
-          <ComponentName 
+          <ComponentName
             title="Reset"
             size="small"
             variant="outline"
@@ -629,9 +670,9 @@ export const Interactive: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Interactive example demonstrating component behavior, state management, and mobile-style layout.'
-      }
-    }
+        story: 'Interactive example demonstrating component behavior, state management, and mobile-style layout.',
+      },
+    },
   },
 };
 
@@ -647,39 +688,36 @@ export const AccessibilityDemo: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates proper accessibility attributes for mobile screen readers and automated testing.'
-      }
-    }
+        story: 'Demonstrates proper accessibility attributes for mobile screen readers and automated testing.',
+      },
+    },
   },
 };
 
 // Mobile usage patterns
 export const MobileFormActions: Story = {
   render: () => (
-    <div style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      gap: '12px', 
-      padding: '16px',
-      maxWidth: '300px',
-      backgroundColor: '#ffffff',
-      borderRadius: '8px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-    }}>
-      <ComponentName 
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '12px',
+        padding: '16px',
+        maxWidth: '300px',
+        backgroundColor: '#ffffff',
+        borderRadius: '8px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+      }}
+    >
+      <ComponentName
         title="Save Changes"
         leftIcon="save"
         variant="primary"
         fullWidth
         onPress={() => console.log('Save pressed')}
       />
-      <ComponentName 
-        title="Cancel"
-        variant="outline"
-        fullWidth
-        onPress={() => console.log('Cancel pressed')}
-      />
-      <ComponentName 
+      <ComponentName title="Cancel" variant="outline" fullWidth onPress={() => console.log('Cancel pressed')} />
+      <ComponentName
         title="Delete"
         leftIcon="delete"
         variant="danger"
@@ -691,27 +729,29 @@ export const MobileFormActions: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Common mobile form action pattern with full-width buttons in a card layout.'
-      }
-    }
+        story: 'Common mobile form action pattern with full-width buttons in a card layout.',
+      },
+    },
   },
 };
 
 export const MobileListActions: Story = {
   render: () => (
-    <div style={{ 
-      display: 'flex', 
-      gap: '8px', 
-      padding: '8px',
-      backgroundColor: '#f8f9fa',
-      borderRadius: '8px',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      maxWidth: '300px'
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        gap: '8px',
+        padding: '8px',
+        backgroundColor: '#f8f9fa',
+        borderRadius: '8px',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        maxWidth: '300px',
+      }}
+    >
       <span style={{ flex: 1, fontSize: '16px' }}>Todo Item</span>
       <div style={{ display: 'flex', gap: '4px' }}>
-        <ComponentName 
+        <ComponentName
           title=""
           leftIcon="edit"
           size="small"
@@ -719,7 +759,7 @@ export const MobileListActions: Story = {
           accessibilityLabel="Edit item"
           onPress={() => console.log('Edit pressed')}
         />
-        <ComponentName 
+        <ComponentName
           title=""
           leftIcon="check"
           size="small"
@@ -727,7 +767,7 @@ export const MobileListActions: Story = {
           accessibilityLabel="Mark as complete"
           onPress={() => console.log('Complete pressed')}
         />
-        <ComponentName 
+        <ComponentName
           title=""
           leftIcon="delete"
           size="small"
@@ -741,9 +781,9 @@ export const MobileListActions: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Mobile list item with inline action buttons, common in todo and task management apps.'
-      }
-    }
+        story: 'Mobile list item with inline action buttons, common in todo and task management apps.',
+      },
+    },
   },
 };
 
@@ -768,8 +808,8 @@ export const MobileResponsive: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates responsive behavior in mobile-sized containers.'
-      }
+        story: 'Demonstrates responsive behavior in mobile-sized containers.',
+      },
     },
     viewport: {
       defaultViewport: 'mobile1',

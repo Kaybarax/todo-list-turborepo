@@ -3,5 +3,5 @@
  */
 
 module.exports = {
-  releaseConfig: require('./release.config')
+  releaseConfig: require('./release.config'),
 };

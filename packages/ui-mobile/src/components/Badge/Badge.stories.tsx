@@ -7,9 +7,7 @@ export default {
   component: Badge,
 };
 
-export const Default = () => (
-  <Badge text="Default" />
-);
+export const Default = () => <Badge text="Default" />;
 
 export const Variants = () => (
   <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
@@ -37,17 +35,17 @@ export const WithLongText = () => (
 );
 
 export const CustomStyles = () => (
-  <Badge 
-    text="Custom" 
-    style={{ 
-      backgroundColor: '#6B46C1', 
-      borderWidth: 1, 
-      borderColor: '#4C1D95' 
-    }} 
-    textStyle={{ 
-      color: 'white', 
-      fontWeight: 'bold' 
-    }} 
+  <Badge
+    text="Custom"
+    style={{
+      backgroundColor: '#6B46C1',
+      borderWidth: 1,
+      borderColor: '#4C1D95',
+    }}
+    textStyle={{
+      color: 'white',
+      fontWeight: 'bold',
+    }}
   />
 );
 
@@ -57,13 +55,13 @@ export const UsageExamples = () => (
       <Badge text="New" variant="primary" size="small" />
       <Badge text="Featured" variant="secondary" size="small" />
     </View>
-    
+
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
       <Badge text="Completed" variant="success" />
       <Badge text="In Progress" variant="warning" />
       <Badge text="Failed" variant="danger" />
     </View>
-    
+
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
       <Badge text="React Native" />
       <Badge text="TypeScript" />

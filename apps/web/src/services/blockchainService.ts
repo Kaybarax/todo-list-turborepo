@@ -28,7 +28,7 @@ export interface BlockchainServiceInterface {
   deleteTodo(id: string): Promise<TransactionResult>;
   getTodo(id: string): Promise<BlockchainTodo | null>;
   getUserTodos(userAddress: string): Promise<BlockchainTodo[]>;
-  
+
   // Transaction monitoring
   getTransactionStatus(_hash: string): Promise<'pending' | 'confirmed' | 'failed'>;
   waitForTransaction(hash: string): Promise<TransactionResult>;
@@ -47,10 +47,12 @@ export class SolanaBlockchainService implements BlockchainServiceInterface {
     this.connection = null;
   }
 
-  async createTodo(_todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
+  async createTodo(
+    _todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>,
+  ): Promise<TransactionResult> {
     // Mock implementation - will be replaced with actual Solana program calls
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -59,7 +61,7 @@ export class SolanaBlockchainService implements BlockchainServiceInterface {
 
   async updateTodo(_id: string, _updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -68,7 +70,7 @@ export class SolanaBlockchainService implements BlockchainServiceInterface {
 
   async deleteTodo(_id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -77,21 +79,21 @@ export class SolanaBlockchainService implements BlockchainServiceInterface {
 
   async getTodo(_id: string): Promise<BlockchainTodo | null> {
     await this.simulateNetworkDelay();
-    
+
     // Mock response
     return null;
   }
 
   async getUserTodos(_userAddress: string): Promise<BlockchainTodo[]> {
     await this.simulateNetworkDelay();
-    
+
     // Mock response
     return [];
   }
 
   async getTransactionStatus(_hash: string): Promise<'pending' | 'confirmed' | 'failed'> {
     await this.simulateNetworkDelay(500);
-    
+
     // Mock status - randomly return confirmed after some time
     return Math.random() > 0.3 ? 'confirmed' : 'pending';
   }
@@ -99,7 +101,7 @@ export class SolanaBlockchainService implements BlockchainServiceInterface {
   async waitForTransaction(hash: string): Promise<TransactionResult> {
     // Simulate waiting for confirmation
     await this.simulateNetworkDelay(3000);
-    
+
     return {
       hash,
       blockNumber: Math.floor(Math.random() * 1000000),
@@ -127,9 +129,11 @@ export class PolkadotBlockchainService implements BlockchainServiceInterface {
     this.api = null;
   }
 
-  async createTodo(_todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
+  async createTodo(
+    _todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>,
+  ): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -138,7 +142,7 @@ export class PolkadotBlockchainService implements BlockchainServiceInterface {
 
   async updateTodo(_id: string, _updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -147,7 +151,7 @@ export class PolkadotBlockchainService implements BlockchainServiceInterface {
 
   async deleteTodo(_id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -171,7 +175,7 @@ export class PolkadotBlockchainService implements BlockchainServiceInterface {
 
   async waitForTransaction(hash: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(3000);
-    
+
     return {
       hash,
       blockNumber: Math.floor(Math.random() * 1000000),
@@ -202,9 +206,11 @@ export class PolygonBlockchainService implements BlockchainServiceInterface {
     this.contract = null;
   }
 
-  async createTodo(_todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
+  async createTodo(
+    _todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>,
+  ): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -213,7 +219,7 @@ export class PolygonBlockchainService implements BlockchainServiceInterface {
 
   async updateTodo(_id: string, _updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -222,7 +228,7 @@ export class PolygonBlockchainService implements BlockchainServiceInterface {
 
   async deleteTodo(_id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -246,7 +252,7 @@ export class PolygonBlockchainService implements BlockchainServiceInterface {
 
   async waitForTransaction(hash: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(3000);
-    
+
     return {
       hash,
       blockNumber: Math.floor(Math.random() * 1000000),
@@ -277,9 +283,11 @@ export class MoonbeamBlockchainService implements BlockchainServiceInterface {
     this.contract = null;
   }
 
-  async createTodo(_todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
+  async createTodo(
+    _todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>,
+  ): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -288,7 +296,7 @@ export class MoonbeamBlockchainService implements BlockchainServiceInterface {
 
   async updateTodo(_id: string, _updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -297,7 +305,7 @@ export class MoonbeamBlockchainService implements BlockchainServiceInterface {
 
   async deleteTodo(_id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -321,7 +329,7 @@ export class MoonbeamBlockchainService implements BlockchainServiceInterface {
 
   async waitForTransaction(hash: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(3000);
-    
+
     return {
       hash,
       blockNumber: Math.floor(Math.random() * 1000000),
@@ -352,9 +360,11 @@ export class BaseBlockchainService implements BlockchainServiceInterface {
     this.contract = null;
   }
 
-  async createTodo(_todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
+  async createTodo(
+    _todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>,
+  ): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -363,7 +373,7 @@ export class BaseBlockchainService implements BlockchainServiceInterface {
 
   async updateTodo(_id: string, _updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -372,7 +382,7 @@ export class BaseBlockchainService implements BlockchainServiceInterface {
 
   async deleteTodo(_id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay();
-    
+
     return {
       hash: this.generateMockTransactionHash(),
       status: 'pending',
@@ -396,7 +406,7 @@ export class BaseBlockchainService implements BlockchainServiceInterface {
 
   async waitForTransaction(hash: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(3000);
-    
+
     return {
       hash,
       blockNumber: Math.floor(Math.random() * 1000000),
@@ -420,36 +430,38 @@ export function createBlockchainService(network: BlockchainNetwork): BlockchainS
     case BlockchainNetwork.SOLANA:
     case BlockchainNetwork.SOLANA_DEVNET:
       return new SolanaBlockchainService('TodoProgramId123');
-    
+
     case BlockchainNetwork.POLKADOT:
     case BlockchainNetwork.POLKADOT_TESTNET:
       return new PolkadotBlockchainService();
-    
+
     case BlockchainNetwork.POLYGON:
     case BlockchainNetwork.POLYGON_MUMBAI:
       return new PolygonBlockchainService('0x1234567890123456789012345678901234567890');
-    
+
     case BlockchainNetwork.MOONBEAM:
     case BlockchainNetwork.MOONBEAM_TESTNET:
       return new MoonbeamBlockchainService('0x1234567890123456789012345678901234567890');
-    
+
     case BlockchainNetwork.BASE:
     case BlockchainNetwork.BASE_TESTNET:
       return new BaseBlockchainService('0x1234567890123456789012345678901234567890');
-    
+
     default:
-      throw new Error(`Unsupported network: ${network}. Available networks: ${Object.values(BlockchainNetwork).join(', ')}`);
+      throw new Error(
+        `Unsupported network: ${network}. Available networks: ${Object.values(BlockchainNetwork).join(', ')}`,
+      );
   }
 }
 
 // Legacy function for backward compatibility
 export function createBlockchainServiceLegacy(network: 'solana' | 'polkadot' | 'polygon'): BlockchainServiceInterface {
   const networkMap = {
-    'solana': BlockchainNetwork.SOLANA,
-    'polkadot': BlockchainNetwork.POLKADOT,
-    'polygon': BlockchainNetwork.POLYGON,
+    solana: BlockchainNetwork.SOLANA,
+    polkadot: BlockchainNetwork.POLKADOT,
+    polygon: BlockchainNetwork.POLYGON,
   };
-  
+
   return createBlockchainService(networkMap[network]);
 }
 

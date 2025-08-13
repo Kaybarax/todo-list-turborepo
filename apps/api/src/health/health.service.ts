@@ -12,7 +12,7 @@ export class HealthService {
 
   async getHealth() {
     const dbStatus = this.connection.readyState === 1 ? 'connected' : 'disconnected';
-    
+
     let redisStatus = 'disconnected';
     try {
       await this.redisClient.ping();
@@ -20,7 +20,7 @@ export class HealthService {
     } catch (error) {
       redisStatus = 'disconnected';
     }
-    
+
     return {
       status: 'ok',
       timestamp: new Date().toISOString(),
@@ -40,7 +40,7 @@ export class HealthService {
 
   async getReadiness() {
     const isDbReady = this.connection.readyState === 1;
-    
+
     let isRedisReady = false;
     try {
       await this.redisClient.ping();
@@ -48,9 +48,9 @@ export class HealthService {
     } catch (error) {
       isRedisReady = false;
     }
-    
+
     const isReady = isDbReady && isRedisReady;
-    
+
     return {
       status: isReady ? 'ready' : 'not ready',
       timestamp: new Date().toISOString(),

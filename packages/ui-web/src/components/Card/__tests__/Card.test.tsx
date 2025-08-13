@@ -1,13 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { 
-  Card, 
-  CardHeader, 
-  CardFooter, 
-  CardTitle, 
-  CardDescription, 
-  CardContent 
-} from '../Card';
+import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from '../Card';
 
 describe('Card', () => {
   it('renders correctly', () => {
@@ -29,7 +22,7 @@ describe('Card', () => {
         </CardHeader>
         <CardContent>Card Content</CardContent>
         <CardFooter>Card Footer</CardFooter>
-      </Card>
+      </Card>,
     );
 
     expect(screen.getByText('Card Title')).toBeInTheDocument();

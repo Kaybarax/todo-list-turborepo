@@ -13,17 +13,18 @@ export function BlockchainStats({ todos }: BlockchainStatsProps) {
     const total = todos.length;
     const onChain = todos.filter(todo => todo.blockchainNetwork).length;
     const offChain = total - onChain;
-    
-    const networkBreakdown = todos.reduce((acc, todo) => {
-      if (todo.blockchainNetwork) {
-        acc[todo.blockchainNetwork] = (acc[todo.blockchainNetwork] || 0) + 1;
-      }
-      return acc;
-    }, {} as Record<string, number>);
 
-    const pendingTransactions = todos.filter(
-      todo => todo.transactionHash && !todo.blockchainAddress
-    ).length;
+    const networkBreakdown = todos.reduce(
+      (acc, todo) => {
+        if (todo.blockchainNetwork) {
+          acc[todo.blockchainNetwork] = (acc[todo.blockchainNetwork] || 0) + 1;
+        }
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+
+    const pendingTransactions = todos.filter(todo => todo.transactionHash && !todo.blockchainAddress).length;
 
     return {
       total,
@@ -55,7 +56,7 @@ export function BlockchainStats({ todos }: BlockchainStatsProps) {
   return (
     <div className="bg-white rounded-lg shadow-sm border p-4">
       <h3 className="text-lg font-medium text-gray-900 mb-4">Blockchain Integration</h3>
-      
+
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
         <div className="text-center">
           <div className="text-2xl font-bold text-blue-600">{stats.onChain}</div>
@@ -95,7 +96,12 @@ export function BlockchainStats({ todos }: BlockchainStatsProps) {
         <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
           <div className="flex items-center">
             <svg className="h-4 w-4 text-blue-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             <p className="text-sm text-blue-800">
               You have {stats.offChain} todo{stats.offChain !== 1 ? 's' : ''} that can be synced to blockchain networks.

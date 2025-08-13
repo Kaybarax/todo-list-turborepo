@@ -280,13 +280,11 @@ describe('IngestionService', () => {
         }),
       };
 
-      await expect(ingestionService.ingestFromBlockchain(mockBlockchainService))
-        .rejects.toThrow('Failed to fetch todos from blockchain: Blockchain error');
-
-      expect(logger.error).toHaveBeenCalledWith(
-        'Failed to ingest from blockchain:',
-        expect.any(Error)
+      await expect(ingestionService.ingestFromBlockchain(mockBlockchainService)).rejects.toThrow(
+        'Failed to fetch todos from blockchain: Blockchain error',
       );
+
+      expect(logger.error).toHaveBeenCalledWith('Failed to ingest from blockchain:', expect.any(Error));
     });
 
     it('should transform blockchain data correctly', async () => {
@@ -353,13 +351,15 @@ describe('IngestionService', () => {
         }),
       };
 
-      await expect(ingestionService.ingestFromAPI(mockApiClient))
-        .rejects.toThrow('Failed to fetch todos from API: API error');
+      await expect(ingestionService.ingestFromAPI(mockApiClient)).rejects.toThrow(
+        'Failed to fetch todos from API: API error',
+      );
     });
 
     it('should handle API pagination', async () => {
       const mockApiClient = {
-        getTodos: jest.fn()
+        getTodos: jest
+          .fn()
           .mockResolvedValueOnce({
             success: true,
             data: [mockTodoData],
@@ -499,8 +499,8 @@ describe('IngestionService', () => {
   describe('performance optimization', () => {
     it('should use connection pooling', async () => {
       // Multiple concurrent ingestions should reuse database connections
-      const promises = Array.from({ length: 10 }, (_, i) => 
-        ingestionService.ingestTodo({ ...mockTodoData, id: `todo-${i}` })
+      const promises = Array.from({ length: 10 }, (_, i) =>
+        ingestionService.ingestTodo({ ...mockTodoData, id: `todo-${i}` }),
       );
 
       mockDatabaseService.insertTodo.mockResolvedValue(mockTodoData);
@@ -512,14 +512,14 @@ describe('IngestionService', () => {
 
     it('should implement rate limiting', async () => {
       const startTime = Date.now();
-      
+
       // Configure rate limiting (e.g., max 5 operations per second)
       const rateLimitedService = new IngestionService({
         rateLimit: { maxOperations: 5, windowMs: 1000 },
       });
 
-      const promises = Array.from({ length: 10 }, (_, i) => 
-        rateLimitedService.ingestTodo({ ...mockTodoData, id: `todo-${i}` })
+      const promises = Array.from({ length: 10 }, (_, i) =>
+        rateLimitedService.ingestTodo({ ...mockTodoData, id: `todo-${i}` }),
       );
 
       mockDatabaseService.insertTodo.mockResolvedValue(mockTodoData);

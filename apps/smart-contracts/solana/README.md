@@ -62,16 +62,19 @@ pub enum Priority {
 ### Installation
 
 1. Clone the repository and navigate to the Solana contracts directory:
+
 ```bash
 cd apps/smart-contracts/solana
 ```
 
 2. Install dependencies:
+
 ```bash
 yarn install
 ```
 
 3. Build the program:
+
 ```bash
 anchor build
 ```
@@ -79,31 +82,37 @@ anchor build
 ### Local Development
 
 1. Start a local Solana validator:
+
 ```bash
 solana-test-validator
 ```
 
 2. Configure Solana CLI to use localhost:
+
 ```bash
 solana config set --url localhost
 ```
 
 3. Create a new keypair (if needed):
+
 ```bash
 solana-keygen new
 ```
 
 4. Airdrop SOL for testing:
+
 ```bash
 solana airdrop 10
 ```
 
 5. Deploy the program:
+
 ```bash
 anchor deploy
 ```
 
 6. Run tests:
+
 ```bash
 anchor test
 ```
@@ -113,21 +122,25 @@ anchor test
 #### Devnet Deployment
 
 1. Configure for devnet:
+
 ```bash
 solana config set --url devnet
 ```
 
 2. Airdrop SOL for deployment:
+
 ```bash
 solana airdrop 2
 ```
 
 3. Deploy to devnet:
+
 ```bash
 anchor deploy --provider.cluster devnet
 ```
 
 4. Run deployment script:
+
 ```bash
 yarn deploy:devnet
 ```
@@ -137,6 +150,7 @@ yarn deploy:devnet
 ⚠️ **Warning**: Mainnet deployment costs real SOL. Test thoroughly on devnet first.
 
 1. Configure for mainnet:
+
 ```bash
 solana config set --url mainnet-beta
 ```
@@ -144,11 +158,13 @@ solana config set --url mainnet-beta
 2. Ensure sufficient SOL balance (minimum 1 SOL recommended)
 
 3. Deploy to mainnet:
+
 ```bash
 anchor deploy --provider.cluster mainnet
 ```
 
 4. Run deployment script:
+
 ```bash
 yarn deploy:mainnet
 ```
@@ -166,11 +182,13 @@ The program includes comprehensive tests covering:
 - Statistics calculation
 
 Run tests with:
+
 ```bash
 anchor test
 ```
 
 For specific test files:
+
 ```bash
 anchor test --skip-deploy tests/todo-program.ts
 ```
@@ -180,9 +198,9 @@ anchor test --skip-deploy tests/todo-program.ts
 ### TypeScript/JavaScript
 
 ```typescript
-import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
-import { TodoProgram } from "./types/todo_program";
+import * as anchor from '@coral-xyz/anchor';
+import { Program } from '@coral-xyz/anchor';
+import { TodoProgram } from './types/todo_program';
 
 // Initialize program
 const provider = anchor.AnchorProvider.env();
@@ -191,8 +209,8 @@ const program = anchor.workspace.TodoProgram as Program<TodoProgram>;
 
 // Get user's todo list PDA
 const [todoListPda] = anchor.web3.PublicKey.findProgramAddressSync(
-  [Buffer.from("todo_list"), wallet.publicKey.toBuffer()],
-  program.programId
+  [Buffer.from('todo_list'), wallet.publicKey.toBuffer()],
+  program.programId,
 );
 
 // Initialize todo list
@@ -207,7 +225,7 @@ await program.methods
 
 // Create a todo
 await program.methods
-  .createTodo("My Todo", "Description", { medium: {} })
+  .createTodo('My Todo', 'Description', { medium: {} })
   .accounts({
     todoList: todoListPda,
     owner: wallet.publicKey,
@@ -218,13 +236,16 @@ await program.methods
 ## Program Addresses
 
 ### Localnet
+
 - Program ID: `Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS`
 
 ### Devnet
+
 - Program ID: `Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS`
 - Explorer: [View on Solana Explorer](https://explorer.solana.com/address/Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS?cluster=devnet)
 
 ### Mainnet
+
 - Program ID: `Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS`
 - Explorer: [View on Solana Explorer](https://explorer.solana.com/address/Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS)
 

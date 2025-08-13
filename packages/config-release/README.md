@@ -32,20 +32,20 @@ module.exports = require('@todo/config-release').releaseConfig;
 
 The configuration includes the following release rules:
 
-| Commit Type | Release Type | Example                                  |
-|-------------|--------------|------------------------------------------|
-| feat        | minor        | feat: add new todo filtering feature     |
-| fix         | patch        | fix: resolve issue with todo creation    |
-| docs        | patch        | docs: update API documentation           |
-| style       | patch        | style: format code according to standards|
-| refactor    | patch        | refactor: improve todo service structure |
-| perf        | patch        | perf: optimize database queries          |
-| test        | patch        | test: add tests for todo service         |
-| build       | patch        | build: update build configuration        |
-| ci          | patch        | ci: configure GitHub Actions workflow    |
-| chore       | patch        | chore: update dependencies               |
-| *           | major        | feat!: change API interface              |
-| *           | major        | feat: add new feature\n\nBREAKING CHANGE: This changes the API |
+| Commit Type | Release Type | Example                                                        |
+| ----------- | ------------ | -------------------------------------------------------------- |
+| feat        | minor        | feat: add new todo filtering feature                           |
+| fix         | patch        | fix: resolve issue with todo creation                          |
+| docs        | patch        | docs: update API documentation                                 |
+| style       | patch        | style: format code according to standards                      |
+| refactor    | patch        | refactor: improve todo service structure                       |
+| perf        | patch        | perf: optimize database queries                                |
+| test        | patch        | test: add tests for todo service                               |
+| build       | patch        | build: update build configuration                              |
+| ci          | patch        | ci: configure GitHub Actions workflow                          |
+| chore       | patch        | chore: update dependencies                                     |
+| \*          | major        | feat!: change API interface                                    |
+| \*          | major        | feat: add new feature\n\nBREAKING CHANGE: This changes the API |
 
 Any commit with a scope of "breaking", a type of "breaking", or a footer containing "BREAKING CHANGE" will trigger a major release.
 

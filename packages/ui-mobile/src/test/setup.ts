@@ -1,7 +1,7 @@
 // Mock React Native components
 jest.mock('react-native', () => {
   const RN = jest.requireActual('react-native');
-  
+
   // Mock components
   RN.TouchableOpacity = 'TouchableOpacity';
   RN.TouchableWithoutFeedback = 'TouchableWithoutFeedback';
@@ -16,13 +16,13 @@ jest.mock('react-native', () => {
   RN.Switch = 'Switch';
   RN.Modal = 'Modal';
   RN.Pressable = 'Pressable';
-  
+
   // Mock methods
-  RN.StyleSheet.create = (styles) => styles;
+  RN.StyleSheet.create = styles => styles;
   RN.Dimensions.get = jest.fn().mockReturnValue({ width: 375, height: 812 });
   RN.Platform.OS = 'ios';
-  RN.Platform.select = jest.fn((obj) => obj.ios || obj.default);
-  
+  RN.Platform.select = jest.fn(obj => obj.ios || obj.default);
+
   return RN;
 });
 

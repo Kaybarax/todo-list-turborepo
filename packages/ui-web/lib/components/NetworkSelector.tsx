@@ -65,7 +65,7 @@ export function NetworkSelector({
       <div className={`relative ${className}`}>
         <select
           value={selectedNetwork}
-          onChange={(e) => onNetworkSelect(e.target.value as any)}
+          onChange={e => onNetworkSelect(e.target.value as any)}
           disabled={disabled}
           className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50"
         >
@@ -85,7 +85,7 @@ export function NetworkSelector({
         {supportedNetworks.map((network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => {
           const isSelected = selectedNetwork === network;
           const networkInfo = NETWORK_INFO[network];
-          
+
           return (
             <button
               key={network}
@@ -93,9 +93,10 @@ export function NetworkSelector({
               disabled={disabled}
               className={`
                 relative p-3 rounded-lg border-2 transition-all duration-200
-                ${isSelected 
-                  ? `${getNetworkColorClasses(network)} border-current shadow-md` 
-                  : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm'
+                ${
+                  isSelected
+                    ? `${getNetworkColorClasses(network)} border-current shadow-md`
+                    : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm'
                 }
                 ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
@@ -104,11 +105,9 @@ export function NetworkSelector({
               <div className="flex flex-col items-center space-y-1">
                 <span className="text-2xl">{networkInfo.icon}</span>
                 <span className="text-sm font-medium">{networkInfo.name}</span>
-                <span className="text-xs text-gray-500 text-center leading-tight">
-                  {networkInfo.description}
-                </span>
+                <span className="text-xs text-gray-500 text-center leading-tight">{networkInfo.description}</span>
               </div>
-              
+
               {isSelected && (
                 <div className="absolute -top-1 -right-1">
                   <Badge variant="secondary" size="sm" className="bg-green-100 text-green-800">
@@ -120,10 +119,8 @@ export function NetworkSelector({
           );
         })}
       </div>
-      
-      <div className="text-xs text-gray-500 text-center">
-        Select a blockchain network to connect your wallet
-      </div>
+
+      <div className="text-xs text-gray-500 text-center">Select a blockchain network to connect your wallet</div>
     </div>
   );
 }

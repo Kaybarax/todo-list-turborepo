@@ -1,13 +1,6 @@
 import React from 'react';
 import { Avatar as KittenAvatar, AvatarProps as KittenAvatarProps, Text } from '@ui-kitten/components';
-import { 
-  View, 
-  StyleSheet, 
-  ViewStyle, 
-  TextStyle, 
-  StyleProp,
-  ImageSourcePropType 
-} from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle, StyleProp, ImageSourcePropType } from 'react-native';
 
 export type AvatarSize = 'tiny' | 'small' | 'medium' | 'large' | 'giant';
 export type AvatarShape = 'round' | 'rounded' | 'square';
@@ -94,16 +87,9 @@ const Avatar: React.FC<AvatarProps> = ({
   // Render initials fallback
   const renderInitials = () => {
     if (!initials || source) return null;
-    
+
     return (
-      <Text
-        category={getTextCategory()}
-        style={[
-          styles.initialsText,
-          { color: textColor || '#FFFFFF' },
-          textStyle,
-        ]}
-      >
+      <Text category={getTextCategory()} style={[styles.initialsText, { color: textColor || '#FFFFFF' }, textStyle]}>
         {initials}
       </Text>
     );
@@ -136,13 +122,7 @@ const Avatar: React.FC<AvatarProps> = ({
   // Use UI Kitten Avatar for images or default avatar
   return (
     <View style={containerStyle}>
-      <KittenAvatar
-        size={getKittenSize()}
-        shape={getKittenShape()}
-        source={source}
-        style={avatarStyles}
-        {...props}
-      />
+      <KittenAvatar size={getKittenSize()} shape={getKittenShape()} source={source} style={avatarStyles} {...props} />
     </View>
   );
 };
@@ -157,7 +137,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
   },
-  
+
   // Size styles
   tinyAvatar: {
     width: 24,
@@ -179,7 +159,7 @@ const styles = StyleSheet.create({
     width: 72,
     height: 72,
   },
-  
+
   // Shape styles
   roundShape: {
     borderRadius: 1000, // Very large number for perfect circle

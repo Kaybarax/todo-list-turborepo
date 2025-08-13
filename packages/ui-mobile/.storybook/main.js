@@ -20,15 +20,12 @@ const config = {
     reactDocgen: 'react-docgen-typescript',
     reactDocgenTypescriptOptions: {
       shouldExtractLiteralValuesFromEnum: true,
-      propFilter: (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
+      propFilter: prop => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
     },
   },
-  babel: async (options) => ({
+  babel: async options => ({
     ...options,
-    presets: [
-      ...options.presets,
-      ['@babel/preset-typescript', { isTSX: true, allExtensions: true }],
-    ],
+    presets: [...options.presets, ['@babel/preset-typescript', { isTSX: true, allExtensions: true }]],
   }),
 };
 

@@ -40,7 +40,7 @@ export interface BaseStoryConfig<T = any> {
  * ArgType configuration for Storybook controls
  */
 export interface ArgTypeConfig {
-  control?: 
+  control?:
     | { type: 'text' }
     | { type: 'boolean' }
     | { type: 'number'; min?: number; max?: number; step?: number }
@@ -82,14 +82,7 @@ export interface CommonProps {
 /**
  * Common variant types
  */
-export type CommonVariant = 
-  | 'default' 
-  | 'primary' 
-  | 'secondary' 
-  | 'destructive' 
-  | 'outline' 
-  | 'ghost' 
-  | 'link';
+export type CommonVariant = 'default' | 'primary' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link';
 
 /**
  * Common size types
@@ -203,7 +196,7 @@ export const commonArgTypes = {
       defaultValue: { summary: 'undefined' },
     },
   },
-  
+
   className: {
     control: { type: 'text' },
     description: 'Additional CSS classes to apply',
@@ -317,31 +310,31 @@ export const commonParameters = {
   centered: {
     layout: 'centered' as const,
   },
-  
+
   padded: {
     layout: 'padded' as const,
   },
-  
+
   fullscreen: {
     layout: 'fullscreen' as const,
   },
-  
+
   darkMode: {
     backgrounds: { default: 'dark' },
   },
-  
+
   mobileViewport: {
     viewport: {
       defaultViewport: 'mobile1',
     },
   },
-  
+
   tabletViewport: {
     viewport: {
       defaultViewport: 'tablet',
     },
   },
-  
+
   desktopViewport: {
     viewport: {
       defaultViewport: 'desktop',
@@ -385,7 +378,7 @@ export function createA11yStory<T>(
     'aria-label'?: string;
     'aria-describedby'?: string;
   },
-  description?: string
+  description?: string,
 ): ComponentStory<T> {
   return {
     args,
@@ -402,10 +395,7 @@ export function createA11yStory<T>(
 /**
  * Helper function to create interactive stories
  */
-export function createInteractiveStory<T>(
-  renderFunction: () => ReactNode,
-  description?: string
-): ComponentStory<T> {
+export function createInteractiveStory<T>(renderFunction: () => ReactNode, description?: string): ComponentStory<T> {
   return {
     render: renderFunction,
     parameters: {
@@ -423,7 +413,7 @@ export function createInteractiveStory<T>(
  */
 export function createVisualRegressionStory<T>(
   renderFunction: () => ReactNode,
-  description?: string
+  description?: string,
 ): ComponentStory<T> {
   return {
     render: renderFunction,

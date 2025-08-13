@@ -3,59 +3,65 @@ import { z } from 'zod';
  * Supported blockchain networks
  */
 export declare enum BlockchainNetwork {
-    POLYGON = "polygon",
-    POLYGON_MUMBAI = "polygon_mumbai",
-    SOLANA = "solana",
-    SOLANA_DEVNET = "solana_devnet",
-    POLKADOT = "polkadot",
-    POLKADOT_TESTNET = "polkadot_testnet",
-    MOONBEAM = "moonbeam",
-    MOONBEAM_TESTNET = "moonbeam_testnet",
-    BASE = "base",
-    BASE_TESTNET = "base_testnet"
+  POLYGON = 'polygon',
+  POLYGON_MUMBAI = 'polygon_mumbai',
+  SOLANA = 'solana',
+  SOLANA_DEVNET = 'solana_devnet',
+  POLKADOT = 'polkadot',
+  POLKADOT_TESTNET = 'polkadot_testnet',
+  MOONBEAM = 'moonbeam',
+  MOONBEAM_TESTNET = 'moonbeam_testnet',
+  BASE = 'base',
+  BASE_TESTNET = 'base_testnet',
 }
 /**
  * Transaction status
  */
 export declare enum TransactionStatus {
-    PENDING = "pending",
-    CONFIRMED = "confirmed",
-    FAILED = "failed",
-    UNKNOWN = "unknown"
+  PENDING = 'pending',
+  CONFIRMED = 'confirmed',
+  FAILED = 'failed',
+  UNKNOWN = 'unknown',
 }
 /**
  * Todo status on blockchain
  */
 export declare enum BlockchainTodoStatus {
-    TODO = "todo",
-    IN_PROGRESS = "in_progress",
-    DONE = "done"
+  TODO = 'todo',
+  IN_PROGRESS = 'in_progress',
+  DONE = 'done',
 }
 /**
  * Schema for wallet information
  */
-export declare const walletInfoSchema: z.ZodObject<{
+export declare const walletInfoSchema: z.ZodObject<
+  {
     address: z.ZodString;
     network: z.ZodNativeEnum<typeof BlockchainNetwork>;
     balance: z.ZodOptional<z.ZodString>;
     isConnected: z.ZodDefault<z.ZodBoolean>;
     chainId: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNumber]>>;
     publicKey: z.ZodOptional<z.ZodString>;
-}, "strip", z.ZodTypeAny, {
+  },
+  'strip',
+  z.ZodTypeAny,
+  {
     address: string;
     network: BlockchainNetwork;
     isConnected: boolean;
     balance?: string | undefined;
     chainId?: string | number | undefined;
     publicKey?: string | undefined;
-}, {
+  },
+  {
     address: string;
     network: BlockchainNetwork;
     balance?: string | undefined;
     isConnected?: boolean | undefined;
     chainId?: string | number | undefined;
     publicKey?: string | undefined;
-}>;
+  }
+>;
 /**
  * Type for wallet information
  */
@@ -63,7 +69,8 @@ export type WalletInfo = z.infer<typeof walletInfoSchema>;
 /**
  * Schema for transaction receipt
  */
-export declare const transactionReceiptSchema: z.ZodObject<{
+export declare const transactionReceiptSchema: z.ZodObject<
+  {
     transactionHash: z.ZodString;
     blockNumber: z.ZodOptional<z.ZodNumber>;
     blockHash: z.ZodOptional<z.ZodString>;
@@ -75,7 +82,10 @@ export declare const transactionReceiptSchema: z.ZodObject<{
     effectiveGasPrice: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNumber]>>;
     network: z.ZodNativeEnum<typeof BlockchainNetwork>;
     fee: z.ZodOptional<z.ZodString>;
-}, "strip", z.ZodTypeAny, {
+  },
+  'strip',
+  z.ZodTypeAny,
+  {
     status: TransactionStatus;
     network: BlockchainNetwork;
     transactionHash: string;
@@ -87,7 +97,8 @@ export declare const transactionReceiptSchema: z.ZodObject<{
     gasUsed?: string | number | undefined;
     effectiveGasPrice?: string | number | undefined;
     fee?: string | undefined;
-}, {
+  },
+  {
     status: TransactionStatus;
     network: BlockchainNetwork;
     transactionHash: string;
@@ -99,7 +110,8 @@ export declare const transactionReceiptSchema: z.ZodObject<{
     gasUsed?: string | number | undefined;
     effectiveGasPrice?: string | number | undefined;
     fee?: string | undefined;
-}>;
+  }
+>;
 /**
  * Type for transaction receipt
  */
@@ -107,7 +119,8 @@ export type TransactionReceipt = z.infer<typeof transactionReceiptSchema>;
 /**
  * Schema for blockchain todo
  */
-export declare const blockchainTodoSchema: z.ZodObject<{
+export declare const blockchainTodoSchema: z.ZodObject<
+  {
     id: z.ZodString;
     title: z.ZodString;
     description: z.ZodOptional<z.ZodString>;
@@ -118,7 +131,10 @@ export declare const blockchainTodoSchema: z.ZodObject<{
     owner: z.ZodString;
     transactionHash: z.ZodOptional<z.ZodString>;
     network: z.ZodNativeEnum<typeof BlockchainNetwork>;
-}, "strip", z.ZodTypeAny, {
+  },
+  'strip',
+  z.ZodTypeAny,
+  {
     id: string;
     title: string;
     status: BlockchainTodoStatus;
@@ -129,7 +145,8 @@ export declare const blockchainTodoSchema: z.ZodObject<{
     createdAt?: Date | undefined;
     updatedAt?: Date | undefined;
     transactionHash?: string | undefined;
-}, {
+  },
+  {
     id: string;
     title: string;
     network: BlockchainNetwork;
@@ -140,7 +157,8 @@ export declare const blockchainTodoSchema: z.ZodObject<{
     updatedAt?: Date | undefined;
     transactionHash?: string | undefined;
     completed?: boolean | undefined;
-}>;
+  }
+>;
 /**
  * Type for blockchain todo
  */
@@ -148,28 +166,37 @@ export type BlockchainTodo = z.infer<typeof blockchainTodoSchema>;
 /**
  * Schema for creating a blockchain todo
  */
-export declare const createBlockchainTodoSchema: z.ZodObject<Omit<{
-    id: z.ZodString;
-    title: z.ZodString;
-    description: z.ZodOptional<z.ZodString>;
-    status: z.ZodDefault<z.ZodNativeEnum<typeof BlockchainTodoStatus>>;
-    completed: z.ZodDefault<z.ZodBoolean>;
-    createdAt: z.ZodOptional<z.ZodDate>;
-    updatedAt: z.ZodOptional<z.ZodDate>;
-    owner: z.ZodString;
-    transactionHash: z.ZodOptional<z.ZodString>;
-    network: z.ZodNativeEnum<typeof BlockchainNetwork>;
-}, "id" | "createdAt" | "updatedAt" | "network" | "transactionHash" | "owner">, "strip", z.ZodTypeAny, {
+export declare const createBlockchainTodoSchema: z.ZodObject<
+  Omit<
+    {
+      id: z.ZodString;
+      title: z.ZodString;
+      description: z.ZodOptional<z.ZodString>;
+      status: z.ZodDefault<z.ZodNativeEnum<typeof BlockchainTodoStatus>>;
+      completed: z.ZodDefault<z.ZodBoolean>;
+      createdAt: z.ZodOptional<z.ZodDate>;
+      updatedAt: z.ZodOptional<z.ZodDate>;
+      owner: z.ZodString;
+      transactionHash: z.ZodOptional<z.ZodString>;
+      network: z.ZodNativeEnum<typeof BlockchainNetwork>;
+    },
+    'id' | 'createdAt' | 'updatedAt' | 'network' | 'transactionHash' | 'owner'
+  >,
+  'strip',
+  z.ZodTypeAny,
+  {
     title: string;
     status: BlockchainTodoStatus;
     completed: boolean;
     description?: string | undefined;
-}, {
+  },
+  {
     title: string;
     description?: string | undefined;
     status?: BlockchainTodoStatus | undefined;
     completed?: boolean | undefined;
-}>;
+  }
+>;
 /**
  * Type for creating a blockchain todo
  */
@@ -177,22 +204,28 @@ export type CreateBlockchainTodoInput = z.infer<typeof createBlockchainTodoSchem
 /**
  * Schema for updating a blockchain todo
  */
-export declare const updateBlockchainTodoSchema: z.ZodObject<{
+export declare const updateBlockchainTodoSchema: z.ZodObject<
+  {
     title: z.ZodOptional<z.ZodString>;
     description: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     status: z.ZodOptional<z.ZodDefault<z.ZodNativeEnum<typeof BlockchainTodoStatus>>>;
     completed: z.ZodOptional<z.ZodDefault<z.ZodBoolean>>;
-}, "strip", z.ZodTypeAny, {
+  },
+  'strip',
+  z.ZodTypeAny,
+  {
     title?: string | undefined;
     description?: string | undefined;
     status?: BlockchainTodoStatus | undefined;
     completed?: boolean | undefined;
-}, {
+  },
+  {
     title?: string | undefined;
     description?: string | undefined;
     status?: BlockchainTodoStatus | undefined;
     completed?: boolean | undefined;
-}>;
+  }
+>;
 /**
  * Type for updating a blockchain todo
  */
@@ -201,45 +234,51 @@ export type UpdateBlockchainTodoInput = z.infer<typeof updateBlockchainTodoSchem
  * Error types for blockchain operations
  */
 export declare enum BlockchainErrorType {
-    WALLET_CONNECTION_FAILED = "wallet_connection_failed",
-    WALLET_NOT_CONNECTED = "wallet_not_connected",
-    TRANSACTION_FAILED = "transaction_failed",
-    NETWORK_ERROR = "network_error",
-    CONTRACT_ERROR = "contract_error",
-    INSUFFICIENT_FUNDS = "insufficient_funds",
-    USER_REJECTED = "user_rejected",
-    UNKNOWN_ERROR = "unknown_error",
-    MOONBEAM_CONNECTION_FAILED = "moonbeam_connection_failed",
-    MOONBEAM_SUBSTRATE_ERROR = "moonbeam_substrate_error",
-    MOONBEAM_EVM_ERROR = "moonbeam_evm_error",
-    BASE_L2_ERROR = "base_l2_error",
-    BASE_SEQUENCER_ERROR = "base_sequencer_error",
-    BASE_BRIDGE_ERROR = "base_bridge_error",
-    NETWORK_SWITCH_REQUIRED = "network_switch_required",
-    UNSUPPORTED_WALLET = "unsupported_wallet"
+  WALLET_CONNECTION_FAILED = 'wallet_connection_failed',
+  WALLET_NOT_CONNECTED = 'wallet_not_connected',
+  TRANSACTION_FAILED = 'transaction_failed',
+  NETWORK_ERROR = 'network_error',
+  CONTRACT_ERROR = 'contract_error',
+  INSUFFICIENT_FUNDS = 'insufficient_funds',
+  USER_REJECTED = 'user_rejected',
+  UNKNOWN_ERROR = 'unknown_error',
+  MOONBEAM_CONNECTION_FAILED = 'moonbeam_connection_failed',
+  MOONBEAM_SUBSTRATE_ERROR = 'moonbeam_substrate_error',
+  MOONBEAM_EVM_ERROR = 'moonbeam_evm_error',
+  BASE_L2_ERROR = 'base_l2_error',
+  BASE_SEQUENCER_ERROR = 'base_sequencer_error',
+  BASE_BRIDGE_ERROR = 'base_bridge_error',
+  NETWORK_SWITCH_REQUIRED = 'network_switch_required',
+  UNSUPPORTED_WALLET = 'unsupported_wallet',
 }
 /**
  * Schema for blockchain error
  */
-export declare const blockchainErrorSchema: z.ZodObject<{
+export declare const blockchainErrorSchema: z.ZodObject<
+  {
     type: z.ZodNativeEnum<typeof BlockchainErrorType>;
     message: z.ZodString;
     originalError: z.ZodOptional<z.ZodUnknown>;
     transactionHash: z.ZodOptional<z.ZodString>;
     network: z.ZodOptional<z.ZodNativeEnum<typeof BlockchainNetwork>>;
-}, "strip", z.ZodTypeAny, {
+  },
+  'strip',
+  z.ZodTypeAny,
+  {
     message: string;
     type: BlockchainErrorType;
     network?: BlockchainNetwork | undefined;
     transactionHash?: string | undefined;
     originalError?: unknown;
-}, {
+  },
+  {
     message: string;
     type: BlockchainErrorType;
     network?: BlockchainNetwork | undefined;
     transactionHash?: string | undefined;
     originalError?: unknown;
-}>;
+  }
+>;
 /**
  * Type for blockchain error
  */
@@ -247,69 +286,87 @@ export type BlockchainError = z.infer<typeof blockchainErrorSchema>;
 /**
  * Schema for network configuration
  */
-export declare const networkConfigSchema: z.ZodObject<{
+export declare const networkConfigSchema: z.ZodObject<
+  {
     name: z.ZodString;
     chainId: z.ZodNumber;
     rpcUrl: z.ZodString;
     explorerUrl: z.ZodString;
-    nativeCurrency: z.ZodObject<{
+    nativeCurrency: z.ZodObject<
+      {
         name: z.ZodString;
         symbol: z.ZodString;
         decimals: z.ZodNumber;
-    }, "strip", z.ZodTypeAny, {
+      },
+      'strip',
+      z.ZodTypeAny,
+      {
         symbol: string;
         name: string;
         decimals: number;
-    }, {
+      },
+      {
         symbol: string;
         name: string;
         decimals: number;
-    }>;
-    contractAddresses: z.ZodObject<{
+      }
+    >;
+    contractAddresses: z.ZodObject<
+      {
         todoListFactory: z.ZodOptional<z.ZodString>;
         todoList: z.ZodOptional<z.ZodString>;
-    }, "strip", z.ZodTypeAny, {
+      },
+      'strip',
+      z.ZodTypeAny,
+      {
         todoListFactory?: string | undefined;
         todoList?: string | undefined;
-    }, {
+      },
+      {
         todoListFactory?: string | undefined;
         todoList?: string | undefined;
-    }>;
+      }
+    >;
     isTestnet: z.ZodDefault<z.ZodBoolean>;
     isEVM: z.ZodDefault<z.ZodBoolean>;
-}, "strip", z.ZodTypeAny, {
+  },
+  'strip',
+  z.ZodTypeAny,
+  {
     chainId: number;
     name: string;
     rpcUrl: string;
     explorerUrl: string;
     nativeCurrency: {
-        symbol: string;
-        name: string;
-        decimals: number;
+      symbol: string;
+      name: string;
+      decimals: number;
     };
     contractAddresses: {
-        todoListFactory?: string | undefined;
-        todoList?: string | undefined;
+      todoListFactory?: string | undefined;
+      todoList?: string | undefined;
     };
     isTestnet: boolean;
     isEVM: boolean;
-}, {
+  },
+  {
     chainId: number;
     name: string;
     rpcUrl: string;
     explorerUrl: string;
     nativeCurrency: {
-        symbol: string;
-        name: string;
-        decimals: number;
+      symbol: string;
+      name: string;
+      decimals: number;
     };
     contractAddresses: {
-        todoListFactory?: string | undefined;
-        todoList?: string | undefined;
+      todoListFactory?: string | undefined;
+      todoList?: string | undefined;
     };
     isTestnet?: boolean | undefined;
     isEVM?: boolean | undefined;
-}>;
+  }
+>;
 /**
  * Type for network configuration
  */
@@ -317,46 +374,58 @@ export type NetworkConfig = z.infer<typeof networkConfigSchema>;
 /**
  * Schema for EVM-compatible network service options
  */
-export declare const evmServiceOptionsSchema: z.ZodObject<{
+export declare const evmServiceOptionsSchema: z.ZodObject<
+  {
     rpcUrl: z.ZodString;
     chainId: z.ZodNumber;
-    contractAddresses: z.ZodObject<{
+    contractAddresses: z.ZodObject<
+      {
         todoListFactory: z.ZodString;
         todoList: z.ZodOptional<z.ZodString>;
-    }, "strip", z.ZodTypeAny, {
+      },
+      'strip',
+      z.ZodTypeAny,
+      {
         todoListFactory: string;
         todoList?: string | undefined;
-    }, {
+      },
+      {
         todoListFactory: string;
         todoList?: string | undefined;
-    }>;
+      }
+    >;
     gasLimit: z.ZodOptional<z.ZodNumber>;
     gasPrice: z.ZodOptional<z.ZodString>;
     maxFeePerGas: z.ZodOptional<z.ZodString>;
     maxPriorityFeePerGas: z.ZodOptional<z.ZodString>;
-}, "strip", z.ZodTypeAny, {
+  },
+  'strip',
+  z.ZodTypeAny,
+  {
     chainId: number;
     rpcUrl: string;
     contractAddresses: {
-        todoListFactory: string;
-        todoList?: string | undefined;
+      todoListFactory: string;
+      todoList?: string | undefined;
     };
     gasLimit?: number | undefined;
     gasPrice?: string | undefined;
     maxFeePerGas?: string | undefined;
     maxPriorityFeePerGas?: string | undefined;
-}, {
+  },
+  {
     chainId: number;
     rpcUrl: string;
     contractAddresses: {
-        todoListFactory: string;
-        todoList?: string | undefined;
+      todoListFactory: string;
+      todoList?: string | undefined;
     };
     gasLimit?: number | undefined;
     gasPrice?: string | undefined;
     maxFeePerGas?: string | undefined;
     maxPriorityFeePerGas?: string | undefined;
-}>;
+  }
+>;
 /**
  * Type for EVM-compatible network service options
  */

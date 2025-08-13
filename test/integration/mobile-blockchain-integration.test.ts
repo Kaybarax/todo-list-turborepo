@@ -39,7 +39,7 @@ const TEST_CONFIG = {
 // Helper functions
 const setupMockWallet = async (network: keyof typeof TEST_CONFIG.networks) => {
   const networkConfig = TEST_CONFIG.networks[network];
-  
+
   // Mock WalletConnect or other mobile wallet provider
   await device.sendToHome();
   await device.launchApp({
@@ -56,7 +56,9 @@ const loginUser = async () => {
   await element(by.id('email-input')).typeText(TEST_CONFIG.testUser.email);
   await element(by.id('password-input')).typeText(TEST_CONFIG.testUser.password);
   await element(by.id('login-button')).tap();
-  await waitFor(element(by.id('todo-list-screen'))).toBeVisible().withTimeout(5000);
+  await waitFor(element(by.id('todo-list-screen')))
+    .toBeVisible()
+    .withTimeout(5000);
 };
 
 const registerUser = async () => {
@@ -65,7 +67,9 @@ const registerUser = async () => {
   await element(by.id('email-input')).typeText(TEST_CONFIG.testUser.email);
   await element(by.id('password-input')).typeText(TEST_CONFIG.testUser.password);
   await element(by.id('register-button')).tap();
-  await waitFor(element(by.id('todo-list-screen'))).toBeVisible().withTimeout(5000);
+  await waitFor(element(by.id('todo-list-screen')))
+    .toBeVisible()
+    .withTimeout(5000);
 };
 
 describe('Mobile Blockchain Integration Tests', () => {
@@ -93,7 +97,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('walletconnect-option')).tap();
 
       // Mock successful wallet connection
-      await waitFor(element(by.id('wallet-connected-status'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('wallet-connected-status')))
+        .toBeVisible()
+        .withTimeout(10000);
       await expect(element(by.id('wallet-address-display'))).toBeVisible();
 
       // Select Moonbeam network
@@ -104,8 +110,10 @@ describe('Mobile Blockchain Integration Tests', () => {
       // Create blockchain todo
       await element(by.id('create-blockchain-todo-fab')).tap();
       await element(by.id('blockchain-todo-title-input')).typeText('Deploy on Moonbeam Parachain');
-      await element(by.id('blockchain-todo-description-input')).typeText('Test Moonbeam EVM compatibility with Polkadot ecosystem');
-      
+      await element(by.id('blockchain-todo-description-input')).typeText(
+        'Test Moonbeam EVM compatibility with Polkadot ecosystem',
+      );
+
       // Select priority
       await element(by.id('blockchain-todo-priority-picker')).tap();
       await element(by.text('High')).tap();
@@ -118,7 +126,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await expect(element(by.id('transaction-status-text'))).toHaveText('Transaction pending...');
 
       // Wait for transaction confirmation (mocked)
-      await waitFor(element(by.id('transaction-confirmed-status'))).toBeVisible().withTimeout(5000);
+      await waitFor(element(by.id('transaction-confirmed-status')))
+        .toBeVisible()
+        .withTimeout(5000);
       await expect(element(by.id('transaction-hash-display'))).toBeVisible();
 
       // Close transaction modal
@@ -128,19 +138,20 @@ describe('Mobile Blockchain Integration Tests', () => {
       await expect(element(by.id('blockchain-todos-list'))).toBeVisible();
       const blockchainTodo = element(by.id('blockchain-todo-item-0'));
       await expect(blockchainTodo).toBeVisible();
-      await expect(element(by.id('blockchain-todo-title')).withAncestor(blockchainTodo))
-        .toHaveText('Deploy on Moonbeam Parachain');
-      await expect(element(by.id('network-badge')).withAncestor(blockchainTodo))
-        .toHaveText('Moonbeam');
-      await expect(element(by.id('parachain-indicator')).withAncestor(blockchainTodo))
-        .toBeVisible();
+      await expect(element(by.id('blockchain-todo-title')).withAncestor(blockchainTodo)).toHaveText(
+        'Deploy on Moonbeam Parachain',
+      );
+      await expect(element(by.id('network-badge')).withAncestor(blockchainTodo)).toHaveText('Moonbeam');
+      await expect(element(by.id('parachain-indicator')).withAncestor(blockchainTodo)).toBeVisible();
     });
 
     it('should perform CRUD operations on Moonbase Alpha testnet', async () => {
       await element(by.id('wallet-tab')).tap();
       await element(by.id('connect-wallet-button')).tap();
       await element(by.id('walletconnect-option')).tap();
-      await waitFor(element(by.id('wallet-connected-status'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('wallet-connected-status')))
+        .toBeVisible()
+        .withTimeout(10000);
 
       // Select Moonbase Alpha testnet
       await element(by.id('network-selector')).tap();
@@ -151,11 +162,15 @@ describe('Mobile Blockchain Integration Tests', () => {
       // Create todo
       await element(by.id('create-blockchain-todo-fab')).tap();
       await element(by.id('blockchain-todo-title-input')).typeText('Test Moonbase Alpha Features');
-      await element(by.id('blockchain-todo-description-input')).typeText('Validate testnet functionality before mainnet deployment');
+      await element(by.id('blockchain-todo-description-input')).typeText(
+        'Validate testnet functionality before mainnet deployment',
+      );
       await element(by.id('submit-blockchain-todo-button')).tap();
 
       // Wait for confirmation
-      await waitFor(element(by.id('transaction-confirmed-status'))).toBeVisible().withTimeout(5000);
+      await waitFor(element(by.id('transaction-confirmed-status')))
+        .toBeVisible()
+        .withTimeout(5000);
       await element(by.id('close-transaction-modal')).tap();
 
       // Verify todo was created
@@ -170,21 +185,25 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('submit-blockchain-todo-button')).tap();
 
       // Wait for update confirmation
-      await waitFor(element(by.id('transaction-confirmed-status'))).toBeVisible().withTimeout(5000);
+      await waitFor(element(by.id('transaction-confirmed-status')))
+        .toBeVisible()
+        .withTimeout(5000);
       await element(by.id('close-transaction-modal')).tap();
 
       // Verify update
-      await expect(element(by.id('blockchain-todo-title')).withAncestor(todoItem))
-        .toHaveText('Updated: Moonbase Alpha Testing Complete');
+      await expect(element(by.id('blockchain-todo-title')).withAncestor(todoItem)).toHaveText(
+        'Updated: Moonbase Alpha Testing Complete',
+      );
 
       // Toggle completion
       await element(by.id('toggle-blockchain-todo-completion')).withAncestor(todoItem).tap();
-      await waitFor(element(by.id('transaction-confirmed-status'))).toBeVisible().withTimeout(5000);
+      await waitFor(element(by.id('transaction-confirmed-status')))
+        .toBeVisible()
+        .withTimeout(5000);
       await element(by.id('close-transaction-modal')).tap();
 
       // Verify completion status
-      await expect(element(by.id('blockchain-todo-completed-indicator')).withAncestor(todoItem))
-        .toBeVisible();
+      await expect(element(by.id('blockchain-todo-completed-indicator')).withAncestor(todoItem)).toBeVisible();
 
       // Delete todo
       await todoItem.longPress();
@@ -192,7 +211,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('confirm-delete-blockchain-todo')).tap();
 
       // Wait for deletion confirmation
-      await waitFor(element(by.id('transaction-confirmed-status'))).toBeVisible().withTimeout(5000);
+      await waitFor(element(by.id('transaction-confirmed-status')))
+        .toBeVisible()
+        .withTimeout(5000);
       await element(by.id('close-transaction-modal')).tap();
 
       // Verify deletion
@@ -206,11 +227,12 @@ describe('Mobile Blockchain Integration Tests', () => {
 
       // Mock connection error
       await element(by.id('walletconnect-option')).tap();
-      
+
       // Simulate Moonbeam parachain connection failure
-      await waitFor(element(by.id('wallet-connection-error'))).toBeVisible().withTimeout(10000);
-      await expect(element(by.id('error-message-text')))
-        .toHaveText('Failed to connect to Moonbeam parachain');
+      await waitFor(element(by.id('wallet-connection-error')))
+        .toBeVisible()
+        .withTimeout(10000);
+      await expect(element(by.id('error-message-text'))).toHaveText('Failed to connect to Moonbeam parachain');
       await expect(element(by.id('moonbeam-error-indicator'))).toBeVisible();
 
       // Verify retry functionality
@@ -222,7 +244,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('wallet-tab')).tap();
       await element(by.id('connect-wallet-button')).tap();
       await element(by.id('walletconnect-option')).tap();
-      await waitFor(element(by.id('wallet-connected-status'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('wallet-connected-status')))
+        .toBeVisible()
+        .withTimeout(10000);
 
       await element(by.id('network-selector')).tap();
       await element(by.text('Moonbeam')).tap();
@@ -255,7 +279,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('metamask-option')).tap(); // Base uses MetaMask-compatible wallets
 
       // Mock successful wallet connection
-      await waitFor(element(by.id('wallet-connected-status'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('wallet-connected-status')))
+        .toBeVisible()
+        .withTimeout(10000);
 
       // Select Base network
       await element(by.id('network-selector')).tap();
@@ -265,8 +291,10 @@ describe('Mobile Blockchain Integration Tests', () => {
       // Create blockchain todo
       await element(by.id('create-blockchain-todo-fab')).tap();
       await element(by.id('blockchain-todo-title-input')).typeText('Deploy on Base L2');
-      await element(by.id('blockchain-todo-description-input')).typeText('Test Coinbase\'s optimistic rollup for fast, cheap transactions');
-      
+      await element(by.id('blockchain-todo-description-input')).typeText(
+        "Test Coinbase's optimistic rollup for fast, cheap transactions",
+      );
+
       await element(by.id('blockchain-todo-priority-picker')).tap();
       await element(by.text('High')).tap();
 
@@ -277,8 +305,10 @@ describe('Mobile Blockchain Integration Tests', () => {
       await expect(element(by.id('transaction-status-text'))).toHaveText('Transaction pending...');
 
       // Wait for faster L2 confirmation
-      await waitFor(element(by.id('transaction-confirmed-status'))).toBeVisible().withTimeout(3000);
-      
+      await waitFor(element(by.id('transaction-confirmed-status')))
+        .toBeVisible()
+        .withTimeout(3000);
+
       // Verify L2 optimization indicators
       await expect(element(by.id('l2-fast-confirmation-indicator'))).toBeVisible();
       await expect(element(by.id('low-gas-cost-indicator'))).toBeVisible();
@@ -288,32 +318,28 @@ describe('Mobile Blockchain Integration Tests', () => {
       // Verify todo appears with Base-specific indicators
       const blockchainTodo = element(by.id('blockchain-todo-item-0'));
       await expect(blockchainTodo).toBeVisible();
-      await expect(element(by.id('blockchain-todo-title')).withAncestor(blockchainTodo))
-        .toHaveText('Deploy on Base L2');
-      await expect(element(by.id('network-badge')).withAncestor(blockchainTodo))
-        .toHaveText('Base');
-      await expect(element(by.id('l2-indicator')).withAncestor(blockchainTodo))
-        .toBeVisible();
-      await expect(element(by.id('optimistic-rollup-badge')).withAncestor(blockchainTodo))
-        .toBeVisible();
+      await expect(element(by.id('blockchain-todo-title')).withAncestor(blockchainTodo)).toHaveText(
+        'Deploy on Base L2',
+      );
+      await expect(element(by.id('network-badge')).withAncestor(blockchainTodo)).toHaveText('Base');
+      await expect(element(by.id('l2-indicator')).withAncestor(blockchainTodo)).toBeVisible();
+      await expect(element(by.id('optimistic-rollup-badge')).withAncestor(blockchainTodo)).toBeVisible();
     });
 
     it('should demonstrate Base L2 efficiency with multiple rapid transactions', async () => {
       await element(by.id('wallet-tab')).tap();
       await element(by.id('connect-wallet-button')).tap();
       await element(by.id('metamask-option')).tap();
-      await waitFor(element(by.id('wallet-connected-status'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('wallet-connected-status')))
+        .toBeVisible()
+        .withTimeout(10000);
 
       // Select Base Sepolia testnet for testing
       await element(by.id('network-selector')).tap();
       await element(by.text('Base Sepolia')).tap();
       await expect(element(by.id('selected-network-display'))).toHaveText('Base Sepolia');
 
-      const todoTitles = [
-        'L2 Efficiency Test 1',
-        'L2 Efficiency Test 2',
-        'L2 Efficiency Test 3',
-      ];
+      const todoTitles = ['L2 Efficiency Test 1', 'L2 Efficiency Test 2', 'L2 Efficiency Test 3'];
 
       const startTime = Date.now();
 
@@ -325,7 +351,9 @@ describe('Mobile Blockchain Integration Tests', () => {
         await element(by.id('submit-blockchain-todo-button')).tap();
 
         // Wait for fast L2 confirmation
-        await waitFor(element(by.id('transaction-confirmed-status'))).toBeVisible().withTimeout(2000);
+        await waitFor(element(by.id('transaction-confirmed-status')))
+          .toBeVisible()
+          .withTimeout(2000);
         await element(by.id('close-transaction-modal')).tap();
       }
 
@@ -343,12 +371,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       // Verify L2-specific features for all todos
       for (let i = 0; i < todoTitles.length; i++) {
         const todoItem = element(by.id(`blockchain-todo-item-${i}`));
-        await expect(element(by.id('network-badge')).withAncestor(todoItem))
-          .toHaveText('Base Sepolia');
-        await expect(element(by.id('l2-indicator')).withAncestor(todoItem))
-          .toBeVisible();
-        await expect(element(by.id('low-gas-indicator')).withAncestor(todoItem))
-          .toBeVisible();
+        await expect(element(by.id('network-badge')).withAncestor(todoItem)).toHaveText('Base Sepolia');
+        await expect(element(by.id('l2-indicator')).withAncestor(todoItem)).toBeVisible();
+        await expect(element(by.id('low-gas-indicator')).withAncestor(todoItem)).toBeVisible();
       }
     });
 
@@ -358,9 +383,10 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('metamask-option')).tap();
 
       // Mock Base sequencer error
-      await waitFor(element(by.id('wallet-connection-error'))).toBeVisible().withTimeout(10000);
-      await expect(element(by.id('error-message-text')))
-        .toHaveText('Base sequencer temporarily unavailable');
+      await waitFor(element(by.id('wallet-connection-error')))
+        .toBeVisible()
+        .withTimeout(10000);
+      await expect(element(by.id('error-message-text'))).toHaveText('Base sequencer temporarily unavailable');
       await expect(element(by.id('l2-error-indicator'))).toBeVisible();
       await expect(element(by.id('sequencer-status-indicator'))).toHaveText('Offline');
 
@@ -374,7 +400,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('wallet-tab')).tap();
       await element(by.id('connect-wallet-button')).tap();
       await element(by.id('metamask-option')).tap();
-      await waitFor(element(by.id('wallet-connected-status'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('wallet-connected-status')))
+        .toBeVisible()
+        .withTimeout(10000);
 
       await element(by.id('network-selector')).tap();
       await element(by.text('Base')).tap();
@@ -415,19 +443,21 @@ describe('Mobile Blockchain Integration Tests', () => {
       // Connect wallet first
       await element(by.id('connect-wallet-button')).tap();
       await element(by.id('metamask-option')).tap();
-      await waitFor(element(by.id('wallet-connected-status'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('wallet-connected-status')))
+        .toBeVisible()
+        .withTimeout(10000);
 
       // Test switching between networks
       for (const network of networks) {
         await element(by.id('network-selector')).tap();
         await element(by.text(network.name)).tap();
-        
+
         await expect(element(by.id('selected-network-display'))).toHaveText(network.name);
         await expect(element(by.id(network.indicator))).toBeVisible();
-        
+
         // Verify network switch was successful
         await expect(element(by.id('network-connection-status'))).toHaveText('Connected');
-        
+
         // Brief pause between switches
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
@@ -437,7 +467,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('wallet-tab')).tap();
       await element(by.id('connect-wallet-button')).tap();
       await element(by.id('metamask-option')).tap();
-      await waitFor(element(by.id('wallet-connected-status'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('wallet-connected-status')))
+        .toBeVisible()
+        .withTimeout(10000);
 
       // Try to switch to Moonbeam (should prompt for network addition)
       await element(by.id('network-selector')).tap();
@@ -446,14 +478,17 @@ describe('Mobile Blockchain Integration Tests', () => {
       // Verify network switch prompt
       await expect(element(by.id('network-switch-modal'))).toBeVisible();
       await expect(element(by.id('network-switch-title'))).toHaveText('Switch to Moonbeam');
-      await expect(element(by.id('network-switch-description')))
-        .toHaveText('This will add Moonbeam network to your wallet');
+      await expect(element(by.id('network-switch-description'))).toHaveText(
+        'This will add Moonbeam network to your wallet',
+      );
 
       // Confirm network switch
       await element(by.id('confirm-network-switch')).tap();
-      
+
       // Verify successful switch
-      await waitFor(element(by.id('network-switch-success'))).toBeVisible().withTimeout(5000);
+      await waitFor(element(by.id('network-switch-success')))
+        .toBeVisible()
+        .withTimeout(5000);
       await expect(element(by.id('selected-network-display'))).toHaveText('Moonbeam');
     });
 
@@ -461,18 +496,24 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('wallet-tab')).tap();
       await element(by.id('connect-wallet-button')).tap();
       await element(by.id('metamask-option')).tap();
-      await waitFor(element(by.id('wallet-connected-status'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('wallet-connected-status')))
+        .toBeVisible()
+        .withTimeout(10000);
 
       // Create todo on Moonbeam
       await element(by.id('network-selector')).tap();
       await element(by.text('Moonbeam')).tap();
       await element(by.id('confirm-network-switch')).tap();
-      await waitFor(element(by.id('network-switch-success'))).toBeVisible().withTimeout(5000);
+      await waitFor(element(by.id('network-switch-success')))
+        .toBeVisible()
+        .withTimeout(5000);
 
       await element(by.id('create-blockchain-todo-fab')).tap();
       await element(by.id('blockchain-todo-title-input')).typeText('Moonbeam Todo');
       await element(by.id('submit-blockchain-todo-button')).tap();
-      await waitFor(element(by.id('transaction-confirmed-status'))).toBeVisible().withTimeout(5000);
+      await waitFor(element(by.id('transaction-confirmed-status')))
+        .toBeVisible()
+        .withTimeout(5000);
       await element(by.id('close-transaction-modal')).tap();
 
       // Verify Moonbeam todo exists
@@ -482,7 +523,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('network-selector')).tap();
       await element(by.text('Base')).tap();
       await element(by.id('confirm-network-switch')).tap();
-      await waitFor(element(by.id('network-switch-success'))).toBeVisible().withTimeout(5000);
+      await waitFor(element(by.id('network-switch-success')))
+        .toBeVisible()
+        .withTimeout(5000);
 
       // Verify Base network has no todos initially
       await expect(element(by.id('empty-blockchain-todos-message'))).toBeVisible();
@@ -491,13 +534,16 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('create-blockchain-todo-fab')).tap();
       await element(by.id('blockchain-todo-title-input')).typeText('Base Todo');
       await element(by.id('submit-blockchain-todo-button')).tap();
-      await waitFor(element(by.id('transaction-confirmed-status'))).toBeVisible().withTimeout(3000);
+      await waitFor(element(by.id('transaction-confirmed-status')))
+        .toBeVisible()
+        .withTimeout(3000);
       await element(by.id('close-transaction-modal')).tap();
 
       // Verify Base todo exists
       await expect(element(by.id('blockchain-todo-item-0'))).toBeVisible();
-      await expect(element(by.id('blockchain-todo-title')).withAncestor(by.id('blockchain-todo-item-0')))
-        .toHaveText('Base Todo');
+      await expect(element(by.id('blockchain-todo-title')).withAncestor(by.id('blockchain-todo-item-0'))).toHaveText(
+        'Base Todo',
+      );
 
       // Switch back to Moonbeam
       await element(by.id('network-selector')).tap();
@@ -505,8 +551,9 @@ describe('Mobile Blockchain Integration Tests', () => {
 
       // Verify Moonbeam todo still exists
       await expect(element(by.id('blockchain-todo-item-0'))).toBeVisible();
-      await expect(element(by.id('blockchain-todo-title')).withAncestor(by.id('blockchain-todo-item-0')))
-        .toHaveText('Moonbeam Todo');
+      await expect(element(by.id('blockchain-todo-title')).withAncestor(by.id('blockchain-todo-item-0'))).toHaveText(
+        'Moonbeam Todo',
+      );
     });
   });
 
@@ -516,7 +563,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('wallet-tab')).tap();
       await element(by.id('connect-wallet-button')).tap();
       await element(by.id('metamask-option')).tap();
-      await waitFor(element(by.id('wallet-connected-status'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('wallet-connected-status')))
+        .toBeVisible()
+        .withTimeout(10000);
     });
 
     it('should maintain data integrity across network switches', async () => {
@@ -531,26 +580,34 @@ describe('Mobile Blockchain Integration Tests', () => {
       for (const network of networks) {
         await element(by.id('network-selector')).tap();
         await element(by.text(network.name)).tap();
-        if (network.name !== 'Polygon') { // Assume Polygon is default
+        if (network.name !== 'Polygon') {
+          // Assume Polygon is default
           await element(by.id('confirm-network-switch')).tap();
-          await waitFor(element(by.id('network-switch-success'))).toBeVisible().withTimeout(5000);
+          await waitFor(element(by.id('network-switch-success')))
+            .toBeVisible()
+            .withTimeout(5000);
         }
 
         await element(by.id('create-blockchain-todo-fab')).tap();
         await element(by.id('blockchain-todo-title-input')).typeText(network.todoTitle);
-        await element(by.id('blockchain-todo-description-input')).typeText(`Testing data consistency on ${network.name}`);
+        await element(by.id('blockchain-todo-description-input')).typeText(
+          `Testing data consistency on ${network.name}`,
+        );
         await element(by.id('submit-blockchain-todo-button')).tap();
-        
+
         const timeout = network.name === 'Base' ? 3000 : 5000; // Base L2 should be faster
-        await waitFor(element(by.id('transaction-confirmed-status'))).toBeVisible().withTimeout(timeout);
+        await waitFor(element(by.id('transaction-confirmed-status')))
+          .toBeVisible()
+          .withTimeout(timeout);
         await element(by.id('close-transaction-modal')).tap();
 
         createdTodos.push({ network: network.name, title: network.todoTitle });
 
         // Verify todo was created
         await expect(element(by.id('blockchain-todo-item-0'))).toBeVisible();
-        await expect(element(by.id('blockchain-todo-title')).withAncestor(by.id('blockchain-todo-item-0')))
-          .toHaveText(network.todoTitle);
+        await expect(element(by.id('blockchain-todo-title')).withAncestor(by.id('blockchain-todo-item-0'))).toHaveText(
+          network.todoTitle,
+        );
       }
 
       // Verify data persistence by switching back to each network
@@ -560,8 +617,9 @@ describe('Mobile Blockchain Integration Tests', () => {
 
         // Verify todo still exists
         await expect(element(by.id('blockchain-todo-item-0'))).toBeVisible();
-        await expect(element(by.id('blockchain-todo-title')).withAncestor(by.id('blockchain-todo-item-0')))
-          .toHaveText(todo.title);
+        await expect(element(by.id('blockchain-todo-title')).withAncestor(by.id('blockchain-todo-item-0'))).toHaveText(
+          todo.title,
+        );
       }
     });
 
@@ -570,13 +628,17 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('network-selector')).tap();
       await element(by.text('Moonbeam')).tap();
       await element(by.id('confirm-network-switch')).tap();
-      await waitFor(element(by.id('network-switch-success'))).toBeVisible().withTimeout(5000);
+      await waitFor(element(by.id('network-switch-success')))
+        .toBeVisible()
+        .withTimeout(5000);
 
       // Create todo while online
       await element(by.id('create-blockchain-todo-fab')).tap();
       await element(by.id('blockchain-todo-title-input')).typeText('Online Moonbeam Todo');
       await element(by.id('submit-blockchain-todo-button')).tap();
-      await waitFor(element(by.id('transaction-confirmed-status'))).toBeVisible().withTimeout(5000);
+      await waitFor(element(by.id('transaction-confirmed-status')))
+        .toBeVisible()
+        .withTimeout(5000);
       await element(by.id('close-transaction-modal')).tap();
 
       // Simulate going offline
@@ -599,7 +661,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await device.setURLBlacklist([]);
 
       // Verify sync occurs
-      await waitFor(element(by.id('sync-success-indicator'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('sync-success-indicator')))
+        .toBeVisible()
+        .withTimeout(10000);
       await expect(element(by.id('offline-indicator'))).not.toBeVisible();
 
       // Verify both todos exist
@@ -617,13 +681,17 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('wallet-tab')).tap();
       await element(by.id('connect-wallet-button')).tap();
       await element(by.id('metamask-option')).tap();
-      await waitFor(element(by.id('wallet-connected-status'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('wallet-connected-status')))
+        .toBeVisible()
+        .withTimeout(10000);
 
       // Select Base for fast L2 transactions
       await element(by.id('network-selector')).tap();
       await element(by.text('Base')).tap();
       await element(by.id('confirm-network-switch')).tap();
-      await waitFor(element(by.id('network-switch-success'))).toBeVisible().withTimeout(5000);
+      await waitFor(element(by.id('network-switch-success')))
+        .toBeVisible()
+        .withTimeout(5000);
 
       // Create todo and verify UI responsiveness
       await element(by.id('create-blockchain-todo-fab')).tap();
@@ -639,7 +707,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await expect(element(by.id('wallet-balance-display'))).toBeVisible();
 
       // Wait for completion
-      await waitFor(element(by.id('transaction-confirmed-status'))).toBeVisible().withTimeout(3000);
+      await waitFor(element(by.id('transaction-confirmed-status')))
+        .toBeVisible()
+        .withTimeout(3000);
       await expect(element(by.id('transaction-loading-spinner'))).not.toBeVisible();
       await expect(element(by.id('submit-blockchain-todo-button'))).toHaveText('Submit');
     });
@@ -648,7 +718,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('wallet-tab')).tap();
       await element(by.id('connect-wallet-button')).tap();
       await element(by.id('metamask-option')).tap();
-      await waitFor(element(by.id('wallet-connected-status'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('wallet-connected-status')))
+        .toBeVisible()
+        .withTimeout(10000);
 
       // Start creating a todo
       await element(by.id('create-blockchain-todo-fab')).tap();
@@ -669,7 +741,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await device.setOrientation('portrait');
 
       // Verify transaction completes successfully
-      await waitFor(element(by.id('transaction-confirmed-status'))).toBeVisible().withTimeout(5000);
+      await waitFor(element(by.id('transaction-confirmed-status')))
+        .toBeVisible()
+        .withTimeout(5000);
       await element(by.id('close-transaction-modal')).tap();
 
       // Verify todo was created
@@ -680,7 +754,9 @@ describe('Mobile Blockchain Integration Tests', () => {
       await element(by.id('wallet-tab')).tap();
       await element(by.id('connect-wallet-button')).tap();
       await element(by.id('metamask-option')).tap();
-      await waitFor(element(by.id('wallet-connected-status'))).toBeVisible().withTimeout(10000);
+      await waitFor(element(by.id('wallet-connected-status')))
+        .toBeVisible()
+        .withTimeout(10000);
 
       const networkTests = [
         {
@@ -698,7 +774,9 @@ describe('Mobile Blockchain Integration Tests', () => {
         await element(by.text(test.network)).tap();
         if (test.network !== 'Polygon') {
           await element(by.id('confirm-network-switch')).tap();
-          await waitFor(element(by.id('network-switch-success'))).toBeVisible().withTimeout(5000);
+          await waitFor(element(by.id('network-switch-success')))
+            .toBeVisible()
+            .withTimeout(5000);
         }
 
         // Verify mobile-optimized network indicators

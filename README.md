@@ -1,22 +1,27 @@
 # Todo List Monorepo
 
+**A comprehensive monorepo template designed to empower developers with a powerful, yet simple-to-use foundation for end-to-end enterprise-grade development.** This template provides all batteries included across multiple fronts - web, mobile, backend, blockchain, DevOps, and infrastructure - while maintaining an opinionated approach with carefully selected, modern technologies.
+
 A modern, full-stack Todo application built as a comprehensive monorepo showcasing best practices for enterprise-grade development with blockchain integration.
 
 ## 🚀 Features
 
 ### Core Applications
+
 - **Web App**: Next.js 14 with App Router, TypeScript, and Tailwind CSS
 - **Mobile App**: Expo React Native with cross-platform support
 - **API**: NestJS with MongoDB, Redis, and comprehensive validation
 - **Ingestion Service**: Background processing for blockchain data
 
 ### Blockchain Integration
+
 - **Multi-Network Support**: Polygon, Solana, Polkadot, Moonbeam, and Base integration
 - **Smart Contracts**: Solidity, Rust (Anchor), and Substrate pallets across 5 networks
 - **Wallet Connectivity**: WalletConnect v2 for seamless Web3 integration
 - **Decentralized Storage**: Todo items stored on multiple blockchain networks
 
 ### Development Infrastructure
+
 - **Monorepo Management**: pnpm workspaces with Turborepo orchestration
 - **Shared Packages**: UI components, services, and configurations
 - **Database**: MongoDB with migrations, seeding, and validation
@@ -89,6 +94,7 @@ packages:
 ```
 
 This allows for:
+
 - Shared dependencies across packages
 - Local package linking (packages can depend on each other without publishing)
 - Efficient installation with a single `pnpm install` command
@@ -104,6 +110,7 @@ Turborepo is used for build orchestration and task running. The configuration in
 - Development mode configurations
 
 Key tasks defined in Turborepo:
+
 - `build`: Builds all packages and applications
 - `dev`: Starts development servers
 - `test`: Runs tests across the monorepo
@@ -115,11 +122,13 @@ Key tasks defined in Turborepo:
 - `build-storybook`: Builds static Storybook sites
 
 To run a task for a specific package:
+
 ```bash
 pnpm --filter <package-name> <task>
 ```
 
 Example:
+
 ```bash
 # Run tests only for the web app
 pnpm --filter @todo/web test
@@ -133,30 +142,35 @@ pnpm --filter @todo/api dev
 This monorepo has been comprehensively modernized with enterprise-grade features and blockchain integration:
 
 ### 🏗️ Infrastructure Modernization
+
 - **Complete Kubernetes Setup**: Production-ready manifests with auto-scaling, monitoring, and security
 - **Development Container**: Fully configured devcontainer with all blockchain tools (Solana CLI, Anchor, Rust)
 - **Database Management**: MongoDB with migrations, schema validation, and automated seeding
 - **Build System**: Multi-environment build scripts with security scanning and Docker optimization
 
 ### ⛓️ Blockchain Integration
+
 - **Multi-Network Support**: Integrated Polygon (Solidity), Solana (Rust/Anchor), Polkadot (Substrate), Moonbeam (EVM), and Base (L2)
 - **Smart Contracts**: Complete contract suites for decentralized todo storage across 5 blockchain networks
 - **Wallet Integration**: WalletConnect v2 implementation for seamless Web3 connectivity
 - **Transaction Management**: Comprehensive blockchain transaction tracking and status monitoring
 
 ### 🚀 Application Modernization
+
 - **Next.js 14 Web App**: Rebuilt with App Router, server components, and optimized performance
 - **NestJS API**: Complete rewrite with proper architecture, validation, and OpenTelemetry tracing
 - **Expo React Native**: Modern mobile app with blockchain wallet integration
 - **Shared Libraries**: Rebuilt UI components and services with TypeScript and modern patterns
 
 ### 🧪 Testing Excellence
+
 - **Comprehensive Coverage**: Unit, integration, E2E, and contract testing across all applications
 - **Blockchain Testing**: Specialized test suites for smart contracts on all supported networks
 - **Cross-Platform E2E**: Playwright for web and React Native testing frameworks for mobile
 - **Performance Testing**: Load testing and blockchain transaction validation
 
 ### 🔧 Developer Experience
+
 - **Advanced Build System**: Multi-stage builds with parallel processing and caching optimization
 - **Security Integration**: Vulnerability scanning, container security, and code quality enforcement
 - **Documentation**: Comprehensive guides for setup, development, and deployment
@@ -172,9 +186,11 @@ This monorepo has been comprehensively modernized with enterprise-grade features
 - **Git** for version control
 
 ### For Blockchain Development (Optional)
+
 The project includes automated setup for blockchain development tools:
+
 - **Rust** and Cargo for Solana/Polkadot development
-- **Solana CLI** for Solana program deployment  
+- **Solana CLI** for Solana program deployment
 - **Anchor CLI** for Solana program development
 - **Substrate tools** for Polkadot development
 
@@ -183,11 +199,13 @@ The project includes automated setup for blockchain development tools:
 ### Quick Start
 
 1. **Install pnpm** (if not already installed)
+
    ```bash
    npm install -g pnpm@9.12.0
    ```
 
 2. **Clone and setup**
+
    ```bash
    git clone https://github.com/yourusername/todo-list-monorepo.git
    cd todo-list-monorepo
@@ -195,19 +213,21 @@ The project includes automated setup for blockchain development tools:
    ```
 
 3. **Setup blockchain development (optional)**
+
    ```bash
    # Automated blockchain tools installation
    pnpm blockchain:deps:fix
-   
+
    # Or check what's needed first
    pnpm blockchain:deps:check
    ```
 
 4. **Start development environment**
+
    ```bash
    # Option 1: Use development container (recommended)
    # Open in VS Code and select "Reopen in Container"
-   
+
    # Option 2: Local development
    docker-compose -f docker-compose.dev.yml up -d
    pnpm db:setup  # Setup database with sample data
@@ -234,6 +254,7 @@ code .
 ```
 
 The devcontainer includes:
+
 - Node.js 20, pnpm, and all JavaScript tools
 - Rust, Solana CLI, and Anchor for blockchain development
 - Docker-in-Docker for container management
@@ -243,6 +264,7 @@ The devcontainer includes:
 ### Development Workflow
 
 #### Building
+
 ```bash
 # Full build (all apps, packages, and contracts)
 pnpm build
@@ -260,6 +282,7 @@ pnpm build:contracts   # Blockchain contracts only
 ```
 
 #### Development Servers
+
 ```bash
 # Start all development servers
 pnpm dev
@@ -273,6 +296,7 @@ pnpm dev:contracts    # Hardhat node for contracts
 ```
 
 #### Testing
+
 ```bash
 # Run all tests
 pnpm test
@@ -287,6 +311,7 @@ pnpm test:contracts   # Blockchain contract tests
 #### Blockchain Development
 
 **Dependency Management**:
+
 ```bash
 # Check blockchain development environment
 pnpm blockchain:deps:check
@@ -310,6 +335,7 @@ pnpm blockchain:deps:diagnose
 ```
 
 **Tool Installation**:
+
 ```bash
 # Install all blockchain tools
 pnpm blockchain:tools:install
@@ -325,6 +351,7 @@ pnpm blockchain:tools:install:interactive
 ```
 
 **Contract Compilation** (with automatic dependency checking):
+
 ```bash
 # Compile all contracts
 pnpm contracts:compile
@@ -341,6 +368,7 @@ pnpm contracts:deploy
 ```
 
 **Help and Troubleshooting**:
+
 ```bash
 # Get blockchain development help
 pnpm blockchain:help
@@ -350,6 +378,7 @@ pnpm blockchain:help:interactive
 ```
 
 #### Database Management
+
 ```bash
 # Complete database setup
 pnpm db:setup
@@ -365,6 +394,7 @@ pnpm db:reset
 ```
 
 #### Code Quality
+
 ```bash
 # Lint and fix issues
 pnpm lint
@@ -382,6 +412,7 @@ pnpm typecheck
 The project implements enterprise-grade testing across all layers:
 
 ### Frontend Testing
+
 - **Unit Tests**: Jest with React Testing Library for components
 - **Integration Tests**: API integration with mock servers
 - **E2E Tests**: Playwright for complete user journeys
@@ -389,12 +420,14 @@ The project implements enterprise-grade testing across all layers:
 - **Mobile Testing**: React Native testing with platform-specific scenarios
 
 ### Backend Testing
+
 - **Unit Tests**: NestJS services and controllers with comprehensive mocking
 - **Integration Tests**: Database integration with test containers
 - **API Tests**: Supertest for endpoint validation
 - **Performance Tests**: Load testing for critical endpoints
 
 ### Blockchain Testing
+
 - **Contract Tests**: Comprehensive smart contract testing on all networks
   - **Polygon**: Hardhat with Chai for Solidity contracts
   - **Solana**: Anchor testing framework for Rust programs
@@ -403,12 +436,14 @@ The project implements enterprise-grade testing across all layers:
 - **Transaction Tests**: End-to-end transaction flow validation
 
 ### Cross-Platform Testing
+
 - **Multi-Environment**: Tests run across development, staging, and production configs
 - **Browser Testing**: Cross-browser compatibility with Playwright
 - **Mobile Testing**: iOS and Android testing scenarios
 - **Network Testing**: Multi-blockchain network testing
 
 ### Running Tests
+
 ```bash
 # All tests with coverage
 pnpm test
@@ -431,6 +466,7 @@ pnpm test --watch
 ```
 
 ### Test Coverage
+
 - **Minimum 80% coverage** across all applications
 - **100% coverage** for critical business logic
 - **Contract coverage** for all smart contract functions
@@ -439,6 +475,7 @@ pnpm test --watch
 ## 📚 Documentation
 
 ### Component Documentation
+
 - Component documentation is available through Storybook
   ```bash
   # Start Storybook for web components
@@ -446,14 +483,17 @@ pnpm test --watch
   ```
 
 ### API Documentation
+
 - API documentation is available at `/api/docs` when running the API server
 
 ### Blockchain Development
+
 - **[Blockchain Setup Guide](docs/BLOCKCHAIN_SETUP.md)** - Comprehensive setup instructions for blockchain development
 - **[Blockchain Commands Reference](docs/BLOCKCHAIN_COMMANDS.md)** - Quick reference for dependency management commands
 - **[Troubleshooting Guide](docs/TROUBLESHOOTING.md)** - Solutions to common development issues
 
 ### Additional Guides
+
 - **[Contributing Guidelines](CONTRIBUTING.md)** - How to contribute to the project
 - **[Security Policy](SECURITY.md)** - Security guidelines and reporting
 - **[Deployment Guide](docs/DEPLOYMENT.md)** - Production deployment instructions
@@ -461,6 +501,7 @@ pnpm test --watch
 ## 🚢 Production Deployment
 
 ### Kubernetes Infrastructure
+
 The project includes production-ready Kubernetes manifests:
 
 ```bash
@@ -476,12 +517,14 @@ kubectl apply -f ingress/
 ```
 
 **Kubernetes Features**:
+
 - **Auto-scaling**: HPA for all services based on CPU/memory
 - **Monitoring**: Prometheus and Grafana integration
 - **Security**: RBAC, network policies, and pod security standards
 - **High Availability**: Multi-replica deployments with health checks
 
 ### Docker Deployment
+
 ```bash
 # Production build with Docker
 pnpm build:production
@@ -495,6 +538,7 @@ docker run -d todo-web:latest
 ```
 
 ### Environment Configuration
+
 ```bash
 # Development
 export ENVIRONMENT=development
@@ -513,12 +557,14 @@ export DOCKER_REGISTRY=prod.registry.com
 ```
 
 ### CI/CD Pipeline
+
 - **Continuous Integration**: Automated testing, linting, and security scanning
 - **Continuous Deployment**: Automated deployment to staging and production
 - **Security Scanning**: Container and dependency vulnerability scanning
 - **Performance Monitoring**: Automated performance regression detection
 
 ### Blockchain Deployment
+
 ```bash
 # Deploy contracts to all networks
 pnpm contracts:deploy
@@ -559,6 +605,7 @@ pnpm blockchain:deps:diagnose
 #### Smart Contract Compilation Failures
 
 **Problem**: Contract compilation fails with missing dependencies
+
 ```bash
 # Solution: Check and install missing blockchain tools
 pnpm blockchain:deps:check --verbose
@@ -566,6 +613,7 @@ pnpm blockchain:deps:fix
 ```
 
 **Problem**: Anchor CLI not found or outdated
+
 ```bash
 # Solution: Install/update Anchor CLI
 pnpm blockchain:tools:install:anchor
@@ -575,6 +623,7 @@ avm install 0.29.0 && avm use 0.29.0
 ```
 
 **Problem**: Solana CLI configuration issues
+
 ```bash
 # Solution: Configure Solana CLI
 solana config set --url devnet
@@ -584,6 +633,7 @@ solana-keygen new --outfile ~/.config/solana/id.json
 #### Development Environment Issues
 
 **Problem**: pnpm workspace dependencies not resolving
+
 ```bash
 # Solution: Clean and reinstall dependencies
 pnpm clean
@@ -592,6 +642,7 @@ pnpm install
 ```
 
 **Problem**: Docker containers failing to start
+
 ```bash
 # Solution: Reset Docker environment
 docker-compose down -v
@@ -601,6 +652,7 @@ docker-compose -f docker-compose.dev.yml up -d
 ```
 
 **Problem**: Database connection issues
+
 ```bash
 # Solution: Reset and setup database
 pnpm db:reset
@@ -610,6 +662,7 @@ pnpm db:setup
 #### Network-Specific Issues
 
 **Polygon/Hardhat Issues**:
+
 ```bash
 # Check Node.js version (requires 20+)
 node --version
@@ -618,6 +671,7 @@ cd apps/smart-contracts/polygon && pnpm install
 ```
 
 **Solana Issues**:
+
 ```bash
 # Check Rust and Solana CLI versions
 pnpm blockchain:deps:check:solana
@@ -626,6 +680,7 @@ solana-install update
 ```
 
 **Polkadot Issues**:
+
 ```bash
 # Install missing Substrate tools
 pnpm blockchain:tools:install:substrate
@@ -655,6 +710,7 @@ docker build -f .devcontainer/Dockerfile -t todo-devcontainer .
 ### Performance Issues
 
 **Slow builds**:
+
 ```bash
 # Use quick build for development
 pnpm build:quick
@@ -664,12 +720,14 @@ export TURBO_CACHE_DIR=.turbo
 ```
 
 **Memory issues during contract compilation**:
+
 ```bash
 # Increase Node.js memory limit
 export NODE_OPTIONS="--max-old-space-size=8192"
 ```
 
 For more detailed troubleshooting information, see:
+
 - [BLOCKCHAIN_SETUP.md](docs/BLOCKCHAIN_SETUP.md) - Blockchain environment setup
 - [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) - General troubleshooting guide
 - `scripts/troubleshooting/` - Platform-specific troubleshooting guides

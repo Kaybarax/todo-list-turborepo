@@ -7,6 +7,7 @@ This guide provides detailed, platform-specific instructions for setting up the 
 ## macOS Installation
 
 ### Prerequisites
+
 - macOS 10.15 (Catalina) or later
 - Xcode Command Line Tools
 - Homebrew (recommended)
@@ -14,16 +15,19 @@ This guide provides detailed, platform-specific instructions for setting up the 
 ### Step 1: Install System Dependencies
 
 #### Install Xcode Command Line Tools
+
 ```bash
 xcode-select --install
 ```
 
 #### Install Homebrew (if not already installed)
+
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
 #### Install System Libraries
+
 ```bash
 # Essential development tools
 brew install git curl wget pkg-config openssl cmake
@@ -33,6 +37,7 @@ brew install libuv libffi
 ```
 
 ### Step 2: Install Node.js
+
 ```bash
 # Install Node.js 20+ using Homebrew
 brew install node@20
@@ -46,6 +51,7 @@ nvm alias default 20
 ```
 
 ### Step 3: Install Rust
+
 ```bash
 # Install Rust using rustup
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -59,6 +65,7 @@ rustup component add rustfmt clippy
 ```
 
 ### Step 4: Install Solana CLI
+
 ```bash
 # Method 1: Official installer (recommended)
 sh -c "$(curl -sSfL https://release.solana.com/v1.16.0/install)"
@@ -68,6 +75,7 @@ brew install solana
 ```
 
 ### Step 5: Install Anchor CLI
+
 ```bash
 # Install using cargo
 cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
@@ -76,6 +84,7 @@ avm use latest
 ```
 
 ### Step 6: Configure Environment
+
 ```bash
 # Add to ~/.zshrc (or ~/.bash_profile for bash)
 cat >> ~/.zshrc << 'EOF'
@@ -95,6 +104,7 @@ source ~/.zshrc
 ```
 
 ### Step 7: Verify Installation
+
 ```bash
 # Check versions
 node --version          # Should be 20+
@@ -106,6 +116,7 @@ anchor --version        # Should be latest
 ```
 
 ### macOS-Specific Notes
+
 - **M1/M2 Macs**: All tools have native Apple Silicon support
 - **Rosetta**: Not required for blockchain development tools
 - **Security**: You may need to allow downloaded tools in System Preferences > Security & Privacy
@@ -115,16 +126,19 @@ anchor --version        # Should be latest
 ## Linux Installation (Ubuntu/Debian)
 
 ### Prerequisites
+
 - Ubuntu 20.04+ or Debian 11+
 - sudo access
 - Internet connection
 
 ### Step 1: Update System
+
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
 
 ### Step 2: Install System Dependencies
+
 ```bash
 # Essential development tools
 sudo apt install -y curl wget git build-essential pkg-config libssl-dev
@@ -137,6 +151,7 @@ sudo apt install -y libgtk-3-dev libwebkit2gtk-4.0-dev
 ```
 
 ### Step 3: Install Node.js
+
 ```bash
 # Method 1: Using NodeSource repository (recommended)
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
@@ -151,6 +166,7 @@ nvm alias default 20
 ```
 
 ### Step 4: Install Rust
+
 ```bash
 # Install Rust using rustup
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -164,12 +180,14 @@ rustup component add rustfmt clippy
 ```
 
 ### Step 5: Install Solana CLI
+
 ```bash
 # Download and install Solana CLI
 sh -c "$(curl -sSfL https://release.solana.com/v1.16.0/install)"
 ```
 
 ### Step 6: Install Anchor CLI
+
 ```bash
 # Install Anchor CLI using cargo
 cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
@@ -178,6 +196,7 @@ avm use latest
 ```
 
 ### Step 7: Configure Environment
+
 ```bash
 # Add to ~/.bashrc
 cat >> ~/.bashrc << 'EOF'
@@ -197,6 +216,7 @@ source ~/.bashrc
 ```
 
 ### Step 8: Verify Installation
+
 ```bash
 # Check versions
 node --version          # Should be 20+
@@ -210,6 +230,7 @@ anchor --version        # Should be latest
 ### Linux Distribution Specific Notes
 
 #### CentOS/RHEL/Fedora
+
 ```bash
 # Install development tools
 sudo dnf groupinstall "Development Tools"
@@ -221,6 +242,7 @@ sudo yum install pkg-config openssl-devel clang
 ```
 
 #### Arch Linux
+
 ```bash
 # Install dependencies
 sudo pacman -S base-devel git curl wget pkg-config openssl clang
@@ -234,6 +256,7 @@ sudo pacman -S nodejs npm
 ## Windows Installation
 
 ### Prerequisites
+
 - Windows 10 version 1903+ or Windows 11
 - Administrator access
 - PowerShell 5.1+ or PowerShell Core 7+
@@ -241,15 +264,18 @@ sudo pacman -S nodejs npm
 ### Option 1: Windows Subsystem for Linux (WSL) - Recommended
 
 #### Step 1: Install WSL
+
 ```powershell
 # Run as Administrator
 wsl --install -d Ubuntu-22.04
 ```
 
 #### Step 2: Setup Ubuntu in WSL
+
 After WSL installation and restart, follow the Linux (Ubuntu) installation instructions above.
 
 #### Step 3: Configure WSL Integration
+
 ```bash
 # In WSL terminal, add Windows PATH integration
 echo 'export PATH="$PATH:/mnt/c/Windows/System32"' >> ~/.bashrc
@@ -259,6 +285,7 @@ source ~/.bashrc
 ### Option 2: Native Windows Installation
 
 #### Step 1: Install Package Manager
+
 ```powershell
 # Install Chocolatey (run as Administrator)
 Set-ExecutionPolicy Bypass -Scope Process -Force
@@ -270,6 +297,7 @@ iwr -useb get.scoop.sh | iex
 ```
 
 #### Step 2: Install Visual Studio Build Tools
+
 ```powershell
 # Using Chocolatey
 choco install visualstudio2022buildtools -y
@@ -279,6 +307,7 @@ choco install visualstudio2022buildtools -y
 ```
 
 #### Step 3: Install Git
+
 ```powershell
 # Using Chocolatey
 choco install git -y
@@ -288,6 +317,7 @@ scoop install git
 ```
 
 #### Step 4: Install Node.js
+
 ```powershell
 # Using Chocolatey
 choco install nodejs -y
@@ -299,6 +329,7 @@ scoop install nodejs
 ```
 
 #### Step 5: Install Rust
+
 ```powershell
 # Download and run rustup-init.exe from https://rustup.rs/
 # Or use PowerShell
@@ -310,6 +341,7 @@ rustup target add wasm32-unknown-unknown
 ```
 
 #### Step 6: Install Solana CLI
+
 ```powershell
 # Download Windows installer from GitHub releases
 # https://github.com/solana-labs/solana/releases
@@ -320,12 +352,14 @@ cmd /c "curl https://release.solana.com/v1.16.0/solana-install-init-x86_64-pc-wi
 ```
 
 #### Step 7: Install Anchor CLI
+
 ```powershell
 # This requires WSL or may have compatibility issues
 # Recommended to use WSL for Anchor development
 ```
 
 #### Step 8: Configure Environment
+
 ```powershell
 # Add to PowerShell profile
 $profile_path = $PROFILE
@@ -337,12 +371,13 @@ Add-Content -Path $profile_path -Value @"
 # Rust environment
 `$env:PATH += ";`$env:USERPROFILE\.cargo\bin"
 
-# Solana environment  
+# Solana environment
 `$env:PATH += ";`$env:USERPROFILE\.local\share\solana\install\active_release\bin"
 "@
 ```
 
 ### Windows-Specific Notes
+
 - **WSL is strongly recommended** for blockchain development on Windows
 - Native Windows support varies by tool (Solana: good, Anchor: limited)
 - PowerShell execution policy may need adjustment
@@ -353,10 +388,12 @@ Add-Content -Path $profile_path -Value @"
 ## Docker-Based Development (All Platforms)
 
 ### Prerequisites
+
 - Docker Desktop installed
 - Docker Compose (included with Docker Desktop)
 
 ### Step 1: Create Development Container
+
 ```dockerfile
 # Create Dockerfile.dev
 FROM ubuntu:22.04
@@ -388,6 +425,7 @@ WORKDIR /workspace
 ```
 
 ### Step 2: Create Docker Compose
+
 ```yaml
 # docker-compose.dev.yml
 version: '3.8'
@@ -401,8 +439,8 @@ services:
       - cargo-cache:/root/.cargo
       - solana-cache:/root/.cache/solana
     ports:
-      - "8899:8899"  # Solana local validator
-      - "8900:8900"  # Solana WebSocket
+      - '8899:8899' # Solana local validator
+      - '8900:8900' # Solana WebSocket
     environment:
       - RUST_BACKTRACE=1
       - CARGO_INCREMENTAL=1
@@ -413,6 +451,7 @@ volumes:
 ```
 
 ### Step 3: Use Development Container
+
 ```bash
 # Build and start container
 docker-compose -f docker-compose.dev.yml up -d
@@ -499,6 +538,7 @@ echo "🎯 Environment verification complete!"
 ```
 
 Make it executable and run:
+
 ```bash
 chmod +x verify-installation.sh
 ./verify-installation.sh
@@ -509,18 +549,21 @@ chmod +x verify-installation.sh
 ## Troubleshooting by Platform
 
 ### macOS Common Issues
+
 - **Permission denied**: Use `sudo` for system-wide installations
 - **Command not found**: Check PATH in `~/.zshrc`
 - **Xcode issues**: Reinstall Command Line Tools
 - **Homebrew conflicts**: Run `brew doctor`
 
 ### Linux Common Issues
+
 - **Package conflicts**: Update package lists with `apt update`
 - **Permission issues**: Ensure user is in sudo group
 - **Missing libraries**: Install build-essential package
 - **Network issues**: Check firewall and proxy settings
 
 ### Windows Common Issues
+
 - **PowerShell execution policy**: Run `Set-ExecutionPolicy RemoteSigned`
 - **Path issues**: Restart terminal after installations
 - **Visual Studio Build Tools**: Ensure C++ workload is installed
@@ -539,6 +582,7 @@ After successful installation:
 5. **Configure your IDE** with appropriate extensions
 
 For ongoing development, refer to the specific troubleshooting guides for each tool:
+
 - [Anchor CLI Setup](./anchor-setup.md)
 - [Solana CLI Setup](./solana-setup.md)
 - [Rust Environment Setup](./rust-setup.md)

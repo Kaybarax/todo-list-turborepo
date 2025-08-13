@@ -30,7 +30,7 @@ export interface BlockchainServiceInterface {
   deleteTodo(id: string): Promise<TransactionResult>;
   getTodo(id: string): Promise<BlockchainTodo | null>;
   getUserTodos(userAddress: string): Promise<BlockchainTodo[]>;
-  
+
   // Transaction monitoring
   getTransactionStatus(hash: string): Promise<'pending' | 'confirmed' | 'failed'>;
   waitForTransaction(hash: string): Promise<TransactionResult>;
@@ -44,7 +44,9 @@ abstract class MobileBlockchainService implements BlockchainServiceInterface {
     this.networkName = networkName;
   }
 
-  abstract createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult>;
+  abstract createTodo(
+    todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>,
+  ): Promise<TransactionResult>;
   abstract updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult>;
   abstract deleteTodo(id: string): Promise<TransactionResult>;
   abstract getTodo(id: string): Promise<BlockchainTodo | null>;
@@ -52,14 +54,14 @@ abstract class MobileBlockchainService implements BlockchainServiceInterface {
 
   async getTransactionStatus(_hash: string): Promise<'pending' | 'confirmed' | 'failed'> {
     await this.simulateNetworkDelay(500);
-    
+
     // Mock status - randomly return confirmed after some time
     return Math.random() > 0.3 ? 'confirmed' : 'pending';
   }
 
   async waitForTransaction(hash: string): Promise<TransactionResult> {
     // Show mobile-friendly loading state
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       Alert.alert(
         'Transaction Processing',
         `Your transaction is being processed on ${this.networkName}. This may take a few moments.`,
@@ -69,7 +71,7 @@ abstract class MobileBlockchainService implements BlockchainServiceInterface {
             onPress: async () => {
               // Simulate waiting for confirmation
               await this.simulateNetworkDelay(3000);
-              
+
               resolve({
                 hash,
                 blockNumber: Math.floor(Math.random() * 1000000),
@@ -78,7 +80,7 @@ abstract class MobileBlockchainService implements BlockchainServiceInterface {
               });
             },
           },
-        ]
+        ],
       );
     });
   }
@@ -92,11 +94,7 @@ abstract class MobileBlockchainService implements BlockchainServiceInterface {
   }
 
   protected showTransactionAlert(type: 'success' | 'error', message: string) {
-    Alert.alert(
-      type === 'success' ? 'Transaction Successful' : 'Transaction Failed',
-      message,
-      [{ text: 'OK' }]
-    );
+    Alert.alert(type === 'success' ? 'Transaction Successful' : 'Transaction Failed', message, [{ text: 'OK' }]);
   }
 }
 
@@ -111,40 +109,43 @@ export class SolanaMobileBlockchainService extends MobileBlockchainService {
 
   async createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1500);
-    
+
     const result = {
       hash: this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
     this.showTransactionAlert('success', `Todo created on Solana network!\nTransaction: ${result.hash.slice(0, 8)}...`);
-    
+
     return result;
   }
 
   async updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1200);
-    
+
     const result = {
       hash: this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
     this.showTransactionAlert('success', `Todo updated on Solana network!\nTransaction: ${result.hash.slice(0, 8)}...`);
-    
+
     return result;
   }
 
   async deleteTodo(id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1000);
-    
+
     const result = {
       hash: this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
-    this.showTransactionAlert('success', `Todo deleted from Solana network!\nTransaction: ${result.hash.slice(0, 8)}...`);
-    
+    this.showTransactionAlert(
+      'success',
+      `Todo deleted from Solana network!\nTransaction: ${result.hash.slice(0, 8)}...`,
+    );
+
     return result;
   }
 
@@ -167,40 +168,49 @@ export class PolkadotMobileBlockchainService extends MobileBlockchainService {
 
   async createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1800);
-    
+
     const result = {
       hash: this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
-    this.showTransactionAlert('success', `Todo created on Polkadot network!\nTransaction: ${result.hash.slice(0, 8)}...`);
-    
+    this.showTransactionAlert(
+      'success',
+      `Todo created on Polkadot network!\nTransaction: ${result.hash.slice(0, 8)}...`,
+    );
+
     return result;
   }
 
   async updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1500);
-    
+
     const result = {
       hash: this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
-    this.showTransactionAlert('success', `Todo updated on Polkadot network!\nTransaction: ${result.hash.slice(0, 8)}...`);
-    
+    this.showTransactionAlert(
+      'success',
+      `Todo updated on Polkadot network!\nTransaction: ${result.hash.slice(0, 8)}...`,
+    );
+
     return result;
   }
 
   async deleteTodo(id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1200);
-    
+
     const result = {
       hash: this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
-    this.showTransactionAlert('success', `Todo deleted from Polkadot network!\nTransaction: ${result.hash.slice(0, 8)}...`);
-    
+    this.showTransactionAlert(
+      'success',
+      `Todo deleted from Polkadot network!\nTransaction: ${result.hash.slice(0, 8)}...`,
+    );
+
     return result;
   }
 
@@ -226,40 +236,49 @@ export class PolygonMobileBlockchainService extends MobileBlockchainService {
 
   async createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(2000);
-    
+
     const result = {
       hash: '0x' + this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
-    this.showTransactionAlert('success', `Todo created on Polygon network!\nTransaction: ${result.hash.slice(0, 10)}...`);
-    
+    this.showTransactionAlert(
+      'success',
+      `Todo created on Polygon network!\nTransaction: ${result.hash.slice(0, 10)}...`,
+    );
+
     return result;
   }
 
   async updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1700);
-    
+
     const result = {
       hash: '0x' + this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
-    this.showTransactionAlert('success', `Todo updated on Polygon network!\nTransaction: ${result.hash.slice(0, 10)}...`);
-    
+    this.showTransactionAlert(
+      'success',
+      `Todo updated on Polygon network!\nTransaction: ${result.hash.slice(0, 10)}...`,
+    );
+
     return result;
   }
 
   async deleteTodo(id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1400);
-    
+
     const result = {
       hash: '0x' + this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
-    this.showTransactionAlert('success', `Todo deleted from Polygon network!\nTransaction: ${result.hash.slice(0, 10)}...`);
-    
+    this.showTransactionAlert(
+      'success',
+      `Todo deleted from Polygon network!\nTransaction: ${result.hash.slice(0, 10)}...`,
+    );
+
     return result;
   }
 
@@ -285,40 +304,49 @@ export class MoonbeamMobileBlockchainService extends MobileBlockchainService {
 
   async createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1800);
-    
+
     const result = {
       hash: '0x' + this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
-    this.showTransactionAlert('success', `Todo created on Moonbeam network!\nTransaction: ${result.hash.slice(0, 10)}...`);
-    
+    this.showTransactionAlert(
+      'success',
+      `Todo created on Moonbeam network!\nTransaction: ${result.hash.slice(0, 10)}...`,
+    );
+
     return result;
   }
 
   async updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1500);
-    
+
     const result = {
       hash: '0x' + this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
-    this.showTransactionAlert('success', `Todo updated on Moonbeam network!\nTransaction: ${result.hash.slice(0, 10)}...`);
-    
+    this.showTransactionAlert(
+      'success',
+      `Todo updated on Moonbeam network!\nTransaction: ${result.hash.slice(0, 10)}...`,
+    );
+
     return result;
   }
 
   async deleteTodo(id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1300);
-    
+
     const result = {
       hash: '0x' + this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
-    this.showTransactionAlert('success', `Todo deleted from Moonbeam network!\nTransaction: ${result.hash.slice(0, 10)}...`);
-    
+    this.showTransactionAlert(
+      'success',
+      `Todo deleted from Moonbeam network!\nTransaction: ${result.hash.slice(0, 10)}...`,
+    );
+
     return result;
   }
 
@@ -344,40 +372,43 @@ export class BaseMobileBlockchainService extends MobileBlockchainService {
 
   async createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1600);
-    
+
     const result = {
       hash: '0x' + this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
     this.showTransactionAlert('success', `Todo created on Base network!\nTransaction: ${result.hash.slice(0, 10)}...`);
-    
+
     return result;
   }
 
   async updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1300);
-    
+
     const result = {
       hash: '0x' + this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
     this.showTransactionAlert('success', `Todo updated on Base network!\nTransaction: ${result.hash.slice(0, 10)}...`);
-    
+
     return result;
   }
 
   async deleteTodo(id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1100);
-    
+
     const result = {
       hash: '0x' + this.generateMockTransactionHash(),
       status: 'pending' as const,
     };
 
-    this.showTransactionAlert('success', `Todo deleted from Base network!\nTransaction: ${result.hash.slice(0, 10)}...`);
-    
+    this.showTransactionAlert(
+      'success',
+      `Todo deleted from Base network!\nTransaction: ${result.hash.slice(0, 10)}...`,
+    );
+
     return result;
   }
 
@@ -398,36 +429,40 @@ export function createMobileBlockchainService(network: BlockchainNetwork): Block
     case BlockchainNetwork.SOLANA:
     case BlockchainNetwork.SOLANA_DEVNET:
       return new SolanaMobileBlockchainService('TodoProgramMobile123');
-    
+
     case BlockchainNetwork.POLKADOT:
     case BlockchainNetwork.POLKADOT_TESTNET:
       return new PolkadotMobileBlockchainService();
-    
+
     case BlockchainNetwork.POLYGON:
     case BlockchainNetwork.POLYGON_MUMBAI:
       return new PolygonMobileBlockchainService('0x1234567890123456789012345678901234567890');
-    
+
     case BlockchainNetwork.MOONBEAM:
     case BlockchainNetwork.MOONBEAM_TESTNET:
       return new MoonbeamMobileBlockchainService('0x1234567890123456789012345678901234567890');
-    
+
     case BlockchainNetwork.BASE:
     case BlockchainNetwork.BASE_TESTNET:
       return new BaseMobileBlockchainService('0x1234567890123456789012345678901234567890');
-    
+
     default:
-      throw new Error(`Unsupported network: ${network}. Available networks: ${Object.values(BlockchainNetwork).join(', ')}`);
+      throw new Error(
+        `Unsupported network: ${network}. Available networks: ${Object.values(BlockchainNetwork).join(', ')}`,
+      );
   }
 }
 
 // Legacy function for backward compatibility
-export function createMobileBlockchainServiceLegacy(network: 'solana' | 'polkadot' | 'polygon'): BlockchainServiceInterface {
+export function createMobileBlockchainServiceLegacy(
+  network: 'solana' | 'polkadot' | 'polygon',
+): BlockchainServiceInterface {
   const networkMap = {
-    'solana': BlockchainNetwork.SOLANA,
-    'polkadot': BlockchainNetwork.POLKADOT,
-    'polygon': BlockchainNetwork.POLYGON,
+    solana: BlockchainNetwork.SOLANA,
+    polkadot: BlockchainNetwork.POLKADOT,
+    polygon: BlockchainNetwork.POLYGON,
   };
-  
+
   return createMobileBlockchainService(networkMap[network]);
 }
 

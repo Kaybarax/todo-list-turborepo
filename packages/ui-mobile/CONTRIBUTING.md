@@ -17,30 +17,34 @@ Thank you for your interest in contributing to the `@todo/ui-mobile` component l
 ### Development Setup
 
 1. **Clone the repository**:
+
    ```bash
    git clone <repository-url>
    cd todo-list-turborepo
    ```
 
 2. **Install dependencies**:
+
    ```bash
    pnpm install
    ```
 
 3. **Build packages**:
+
    ```bash
    pnpm build:packages
    ```
 
 4. **Start mobile development**:
+
    ```bash
    # Start the mobile UI package in development mode
    cd packages/ui-mobile
    pnpm dev
-   
+
    # In another terminal, start Storybook
    pnpm storybook
-   
+
    # In another terminal, start the showcase app
    pnpm showcase:start
    ```
@@ -68,6 +72,7 @@ Thank you for your interest in contributing to the `@todo/ui-mobile` component l
 ### Development Workflow
 
 1. **Create a feature branch**:
+
    ```bash
    git checkout -b feature/mobile-component-name
    ```
@@ -75,17 +80,19 @@ Thank you for your interest in contributing to the `@todo/ui-mobile` component l
 2. **Make your changes** following the guidelines in [DEVELOPMENT.md](./DEVELOPMENT.md)
 
 3. **Test your changes**:
+
    ```bash
    pnpm test
    pnpm test:ci
    pnpm lint
-   
+
    # Test on devices/simulators
    pnpm showcase:ios
    pnpm showcase:android
    ```
 
 4. **Commit your changes**:
+
    ```bash
    git add .
    git commit -m "feat(mobile): add new component"
@@ -222,17 +229,14 @@ import { AccessibilityInfo } from 'react-native';
   onPress={handleClose}
 >
   <Text>Close</Text>
-</TouchableOpacity>
+</TouchableOpacity>;
 
 // Good: Dynamic accessibility
 const [isScreenReaderEnabled, setIsScreenReaderEnabled] = React.useState(false);
 
 React.useEffect(() => {
   AccessibilityInfo.isScreenReaderEnabled().then(setIsScreenReaderEnabled);
-  const subscription = AccessibilityInfo.addEventListener(
-    'screenReaderChanged',
-    setIsScreenReaderEnabled
-  );
+  const subscription = AccessibilityInfo.addEventListener('screenReaderChanged', setIsScreenReaderEnabled);
   return () => subscription?.remove();
 }, []);
 ```
@@ -246,7 +250,7 @@ import { FlatList, VirtualizedList } from 'react-native';
 <FlatList
   data={items}
   renderItem={({ item }) => <MemoizedItem item={item} />}
-  keyExtractor={(item) => item.id}
+  keyExtractor={item => item.id}
   getItemLayout={(data, index) => ({
     length: ITEM_HEIGHT,
     offset: ITEM_HEIGHT * index,
@@ -255,7 +259,7 @@ import { FlatList, VirtualizedList } from 'react-native';
   removeClippedSubviews={true}
   maxToRenderPerBatch={10}
   windowSize={10}
-/>
+/>;
 
 // Good: Memoized components
 const MemoizedItem = React.memo(({ item }) => (
@@ -284,35 +288,25 @@ const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 
 describe('MobileButton', () => {
   it('renders correctly on mobile', () => {
-    const { getByText } = render(
-      <MobileButton title="Test Button" onPress={() => {}} />,
-      { wrapper: TestWrapper }
-    );
-    
+    const { getByText } = render(<MobileButton title="Test Button" onPress={() => {}} />, { wrapper: TestWrapper });
+
     expect(getByText('Test Button')).toBeTruthy();
   });
 
   it('handles touch interactions', () => {
     const onPress = jest.fn();
-    const { getByText } = render(
-      <MobileButton title="Touch Me" onPress={onPress} />,
-      { wrapper: TestWrapper }
-    );
-    
+    const { getByText } = render(<MobileButton title="Touch Me" onPress={onPress} />, { wrapper: TestWrapper });
+
     fireEvent.press(getByText('Touch Me'));
     expect(onPress).toHaveBeenCalledTimes(1);
   });
 
   it('supports accessibility features', () => {
     const { getByLabelText } = render(
-      <MobileButton 
-        title="Accessible Button"
-        accessibilityLabel="Custom accessibility label"
-        onPress={() => {}}
-      />,
-      { wrapper: TestWrapper }
+      <MobileButton title="Accessible Button" accessibilityLabel="Custom accessibility label" onPress={() => {}} />,
+      { wrapper: TestWrapper },
     );
-    
+
     const button = getByLabelText('Custom accessibility label');
     expect(button).toBeTruthy();
   });
@@ -331,11 +325,10 @@ describe('MobileButton Platform Tests', () => {
 
   it('applies iOS-specific styles', () => {
     Platform.OS = 'ios';
-    const { getByTestId } = render(
-      <MobileButton title="iOS Button" testID="button" onPress={() => {}} />,
-      { wrapper: TestWrapper }
-    );
-    
+    const { getByTestId } = render(<MobileButton title="iOS Button" testID="button" onPress={() => {}} />, {
+      wrapper: TestWrapper,
+    });
+
     const button = getByTestId('button');
     expect(button.props.style).toMatchObject({
       borderRadius: 8,
@@ -344,11 +337,10 @@ describe('MobileButton Platform Tests', () => {
 
   it('applies Android-specific styles', () => {
     Platform.OS = 'android';
-    const { getByTestId } = render(
-      <MobileButton title="Android Button" testID="button" onPress={() => {}} />,
-      { wrapper: TestWrapper }
-    );
-    
+    const { getByTestId } = render(<MobileButton title="Android Button" testID="button" onPress={() => {}} />, {
+      wrapper: TestWrapper,
+    });
+
     const button = getByTestId('button');
     expect(button.props.style).toMatchObject({
       elevation: 2,
@@ -375,7 +367,7 @@ const meta: Meta<typeof MobileButton> = {
   title: 'Mobile/Button',
   component: MobileButton,
   decorators: [
-    (Story) => (
+    Story => (
       <UIKittenWrapper>
         <Story />
       </UIKittenWrapper>
@@ -581,6 +573,7 @@ Animated.timing(fadeAnim, {
 Before submitting mobile components:
 
 ### Implementation
+
 - [ ] Uses UI Kitten as foundation
 - [ ] Works on both iOS and Android
 - [ ] Follows platform design guidelines
@@ -589,6 +582,7 @@ Before submitting mobile components:
 - [ ] Optimized for mobile performance
 
 ### Accessibility
+
 - [ ] Minimum 44x44 point touch targets
 - [ ] Proper accessibility labels and hints
 - [ ] Screen reader compatibility (VoiceOver/TalkBack)
@@ -596,6 +590,7 @@ Before submitting mobile components:
 - [ ] High contrast support
 
 ### Testing
+
 - [ ] Unit tests with React Native Testing Library
 - [ ] Platform-specific tests
 - [ ] Accessibility tests
@@ -603,6 +598,7 @@ Before submitting mobile components:
 - [ ] Manual testing on devices
 
 ### Documentation
+
 - [ ] React Native Storybook stories
 - [ ] Platform-specific examples
 - [ ] Performance considerations documented
@@ -634,7 +630,7 @@ We encourage testing on real devices:
 For mobile-specific questions:
 
 - **React Native issues**: Tag with "react-native" label
-- **iOS issues**: Tag with "ios" label  
+- **iOS issues**: Tag with "ios" label
 - **Android issues**: Tag with "android" label
 - **Performance issues**: Tag with "performance" label
 - **Accessibility issues**: Tag with "accessibility" label

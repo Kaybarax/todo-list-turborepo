@@ -22,9 +22,11 @@ pnpm blockchain:deps:fix:interactive
 ### Smart Contract Compilation Failures
 
 #### Issue: "anchor: command not found"
+
 **Symptoms**: Anchor CLI commands fail with "command not found"
 
 **Solutions**:
+
 ```bash
 # Option 1: Automated installation
 pnpm blockchain:tools:install:anchor
@@ -40,9 +42,11 @@ source ~/.bashrc  # or ~/.zshrc
 ```
 
 #### Issue: "solana: command not found"
+
 **Symptoms**: Solana CLI commands fail
 
 **Solutions**:
+
 ```bash
 # Option 1: Automated installation
 pnpm blockchain:tools:install:solana
@@ -56,9 +60,11 @@ solana-install update
 ```
 
 #### Issue: "rustc: command not found"
+
 **Symptoms**: Rust compilation fails
 
 **Solutions**:
+
 ```bash
 # Option 1: Automated installation
 pnpm blockchain:tools:install:rust
@@ -72,9 +78,11 @@ rustup update stable
 ```
 
 #### Issue: "cargo-contract: command not found"
+
 **Symptoms**: Polkadot/Substrate contract compilation fails
 
 **Solutions**:
+
 ```bash
 # Option 1: Automated installation
 pnpm blockchain:tools:install:substrate
@@ -93,14 +101,17 @@ sudo apt-get install protobuf-compiler
 ### Version Compatibility Issues
 
 #### Issue: Outdated tool versions
+
 **Symptoms**: Tools are installed but versions are too old
 
 **Check versions**:
+
 ```bash
 pnpm blockchain:deps:check --verbose
 ```
 
 **Update tools**:
+
 ```bash
 # Update all tools
 pnpm blockchain:deps:fix
@@ -115,9 +126,11 @@ cargo install cargo-contract --force
 ### Network Configuration Issues
 
 #### Issue: Solana CLI not configured
+
 **Symptoms**: Solana commands work but network errors occur
 
 **Solutions**:
+
 ```bash
 # Configure for development
 solana config set --url devnet
@@ -133,9 +146,11 @@ solana balance
 ```
 
 #### Issue: Hardhat network issues
+
 **Symptoms**: Polygon/Moonbeam/Base contract deployment fails
 
 **Solutions**:
+
 ```bash
 # Check Node.js version (must be 20+)
 node --version
@@ -156,9 +171,11 @@ npx hardhat node
 ### Package Management Issues
 
 #### Issue: pnpm workspace resolution failures
+
 **Symptoms**: Packages can't find each other, import errors
 
 **Solutions**:
+
 ```bash
 # Clean and reinstall
 pnpm clean
@@ -175,9 +192,11 @@ pnpm list --depth=0
 ```
 
 #### Issue: "Cannot find module" errors
+
 **Symptoms**: TypeScript/JavaScript import errors
 
 **Solutions**:
+
 ```bash
 # Rebuild TypeScript references
 pnpm build:packages
@@ -192,9 +211,11 @@ cat packages/*/package.json | grep -A 5 "exports"
 ### Docker and Container Issues
 
 #### Issue: Docker containers won't start
+
 **Symptoms**: docker-compose up fails
 
 **Solutions**:
+
 ```bash
 # Clean Docker environment
 docker-compose down -v
@@ -209,9 +230,11 @@ docker system df
 ```
 
 #### Issue: Development container issues
+
 **Symptoms**: VS Code devcontainer fails to start
 
 **Solutions**:
+
 ```bash
 # Rebuild container
 # In VS Code: Cmd/Ctrl+Shift+P > "Dev Containers: Rebuild Container"
@@ -226,9 +249,11 @@ docker build -f .devcontainer/Dockerfile -t todo-devcontainer .
 ### Database Issues
 
 #### Issue: MongoDB connection failures
+
 **Symptoms**: API can't connect to database
 
 **Solutions**:
+
 ```bash
 # Reset database
 pnpm db:reset
@@ -242,9 +267,11 @@ cat apps/api/.env.example
 ```
 
 #### Issue: Migration failures
+
 **Symptoms**: Database migrations fail to run
 
 **Solutions**:
+
 ```bash
 # Check migration status
 pnpm db:migrate status
@@ -262,9 +289,11 @@ cd db && node migrate.js up
 ### Test Failures
 
 #### Issue: Contract tests failing
+
 **Symptoms**: Smart contract tests fail to run
 
 **Solutions**:
+
 ```bash
 # Check blockchain dependencies first
 pnpm blockchain:deps:check
@@ -279,9 +308,11 @@ pnpm contracts:polkadot --test
 ```
 
 #### Issue: E2E tests failing
+
 **Symptoms**: Playwright or React Native tests fail
 
 **Solutions**:
+
 ```bash
 # Install browser dependencies
 npx playwright install
@@ -297,9 +328,11 @@ NODE_ENV=test pnpm db:setup
 ### Performance Issues
 
 #### Issue: Slow builds
+
 **Symptoms**: Build process takes too long
 
 **Solutions**:
+
 ```bash
 # Use quick build for development
 pnpm build:quick
@@ -315,9 +348,11 @@ turbo run build --dry-run
 ```
 
 #### Issue: Memory issues during compilation
+
 **Symptoms**: Out of memory errors during builds
 
 **Solutions**:
+
 ```bash
 # Increase Node.js memory limit
 export NODE_OPTIONS="--max-old-space-size=8192"
@@ -339,9 +374,11 @@ pnpm build:contracts
 ### Internet Connectivity
 
 #### Issue: Installation failures due to network issues
+
 **Symptoms**: Downloads fail, timeouts occur
 
 **Solutions**:
+
 ```bash
 # Test connectivity
 curl -I https://github.com
@@ -360,9 +397,11 @@ export HTTPS_PROXY=http://proxy.company.com:8080
 ### Firewall Issues
 
 #### Issue: Corporate firewall blocking downloads
+
 **Symptoms**: SSL/TLS errors, connection refused
 
 **Solutions**:
+
 ```bash
 # Configure git to use HTTPS instead of SSH
 git config --global url."https://github.com/".insteadOf git@github.com:
@@ -378,9 +417,11 @@ git config --global url."https://github.com/".insteadOf git@github.com:
 ### macOS Issues
 
 #### Issue: Xcode command line tools missing
+
 **Symptoms**: Compilation fails with missing headers
 
 **Solutions**:
+
 ```bash
 # Install Xcode command line tools
 xcode-select --install
@@ -390,9 +431,11 @@ sudo xcodebuild -license accept
 ```
 
 #### Issue: Homebrew permission issues
+
 **Symptoms**: brew commands fail with permission errors
 
 **Solutions**:
+
 ```bash
 # Fix Homebrew permissions
 sudo chown -R $(whoami) $(brew --prefix)/*
@@ -405,9 +448,11 @@ sudo chown -R $(whoami) $(brew --prefix)/*
 ### Linux Issues
 
 #### Issue: Missing system dependencies
+
 **Symptoms**: Compilation fails with missing libraries
 
 **Solutions**:
+
 ```bash
 # Ubuntu/Debian
 sudo apt-get update
@@ -424,9 +469,11 @@ sudo pacman -S base-devel openssl protobuf
 ### Windows Issues
 
 #### Issue: WSL not configured properly
+
 **Symptoms**: Linux commands don't work on Windows
 
 **Solutions**:
+
 ```bash
 # Install WSL2
 wsl --install
@@ -505,6 +552,7 @@ tail -f apps/web/.next/trace
 When reporting issues, include:
 
 1. **Environment Information**:
+
    ```bash
    pnpm blockchain:deps:check --verbose > environment.txt
    ```

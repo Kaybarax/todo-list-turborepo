@@ -1,11 +1,11 @@
-import { 
-  BlockchainNetwork, 
-  TransactionStatus, 
-  TransactionReceipt, 
-  BlockchainTodo, 
-  CreateBlockchainTodoInput, 
+import {
+  BlockchainNetwork,
+  TransactionStatus,
+  TransactionReceipt,
+  BlockchainTodo,
+  CreateBlockchainTodoInput,
   UpdateBlockchainTodoInput,
-  WalletInfo
+  WalletInfo,
 } from '../types';
 import { BaseBlockchainService } from './BaseBlockchainService';
 import { BlockchainError } from '../utils/BlockchainError';
@@ -21,47 +21,34 @@ export class SolanaBlockchainService extends BaseBlockchainService {
   private program: any; // Anchor Program
 
   constructor() {
-    super(
-      BlockchainNetwork.SOLANA,
-      'https://explorer.solana.com',
-      {
-        maxAttempts: 20,
-        pollingInterval: 3000,
-        timeout: 180000, // 3 minutes for Solana
-      }
-    );
+    super(BlockchainNetwork.SOLANA, 'https://explorer.solana.com', {
+      maxAttempts: 20,
+      pollingInterval: 3000,
+      timeout: 180000, // 3 minutes for Solana
+    });
   }
 
   /**
    * Connect to a Solana wallet
    * @param options - Solana connection options
    */
-  async connectWallet(options?: { 
-    rpcUrl?: string;
-    walletAdapter?: any;
-  }): Promise<WalletInfo> {
+  async connectWallet(options?: { rpcUrl?: string; walletAdapter?: any }): Promise<WalletInfo> {
     try {
       // Initialize Solana connection
       // @ts-ignore - Used in real implementation
       const rpcUrl = options?.rpcUrl || 'https://api.mainnet-beta.solana.com';
-      
+
       // This would typically use @solana/web3.js and wallet adapters
       // For now, we'll create a mock implementation
       if (!options?.walletAdapter) {
-        throw BlockchainError.walletNotFound(
-          'Wallet adapter not provided for Solana connection',
-          this.network
-        );
+        throw BlockchainError.walletNotFound('Wallet adapter not provided for Solana connection', this.network);
       }
 
       // Connect to wallet
       await options.walletAdapter.connect();
-      
+
       if (!options.walletAdapter.publicKey) {
-        throw BlockchainError.connectionFailed(
-          'Failed to get public key from Solana wallet',
-          this.network
-        );
+        throw BlockchainError.connectionFailed('Failed to get public key from Solana wallet', this.network);
       }
 
       this.walletInfo = {
@@ -73,11 +60,9 @@ export class SolanaBlockchainService extends BaseBlockchainService {
 
       return this.walletInfo;
     } catch (error) {
-      throw BlockchainError.connectionFailed(
-        'Failed to connect to Solana wallet',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.connectionFailed('Failed to connect to Solana wallet', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -92,11 +77,9 @@ export class SolanaBlockchainService extends BaseBlockchainService {
       this.walletInfo = null;
       this.wallet = null;
     } catch (error) {
-      throw BlockchainError.connectionFailed(
-        'Failed to disconnect from Solana wallet',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.connectionFailed('Failed to disconnect from Solana wallet', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -106,7 +89,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    */
   async getWalletBalance(tokenAddress?: string): Promise<string> {
     this.ensureWalletConnected();
-    
+
     try {
       if (tokenAddress) {
         // Get SPL token balance
@@ -118,11 +101,9 @@ export class SolanaBlockchainService extends BaseBlockchainService {
         return '0'; // Mock implementation
       }
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to get Solana wallet balance',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to get Solana wallet balance', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -131,17 +112,15 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    */
   async getTodos(): Promise<BlockchainTodo[]> {
     this.ensureWalletConnected();
-    
+
     try {
       // This would fetch todos from the Solana program
       // Using Anchor program.account.todo.all()
       return []; // Mock implementation
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to fetch todos from Solana',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to fetch todos from Solana', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -151,17 +130,15 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    */
   async getTodoById(_id: string): Promise<BlockchainTodo | null> {
     this.ensureWalletConnected();
-    
+
     try {
       // This would fetch a specific todo account
       // Using program.account.todo.fetch(publicKey)
       return null; // Mock implementation
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to fetch todo from Solana',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to fetch todo from Solana', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -171,13 +148,13 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    */
   async createTodo(_todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
-    
+
     try {
       // This would call the Solana program's create_todo instruction
       // Using program.methods.createTodo().accounts().rpc()
-      
+
       const mockTxHash = 'solana_mock_tx_' + Date.now();
-      
+
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
@@ -188,11 +165,9 @@ export class SolanaBlockchainService extends BaseBlockchainService {
         timestamp: new Date(),
       };
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to create todo on Solana',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to create todo on Solana', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -203,12 +178,12 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    */
   async updateTodo(_id: string, _todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
-    
+
     try {
       // This would call the Solana program's update_todo instruction
-      
+
       const mockTxHash = 'solana_update_tx_' + Date.now();
-      
+
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
@@ -219,11 +194,9 @@ export class SolanaBlockchainService extends BaseBlockchainService {
         timestamp: new Date(),
       };
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to update todo on Solana',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to update todo on Solana', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -233,12 +206,12 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    */
   async deleteTodo(_id: string): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
-    
+
     try {
       // This would call the Solana program's delete_todo instruction
-      
+
       const mockTxHash = 'solana_delete_tx_' + Date.now();
-      
+
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
@@ -249,11 +222,9 @@ export class SolanaBlockchainService extends BaseBlockchainService {
         timestamp: new Date(),
       };
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to delete todo on Solana',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to delete todo on Solana', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -270,11 +241,9 @@ export class SolanaBlockchainService extends BaseBlockchainService {
       }
       return TransactionStatus.UNKNOWN;
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to get Solana transaction status',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to get Solana transaction status', this.network, {
+        originalError: error,
+      });
     }
   }
 
@@ -298,11 +267,9 @@ export class SolanaBlockchainService extends BaseBlockchainService {
       }
       return null;
     } catch (error) {
-      throw BlockchainError.transactionFailed(
-        'Failed to get Solana transaction receipt',
-        this.network,
-        { originalError: error }
-      );
+      throw BlockchainError.transactionFailed('Failed to get Solana transaction receipt', this.network, {
+        originalError: error,
+      });
     }
   }
 

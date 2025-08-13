@@ -66,7 +66,7 @@ describe('PolygonBlockchainService', () => {
       expect(ethers.Contract).toHaveBeenCalledWith(
         mockConfig.contractAddress,
         expect.any(Array), // ABI
-        mockSigner
+        mockSigner,
       );
     });
 
@@ -144,7 +144,7 @@ describe('PolygonBlockchainService', () => {
         todoData.title,
         todoData.description,
         1, // medium priority
-        Math.floor(new Date(todoData.dueDate).getTime() / 1000)
+        Math.floor(new Date(todoData.dueDate).getTime() / 1000),
       );
       expect(result.success).toBe(true);
       expect(result.transactionHash).toBe('0xtxhash');
@@ -204,7 +204,7 @@ describe('PolygonBlockchainService', () => {
         todoData.title,
         todoData.description,
         2, // high priority
-        expect.any(Number)
+        expect.any(Number),
       );
 
       // Test low priority
@@ -213,7 +213,7 @@ describe('PolygonBlockchainService', () => {
         todoData.title,
         todoData.description,
         0, // low priority
-        expect.any(Number)
+        expect.any(Number),
       );
     });
   });
@@ -249,7 +249,7 @@ describe('PolygonBlockchainService', () => {
         '',
         1, // medium priority (default)
         0, // no due date
-        updateData.completed
+        updateData.completed,
       );
       expect(result.success).toBe(true);
       expect(result.transactionHash).toBe('0xtxhash');
@@ -271,7 +271,7 @@ describe('PolygonBlockchainService', () => {
         '',
         1, // default priority
         0, // no due date
-        true
+        true,
       );
       expect(result.success).toBe(true);
     });
@@ -387,9 +387,7 @@ describe('PolygonBlockchainService', () => {
       ];
 
       mockContract.getTodoCount.mockResolvedValue(mockTodoCount);
-      mockContract.getTodo
-        .mockResolvedValueOnce(mockTodoData1)
-        .mockResolvedValueOnce(mockTodoData2);
+      mockContract.getTodo.mockResolvedValueOnce(mockTodoData1).mockResolvedValueOnce(mockTodoData2);
 
       const result = await service.getAllTodos();
 
@@ -478,7 +476,7 @@ describe('PolygonBlockchainService', () => {
 
     it('should get network info', () => {
       const networkInfo = service.getNetworkInfo();
-      
+
       expect(networkInfo.name).toBe('polygon');
       expect(networkInfo.chainId).toBe(137);
       expect(networkInfo.rpcUrl).toBe(mockConfig.rpcUrl);

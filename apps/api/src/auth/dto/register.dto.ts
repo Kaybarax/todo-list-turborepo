@@ -26,7 +26,11 @@ export class RegisterDto {
   @Transform(({ value }) => value?.trim())
   walletAddress?: string;
 
-  @ApiProperty({ description: 'Preferred blockchain network', enum: ['solana', 'polkadot', 'polygon'], required: false })
+  @ApiProperty({
+    description: 'Preferred blockchain network',
+    enum: ['solana', 'polkadot', 'polygon'],
+    required: false,
+  })
   @IsOptional()
   @IsEnum(['solana', 'polkadot', 'polygon'], { message: 'Preferred network must be solana, polkadot, or polygon' })
   preferredNetwork?: 'solana' | 'polkadot' | 'polygon';

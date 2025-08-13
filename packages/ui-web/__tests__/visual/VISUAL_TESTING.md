@@ -9,6 +9,7 @@ This document outlines the visual regression testing setup for the UI Web packag
 ### 1. Storybook Visual Testing
 
 We use Storybook as the primary tool for visual regression testing, providing:
+
 - Component isolation for consistent testing
 - Multiple viewport testing for responsive design
 - Dark mode and theme testing
@@ -17,6 +18,7 @@ We use Storybook as the primary tool for visual regression testing, providing:
 ### 2. Chromatic Integration
 
 Chromatic provides automated visual regression testing with:
+
 - Cross-browser screenshot comparison
 - Baseline image management
 - CI/CD integration
@@ -25,6 +27,7 @@ Chromatic provides automated visual regression testing with:
 ### 3. Screenshot Comparison Testing
 
 Local screenshot testing using jest-image-snapshot for:
+
 - Pixel-perfect component rendering verification
 - Custom test scenarios
 - Integration with existing test suite
@@ -55,28 +58,33 @@ packages/ui-web/
 ## Story Categories
 
 ### 1. Component Variants
+
 - All visual variants of each component
 - Size variations (small, medium, large)
 - State variations (disabled, loading, error)
 
 ### 2. Interactive States
+
 - Hover states
 - Focus states
 - Active states
 - Loading states
 
 ### 3. Responsive Testing
+
 - Mobile viewport (375px)
 - Tablet viewport (768px)
 - Desktop viewport (1024px)
 - Wide desktop viewport (1440px)
 
 ### 4. Theme Testing
+
 - Light theme
 - Dark theme
 - Custom theme variations
 
 ### 5. Integration Testing
+
 - Component combinations
 - Form layouts
 - Card layouts
@@ -125,6 +133,7 @@ npm run visual-test:ci
 ### Storybook Configuration
 
 The Storybook configuration includes:
+
 - Viewport addon for responsive testing
 - Backgrounds addon for theme testing
 - A11y addon for accessibility testing
@@ -133,6 +142,7 @@ The Storybook configuration includes:
 ### Chromatic Configuration
 
 Key settings in `chromatic.config.json`:
+
 - `threshold`: 0.2 (20% difference threshold)
 - `diffThreshold`: 0.063 (6.3% pixel difference)
 - `exitZeroOnChanges`: false (fail on visual changes)
@@ -141,6 +151,7 @@ Key settings in `chromatic.config.json`:
 ### Screenshot Testing Configuration
 
 Jest image snapshot settings:
+
 - `threshold`: 0.2 (20% difference threshold)
 - `comparisonMethod`: 'ssim' (structural similarity)
 - `failureThreshold`: 0.01 (1% failure threshold)
@@ -149,24 +160,28 @@ Jest image snapshot settings:
 ## Best Practices
 
 ### 1. Story Writing
+
 - Create comprehensive stories covering all component states
 - Use consistent naming conventions
 - Include documentation for each story
 - Group related stories logically
 
 ### 2. Visual Testing
+
 - Test all component variants and states
 - Include responsive breakpoints
 - Test dark mode and theme variations
 - Test component interactions and integrations
 
 ### 3. Screenshot Management
+
 - Keep screenshots up to date with component changes
 - Review visual diffs carefully before approving
 - Use descriptive names for screenshot identifiers
 - Organize screenshots by component and test type
 
 ### 4. CI/CD Integration
+
 - Run visual tests on every pull request
 - Require visual approval for changes
 - Use environment variables for Chromatic tokens
@@ -207,18 +222,21 @@ npm run test:visual -- --verbose
 ## Environment Variables
 
 Required environment variables:
+
 - `CHROMATIC_PROJECT_TOKEN`: Chromatic project token for web package
 - `CI`: Set to true in CI environments
 
 ## Maintenance
 
 ### Regular Tasks
+
 - Update screenshot baselines when components change
 - Review and approve visual changes in Chromatic
 - Update test configurations as needed
 - Monitor test performance and reliability
 
 ### Version Updates
+
 - Keep Storybook and Chromatic dependencies updated
 - Test visual regression after major updates
 - Update configuration files as needed
@@ -227,6 +245,7 @@ Required environment variables:
 ## Integration with Development Workflow
 
 ### Pull Request Process
+
 1. Developer creates PR with component changes
 2. Visual tests run automatically in CI
 3. Chromatic generates visual diffs
@@ -234,6 +253,7 @@ Required environment variables:
 5. Visual baselines updated on merge
 
 ### Release Process
+
 1. All visual tests must pass
 2. Visual changes documented in changelog
 3. New baselines established for release branch

@@ -13,8 +13,8 @@ describe('Input', () => {
 
   it('renders with correct variant classes', () => {
     const variants = ['default', 'filled', 'ghost'] as const;
-    
-    variants.forEach((variant) => {
+
+    variants.forEach(variant => {
       const { unmount } = render(<Input variant={variant} data-testid={`input-${variant}`} />);
       const input = screen.getByTestId(`input-${variant}`);
       expect(input).toBeInTheDocument();
@@ -24,8 +24,8 @@ describe('Input', () => {
 
   it('renders with correct size classes', () => {
     const sizes = ['default', 'sm', 'lg'] as const;
-    
-    sizes.forEach((size) => {
+
+    sizes.forEach(size => {
       const { unmount } = render(<Input size={size} data-testid={`input-${size}`} />);
       const input = screen.getByTestId(`input-${size}`);
       expect(input).toBeInTheDocument();
@@ -35,8 +35,8 @@ describe('Input', () => {
 
   it('renders with correct state classes', () => {
     const states = ['default', 'error', 'success', 'warning'] as const;
-    
-    states.forEach((state) => {
+
+    states.forEach(state => {
       const { unmount } = render(<Input state={state} data-testid={`input-${state}`} />);
       const input = screen.getByTestId(`input-${state}`);
       expect(input).toBeInTheDocument();
@@ -53,7 +53,7 @@ describe('Input', () => {
   it('handles change events', () => {
     const handleChange = vi.fn();
     render(<Input onChange={handleChange} />);
-    
+
     const input = screen.getByRole('textbox');
     fireEvent.change(input, { target: { value: 'test' } });
     expect(handleChange).toHaveBeenCalledTimes(1);
@@ -69,7 +69,7 @@ describe('Input', () => {
     render(<Input label="Username" />);
     const label = screen.getByText('Username');
     const input = screen.getByRole('textbox');
-    
+
     expect(label).toBeInTheDocument();
     expect(label).toHaveAttribute('for', input.id);
   });
@@ -78,7 +78,7 @@ describe('Input', () => {
     render(<Input helperText="Enter your username" />);
     const helperText = screen.getByText('Enter your username');
     const input = screen.getByRole('textbox');
-    
+
     expect(helperText).toBeInTheDocument();
     expect(input).toHaveAttribute('aria-describedby', helperText.id);
   });
@@ -86,7 +86,7 @@ describe('Input', () => {
   it('renders with error helper text', () => {
     render(<Input error helperText="Username is required" />);
     const helperText = screen.getByText('Username is required');
-    
+
     expect(helperText).toBeInTheDocument();
     expect(helperText).toHaveClass('text-destructive');
   });
@@ -94,10 +94,10 @@ describe('Input', () => {
   it('renders left icon correctly', () => {
     const leftIcon = <span data-testid="left-icon">👤</span>;
     render(<Input leftIcon={leftIcon} />);
-    
+
     const icon = screen.getByTestId('left-icon');
     const input = screen.getByRole('textbox');
-    
+
     expect(icon).toBeInTheDocument();
     expect(input).toHaveClass('pl-10');
   });
@@ -105,10 +105,10 @@ describe('Input', () => {
   it('renders right icon correctly', () => {
     const rightIcon = <span data-testid="right-icon">🔍</span>;
     render(<Input rightIcon={rightIcon} />);
-    
+
     const icon = screen.getByTestId('right-icon');
     const input = screen.getByRole('textbox');
-    
+
     expect(icon).toBeInTheDocument();
     expect(input).toHaveClass('pr-10');
   });
@@ -116,13 +116,13 @@ describe('Input', () => {
   it('renders both left and right icons', () => {
     const leftIcon = <span data-testid="left-icon">👤</span>;
     const rightIcon = <span data-testid="right-icon">🔍</span>;
-    
+
     render(<Input leftIcon={leftIcon} rightIcon={rightIcon} />);
-    
+
     const leftIconElement = screen.getByTestId('left-icon');
     const rightIconElement = screen.getByTestId('right-icon');
     const input = screen.getByRole('textbox');
-    
+
     expect(leftIconElement).toBeInTheDocument();
     expect(rightIconElement).toBeInTheDocument();
     expect(input).toHaveClass('pl-10', 'pr-10');
@@ -138,9 +138,9 @@ describe('Input', () => {
     render(
       <Input asChild>
         <textarea data-testid="textarea" />
-      </Input>
+      </Input>,
     );
-    
+
     const textarea = screen.getByTestId('textarea');
     expect(textarea).toBeInTheDocument();
     expect(textarea).toHaveClass('flex', 'rounded-md', 'border');
@@ -174,9 +174,9 @@ describe('Input', () => {
       <div>
         <Input label="First" />
         <Input label="Second" />
-      </div>
+      </div>,
     );
-    
+
     const inputs = screen.getAllByRole('textbox');
     expect(inputs[0].id).not.toBe(inputs[1].id);
   });
@@ -185,19 +185,14 @@ describe('Input', () => {
     render(<Input id="custom-id" label="Test" />);
     const input = screen.getByRole('textbox');
     const label = screen.getByText('Test');
-    
+
     expect(input).toHaveAttribute('id', 'custom-id');
     expect(label).toHaveAttribute('for', 'custom-id');
   });
 
   it('passes label props correctly', () => {
-    render(
-      <Input 
-        label="Test Label" 
-        labelProps={{ className: 'custom-label-class' }}
-      />
-    );
-    
+    render(<Input label="Test Label" labelProps={{ className: 'custom-label-class' }} />);
+
     const label = screen.getByText('Test Label');
     expect(label).toHaveClass('custom-label-class');
   });
@@ -207,7 +202,7 @@ describe('Label', () => {
   it('renders correctly', () => {
     render(<Label htmlFor="test">Test Label</Label>);
     const label = screen.getByText('Test Label');
-    
+
     expect(label).toBeInTheDocument();
     expect(label).toHaveAttribute('for', 'test');
     expect(label).toHaveClass('text-sm', 'font-medium', 'leading-none');
@@ -226,7 +221,11 @@ describe('Label', () => {
   });
 
   it('passes through additional props', () => {
-    render(<Label data-testid="label" aria-label="Custom label">Test</Label>);
+    render(
+      <Label data-testid="label" aria-label="Custom label">
+        Test
+      </Label>,
+    );
     const label = screen.getByTestId('label');
     expect(label).toHaveAttribute('aria-label', 'Custom label');
   });
@@ -236,7 +235,7 @@ describe('Complete Input with Label and Helper Text', () => {
   it('renders a complete input with all features', () => {
     const leftIcon = <span data-testid="left-icon">👤</span>;
     const rightIcon = <span data-testid="right-icon">✓</span>;
-    
+
     render(
       <Input
         label="Username"
@@ -245,7 +244,7 @@ describe('Complete Input with Label and Helper Text', () => {
         leftIcon={leftIcon}
         rightIcon={rightIcon}
         data-testid="complete-input"
-      />
+      />,
     );
 
     expect(screen.getByText('Username')).toBeInTheDocument();
@@ -256,14 +255,7 @@ describe('Complete Input with Label and Helper Text', () => {
   });
 
   it('shows error state with error styling', () => {
-    render(
-      <Input
-        label="Email"
-        error
-        helperText="Invalid email format"
-        data-testid="error-input"
-      />
-    );
+    render(<Input label="Email" error helperText="Invalid email format" data-testid="error-input" />);
 
     const label = screen.getByText('Email');
     const input = screen.getByTestId('error-input');
@@ -289,7 +281,7 @@ describe('inputVariants', () => {
     const filledClasses = inputVariants({ variant: 'filled' });
     expect(filledClasses).toContain('bg-muted');
     expect(filledClasses).toContain('border-0');
-    
+
     const ghostClasses = inputVariants({ variant: 'ghost' });
     expect(ghostClasses).toContain('border-0');
     expect(ghostClasses).toContain('shadow-none');
@@ -300,7 +292,7 @@ describe('inputVariants', () => {
     const smallClasses = inputVariants({ size: 'sm' });
     expect(smallClasses).toContain('h-9');
     expect(smallClasses).toContain('text-xs');
-    
+
     const largeClasses = inputVariants({ size: 'lg' });
     expect(largeClasses).toContain('h-11');
     expect(largeClasses).toContain('px-4');
@@ -309,10 +301,10 @@ describe('inputVariants', () => {
   it('generates correct classes for different states', () => {
     const errorClasses = inputVariants({ state: 'error' });
     expect(errorClasses).toContain('border-destructive');
-    
+
     const successClasses = inputVariants({ state: 'success' });
     expect(successClasses).toContain('border-green-500');
-    
+
     const warningClasses = inputVariants({ state: 'warning' });
     expect(warningClasses).toContain('border-yellow-500');
   });

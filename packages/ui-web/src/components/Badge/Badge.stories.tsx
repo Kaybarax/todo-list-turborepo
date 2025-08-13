@@ -91,11 +91,19 @@ export const AllVariantsWithIcons: Story = {
     <div className="flex flex-wrap gap-2">
       <Badge variant="default">Default</Badge>
       <Badge variant="secondary">Secondary</Badge>
-      <Badge variant="destructive" icon={<X className="h-3 w-3" />}>Destructive</Badge>
+      <Badge variant="destructive" icon={<X className="h-3 w-3" />}>
+        Destructive
+      </Badge>
       <Badge variant="outline">Outline</Badge>
-      <Badge variant="success" icon={<Check className="h-3 w-3" />}>Success</Badge>
-      <Badge variant="warning" icon={<AlertTriangle className="h-3 w-3" />}>Warning</Badge>
-      <Badge variant="info" icon={<Info className="h-3 w-3" />}>Info</Badge>
+      <Badge variant="success" icon={<Check className="h-3 w-3" />}>
+        Success
+      </Badge>
+      <Badge variant="warning" icon={<AlertTriangle className="h-3 w-3" />}>
+        Warning
+      </Badge>
+      <Badge variant="info" icon={<Info className="h-3 w-3" />}>
+        Info
+      </Badge>
     </div>
   ),
 };

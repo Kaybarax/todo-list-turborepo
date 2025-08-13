@@ -92,6 +92,7 @@ npx hardhat run scripts/create-sample-todos.js --network localhost
 #### Mumbai Testnet Deployment
 
 1. Create a `.env` file based on `.env.example`:
+
 ```
 POLYGON_RPC_URL=https://polygon-rpc.com
 MUMBAI_RPC_URL=https://rpc-mumbai.maticvigil.com
@@ -100,11 +101,13 @@ POLYGONSCAN_API_KEY=YourPolygonscanApiKeyHere
 ```
 
 2. Deploy to Mumbai:
+
 ```bash
 yarn deploy:mumbai
 ```
 
 3. Create a TodoList and sample todos:
+
 ```bash
 npx hardhat run scripts/create-todo-list.js --network mumbai
 npx hardhat run scripts/create-sample-todos.js --network mumbai
@@ -149,13 +152,13 @@ const factory = new web3.eth.Contract(TodoListFactoryABI, factoryAddress);
 // Get or create TodoList
 async function getOrCreateTodoList() {
   let todoListAddress = await factory.methods.getTodoList().call({ from: account.address });
-  
+
   if (todoListAddress === '0x0000000000000000000000000000000000000000') {
     // Create new TodoList
     await factory.methods.createTodoList().send({ from: account.address });
     todoListAddress = await factory.methods.getTodoList().call({ from: account.address });
   }
-  
+
   return new web3.eth.Contract(TodoListABI, todoListAddress);
 }
 
@@ -200,14 +203,14 @@ const factory = new ethers.Contract(factoryAddress, TodoListFactoryABI, wallet);
 // Get or create TodoList
 async function getOrCreateTodoList() {
   let todoListAddress = await factory.getTodoList();
-  
+
   if (todoListAddress === ethers.constants.AddressZero) {
     // Create new TodoList
     const tx = await factory.createTodoList();
     await tx.wait();
     todoListAddress = await factory.getTodoList();
   }
-  
+
   return new ethers.Contract(todoListAddress, TodoListABI, wallet);
 }
 
@@ -273,29 +276,29 @@ const TodoApp = () => {
     const init = async () => {
       try {
         setLoading(true);
-        
+
         // Connect to provider
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
-        
+
         // Connect to TodoListFactory
         const factoryAddress = '0xYourFactoryContractAddress'; // Replace with actual address
         const factory = new ethers.Contract(factoryAddress, TodoListFactoryABI.abi, signer);
-        
+
         // Get or create TodoList
         let todoListAddress = await factory.getTodoList();
-        
+
         if (todoListAddress === ethers.constants.AddressZero) {
           // Create new TodoList
           const tx = await factory.createTodoList();
           await tx.wait();
           todoListAddress = await factory.getTodoList();
         }
-        
+
         // Connect to TodoList
         const todoList = new ethers.Contract(todoListAddress, TodoListABI.abi, signer);
         setTodoList(todoList);
-        
+
         // Load todos and stats
         await loadTodos(todoList);
       } catch (error) {
@@ -309,17 +312,17 @@ const TodoApp = () => {
   }, [account]);
 
   // Load todos and stats
-  const loadTodos = async (todoListContract) => {
+  const loadTodos = async todoListContract => {
     try {
       setLoading(true);
-      
+
       const todoList = todoListContract || todoList;
       if (!todoList) return;
-      
+
       // Get todos
       const todos = await todoList.getTodos();
       setTodos(todos);
-      
+
       // Get stats
       const stats = await todoList.getTodoStats();
       setStats({
@@ -336,23 +339,23 @@ const TodoApp = () => {
   };
 
   // Create todo
-  const handleCreateTodo = async (e) => {
+  const handleCreateTodo = async e => {
     e.preventDefault();
-    
+
     if (!todoList || !title) return;
-    
+
     try {
       setLoading(true);
-      
+
       // Create todo
       const tx = await todoList.createTodo(title, description, priority);
       await tx.wait();
-      
+
       // Reset form
       setTitle('');
       setDescription('');
       setPriority(1);
-      
+
       // Reload todos
       await loadTodos();
     } catch (error) {
@@ -363,16 +366,16 @@ const TodoApp = () => {
   };
 
   // Toggle todo completion
-  const handleToggleCompletion = async (id) => {
+  const handleToggleCompletion = async id => {
     if (!todoList) return;
-    
+
     try {
       setLoading(true);
-      
+
       // Toggle completion
       const tx = await todoList.toggleTodoCompletion(id);
       await tx.wait();
-      
+
       // Reload todos
       await loadTodos();
     } catch (error) {
@@ -383,16 +386,16 @@ const TodoApp = () => {
   };
 
   // Delete todo
-  const handleDeleteTodo = async (id) => {
+  const handleDeleteTodo = async id => {
     if (!todoList) return;
-    
+
     try {
       setLoading(true);
-      
+
       // Delete todo
       const tx = await todoList.deleteTodo(id);
       await tx.wait();
-      
+
       // Reload todos
       await loadTodos();
     } catch (error) {
@@ -403,12 +406,16 @@ const TodoApp = () => {
   };
 
   // Render priority as string
-  const renderPriority = (priority) => {
+  const renderPriority = priority => {
     switch (priority) {
-      case 0: return 'Low';
-      case 1: return 'Medium';
-      case 2: return 'High';
-      default: return 'Unknown';
+      case 0:
+        return 'Low';
+      case 1:
+        return 'Medium';
+      case 2:
+        return 'High';
+      default:
+        return 'Unknown';
     }
   };
 
@@ -425,7 +432,7 @@ const TodoApp = () => {
     <div className="container">
       <h1>Polygon Todo App</h1>
       <p>Connected: {account}</p>
-      
+
       <div className="stats">
         <h3>Statistics</h3>
         <p>Total: {stats.total}</p>
@@ -433,26 +440,23 @@ const TodoApp = () => {
         <p>Pending: {stats.pending}</p>
         <p>High Priority: {stats.highPriority}</p>
       </div>
-      
+
       <form onSubmit={handleCreateTodo}>
         <input
           type="text"
           placeholder="Title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={e => setTitle(e.target.value)}
           required
           maxLength={100}
         />
         <textarea
           placeholder="Description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={e => setDescription(e.target.value)}
           maxLength={500}
         />
-        <select
-          value={priority}
-          onChange={(e) => setPriority(parseInt(e.target.value))}
-        >
+        <select value={priority} onChange={e => setPriority(parseInt(e.target.value))}>
           <option value={0}>Low</option>
           <option value={1}>Medium</option>
           <option value={2}>High</option>
@@ -461,11 +465,11 @@ const TodoApp = () => {
           Add Todo
         </button>
       </form>
-      
+
       {loading && <p>Loading...</p>}
-      
+
       <ul className="todo-list">
-        {todos.map((todo) => (
+        {todos.map(todo => (
           <li key={todo.id.toString()} className={todo.completed ? 'completed' : ''}>
             <span className={`priority priority-${renderPriority(todo.priority).toLowerCase()}`}>
               {renderPriority(todo.priority)}

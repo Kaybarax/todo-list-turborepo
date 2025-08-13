@@ -1,6 +1,6 @@
 // React import removed as it's not used in this file
-import { Button } from '../../../lib'
-import type { ComponentExample } from '../App'
+import { Button } from '../../../lib';
+import type { ComponentExample } from '../App';
 
 export const buttonExamples: ComponentExample[] = [
   {
@@ -52,8 +52,12 @@ export const buttonExamples: ComponentExample[] = [
     component: (
       <>
         <Button disabled>Disabled Default</Button>
-        <Button variant="outline" disabled>Disabled Outline</Button>
-        <Button variant="secondary" disabled>Disabled Secondary</Button>
+        <Button variant="outline" disabled>
+          Disabled Outline
+        </Button>
+        <Button variant="secondary" disabled>
+          Disabled Secondary
+        </Button>
       </>
     ),
   },
@@ -118,4 +122,4 @@ import { Download, Mail, Plus } from 'lucide-react'
       </>
     ),
   },
-]
+];

@@ -21,7 +21,7 @@ export class AuthService {
     try {
       const user = await this.userService.create(registerDto);
       this.logger.log(`New user registered: ${user.email}`);
-      
+
       return this.generateTokenResponse(user);
     } catch (error) {
       if (error instanceof ConflictException) {
@@ -35,7 +35,7 @@ export class AuthService {
   @Trace('AuthService.login')
   async login(loginDto: LoginDto): Promise<AuthResponseDto> {
     const { email, password } = loginDto;
-    
+
     const user = await this.userService.findByEmail(email);
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -52,7 +52,7 @@ export class AuthService {
 
     // Update last login
     await this.userService.updateLastLogin(user._id.toString());
-    
+
     this.logger.log(`User logged in: ${user.email}`);
     return this.generateTokenResponse(user);
   }
@@ -60,22 +60,22 @@ export class AuthService {
   @Trace('AuthService.validateUser')
   async validateUser(userId: string): Promise<User | null> {
     const user = await this.userService.findById(userId);
-    
+
     if (!user || !user.isActive) {
       return null;
     }
-    
+
     return user;
   }
 
   @Trace('AuthService.refreshToken')
   async refreshToken(userId: string): Promise<AuthResponseDto> {
     const user = await this.validateUser(userId);
-    
+
     if (!user) {
       throw new UnauthorizedException('Invalid user');
     }
-    
+
     return this.generateTokenResponse(user);
   }
 

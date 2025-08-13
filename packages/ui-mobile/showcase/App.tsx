@@ -42,64 +42,64 @@ export default function App() {
               drawerInactiveTintColor: '#8F9BB3',
             }}
           >
-            <Drawer.Screen 
-              name="Home" 
+            <Drawer.Screen
+              name="Home"
               component={HomeScreen}
               options={{
                 title: 'UI Mobile Components',
                 drawerLabel: 'Home',
               }}
             />
-            <Drawer.Screen 
-              name="Button" 
+            <Drawer.Screen
+              name="Button"
               component={ButtonScreen}
               options={{
                 title: 'Button Component',
                 drawerLabel: 'Button',
               }}
             />
-            <Drawer.Screen 
-              name="Card" 
+            <Drawer.Screen
+              name="Card"
               component={CardScreen}
               options={{
                 title: 'Card Component',
                 drawerLabel: 'Card',
               }}
             />
-            <Drawer.Screen 
-              name="Input" 
+            <Drawer.Screen
+              name="Input"
               component={InputScreen}
               options={{
                 title: 'Input Component',
                 drawerLabel: 'Input',
               }}
             />
-            <Drawer.Screen 
-              name="Badge" 
+            <Drawer.Screen
+              name="Badge"
               component={BadgeScreen}
               options={{
                 title: 'Badge Component',
                 drawerLabel: 'Badge',
               }}
             />
-            <Drawer.Screen 
-              name="Avatar" 
+            <Drawer.Screen
+              name="Avatar"
               component={AvatarScreen}
               options={{
                 title: 'Avatar Component',
                 drawerLabel: 'Avatar',
               }}
             />
-            <Drawer.Screen 
-              name="Switch" 
+            <Drawer.Screen
+              name="Switch"
               component={SwitchScreen}
               options={{
                 title: 'Switch Component',
                 drawerLabel: 'Switch',
               }}
             />
-            <Drawer.Screen 
-              name="Checkbox" 
+            <Drawer.Screen
+              name="Checkbox"
               component={CheckboxScreen}
               options={{
                 title: 'Checkbox Component',

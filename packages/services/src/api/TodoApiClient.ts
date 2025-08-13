@@ -1,13 +1,13 @@
 import { BaseApiClient } from './BaseApiClient';
-import { 
-  ApiClientConfig, 
-  ApiResponse, 
-  ApiTodo, 
-  CreateApiTodoInput, 
+import {
+  ApiClientConfig,
+  ApiResponse,
+  ApiTodo,
+  CreateApiTodoInput,
   UpdateApiTodoInput,
   apiTodoSchema,
   createApiTodoSchema,
-  updateApiTodoSchema
+  updateApiTodoSchema,
 } from './types';
 import { ApiError } from './ApiError';
 
@@ -37,7 +37,7 @@ export class TodoApiClient extends BaseApiClient {
   }): Promise<ApiResponse<ApiTodo[]>> {
     try {
       const response = await this.get<ApiTodo[]>('/todos', { params });
-      
+
       // Validate response data
       if (response.success && response.data) {
         const validatedData = response.data.map(todo => {
@@ -47,13 +47,13 @@ export class TodoApiClient extends BaseApiClient {
           }
           return result.data;
         });
-        
+
         return {
           ...response,
           data: validatedData,
         };
       }
-      
+
       return response;
     } catch (error) {
       if (error instanceof ApiError) {
@@ -70,20 +70,20 @@ export class TodoApiClient extends BaseApiClient {
   async getTodoById(id: string): Promise<ApiResponse<ApiTodo>> {
     try {
       const response = await this.get<ApiTodo>(`/todos/${id}`);
-      
+
       // Validate response data
       if (response.success && response.data) {
         const result = apiTodoSchema.safeParse(response.data);
         if (!result.success) {
           throw ApiError.validationError(`Invalid todo data: ${result.error.message}`);
         }
-        
+
         return {
           ...response,
           data: result.data,
         };
       }
-      
+
       return response;
     } catch (error) {
       if (error instanceof ApiError) {
@@ -106,20 +106,20 @@ export class TodoApiClient extends BaseApiClient {
       }
 
       const response = await this.post<ApiTodo>('/todos', result.data);
-      
+
       // Validate response data
       if (response.success && response.data) {
         const todoResult = apiTodoSchema.safeParse(response.data);
         if (!todoResult.success) {
           throw ApiError.validationError(`Invalid todo response: ${todoResult.error.message}`);
         }
-        
+
         return {
           ...response,
           data: todoResult.data,
         };
       }
-      
+
       return response;
     } catch (error) {
       if (error instanceof ApiError) {
@@ -143,20 +143,20 @@ export class TodoApiClient extends BaseApiClient {
       }
 
       const response = await this.put<ApiTodo>(`/todos/${id}`, result.data);
-      
+
       // Validate response data
       if (response.success && response.data) {
         const todoResult = apiTodoSchema.safeParse(response.data);
         if (!todoResult.success) {
           throw ApiError.validationError(`Invalid todo response: ${todoResult.error.message}`);
         }
-        
+
         return {
           ...response,
           data: todoResult.data,
         };
       }
-      
+
       return response;
     } catch (error) {
       if (error instanceof ApiError) {
@@ -189,20 +189,20 @@ export class TodoApiClient extends BaseApiClient {
   async toggleTodo(id: string): Promise<ApiResponse<ApiTodo>> {
     try {
       const response = await this.patch<ApiTodo>(`/todos/${id}/toggle`);
-      
+
       // Validate response data
       if (response.success && response.data) {
         const result = apiTodoSchema.safeParse(response.data);
         if (!result.success) {
           throw ApiError.validationError(`Invalid todo response: ${result.error.message}`);
         }
-        
+
         return {
           ...response,
           data: result.data,
         };
       }
-      
+
       return response;
     } catch (error) {
       if (error instanceof ApiError) {
@@ -231,7 +231,7 @@ export class TodoApiClient extends BaseApiClient {
       });
 
       const response = await this.patch<ApiTodo[]>('/todos/bulk', { updates: validatedUpdates });
-      
+
       // Validate response data
       if (response.success && response.data) {
         const validatedData = response.data.map(todo => {
@@ -241,13 +241,13 @@ export class TodoApiClient extends BaseApiClient {
           }
           return result.data;
         });
-        
+
         return {
           ...response,
           data: validatedData,
         };
       }
-      
+
       return response;
     } catch (error) {
       if (error instanceof ApiError) {
@@ -270,7 +270,7 @@ export class TodoApiClient extends BaseApiClient {
       tags?: string[];
       dateFrom?: string;
       dateTo?: string;
-    }
+    },
   ): Promise<ApiResponse<ApiTodo[]>> {
     try {
       const params = {
@@ -279,7 +279,7 @@ export class TodoApiClient extends BaseApiClient {
       };
 
       const response = await this.get<ApiTodo[]>('/todos/search', { params });
-      
+
       // Validate response data
       if (response.success && response.data) {
         const validatedData = response.data.map(todo => {
@@ -289,13 +289,13 @@ export class TodoApiClient extends BaseApiClient {
           }
           return result.data;
         });
-        
+
         return {
           ...response,
           data: validatedData,
         };
       }
-      
+
       return response;
     } catch (error) {
       if (error instanceof ApiError) {

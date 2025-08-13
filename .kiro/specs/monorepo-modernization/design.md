@@ -14,44 +14,44 @@ graph TB
         WEB[Next.js Web App]
         MOBILE[Expo React Native App]
     end
-    
+
     subgraph "Backend Services"
         API[NestJS API]
         REDIS[(Redis Cache)]
         MONGO[(MongoDB)]
     end
-    
+
     subgraph "Blockchain Layer"
         SOLANA[Solana Contracts]
         POLKADOT[Polkadot Contracts]
         POLYGON[Polygon Contracts]
     end
-    
+
     subgraph "Shared Packages"
         UI_WEB[UI Web Components]
         UI_MOBILE[UI Mobile Components]
         SERVICES[Shared Services]
         CONFIGS[Shared Configs]
     end
-    
+
     subgraph "Infrastructure"
         DOCKER[Docker Containers]
         K8S[Kubernetes Manifests]
         MONITORING[Observability Stack]
     end
-    
+
     WEB --> API
     MOBILE --> API
     API --> REDIS
     API --> MONGO
-    
+
     WEB --> SOLANA
     WEB --> POLKADOT
     WEB --> POLYGON
     MOBILE --> SOLANA
     MOBILE --> POLKADOT
     MOBILE --> POLYGON
-    
+
     WEB --> UI_WEB
     MOBILE --> UI_MOBILE
     WEB --> SERVICES
@@ -79,6 +79,7 @@ graph TB
 **Purpose**: Modern web interface for todo management with wallet connectivity
 
 **Key Components**:
+
 - Todo List Management UI
 - Wallet Connection Interface
 - Blockchain Network Selection
@@ -86,6 +87,7 @@ graph TB
 - Responsive Design
 
 **Technology Decisions**:
+
 - Next.js 14 for SSR/SSG capabilities and modern React features
 - App Router for improved routing and layouts
 - Tailwind CSS for styling consistency
@@ -96,6 +98,7 @@ graph TB
 **Purpose**: Cross-platform mobile app with native performance
 
 **Key Components**:
+
 - Native Todo Management Interface
 - Mobile Wallet Integration
 - Offline Capability
@@ -103,6 +106,7 @@ graph TB
 - Platform-specific optimizations
 
 **Technology Decisions**:
+
 - Expo SDK 49+ for rapid development and deployment
 - React Native 0.72+ for latest features
 - Expo Router for navigation
@@ -113,6 +117,7 @@ graph TB
 **Purpose**: Robust, scalable API with caching and observability
 
 **Key Components**:
+
 - RESTful API endpoints
 - Authentication middleware
 - Database integration
@@ -120,6 +125,7 @@ graph TB
 - OpenTelemetry instrumentation
 
 **Technology Decisions**:
+
 - NestJS for enterprise-grade architecture
 - MongoDB with Mongoose for data persistence
 - Redis for caching and session management
@@ -131,11 +137,13 @@ graph TB
 **Purpose**: Decentralized todo storage across multiple networks
 
 **Components**:
+
 - **Solana Program**: Rust-based program for Solana network
 - **Polkadot Pallet**: Substrate-based pallet for Polkadot ecosystem
 - **Polygon Contract**: Solidity smart contract for Polygon network
 
 **Technology Decisions**:
+
 - Solana: Anchor framework for program development
 - Polkadot: Substrate framework with ink! smart contracts
 - Polygon: Hardhat for Solidity development and deployment
@@ -143,12 +151,14 @@ graph TB
 ### 5. Shared UI Packages
 
 **Web UI Package (`packages/ui-web`)**:
+
 - React components built with Vite
 - Storybook for component documentation
 - Tailwind CSS for styling
 - TypeScript for type safety
 
 **Mobile UI Package (`packages/ui-mobile`)**:
+
 - React Native components
 - Vite for library packaging
 - Consistent theming with web
@@ -157,17 +167,20 @@ graph TB
 ### 6. Infrastructure Components
 
 **Docker Configuration**:
+
 - Multi-stage builds for optimization
 - Development and production environments
 - Service orchestration with docker-compose
 
 **Kubernetes Manifests**:
+
 - Deployment configurations
 - Service definitions
 - Ingress controllers
 - ConfigMaps and Secrets
 
 **Observability Stack**:
+
 - OpenTelemetry for distributed tracing
 - Prometheus for metrics collection
 - Grafana for visualization
@@ -263,12 +276,14 @@ interface BlockchainTransaction {
 **Coverage Requirements**: Minimum 80% code coverage across all applications
 
 **Testing Libraries**:
+
 - **API**: Jest with Supertest for HTTP testing
 - **Web**: Jest with React Testing Library
 - **Mobile**: Jest with React Native Testing Library
 - **Contracts**: Network-specific testing frameworks
 
 **Test Categories**:
+
 - Component testing for UI components
 - Service testing for business logic
 - Repository testing for data access
@@ -277,11 +292,13 @@ interface BlockchainTransaction {
 ### Integration Testing
 
 **API Integration Tests**:
+
 - Database integration testing with test containers
 - Redis integration testing
 - External service integration testing
 
 **Frontend Integration Tests**:
+
 - API integration testing with mock servers
 - Wallet integration testing with mock wallets
 - Cross-component integration testing
@@ -289,17 +306,20 @@ interface BlockchainTransaction {
 ### End-to-End Testing
 
 **Web E2E Testing**:
+
 - Playwright for comprehensive browser testing
 - User journey testing
 - Cross-browser compatibility testing
 - Accessibility testing
 
 **Mobile E2E Testing**:
+
 - Detox for React Native E2E testing
 - Device-specific testing
 - Platform-specific feature testing
 
 **API E2E Testing**:
+
 - Full request-response cycle testing
 - Authentication flow testing
 - Error scenario testing
@@ -307,11 +327,13 @@ interface BlockchainTransaction {
 ### Contract Testing
 
 **Blockchain Testing**:
+
 - Solana: Anchor testing framework
 - Polkadot: Substrate testing utilities
 - Polygon: Hardhat testing with Waffle
 
 **Test Scenarios**:
+
 - Contract deployment testing
 - Function execution testing
 - Gas optimization testing

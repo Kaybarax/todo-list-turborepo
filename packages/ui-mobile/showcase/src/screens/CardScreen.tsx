@@ -1,15 +1,15 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Layout, Text, Card as KittenCard } from '@ui-kitten/components';
-import { 
-  Card, 
-  CardHeader as CustomCardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent, 
+import {
+  Card,
+  CardHeader as CustomCardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
   CardFooter,
   Button,
-  Badge 
+  Badge,
 } from '@todo/ui-mobile';
 import ComponentExample from '../components/ComponentExample';
 
@@ -24,23 +24,18 @@ const CardScreen: React.FC = () => {
           </Layout>
           <Layout style={styles.cardContent}>
             <Text category="p1">
-              Flexible container component for displaying content. Built on UI Kitten Card 
-              primitive with custom header, content, and footer components.
+              Flexible container component for displaying content. Built on UI Kitten Card primitive with custom header,
+              content, and footer components.
             </Text>
           </Layout>
         </KittenCard>
 
         {/* Basic Card */}
-        <ComponentExample
-          title="Basic Card"
-          description="Simple card with header, content, and footer."
-        >
+        <ComponentExample title="Basic Card" description="Simple card with header, content, and footer.">
           <Card style={styles.exampleCard}>
             <CustomCardHeader>
               <CardTitle>Card Title</CardTitle>
-              <CardDescription>
-                Card description goes here. This provides additional context.
-              </CardDescription>
+              <CardDescription>Card description goes here. This provides additional context.</CardDescription>
             </CustomCardHeader>
             <CardContent>
               <Text category="p1">This is the main content of the card.</Text>
@@ -52,18 +47,13 @@ const CardScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Card with Badge */}
-        <ComponentExample
-          title="Card with Badge"
-          description="Card featuring a status badge in the header."
-        >
+        <ComponentExample title="Card with Badge" description="Card featuring a status badge in the header.">
           <Card style={styles.exampleCard}>
             <CustomCardHeader>
               <View style={styles.headerWithBadge}>
                 <View style={styles.headerText}>
                   <CardTitle>Project Status</CardTitle>
-                  <CardDescription>
-                    Current project development status and metrics.
-                  </CardDescription>
+                  <CardDescription>Current project development status and metrics.</CardDescription>
                 </View>
                 <Badge variant="success" size="small" text="Active" />
               </View>
@@ -84,26 +74,29 @@ const CardScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Interactive Card */}
-        <ComponentExample
-          title="Interactive Card"
-          description="Card with multiple actions and interactive elements."
-        >
+        <ComponentExample title="Interactive Card" description="Card with multiple actions and interactive elements.">
           <Card style={styles.exampleCard}>
             <CustomCardHeader>
               <CardTitle>User Profile</CardTitle>
-              <CardDescription>
-                Manage your account settings and preferences.
-              </CardDescription>
+              <CardDescription>Manage your account settings and preferences.</CardDescription>
             </CustomCardHeader>
             <CardContent>
               <View style={styles.profileContent}>
                 <View style={styles.profileField}>
-                  <Text category="label" style={styles.fieldLabel}>Name</Text>
-                  <Text category="p2" appearance="hint">John Doe</Text>
+                  <Text category="label" style={styles.fieldLabel}>
+                    Name
+                  </Text>
+                  <Text category="p2" appearance="hint">
+                    John Doe
+                  </Text>
                 </View>
                 <View style={styles.profileField}>
-                  <Text category="label" style={styles.fieldLabel}>Email</Text>
-                  <Text category="p2" appearance="hint">john@example.com</Text>
+                  <Text category="label" style={styles.fieldLabel}>
+                    Email
+                  </Text>
+                  <Text category="p2" appearance="hint">
+                    john@example.com
+                  </Text>
                 </View>
               </View>
             </CardContent>
@@ -115,29 +108,38 @@ const CardScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Card Variants */}
-        <ComponentExample
-          title="Card Variants"
-          description="Different card styles and elevations."
-        >
+        <ComponentExample title="Card Variants" description="Different card styles and elevations.">
           <View style={styles.cardVariants}>
             <Card variant="default" elevation="low" style={styles.variantCard}>
               <CardContent>
-                <Text category="h6" style={styles.variantTitle}>Default Card</Text>
-                <Text category="p2" appearance="hint">Low elevation</Text>
+                <Text category="h6" style={styles.variantTitle}>
+                  Default Card
+                </Text>
+                <Text category="p2" appearance="hint">
+                  Low elevation
+                </Text>
               </CardContent>
             </Card>
-            
+
             <Card variant="outlined" elevation="medium" style={styles.variantCard}>
               <CardContent>
-                <Text category="h6" style={styles.variantTitle}>Outlined Card</Text>
-                <Text category="p2" appearance="hint">Medium elevation</Text>
+                <Text category="h6" style={styles.variantTitle}>
+                  Outlined Card
+                </Text>
+                <Text category="p2" appearance="hint">
+                  Medium elevation
+                </Text>
               </CardContent>
             </Card>
-            
+
             <Card variant="filled" elevation="high" style={styles.variantCard}>
               <CardContent>
-                <Text category="h6" style={styles.variantTitle}>Filled Card</Text>
-                <Text category="p2" appearance="hint">High elevation</Text>
+                <Text category="h6" style={styles.variantTitle}>
+                  Filled Card
+                </Text>
+                <Text category="p2" appearance="hint">
+                  High elevation
+                </Text>
               </CardContent>
             </Card>
           </View>

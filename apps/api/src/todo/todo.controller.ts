@@ -11,13 +11,7 @@ import {
   HttpStatus,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiQuery,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
@@ -37,10 +31,7 @@ export class TodoController {
   @ApiOperation({ summary: 'Create a new todo' })
   @ApiResponse({ status: 201, description: 'Todo created successfully', type: Todo })
   @ApiResponse({ status: 400, description: 'Invalid input data' })
-  async create(
-    @Body() createTodoDto: CreateTodoDto,
-    @CurrentUser() user: { id: string },
-  ): Promise<Todo> {
+  async create(@Body() createTodoDto: CreateTodoDto, @CurrentUser() user: { id: string }): Promise<Todo> {
     return this.todoService.create(createTodoDto, user.id);
   }
 
@@ -52,19 +43,14 @@ export class TodoController {
   @ApiQuery({ name: 'completed', required: false, description: 'Filter by completion status' })
   @ApiQuery({ name: 'priority', required: false, description: 'Filter by priority' })
   @ApiQuery({ name: 'search', required: false, description: 'Search in title and description' })
-  async findAll(
-    @Query() queryDto: QueryTodoDto,
-    @CurrentUser() user: { id: string },
-  ) {
+  async findAll(@Query() queryDto: QueryTodoDto, @CurrentUser() user: { id: string }) {
     return this.todoService.findAll(queryDto, user.id);
   }
 
   @Get('stats')
   @ApiOperation({ summary: 'Get todo statistics' })
   @ApiResponse({ status: 200, description: 'Statistics retrieved successfully' })
-  async getStats(
-    @CurrentUser() user: { id: string },
-  ) {
+  async getStats(@CurrentUser() user: { id: string }) {
     return this.todoService.getStats(user.id);
   }
 
@@ -73,10 +59,7 @@ export class TodoController {
   @ApiResponse({ status: 200, description: 'Todo retrieved successfully', type: Todo })
   @ApiResponse({ status: 404, description: 'Todo not found' })
   @ApiResponse({ status: 403, description: 'Access denied' })
-  async findOne(
-    @Param('id') id: string,
-    @CurrentUser() user: { id: string },
-  ): Promise<Todo> {
+  async findOne(@Param('id') id: string, @CurrentUser() user: { id: string }): Promise<Todo> {
     return this.todoService.findOne(id, user.id);
   }
 
@@ -98,10 +81,7 @@ export class TodoController {
   @ApiResponse({ status: 200, description: 'Todo toggled successfully', type: Todo })
   @ApiResponse({ status: 404, description: 'Todo not found' })
   @ApiResponse({ status: 403, description: 'Access denied' })
-  async toggleComplete(
-    @Param('id') id: string,
-    @CurrentUser() user: { id: string },
-  ): Promise<Todo> {
+  async toggleComplete(@Param('id') id: string, @CurrentUser() user: { id: string }): Promise<Todo> {
     return this.todoService.toggleComplete(id, user.id);
   }
 
@@ -111,10 +91,7 @@ export class TodoController {
   @ApiResponse({ status: 204, description: 'Todo deleted successfully' })
   @ApiResponse({ status: 404, description: 'Todo not found' })
   @ApiResponse({ status: 403, description: 'Access denied' })
-  async remove(
-    @Param('id') id: string,
-    @CurrentUser() user: { id: string },
-  ): Promise<void> {
+  async remove(@Param('id') id: string, @CurrentUser() user: { id: string }): Promise<void> {
     return this.todoService.remove(id, user.id);
   }
 }

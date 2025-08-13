@@ -57,13 +57,14 @@ async function checkMigrateMongo() {
  */
 async function listMigrations() {
   console.log('📋 Available migrations:');
-  
+
   if (!fs.existsSync(MIGRATIONS_DIR)) {
     console.log('No migrations directory found');
     return;
   }
 
-  const files = fs.readdirSync(MIGRATIONS_DIR)
+  const files = fs
+    .readdirSync(MIGRATIONS_DIR)
     .filter(file => file.endsWith('.js'))
     .sort();
 
@@ -111,10 +112,11 @@ async function migrateUp() {
 async function migrateDown(count = 1) {
   try {
     console.log(`⬇️  Running ${count} migration(s) down...`);
-    const command = count === 'all' 
-      ? `npx migrate-mongo down -f ${MIGRATE_MONGO_CONFIG} --all`
-      : `npx migrate-mongo down -f ${MIGRATE_MONGO_CONFIG}`;
-    
+    const command =
+      count === 'all'
+        ? `npx migrate-mongo down -f ${MIGRATE_MONGO_CONFIG} --all`
+        : `npx migrate-mongo down -f ${MIGRATE_MONGO_CONFIG}`;
+
     const { stdout } = await execCommand(command);
     console.log(stdout);
     console.log('✅ Rollback completed successfully');
@@ -150,14 +152,14 @@ async function createMigration(name) {
  */
 async function resetDatabase() {
   console.log('🔄 Resetting database...');
-  
+
   try {
     // First, run all migrations down
     await migrateDown('all');
-    
+
     // Then, run all migrations up
     await migrateUp();
-    
+
     console.log('✅ Database reset completed successfully');
   } catch (error) {
     console.error('❌ Error resetting database:', error);
@@ -225,34 +227,34 @@ async function main() {
     case 'up':
       await migrateUp();
       break;
-    
+
     case 'down':
       const count = arg || 1;
       await migrateDown(count);
       break;
-    
+
     case 'status':
       await showStatus();
       break;
-    
+
     case 'list':
       await listMigrations();
       break;
-    
+
     case 'create':
       await createMigration(arg);
       break;
-    
+
     case 'reset':
       await resetDatabase();
       break;
-    
+
     case 'help':
     case '--help':
     case '-h':
       showHelp();
       break;
-    
+
     default:
       if (!command) {
         console.log('⚡ Todo App Database Migration Tool');
@@ -280,5 +282,5 @@ module.exports = {
   migrateDown,
   showStatus,
   createMigration,
-  resetDatabase
+  resetDatabase,
 };

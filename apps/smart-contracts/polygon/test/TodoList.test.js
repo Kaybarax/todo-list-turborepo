@@ -11,7 +11,7 @@ describe('TodoList Contract Tests', function () {
 
   beforeEach(async function () {
     [owner, user1, user2, ...addrs] = await ethers.getSigners();
-    
+
     TodoList = await ethers.getContractFactory('TodoList');
     todoList = await TodoList.deploy(owner.address);
     await todoList.deployed();
@@ -28,7 +28,7 @@ describe('TodoList Contract Tests', function () {
 
     it('Should emit OwnershipTransferred event on deployment', async function () {
       const TodoListFactory = await ethers.getContractFactory('TodoList');
-      
+
       await expect(TodoListFactory.deploy(owner.address))
         .to.emit(TodoListFactory, 'OwnershipTransferred')
         .withArgs(ethers.constants.AddressZero, owner.address);
@@ -44,12 +44,7 @@ describe('TodoList Contract Tests', function () {
     };
 
     it('Should create a todo successfully', async function () {
-      await expect(todoList.createTodo(
-        validTodo.title,
-        validTodo.description,
-        validTodo.priority,
-        validTodo.dueDate
-      ))
+      await expect(todoList.createTodo(validTodo.title, validTodo.description, validTodo.priority, validTodo.dueDate))
         .to.emit(todoList, 'TodoCreated')
         .withArgs(0, owner.address, validTodo.title);
 
@@ -64,52 +59,42 @@ describe('TodoList Contract Tests', function () {
     });
 
     it('Should increment todo count after creation', async function () {
-      await todoList.createTodo(
-        validTodo.title,
-        validTodo.description,
-        validTodo.priority,
-        validTodo.dueDate
-      );
+      await todoList.createTodo(validTodo.title, validTodo.description, validTodo.priority, validTodo.dueDate);
 
       expect(await todoList.getTodoCount()).to.equal(1);
     });
 
     it('Should fail with empty title', async function () {
-      await expect(todoList.createTodo(
-        '',
-        validTodo.description,
-        validTodo.priority,
-        validTodo.dueDate
-      )).to.be.revertedWith('Title cannot be empty');
+      await expect(
+        todoList.createTodo('', validTodo.description, validTodo.priority, validTodo.dueDate),
+      ).to.be.revertedWith('Title cannot be empty');
     });
 
     it('Should fail with past due date', async function () {
       const pastDate = Math.floor(Date.now() / 1000) - 86400; // yesterday
-      
-      await expect(todoList.createTodo(
-        validTodo.title,
-        validTodo.description,
-        validTodo.priority,
-        pastDate
-      )).to.be.revertedWith('Due date cannot be in the past');
+
+      await expect(
+        todoList.createTodo(validTodo.title, validTodo.description, validTodo.priority, pastDate),
+      ).to.be.revertedWith('Due date cannot be in the past');
     });
 
     it('Should fail with invalid priority', async function () {
-      await expect(todoList.createTodo(
-        validTodo.title,
-        validTodo.description,
-        5, // invalid priority
-        validTodo.dueDate
-      )).to.be.revertedWith('Invalid priority');
+      await expect(
+        todoList.createTodo(
+          validTodo.title,
+          validTodo.description,
+          5, // invalid priority
+          validTodo.dueDate,
+        ),
+      ).to.be.revertedWith('Invalid priority');
     });
 
     it('Should allow only owner to create todos', async function () {
-      await expect(todoList.connect(user1).createTodo(
-        validTodo.title,
-        validTodo.description,
-        validTodo.priority,
-        validTodo.dueDate
-      )).to.be.revertedWith('Not the owner of this TodoList');
+      await expect(
+        todoList
+          .connect(user1)
+          .createTodo(validTodo.title, validTodo.description, validTodo.priority, validTodo.dueDate),
+      ).to.be.revertedWith('Not the owner of this TodoList');
     });
 
     it('Should handle different priority levels', async function () {
@@ -131,25 +116,15 @@ describe('TodoList Contract Tests', function () {
 
     it('Should handle maximum title length', async function () {
       const longTitle = 'a'.repeat(200); // Assuming max length is 200
-      
-      await todoList.createTodo(
-        longTitle,
-        validTodo.description,
-        validTodo.priority,
-        validTodo.dueDate
-      );
+
+      await todoList.createTodo(longTitle, validTodo.description, validTodo.priority, validTodo.dueDate);
 
       const todo = await todoList.getTodo(0);
       expect(todo.title).to.equal(longTitle);
     });
 
     it('Should handle empty description', async function () {
-      await todoList.createTodo(
-        validTodo.title,
-        '',
-        validTodo.priority,
-        validTodo.dueDate
-      );
+      await todoList.createTodo(validTodo.title, '', validTodo.priority, validTodo.dueDate);
 
       const todo = await todoList.getTodo(0);
       expect(todo.description).to.equal('');
@@ -241,29 +216,34 @@ describe('TodoList Contract Tests', function () {
     });
 
     it('Should fail to update non-existent todo', async function () {
-      await expect(todoList.updateTodo(999, 'Title', 'Description', 1, Math.floor(Date.now() / 1000) + 86400))
-        .to.be.revertedWith('Todo does not exist');
+      await expect(
+        todoList.updateTodo(999, 'Title', 'Description', 1, Math.floor(Date.now() / 1000) + 86400),
+      ).to.be.revertedWith('Todo does not exist');
     });
 
     it('Should fail to update with empty title', async function () {
-      await expect(todoList.updateTodo(0, '', 'Description', 1, Math.floor(Date.now() / 1000) + 86400))
-        .to.be.revertedWith('Title cannot be empty');
+      await expect(
+        todoList.updateTodo(0, '', 'Description', 1, Math.floor(Date.now() / 1000) + 86400),
+      ).to.be.revertedWith('Title cannot be empty');
     });
 
     it('Should fail to update with past due date', async function () {
       const pastDate = Math.floor(Date.now() / 1000) - 86400;
-      await expect(todoList.updateTodo(0, 'Title', 'Description', 1, pastDate))
-        .to.be.revertedWith('Due date cannot be in the past');
+      await expect(todoList.updateTodo(0, 'Title', 'Description', 1, pastDate)).to.be.revertedWith(
+        'Due date cannot be in the past',
+      );
     });
 
     it('Should fail to update with invalid priority', async function () {
-      await expect(todoList.updateTodo(0, 'Title', 'Description', 5, Math.floor(Date.now() / 1000) + 86400))
-        .to.be.revertedWith('Invalid priority');
+      await expect(
+        todoList.updateTodo(0, 'Title', 'Description', 5, Math.floor(Date.now() / 1000) + 86400),
+      ).to.be.revertedWith('Invalid priority');
     });
 
     it('Should allow only owner to update todos', async function () {
-      await expect(todoList.connect(user1).updateTodo(0, 'Hacked', 'Description', 1, Math.floor(Date.now() / 1000) + 86400))
-        .to.be.revertedWith('Not the owner of this TodoList');
+      await expect(
+        todoList.connect(user1).updateTodo(0, 'Hacked', 'Description', 1, Math.floor(Date.now() / 1000) + 86400),
+      ).to.be.revertedWith('Not the owner of this TodoList');
     });
 
     it('Should preserve creation timestamp on update', async function () {
@@ -288,17 +268,13 @@ describe('TodoList Contract Tests', function () {
       expect(todo.completed).to.be.false;
 
       // Toggle to completed
-      await expect(todoList.toggleTodo(0))
-        .to.emit(todoList, 'TodoToggled')
-        .withArgs(0, owner.address, true);
+      await expect(todoList.toggleTodo(0)).to.emit(todoList, 'TodoToggled').withArgs(0, owner.address, true);
 
       todo = await todoList.getTodo(0);
       expect(todo.completed).to.be.true;
 
       // Toggle back to not completed
-      await expect(todoList.toggleTodo(0))
-        .to.emit(todoList, 'TodoToggled')
-        .withArgs(0, owner.address, false);
+      await expect(todoList.toggleTodo(0)).to.emit(todoList, 'TodoToggled').withArgs(0, owner.address, false);
 
       todo = await todoList.getTodo(0);
       expect(todo.completed).to.be.false;
@@ -309,8 +285,7 @@ describe('TodoList Contract Tests', function () {
     });
 
     it('Should allow only owner to toggle todos', async function () {
-      await expect(todoList.connect(user1).toggleTodo(0))
-        .to.be.revertedWith('Not the owner of this TodoList');
+      await expect(todoList.connect(user1).toggleTodo(0)).to.be.revertedWith('Not the owner of this TodoList');
     });
 
     it('Should update completion statistics', async function () {
@@ -336,9 +311,7 @@ describe('TodoList Contract Tests', function () {
     });
 
     it('Should delete todo successfully', async function () {
-      await expect(todoList.deleteTodo(1))
-        .to.emit(todoList, 'TodoDeleted')
-        .withArgs(1, owner.address);
+      await expect(todoList.deleteTodo(1)).to.emit(todoList, 'TodoDeleted').withArgs(1, owner.address);
 
       // Verify todo is deleted
       await expect(todoList.getTodo(1)).to.be.revertedWith('Todo does not exist');
@@ -352,8 +325,7 @@ describe('TodoList Contract Tests', function () {
     });
 
     it('Should allow only owner to delete todos', async function () {
-      await expect(todoList.connect(user1).deleteTodo(0))
-        .to.be.revertedWith('Not the owner of this TodoList');
+      await expect(todoList.connect(user1).deleteTodo(0)).to.be.revertedWith('Not the owner of this TodoList');
     });
 
     it('Should maintain array integrity after deletion', async function () {
@@ -416,7 +388,7 @@ describe('TodoList Contract Tests', function () {
 
     it('Should calculate completion rate', async function () {
       const completionRate = await todoList.getCompletionRate();
-      
+
       // 2 completed out of 4 total = 50%
       expect(completionRate).to.equal(50);
     });
@@ -441,17 +413,17 @@ describe('TodoList Contract Tests', function () {
     it('Should prevent unauthorized access to all functions', async function () {
       const unauthorizedUser = user1;
 
-      await expect(unauthorizedUser.createTodo('Hack', 'Hack', 1, Math.floor(Date.now() / 1000) + 86400))
-        .to.be.revertedWith('Not the owner of this TodoList');
+      await expect(
+        unauthorizedUser.createTodo('Hack', 'Hack', 1, Math.floor(Date.now() / 1000) + 86400),
+      ).to.be.revertedWith('Not the owner of this TodoList');
 
-      await expect(unauthorizedUser.updateTodo(0, 'Hack', 'Hack', 1, Math.floor(Date.now() / 1000) + 86400))
-        .to.be.revertedWith('Not the owner of this TodoList');
+      await expect(
+        unauthorizedUser.updateTodo(0, 'Hack', 'Hack', 1, Math.floor(Date.now() / 1000) + 86400),
+      ).to.be.revertedWith('Not the owner of this TodoList');
 
-      await expect(unauthorizedUser.toggleTodo(0))
-        .to.be.revertedWith('Not the owner of this TodoList');
+      await expect(unauthorizedUser.toggleTodo(0)).to.be.revertedWith('Not the owner of this TodoList');
 
-      await expect(unauthorizedUser.deleteTodo(0))
-        .to.be.revertedWith('Not the owner of this TodoList');
+      await expect(unauthorizedUser.deleteTodo(0)).to.be.revertedWith('Not the owner of this TodoList');
     });
 
     it('Should allow read access to anyone', async function () {
@@ -474,16 +446,20 @@ describe('TodoList Contract Tests', function () {
       await todoList.transferOwnership(user1.address);
 
       // Verify new owner can manage todos
-      await todoList.connect(user1).createTodo('New Owner Todo', 'Description', 1, Math.floor(Date.now() / 1000) + 86400);
+      await todoList
+        .connect(user1)
+        .createTodo('New Owner Todo', 'Description', 1, Math.floor(Date.now() / 1000) + 86400);
 
       // Verify old owner cannot manage todos
-      await expect(todoList.createTodo('Old Owner Todo', 'Description', 1, Math.floor(Date.now() / 1000) + 86400))
-        .to.be.revertedWith('Not the owner of this TodoList');
+      await expect(
+        todoList.createTodo('Old Owner Todo', 'Description', 1, Math.floor(Date.now() / 1000) + 86400),
+      ).to.be.revertedWith('Not the owner of this TodoList');
     });
 
     it('Should prevent ownership transfer to zero address', async function () {
-      await expect(todoList.transferOwnership(ethers.constants.AddressZero))
-        .to.be.revertedWith('New owner cannot be zero address');
+      await expect(todoList.transferOwnership(ethers.constants.AddressZero)).to.be.revertedWith(
+        'New owner cannot be zero address',
+      );
     });
 
     it('Should emit ownership transfer event', async function () {
@@ -497,13 +473,13 @@ describe('TodoList Contract Tests', function () {
     it('Should handle maximum number of todos', async function () {
       // Create many todos to test limits (adjust based on gas limits)
       const maxTodos = 100;
-      
+
       for (let i = 0; i < maxTodos; i++) {
         await todoList.createTodo(`Todo ${i}`, `Description ${i}`, i % 3, Math.floor(Date.now() / 1000) + 86400);
       }
 
       expect(await todoList.getTodoCount()).to.equal(maxTodos);
-      
+
       // Verify we can still access all todos
       const todos = await todoList.getAllTodos();
       expect(todos.length).to.equal(maxTodos);
@@ -533,7 +509,7 @@ describe('TodoList Contract Tests', function () {
 
     it('Should handle boundary values for timestamps', async function () {
       // Test with far future date
-      const farFuture = Math.floor(Date.now() / 1000) + (365 * 24 * 60 * 60 * 100); // 100 years
+      const farFuture = Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60 * 100; // 100 years
 
       await todoList.createTodo('Future Todo', 'Description', 1, farFuture);
 
@@ -586,7 +562,13 @@ describe('TodoList Contract Tests', function () {
       expect(createReceipt.gasUsed.toNumber()).to.be.lessThan(200000);
 
       // Update todo
-      const updateTx = await todoList.updateTodo(0, 'Updated', 'Updated Description', 2, Math.floor(Date.now() / 1000) + 172800);
+      const updateTx = await todoList.updateTodo(
+        0,
+        'Updated',
+        'Updated Description',
+        2,
+        Math.floor(Date.now() / 1000) + 172800,
+      );
       const updateReceipt = await updateTx.wait();
       expect(updateReceipt.gasUsed.toNumber()).to.be.lessThan(100000);
 
@@ -615,7 +597,7 @@ describe('TodoList Contract Tests', function () {
       const firstGas = gasUsages[0];
       const lastGas = gasUsages[gasUsages.length - 1];
       const increase = (lastGas - firstGas) / firstGas;
-      
+
       expect(increase).to.be.lessThan(0.1); // Less than 10% increase
     });
   });
@@ -628,19 +610,17 @@ describe('TodoList Contract Tests', function () {
         .withArgs(0, owner.address, 'Event Test');
 
       // Test TodoUpdated event
-      await expect(todoList.updateTodo(0, 'Updated Event Test', 'Updated Description', 2, Math.floor(Date.now() / 1000) + 172800))
+      await expect(
+        todoList.updateTodo(0, 'Updated Event Test', 'Updated Description', 2, Math.floor(Date.now() / 1000) + 172800),
+      )
         .to.emit(todoList, 'TodoUpdated')
         .withArgs(0, owner.address);
 
       // Test TodoToggled event
-      await expect(todoList.toggleTodo(0))
-        .to.emit(todoList, 'TodoToggled')
-        .withArgs(0, owner.address, true);
+      await expect(todoList.toggleTodo(0)).to.emit(todoList, 'TodoToggled').withArgs(0, owner.address, true);
 
       // Test TodoDeleted event
-      await expect(todoList.deleteTodo(0))
-        .to.emit(todoList, 'TodoDeleted')
-        .withArgs(0, owner.address);
+      await expect(todoList.deleteTodo(0)).to.emit(todoList, 'TodoDeleted').withArgs(0, owner.address);
     });
 
     it('Should emit events in correct order for batch operations', async function () {

@@ -21,7 +21,7 @@ const sampleUsers = [
     isActive: true,
     createdAt: new Date('2024-01-01T00:00:00Z'),
     updatedAt: new Date('2024-01-01T00:00:00Z'),
-    schemaVersion: 2
+    schemaVersion: 2,
   },
   {
     _id: new ObjectId('507f1f77bcf86cd799439012'),
@@ -33,8 +33,8 @@ const sampleUsers = [
     walletAddress: '0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4',
     createdAt: new Date('2024-01-02T00:00:00Z'),
     updatedAt: new Date('2024-01-02T00:00:00Z'),
-    schemaVersion: 2
-  }
+    schemaVersion: 2,
+  },
 ];
 
 const sampleTodos = [
@@ -48,7 +48,7 @@ const sampleTodos = [
     userId: new ObjectId('507f1f77bcf86cd799439011'),
     createdAt: new Date('2024-01-01T10:00:00Z'),
     updatedAt: new Date('2024-01-01T15:00:00Z'),
-    schemaVersion: 2
+    schemaVersion: 2,
   },
   {
     _id: new ObjectId('507f1f77bcf86cd799439022'),
@@ -60,7 +60,7 @@ const sampleTodos = [
     userId: new ObjectId('507f1f77bcf86cd799439011'),
     createdAt: new Date('2024-01-02T09:00:00Z'),
     updatedAt: new Date('2024-01-03T14:00:00Z'),
-    schemaVersion: 2
+    schemaVersion: 2,
   },
   {
     _id: new ObjectId('507f1f77bcf86cd799439023'),
@@ -73,7 +73,7 @@ const sampleTodos = [
     userId: new ObjectId('507f1f77bcf86cd799439011'),
     createdAt: new Date('2024-01-03T11:00:00Z'),
     updatedAt: new Date('2024-01-03T11:00:00Z'),
-    schemaVersion: 2
+    schemaVersion: 2,
   },
   {
     _id: new ObjectId('507f1f77bcf86cd799439024'),
@@ -87,7 +87,7 @@ const sampleTodos = [
     blockchainNetwork: 'polygon',
     createdAt: new Date('2024-01-04T13:00:00Z'),
     updatedAt: new Date('2024-01-04T13:00:00Z'),
-    schemaVersion: 2
+    schemaVersion: 2,
   },
   {
     _id: new ObjectId('507f1f77bcf86cd799439025'),
@@ -100,7 +100,7 @@ const sampleTodos = [
     userId: new ObjectId('507f1f77bcf86cd799439012'),
     createdAt: new Date('2024-01-05T10:00:00Z'),
     updatedAt: new Date('2024-01-05T10:00:00Z'),
-    schemaVersion: 2
+    schemaVersion: 2,
   },
   {
     _id: new ObjectId('507f1f77bcf86cd799439026'),
@@ -113,7 +113,7 @@ const sampleTodos = [
     userId: new ObjectId('507f1f77bcf86cd799439011'),
     createdAt: new Date('2024-01-06T14:00:00Z'),
     updatedAt: new Date('2024-01-06T14:00:00Z'),
-    schemaVersion: 2
+    schemaVersion: 2,
   },
   {
     _id: new ObjectId('507f1f77bcf86cd799439027'),
@@ -126,8 +126,8 @@ const sampleTodos = [
     userId: new ObjectId('507f1f77bcf86cd799439011'),
     createdAt: new Date('2024-01-07T16:00:00Z'),
     updatedAt: new Date('2024-01-07T16:00:00Z'),
-    schemaVersion: 2
-  }
+    schemaVersion: 2,
+  },
 ];
 
 /**
@@ -145,7 +145,7 @@ async function connectToDatabase() {
  */
 async function seedUsers(db) {
   const usersCollection = db.collection('users');
-  
+
   // Check if users already exist
   const existingUsersCount = await usersCollection.countDocuments();
   if (existingUsersCount > 0) {
@@ -163,7 +163,7 @@ async function seedUsers(db) {
  */
 async function seedTodos(db) {
   const todosCollection = db.collection('todos');
-  
+
   // Check if todos already exist
   const existingTodosCount = await todosCollection.countDocuments();
   if (existingTodosCount > 0) {
@@ -181,7 +181,7 @@ async function seedTodos(db) {
  */
 async function createAdditionalIndexes(db) {
   console.log('Creating additional indexes...');
-  
+
   const usersCollection = db.collection('users');
   const todosCollection = db.collection('todos');
 
@@ -198,7 +198,7 @@ async function createAdditionalIndexes(db) {
   await todosCollection.createIndex({ userId: 1, createdAt: -1 }, { background: true });
   await todosCollection.createIndex({ blockchainNetwork: 1 }, { sparse: true, background: true });
   await todosCollection.createIndex({ transactionHash: 1 }, { unique: true, sparse: true, background: true });
-  
+
   console.log('Additional indexes created successfully');
 }
 
@@ -207,11 +207,11 @@ async function createAdditionalIndexes(db) {
  */
 async function seedDatabase() {
   let client;
-  
+
   try {
     console.log('Starting database seeding process...');
     console.log(`Connecting to: ${MONGODB_URI.replace(/\/\/.*@/, '//***:***@')}`);
-    
+
     const { client: dbClient, db } = await connectToDatabase();
     client = dbClient;
 
@@ -223,7 +223,7 @@ async function seedDatabase() {
     // Display statistics
     const usersCount = await db.collection('users').countDocuments();
     const todosCount = await db.collection('todos').countDocuments();
-    
+
     console.log('\n=== Database Seeding Complete ===');
     console.log(`Database: ${DATABASE_NAME}`);
     console.log(`Users: ${usersCount}`);
@@ -232,7 +232,6 @@ async function seedDatabase() {
     console.log('Admin: admin@todo-app.com / admin123');
     console.log('User:  user@todo-app.com / user123');
     console.log('=====================================\n');
-
   } catch (error) {
     console.error('Error seeding database:', error);
     throw error;
@@ -249,10 +248,10 @@ async function seedDatabase() {
  */
 async function clearDatabase() {
   let client;
-  
+
   try {
     console.log('Clearing database...');
-    
+
     const { client: dbClient, db } = await connectToDatabase();
     client = dbClient;
 
@@ -261,7 +260,6 @@ async function clearDatabase() {
     await db.collection('migrations_changelog').deleteMany({});
 
     console.log('Database cleared successfully');
-    
   } catch (error) {
     console.error('Error clearing database:', error);
     throw error;
@@ -275,7 +273,7 @@ async function clearDatabase() {
 // Run the appropriate function based on command line arguments
 if (require.main === module) {
   const command = process.argv[2];
-  
+
   if (command === 'clear') {
     clearDatabase()
       .then(() => process.exit(0))
@@ -293,9 +291,9 @@ if (require.main === module) {
   }
 }
 
-module.exports = { 
-  seedDatabase, 
+module.exports = {
+  seedDatabase,
   clearDatabase,
   sampleUsers,
-  sampleTodos
+  sampleTodos,
 };

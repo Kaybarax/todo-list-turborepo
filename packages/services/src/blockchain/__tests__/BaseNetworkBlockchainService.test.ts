@@ -1,4 +1,7 @@
-import { BaseNetworkBlockchainService, BaseNetworkBlockchainServiceOptions } from '../implementations/BaseNetworkBlockchainService';
+import {
+  BaseNetworkBlockchainService,
+  BaseNetworkBlockchainServiceOptions,
+} from '../implementations/BaseNetworkBlockchainService';
 import { BlockchainNetwork, TransactionStatus, BlockchainTodoStatus } from '../types';
 import { BlockchainError } from '../utils/BlockchainError';
 
@@ -61,10 +64,10 @@ describe('BaseNetworkBlockchainService', () => {
       const address = '0x1234567890123456789012345678901234567890';
 
       expect(service.getTransactionExplorerUrl(txHash)).toBe(
-        'https://basescan.org/tx/0x1234567890123456789012345678901234567890123456789012345678901234'
+        'https://basescan.org/tx/0x1234567890123456789012345678901234567890123456789012345678901234',
       );
       expect(service.getAddressExplorerUrl(address)).toBe(
-        'https://basescan.org/address/0x1234567890123456789012345678901234567890'
+        'https://basescan.org/address/0x1234567890123456789012345678901234567890',
       );
     });
   });
@@ -204,7 +207,7 @@ describe('BaseNetworkBlockchainService', () => {
         expect(todos[0]).toEqual({
           id: '1',
           title: 'Deploy on Base L2',
-          description: 'Successfully deploy todo contracts on Base, Coinbase\'s Ethereum L2 optimistic rollup',
+          description: "Successfully deploy todo contracts on Base, Coinbase's Ethereum L2 optimistic rollup",
           status: BlockchainTodoStatus.IN_PROGRESS,
           completed: false,
           owner: '0x1234567890123456789012345678901234567890',
@@ -230,7 +233,7 @@ describe('BaseNetworkBlockchainService', () => {
         expect(todo).toEqual({
           id: '1',
           title: 'Deploy on Base L2',
-          description: 'Successfully deploy todo contracts on Base, Coinbase\'s Ethereum L2 optimistic rollup',
+          description: "Successfully deploy todo contracts on Base, Coinbase's Ethereum L2 optimistic rollup",
           status: BlockchainTodoStatus.IN_PROGRESS,
           completed: false,
           owner: '0x1234567890123456789012345678901234567890',
@@ -468,7 +471,7 @@ describe('BaseNetworkBlockchainService', () => {
 
     it('should handle network errors gracefully', async () => {
       const txHash = '0x1234567890123456789012345678901234567890123456789012345678901234';
-      
+
       // Mock getTransactionReceipt to throw an error
       jest.spyOn(service, 'getTransactionReceipt').mockRejectedValue(new Error('Network error'));
 
@@ -507,7 +510,7 @@ describe('BaseNetworkBlockchainService', () => {
       await service.connectWallet(mockProvider);
 
       const todos = await service.getTodos();
-      
+
       // Check that todos contain Base-specific content
       expect(todos.some(todo => todo.title.includes('Base L2'))).toBe(true);
       expect(todos.some(todo => todo.description.includes('Coinbase'))).toBe(true);

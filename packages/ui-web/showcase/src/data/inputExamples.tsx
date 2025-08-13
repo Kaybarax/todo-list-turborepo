@@ -1,6 +1,6 @@
-import { Button } from '../../../lib'
-import { Input } from '../../../lib'
-import type { ComponentExample } from '../App'
+import { Button } from '../../../lib';
+import { Input } from '../../../lib';
+import type { ComponentExample } from '../App';
 
 export const inputExamples: ComponentExample[] = [
   {
@@ -115,21 +115,21 @@ export const inputExamples: ComponentExample[] = [
           <label className="text-sm font-medium">Username</label>
           <Input placeholder="Enter username" />
         </div>
-        
+
         <div className="space-y-2">
           <label className="text-sm font-medium">Email</label>
           <Input type="email" placeholder="Enter email" />
         </div>
-        
+
         <div className="space-y-2">
           <label className="text-sm font-medium">Password</label>
           <Input type="password" placeholder="Enter password" />
         </div>
-        
+
         <Button type="submit" className="w-full">
           Create Account
         </Button>
       </form>
     ),
   },
-]
+];

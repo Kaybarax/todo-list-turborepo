@@ -18,10 +18,10 @@ class TestResultsAggregator {
           lines: 0,
           functions: 0,
           branches: 0,
-          statements: 0
-        }
+          statements: 0,
+        },
       },
-      suites: []
+      suites: [],
     };
   }
 
@@ -37,7 +37,7 @@ class TestResultsAggregator {
           lines: coverage.total.lines.pct || 0,
           functions: coverage.total.functions.pct || 0,
           branches: coverage.total.branches.pct || 0,
-          statements: coverage.total.statements.pct || 0
+          statements: coverage.total.statements.pct || 0,
         };
       }
     } catch (error) {
@@ -58,7 +58,7 @@ class TestResultsAggregator {
           totalTests: results.numTotalTests || 0,
           passedTests: results.numPassedTests || 0,
           failedTests: results.numFailedTests || 0,
-          skippedTests: results.numPendingTests || 0
+          skippedTests: results.numPendingTests || 0,
         };
       }
     } catch (error) {
@@ -80,7 +80,7 @@ class TestResultsAggregator {
           totalTests: stats.expected || 0,
           passedTests: stats.passed || 0,
           failedTests: stats.failed || 0,
-          skippedTests: stats.skipped || 0
+          skippedTests: stats.skipped || 0,
         };
       }
     } catch (error) {
@@ -96,16 +96,15 @@ class TestResultsAggregator {
     console.log(`Processing ${suiteName} test suite...`);
 
     const coverage = this.readCoverageReport(coveragePath);
-    const testResults = type === 'playwright' 
-      ? this.readPlaywrightResults(resultsPath)
-      : this.readJestResults(resultsPath);
+    const testResults =
+      type === 'playwright' ? this.readPlaywrightResults(resultsPath) : this.readJestResults(resultsPath);
 
     const suite = {
       name: suiteName,
       type,
       ...testResults,
       coverage,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
     this.results.suites.push(suite);
@@ -116,7 +115,9 @@ class TestResultsAggregator {
     this.results.summary.failedTests += testResults.failedTests;
     this.results.summary.skippedTests += testResults.skippedTests;
 
-    console.log(`  Tests: ${testResults.totalTests} total, ${testResults.passedTests} passed, ${testResults.failedTests} failed`);
+    console.log(
+      `  Tests: ${testResults.totalTests} total, ${testResults.passedTests} passed, ${testResults.failedTests} failed`,
+    );
     console.log(`  Coverage: ${coverage.lines}% lines, ${coverage.functions}% functions`);
   }
 
@@ -127,18 +128,21 @@ class TestResultsAggregator {
     const suites = this.results.suites.filter(suite => suite.coverage);
     if (suites.length === 0) return;
 
-    const totals = suites.reduce((acc, suite) => ({
-      lines: acc.lines + suite.coverage.lines,
-      functions: acc.functions + suite.coverage.functions,
-      branches: acc.branches + suite.coverage.branches,
-      statements: acc.statements + suite.coverage.statements
-    }), { lines: 0, functions: 0, branches: 0, statements: 0 });
+    const totals = suites.reduce(
+      (acc, suite) => ({
+        lines: acc.lines + suite.coverage.lines,
+        functions: acc.functions + suite.coverage.functions,
+        branches: acc.branches + suite.coverage.branches,
+        statements: acc.statements + suite.coverage.statements,
+      }),
+      { lines: 0, functions: 0, branches: 0, statements: 0 },
+    );
 
     this.results.summary.coverage = {
       lines: Math.round(totals.lines / suites.length),
       functions: Math.round(totals.functions / suites.length),
       branches: Math.round(totals.branches / suites.length),
-      statements: Math.round(totals.statements / suites.length)
+      statements: Math.round(totals.statements / suites.length),
     };
   }
 
@@ -213,7 +217,9 @@ class TestResultsAggregator {
     </div>
 
     <h2>Test Suites</h2>
-    ${this.results.suites.map(suite => `
+    ${this.results.suites
+      .map(
+        suite => `
         <div class="suite">
             <h3>${suite.name} (${suite.type})</h3>
             <p>
@@ -237,7 +243,9 @@ class TestResultsAggregator {
                 </div>
             </div>
         </div>
-    `).join('')}
+    `,
+      )
+      .join('')}
 
     <h2>Detailed Results</h2>
     <table>
@@ -254,7 +262,9 @@ class TestResultsAggregator {
             </tr>
         </thead>
         <tbody>
-            ${this.results.suites.map(suite => `
+            ${this.results.suites
+              .map(
+                suite => `
                 <tr>
                     <td>${suite.name}</td>
                     <td>${suite.type}</td>
@@ -265,7 +275,9 @@ class TestResultsAggregator {
                     <td>${suite.coverage.lines}%</td>
                     <td>${suite.coverage.functions}%</td>
                 </tr>
-            `).join('')}
+            `,
+              )
+              .join('')}
         </tbody>
     </table>
 
@@ -301,10 +313,7 @@ class TestResultsAggregator {
       fs.mkdirSync(resultsDir, { recursive: true });
     }
 
-    fs.writeFileSync(
-      path.join(resultsDir, 'aggregated-results.json'),
-      JSON.stringify(this.results, null, 2)
-    );
+    fs.writeFileSync(path.join(resultsDir, 'aggregated-results.json'), JSON.stringify(this.results, null, 2));
 
     // Generate HTML report
     const htmlReport = this.generateHtmlReport();
@@ -316,8 +325,12 @@ class TestResultsAggregator {
     console.log(`Passed: ${this.results.summary.passedTests}`);
     console.log(`Failed: ${this.results.summary.failedTests}`);
     console.log(`Skipped: ${this.results.summary.skippedTests}`);
-    console.log(`Success Rate: ${Math.round((this.results.summary.passedTests / this.results.summary.totalTests) * 100)}%`);
-    console.log(`Average Coverage: ${this.results.summary.coverage.lines}% lines, ${this.results.summary.coverage.functions}% functions`);
+    console.log(
+      `Success Rate: ${Math.round((this.results.summary.passedTests / this.results.summary.totalTests) * 100)}%`,
+    );
+    console.log(
+      `Average Coverage: ${this.results.summary.coverage.lines}% lines, ${this.results.summary.coverage.functions}% functions`,
+    );
     console.log('\nReports generated:');
     console.log(`- JSON: ${path.join(resultsDir, 'aggregated-results.json')}`);
     console.log(`- HTML: ${path.join(resultsDir, 'test-report.html')}`);

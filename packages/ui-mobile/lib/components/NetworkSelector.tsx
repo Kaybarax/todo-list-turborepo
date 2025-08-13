@@ -52,11 +52,11 @@ export function NetworkSelector({
   if (variant === 'list') {
     return (
       <View style={[styles.listContainer, style]}>
-        {supportedNetworks.map((network) => {
+        {supportedNetworks.map(network => {
           const isSelected = selectedNetwork === network;
           const networkInfo = NETWORK_INFO[network];
           const networkColor = getNetworkColor(network);
-          
+
           return (
             <TouchableOpacity
               key={network}
@@ -71,9 +71,7 @@ export function NetworkSelector({
               <View style={styles.listItemContent}>
                 <Text style={styles.networkIcon}>{networkInfo.icon}</Text>
                 <View style={styles.networkInfo}>
-                  <Text style={[styles.networkName, isSelected && { color: networkColor }]}>
-                    {networkInfo.name}
-                  </Text>
+                  <Text style={[styles.networkName, isSelected && { color: networkColor }]}>{networkInfo.name}</Text>
                   <Text style={styles.networkDescription}>{networkInfo.description}</Text>
                 </View>
                 {isSelected && (
@@ -95,11 +93,11 @@ export function NetworkSelector({
   return (
     <View style={[styles.container, style]}>
       <View style={styles.gridContainer}>
-        {supportedNetworks.map((network) => {
+        {supportedNetworks.map(network => {
           const isSelected = selectedNetwork === network;
           const networkInfo = NETWORK_INFO[network];
           const networkColor = getNetworkColor(network);
-          
+
           return (
             <TouchableOpacity
               key={network}
@@ -113,12 +111,10 @@ export function NetworkSelector({
             >
               <View style={styles.networkContent}>
                 <Text style={styles.networkIcon}>{networkInfo.icon}</Text>
-                <Text style={[styles.networkName, isSelected && { color: networkColor }]}>
-                  {networkInfo.name}
-                </Text>
+                <Text style={[styles.networkName, isSelected && { color: networkColor }]}>{networkInfo.name}</Text>
                 <Text style={styles.networkDescription}>{networkInfo.description}</Text>
               </View>
-              
+
               {isSelected && (
                 <View style={styles.selectedIndicator}>
                   <Badge
@@ -133,10 +129,8 @@ export function NetworkSelector({
           );
         })}
       </View>
-      
-      <Text style={styles.helpText}>
-        Select a blockchain network to connect your wallet
-      </Text>
+
+      <Text style={styles.helpText}>Select a blockchain network to connect your wallet</Text>
     </View>
   );
 }

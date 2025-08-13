@@ -1,8 +1,7 @@
 import React from 'react';
 import { cn } from '../../utils';
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
   helperText?: string;
   leftIcon?: React.ReactNode;
@@ -14,9 +13,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="relative w-full">
         {leftIcon && (
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            {leftIcon}
-          </div>
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">{leftIcon}</div>
         )}
         <input
           type={type}
@@ -25,27 +22,20 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             error && 'border-destructive focus-visible:ring-destructive',
             leftIcon && 'pl-10',
             rightIcon && 'pr-10',
-            className
+            className,
           )}
           ref={ref}
           {...props}
         />
         {rightIcon && (
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-            {rightIcon}
-          </div>
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">{rightIcon}</div>
         )}
         {helperText && (
-          <p className={cn(
-            'mt-1 text-xs',
-            error ? 'text-destructive' : 'text-muted-foreground'
-          )}>
-            {helperText}
-          </p>
+          <p className={cn('mt-1 text-xs', error ? 'text-destructive' : 'text-muted-foreground')}>{helperText}</p>
         )}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = 'Input';

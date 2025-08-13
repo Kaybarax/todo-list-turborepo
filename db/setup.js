@@ -27,39 +27,38 @@ const DATABASE_NAME = process.env.MONGODB_DATABASE || 'todo-app';
  */
 async function testConnection() {
   let client;
-  
+
   try {
     console.log('🔌 Testing MongoDB connection...');
     console.log(`Connecting to: ${MONGODB_URI.replace(/\/\/.*@/, '//***:***@')}`);
-    
+
     client = new MongoClient(MONGODB_URI);
     await client.connect();
-    
+
     // Test database access
     const db = client.db(DATABASE_NAME);
     await db.admin().ping();
-    
+
     console.log('✅ MongoDB connection successful');
-    
+
     // Show database info
     const stats = await db.stats();
     console.log(`📊 Database: ${DATABASE_NAME}`);
     console.log(`   Collections: ${stats.collections}`);
     console.log(`   Data Size: ${(stats.dataSize / 1024 / 1024).toFixed(2)} MB`);
     console.log(`   Index Size: ${(stats.indexSize / 1024 / 1024).toFixed(2)} MB`);
-    
+
     return { client, db };
-    
   } catch (error) {
     console.error('❌ MongoDB connection failed:', error.message);
-    
+
     if (error.message.includes('ECONNREFUSED')) {
       console.log('\n💡 Troubleshooting tips:');
       console.log('   1. Make sure MongoDB is running');
       console.log('   2. Check if Docker containers are started: docker-compose -f docker-compose.dev.yml up -d');
       console.log('   3. Verify connection string in environment variables');
     }
-    
+
     throw error;
   } finally {
     if (client) {
@@ -73,20 +72,20 @@ async function testConnection() {
  */
 function checkDependencies() {
   console.log('📦 Checking dependencies...');
-  
+
   const requiredPackages = ['mongodb', 'dotenv'];
   const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
-  
-  const missingPackages = requiredPackages.filter(pkg => 
-    !packageJson.dependencies?.[pkg] && !packageJson.devDependencies?.[pkg]
+
+  const missingPackages = requiredPackages.filter(
+    pkg => !packageJson.dependencies?.[pkg] && !packageJson.devDependencies?.[pkg],
   );
-  
+
   if (missingPackages.length > 0) {
     console.error(`❌ Missing required packages: ${missingPackages.join(', ')}`);
     console.log('Install with: pnpm add ' + missingPackages.join(' '));
     return false;
   }
-  
+
   console.log('✅ All dependencies are installed');
   return true;
 }
@@ -96,20 +95,20 @@ function checkDependencies() {
  */
 function validateEnvironment() {
   console.log('⚙️  Validating environment configuration...');
-  
+
   const requiredEnvVars = ['MONGODB_URI', 'MONGODB_DATABASE'];
   const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
-  
+
   if (missingVars.length > 0) {
     console.warn(`⚠️  Missing environment variables: ${missingVars.join(', ')}`);
     console.log('Using default values for development');
   }
-  
+
   console.log('Environment configuration:');
   console.log(`   MONGODB_URI: ${MONGODB_URI.replace(/\/\/.*@/, '//***:***@')}`);
   console.log(`   MONGODB_DATABASE: ${DATABASE_NAME}`);
   console.log(`   NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
-  
+
   return true;
 }
 
@@ -118,7 +117,7 @@ function validateEnvironment() {
  */
 async function runMigrations() {
   console.log('🔄 Running database migrations...');
-  
+
   try {
     await migrateUp();
     console.log('✅ Migrations completed successfully');
@@ -133,7 +132,7 @@ async function runMigrations() {
  */
 async function runSeeding() {
   console.log('🌱 Seeding database with initial data...');
-  
+
   try {
     await seedDatabase();
     console.log('✅ Database seeding completed successfully');
@@ -148,27 +147,27 @@ async function runSeeding() {
  */
 async function validateDatabase() {
   let client;
-  
+
   try {
     console.log('🔍 Validating database schema and indexes...');
-    
+
     client = new MongoClient(MONGODB_URI);
     await client.connect();
     const db = client.db(DATABASE_NAME);
-    
+
     // Check required collections exist
     const collections = await db.listCollections().toArray();
     const collectionNames = collections.map(c => c.name);
-    
+
     const requiredCollections = ['users', 'todos', 'blockchain_transactions', 'user_wallets', 'network_status'];
     const missingCollections = requiredCollections.filter(name => !collectionNames.includes(name));
-    
+
     if (missingCollections.length > 0) {
       console.warn(`⚠️  Missing collections: ${missingCollections.join(', ')}`);
     } else {
       console.log('✅ All required collections exist');
     }
-    
+
     // Check indexes for critical collections
     const criticalCollections = ['users', 'todos'];
     for (const collectionName of criticalCollections) {
@@ -177,17 +176,16 @@ async function validateDatabase() {
         console.log(`   ${collectionName}: ${indexes.length} indexes`);
       }
     }
-    
+
     // Check data counts
     const userCount = await db.collection('users').countDocuments();
     const todoCount = await db.collection('todos').countDocuments();
-    
+
     console.log(`📊 Data summary:`);
     console.log(`   Users: ${userCount}`);
     console.log(`   Todos: ${todoCount}`);
-    
+
     console.log('✅ Database validation completed');
-    
   } catch (error) {
     console.error('❌ Database validation failed:', error.message);
     throw error;
@@ -203,41 +201,41 @@ async function validateDatabase() {
  */
 async function setupDatabase(options = {}) {
   const { skipMigrations = false, skipSeeding = false, clearFirst = false } = options;
-  
+
   console.log('🚀 Starting database setup...');
   console.log('=====================================');
-  
+
   try {
     // Check dependencies
     if (!checkDependencies()) {
       process.exit(1);
     }
-    
+
     // Validate environment
     validateEnvironment();
-    
+
     // Test connection
     await testConnection();
-    
+
     // Clear database if requested
     if (clearFirst) {
       console.log('🧹 Clearing existing data...');
       await clearDatabase();
     }
-    
+
     // Run migrations
     if (!skipMigrations) {
       await runMigrations();
     }
-    
+
     // Seed database
     if (!skipSeeding) {
       await runSeeding();
     }
-    
+
     // Validate setup
     await validateDatabase();
-    
+
     console.log('=====================================');
     console.log('✅ Database setup completed successfully!');
     console.log('');
@@ -248,7 +246,6 @@ async function setupDatabase(options = {}) {
     console.log('   MongoDB: mongo-cli');
     console.log('   Redis: redis-cli');
     console.log('');
-    
   } catch (error) {
     console.log('=====================================');
     console.error('❌ Database setup failed:', error.message);
@@ -311,45 +308,45 @@ async function main() {
   const options = {
     skipMigrations: process.argv.includes('--skip-migrations'),
     skipSeeding: process.argv.includes('--skip-seeding'),
-    clearFirst: process.argv.includes('--clear-first')
+    clearFirst: process.argv.includes('--clear-first'),
   };
 
   switch (command) {
     case 'setup':
       await setupDatabase(options);
       break;
-    
+
     case 'test':
       await testConnection();
       break;
-    
+
     case 'migrate':
       await runMigrations();
       break;
-    
+
     case 'seed':
       await runSeeding();
       break;
-    
+
     case 'validate':
       await validateDatabase();
       break;
-    
+
     case 'clear':
       await clearDatabase();
       console.log('✅ Database cleared successfully');
       break;
-    
+
     case 'reset':
       await setupDatabase({ ...options, clearFirst: true });
       break;
-    
+
     case 'help':
     case '--help':
     case '-h':
       showHelp();
       break;
-    
+
     default:
       console.error(`❌ Unknown command: ${command}`);
       console.log('Run "node setup.js help" for usage information');
@@ -370,5 +367,5 @@ module.exports = {
   testConnection,
   runMigrations,
   runSeeding,
-  validateDatabase
+  validateDatabase,
 };

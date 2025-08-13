@@ -13,8 +13,8 @@ describe('Button', () => {
 
   it('renders with correct variant classes', () => {
     const variants = ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'] as const;
-    
-    variants.forEach((variant) => {
+
+    variants.forEach(variant => {
       const { unmount } = render(<Button variant={variant}>Test</Button>);
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -24,8 +24,8 @@ describe('Button', () => {
 
   it('renders with correct size classes', () => {
     const sizes = ['default', 'sm', 'lg', 'icon'] as const;
-    
-    sizes.forEach((size) => {
+
+    sizes.forEach(size => {
       const { unmount } = render(<Button size={size}>Test</Button>);
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe('Button', () => {
   it('handles click events', () => {
     const handleClick = vi.fn();
     render(<Button onClick={handleClick}>Click me</Button>);
-    
+
     fireEvent.click(screen.getByRole('button'));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
@@ -61,7 +61,11 @@ describe('Button', () => {
   });
 
   it('shows loading text when provided', () => {
-    render(<Button isLoading loadingText="Please wait...">Submit</Button>);
+    render(
+      <Button isLoading loadingText="Please wait...">
+        Submit
+      </Button>,
+    );
     expect(screen.getByText('Please wait...')).toBeInTheDocument();
     expect(screen.queryByText('Submit')).not.toBeInTheDocument();
   });
@@ -69,7 +73,7 @@ describe('Button', () => {
   it('renders left icon correctly', () => {
     const leftIcon = <span data-testid="left-icon">←</span>;
     render(<Button leftIcon={leftIcon}>With Icon</Button>);
-    
+
     expect(screen.getByTestId('left-icon')).toBeInTheDocument();
     expect(screen.getByText('With Icon')).toBeInTheDocument();
   });
@@ -77,7 +81,7 @@ describe('Button', () => {
   it('renders right icon correctly', () => {
     const rightIcon = <span data-testid="right-icon">→</span>;
     render(<Button rightIcon={rightIcon}>With Icon</Button>);
-    
+
     expect(screen.getByTestId('right-icon')).toBeInTheDocument();
     expect(screen.getByText('With Icon')).toBeInTheDocument();
   });
@@ -85,13 +89,13 @@ describe('Button', () => {
   it('hides icons when loading', () => {
     const leftIcon = <span data-testid="left-icon">←</span>;
     const rightIcon = <span data-testid="right-icon">→</span>;
-    
+
     render(
       <Button isLoading leftIcon={leftIcon} rightIcon={rightIcon}>
         Loading
-      </Button>
+      </Button>,
     );
-    
+
     expect(screen.queryByTestId('left-icon')).not.toBeInTheDocument();
     expect(screen.queryByTestId('right-icon')).not.toBeInTheDocument();
   });
@@ -106,9 +110,9 @@ describe('Button', () => {
     render(
       <Button asChild>
         <a href="/test">Link Button</a>
-      </Button>
+      </Button>,
     );
-    
+
     const link = screen.getByRole('link');
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', '/test');
@@ -116,7 +120,11 @@ describe('Button', () => {
   });
 
   it('passes through additional props', () => {
-    render(<Button data-testid="custom-button" aria-label="Custom label">Test</Button>);
+    render(
+      <Button data-testid="custom-button" aria-label="Custom label">
+        Test
+      </Button>,
+    );
     const button = screen.getByTestId('custom-button');
     expect(button).toHaveAttribute('aria-label', 'Custom label');
   });
@@ -132,7 +140,7 @@ describe('Button', () => {
     it('generates correct classes for different variants', () => {
       const destructiveClasses = buttonVariants({ variant: 'destructive' });
       expect(destructiveClasses).toContain('bg-destructive');
-      
+
       const outlineClasses = buttonVariants({ variant: 'outline' });
       expect(outlineClasses).toContain('border');
     });
@@ -140,7 +148,7 @@ describe('Button', () => {
     it('generates correct classes for different sizes', () => {
       const smallClasses = buttonVariants({ size: 'sm' });
       expect(smallClasses).toContain('h-9');
-      
+
       const largeClasses = buttonVariants({ size: 'lg' });
       expect(largeClasses).toContain('h-11');
     });

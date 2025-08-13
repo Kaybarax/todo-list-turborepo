@@ -64,11 +64,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         {/* Component Grid */}
         <Layout style={styles.grid}>
           {components.map((component, index) => (
-            <Card
-              key={index}
-              style={styles.componentCard}
-              onPress={() => navigation.navigate(component.screen)}
-            >
+            <Card key={index} style={styles.componentCard} onPress={() => navigation.navigate(component.screen)}>
               <Layout style={styles.cardHeader}>
                 <Text category="h6">{component.name}</Text>
               </Layout>

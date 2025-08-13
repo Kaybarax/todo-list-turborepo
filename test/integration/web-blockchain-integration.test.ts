@@ -40,8 +40,8 @@ const TEST_CONFIG = {
 // Helper functions
 async function setupMockWallet(page: Page, network: keyof typeof TEST_CONFIG.networks) {
   const networkConfig = TEST_CONFIG.networks[network];
-  
-  await page.addInitScript((config) => {
+
+  await page.addInitScript(config => {
     // Mock MetaMask/wallet provider
     (window as any).ethereum = {
       isMetaMask: true,
@@ -117,13 +117,16 @@ test.describe('Web Blockchain Integration Tests', () => {
       // Create blockchain todo
       await page.click('[data-testid="create-blockchain-todo-button"]');
       await page.fill('[data-testid="blockchain-todo-title"]', 'Deploy on Moonbeam Parachain');
-      await page.fill('[data-testid="blockchain-todo-description"]', 'Test Moonbeam EVM compatibility with Polkadot ecosystem');
+      await page.fill(
+        '[data-testid="blockchain-todo-description"]',
+        'Test Moonbeam EVM compatibility with Polkadot ecosystem',
+      );
       await page.selectOption('[data-testid="blockchain-todo-priority"]', 'high');
       await page.click('[data-testid="submit-blockchain-todo-button"]');
 
       // Verify transaction status
       await expect(page.locator('[data-testid="transaction-status"]')).toContainText('Transaction pending');
-      
+
       // Wait for transaction confirmation (mocked)
       await page.waitForTimeout(2000);
       await expect(page.locator('[data-testid="transaction-status"]')).toContainText('Transaction confirmed');
@@ -143,7 +146,7 @@ test.describe('Web Blockchain Integration Tests', () => {
       // Navigate to wallet page and connect
       await page.click('[data-testid="wallet-nav-link"]');
       await page.click('[data-testid="connect-wallet-button"]');
-      
+
       // Select Moonbase Alpha testnet
       await page.selectOption('[data-testid="network-selector"]', 'moonbeam_testnet');
       await expect(page.locator('[data-testid="selected-network"]')).toContainText('Moonbase Alpha');
@@ -169,7 +172,9 @@ test.describe('Web Blockchain Integration Tests', () => {
       await expect(page.locator('[data-testid="transaction-status"]')).toContainText('Transaction confirmed');
 
       // Verify update
-      await expect(todoItem.locator('[data-testid="todo-title"]')).toContainText('Updated: Moonbase Alpha Testing Complete');
+      await expect(todoItem.locator('[data-testid="todo-title"]')).toContainText(
+        'Updated: Moonbase Alpha Testing Complete',
+      );
 
       // Toggle completion
       await todoItem.locator('[data-testid="toggle-completion-button"]').click();
@@ -236,13 +241,16 @@ test.describe('Web Blockchain Integration Tests', () => {
       // Create blockchain todo
       await page.click('[data-testid="create-blockchain-todo-button"]');
       await page.fill('[data-testid="blockchain-todo-title"]', 'Deploy on Base L2');
-      await page.fill('[data-testid="blockchain-todo-description"]', 'Test Coinbase\'s optimistic rollup for fast, cheap transactions');
+      await page.fill(
+        '[data-testid="blockchain-todo-description"]',
+        "Test Coinbase's optimistic rollup for fast, cheap transactions",
+      );
       await page.selectOption('[data-testid="blockchain-todo-priority"]', 'high');
       await page.click('[data-testid="submit-blockchain-todo-button"]');
 
       // Verify transaction status
       await expect(page.locator('[data-testid="transaction-status"]')).toContainText('Transaction pending');
-      
+
       // Wait for transaction confirmation
       await page.waitForTimeout(1500); // Base should be faster than other networks
       await expect(page.locator('[data-testid="transaction-status"]')).toContainText('Transaction confirmed');
@@ -264,17 +272,13 @@ test.describe('Web Blockchain Integration Tests', () => {
 
       await page.click('[data-testid="wallet-nav-link"]');
       await page.click('[data-testid="connect-wallet-button"]');
-      
+
       // Select Base Sepolia testnet
       await page.selectOption('[data-testid="network-selector"]', 'base_testnet');
       await expect(page.locator('[data-testid="selected-network"]')).toContainText('Base Sepolia');
 
       // Create multiple todos quickly to test L2 efficiency
-      const todoTitles = [
-        'L2 Efficiency Test 1',
-        'L2 Efficiency Test 2',
-        'L2 Efficiency Test 3',
-      ];
+      const todoTitles = ['L2 Efficiency Test 1', 'L2 Efficiency Test 2', 'L2 Efficiency Test 3'];
 
       const startTime = Date.now();
 
@@ -283,7 +287,7 @@ test.describe('Web Blockchain Integration Tests', () => {
         await page.fill('[data-testid="blockchain-todo-title"]', title);
         await page.fill('[data-testid="blockchain-todo-description"]', 'Testing Base L2 transaction speed and cost');
         await page.click('[data-testid="submit-blockchain-todo-button"]');
-        
+
         // Wait for confirmation
         await page.waitForTimeout(1000); // Base L2 should be fast
         await expect(page.locator('[data-testid="transaction-status"]')).toContainText('Transaction confirmed');
@@ -331,7 +335,9 @@ test.describe('Web Blockchain Integration Tests', () => {
       await page.click('[data-testid="submit-blockchain-todo-button"]');
 
       // Verify L2-specific error handling
-      await expect(page.locator('[data-testid="error-message"]')).toContainText('Base sequencer temporarily unavailable');
+      await expect(page.locator('[data-testid="error-message"]')).toContainText(
+        'Base sequencer temporarily unavailable',
+      );
       await expect(page.locator('[data-testid="l2-error-indicator"]')).toBeVisible();
       await expect(page.locator('[data-testid="retry-button"]')).toBeVisible();
     });
@@ -359,7 +365,7 @@ test.describe('Web Blockchain Integration Tests', () => {
         await network.setup();
         await page.selectOption('[data-testid="network-selector"]', network.value);
         await expect(page.locator('[data-testid="selected-network"]')).toContainText(network.name);
-        
+
         // Verify network-specific UI elements
         if (network.value === 'moonbeam') {
           await expect(page.locator('[data-testid="parachain-indicator"]')).toBeVisible();
@@ -401,8 +407,9 @@ test.describe('Web Blockchain Integration Tests', () => {
       // Verify network switch prompt
       await expect(page.locator('[data-testid="network-switch-prompt"]')).toBeVisible();
       await expect(page.locator('[data-testid="switch-network-button"]')).toBeVisible();
-      await expect(page.locator('[data-testid="network-mismatch-warning"]'))
-        .toContainText('Please switch to Moonbeam network');
+      await expect(page.locator('[data-testid="network-mismatch-warning"]')).toContainText(
+        'Please switch to Moonbeam network',
+      );
     });
 
     test('should maintain separate todo lists for each network', async ({ page }) => {
@@ -421,8 +428,9 @@ test.describe('Web Blockchain Integration Tests', () => {
 
       // Verify Moonbeam todo exists
       await expect(page.locator('[data-testid="blockchain-todo-item"]')).toHaveCount(1);
-      await expect(page.locator('[data-testid="blockchain-todo-item"]').first()
-        .locator('[data-testid="todo-title"]')).toContainText('Moonbeam Todo');
+      await expect(
+        page.locator('[data-testid="blockchain-todo-item"]').first().locator('[data-testid="todo-title"]'),
+      ).toContainText('Moonbeam Todo');
 
       // Switch to Base network
       await setupMockWallet(page, 'base');
@@ -439,8 +447,9 @@ test.describe('Web Blockchain Integration Tests', () => {
 
       // Verify Base todo exists
       await expect(page.locator('[data-testid="blockchain-todo-item"]')).toHaveCount(1);
-      await expect(page.locator('[data-testid="blockchain-todo-item"]').first()
-        .locator('[data-testid="todo-title"]')).toContainText('Base Todo');
+      await expect(
+        page.locator('[data-testid="blockchain-todo-item"]').first().locator('[data-testid="todo-title"]'),
+      ).toContainText('Base Todo');
 
       // Switch back to Moonbeam
       await setupMockWallet(page, 'moonbeam');
@@ -448,8 +457,9 @@ test.describe('Web Blockchain Integration Tests', () => {
 
       // Verify Moonbeam todo still exists
       await expect(page.locator('[data-testid="blockchain-todo-item"]')).toHaveCount(1);
-      await expect(page.locator('[data-testid="blockchain-todo-item"]').first()
-        .locator('[data-testid="todo-title"]')).toContainText('Moonbeam Todo');
+      await expect(
+        page.locator('[data-testid="blockchain-todo-item"]').first().locator('[data-testid="todo-title"]'),
+      ).toContainText('Moonbeam Todo');
     });
   });
 
@@ -482,8 +492,9 @@ test.describe('Web Blockchain Integration Tests', () => {
 
         // Verify todo was created
         await expect(page.locator('[data-testid="blockchain-todo-item"]')).toHaveCount(1);
-        await expect(page.locator('[data-testid="blockchain-todo-item"]').first()
-          .locator('[data-testid="todo-title"]')).toContainText(todoTitle);
+        await expect(
+          page.locator('[data-testid="blockchain-todo-item"]').first().locator('[data-testid="todo-title"]'),
+        ).toContainText(todoTitle);
       }
 
       // Verify data persistence by switching back to each network
@@ -494,8 +505,9 @@ test.describe('Web Blockchain Integration Tests', () => {
 
         // Verify todo still exists
         await expect(page.locator('[data-testid="blockchain-todo-item"]')).toHaveCount(1);
-        await expect(page.locator('[data-testid="blockchain-todo-item"]').first()
-          .locator('[data-testid="todo-title"]')).toContainText(todo.title);
+        await expect(
+          page.locator('[data-testid="blockchain-todo-item"]').first().locator('[data-testid="todo-title"]'),
+        ).toContainText(todo.title);
       }
     });
 
@@ -542,12 +554,14 @@ test.describe('Web Blockchain Integration Tests', () => {
 
       // Verify both todos were created successfully
       await expect(moonbeamPage.locator('[data-testid="blockchain-todo-item"]')).toHaveCount(1);
-      await expect(moonbeamPage.locator('[data-testid="blockchain-todo-item"]').first()
-        .locator('[data-testid="todo-title"]')).toContainText('Concurrent Moonbeam Todo');
+      await expect(
+        moonbeamPage.locator('[data-testid="blockchain-todo-item"]').first().locator('[data-testid="todo-title"]'),
+      ).toContainText('Concurrent Moonbeam Todo');
 
       await expect(basePage.locator('[data-testid="blockchain-todo-item"]')).toHaveCount(1);
-      await expect(basePage.locator('[data-testid="blockchain-todo-item"]').first()
-        .locator('[data-testid="todo-title"]')).toContainText('Concurrent Base Todo');
+      await expect(
+        basePage.locator('[data-testid="blockchain-todo-item"]').first().locator('[data-testid="todo-title"]'),
+      ).toContainText('Concurrent Base Todo');
 
       // Cleanup
       await moonbeamPage.close();

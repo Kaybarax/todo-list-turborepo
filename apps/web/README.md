@@ -5,6 +5,7 @@ A modern Next.js 14 web application with App Router, TypeScript, Tailwind CSS, a
 ## 🚀 Features
 
 ### Core Web Features
+
 - **Next.js 14**: Latest Next.js with App Router and server components
 - **TypeScript**: Full type safety throughout the application
 - **Tailwind CSS**: Utility-first CSS framework for rapid UI development
@@ -13,6 +14,7 @@ A modern Next.js 14 web application with App Router, TypeScript, Tailwind CSS, a
 - **Progressive Web App**: PWA capabilities for offline usage
 
 ### Blockchain Integration
+
 - **WalletConnect v2**: Seamless wallet connection and authentication
 - **Multi-Network Support**: Polygon, Solana, and Polkadot integration
 - **Web3 Authentication**: Wallet-based user authentication
@@ -20,6 +22,7 @@ A modern Next.js 14 web application with App Router, TypeScript, Tailwind CSS, a
 - **Decentralized Storage**: Todo items stored on blockchain networks
 
 ### User Experience
+
 - **Real-time Updates**: Live updates using WebSocket connections
 - **Optimistic Updates**: Immediate UI feedback with rollback on errors
 - **Offline Support**: Service worker for offline functionality
@@ -73,6 +76,7 @@ apps/web/
 ## 🛠️ Development
 
 ### Prerequisites
+
 - Node.js 20+
 - pnpm package manager
 - API server running (see apps/api/README.md)
@@ -80,6 +84,7 @@ apps/web/
 ### Quick Start
 
 #### Using Development Scripts
+
 ```bash
 # Start web app with dependencies (recommended)
 pnpm dev:web
@@ -89,6 +94,7 @@ pnpm dev:frontend
 ```
 
 #### Manual Setup
+
 ```bash
 # Install dependencies
 pnpm install
@@ -161,9 +167,11 @@ pnpm build-storybook     # Build Storybook for production
 ## 🎨 UI Components
 
 ### Design System
+
 The application uses a custom design system built with Tailwind CSS and Radix UI primitives.
 
 #### Core Components
+
 ```typescript
 // Button component example
 import { Button } from '@/components/ui/button';
@@ -174,6 +182,7 @@ import { Button } from '@/components/ui/button';
 ```
 
 #### Form Components
+
 ```typescript
 // Form with validation
 import { TodoForm } from '@/components/forms/TodoForm';
@@ -186,6 +195,7 @@ import { TodoForm } from '@/components/forms/TodoForm';
 ```
 
 #### Layout Components
+
 ```typescript
 // Dashboard layout
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -198,6 +208,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 ### Styling Guidelines
 
 #### Tailwind CSS Classes
+
 ```css
 /* Primary colors */
 .bg-primary     /* Main brand color */
@@ -216,6 +227,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 ```
 
 #### Dark Mode Support
+
 ```typescript
 // Theme switching
 import { useTheme } from '@/hooks/useTheme';
@@ -230,6 +242,7 @@ const { theme, setTheme } = useTheme();
 ## 🔐 Authentication
 
 ### JWT Authentication
+
 ```typescript
 // Login with email/password
 import { useAuth } from '@/hooks/useAuth';
@@ -247,6 +260,7 @@ const handleLogin = async (email: string, password: string) => {
 ```
 
 ### Wallet Authentication
+
 ```typescript
 // Connect wallet and authenticate
 import { useWallet } from '@/hooks/useWallet';
@@ -264,6 +278,7 @@ const handleWalletConnect = async () => {
 ```
 
 ### Protected Routes
+
 ```typescript
 // Protected page component
 import { withAuth } from '@/lib/auth';
@@ -278,6 +293,7 @@ export default withAuth(DashboardPage);
 ## 📝 Todo Management
 
 ### Todo List Component
+
 ```typescript
 // Todo list with real-time updates
 import { useTodos } from '@/hooks/useTodos';
@@ -301,6 +317,7 @@ function TodoList() {
 ```
 
 ### Todo Creation
+
 ```typescript
 // Create todo with blockchain integration
 const handleCreateTodo = async (data: CreateTodoData) => {
@@ -309,7 +326,7 @@ const handleCreateTodo = async (data: CreateTodoData) => {
       ...data,
       blockchainNetwork: selectedNetwork,
     });
-    
+
     // Optionally sync to blockchain
     if (data.syncToBlockchain) {
       await syncTodoToBlockchain(todo.id, selectedNetwork);
@@ -321,23 +338,24 @@ const handleCreateTodo = async (data: CreateTodoData) => {
 ```
 
 ### Real-time Updates
+
 ```typescript
 // WebSocket integration for real-time updates
 import { useWebSocket } from '@/hooks/useWebSocket';
 
 function TodoDashboard() {
   const { todos, setTodos } = useTodos();
-  
+
   useWebSocket('/todos', {
     onMessage: (event) => {
       const { type, data } = JSON.parse(event.data);
-      
+
       switch (type) {
         case 'TODO_CREATED':
           setTodos(prev => [...prev, data]);
           break;
         case 'TODO_UPDATED':
-          setTodos(prev => prev.map(todo => 
+          setTodos(prev => prev.map(todo =>
             todo.id === data.id ? data : todo
           ));
           break;
@@ -355,6 +373,7 @@ function TodoDashboard() {
 ## ⛓️ Blockchain Integration
 
 ### Wallet Connection
+
 ```typescript
 // WalletConnect integration
 import { WalletConnectProvider } from '@/components/providers/WalletConnectProvider';
@@ -369,6 +388,7 @@ function App() {
 ```
 
 ### Multi-Network Support
+
 ```typescript
 // Network switching
 import { useBlockchain } from '@/hooks/useBlockchain';
@@ -377,8 +397,8 @@ function NetworkSelector() {
   const { currentNetwork, switchNetwork, supportedNetworks } = useBlockchain();
 
   return (
-    <select 
-      value={currentNetwork} 
+    <select
+      value={currentNetwork}
       onChange={(e) => switchNetwork(e.target.value)}
     >
       {supportedNetworks.map(network => (
@@ -392,6 +412,7 @@ function NetworkSelector() {
 ```
 
 ### Transaction Management
+
 ```typescript
 // Transaction status tracking
 import { useTransactions } from '@/hooks/useTransactions';
@@ -421,6 +442,7 @@ function TransactionStatus({ todoId }: { todoId: string }) {
 ## 🧪 Testing
 
 ### Test Structure
+
 ```
 __tests__/
 ├── components/            # Component tests
@@ -444,6 +466,7 @@ __tests__/
 ```
 
 ### Unit Testing
+
 ```typescript
 // Component testing with React Testing Library
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -459,7 +482,7 @@ describe('TodoItem', () => {
 
   it('renders todo item correctly', () => {
     render(<TodoItem todo={mockTodo} onUpdate={jest.fn()} onDelete={jest.fn()} />);
-    
+
     expect(screen.getByText('Test Todo')).toBeInTheDocument();
     expect(screen.getByRole('checkbox')).not.toBeChecked();
   });
@@ -467,9 +490,9 @@ describe('TodoItem', () => {
   it('calls onUpdate when checkbox is clicked', () => {
     const onUpdate = jest.fn();
     render(<TodoItem todo={mockTodo} onUpdate={onUpdate} onDelete={jest.fn()} />);
-    
+
     fireEvent.click(screen.getByRole('checkbox'));
-    
+
     expect(onUpdate).toHaveBeenCalledWith({
       ...mockTodo,
       completed: true,
@@ -479,6 +502,7 @@ describe('TodoItem', () => {
 ```
 
 ### E2E Testing
+
 ```typescript
 // Playwright E2E tests
 import { test, expect } from '@playwright/test';
@@ -504,7 +528,7 @@ test.describe('Todo Management', () => {
   test('should connect wallet', async ({ page }) => {
     await page.click('[data-testid=connect-wallet-button]');
     await page.click('[data-testid=metamask-option]');
-    
+
     // Mock wallet connection
     await page.evaluate(() => {
       window.ethereum = {
@@ -521,6 +545,7 @@ test.describe('Todo Management', () => {
 ## 🚀 Deployment
 
 ### Build Configuration
+
 ```javascript
 // next.config.js
 /** @type {import('next').NextConfig} */
@@ -548,6 +573,7 @@ module.exports = nextConfig;
 ```
 
 ### Docker Deployment
+
 ```dockerfile
 # Multi-stage build
 FROM node:20-alpine AS base
@@ -573,6 +599,7 @@ CMD ["npm", "start"]
 ```
 
 ### Static Export
+
 ```bash
 # Build static export
 pnpm build
@@ -585,11 +612,13 @@ aws s3 sync out/ s3://your-bucket-name --delete
 ## 📊 Performance Optimization
 
 ### Core Web Vitals
+
 - **Largest Contentful Paint (LCP)**: < 2.5s
 - **First Input Delay (FID)**: < 100ms
 - **Cumulative Layout Shift (CLS)**: < 0.1
 
 ### Optimization Techniques
+
 ```typescript
 // Image optimization
 import Image from 'next/image';
@@ -625,6 +654,7 @@ const ExpensiveComponent = ({ data }) => {
 ```
 
 ### Bundle Analysis
+
 ```bash
 # Analyze bundle size
 pnpm build
@@ -637,12 +667,11 @@ open .next/analyze/client.html
 ## 🔧 Configuration
 
 ### Tailwind Configuration
+
 ```javascript
 // tailwind.config.js
 module.exports = {
-  content: [
-    './src/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -657,14 +686,12 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 };
 ```
 
 ### TypeScript Configuration
+
 ```json
 {
   "compilerOptions": {
@@ -702,6 +729,7 @@ module.exports = {
 ### Common Issues
 
 #### Build Errors
+
 ```bash
 # Clear Next.js cache
 rm -rf .next
@@ -715,6 +743,7 @@ pnpm type-check
 ```
 
 #### Runtime Errors
+
 ```bash
 # Check browser console for errors
 # Enable React DevTools for debugging
@@ -724,6 +753,7 @@ curl http://localhost:3001/health
 ```
 
 #### Wallet Connection Issues
+
 ```bash
 # Check WalletConnect configuration
 echo $NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
@@ -733,6 +763,7 @@ echo $NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
 ```
 
 ### Debug Mode
+
 ```bash
 # Start in debug mode
 NODE_OPTIONS='--inspect' pnpm dev

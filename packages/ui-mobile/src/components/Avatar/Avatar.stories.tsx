@@ -10,13 +10,9 @@ export default {
 // Using a placeholder image URL for examples
 const placeholderImage = { uri: 'https://via.placeholder.com/150' };
 
-export const WithInitials = () => (
-  <Avatar initials="JD" />
-);
+export const WithInitials = () => <Avatar initials="JD" />;
 
-export const WithImage = () => (
-  <Avatar source={placeholderImage} />
-);
+export const WithImage = () => <Avatar source={placeholderImage} />;
 
 export const Sizes = () => (
   <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
@@ -50,10 +46,10 @@ export const CustomColors = () => (
 
 export const WithBorder = () => (
   <View style={{ flexDirection: 'row', gap: 16 }}>
-    <Avatar 
-      initials="JD" 
-      style={{ 
-        borderWidth: 2, 
+    <Avatar
+      initials="JD"
+      style={{
+        borderWidth: 2,
         borderColor: 'white',
         ...Platform.select({
           ios: {
@@ -66,12 +62,12 @@ export const WithBorder = () => (
             elevation: 4,
           },
         }),
-      }} 
+      }}
     />
-    <Avatar 
-      source={placeholderImage} 
-      style={{ 
-        borderWidth: 2, 
+    <Avatar
+      source={placeholderImage}
+      style={{
+        borderWidth: 2,
         borderColor: 'white',
         ...Platform.select({
           ios: {
@@ -84,7 +80,7 @@ export const WithBorder = () => (
             elevation: 4,
           },
         }),
-      }} 
+      }}
     />
   </View>
 );
@@ -92,21 +88,21 @@ export const WithBorder = () => (
 export const AvatarGroup = () => (
   <View style={{ flexDirection: 'row' }}>
     {['JD', 'AB', 'CD', 'EF'].map((initials, index) => (
-      <View 
+      <View
         key={initials}
-        style={{ 
+        style={{
           marginLeft: index > 0 ? -12 : 0,
           zIndex: 4 - index,
         }}
       >
-        <Avatar 
-          initials={initials} 
+        <Avatar
+          initials={initials}
           size="md"
           backgroundColor={['#6366F1', '#10B981', '#F59E0B', '#EF4444'][index]}
-          style={{ 
-            borderWidth: 2, 
+          style={{
+            borderWidth: 2,
             borderColor: 'white',
-          }} 
+          }}
         />
       </View>
     ))}

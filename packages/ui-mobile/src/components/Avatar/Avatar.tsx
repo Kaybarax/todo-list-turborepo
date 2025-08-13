@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-  TextStyle,
-  ImageSourcePropType,
-} from 'react-native';
+import { View, Image, Text, StyleSheet, StyleProp, ViewStyle, TextStyle, ImageSourcePropType } from 'react-native';
 import theme from '../../theme';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -65,12 +56,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       testID={testID}
     >
       {source ? (
-        <Image
-          source={source}
-          style={styles.image}
-          resizeMode="cover"
-          testID={`${testID}-image`}
-        />
+        <Image source={source} style={styles.image} resizeMode="cover" testID={`${testID}-image`} />
       ) : (
         <Text
           style={[

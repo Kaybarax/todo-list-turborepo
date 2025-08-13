@@ -1,12 +1,6 @@
 import React from 'react';
 import { Toggle, ToggleProps as KittenToggleProps, Text } from '@ui-kitten/components';
-import { 
-  View, 
-  StyleSheet, 
-  ViewStyle, 
-  TextStyle, 
-  StyleProp 
-} from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
 
 export type SwitchStatus = 'basic' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
 
@@ -43,28 +37,12 @@ const Switch: React.FC<SwitchProps> = ({
   };
 
   // Combine switch styles
-  const switchStyles = [
-    styles.switch,
-    style,
-  ];
+  const switchStyles = [styles.switch, style];
 
   return (
-    <View
-      style={[
-        styles.container,
-        disabled && styles.containerDisabled,
-        containerStyle,
-      ]}
-    >
+    <View style={[styles.container, disabled && styles.containerDisabled, containerStyle]}>
       {label && (
-        <Text
-          category="p1"
-          style={[
-            styles.label,
-            disabled && styles.labelDisabled,
-            labelStyle,
-          ]}
-        >
+        <Text category="p1" style={[styles.label, disabled && styles.labelDisabled, labelStyle]}>
           {label}
         </Text>
       )}

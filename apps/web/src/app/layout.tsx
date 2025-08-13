@@ -11,11 +11,7 @@ export const metadata: Metadata = {
   description: 'A modern todo application with blockchain integration',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -50,9 +46,7 @@ export default function RootLayout({
                 </div>
               </div>
             </header>
-            <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-              {children}
-            </main>
+            <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">{children}</main>
           </div>
         </WalletProvider>
       </body>

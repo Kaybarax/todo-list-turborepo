@@ -14,15 +14,7 @@ interface TodoItemProps {
   priority?: TodoItemPriority;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({
-  id,
-  title,
-  description,
-  completed,
-  onToggle,
-  onPress,
-  priority,
-}) => {
+const TodoItem: React.FC<TodoItemProps> = ({ id, title, description, completed, onToggle, onPress, priority }) => {
   // Theme colors matching the React Native theme
   const colors = {
     primary: '#007AFF',
@@ -178,10 +170,13 @@ const TodoItem: React.FC<TodoItemProps> = ({
 
   return (
     <div style={containerStyle} onClick={handlePress}>
-      <div style={checkboxContainerStyle} onClick={(e) => {
-        e.stopPropagation();
-        handleToggle();
-      }}>
+      <div
+        style={checkboxContainerStyle}
+        onClick={e => {
+          e.stopPropagation();
+          handleToggle();
+        }}
+      >
         <div style={checkboxStyle}>
           <div style={checkmarkStyle} />
         </div>
@@ -193,9 +188,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
           {priority && <div style={priorityIndicatorStyle} />}
         </div>
 
-        {description && (
-          <p style={descriptionStyle}>{description}</p>
-        )}
+        {description && <p style={descriptionStyle}>{description}</p>}
       </div>
     </div>
   );
@@ -208,9 +201,10 @@ const meta: Meta<typeof TodoItem> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A todo item component with checkbox, title, description, priority indicator, and interactive states for mobile interfaces (web preview)'
-      }
-    }
+        component:
+          'A todo item component with checkbox, title, description, priority indicator, and interactive states for mobile interfaces (web preview)',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -364,16 +358,16 @@ export const InteractiveToggle: Story = {
         completed={completed}
         priority="medium"
         onToggle={handleToggle}
-        onPress={(id) => console.log('Pressed todo:', id)}
+        onPress={id => console.log('Pressed todo:', id)}
       />
     );
   },
   parameters: {
     docs: {
       description: {
-        story: 'Interactive example showing toggle functionality'
-      }
-    }
+        story: 'Interactive example showing toggle functionality',
+      },
+    },
   },
 };
 
@@ -402,17 +396,19 @@ export const EditingState: Story = {
 
     if (isEditing) {
       return (
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: '8px',
-          maxWidth: '400px',
-          width: '100%',
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px',
+            maxWidth: '400px',
+            width: '100%',
+          }}
+        >
           <input
             type="text"
             value={tempTitle}
-            onChange={(e) => setTempTitle(e.target.value)}
+            onChange={e => setTempTitle(e.target.value)}
             style={{
               padding: '12px',
               border: '2px solid #007AFF',
@@ -464,7 +460,7 @@ export const EditingState: Story = {
         description="Click on this todo to edit it"
         completed={false}
         priority="low"
-        onToggle={(id) => console.log('Toggled todo:', id)}
+        onToggle={id => console.log('Toggled todo:', id)}
         onPress={handlePress}
       />
     );
@@ -472,9 +468,9 @@ export const EditingState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Interactive example showing editing functionality with mobile-friendly input'
-      }
-    }
+        story: 'Interactive example showing editing functionality with mobile-friendly input',
+      },
+    },
   },
 };
 
@@ -482,18 +478,34 @@ export const EditingState: Story = {
 export const MobileGestureExample: Story = {
   render: () => {
     const [todos, setTodos] = React.useState([
-      { id: '1', title: 'Swipe gestures demo', description: 'This simulates mobile swipe interactions', completed: false, priority: 'medium' as TodoItemPriority },
-      { id: '2', title: 'Long press actions', description: 'Hold to see context menu (simulated)', completed: true, priority: 'low' as TodoItemPriority },
-      { id: '3', title: 'Touch feedback', description: 'Visual feedback on touch interactions', completed: false, priority: 'high' as TodoItemPriority },
+      {
+        id: '1',
+        title: 'Swipe gestures demo',
+        description: 'This simulates mobile swipe interactions',
+        completed: false,
+        priority: 'medium' as TodoItemPriority,
+      },
+      {
+        id: '2',
+        title: 'Long press actions',
+        description: 'Hold to see context menu (simulated)',
+        completed: true,
+        priority: 'low' as TodoItemPriority,
+      },
+      {
+        id: '3',
+        title: 'Touch feedback',
+        description: 'Visual feedback on touch interactions',
+        completed: false,
+        priority: 'high' as TodoItemPriority,
+      },
     ]);
 
     const [longPressTimer, setLongPressTimer] = React.useState<NodeJS.Timeout | null>(null);
     const [showContextMenu, setShowContextMenu] = React.useState<string | null>(null);
 
     const handleToggle = (id: string) => {
-      setTodos(prev => prev.map(todo => 
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      ));
+      setTodos(prev => prev.map(todo => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
     };
 
     const handleMouseDown = (id: string) => {
@@ -517,25 +529,27 @@ export const MobileGestureExample: Story = {
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '400px', width: '100%' }}>
-        <div style={{ 
-          fontSize: '14px', 
-          color: '#8E8E93', 
-          marginBottom: '8px',
-          fontFamily: 'system-ui, -apple-system, sans-serif',
-        }}>
+        <div
+          style={{
+            fontSize: '14px',
+            color: '#8E8E93',
+            marginBottom: '8px',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+          }}
+        >
           Mobile Interactions Demo:
           <br />• Tap checkbox to toggle
           <br />• Tap item to select
           <br />• Hold item for context menu
         </div>
-        
+
         {todos.map(todo => (
           <div key={todo.id} style={{ position: 'relative' }}>
             <div
               onMouseDown={() => handleMouseDown(todo.id)}
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
-              style={{ 
+              style={{
                 transform: showContextMenu === todo.id ? 'scale(0.98)' : 'scale(1)',
                 transition: 'transform 0.1s ease-in-out',
               }}
@@ -547,26 +561,28 @@ export const MobileGestureExample: Story = {
                 completed={todo.completed}
                 priority={todo.priority}
                 onToggle={handleToggle}
-                onPress={(id) => console.log('Selected todo:', id)}
+                onPress={id => console.log('Selected todo:', id)}
               />
             </div>
-            
+
             {showContextMenu === todo.id && (
-              <div style={{
-                position: 'absolute',
-                top: '100%',
-                left: '0',
-                right: '0',
-                backgroundColor: 'white',
-                border: '1px solid #CECED2',
-                borderRadius: '8px',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                zIndex: 10,
-                padding: '8px',
-                display: 'flex',
-                gap: '8px',
-                marginTop: '4px',
-              }}>
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '100%',
+                  left: '0',
+                  right: '0',
+                  backgroundColor: 'white',
+                  border: '1px solid #CECED2',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                  zIndex: 10,
+                  padding: '8px',
+                  display: 'flex',
+                  gap: '8px',
+                  marginTop: '4px',
+                }}
+              >
                 <button
                   onClick={() => handleContextAction('Edit', todo.id)}
                   style={{
@@ -624,9 +640,9 @@ export const MobileGestureExample: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Mobile-specific interactions including long press context menu and touch feedback'
-      }
-    }
+        story: 'Mobile-specific interactions including long press context menu and touch feedback',
+      },
+    },
   },
 };
 
@@ -640,8 +656,8 @@ export const AllPriorities: Story = {
         description="This can be done when you have time"
         completed={false}
         priority="low"
-        onToggle={(id) => console.log('Toggled:', id)}
-        onPress={(id) => console.log('Pressed:', id)}
+        onToggle={id => console.log('Toggled:', id)}
+        onPress={id => console.log('Pressed:', id)}
       />
       <TodoItem
         id="priority-2"
@@ -649,8 +665,8 @@ export const AllPriorities: Story = {
         description="Should be done soon"
         completed={false}
         priority="medium"
-        onToggle={(id) => console.log('Toggled:', id)}
-        onPress={(id) => console.log('Pressed:', id)}
+        onToggle={id => console.log('Toggled:', id)}
+        onPress={id => console.log('Pressed:', id)}
       />
       <TodoItem
         id="priority-3"
@@ -658,25 +674,25 @@ export const AllPriorities: Story = {
         description="Needs immediate attention"
         completed={false}
         priority="high"
-        onToggle={(id) => console.log('Toggled:', id)}
-        onPress={(id) => console.log('Pressed:', id)}
+        onToggle={id => console.log('Toggled:', id)}
+        onPress={id => console.log('Pressed:', id)}
       />
       <TodoItem
         id="priority-4"
         title="No priority task"
         description="Standard priority level"
         completed={false}
-        onToggle={(id) => console.log('Toggled:', id)}
-        onPress={(id) => console.log('Pressed:', id)}
+        onToggle={id => console.log('Toggled:', id)}
+        onPress={id => console.log('Pressed:', id)}
       />
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Comparison of all priority levels with visual indicators'
-      }
-    }
+        story: 'Comparison of all priority levels with visual indicators',
+      },
+    },
   },
 };
 
@@ -690,8 +706,8 @@ export const CompletionStates: Story = {
         description="This task is not yet completed"
         completed={false}
         priority="medium"
-        onToggle={(id) => console.log('Toggled:', id)}
-        onPress={(id) => console.log('Pressed:', id)}
+        onToggle={id => console.log('Toggled:', id)}
+        onPress={id => console.log('Pressed:', id)}
       />
       <TodoItem
         id="state-2"
@@ -699,17 +715,17 @@ export const CompletionStates: Story = {
         description="This task has been finished"
         completed={true}
         priority="medium"
-        onToggle={(id) => console.log('Toggled:', id)}
-        onPress={(id) => console.log('Pressed:', id)}
+        onToggle={id => console.log('Toggled:', id)}
+        onPress={id => console.log('Pressed:', id)}
       />
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Comparison of completed vs incomplete states showing visual differences'
-      }
-    }
+        story: 'Comparison of completed vs incomplete states showing visual differences',
+      },
+    },
   },
 };
 
@@ -717,17 +733,45 @@ export const CompletionStates: Story = {
 export const TodoList: Story = {
   render: () => {
     const [todos, setTodos] = React.useState([
-      { id: '1', title: 'Review code changes', description: 'Check the new authentication module', completed: false, priority: 'high' as TodoItemPriority },
-      { id: '2', title: 'Update documentation', description: 'Add examples for the new API endpoints', completed: false, priority: 'medium' as TodoItemPriority },
-      { id: '3', title: 'Fix responsive layout', description: 'Mobile view needs adjustment', completed: true, priority: 'low' as TodoItemPriority },
-      { id: '4', title: 'Team standup meeting', description: 'Daily sync at 9:00 AM', completed: true, priority: 'medium' as TodoItemPriority },
-      { id: '5', title: 'Grocery shopping', description: 'Buy ingredients for dinner', completed: false, priority: 'low' as TodoItemPriority },
+      {
+        id: '1',
+        title: 'Review code changes',
+        description: 'Check the new authentication module',
+        completed: false,
+        priority: 'high' as TodoItemPriority,
+      },
+      {
+        id: '2',
+        title: 'Update documentation',
+        description: 'Add examples for the new API endpoints',
+        completed: false,
+        priority: 'medium' as TodoItemPriority,
+      },
+      {
+        id: '3',
+        title: 'Fix responsive layout',
+        description: 'Mobile view needs adjustment',
+        completed: true,
+        priority: 'low' as TodoItemPriority,
+      },
+      {
+        id: '4',
+        title: 'Team standup meeting',
+        description: 'Daily sync at 9:00 AM',
+        completed: true,
+        priority: 'medium' as TodoItemPriority,
+      },
+      {
+        id: '5',
+        title: 'Grocery shopping',
+        description: 'Buy ingredients for dinner',
+        completed: false,
+        priority: 'low' as TodoItemPriority,
+      },
     ]);
 
     const handleToggle = (id: string) => {
-      setTodos(prev => prev.map(todo => 
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      ));
+      setTodos(prev => prev.map(todo => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
     };
 
     const completedCount = todos.filter(todo => todo.completed).length;
@@ -735,19 +779,21 @@ export const TodoList: Story = {
 
     return (
       <div style={{ maxWidth: '400px', width: '100%' }}>
-        <div style={{ 
-          marginBottom: '16px', 
-          padding: '12px',
-          backgroundColor: '#F2F2F7',
-          borderRadius: '8px',
-          fontFamily: 'system-ui, -apple-system, sans-serif',
-        }}>
+        <div
+          style={{
+            marginBottom: '16px',
+            padding: '12px',
+            backgroundColor: '#F2F2F7',
+            borderRadius: '8px',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+          }}
+        >
           <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', color: '#000000' }}>My Todo List</h3>
           <p style={{ margin: 0, fontSize: '14px', color: '#8E8E93' }}>
             {completedCount} of {totalCount} tasks completed
           </p>
         </div>
-        
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {todos.map(todo => (
             <TodoItem
@@ -758,7 +804,7 @@ export const TodoList: Story = {
               completed={todo.completed}
               priority={todo.priority}
               onToggle={handleToggle}
-              onPress={(id) => console.log('Selected todo:', id)}
+              onPress={id => console.log('Selected todo:', id)}
             />
           ))}
         </div>
@@ -768,9 +814,9 @@ export const TodoList: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Real-world example showing a complete todo list with various states and priorities'
-      }
-    }
+        story: 'Real-world example showing a complete todo list with various states and priorities',
+      },
+    },
   },
 };
 
@@ -788,8 +834,8 @@ export const AccessibilityExample: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Todo item with proper accessibility considerations for screen readers and keyboard navigation'
-      }
-    }
+        story: 'Todo item with proper accessibility considerations for screen readers and keyboard navigation',
+      },
+    },
   },
 };

@@ -162,7 +162,7 @@ const meta: Meta<typeof ComponentName> = {
         defaultValue: { summary: 'undefined' },
       },
     },
-    onPress: { 
+    onPress: {
       action: 'pressed',
       description: 'Function called when component is pressed',
       table: {
@@ -314,7 +314,7 @@ export const Interactive: Story = {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center' }}>
         <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Count: {count}</div>
-        <ComponentName 
+        <ComponentName
           title={loading ? 'Processing...' : 'Increment'}
           loading={loading}
           onPress={handlePress}
@@ -355,26 +355,28 @@ export const AccessibilityDemo: Story = {
 Since Storybook runs in a web environment, you need to create web-compatible versions of your React Native components:
 
 1. **Replace React Native imports** with web equivalents:
+
    ```typescript
    // Instead of:
    import { View, Text, TouchableOpacity } from 'react-native';
-   
+
    // Use:
    import React from 'react';
    // Create web-compatible versions using HTML elements
    ```
 
 2. **Convert StyleSheet to CSS-in-JS**:
+
    ```typescript
    // Instead of:
    const styles = StyleSheet.create({
-     button: { backgroundColor: '#007AFF', padding: 10 }
+     button: { backgroundColor: '#007AFF', padding: 10 },
    });
-   
+
    // Use:
    const buttonStyle: React.CSSProperties = {
      backgroundColor: '#007AFF',
-     padding: 10
+     padding: 10,
    };
    ```
 
@@ -463,20 +465,20 @@ argTypes: {
   // Touch event handlers
   onPress: { action: 'pressed' },
   onLongPress: { action: 'long-pressed' },
-  
+
   // Mobile-specific props
   hapticFeedback: {
     control: { type: 'boolean' },
     description: 'Whether to provide haptic feedback on press',
   },
-  
+
   // Icon selection
   iconName: {
     control: { type: 'select' },
     options: ['add', 'remove', 'edit', 'delete', 'save', 'search'],
     description: 'Icon to display',
   },
-  
+
   // Mobile sizes
   size: {
     control: { type: 'select' },
@@ -505,9 +507,9 @@ export const AccessibilityDemo: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates mobile accessibility features including VoiceOver support'
-      }
-    }
+        story: 'Demonstrates mobile accessibility features including VoiceOver support',
+      },
+    },
   },
 };
 ```
@@ -531,14 +533,15 @@ Stories should support:
 ### Common Mobile Patterns
 
 #### Form Input Components
+
 ```typescript
 export const FormExample: Story = {
   render: () => {
     const [value, setValue] = React.useState('');
-    
+
     return (
       <div style={{ width: '300px', padding: '16px' }}>
-        <ComponentName 
+        <ComponentName
           value={value}
           onChangeText={setValue}
           placeholder="Enter text here"
@@ -551,6 +554,7 @@ export const FormExample: Story = {
 ```
 
 #### List Item Components
+
 ```typescript
 export const ListExample: Story = {
   render: () => (

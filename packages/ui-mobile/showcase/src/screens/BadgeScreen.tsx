@@ -15,17 +15,14 @@ const BadgeScreen: React.FC = () => {
           </Layout>
           <Layout style={styles.cardContent}>
             <Text category="p1">
-              Small status indicator component with color variants. Built with UI Kitten Text 
-              component and custom styling for consistent design.
+              Small status indicator component with color variants. Built with UI Kitten Text component and custom
+              styling for consistent design.
             </Text>
           </Layout>
         </Card>
 
         {/* Badge Variants */}
-        <ComponentExample
-          title="Badge Variants"
-          description="Different visual styles for various use cases."
-        >
+        <ComponentExample title="Badge Variants" description="Different visual styles for various use cases.">
           <View style={styles.badgeGrid}>
             <Badge variant="default" text="Default" />
             <Badge variant="primary" text="Primary" />
@@ -37,10 +34,7 @@ const BadgeScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Badge Sizes */}
-        <ComponentExample
-          title="Badge Sizes"
-          description="Different sizes to fit various layouts."
-        >
+        <ComponentExample title="Badge Sizes" description="Different sizes to fit various layouts.">
           <View style={styles.badgeColumn}>
             <Badge variant="primary" size="small" text="Small Badge" />
             <Badge variant="primary" size="medium" text="Medium Badge" />
@@ -49,10 +43,7 @@ const BadgeScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Status Badges */}
-        <ComponentExample
-          title="Status Indicators"
-          description="Badges commonly used for status indicators."
-        >
+        <ComponentExample title="Status Indicators" description="Badges commonly used for status indicators.">
           <View style={styles.statusContainer}>
             <View style={styles.statusItem}>
               <Text category="p1">Order Status:</Text>
@@ -74,10 +65,7 @@ const BadgeScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Notification Badges */}
-        <ComponentExample
-          title="Notification Badges"
-          description="Badges used for notifications and counts."
-        >
+        <ComponentExample title="Notification Badges" description="Badges used for notifications and counts.">
           <View style={styles.notificationContainer}>
             <View style={styles.notificationItem}>
               <Text category="p1">Messages</Text>
@@ -99,17 +87,16 @@ const BadgeScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Badge in Context */}
-        <ComponentExample
-          title="Badges in Context"
-          description="Examples of badges used in real-world scenarios."
-        >
+        <ComponentExample title="Badges in Context" description="Examples of badges used in real-world scenarios.">
           <View style={styles.contextContainer}>
             {/* User Profile with Badge */}
             <View style={styles.contextItem}>
               <View style={styles.userProfile}>
                 <View style={styles.userInfo}>
                   <Text category="h6">John Doe</Text>
-                  <Text category="p2" appearance="hint">Software Engineer</Text>
+                  <Text category="p2" appearance="hint">
+                    Software Engineer
+                  </Text>
                 </View>
                 <Badge variant="success" size="small" text="Online" />
               </View>
@@ -120,7 +107,9 @@ const BadgeScreen: React.FC = () => {
               <View style={styles.productItem}>
                 <View style={styles.productInfo}>
                   <Text category="h6">Premium Plan</Text>
-                  <Text category="p2" appearance="hint">$29.99/month</Text>
+                  <Text category="p2" appearance="hint">
+                    $29.99/month
+                  </Text>
                 </View>
                 <Badge variant="warning" size="small" text="Popular" />
               </View>
@@ -131,7 +120,9 @@ const BadgeScreen: React.FC = () => {
               <View style={styles.taskItem}>
                 <View style={styles.taskInfo}>
                   <Text category="h6">Fix critical bug</Text>
-                  <Text category="p2" appearance="hint">Due: Today</Text>
+                  <Text category="p2" appearance="hint">
+                    Due: Today
+                  </Text>
                 </View>
                 <Badge variant="danger" size="small" text="High Priority" />
               </View>
@@ -140,31 +131,12 @@ const BadgeScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Custom Styled Badges */}
-        <ComponentExample
-          title="Custom Styling"
-          description="Badges with custom styling and colors."
-        >
+        <ComponentExample title="Custom Styling" description="Badges with custom styling and colors.">
           <View style={styles.badgeGrid}>
-            <Badge 
-              variant="primary" 
-              text="Custom Blue" 
-              style={{ backgroundColor: '#007AFF' }}
-            />
-            <Badge 
-              variant="success" 
-              text="Custom Green" 
-              style={{ backgroundColor: '#34C759' }}
-            />
-            <Badge 
-              variant="warning" 
-              text="Custom Orange" 
-              style={{ backgroundColor: '#FF9500' }}
-            />
-            <Badge 
-              variant="danger" 
-              text="Custom Red" 
-              style={{ backgroundColor: '#FF3B30' }}
-            />
+            <Badge variant="primary" text="Custom Blue" style={{ backgroundColor: '#007AFF' }} />
+            <Badge variant="success" text="Custom Green" style={{ backgroundColor: '#34C759' }} />
+            <Badge variant="warning" text="Custom Orange" style={{ backgroundColor: '#FF9500' }} />
+            <Badge variant="danger" text="Custom Red" style={{ backgroundColor: '#FF3B30' }} />
           </View>
         </ComponentExample>
       </ScrollView>

@@ -2,7 +2,7 @@ import React from 'react';
 
 // Mock UI Kitten components for testing
 export const mockUIKittenComponent = (name: string) => {
-  return ({ children, ...props }: any) => 
+  return ({ children, ...props }: any) =>
     React.createElement('View', { 'data-testid': `ui-kitten-${name.toLowerCase()}`, ...props }, children);
 };
 

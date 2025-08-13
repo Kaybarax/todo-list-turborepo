@@ -26,19 +26,11 @@ const CheckboxScreen: React.FC = () => {
   };
 
   const updateTodoItem = (id: number, checked: boolean) => {
-    setTodoItems(prev => 
-      prev.map(item => 
-        item.id === id ? { ...item, checked } : item
-      )
-    );
+    setTodoItems(prev => prev.map(item => (item.id === id ? { ...item, checked } : item)));
   };
 
   const updateFeatureSelection = (feature: string, checked: boolean) => {
-    setSelectedFeatures(prev => 
-      checked 
-        ? [...prev, feature]
-        : prev.filter(f => f !== feature)
-    );
+    setSelectedFeatures(prev => (checked ? [...prev, feature] : prev.filter(f => f !== feature)));
   };
 
   const selectAllTodos = () => {
@@ -59,93 +51,41 @@ const CheckboxScreen: React.FC = () => {
           </Layout>
           <Layout style={styles.cardContent}>
             <Text category="p1">
-              Checkbox component for multiple selections. Built on UI Kitten CheckBox 
-              primitive with custom styling and status mapping.
+              Checkbox component for multiple selections. Built on UI Kitten CheckBox primitive with custom styling and
+              status mapping.
             </Text>
           </Layout>
         </Card>
 
         {/* Basic Checkboxes */}
-        <ComponentExample
-          title="Basic Checkboxes"
-          description="Simple checkboxes with labels."
-        >
+        <ComponentExample title="Basic Checkboxes" description="Simple checkboxes with labels.">
           <View style={styles.checkboxGroup}>
             <Checkbox
               checked={checkboxes.basic}
-              onValueChange={(value) => updateCheckbox('basic', value)}
+              onValueChange={value => updateCheckbox('basic', value)}
               label="Basic Checkbox"
             />
-            <Checkbox
-              checked={true}
-              onValueChange={() => {}}
-              label="Always Checked"
-            />
-            <Checkbox
-              checked={false}
-              onValueChange={() => {}}
-              label="Always Unchecked"
-            />
+            <Checkbox checked={true} onValueChange={() => {}} label="Always Checked" />
+            <Checkbox checked={false} onValueChange={() => {}} label="Always Unchecked" />
           </View>
         </ComponentExample>
 
         {/* Checkbox Status */}
-        <ComponentExample
-          title="Checkbox Status"
-          description="Different status colors for various use cases."
-        >
+        <ComponentExample title="Checkbox Status" description="Different status colors for various use cases.">
           <View style={styles.checkboxGroup}>
-            <Checkbox
-              checked={true}
-              onValueChange={() => {}}
-              label="Primary Status"
-              status="primary"
-            />
-            <Checkbox
-              checked={true}
-              onValueChange={() => {}}
-              label="Success Status"
-              status="success"
-            />
-            <Checkbox
-              checked={true}
-              onValueChange={() => {}}
-              label="Info Status"
-              status="info"
-            />
-            <Checkbox
-              checked={true}
-              onValueChange={() => {}}
-              label="Warning Status"
-              status="warning"
-            />
-            <Checkbox
-              checked={true}
-              onValueChange={() => {}}
-              label="Danger Status"
-              status="danger"
-            />
+            <Checkbox checked={true} onValueChange={() => {}} label="Primary Status" status="primary" />
+            <Checkbox checked={true} onValueChange={() => {}} label="Success Status" status="success" />
+            <Checkbox checked={true} onValueChange={() => {}} label="Info Status" status="info" />
+            <Checkbox checked={true} onValueChange={() => {}} label="Warning Status" status="warning" />
+            <Checkbox checked={true} onValueChange={() => {}} label="Danger Status" status="danger" />
           </View>
         </ComponentExample>
 
         {/* Disabled Checkboxes */}
-        <ComponentExample
-          title="Disabled Checkboxes"
-          description="Checkboxes in disabled state."
-        >
+        <ComponentExample title="Disabled Checkboxes" description="Checkboxes in disabled state.">
           <View style={styles.checkboxGroup}>
-            <Checkbox
-              checked={true}
-              onValueChange={() => {}}
-              label="Disabled (Checked)"
-              disabled
-            />
-            <Checkbox
-              checked={false}
-              onValueChange={() => {}}
-              label="Disabled (Unchecked)"
-              disabled
-            />
+            <Checkbox checked={true} onValueChange={() => {}} label="Disabled (Checked)" disabled />
+            <Checkbox checked={false} onValueChange={() => {}} label="Disabled (Unchecked)" disabled />
           </View>
         </ComponentExample>
 
@@ -155,81 +95,44 @@ const CheckboxScreen: React.FC = () => {
           description="Checkboxes with indeterminate state for partial selections."
         >
           <View style={styles.checkboxGroup}>
-            <Checkbox
-              checked={false}
-              onValueChange={() => {}}
-              label="Indeterminate Checkbox"
-              indeterminate={true}
-            />
-            <Checkbox
-              checked={true}
-              onValueChange={() => {}}
-              label="Indeterminate + Checked"
-              indeterminate={true}
-            />
+            <Checkbox checked={false} onValueChange={() => {}} label="Indeterminate Checkbox" indeterminate={true} />
+            <Checkbox checked={true} onValueChange={() => {}} label="Indeterminate + Checked" indeterminate={true} />
           </View>
         </ComponentExample>
 
         {/* Checkboxes without Labels */}
-        <ComponentExample
-          title="Checkboxes without Labels"
-          description="Standalone checkboxes without text labels."
-        >
+        <ComponentExample title="Checkboxes without Labels" description="Standalone checkboxes without text labels.">
           <View style={styles.checkboxRow}>
-            <Checkbox
-              checked={checkboxes.basic}
-              onValueChange={(value) => updateCheckbox('basic', value)}
-            />
-            <Checkbox
-              checked={true}
-              onValueChange={() => {}}
-              status="success"
-            />
-            <Checkbox
-              checked={false}
-              onValueChange={() => {}}
-              status="danger"
-            />
+            <Checkbox checked={checkboxes.basic} onValueChange={value => updateCheckbox('basic', value)} />
+            <Checkbox checked={true} onValueChange={() => {}} status="success" />
+            <Checkbox checked={false} onValueChange={() => {}} status="danger" />
           </View>
         </ComponentExample>
 
         {/* Todo List Example */}
-        <ComponentExample
-          title="Todo List Example"
-          description="Interactive todo list with checkboxes."
-        >
+        <ComponentExample title="Todo List Example" description="Interactive todo list with checkboxes.">
           <View style={styles.todoContainer}>
             <View style={styles.todoHeader}>
               <Text category="h6">Tasks</Text>
               <View style={styles.todoActions}>
-                <Button 
-                  title="All" 
-                  size="small" 
-                  variant="outline" 
-                  onPress={selectAllTodos}
-                />
-                <Button 
-                  title="None" 
-                  size="small" 
-                  variant="outline" 
-                  onPress={deselectAllTodos}
-                />
+                <Button title="All" size="small" variant="outline" onPress={selectAllTodos} />
+                <Button title="None" size="small" variant="outline" onPress={deselectAllTodos} />
               </View>
             </View>
-            
+
             <View style={styles.todoList}>
-              {todoItems.map((item) => (
+              {todoItems.map(item => (
                 <View key={item.id} style={styles.todoItem}>
                   <Checkbox
                     checked={item.checked}
-                    onValueChange={(checked) => updateTodoItem(item.id, checked)}
+                    onValueChange={checked => updateTodoItem(item.id, checked)}
                     label={item.text}
-                    status={item.checked ? "success" : "basic"}
+                    status={item.checked ? 'success' : 'basic'}
                   />
                 </View>
               ))}
             </View>
-            
+
             <Text category="c1" appearance="hint" style={styles.todoSummary}>
               {todoItems.filter(item => item.checked).length} of {todoItems.length} completed
             </Text>
@@ -237,51 +140,50 @@ const CheckboxScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Form Example */}
-        <ComponentExample
-          title="Form Example"
-          description="Checkboxes in a form context with validation."
-        >
+        <ComponentExample title="Form Example" description="Checkboxes in a form context with validation.">
           <View style={styles.formContainer}>
-            <Text category="h6" style={styles.formTitle}>Account Preferences</Text>
-            
+            <Text category="h6" style={styles.formTitle}>
+              Account Preferences
+            </Text>
+
             <Checkbox
               checked={checkboxes.terms}
-              onValueChange={(value) => updateCheckbox('terms', value)}
+              onValueChange={value => updateCheckbox('terms', value)}
               label="I agree to the Terms and Conditions"
-              status={checkboxes.terms ? "success" : "danger"}
+              status={checkboxes.terms ? 'success' : 'danger'}
             />
-            
+
             <Checkbox
               checked={checkboxes.newsletter}
-              onValueChange={(value) => updateCheckbox('newsletter', value)}
+              onValueChange={value => updateCheckbox('newsletter', value)}
               label="Subscribe to newsletter"
             />
-            
+
             <Checkbox
               checked={checkboxes.notifications}
-              onValueChange={(value) => updateCheckbox('notifications', value)}
+              onValueChange={value => updateCheckbox('notifications', value)}
               label="Enable push notifications"
             />
 
             <Text category="s1" style={styles.sectionTitle}>
               Features (Select multiple)
             </Text>
-            
+
             {[
               { id: 'push', label: 'Push Notifications' },
               { id: 'email', label: 'Email Alerts' },
               { id: 'sms', label: 'SMS Updates' },
               { id: 'analytics', label: 'Usage Analytics' },
-            ].map((feature) => (
+            ].map(feature => (
               <Checkbox
                 key={feature.id}
                 checked={selectedFeatures.includes(feature.id)}
-                onValueChange={(checked) => updateFeatureSelection(feature.id, checked)}
+                onValueChange={checked => updateFeatureSelection(feature.id, checked)}
                 label={feature.label}
                 status="info"
               />
             ))}
-            
+
             <Button
               title="Save Preferences"
               variant="primary"
@@ -294,10 +196,7 @@ const CheckboxScreen: React.FC = () => {
         </ComponentExample>
 
         {/* Custom Styled Checkboxes */}
-        <ComponentExample
-          title="Custom Styling"
-          description="Checkboxes with custom container and label styling."
-        >
+        <ComponentExample title="Custom Styling" description="Checkboxes with custom container and label styling.">
           <View style={styles.customCheckboxGroup}>
             <Checkbox
               checked={true}

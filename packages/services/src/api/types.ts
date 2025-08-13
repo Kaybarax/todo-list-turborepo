@@ -124,17 +124,16 @@ export type AuthResponse = z.infer<typeof authResponseSchema>;
 /**
  * Login input schema
  */
-export const loginInputSchema = z.object({
-  email: z.string().email().optional(),
-  walletAddress: z.string().optional(),
-  signature: z.string().optional(),
-  message: z.string().optional(),
-}).refine(
-  (data) => data.email || (data.walletAddress && data.signature && data.message),
-  {
-    message: "Either email or wallet authentication is required",
-  }
-);
+export const loginInputSchema = z
+  .object({
+    email: z.string().email().optional(),
+    walletAddress: z.string().optional(),
+    signature: z.string().optional(),
+    message: z.string().optional(),
+  })
+  .refine(data => data.email || (data.walletAddress && data.signature && data.message), {
+    message: 'Either email or wallet authentication is required',
+  });
 
 /**
  * Login input type

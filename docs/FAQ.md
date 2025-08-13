@@ -47,12 +47,14 @@ This allows apps to depend on shared packages without publishing to npm.
 **A:** Follow these steps:
 
 1. Create the package directory:
+
    ```bash
    mkdir packages/my-new-package
    cd packages/my-new-package
    ```
 
 2. Initialize package.json:
+
    ```json
    {
      "name": "@todo/my-new-package",
@@ -63,6 +65,7 @@ This allows apps to depend on shared packages without publishing to npm.
    ```
 
 3. Add to workspace root:
+
    ```bash
    pnpm install
    ```
@@ -170,28 +173,24 @@ pnpm db:drop
 **A:** Create a new migration file:
 
 1. Create migration file:
+
    ```bash
    # Create new migration
    touch db/migrations/$(date +%Y%m%d%H%M%S)_add_new_field.js
    ```
 
 2. Write migration:
+
    ```javascript
    // db/migrations/20240115120000_add_new_field.js
    module.exports = {
      async up(db) {
-       await db.collection('todos').updateMany(
-         {},
-         { $set: { newField: 'defaultValue' } }
-       );
+       await db.collection('todos').updateMany({}, { $set: { newField: 'defaultValue' } });
      },
-     
+
      async down(db) {
-       await db.collection('todos').updateMany(
-         {},
-         { $unset: { newField: '' } }
-       );
-     }
+       await db.collection('todos').updateMany({}, { $unset: { newField: '' } });
+     },
    };
    ```
 
@@ -234,6 +233,7 @@ Each network has its own smart contracts and integration services.
 **A:** Follow these steps:
 
 1. **Add Network Configuration**:
+
    ```typescript
    // packages/services/src/blockchain/networks.ts
    export enum BlockchainNetwork {
@@ -245,6 +245,7 @@ Each network has its own smart contracts and integration services.
    ```
 
 2. **Create Service Implementation**:
+
    ```typescript
    // apps/api/src/blockchain/services/new-network.service.ts
    @Injectable()
@@ -256,6 +257,7 @@ Each network has its own smart contracts and integration services.
    ```
 
 3. **Add Smart Contracts**:
+
    ```bash
    mkdir apps/smart-contracts/new-network
    # Add contract code and deployment scripts
@@ -396,7 +398,7 @@ import { setupServer } from 'msw/node';
 const server = setupServer(
   rest.post('/api/todos', (req, res, ctx) => {
     return res(ctx.json({ id: '1', title: 'Test Todo' }));
-  })
+  }),
 );
 ```
 
@@ -438,6 +440,7 @@ pnpm deploy:production
 ```
 
 Each environment has its own:
+
 - Environment variables
 - Database connections
 - Blockchain network configurations
@@ -488,12 +491,12 @@ spec:
   minReplicas: 2
   maxReplicas: 10
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
 ```
 
 ### Q: How do I monitor the application in production?
