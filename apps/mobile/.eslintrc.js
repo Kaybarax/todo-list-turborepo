@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['@todo/eslint-config/react-native'],
+  extends: ['@todo/config-eslint/react-native'],
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,

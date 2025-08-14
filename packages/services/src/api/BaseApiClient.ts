@@ -1,4 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+
+import { ApiError } from './ApiError';
 import {
   ApiClientConfig,
   ApiResponse,
@@ -7,7 +9,6 @@ import {
   ErrorInterceptor,
   RetryConfig,
 } from './types';
-import { ApiError } from './ApiError';
 
 /**
  * Base API client with authentication, retry logic, and error handling

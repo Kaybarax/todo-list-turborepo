@@ -1,5 +1,6 @@
-import { Badge } from './Badge';
 import { getNetworkColor, getSupportedWalletNetworks } from '@todo/services';
+
+import { Badge } from './Badge';
 
 export interface NetworkSelectorProps {
   selectedNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base';

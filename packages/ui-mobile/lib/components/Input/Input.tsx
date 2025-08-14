@@ -1,5 +1,5 @@
-import React from 'react';
 import { Input as KittenInput, InputProps as KittenInputProps, Text } from '@ui-kitten/components';
+import React from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -175,20 +175,20 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 16,
   },
+  errorText: {
+    marginTop: 4,
+  },
+  fullWidth: {
+    width: '100%',
+  },
+  helperText: {
+    marginTop: 4,
+  },
   label: {
     marginBottom: 8,
   },
   required: {
     color: '#FF3D71', // UI Kitten danger color
-  },
-  errorText: {
-    marginTop: 4,
-  },
-  helperText: {
-    marginTop: 4,
-  },
-  fullWidth: {
-    width: '100%',
   },
 });
 

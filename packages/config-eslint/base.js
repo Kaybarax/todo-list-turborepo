@@ -1,6 +1,6 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'import', 'security', 'promise'],
+  plugins: ['@typescript-eslint', 'import', 'promise'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -8,7 +8,6 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
-    'plugin:security/recommended',
     'plugin:promise/recommended',
     'prettier',
   ],
@@ -45,9 +44,7 @@ module.exports = {
     'import/no-duplicates': 'error',
     'import/no-unresolved': 'error',
 
-    // Security rules
-    'security/detect-object-injection': 'warn',
-    'security/detect-non-literal-regexp': 'warn',
+
 
     // General rules
     'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],

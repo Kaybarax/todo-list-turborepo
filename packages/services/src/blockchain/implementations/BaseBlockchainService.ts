@@ -1,3 +1,4 @@
+import { BlockchainService } from '../interfaces/BlockchainService';
 import {
   BlockchainNetwork,
   TransactionStatus,
@@ -7,7 +8,6 @@ import {
   UpdateBlockchainTodoInput,
   WalletInfo,
 } from '../types';
-import { BlockchainService } from '../interfaces/BlockchainService';
 import { BlockchainError } from '../utils/BlockchainError';
 import { TransactionMonitor, TransactionMonitorOptions } from '../utils/TransactionMonitor';
 
@@ -134,7 +134,7 @@ export abstract class BaseBlockchainService implements BlockchainService {
    * @throws BlockchainError if wallet is not connected
    */
   protected ensureWalletConnected(): void {
-    if (!this.walletInfo || !this.walletInfo.isConnected) {
+    if (!this.walletInfo?.isConnected) {
       throw BlockchainError.walletNotConnected(
         'Wallet is not connected. Please connect a wallet before performing this operation.',
         this.network,

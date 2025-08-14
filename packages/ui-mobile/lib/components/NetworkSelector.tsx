@@ -1,7 +1,8 @@
+import { getNetworkColor, getSupportedWalletNetworks } from '@todo/services';
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+
 import { Badge } from './Badge';
-import { getNetworkColor, getSupportedWalletNetworks } from '@todo/services';
 
 export interface NetworkSelectorProps {
   selectedNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base';
@@ -146,15 +147,15 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   networkButton: {
-    flex: 1,
-    minWidth: '45%',
-    maxWidth: '48%',
+    alignItems: 'center',
     backgroundColor: '#ffffff',
-    borderWidth: 2,
     borderColor: '#e5e7eb',
     borderRadius: 12,
+    borderWidth: 2,
+    flex: 1,
+    maxWidth: '48%',
+    minWidth: '45%',
     padding: 16,
-    alignItems: 'center',
     position: 'relative',
   },
   networkContent: {
@@ -165,35 +166,35 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   networkName: {
+    color: '#1f2937',
     fontSize: 14,
     fontWeight: '600',
-    color: '#1f2937',
     marginBottom: 4,
     textAlign: 'center',
   },
   networkDescription: {
-    fontSize: 11,
     color: '#6b7280',
-    textAlign: 'center',
+    fontSize: 11,
     lineHeight: 14,
+    textAlign: 'center',
   },
   selectedIndicator: {
     position: 'absolute',
-    top: -4,
     right: -4,
+    top: -4,
   },
   selectedBadge: {
-    minWidth: 20,
     height: 20,
+    minWidth: 20,
   },
   disabled: {
     opacity: 0.5,
   },
   helpText: {
-    fontSize: 12,
     color: '#6b7280',
-    textAlign: 'center',
+    fontSize: 12,
     marginTop: 8,
+    textAlign: 'center',
   },
   // List variant styles
   listContainer: {
@@ -201,15 +202,15 @@ const styles = StyleSheet.create({
   },
   listItem: {
     backgroundColor: '#ffffff',
-    borderWidth: 1,
     borderColor: '#e5e7eb',
     borderRadius: 8,
-    padding: 12,
+    borderWidth: 1,
     marginBottom: 8,
+    padding: 12,
   },
   listItemContent: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   networkInfo: {
     flex: 1,

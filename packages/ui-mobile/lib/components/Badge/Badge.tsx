@@ -1,5 +1,5 @@
-import React from 'react';
 import { Text } from '@ui-kitten/components';
+import React from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
 
 export type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
@@ -94,11 +94,11 @@ const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'medium
 
 const styles = StyleSheet.create({
   badge: {
-    borderRadius: 12,
-    paddingHorizontal: 8,
-    alignSelf: 'flex-start',
-    justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'flex-start',
+    borderRadius: 12,
+    justifyContent: 'center',
+    paddingHorizontal: 8,
   },
   text: {
     fontWeight: '600',
@@ -127,16 +127,16 @@ const styles = StyleSheet.create({
 
   // Size styles
   smallBadge: {
-    paddingVertical: 2,
     minHeight: 16,
+    paddingVertical: 2,
   },
   mediumBadge: {
-    paddingVertical: 4,
     minHeight: 20,
+    paddingVertical: 4,
   },
   largeBadge: {
-    paddingVertical: 6,
     minHeight: 24,
+    paddingVertical: 6,
   },
 });
 

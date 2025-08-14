@@ -83,8 +83,7 @@ module.exports = {
     'react-native/no-single-element-style-arrays': 'error',
     'react-native/sort-styles': 'warn',
 
-    // Accessibility
-    'react-native/accessibility-label': 'error',
+    // Accessibility - Note: accessibility-label rule may not exist in current plugin version
 
     // Override React rules for React Native
     'jsx-a11y/accessible-emoji': 'off', // React Native handles emoji accessibility

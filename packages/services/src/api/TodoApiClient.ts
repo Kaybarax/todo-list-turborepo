@@ -1,3 +1,4 @@
+import { ApiError } from './ApiError';
 import { BaseApiClient } from './BaseApiClient';
 import {
   ApiClientConfig,
@@ -9,7 +10,6 @@ import {
   createApiTodoSchema,
   updateApiTodoSchema,
 } from './types';
-import { ApiError } from './ApiError';
 
 /**
  * Todo API client for managing todos

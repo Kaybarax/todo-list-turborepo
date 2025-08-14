@@ -1,5 +1,5 @@
-import React from 'react';
 import { Button as KittenButton, ButtonProps as KittenButtonProps } from '@ui-kitten/components';
+import React from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -155,18 +155,18 @@ const Button: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
   contentContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'center',
+  },
+  fullWidth: {
+    width: '100%',
   },
   leftIcon: {
     marginRight: 8,
   },
   rightIcon: {
     marginLeft: 8,
-  },
-  fullWidth: {
-    width: '100%',
   },
   rounded: {
     borderRadius: 25,

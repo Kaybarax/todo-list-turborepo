@@ -1,6 +1,6 @@
+import { Select, SelectItem, Text, IndexPath } from '@ui-kitten/components';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Select, SelectItem, Text, IndexPath } from '@ui-kitten/components';
 
 export type NetworkType = 'polygon' | 'solana' | 'polkadot' | 'moonbeam' | 'base';
 
@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   label: {
-    marginBottom: 8,
     fontWeight: '600',
+    marginBottom: 8,
   },
   select: {
     backgroundColor: '#F7F9FC',

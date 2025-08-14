@@ -1,7 +1,7 @@
-import { ApiClientConfig } from './types';
+import { AuthApiClient } from './AuthApiClient';
 import { BaseApiClient } from './BaseApiClient';
 import { TodoApiClient } from './TodoApiClient';
-import { AuthApiClient } from './AuthApiClient';
+import { ApiClientConfig } from './types';
 
 /**
  * Configuration for API client factory

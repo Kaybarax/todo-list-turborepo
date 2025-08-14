@@ -1,3 +1,4 @@
+import { ApiError } from './ApiError';
 import { BaseApiClient } from './BaseApiClient';
 import {
   ApiClientConfig,
@@ -9,7 +10,6 @@ import {
   authResponseSchema,
   loginInputSchema,
 } from './types';
-import { ApiError } from './ApiError';
 
 /**
  * Authentication API client

@@ -1,5 +1,5 @@
-import React from 'react';
 import { CheckBox, CheckBoxProps as KittenCheckBoxProps, Text } from '@ui-kitten/components';
+import React from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
 
 export type CheckboxStatus = 'basic' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
@@ -70,14 +70,14 @@ const Checkbox: React.FC<CheckboxProps> = ({
 };
 
 const styles = StyleSheet.create({
+  checkbox: {
+    // UI Kitten CheckBox handles its own styling
+  },
   container: {
     // Container styles handled by UI Kitten CheckBox
   },
   containerDisabled: {
     opacity: 0.6,
-  },
-  checkbox: {
-    // UI Kitten CheckBox handles its own styling
   },
   label: {
     marginLeft: 8,

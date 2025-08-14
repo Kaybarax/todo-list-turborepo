@@ -1,5 +1,5 @@
-import React from 'react';
 import { Avatar as KittenAvatar, AvatarProps as KittenAvatarProps, Text } from '@ui-kitten/components';
+import React from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle, StyleProp, ImageSourcePropType } from 'react-native';
 
 export type AvatarSize = 'tiny' | 'small' | 'medium' | 'large' | 'giant';
@@ -129,9 +129,9 @@ const Avatar: React.FC<AvatarProps> = ({
 
 const styles = StyleSheet.create({
   customAvatar: {
-    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#3366FF', // UI Kitten primary color
+    backgroundColor: '#3366FF',
+    justifyContent: 'center', // UI Kitten primary color
   },
   initialsText: {
     fontWeight: '600',
@@ -140,24 +140,24 @@ const styles = StyleSheet.create({
 
   // Size styles
   tinyAvatar: {
-    width: 24,
     height: 24,
+    width: 24,
   },
   smallAvatar: {
-    width: 32,
     height: 32,
+    width: 32,
   },
   mediumAvatar: {
-    width: 40,
     height: 40,
+    width: 40,
   },
   largeAvatar: {
-    width: 56,
     height: 56,
+    width: 56,
   },
   giantAvatar: {
-    width: 72,
     height: 72,
+    width: 72,
   },
 
   // Shape styles

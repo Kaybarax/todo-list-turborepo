@@ -1,5 +1,5 @@
-import React from 'react';
 import { Toggle, ToggleProps as KittenToggleProps, Text } from '@ui-kitten/components';
+import React from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
 
 export type SwitchStatus = 'basic' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
@@ -60,8 +60,8 @@ const Switch: React.FC<SwitchProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     minHeight: 40,
   },

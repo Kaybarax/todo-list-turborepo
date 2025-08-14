@@ -1,5 +1,5 @@
-import React from 'react';
 import { Card as KittenCard, CardProps as KittenCardProps, Text } from '@ui-kitten/components';
+import React from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
 
 export interface CardProps extends Omit<KittenCardProps, 'children'> {
@@ -143,9 +143,9 @@ const styles = StyleSheet.create({
 
   // Component styles
   header: {
+    paddingBottom: 8,
     paddingHorizontal: 16,
     paddingTop: 16,
-    paddingBottom: 8,
   },
   title: {
     marginBottom: 4,
@@ -158,11 +158,11 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   footer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingBottom: 16,
     paddingHorizontal: 16,
     paddingTop: 8,
-    paddingBottom: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   footerLeft: {
     justifyContent: 'flex-start',

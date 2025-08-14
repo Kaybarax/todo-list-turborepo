@@ -1,15 +1,19 @@
 module.exports = {
-  extends: ['../config-eslint/react-native.js'],
+  extends: ['../config-eslint/base.js'],
   parserOptions: {
-    project: './tsconfig.dev.json',
+    project: './tsconfig.json',
     tsconfigRootDir: __dirname,
   },
   settings: {
     'import/resolver': {
       typescript: {
         alwaysTryTypes: true,
-        project: './tsconfig.dev.json',
+        project: './tsconfig.json',
       },
     },
+  },
+  env: {
+    node: true,
+    es2022: true,
   },
 };
