@@ -1,16 +1,71 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local"],
+  "globalDependencies": [
+    "**/.env.*local",
+    ".eslintrc.*",
+    ".prettierrc*",
+    "prettier.config.*",
+    ".solhint.json",
+    "clippy.toml"
+  ],
+  "globalEnv": [
+    "NODE_ENV",
+    "CI",
+    "ESLINT_USE_FLAT_CONFIG"
+  ],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "build/**", "lib/**"]
     },
     "lint": {
-      "outputs": []
+      "inputs": [
+        "src/**/*.{ts,tsx,js,jsx}",
+        "lib/**/*.{ts,tsx,js,jsx}",
+        "app/**/*.{ts,tsx,js,jsx}",
+        "test/**/*.{ts,tsx,js,jsx}",
+        "__tests__/**/*.{ts,tsx,js,jsx}",
+        "e2e/**/*.{ts,tsx,js,jsx}",
+        "contracts/**/*.sol",
+        "programs/**/*.rs",
+        "pallet-*/**/*.rs",
+        ".eslintrc.*",
+        ".solhint.json",
+        "eslint.config.*",
+        "package.json",
+        "tsconfig.json",
+        "tsconfig.*.json"
+      ],
+      "outputs": [
+        ".eslintcache"
+      ],
+      "dependsOn": [
+        "^build"
+      ]
     },
     "lint:fix": {
-      "outputs": []
+      "inputs": [
+        "src/**/*.{ts,tsx,js,jsx}",
+        "lib/**/*.{ts,tsx,js,jsx}",
+        "app/**/*.{ts,tsx,js,jsx}",
+        "test/**/*.{ts,tsx,js,jsx}",
+        "__tests__/**/*.{ts,tsx,js,jsx}",
+        "e2e/**/*.{ts,tsx,js,jsx}",
+        "contracts/**/*.sol",
+        "programs/**/*.rs",
+        "pallet-*/**/*.rs",
+        ".eslintrc.*",
+        ".solhint.json",
+        "eslint.config.*",
+        "package.json",
+        "tsconfig.json",
+        "tsconfig.*.json"
+      ],
+      "outputs": [],
+      "cache": false,
+      "dependsOn": [
+        "^build"
+      ]
     },
     "dev": {
       "cache": false,
@@ -43,11 +98,80 @@
       "inputs": ["src/**/*.tsx", "src/**/*.ts", "e2e/**/*.ts", "tests/**/*.spec.ts"]
     },
     "typecheck": {
-      "dependsOn": ["^build"],
-      "outputs": []
+      "inputs": [
+        "src/**/*.{ts,tsx}",
+        "lib/**/*.{ts,tsx}",
+        "app/**/*.{ts,tsx}",
+        "test/**/*.{ts,tsx}",
+        "__tests__/**/*.{ts,tsx}",
+        "e2e/**/*.{ts,tsx}",
+        "tsconfig.json",
+        "tsconfig.*.json",
+        "package.json"
+      ],
+      "outputs": [
+        "tsconfig.tsbuildinfo"
+      ],
+      "dependsOn": ["^build"]
+    },
+    "lint:solidity": {
+      "inputs": [
+        "contracts/**/*.sol",
+        ".solhint.json",
+        "package.json"
+      ],
+      "outputs": [],
+      "dependsOn": []
+    },
+    "lint:rust": {
+      "inputs": [
+        "programs/**/*.rs",
+        "pallet-*/**/*.rs",
+        "Cargo.toml",
+        "Cargo.lock",
+        "clippy.toml"
+      ],
+      "outputs": [],
+      "dependsOn": []
+    },
+    "lint:typescript": {
+      "inputs": [
+        "src/**/*.{ts,tsx}",
+        "lib/**/*.{ts,tsx}",
+        "app/**/*.{ts,tsx}",
+        "test/**/*.{ts,tsx}",
+        "__tests__/**/*.{ts,tsx}",
+        "e2e/**/*.{ts,tsx}",
+        ".eslintrc.*",
+        "eslint.config.*",
+        "package.json",
+        "tsconfig.json",
+        "tsconfig.*.json"
+      ],
+      "outputs": [
+        ".eslintcache"
+      ],
+      "dependsOn": [
+        "^build"
+      ]
     },
     "format": {
-      "outputs": []
+      "inputs": [
+        "src/**/*.{ts,tsx,js,jsx,json,md,sol,rs}",
+        "lib/**/*.{ts,tsx,js,jsx,json,md,sol,rs}",
+        "app/**/*.{ts,tsx,js,jsx,json,md,sol,rs}",
+        "test/**/*.{ts,tsx,js,jsx,json,md,sol,rs}",
+        "__tests__/**/*.{ts,tsx,js,jsx,json,md,sol,rs}",
+        "e2e/**/*.{ts,tsx,js,jsx,json,md,sol,rs}",
+        "contracts/**/*.sol",
+        "programs/**/*.rs",
+        "pallet-*/**/*.rs",
+        ".prettierrc*",
+        "prettier.config.*",
+        "package.json"
+      ],
+      "outputs": [],
+      "cache": false
     },
     "clean": {
       "cache": false
@@ -75,7 +199,7 @@
       "dependsOn": ["compile:polygon", "compile:moonbeam", "compile:base", "compile:solana", "compile:polkadot"]
     },
     "deploy": {
-      "dependsOn": ["build", "test", "lint"],
+      "dependsOn": ["build", "test", "lint", "typecheck"],
       "outputs": []
     },
     "storybook": {
