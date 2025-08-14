@@ -1,6 +1,6 @@
 # Implementation Plan
 
-- [ ] 1. Remove deprecated testing libraries and update configurations
+- [x] 1. Remove deprecated testing libraries and update configurations
   - Remove `@testing-library/jest-native` from mobile app package.json
   - Remove `react-native-testing-library` from config-jest package.json
   - Update all test files that import from these deprecated packages
