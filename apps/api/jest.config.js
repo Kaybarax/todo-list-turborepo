@@ -40,5 +40,5 @@ module.exports = {
   roots: ['<rootDir>/src'],
   moduleFileExtensions: ['js', 'json', 'ts'],
   rootDir: '.',
-  testRegex: '.*\\.spec\\.ts$',
+
 };

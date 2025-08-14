@@ -23,9 +23,20 @@ describe('AuthService', () => {
     password: 'hashedPassword',
     name: 'Test User',
     walletAddress: '0x123',
+    preferredNetwork: 'polygon' as 'polygon',
+    settings: {
+      theme: 'light' as 'light',
+      notifications: true,
+      defaultPriority: 'medium' as 'medium',
+    },
+    isVerified: false,
+    isActive: true,
+    lastLoginAt: new Date('2024-01-01'),
     createdAt: new Date('2024-01-01'),
     updatedAt: new Date('2024-01-01'),
-  };
+    comparePassword: jest.fn(),
+    toJSON: jest.fn(),
+  } as any;
 
   beforeEach(async () => {
     const mockUserService = {
@@ -199,70 +210,28 @@ describe('AuthService', () => {
     });
   });
 
-  describe('loginWithWallet', () => {
-    it('should login with wallet address successfully', async () => {
-      const walletAddress = '0x123';
 
-      userService.findByWalletAddress.mockResolvedValue(mockUser);
-      jwtService.sign.mockReturnValue('jwt-token');
-
-      const result = await service.loginWithWallet(walletAddress);
-
-      expect(userService.findByWalletAddress).toHaveBeenCalledWith(walletAddress);
-      expect(jwtService.sign).toHaveBeenCalledWith({
-        sub: mockUser._id,
-        email: mockUser.email,
-      });
-      expect(result).toEqual({
-        access_token: 'jwt-token',
-        user: {
-          id: mockUser._id,
-          email: mockUser.email,
-          name: mockUser.name,
-          walletAddress: mockUser.walletAddress,
-        },
-      });
-    });
-
-    it('should throw UnauthorizedException if wallet address not found', async () => {
-      const walletAddress = '0x456';
-
-      userService.findByWalletAddress.mockResolvedValue(null);
-
-      await expect(service.loginWithWallet(walletAddress)).rejects.toThrow(
-        new UnauthorizedException('Wallet address not registered'),
-      );
-
-      expect(userService.findByWalletAddress).toHaveBeenCalledWith(walletAddress);
-      expect(jwtService.sign).not.toHaveBeenCalled();
-    });
-  });
 
   describe('validateUser', () => {
     it('should validate user successfully', async () => {
-      const payload = { sub: mockUser._id, email: mockUser.email };
+      const userId = mockUser._id;
 
-      userService.findByEmail.mockResolvedValue(mockUser);
+      userService.findById.mockResolvedValue(mockUser);
 
-      const result = await service.validateUser(payload);
+      const result = await service.validateUser(userId);
 
-      expect(userService.findByEmail).toHaveBeenCalledWith(payload.email);
-      expect(result).toEqual({
-        id: mockUser._id,
-        email: mockUser.email,
-        name: mockUser.name,
-        walletAddress: mockUser.walletAddress,
-      });
+      expect(userService.findById).toHaveBeenCalledWith(userId);
+      expect(result).toEqual(mockUser);
     });
 
     it('should return null if user not found during validation', async () => {
-      const payload = { sub: 'nonexistent', email: 'nonexistent@example.com' };
+      const userId = 'nonexistent';
 
-      userService.findByEmail.mockResolvedValue(null);
+      userService.findById.mockResolvedValue(null);
 
-      const result = await service.validateUser(payload);
+      const result = await service.validateUser(userId);
 
-      expect(userService.findByEmail).toHaveBeenCalledWith(payload.email);
+      expect(userService.findById).toHaveBeenCalledWith(userId);
       expect(result).toBeNull();
     });
   });

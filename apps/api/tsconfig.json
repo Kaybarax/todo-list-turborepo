@@ -2,6 +2,8 @@
   "extends": "@todo/config-ts/nestjs.json",
   "compilerOptions": {
     "baseUrl": "./",
+    "skipLibCheck": true,
+    "types": ["node", "jest"],
     "paths": {
       "@/*": ["src/*"],
       "@todo/*": ["../../packages/*/src"]

@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import * as request from 'supertest';
+import request from 'supertest';
 
 import { AppModule } from '../src/app.module';
 import { AuthModule } from '../src/auth/auth.module';

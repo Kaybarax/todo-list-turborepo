@@ -355,7 +355,7 @@ describe('UserService', () => {
 
       userModel.aggregate.mockResolvedValue(mockStats);
 
-      const result = await service.getUserStats(userId);
+      const result = await service.getUserStats();
 
       expect(userModel.aggregate).toHaveBeenCalled();
       expect(result).toEqual(mockStats[0]);
@@ -366,7 +366,7 @@ describe('UserService', () => {
 
       userModel.aggregate.mockResolvedValue([]);
 
-      const result = await service.getUserStats(userId);
+      const result = await service.getUserStats();
 
       expect(result).toEqual({
         totalTodos: 0,

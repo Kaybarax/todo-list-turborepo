@@ -5,7 +5,7 @@ import { AuthResponseDto } from './dto/auth-response.dto';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { Trace } from '../telemetry/decorators/trace.decorator';
-import { User } from '../user/schemas/user.schema';
+import { User, UserDocument } from '../user/schemas/user.schema';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -59,7 +59,7 @@ export class AuthService {
   }
 
   @Trace('AuthService.validateUser')
-  async validateUser(userId: string): Promise<User | null> {
+  async validateUser(userId: string): Promise<UserDocument | null> {
     const user = await this.userService.findById(userId);
 
     if (!user?.isActive) {
@@ -80,7 +80,7 @@ export class AuthService {
     return this.generateTokenResponse(user);
   }
 
-  private generateTokenResponse(user: User): AuthResponseDto {
+  private generateTokenResponse(user: UserDocument): AuthResponseDto {
     const payload = {
       sub: user._id.toString(),
       email: user.email,
@@ -93,7 +93,7 @@ export class AuthService {
     return {
       accessToken,
       refreshToken,
-      user: user.toJSON(),
+      user: user.toJSON() as Omit<User, 'password'>,
       expiresIn: 15 * 60, // 15 minutes in seconds
     };
   }

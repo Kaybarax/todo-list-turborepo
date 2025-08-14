@@ -7,7 +7,7 @@
   - Update Jest configuration files to remove references to deprecated packages
   - _Requirements: 1.1, 1.2, 1.3, 2.1, 2.2, 2.4_
 
-- [ ] 2. Update NestJS framework to version 11
+- [x] 2. Update NestJS framework to version 11
   - Update all NestJS packages in apps/api/package.json to version 11.x
   - Update import statements for any changed NestJS modules
   - Update NestJS configuration files for breaking changes

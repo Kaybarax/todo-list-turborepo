@@ -16,7 +16,17 @@ describe('AuthController', () => {
     email: 'test@example.com',
     name: 'Test User',
     walletAddress: '0x123456789',
-    preferredNetwork: 'polygon',
+    preferredNetwork: 'polygon' as 'polygon',
+    settings: {
+      theme: 'light' as 'light',
+      notifications: true,
+      defaultPriority: 'medium' as 'medium',
+    },
+    isVerified: false,
+    isActive: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    comparePassword: jest.fn(),
   };
 
   const mockAuthResponse: AuthResponseDto = {

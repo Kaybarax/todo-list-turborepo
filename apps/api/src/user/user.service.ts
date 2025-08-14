@@ -11,7 +11,7 @@ export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   @Trace('UserService.create')
-  async create(registerDto: RegisterDto): Promise<User> {
+  async create(registerDto: RegisterDto): Promise<UserDocument> {
     const existingUser = await this.findByEmail(registerDto.email);
     if (existingUser) {
       throw new ConflictException('User with this email already exists');
@@ -30,22 +30,22 @@ export class UserService {
   }
 
   @Trace('UserService.findById')
-  async findById(id: string): Promise<User | null> {
+  async findById(id: string): Promise<UserDocument | null> {
     return this.userModel.findById(id).exec();
   }
 
   @Trace('UserService.findByEmail')
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<UserDocument | null> {
     return this.userModel.findOne({ email: email.toLowerCase() }).exec();
   }
 
   @Trace('UserService.findByWalletAddress')
-  async findByWalletAddress(walletAddress: string): Promise<User | null> {
+  async findByWalletAddress(walletAddress: string): Promise<UserDocument | null> {
     return this.userModel.findOne({ walletAddress }).exec();
   }
 
   @Trace('UserService.updateById')
-  async updateById(id: string, updateData: Partial<User>): Promise<User> {
+  async updateById(id: string, updateData: Partial<User>): Promise<UserDocument> {
     const user = await this.userModel
       .findByIdAndUpdate(id, { ...updateData, updatedAt: new Date() }, { new: true })
       .exec();
@@ -61,15 +61,15 @@ export class UserService {
     await this.userModel.findByIdAndUpdate(id, { lastLoginAt: new Date() }).exec();
   }
 
-  async deactivateUser(id: string): Promise<User> {
+  async deactivateUser(id: string): Promise<UserDocument> {
     return this.updateById(id, { isActive: false });
   }
 
-  async activateUser(id: string): Promise<User> {
+  async activateUser(id: string): Promise<UserDocument> {
     return this.updateById(id, { isActive: true });
   }
 
-  async verifyUser(id: string): Promise<User> {
+  async verifyUser(id: string): Promise<UserDocument> {
     return this.updateById(id, { isVerified: true });
   }
 
@@ -82,7 +82,7 @@ export class UserService {
   }
 
   @Trace('UserService.findAll')
-  async findAll(query: any = {}): Promise<User[]> {
+  async findAll(query: any = {}): Promise<UserDocument[]> {
     return this.userModel.find(query).exec();
   }
 
