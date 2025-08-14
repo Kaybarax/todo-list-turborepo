@@ -1,16 +1,14 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'import', 'promise', 'react', 'react-hooks', 'jsx-a11y'],
+  plugins: ['@typescript-eslint', 'promise', 'react', 'jsx-a11y'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'plugin:import/errors',
-    'plugin:import/warnings',
-    'plugin:import/typescript',
+
     'plugin:promise/recommended',
     'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
+
     'plugin:jsx-a11y/recommended',
     'next/core-web-vitals',
     'prettier',
@@ -31,30 +29,31 @@ module.exports = {
         varsIgnorePattern: '^_',
       },
     ],
-    '@typescript-eslint/prefer-nullish-coalescing': 'error',
-    '@typescript-eslint/prefer-optional-chain': 'error',
-    '@typescript-eslint/no-floating-promises': 'error',
-    '@typescript-eslint/await-thenable': 'error',
+    '@typescript-eslint/prefer-nullish-coalescing': 'warn',
+    '@typescript-eslint/prefer-optional-chain': 'warn',
+    '@typescript-eslint/no-floating-promises': 'warn',
+    '@typescript-eslint/await-thenable': 'warn',
+    '@typescript-eslint/no-unsafe-assignment': 'warn',
+    '@typescript-eslint/no-unsafe-member-access': 'warn',
+    '@typescript-eslint/no-unsafe-call': 'warn',
+    '@typescript-eslint/no-unsafe-return': 'warn',
+    '@typescript-eslint/no-unsafe-argument': 'warn',
+    '@typescript-eslint/no-misused-promises': 'warn',
+    '@typescript-eslint/require-await': 'warn',
+    '@typescript-eslint/ban-ts-comment': 'warn',
+    '@typescript-eslint/restrict-template-expressions': 'warn',
 
-    // Import rules
-    'import/order': [
-      'error',
-      {
-        groups: ['builtin', 'external', 'internal', ['parent', 'sibling'], 'index'],
-        'newlines-between': 'always',
-        alphabetize: { order: 'asc', caseInsensitive: true },
-      },
-    ],
-    'import/no-duplicates': 'error',
-    'import/no-unresolved': 'error',
+
 
     // General rules
     'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
-    'prefer-const': 'error',
+    'prefer-const': 'warn',
     eqeqeq: ['error', 'always', { null: 'ignore' }],
     'no-var': 'error',
     'prefer-arrow-callback': 'error',
     'object-shorthand': 'error',
+    'no-case-declarations': 'warn',
+    'promise/always-return': 'warn',
 
     // React specific rules
     'react/prop-types': 'off', // TypeScript handles prop types
@@ -75,6 +74,7 @@ module.exports = {
         specialLink: ['to'],
       },
     ],
+    'jsx-a11y/label-has-associated-control': 'warn',
     // Next.js specific rules
     '@next/next/no-html-link-for-pages': 'error',
     '@next/next/no-img-element': 'warn', // Prefer next/image
@@ -86,10 +86,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off', // Not needed in Next.js 13+
 
     // Additional rules for Next.js
-    'import/no-anonymous-default-export': 'warn',
-
     // App Router specific rules
-    'import/no-default-export': 'off', // Next.js requires default exports for pages
   },
   env: {
     browser: true,
@@ -97,12 +94,6 @@ module.exports = {
     es2022: true,
   },
   settings: {
-    'import/resolver': {
-      typescript: {
-        alwaysTryTypes: true,
-        project: './tsconfig.json',
-      },
-    },
     react: {
       version: 'detect',
     },

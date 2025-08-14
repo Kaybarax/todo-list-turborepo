@@ -23,7 +23,7 @@
   - Update component prop types and React.FC usage if needed
   - _Requirements: 3.1, 3.2, 2.2, 2.3, 4.1_
 
-- [ ] 4. Update Next.js to version 15
+- [x] 4. Update Next.js to version 15
   - Update Next.js to v15.4.6 in apps/web/package.json
   - Update eslint-config-next to compatible version
   - Update Next.js configuration files for v15 breaking changes

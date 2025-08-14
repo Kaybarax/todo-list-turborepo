@@ -32,14 +32,14 @@
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-wallets": "^0.19.26",
     "@solana/web3.js": "^1.87.6",
-    "next": "^14.0.4",
+    "next": "^15.4.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "zustand": "^4.4.7",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "eslint-config-next": "^14.0.4",
+    "eslint-config-next": "^15.4.6",
     "@playwright/test": "^1.40.1",
     "@testing-library/react": "^16.1.0",
     "@testing-library/jest-dom": "^6.6.3",
