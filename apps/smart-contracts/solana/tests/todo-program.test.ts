@@ -2,7 +2,7 @@ import * as anchor from '@coral-xyz/anchor';
 import { Program } from '@coral-xyz/anchor';
 import { TodoProgram } from '../target/types/todo_program';
 import { expect } from 'chai';
-import { Keypair, PublicKey, SystemProgram } from '@solana/web3.js';
+import { Keypair, SystemProgram } from '@solana/web3.js';
 
 describe('todo-program', () => {
   const provider = anchor.AnchorProvider.env();

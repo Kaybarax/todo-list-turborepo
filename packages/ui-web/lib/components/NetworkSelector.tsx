@@ -4,7 +4,7 @@ import { Badge } from './Badge';
 
 export interface NetworkSelectorProps {
   selectedNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base';
-  onNetworkSelect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => void;
+  onNetworkSelect: (_network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => void;
   disabled?: boolean;
   variant?: 'grid' | 'dropdown';
   showTestnets?: boolean;
@@ -66,7 +66,7 @@ export function NetworkSelector({
       <div className={`relative ${className}`}>
         <select
           value={selectedNetwork}
-          onChange={e => onNetworkSelect(e.target.value as any)}
+          onChange={e => onNetworkSelect(e.target.value as 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base')}
           disabled={disabled}
           className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50"
         >

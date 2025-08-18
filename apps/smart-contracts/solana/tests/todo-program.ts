@@ -12,11 +12,11 @@ describe('todo-program', () => {
   const owner = provider.wallet as anchor.Wallet;
 
   let todoListPda: anchor.web3.PublicKey;
-  let todoListBump: number;
+  let _todoListBump: number;
 
   before(async () => {
     // Derive the PDA for the todo list
-    [todoListPda, todoListBump] = anchor.web3.PublicKey.findProgramAddressSync(
+    [todoListPda, _todoListBump] = anchor.web3.PublicKey.findProgramAddressSync(
       [Buffer.from('todo_list'), owner.publicKey.toBuffer()],
       program.programId,
     );

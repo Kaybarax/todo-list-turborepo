@@ -49,6 +49,7 @@ module.exports = [
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
         },
       ],
       '@typescript-eslint/prefer-nullish-coalescing': 'error',

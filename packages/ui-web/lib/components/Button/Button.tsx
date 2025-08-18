@@ -57,7 +57,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
-    const isDisabled = disabled || isLoading;
+    const isDisabled = disabled ?? isLoading;
 
     if (asChild) {
       return (
