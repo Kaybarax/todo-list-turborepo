@@ -46,7 +46,7 @@
   - Fix any new linting errors introduced by rule changes
   - _Requirements: 3.1, 3.2, 2.4, 4.3_
 
-- [ ] 7. Update Jest testing framework to version 30
+- [x] 7. Update Jest testing framework to version 30
   - Update Jest to v30.x in all packages using it
   - Update Jest configuration files for v30 breaking changes
   - Update jest-environment-jsdom and jest-environment-node to v30
