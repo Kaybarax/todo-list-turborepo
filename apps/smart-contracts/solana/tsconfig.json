@@ -8,6 +8,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,
+    "noImplicitAny": false,
+    "useUnknownInCatchVariables": false,
+    "skipLibCheck": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
@@ -20,5 +23,6 @@
       "*": ["./node_modules/*"]
     }
   },
-  "exclude": ["node_modules", "dist", "target"]
+  "include": ["programs/**/*", "target/types/**/*"],
+  "exclude": ["node_modules", "dist", "target/debug", "target/deploy", "examples/**/*", "scripts/**/*", "tests/**/*"]
 }

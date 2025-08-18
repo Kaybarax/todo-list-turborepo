@@ -98,7 +98,7 @@ describe('TodoForm', () => {
   });
 
   it('shows loading state during submission', async () => {
-    const slowSubmit = jest.fn(() => new Promise(resolve => setTimeout(resolve, 100)));
+    const slowSubmit = jest.fn(() => new Promise<void>(resolve => setTimeout(() => resolve(), 100)));
 
     const { getByPlaceholderText, getByText } = render(<TodoForm onSubmit={slowSubmit} onCancel={mockOnCancel} />);
 

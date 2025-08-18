@@ -60,7 +60,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
       // await Linking.openURL(walletUrls[network]);
 
       // Simulate connection delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 2000));
 
       // Mock wallet connection
       const mockAccount: WalletAccount = {
@@ -91,7 +91,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
     try {
       // Simulate disconnection delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 1000));
 
       setAccount(null);
       setIsConnected(false);
@@ -121,7 +121,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
     try {
       // Simulate network switch delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 1500));
 
       const updatedAccount: WalletAccount = {
         ...account,
@@ -160,7 +160,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
           onPress: async () => {
             try {
               // Simulate signing delay
-              await new Promise(res => setTimeout(res, 1000));
+              await new Promise<void>(res => setTimeout(() => res(), 1000));
 
               // Mock signature
               const signature = `0x${Math.random().toString(16).substr(2, 128)}`;
@@ -191,7 +191,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
           onPress: async () => {
             try {
               // Simulate transaction delay
-              await new Promise(res => setTimeout(res, 3000));
+              await new Promise<void>(res => setTimeout(() => res(), 3000));
 
               // Mock transaction hash
               const txHash = `0x${Math.random().toString(16).substr(2, 64)}`;

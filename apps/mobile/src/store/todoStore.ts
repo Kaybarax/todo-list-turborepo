@@ -159,7 +159,7 @@ export const useTodoStore = create<TodoStore>()(
 
         try {
           // Mock API call - will be replaced with actual API integration
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise<void>(resolve => setTimeout(() => resolve(), 1000));
 
           // Initialize with sample data if no todos exist
           const currentTodos = get().todos;
@@ -220,7 +220,7 @@ export const useTodoStore = create<TodoStore>()(
 
         try {
           // Mock API call - will be replaced with actual API integration
-          await new Promise(resolve => setTimeout(resolve, 500));
+          await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
 
           set({ isLoading: false });
         } catch (error) {

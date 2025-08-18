@@ -86,7 +86,7 @@ abstract class MobileBlockchainService implements BlockchainServiceInterface {
   }
 
   protected async simulateNetworkDelay(ms: number = 1000): Promise<void> {
-    await new Promise(resolve => setTimeout(resolve, ms));
+    await new Promise<void>(resolve => setTimeout(() => resolve(), ms));
   }
 
   protected generateMockTransactionHash(): string {
