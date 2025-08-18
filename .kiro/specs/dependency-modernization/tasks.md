@@ -54,7 +54,7 @@
   - Fix any test failures from Jest v30 changes
   - _Requirements: 3.1, 3.2, 4.2_
 
-- [ ] 8. Update Storybook to version 9
+- [x] 8. Update Storybook to version 9
   - Update all Storybook packages to v9.x in UI packages
   - Update Storybook configuration files for v9 breaking changes
   - Update story files for any API changes in v9

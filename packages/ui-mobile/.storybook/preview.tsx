@@ -1,7 +1,10 @@
 import React from 'react';
+import type { Preview } from '@storybook/react';
 
 // Custom theme provider wrapper for stories using the existing custom theme
-const ThemeProvider = ({ children }) => <div style={styles.container}>{children}</div>;
+const ThemeProvider = ({ children }: { children: React.ReactNode }) => (
+  <div style={styles.container}>{children}</div>
+);
 
 const styles = {
   container: {
@@ -14,8 +17,7 @@ const styles = {
   },
 };
 
-/** @type { import('@storybook/react').Preview } */
-const preview = {
+const preview: Preview = {
   decorators: [
     Story => (
       <ThemeProvider>
@@ -28,7 +30,7 @@ const preview = {
     controls: {
       matchers: {
         color: /(background|color)$/i,
-        date: /Date$/,
+        date: /Date$/i,
       },
     },
     layout: 'centered',
