@@ -40,7 +40,7 @@
   - Update dependencies in apps/smart-contracts/package.json
   - _Requirements: 2.1, 2.3, 2.4_
 
-- [ ] 7. Install Rust toolchain for blockchain development
+- [x] 7. Install Rust toolchain for blockchain development
   - Install or update Rust to the version required for Solana development
   - Configure Rust toolchain with correct target architectures
   - Verify Cargo package manager is working
