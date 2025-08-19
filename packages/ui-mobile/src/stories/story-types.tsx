@@ -2,6 +2,7 @@
  * Common TypeScript types and interfaces for Storybook stories in ui-mobile package
  */
 
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { ComponentType, ReactNode, CSSProperties } from 'react';
 
@@ -33,7 +34,7 @@ export interface MobileStoryConfig<T = any> {
  * ArgType configuration for mobile component controls
  */
 export interface MobileArgTypeConfig {
-  control?: 
+  control?:
     | { type: 'text' }
     | { type: 'boolean' }
     | { type: 'number'; min?: number; max?: number; step?: number }
@@ -70,14 +71,7 @@ export interface MobileCommonProps {
 /**
  * Mobile-specific variant types
  */
-export type MobileVariant = 
-  | 'primary' 
-  | 'secondary' 
-  | 'outline' 
-  | 'danger' 
-  | 'success' 
-  | 'warning'
-  | 'ghost';
+export type MobileVariant = 'primary' | 'secondary' | 'outline' | 'danger' | 'success' | 'warning' | 'ghost';
 
 /**
  * Mobile-specific size types (optimized for touch targets)
@@ -334,7 +328,26 @@ export const mobileCommonArgTypes = {
   // Icon controls
   leftIcon: {
     control: { type: 'select' },
-    options: ['', 'add', 'remove', 'edit', 'delete', 'save', 'search', 'settings', 'home', 'user', 'heart', 'star', 'check', 'close', 'arrow-forward', 'arrow-back', 'download', 'upload'],
+    options: [
+      '',
+      'add',
+      'remove',
+      'edit',
+      'delete',
+      'save',
+      'search',
+      'settings',
+      'home',
+      'user',
+      'heart',
+      'star',
+      'check',
+      'close',
+      'arrow-forward',
+      'arrow-back',
+      'download',
+      'upload',
+    ],
     description: 'Icon to display on the left side',
     table: {
       type: { summary: 'string' },
@@ -344,7 +357,26 @@ export const mobileCommonArgTypes = {
 
   rightIcon: {
     control: { type: 'select' },
-    options: ['', 'add', 'remove', 'edit', 'delete', 'save', 'search', 'settings', 'home', 'user', 'heart', 'star', 'check', 'close', 'arrow-forward', 'arrow-back', 'download', 'upload'],
+    options: [
+      '',
+      'add',
+      'remove',
+      'edit',
+      'delete',
+      'save',
+      'search',
+      'settings',
+      'home',
+      'user',
+      'heart',
+      'star',
+      'check',
+      'close',
+      'arrow-forward',
+      'arrow-back',
+      'download',
+      'upload',
+    ],
     description: 'Icon to display on the right side',
     table: {
       type: { summary: 'string' },
@@ -416,11 +448,11 @@ export const mobileCommonParameters = {
   centered: {
     layout: 'centered' as const,
   },
-  
+
   padded: {
     layout: 'padded' as const,
   },
-  
+
   mobileViewport: {
     viewport: {
       defaultViewport: 'mobile1',
@@ -439,63 +471,63 @@ export const mobileCommonParameters = {
  * Icon mapping for web preview (commonly used mobile icons)
  */
 export const mobileIconMap: Record<string, string> = {
-  'add': '+',
-  'remove': '−',
-  'edit': '✎',
-  'delete': '🗑',
-  'save': '💾',
-  'search': '🔍',
-  'settings': '⚙',
-  'home': '🏠',
-  'user': '👤',
-  'heart': '♥',
-  'star': '★',
-  'check': '✓',
-  'close': '✕',
+  add: '+',
+  remove: '−',
+  edit: '✎',
+  delete: '🗑',
+  save: '💾',
+  search: '🔍',
+  settings: '⚙',
+  home: '🏠',
+  user: '👤',
+  heart: '♥',
+  star: '★',
+  check: '✓',
+  close: '✕',
   'arrow-forward': '→',
   'arrow-back': '←',
   'arrow-up': '↑',
   'arrow-down': '↓',
-  'download': '⬇',
-  'upload': '⬆',
-  'menu': '☰',
-  'more': '⋯',
-  'info': 'ℹ',
-  'warning': '⚠',
-  'error': '⚠',
-  'success': '✓',
-  'camera': '📷',
-  'gallery': '🖼',
-  'location': '📍',
-  'phone': '📞',
-  'email': '✉',
-  'calendar': '📅',
-  'clock': '🕐',
-  'lock': '🔒',
-  'unlock': '🔓',
-  'visibility': '👁',
+  download: '⬇',
+  upload: '⬆',
+  menu: '☰',
+  more: '⋯',
+  info: 'ℹ',
+  warning: '⚠',
+  error: '⚠',
+  success: '✓',
+  camera: '📷',
+  gallery: '🖼',
+  location: '📍',
+  phone: '📞',
+  email: '✉',
+  calendar: '📅',
+  clock: '🕐',
+  lock: '🔒',
+  unlock: '🔓',
+  visibility: '👁',
   'visibility-off': '🙈',
-  'share': '📤',
-  'bookmark': '🔖',
-  'favorite': '❤️',
-  'refresh': '🔄',
-  'sync': '🔄',
-  'wifi': '📶',
-  'bluetooth': '🔵',
-  'battery': '🔋',
-  'volume': '🔊',
-  'notification': '🔔',
-  'message': '💬',
-  'chat': '💬',
-  'call': '📞',
-  'video': '📹',
-  'play': '▶️',
-  'pause': '⏸️',
-  'stop': '⏹️',
+  share: '📤',
+  bookmark: '🔖',
+  favorite: '❤️',
+  refresh: '🔄',
+  sync: '🔄',
+  wifi: '📶',
+  bluetooth: '🔵',
+  battery: '🔋',
+  volume: '🔊',
+  notification: '🔔',
+  message: '💬',
+  chat: '💬',
+  call: '📞',
+  video: '📹',
+  play: '▶️',
+  pause: '⏸️',
+  stop: '⏹️',
   'skip-next': '⏭️',
   'skip-previous': '⏮️',
   'fast-forward': '⏩',
-  'rewind': '⏪',
+  rewind: '⏪',
 } as const;
 
 /**
@@ -536,14 +568,15 @@ export function createMobileA11yStory<T>(
     accessibilityHint?: string;
     accessibilityRole?: string;
   },
-  description?: string
+  description?: string,
 ): MobileComponentStory<T> {
   return {
     args,
     parameters: {
       docs: {
         description: {
-          story: description || 'Demonstrates proper mobile accessibility attributes for screen readers and voice control.',
+          story:
+            description || 'Demonstrates proper mobile accessibility attributes for screen readers and voice control.',
         },
       },
     },
@@ -555,7 +588,7 @@ export function createMobileA11yStory<T>(
  */
 export function createMobileInteractiveStory<T>(
   renderFunction: () => ReactNode,
-  description?: string
+  description?: string,
 ): MobileComponentStory<T> {
   return {
     render: renderFunction,
@@ -575,7 +608,7 @@ export function createMobileInteractiveStory<T>(
  */
 export function createMobileLayoutStory<T>(
   renderFunction: () => ReactNode,
-  description?: string
+  description?: string,
 ): MobileComponentStory<T> {
   return {
     render: renderFunction,
@@ -595,11 +628,13 @@ export function createMobileLayoutStory<T>(
  */
 export function renderMobileIcon(iconName: string, size: number = 16): ReactNode {
   return (
-    <span style={{ 
-      fontSize: size,
-      lineHeight: 1,
-      display: 'inline-block',
-    }}>
+    <span
+      style={{
+        fontSize: size,
+        lineHeight: 1,
+        display: 'inline-block',
+      }}
+    >
       {mobileIconMap[iconName] || iconName}
     </span>
   );

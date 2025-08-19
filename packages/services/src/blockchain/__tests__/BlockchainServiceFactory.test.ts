@@ -80,7 +80,7 @@ describe('BlockchainServiceFactory', () => {
   it('should return a Polygon service for Mumbai network', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
     const service = factory.getService(BlockchainNetwork.POLYGON_MUMBAI);
-    
+
     expect(service).toBeDefined();
     expect(service).toBeInstanceOf(PolygonBlockchainService);
     expect(service.getNetwork()).toBe(BlockchainNetwork.POLYGON_MUMBAI);
@@ -89,7 +89,7 @@ describe('BlockchainServiceFactory', () => {
   it('should return a Polygon service for Polygon mainnet', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
     const service = factory.getService(BlockchainNetwork.POLYGON);
-    
+
     expect(service).toBeDefined();
     expect(service).toBeInstanceOf(PolygonBlockchainService);
     expect(service.getNetwork()).toBe(BlockchainNetwork.POLYGON);
@@ -98,7 +98,7 @@ describe('BlockchainServiceFactory', () => {
   it('should return a Solana service for Solana mainnet', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
     const service = factory.getService(BlockchainNetwork.SOLANA);
-    
+
     expect(service).toBeDefined();
     expect(service).toBeInstanceOf(SolanaBlockchainService);
     expect(service.getNetwork()).toBe(BlockchainNetwork.SOLANA);
@@ -107,7 +107,7 @@ describe('BlockchainServiceFactory', () => {
   it('should return a Solana service for Solana devnet', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
     const service = factory.getService(BlockchainNetwork.SOLANA_DEVNET);
-    
+
     expect(service).toBeDefined();
     expect(service).toBeInstanceOf(SolanaBlockchainService);
     expect(service.getNetwork()).toBe(BlockchainNetwork.SOLANA_DEVNET);
@@ -116,7 +116,7 @@ describe('BlockchainServiceFactory', () => {
   it('should return a Polkadot service for Polkadot mainnet', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
     const service = factory.getService(BlockchainNetwork.POLKADOT);
-    
+
     expect(service).toBeDefined();
     expect(service).toBeInstanceOf(PolkadotBlockchainService);
     expect(service.getNetwork()).toBe(BlockchainNetwork.POLKADOT);
@@ -125,7 +125,7 @@ describe('BlockchainServiceFactory', () => {
   it('should return a Polkadot service for Polkadot testnet', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
     const service = factory.getService(BlockchainNetwork.POLKADOT_TESTNET);
-    
+
     expect(service).toBeDefined();
     expect(service).toBeInstanceOf(PolkadotBlockchainService);
     expect(service.getNetwork()).toBe(BlockchainNetwork.POLKADOT_TESTNET);
@@ -133,17 +133,17 @@ describe('BlockchainServiceFactory', () => {
 
   it('should return the same instance for repeated calls', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
-    
+
     const service1 = factory.getService(BlockchainNetwork.POLYGON_MUMBAI);
     const service2 = factory.getService(BlockchainNetwork.POLYGON_MUMBAI);
-    
+
     expect(service1).toBe(service2);
   });
 
   it('should return a Moonbeam service for Moonbeam mainnet', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
     const service = factory.getService(BlockchainNetwork.MOONBEAM);
-    
+
     expect(service).toBeDefined();
     expect(service).toBeInstanceOf(MoonbeamBlockchainService);
     expect(service.getNetwork()).toBe(BlockchainNetwork.MOONBEAM);
@@ -152,7 +152,7 @@ describe('BlockchainServiceFactory', () => {
   it('should return a Moonbeam service for Moonbeam testnet', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
     const service = factory.getService(BlockchainNetwork.MOONBEAM_TESTNET);
-    
+
     expect(service).toBeDefined();
     expect(service).toBeInstanceOf(MoonbeamBlockchainService);
     expect(service.getNetwork()).toBe(BlockchainNetwork.MOONBEAM_TESTNET);
@@ -161,7 +161,7 @@ describe('BlockchainServiceFactory', () => {
   it('should return a Base service for Base mainnet', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
     const service = factory.getService(BlockchainNetwork.BASE);
-    
+
     expect(service).toBeDefined();
     expect(service).toBeInstanceOf(BaseNetworkBlockchainService);
     expect(service.getNetwork()).toBe(BlockchainNetwork.BASE);
@@ -170,7 +170,7 @@ describe('BlockchainServiceFactory', () => {
   it('should return a Base service for Base testnet', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
     const service = factory.getService(BlockchainNetwork.BASE_TESTNET);
-    
+
     expect(service).toBeDefined();
     expect(service).toBeInstanceOf(BaseNetworkBlockchainService);
     expect(service.getNetwork()).toBe(BlockchainNetwork.BASE_TESTNET);
@@ -179,7 +179,7 @@ describe('BlockchainServiceFactory', () => {
   it('should return all supported networks', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
     const networks = factory.getSupportedNetworks();
-    
+
     expect(networks).toContain(BlockchainNetwork.POLYGON);
     expect(networks).toContain(BlockchainNetwork.POLYGON_MUMBAI);
     expect(networks).toContain(BlockchainNetwork.SOLANA);
@@ -196,9 +196,9 @@ describe('BlockchainServiceFactory', () => {
   it('should return all services', () => {
     const factory = new BlockchainServiceFactory(mockConfig);
     const services = factory.getAllServices();
-    
+
     expect(services).toHaveLength(10);
-    
+
     const networkTypes = services.map(service => service.getNetwork());
     expect(networkTypes).toContain(BlockchainNetwork.POLYGON);
     expect(networkTypes).toContain(BlockchainNetwork.POLYGON_MUMBAI);
@@ -211,12 +211,11 @@ describe('BlockchainServiceFactory', () => {
     expect(networkTypes).toContain(BlockchainNetwork.BASE);
     expect(networkTypes).toContain(BlockchainNetwork.BASE_TESTNET);
   });
-});
 
-describe('error handling', () => {
+  describe('error handling', () => {
     it('should throw error for unsupported network', () => {
       const factory = new BlockchainServiceFactory(mockConfig);
-      
+
       expect(() => {
         factory.getService('UNSUPPORTED_NETWORK' as BlockchainNetwork);
       }).toThrow();
@@ -225,9 +224,9 @@ describe('error handling', () => {
     it('should throw error when Moonbeam mainnet config is missing', () => {
       const configWithoutMoonbeam = { ...mockConfig };
       delete configWithoutMoonbeam.moonbeam;
-      
+
       const factory = new BlockchainServiceFactory(configWithoutMoonbeam);
-      
+
       expect(() => {
         factory.getService(BlockchainNetwork.MOONBEAM);
       }).toThrow('Moonbeam mainnet configuration is missing');
@@ -240,9 +239,9 @@ describe('error handling', () => {
           mainnet: mockConfig.moonbeam.mainnet,
         },
       };
-      
+
       const factory = new BlockchainServiceFactory(configWithoutMoonbeamTestnet);
-      
+
       expect(() => {
         factory.getService(BlockchainNetwork.MOONBEAM_TESTNET);
       }).toThrow('Moonbeam testnet configuration is missing');
@@ -251,9 +250,9 @@ describe('error handling', () => {
     it('should throw error when Base mainnet config is missing', () => {
       const configWithoutBase = { ...mockConfig };
       delete configWithoutBase.base;
-      
+
       const factory = new BlockchainServiceFactory(configWithoutBase);
-      
+
       expect(() => {
         factory.getService(BlockchainNetwork.BASE);
       }).toThrow('Base mainnet configuration is missing');
@@ -266,9 +265,9 @@ describe('error handling', () => {
           mainnet: mockConfig.base.mainnet,
         },
       };
-      
+
       const factory = new BlockchainServiceFactory(configWithoutBaseTestnet);
-      
+
       expect(() => {
         factory.getService(BlockchainNetwork.BASE_TESTNET);
       }).toThrow('Base testnet configuration is missing');
@@ -278,28 +277,28 @@ describe('error handling', () => {
   describe('service caching', () => {
     it('should cache Moonbeam services', () => {
       const factory = new BlockchainServiceFactory(mockConfig);
-      
+
       const service1 = factory.getService(BlockchainNetwork.MOONBEAM);
       const service2 = factory.getService(BlockchainNetwork.MOONBEAM);
-      
+
       expect(service1).toBe(service2);
     });
 
     it('should cache Base services', () => {
       const factory = new BlockchainServiceFactory(mockConfig);
-      
+
       const service1 = factory.getService(BlockchainNetwork.BASE);
       const service2 = factory.getService(BlockchainNetwork.BASE);
-      
+
       expect(service1).toBe(service2);
     });
 
     it('should maintain separate caches for different networks', () => {
       const factory = new BlockchainServiceFactory(mockConfig);
-      
+
       const moonbeamService = factory.getService(BlockchainNetwork.MOONBEAM);
       const baseService = factory.getService(BlockchainNetwork.BASE);
-      
+
       expect(moonbeamService).not.toBe(baseService);
       expect(moonbeamService.getNetwork()).toBe(BlockchainNetwork.MOONBEAM);
       expect(baseService.getNetwork()).toBe(BlockchainNetwork.BASE);
@@ -311,10 +310,10 @@ describe('error handling', () => {
       const moonbeamOnlyConfig = {
         moonbeam: mockConfig.moonbeam,
       };
-      
+
       const factory = new BlockchainServiceFactory(moonbeamOnlyConfig);
       const networks = factory.getSupportedNetworks();
-      
+
       expect(networks).toContain(BlockchainNetwork.MOONBEAM);
       expect(networks).toContain(BlockchainNetwork.MOONBEAM_TESTNET);
       expect(networks).toHaveLength(2);
@@ -324,10 +323,10 @@ describe('error handling', () => {
       const baseOnlyConfig = {
         base: mockConfig.base,
       };
-      
+
       const factory = new BlockchainServiceFactory(baseOnlyConfig);
       const networks = factory.getSupportedNetworks();
-      
+
       expect(networks).toContain(BlockchainNetwork.BASE);
       expect(networks).toContain(BlockchainNetwork.BASE_TESTNET);
       expect(networks).toHaveLength(2);
@@ -343,10 +342,10 @@ describe('error handling', () => {
           testnet: mockConfig.base.testnet,
         },
       };
-      
+
       const factory = new BlockchainServiceFactory(mixedConfig);
       const networks = factory.getSupportedNetworks();
-      
+
       expect(networks).toContain(BlockchainNetwork.POLYGON);
       expect(networks).toContain(BlockchainNetwork.POLYGON_MUMBAI);
       expect(networks).toContain(BlockchainNetwork.MOONBEAM);
