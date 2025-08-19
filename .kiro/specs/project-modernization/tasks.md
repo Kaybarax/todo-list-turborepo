@@ -10,7 +10,7 @@
   - Configure nvm for the project environment
   - _Requirements: 1.2_
 
-- [ ] 3. Update Node.js to latest LTS version
+- [x] 3. Update Node.js to latest LTS version
   - Determine the latest Node.js LTS version
   - Update .nvmrc file with the new version
   - Install and switch to the new Node.js version
