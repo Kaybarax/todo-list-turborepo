@@ -104,7 +104,7 @@
   - Resolve any Rust clippy warnings in Solana/Polkadot code
   - _Requirements: 5.1_
 
-- [ ] 17. Handle necessary unused declarations with ESLint exceptions
+- [x] 17. Handle necessary unused declarations with ESLint exceptions
   - Identify code files that legitimately need unused declarations
   - Add appropriate eslint-disable comments with justification
   - Document why specific unused items are required

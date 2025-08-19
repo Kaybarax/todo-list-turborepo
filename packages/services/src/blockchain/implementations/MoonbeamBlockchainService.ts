@@ -71,6 +71,7 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
    * Connect to a wallet using WalletConnect or other provider
    * @param provider - Ethereum provider (e.g., from WalletConnect)
    */
+  // eslint-disable-next-line no-unused-vars -- _provider parameter will be used for wallet connection in full implementation
   async connectWallet(_provider: any): Promise<WalletInfo> {
     try {
       // In a real implementation, we would:
@@ -240,6 +241,7 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
    * Create a new todo on the blockchain
    * @param todo - Todo data to create
    */
+  // eslint-disable-next-line no-unused-vars -- _todo parameter will be used for smart contract interaction in full implementation
   async createTodo(_todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
 
@@ -268,6 +270,7 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
    * @param id - Todo ID
    * @param todo - Updated todo data
    */
+  // eslint-disable-next-line no-unused-vars -- _todo parameter will be used for smart contract interaction in full implementation
   async updateTodo(id: string, _todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
 
@@ -426,7 +429,7 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
       };
 
       // Get the user's todo list address
-      // @ts-ignore - Used in real implementation
+      // eslint-disable-next-line no-unused-vars -- _todoListAddress will be used for contract instantiation in full implementation
       const _todoListAddress = '0x0987654321098765432109876543210987654321';
 
       // Create a contract instance for the todo list
