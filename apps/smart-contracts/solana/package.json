@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "anchor build",
+    "build": "./build-final.sh",
     "test": "anchor test",
     "deploy:localnet": "anchor deploy --provider.cluster localnet && ts-node scripts/deploy-localnet.ts",
     "deploy:devnet": "anchor deploy --provider.cluster devnet && ts-node scripts/deploy-devnet.ts",
