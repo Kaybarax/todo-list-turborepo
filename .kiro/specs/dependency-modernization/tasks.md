@@ -86,7 +86,7 @@
   - Fix any blockchain integration code for API changes
   - _Requirements: 3.1, 3.2, 2.2_
 
-- [ ] 12. Update mobile app dependencies and Expo framework
+- [x] 12. Update mobile app dependencies and Expo framework
   - Update Expo to v53.x in mobile app
   - Update React Native to v0.81.0
   - Update all Expo-related packages to compatible versions

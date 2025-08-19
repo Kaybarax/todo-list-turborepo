@@ -1,8 +1,5 @@
 import 'react-native-gesture-handler/jestSetup';
 
-// Mock react-native modules
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
-
 // Mock Expo modules
 jest.mock('expo-constants', () => ({
   default: {
@@ -34,7 +31,7 @@ jest.mock('@walletconnect/react-native-compat', () => ({
 }));
 
 // Silence the warning: Animated: `useNativeDriver` is not supported
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
+// Note: React Native 0.76+ has different internal structure
 
 // Mock console methods to reduce noise in tests
 global.console = {

@@ -25,6 +25,7 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@todo/(.*)$': '<rootDir>/../../packages/$1/src',
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': 'identity-obj-proxy',
+    '@react-native/js-polyfills/error-guard': '<rootDir>/../../packages/config-jest/mocks/error-guard.js',
   },
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': [
@@ -35,7 +36,7 @@ module.exports = {
     ],
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|@expo|expo|@unimodules|unimodules|sentry-expo|native-base|react-clone-referenced-element|@react-native-community|@react-navigation|react-native-vector-icons)/)',
+    'node_modules/(?!((jest-)?react-native|@react-native(-community)?|@expo(nent)?|@unimodules|unimodules|sentry-expo|native-base|react-clone-referenced-element|@react-navigation|react-native-vector-icons|@testing-library)/)',
   ],
   testPathIgnorePatterns: ['/node_modules/', '/android/', '/ios/', '/.expo/'],
   coveragePathIgnorePatterns: ['/node_modules/', '/android/', '/ios/', '/.expo/'],
