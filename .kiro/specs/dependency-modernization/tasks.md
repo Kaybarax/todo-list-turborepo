@@ -70,7 +70,7 @@
   - Fix any build errors from Vite v7 changes
   - _Requirements: 3.1, 4.1_
 
-- [ ] 10. Update blockchain development dependencies
+- [x] 10. Update blockchain development dependencies
   - Update Hardhat to v3.0.0 in smart contracts packages
   - Update OpenZeppelin contracts to v5.4.0
   - Update Hardhat plugins to v3 compatible versions

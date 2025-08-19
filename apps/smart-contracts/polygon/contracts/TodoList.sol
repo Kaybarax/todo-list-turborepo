@@ -2,14 +2,12 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * @title TodoList
  * @dev A smart contract for managing todo items on the Polygon blockchain
  */
 contract TodoList is Ownable {
-    using Counters for Counters.Counter;
 
     // Enum for todo priority
     enum Priority { Low, Medium, High }
@@ -41,7 +39,7 @@ contract TodoList is Ownable {
     mapping(address => mapping(uint256 => uint256)) private _todoIndexes;
     
     // Counter for todo IDs
-    mapping(address => Counters.Counter) private _todoIds;
+    mapping(address => uint256) private _todoIds;
 
     // Maximum length for todo title
     uint256 public constant MAX_TITLE_LENGTH = 100;
@@ -61,7 +59,9 @@ contract TodoList is Ownable {
     /**
      * @dev Constructor that sets the contract owner
      */
-    constructor() Ownable(msg.sender) {}
+    constructor() {
+        _transferOwnership(msg.sender);
+    }
 
     /**
      * @dev Create a new todo
@@ -86,8 +86,8 @@ contract TodoList is Ownable {
         require(_userTodos[msg.sender].length < MAX_TODOS_PER_USER, "Todo list is full");
         
         // Get next ID
-        _todoIds[msg.sender].increment();
-        uint256 todoId = _todoIds[msg.sender].current();
+        _todoIds[msg.sender]++;
+        uint256 todoId = _todoIds[msg.sender];
         
         // Create new todo
         Todo memory newTodo = Todo({
