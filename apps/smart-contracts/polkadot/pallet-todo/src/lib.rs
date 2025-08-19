@@ -16,6 +16,7 @@ pub mod pallet {
     use frame_support::{
         pallet_prelude::*,
         traits::Time,
+        weights::Weight,
     };
     use frame_system::pallet_prelude::*;
     use sp_std::prelude::*;
@@ -77,7 +78,7 @@ pub mod pallet {
 
     /// Todo statistics
     #[derive(Clone, Encode, Decode, Eq, PartialEq, RuntimeDebug, TypeInfo, MaxEncodedLen, Default)]
-    pub struct TodoStats {
+    pub struct TodoStatistics {
         /// Total number of todos
         pub total: u32,
         /// Number of completed todos
@@ -120,7 +121,7 @@ pub mod pallet {
         _,
         Blake2_128Concat,
         T::AccountId,
-        self::TodoStats,
+        TodoStatistics,
         ValueQuery,
     >;
 
@@ -158,7 +159,7 @@ pub mod pallet {
     impl<T: Config> Pallet<T> {
         /// Create a new todo
         #[pallet::call_index(0)]
-        #[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+        #[pallet::weight(Weight::from_parts(10_000, 0).saturating_add(T::DbWeight::get().writes(1)))]
         pub fn create_todo(
             origin: OriginFor<T>,
             title: Vec<u8>,
@@ -195,7 +196,7 @@ pub mod pallet {
             
             // Add todo to storage
             Todos::<T>::try_mutate(&who, |todos| {
-                todos.try_push(todo.clone()).map_err(|_| Error::<T>::TodoListFull)
+                todos.try_push(todo).map_err(|_| Error::<T>::TodoListFull)
             })?;
             
             // Increment next ID
@@ -212,7 +213,7 @@ pub mod pallet {
         
         /// Update a todo
         #[pallet::call_index(1)]
-        #[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+        #[pallet::weight(Weight::from_parts(10_000, 0).saturating_add(T::DbWeight::get().writes(1)))]
         pub fn update_todo(
             origin: OriginFor<T>,
             id: u64,
@@ -265,7 +266,7 @@ pub mod pallet {
         
         /// Toggle the completion status of a todo
         #[pallet::call_index(2)]
-        #[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+        #[pallet::weight(Weight::from_parts(10_000, 0).saturating_add(T::DbWeight::get().writes(1)))]
         pub fn toggle_todo_completion(
             origin: OriginFor<T>,
             id: u64,
@@ -306,7 +307,7 @@ pub mod pallet {
         
         /// Delete a todo
         #[pallet::call_index(3)]
-        #[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+        #[pallet::weight(Weight::from_parts(10_000, 0).saturating_add(T::DbWeight::get().writes(1)))]
         pub fn delete_todo(
             origin: OriginFor<T>,
             id: u64,
@@ -342,7 +343,7 @@ pub mod pallet {
                 .filter(|t| matches!(t.priority, Priority::High) && !t.completed)
                 .count() as u32;
             
-            let stats = self::TodoStats {
+            let stats = TodoStatistics {
                 total,
                 completed,
                 pending,
