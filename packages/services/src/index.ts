@@ -60,4 +60,7 @@ export type {
 // API clients
 export * from './api';
 
+// Utilities
+export { getEnvVar } from './utils/env';
+
 // Add more services as they are created

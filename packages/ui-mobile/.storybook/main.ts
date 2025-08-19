@@ -13,9 +13,7 @@ const config: StorybookConfig = {
     name: '@storybook/react-webpack5',
     options: {},
   },
-  docs: {
-    autodocs: 'tag',
-  },
+  docs: {},
   typescript: {
     check: false,
     reactDocgen: 'react-docgen-typescript',
@@ -24,16 +22,16 @@ const config: StorybookConfig = {
       propFilter: prop => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
     },
   },
-  webpackFinal: async (config) => {
+  webpackFinal: async config => {
     // Ensure TypeScript files are handled properly
     config.module = config.module || {};
     config.module.rules = config.module.rules || [];
-    
+
     // Update existing TypeScript rule or add new one
-    const tsRuleIndex = config.module.rules.findIndex((rule: any) => 
-      rule.test && rule.test.toString().includes('tsx?')
+    const tsRuleIndex = config.module.rules.findIndex(
+      (rule: any) => rule.test && rule.test.toString().includes('tsx?'),
     );
-    
+
     const tsRule = {
       test: /\.tsx?$/,
       use: [
@@ -45,22 +43,19 @@ const config: StorybookConfig = {
               ['@babel/preset-react', { runtime: 'automatic' }],
               ['@babel/preset-typescript', { isTSX: true, allExtensions: true }],
             ],
-            plugins: [
-              '@babel/plugin-proposal-class-properties',
-              '@babel/plugin-proposal-object-rest-spread',
-            ],
+            plugins: ['@babel/plugin-proposal-class-properties', '@babel/plugin-proposal-object-rest-spread'],
           },
         },
       ],
       exclude: /node_modules/,
     };
-    
+
     if (tsRuleIndex >= 0) {
       config.module.rules[tsRuleIndex] = tsRule;
     } else {
       config.module.rules.push(tsRule);
     }
-    
+
     return config;
   },
 };

@@ -16,12 +16,7 @@ const config: StorybookConfig = {
     name: '@storybook/react-vite',
     options: {},
   },
-  docs: {
-    autodocs: 'tag',
-  },
-  features: {
-    buildStoriesJson: true,
-  },
+  docs: {},
   // Visual regression testing configuration
   // staticDirs: ['../public'], // Commented out as public directory doesn't exist
   typescript: {

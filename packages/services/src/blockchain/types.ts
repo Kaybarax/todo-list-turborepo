@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { getEnvVar } from '../utils/env';
 
 /**
  * Supported blockchain networks
@@ -218,47 +219,47 @@ export const NETWORK_CONFIGS: Record<BlockchainNetwork, NetworkConfig> = {
   [BlockchainNetwork.POLYGON]: {
     name: 'Polygon',
     chainId: 137,
-    rpcUrl: process.env.POLYGON_RPC_URL || 'https://polygon-rpc.com',
+    rpcUrl: getEnvVar('POLYGON_RPC_URL', 'https://polygon-rpc.com'),
     explorerUrl: 'https://polygonscan.com',
     nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
-    contractAddresses: { todoListFactory: process.env.POLYGON_TODO_FACTORY_ADDRESS || '' },
+    contractAddresses: { todoListFactory: getEnvVar('POLYGON_TODO_FACTORY_ADDRESS') },
     isTestnet: false,
     isEVM: true,
   },
   [BlockchainNetwork.POLYGON_MUMBAI]: {
     name: 'Polygon Mumbai',
     chainId: 80001,
-    rpcUrl: process.env.POLYGON_MUMBAI_RPC_URL || 'https://rpc-mumbai.maticvigil.com',
+    rpcUrl: getEnvVar('POLYGON_MUMBAI_RPC_URL', 'https://rpc-mumbai.maticvigil.com'),
     explorerUrl: 'https://mumbai.polygonscan.com',
     nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
-    contractAddresses: { todoListFactory: process.env.POLYGON_MUMBAI_TODO_FACTORY_ADDRESS || '' },
+    contractAddresses: { todoListFactory: getEnvVar('POLYGON_MUMBAI_TODO_FACTORY_ADDRESS') },
     isTestnet: true,
     isEVM: true,
   },
   [BlockchainNetwork.SOLANA]: {
     name: 'Solana',
     chainId: 101, // Solana doesn't use chain IDs like EVM, but we'll use cluster ID
-    rpcUrl: process.env.SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com',
+    rpcUrl: getEnvVar('SOLANA_RPC_URL', 'https://api.mainnet-beta.solana.com'),
     explorerUrl: 'https://explorer.solana.com',
     nativeCurrency: { name: 'Solana', symbol: 'SOL', decimals: 9 },
-    contractAddresses: { todoListFactory: process.env.SOLANA_PROGRAM_ID || '' },
+    contractAddresses: { todoListFactory: getEnvVar('SOLANA_PROGRAM_ID') },
     isTestnet: false,
     isEVM: false,
   },
   [BlockchainNetwork.SOLANA_DEVNET]: {
     name: 'Solana Devnet',
     chainId: 103,
-    rpcUrl: process.env.SOLANA_DEVNET_RPC_URL || 'https://api.devnet.solana.com',
+    rpcUrl: getEnvVar('SOLANA_DEVNET_RPC_URL', 'https://api.devnet.solana.com'),
     explorerUrl: 'https://explorer.solana.com?cluster=devnet',
     nativeCurrency: { name: 'Solana', symbol: 'SOL', decimals: 9 },
-    contractAddresses: { todoListFactory: process.env.SOLANA_DEVNET_PROGRAM_ID || '' },
+    contractAddresses: { todoListFactory: getEnvVar('SOLANA_DEVNET_PROGRAM_ID') },
     isTestnet: true,
     isEVM: false,
   },
   [BlockchainNetwork.POLKADOT]: {
     name: 'Polkadot',
     chainId: 0, // Polkadot doesn't use chain IDs
-    rpcUrl: process.env.POLKADOT_RPC_URL || 'wss://rpc.polkadot.io',
+    rpcUrl: getEnvVar('POLKADOT_RPC_URL', 'wss://rpc.polkadot.io'),
     explorerUrl: 'https://polkadot.subscan.io',
     nativeCurrency: { name: 'Polkadot', symbol: 'DOT', decimals: 10 },
     contractAddresses: { todoListFactory: '' }, // Polkadot uses pallets, not contracts
@@ -268,7 +269,7 @@ export const NETWORK_CONFIGS: Record<BlockchainNetwork, NetworkConfig> = {
   [BlockchainNetwork.POLKADOT_TESTNET]: {
     name: 'Westend',
     chainId: 0,
-    rpcUrl: process.env.POLKADOT_TESTNET_RPC_URL || 'wss://westend-rpc.polkadot.io',
+    rpcUrl: getEnvVar('POLKADOT_TESTNET_RPC_URL', 'wss://westend-rpc.polkadot.io'),
     explorerUrl: 'https://westend.subscan.io',
     nativeCurrency: { name: 'Westend', symbol: 'WND', decimals: 12 },
     contractAddresses: { todoListFactory: '' },
@@ -279,7 +280,7 @@ export const NETWORK_CONFIGS: Record<BlockchainNetwork, NetworkConfig> = {
   [BlockchainNetwork.MOONBEAM]: {
     name: 'Moonbeam',
     chainId: 1284,
-    rpcUrl: process.env.MOONBEAM_RPC_URL || 'https://rpc.api.moonbeam.network',
+    rpcUrl: getEnvVar('MOONBEAM_RPC_URL', 'https://rpc.api.moonbeam.network'),
     explorerUrl: 'https://moonscan.io',
     nativeCurrency: {
       name: 'Glimmer',
@@ -287,7 +288,7 @@ export const NETWORK_CONFIGS: Record<BlockchainNetwork, NetworkConfig> = {
       decimals: 18,
     },
     contractAddresses: {
-      todoListFactory: process.env.MOONBEAM_TODO_FACTORY_ADDRESS || '',
+      todoListFactory: getEnvVar('MOONBEAM_TODO_FACTORY_ADDRESS'),
     },
     isTestnet: false,
     isEVM: true,
@@ -295,7 +296,7 @@ export const NETWORK_CONFIGS: Record<BlockchainNetwork, NetworkConfig> = {
   [BlockchainNetwork.MOONBEAM_TESTNET]: {
     name: 'Moonbase Alpha',
     chainId: 1287,
-    rpcUrl: process.env.MOONBEAM_TESTNET_RPC_URL || 'https://rpc.api.moonbase.moonbeam.network',
+    rpcUrl: getEnvVar('MOONBEAM_TESTNET_RPC_URL', 'https://rpc.api.moonbase.moonbeam.network'),
     explorerUrl: 'https://moonbase.moonscan.io',
     nativeCurrency: {
       name: 'Dev',
@@ -303,7 +304,7 @@ export const NETWORK_CONFIGS: Record<BlockchainNetwork, NetworkConfig> = {
       decimals: 18,
     },
     contractAddresses: {
-      todoListFactory: process.env.MOONBEAM_TESTNET_TODO_FACTORY_ADDRESS || '',
+      todoListFactory: getEnvVar('MOONBEAM_TESTNET_TODO_FACTORY_ADDRESS'),
     },
     isTestnet: true,
     isEVM: true,
@@ -312,7 +313,7 @@ export const NETWORK_CONFIGS: Record<BlockchainNetwork, NetworkConfig> = {
   [BlockchainNetwork.BASE]: {
     name: 'Base',
     chainId: 8453,
-    rpcUrl: process.env.BASE_RPC_URL || 'https://mainnet.base.org',
+    rpcUrl: getEnvVar('BASE_RPC_URL', 'https://mainnet.base.org'),
     explorerUrl: 'https://basescan.org',
     nativeCurrency: {
       name: 'Ethereum',
@@ -320,7 +321,7 @@ export const NETWORK_CONFIGS: Record<BlockchainNetwork, NetworkConfig> = {
       decimals: 18,
     },
     contractAddresses: {
-      todoListFactory: process.env.BASE_TODO_FACTORY_ADDRESS || '',
+      todoListFactory: getEnvVar('BASE_TODO_FACTORY_ADDRESS'),
     },
     isTestnet: false,
     isEVM: true,
@@ -328,7 +329,7 @@ export const NETWORK_CONFIGS: Record<BlockchainNetwork, NetworkConfig> = {
   [BlockchainNetwork.BASE_TESTNET]: {
     name: 'Base Sepolia',
     chainId: 84532,
-    rpcUrl: process.env.BASE_TESTNET_RPC_URL || 'https://sepolia.base.org',
+    rpcUrl: getEnvVar('BASE_TESTNET_RPC_URL', 'https://sepolia.base.org'),
     explorerUrl: 'https://sepolia.basescan.org',
     nativeCurrency: {
       name: 'Ethereum',
@@ -336,7 +337,7 @@ export const NETWORK_CONFIGS: Record<BlockchainNetwork, NetworkConfig> = {
       decimals: 18,
     },
     contractAddresses: {
-      todoListFactory: process.env.BASE_TESTNET_TODO_FACTORY_ADDRESS || '',
+      todoListFactory: getEnvVar('BASE_TESTNET_TODO_FACTORY_ADDRESS'),
     },
     isTestnet: true,
     isEVM: true,

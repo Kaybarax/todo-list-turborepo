@@ -102,7 +102,7 @@
   - Update package manager and workspace configurations
   - _Requirements: 3.1, 4.1, 4.3_
 
-- [ ] 14. Update remaining outdated packages
+- [x] 14. Update remaining outdated packages
   - Update all remaining packages identified in pnpm outdated
   - Update semantic-release and related packages
   - Update testing utilities like supertest and mongodb-memory-server

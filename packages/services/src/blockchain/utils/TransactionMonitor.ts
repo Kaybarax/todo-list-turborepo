@@ -37,7 +37,7 @@ export class TransactionMonitor {
       receipt?: TransactionReceipt;
       attempts: number;
       startTime: number;
-      timeoutId?: NodeJS.Timeout;
+      timeoutId?: ReturnType<typeof setTimeout>;
     }
   >;
 
