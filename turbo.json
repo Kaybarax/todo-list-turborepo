@@ -102,6 +102,10 @@
       "outputs": ["tsconfig.tsbuildinfo"],
       "dependsOn": ["^build"]
     },
+    "@todo/api#typecheck": {
+      "cache": false,
+      "outputs": []
+    },
     "lint:solidity": {
       "inputs": ["contracts/**/*.sol", ".solhint.json", "package.json"],
       "outputs": [],
