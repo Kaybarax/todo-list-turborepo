@@ -1,11 +1,11 @@
 import {
   BlockchainNetwork,
   TransactionStatus,
-  TransactionReceipt,
-  BlockchainTodo,
-  CreateBlockchainTodoInput,
-  UpdateBlockchainTodoInput,
-  WalletInfo,
+  type TransactionReceipt,
+  type BlockchainTodo,
+  type CreateBlockchainTodoInput,
+  type UpdateBlockchainTodoInput,
+  type WalletInfo,
 } from '../types';
 import { BaseBlockchainService } from './BaseBlockchainService';
 import { BlockchainError } from '../utils/BlockchainError';
@@ -36,7 +36,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
     try {
       // Initialize Polkadot API connection
       // @ts-ignore - Used in real implementation
-      const wsEndpoint = options?.wsEndpoint || 'wss://rpc.polkadot.io';
+      const _wsEndpoint = options?.wsEndpoint ?? 'wss://rpc.polkadot.io';
 
       // This would typically use @polkadot/api and wallet extensions
       if (!options?.walletExtension || !options?.account) {
@@ -163,7 +163,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
-        from: this.walletInfo?.address || 'mock_address',
+        from: this.walletInfo?.address ?? 'mock_address',
         blockNumber: 987654,
         gasUsed: '150000000', // Weight in Polkadot
         network: this.network,
@@ -192,7 +192,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
-        from: this.walletInfo?.address || 'mock_address',
+        from: this.walletInfo?.address ?? 'mock_address',
         blockNumber: 987655,
         gasUsed: '120000000',
         network: this.network,
@@ -220,7 +220,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
-        from: this.walletInfo?.address || 'mock_address',
+        from: this.walletInfo?.address ?? 'mock_address',
         blockNumber: 987656,
         gasUsed: '100000000',
         network: this.network,
@@ -263,7 +263,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
         return {
           transactionHash: txHash,
           status: TransactionStatus.CONFIRMED,
-          from: this.walletInfo?.address || 'mock_address',
+          from: this.walletInfo?.address ?? 'mock_address',
           blockNumber: 987654,
           gasUsed: '150000000',
           network: this.network,

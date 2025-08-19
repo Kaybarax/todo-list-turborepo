@@ -1,5 +1,5 @@
 import * as eva from '@eva-design/eva';
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import { ApplicationProvider } from '@ui-kitten/components';
 
 import { Button } from './Button';
@@ -51,7 +51,7 @@ const meta: Meta<typeof Button> = {
       control: { type: 'boolean' },
     },
   },
-  args: { onPress: () => console.log('Button pressed') },
+  args: { onPress: () => console.info('Button pressed') },
 } satisfies Meta<typeof Button>;
 
 export default meta;

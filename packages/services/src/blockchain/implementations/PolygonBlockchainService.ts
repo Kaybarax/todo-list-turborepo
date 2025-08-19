@@ -1,16 +1,16 @@
 import {
   BlockchainNetwork,
   TransactionStatus,
-  TransactionReceipt,
-  BlockchainTodo,
-  CreateBlockchainTodoInput,
-  UpdateBlockchainTodoInput,
-  WalletInfo,
+  type TransactionReceipt,
+  type BlockchainTodo,
+  type CreateBlockchainTodoInput,
+  type UpdateBlockchainTodoInput,
+  type WalletInfo,
   BlockchainTodoStatus,
 } from '../types';
 import { BaseBlockchainService } from './BaseBlockchainService';
 import { BlockchainError } from '../utils/BlockchainError';
-import { TransactionMonitorOptions } from '../utils/TransactionMonitor';
+import { type TransactionMonitorOptions } from '../utils/TransactionMonitor';
 
 /**
  * Options for Polygon blockchain service
@@ -332,7 +332,7 @@ export class PolygonBlockchainService extends BaseBlockchainService {
           blockNumber: 12345678,
           blockHash: '0x9876543210987654321098765432109876543210987654321098765432109876',
           status: TransactionStatus.CONFIRMED,
-          from: this.walletInfo?.address || '',
+          from: this.walletInfo?.address ?? '',
           to: this.todoListFactoryAddress,
           gasUsed: '100000',
           effectiveGasPrice: '20000000000',
@@ -345,7 +345,7 @@ export class PolygonBlockchainService extends BaseBlockchainService {
           blockNumber: 12345679,
           blockHash: '0x8765432109876543210987654321098765432109876543210987654321098765',
           status: TransactionStatus.FAILED,
-          from: this.walletInfo?.address || '',
+          from: this.walletInfo?.address ?? '',
           to: this.todoListFactoryAddress,
           gasUsed: '100000',
           effectiveGasPrice: '20000000000',
@@ -383,7 +383,7 @@ export class PolygonBlockchainService extends BaseBlockchainService {
       const todoList = {
         /* Mock contract */
       };
-      this.todoLists.set(this.walletInfo?.address || '', todoList);
+      this.todoLists.set(this.walletInfo?.address ?? '', todoList);
     } catch (error) {
       throw BlockchainError.contractError('Failed to initialize contracts', error, this.network);
     }

@@ -1,8 +1,9 @@
-import { ApiErrorResponse } from './types';
+import { type ApiErrorResponse } from './types';
 
 /**
  * API error types
  */
+/* eslint-disable no-unused-vars -- Public API enum for API error types */
 export enum ApiErrorType {
   NETWORK_ERROR = 'network_error',
   TIMEOUT_ERROR = 'timeout_error',
@@ -130,7 +131,7 @@ export class ApiError extends Error {
    */
   static fromResponse(status: number, data: any, originalError?: unknown): ApiError {
     const response = data as ApiErrorResponse;
-    const message = response?.error || response?.message || 'An error occurred';
+    const message = response?.error ?? response?.message ?? 'An error occurred';
 
     if (status === 401) {
       return ApiError.authenticationError(message, response);

@@ -39,13 +39,13 @@ const NETWORK_INFO = {
   },
 };
 
-export function NetworkSelector({
+export const NetworkSelector = ({
   selectedNetwork,
   onNetworkSelect,
   disabled = false,
   variant = 'grid',
   className = '',
-}: NetworkSelectorProps) {
+}: NetworkSelectorProps) => {
   const supportedNetworks = getSupportedWalletNetworks();
 
   const getNetworkColorClasses = (network: string) => {
@@ -124,6 +124,6 @@ export function NetworkSelector({
       <div className="text-xs text-gray-500 text-center">Select a blockchain network to connect your wallet</div>
     </div>
   );
-}
+};
 
 // Already exported as named export via function declaration

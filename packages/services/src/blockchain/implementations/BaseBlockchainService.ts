@@ -1,15 +1,15 @@
-import { BlockchainService } from '../interfaces/BlockchainService';
+import { type BlockchainService } from '../interfaces/BlockchainService';
 import {
-  BlockchainNetwork,
-  TransactionStatus,
-  TransactionReceipt,
-  BlockchainTodo,
-  CreateBlockchainTodoInput,
-  UpdateBlockchainTodoInput,
-  WalletInfo,
+  type BlockchainNetwork,
+  type TransactionStatus,
+  type TransactionReceipt,
+  type BlockchainTodo,
+  type CreateBlockchainTodoInput,
+  type UpdateBlockchainTodoInput,
+  type WalletInfo,
 } from '../types';
 import { BlockchainError } from '../utils/BlockchainError';
-import { TransactionMonitor, TransactionMonitorOptions } from '../utils/TransactionMonitor';
+import { TransactionMonitor, type TransactionMonitorOptions } from '../utils/TransactionMonitor';
 
 /**
  * Base abstract class for blockchain service implementations
@@ -44,6 +44,7 @@ export abstract class BaseBlockchainService implements BlockchainService {
    * Connect to a wallet - must be implemented by subclasses
    * @param options - Connection options specific to the blockchain
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   abstract connectWallet(options?: unknown): Promise<WalletInfo>;
 
   /**
@@ -55,7 +56,7 @@ export abstract class BaseBlockchainService implements BlockchainService {
    * Check if a wallet is connected
    */
   async isWalletConnected(): Promise<boolean> {
-    return this.walletInfo !== null && this.walletInfo.isConnected;
+    return this.walletInfo?.isConnected ?? false;
   }
 
   /**
@@ -69,6 +70,7 @@ export abstract class BaseBlockchainService implements BlockchainService {
    * Get the balance of the connected wallet - must be implemented by subclasses
    * @param tokenAddress - Optional token address for non-native tokens
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   abstract getWalletBalance(tokenAddress?: string): Promise<string>;
 
   /**
@@ -80,12 +82,14 @@ export abstract class BaseBlockchainService implements BlockchainService {
    * Get a specific todo by ID - must be implemented by subclasses
    * @param id - Todo ID or identifier on the blockchain
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   abstract getTodoById(id: string): Promise<BlockchainTodo | null>;
 
   /**
    * Create a new todo on the blockchain - must be implemented by subclasses
    * @param todo - Todo data to create
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   abstract createTodo(todo: CreateBlockchainTodoInput): Promise<TransactionReceipt>;
 
   /**
@@ -93,24 +97,28 @@ export abstract class BaseBlockchainService implements BlockchainService {
    * @param id - Todo ID or identifier
    * @param todo - Updated todo data
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   abstract updateTodo(id: string, todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt>;
 
   /**
    * Delete a todo from the blockchain - must be implemented by subclasses
    * @param id - Todo ID or identifier
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   abstract deleteTodo(id: string): Promise<TransactionReceipt>;
 
   /**
    * Get the status of a transaction - must be implemented by subclasses
    * @param txHash - Transaction hash or identifier
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   abstract getTransactionStatus(txHash: string): Promise<TransactionStatus>;
 
   /**
    * Get the receipt for a transaction - must be implemented by subclasses
    * @param txHash - Transaction hash or identifier
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   abstract getTransactionReceipt(txHash: string): Promise<TransactionReceipt | null>;
 
   /**

@@ -1,6 +1,13 @@
-import { Avatar as KittenAvatar, AvatarProps as KittenAvatarProps, Text } from '@ui-kitten/components';
+import { Avatar as KittenAvatar, type AvatarProps as KittenAvatarProps, Text } from '@ui-kitten/components';
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, StyleProp, ImageSourcePropType } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  type ViewStyle,
+  type TextStyle,
+  type StyleProp,
+  type ImageSourcePropType,
+} from 'react-native';
 
 export type AvatarSize = 'tiny' | 'small' | 'medium' | 'large' | 'giant';
 export type AvatarShape = 'round' | 'rounded' | 'square';
@@ -89,7 +96,7 @@ const Avatar: React.FC<AvatarProps> = ({
     if (!initials || source) return null;
 
     return (
-      <Text category={getTextCategory()} style={[styles.initialsText, { color: textColor || '#FFFFFF' }, textStyle]}>
+      <Text category={getTextCategory()} style={[styles.initialsText, { color: textColor ?? '#FFFFFF' }, textStyle]}>
         {initials}
       </Text>
     );

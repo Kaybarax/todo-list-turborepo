@@ -1,6 +1,6 @@
 import { Text } from '@ui-kitten/components';
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
+import { View, StyleSheet, type ViewStyle, type TextStyle, type StyleProp } from 'react-native';
 
 export type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
 export type BadgeSize = 'small' | 'medium' | 'large';

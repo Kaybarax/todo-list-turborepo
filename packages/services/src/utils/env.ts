@@ -4,8 +4,8 @@
 export function getEnvVar(key: string, defaultValue: string = ''): string {
   // Check if we're in a Node.js environment
   try {
-    if (typeof globalThis !== 'undefined' && (globalThis as any).process && (globalThis as any).process.env) {
-      return (globalThis as any).process.env[key] || defaultValue;
+    if (typeof globalThis !== 'undefined' && (globalThis as any).process?.env) {
+      return (globalThis as any).process.env[key] ?? defaultValue;
     }
   } catch {
     // Ignore errors and fall back to default

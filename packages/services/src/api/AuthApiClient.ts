@@ -1,11 +1,11 @@
 import { ApiError } from './ApiError';
 import { BaseApiClient } from './BaseApiClient';
 import {
-  ApiClientConfig,
-  ApiResponse,
-  User,
-  AuthResponse,
-  LoginInput,
+  type ApiClientConfig,
+  type ApiResponse,
+  type User,
+  type AuthResponse,
+  type LoginInput,
   userSchema,
   authResponseSchema,
   loginInputSchema,
@@ -302,6 +302,6 @@ export class AuthApiClient extends BaseApiClient {
   private getRefreshToken(): string | null {
     // This would typically be stored securely
     // For now, we'll assume it's stored in the base client
-    return (this as any).refreshToken || null;
+    return (this as any).refreshToken ?? null;
   }
 }

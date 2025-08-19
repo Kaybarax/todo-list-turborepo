@@ -1,16 +1,16 @@
 import {
   BlockchainNetwork,
   TransactionStatus,
-  TransactionReceipt,
-  BlockchainTodo,
-  CreateBlockchainTodoInput,
-  UpdateBlockchainTodoInput,
-  WalletInfo,
+  type TransactionReceipt,
+  type BlockchainTodo,
+  type CreateBlockchainTodoInput,
+  type UpdateBlockchainTodoInput,
+  type WalletInfo,
   BlockchainTodoStatus,
 } from '../types';
 import { BaseBlockchainService } from './BaseBlockchainService';
 import { BlockchainError } from '../utils/BlockchainError';
-import { TransactionMonitorOptions } from '../utils/TransactionMonitor';
+import { type TransactionMonitorOptions } from '../utils/TransactionMonitor';
 
 /**
  * Options for Moonbeam blockchain service
@@ -376,7 +376,7 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
           blockNumber: 2345678,
           blockHash: '0x9876543210987654321098765432109876543210987654321098765432109876',
           status: TransactionStatus.CONFIRMED,
-          from: this.walletInfo?.address || '',
+          from: this.walletInfo?.address ?? '',
           to: this.todoListFactoryAddress,
           gasUsed: '80000', // Moonbeam typically has lower gas usage
           effectiveGasPrice: '1000000000', // 1 gwei (Moonbeam has low fees)
@@ -390,7 +390,7 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
           blockNumber: 2345679,
           blockHash: '0x8765432109876543210987654321098765432109876543210987654321098765',
           status: TransactionStatus.FAILED,
-          from: this.walletInfo?.address || '',
+          from: this.walletInfo?.address ?? '',
           to: this.todoListFactoryAddress,
           gasUsed: '80000',
           effectiveGasPrice: '1000000000',
@@ -427,13 +427,13 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
 
       // Get the user's todo list address
       // @ts-ignore - Used in real implementation
-      const todoListAddress = '0x0987654321098765432109876543210987654321';
+      const _todoListAddress = '0x0987654321098765432109876543210987654321';
 
       // Create a contract instance for the todo list
       const todoList = {
         /* Mock contract */
       };
-      this.todoLists.set(this.walletInfo?.address || '', todoList);
+      this.todoLists.set(this.walletInfo?.address ?? '', todoList);
     } catch (error) {
       throw BlockchainError.contractError('Failed to initialize contracts on Moonbeam', error, this.network);
     }

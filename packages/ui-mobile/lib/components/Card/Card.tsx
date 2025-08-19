@@ -1,6 +1,6 @@
-import { Card as KittenCard, CardProps as KittenCardProps, Text } from '@ui-kitten/components';
+import { Card as KittenCard, type CardProps as KittenCardProps, Text } from '@ui-kitten/components';
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
+import { View, StyleSheet, type ViewStyle, type TextStyle, type StyleProp } from 'react-native';
 
 export interface CardProps extends Omit<KittenCardProps, 'children'> {
   children?: React.ReactNode;

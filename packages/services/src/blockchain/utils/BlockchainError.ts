@@ -1,4 +1,4 @@
-import { BlockchainErrorType, BlockchainNetwork } from '../types';
+import { BlockchainErrorType, type BlockchainNetwork } from '../types';
 
 /**
  * Custom error class for blockchain operations

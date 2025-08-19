@@ -1,11 +1,11 @@
 import {
-  BlockchainNetwork,
-  TransactionStatus,
-  TransactionReceipt,
-  BlockchainTodo,
-  CreateBlockchainTodoInput,
-  UpdateBlockchainTodoInput,
-  WalletInfo,
+  type BlockchainNetwork,
+  type TransactionStatus,
+  type TransactionReceipt,
+  type BlockchainTodo,
+  type CreateBlockchainTodoInput,
+  type UpdateBlockchainTodoInput,
+  type WalletInfo,
 } from '../types';
 
 /**
@@ -23,6 +23,7 @@ export interface BlockchainService {
    * @param options - Connection options specific to the blockchain
    * @returns Wallet information
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   connectWallet(options?: unknown): Promise<WalletInfo>;
 
   /**
@@ -44,6 +45,7 @@ export interface BlockchainService {
    * Get the balance of the connected wallet
    * @param tokenAddress - Optional token address for non-native tokens
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getWalletBalance(tokenAddress?: string): Promise<string>;
 
   /**
@@ -55,12 +57,14 @@ export interface BlockchainService {
    * Get a specific todo by ID
    * @param id - Todo ID or identifier on the blockchain
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getTodoById(id: string): Promise<BlockchainTodo | null>;
 
   /**
    * Create a new todo on the blockchain
    * @param todo - Todo data to create
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   createTodo(todo: CreateBlockchainTodoInput): Promise<TransactionReceipt>;
 
   /**
@@ -68,35 +72,41 @@ export interface BlockchainService {
    * @param id - Todo ID or identifier
    * @param todo - Updated todo data
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   updateTodo(id: string, todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt>;
 
   /**
    * Delete a todo from the blockchain
    * @param id - Todo ID or identifier
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   deleteTodo(id: string): Promise<TransactionReceipt>;
 
   /**
    * Get the status of a transaction
    * @param txHash - Transaction hash or identifier
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getTransactionStatus(txHash: string): Promise<TransactionStatus>;
 
   /**
    * Get the receipt for a transaction
    * @param txHash - Transaction hash or identifier
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getTransactionReceipt(txHash: string): Promise<TransactionReceipt | null>;
 
   /**
    * Get the explorer URL for a transaction
    * @param txHash - Transaction hash or identifier
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getTransactionExplorerUrl(txHash: string): string;
 
   /**
    * Get the explorer URL for an address
    * @param address - Wallet or contract address
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getAddressExplorerUrl(address: string): string;
 }

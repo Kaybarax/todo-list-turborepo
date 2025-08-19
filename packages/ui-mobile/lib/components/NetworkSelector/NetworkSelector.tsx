@@ -6,6 +6,7 @@ export type NetworkType = 'polygon' | 'solana' | 'polkadot' | 'moonbeam' | 'base
 
 export interface NetworkSelectorProps {
   selectedNetwork: NetworkType;
+  // eslint-disable-next-line no-unused-vars
   onNetworkChange: (network: NetworkType) => void;
   supportedNetworks?: NetworkType[];
   disabled?: boolean;

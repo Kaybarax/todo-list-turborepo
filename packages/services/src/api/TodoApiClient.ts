@@ -1,11 +1,11 @@
 import { ApiError } from './ApiError';
 import { BaseApiClient } from './BaseApiClient';
 import {
-  ApiClientConfig,
-  ApiResponse,
-  ApiTodo,
-  CreateApiTodoInput,
-  UpdateApiTodoInput,
+  type ApiClientConfig,
+  type ApiResponse,
+  type ApiTodo,
+  type CreateApiTodoInput,
+  type UpdateApiTodoInput,
   apiTodoSchema,
   createApiTodoSchema,
   updateApiTodoSchema,

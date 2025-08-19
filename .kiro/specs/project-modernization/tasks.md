@@ -83,7 +83,7 @@
   - Test ESLint configurations across different project types
   - _Requirements: 5.4_
 
-- [ ] 14. Fix ESLint errors in shared packages
+- [x] 14. Fix ESLint errors in shared packages
   - Run ESLint on packages/services/ and fix all errors
   - Run ESLint on packages/ui-web/ and fix all errors
   - Run ESLint on packages/ui-mobile/ and fix all errors

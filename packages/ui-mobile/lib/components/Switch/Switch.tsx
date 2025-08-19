@@ -1,12 +1,13 @@
-import { Toggle, ToggleProps as KittenToggleProps, Text } from '@ui-kitten/components';
+import { Toggle, type ToggleProps as KittenToggleProps, Text } from '@ui-kitten/components';
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
+import { View, StyleSheet, type ViewStyle, type TextStyle, type StyleProp } from 'react-native';
 
 export type SwitchStatus = 'basic' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
 
 export interface SwitchProps extends Omit<KittenToggleProps, 'checked' | 'onChange' | 'status'> {
   value: boolean;
-  onValueChange: (value: boolean) => void;
+  // eslint-disable-next-line no-unused-vars
+  onValueChange: (arg: boolean) => void;
   label?: string;
   status?: SwitchStatus;
   containerStyle?: StyleProp<ViewStyle>;

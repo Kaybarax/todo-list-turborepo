@@ -1,4 +1,4 @@
-import { TransactionStatus, TransactionReceipt, BlockchainNetwork, BlockchainErrorType } from '../types';
+import { TransactionStatus, type TransactionReceipt, type BlockchainNetwork, BlockchainErrorType } from '../types';
 import { BlockchainError } from './BlockchainError';
 
 /**
@@ -10,6 +10,7 @@ export interface TransactionMonitorOptions {
   /** Interval between status checks in milliseconds */
   pollingInterval?: number;
   /** Callback for status updates */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onStatusChange?: (status: TransactionStatus, receipt?: TransactionReceipt) => void;
   /** Timeout in milliseconds */
   timeout?: number;
@@ -58,6 +59,7 @@ export class TransactionMonitor {
    * @param options - Transaction-specific options (overrides global options)
    * @returns Promise that resolves with the final transaction receipt
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async monitorTransaction(
     txHash: string,
     network: BlockchainNetwork,
@@ -74,7 +76,7 @@ export class TransactionMonitor {
     });
 
     // Set up timeout
-    const timeoutPromise = new Promise<never>((_, reject) => {
+    const timeoutPromise = new Promise<never>((_resolve, reject) => {
       const timeoutId = setTimeout(() => {
         this.transactionHashes.delete(txHash);
         reject(
@@ -97,7 +99,7 @@ export class TransactionMonitor {
     });
 
     // Set up polling
-    const pollingPromise = new Promise<TransactionReceipt>(async (resolve, reject) => {
+    const pollingPromise = new Promise<TransactionReceipt>((resolve, reject) => {
       const checkStatus = async () => {
         try {
           const txData = this.transactionHashes.get(txHash);
@@ -170,7 +172,7 @@ export class TransactionMonitor {
       };
 
       // Start polling
-      checkStatus();
+      void checkStatus();
     });
 
     // Race between polling and timeout
@@ -183,7 +185,7 @@ export class TransactionMonitor {
    */
   getStatus(txHash: string): TransactionStatus {
     const txData = this.transactionHashes.get(txHash);
-    return txData?.status || TransactionStatus.UNKNOWN;
+    return txData?.status ?? TransactionStatus.UNKNOWN;
   }
 
   /**

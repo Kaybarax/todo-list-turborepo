@@ -1,4 +1,4 @@
-import { Button as KittenButton, ButtonProps as KittenButtonProps } from '@ui-kitten/components';
+import { Button as KittenButton, type ButtonProps as KittenButtonProps } from '@ui-kitten/components';
 import React from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -144,7 +144,7 @@ const Button: React.FC<ButtonProps> = ({
       status={getKittenStatus()}
       appearance={getKittenAppearance()}
       size={getKittenSize()}
-      disabled={disabled || loading}
+      disabled={disabled ?? loading}
       style={buttonStyles}
       {...props}
     >

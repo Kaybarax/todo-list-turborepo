@@ -3,6 +3,7 @@ import { z } from 'zod';
 /**
  * Todo priority levels
  */
+/* eslint-disable no-unused-vars -- Public API enum for todo priority */
 export enum TodoPriority {
   LOW = 'low',
   MEDIUM = 'medium',
@@ -12,6 +13,7 @@ export enum TodoPriority {
 /**
  * Todo status options
  */
+/* eslint-disable no-unused-vars -- Public API enum for todo status */
 export enum TodoStatus {
   TODO = 'todo',
   IN_PROGRESS = 'in_progress',

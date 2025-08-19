@@ -1,11 +1,11 @@
 import {
   BlockchainNetwork,
   TransactionStatus,
-  TransactionReceipt,
-  BlockchainTodo,
-  CreateBlockchainTodoInput,
-  UpdateBlockchainTodoInput,
-  WalletInfo,
+  type TransactionReceipt,
+  type BlockchainTodo,
+  type CreateBlockchainTodoInput,
+  type UpdateBlockchainTodoInput,
+  type WalletInfo,
 } from '../types';
 import { BaseBlockchainService } from './BaseBlockchainService';
 import { BlockchainError } from '../utils/BlockchainError';
@@ -36,7 +36,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
     try {
       // Initialize Solana connection
       // @ts-ignore - Used in real implementation
-      const rpcUrl = options?.rpcUrl || 'https://api.mainnet-beta.solana.com';
+      const _rpcUrl = options?.rpcUrl ?? 'https://api.mainnet-beta.solana.com';
 
       // This would typically use @solana/web3.js and wallet adapters
       // For now, we'll create a mock implementation
@@ -158,7 +158,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
-        from: this.walletInfo?.address || 'mock_address',
+        from: this.walletInfo?.address ?? 'mock_address',
         blockNumber: 123456,
         gasUsed: '5000',
         network: this.network,
@@ -187,7 +187,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
-        from: this.walletInfo?.address || 'mock_address',
+        from: this.walletInfo?.address ?? 'mock_address',
         blockNumber: 123457,
         gasUsed: '3000',
         network: this.network,
@@ -215,7 +215,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
       return {
         transactionHash: mockTxHash,
         status: TransactionStatus.CONFIRMED,
-        from: this.walletInfo?.address || 'mock_address',
+        from: this.walletInfo?.address ?? 'mock_address',
         blockNumber: 123458,
         gasUsed: '2000',
         network: this.network,
@@ -258,7 +258,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
         return {
           transactionHash: txHash,
           status: TransactionStatus.CONFIRMED,
-          from: this.walletInfo?.address || 'mock_address',
+          from: this.walletInfo?.address ?? 'mock_address',
           blockNumber: 123456,
           gasUsed: '5000',
           network: this.network,

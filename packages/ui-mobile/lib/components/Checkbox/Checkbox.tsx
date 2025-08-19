@@ -1,12 +1,13 @@
-import { CheckBox, CheckBoxProps as KittenCheckBoxProps, Text } from '@ui-kitten/components';
+import { CheckBox, type CheckBoxProps as KittenCheckBoxProps, Text } from '@ui-kitten/components';
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
+import { View, StyleSheet, type ViewStyle, type TextStyle, type StyleProp } from 'react-native';
 
 export type CheckboxStatus = 'basic' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
 
 export interface CheckboxProps extends Omit<KittenCheckBoxProps, 'checked' | 'onChange' | 'status'> {
   checked: boolean;
-  onValueChange: (checked: boolean) => void;
+  // eslint-disable-next-line no-unused-vars
+  onValueChange: (arg: boolean) => void;
   label?: string;
   status?: CheckboxStatus;
   containerStyle?: StyleProp<ViewStyle>;

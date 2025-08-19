@@ -1,6 +1,6 @@
-import { Input as KittenInput, InputProps as KittenInputProps, Text } from '@ui-kitten/components';
+import { Input as KittenInput, type InputProps as KittenInputProps, Text } from '@ui-kitten/components';
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
+import { View, StyleSheet, type ViewStyle, type TextStyle, type StyleProp } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export type InputVariant = 'default' | 'outline' | 'filled';

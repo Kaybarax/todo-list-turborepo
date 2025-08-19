@@ -1,13 +1,13 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from 'axios';
 
 import { ApiError } from './ApiError';
 import {
-  ApiClientConfig,
-  ApiResponse,
-  RequestInterceptor,
-  ResponseInterceptor,
-  ErrorInterceptor,
-  RetryConfig,
+  type ApiClientConfig,
+  type ApiResponse,
+  type RequestInterceptor,
+  type ResponseInterceptor,
+  type ErrorInterceptor,
+  type RetryConfig,
 } from './types';
 
 /**
@@ -54,7 +54,7 @@ export class BaseApiClient {
    */
   setAuthToken(token: string, refreshToken?: string): void {
     this.authToken = token;
-    this.refreshToken = refreshToken || null;
+    this.refreshToken = refreshToken ?? null;
   }
 
   /**
@@ -329,7 +329,7 @@ export class BaseApiClient {
 
       const { token, refreshToken } = response.data;
       this.setAuthToken(token, refreshToken);
-    } catch (error) {
+    } catch {
       throw ApiError.authenticationError('Failed to refresh token');
     }
   }

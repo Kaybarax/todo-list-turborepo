@@ -1,16 +1,16 @@
 import {
   BlockchainNetwork,
   TransactionStatus,
-  TransactionReceipt,
-  BlockchainTodo,
-  CreateBlockchainTodoInput,
-  UpdateBlockchainTodoInput,
-  WalletInfo,
+  type TransactionReceipt,
+  type BlockchainTodo,
+  type CreateBlockchainTodoInput,
+  type UpdateBlockchainTodoInput,
+  type WalletInfo,
   BlockchainTodoStatus,
 } from '../types';
 import { BaseBlockchainService } from './BaseBlockchainService';
 import { BlockchainError } from '../utils/BlockchainError';
-import { TransactionMonitorOptions } from '../utils/TransactionMonitor';
+import { type TransactionMonitorOptions } from '../utils/TransactionMonitor';
 
 /**
  * Options for Base blockchain service
@@ -351,7 +351,7 @@ export class BaseNetworkBlockchainService extends BaseBlockchainService {
 
       // Mock implementation
       const receipt = await this.getTransactionReceipt(txHash);
-      return receipt?.status || TransactionStatus.PENDING;
+      return receipt?.status ?? TransactionStatus.PENDING;
     } catch (error) {
       throw BlockchainError.networkError(`Failed to get transaction status for ${txHash} on Base`, error, this.network);
     }
@@ -375,7 +375,7 @@ export class BaseNetworkBlockchainService extends BaseBlockchainService {
           blockNumber: 8453678,
           blockHash: '0x9876543210987654321098765432109876543210987654321098765432109876',
           status: TransactionStatus.CONFIRMED,
-          from: this.walletInfo?.address || '',
+          from: this.walletInfo?.address ?? '',
           to: this.todoListFactoryAddress,
           gasUsed: '50000', // Base has very low gas usage due to L2 optimizations
           effectiveGasPrice: '500000000', // 0.5 gwei (Base has very low fees)
@@ -389,7 +389,7 @@ export class BaseNetworkBlockchainService extends BaseBlockchainService {
           blockNumber: 8453679,
           blockHash: '0x8765432109876543210987654321098765432109876543210987654321098765',
           status: TransactionStatus.FAILED,
-          from: this.walletInfo?.address || '',
+          from: this.walletInfo?.address ?? '',
           to: this.todoListFactoryAddress,
           gasUsed: '50000',
           effectiveGasPrice: '500000000',
@@ -426,13 +426,13 @@ export class BaseNetworkBlockchainService extends BaseBlockchainService {
 
       // Get the user's todo list address
       // @ts-ignore - Used in real implementation
-      const todoListAddress = '0x0987654321098765432109876543210987654321';
+      const _todoListAddress = '0x0987654321098765432109876543210987654321';
 
       // Create a contract instance for the todo list
       const todoList = {
         /* Mock contract */
       };
-      this.todoLists.set(this.walletInfo?.address || '', todoList);
+      this.todoLists.set(this.walletInfo?.address ?? '', todoList);
     } catch (error) {
       throw BlockchainError.contractError('Failed to initialize contracts on Base', error, this.network);
     }
@@ -445,7 +445,7 @@ export class BaseNetworkBlockchainService extends BaseBlockchainService {
   private isBaseSpecificError(error: any): boolean {
     // In a real implementation, we would check for specific error patterns
     // that are unique to Base's L2 implementation or sequencer issues
-    const errorMessage = error?.message?.toLowerCase() || '';
+    const errorMessage = error?.message?.toLowerCase() ?? '';
 
     return (
       errorMessage.includes('base') ||

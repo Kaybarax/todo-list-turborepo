@@ -1,15 +1,18 @@
 import {
   BaseNetworkBlockchainService,
-  BaseNetworkBlockchainServiceOptions,
+  type BaseNetworkBlockchainServiceOptions,
 } from './implementations/BaseNetworkBlockchainService';
 import {
   MoonbeamBlockchainService,
-  MoonbeamBlockchainServiceOptions,
+  type MoonbeamBlockchainServiceOptions,
 } from './implementations/MoonbeamBlockchainService';
 import { PolkadotBlockchainService } from './implementations/PolkadotBlockchainService';
-import { PolygonBlockchainService, PolygonBlockchainServiceOptions } from './implementations/PolygonBlockchainService';
+import {
+  PolygonBlockchainService,
+  type PolygonBlockchainServiceOptions,
+} from './implementations/PolygonBlockchainService';
 import { SolanaBlockchainService } from './implementations/SolanaBlockchainService';
-import { BlockchainService } from './interfaces/BlockchainService';
+import { type BlockchainService } from './interfaces/BlockchainService';
 import { BlockchainNetwork } from './types';
 import { BlockchainError } from './utils/BlockchainError';
 

@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 import {
-  Todo,
-  CreateTodoInput,
-  UpdateTodoInput,
-  TodoQueryParams,
+  type Todo,
+  type CreateTodoInput,
+  type UpdateTodoInput,
+  type TodoQueryParams,
   todoSchema,
   createTodoSchema,
   updateTodoSchema,

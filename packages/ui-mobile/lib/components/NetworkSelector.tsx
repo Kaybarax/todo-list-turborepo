@@ -6,6 +6,7 @@ import { Badge } from './Badge';
 
 export interface NetworkSelectorProps {
   selectedNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base';
+  // eslint-disable-next-line no-unused-vars
   onNetworkSelect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => void;
   disabled?: boolean;
   variant?: 'grid' | 'list';
@@ -41,13 +42,13 @@ const NETWORK_INFO = {
   },
 };
 
-export function NetworkSelector({
+export const NetworkSelector = ({
   selectedNetwork,
   onNetworkSelect,
   disabled = false,
   variant = 'grid',
   style,
-}: NetworkSelectorProps) {
+}: NetworkSelectorProps) => {
   const supportedNetworks = getSupportedWalletNetworks();
 
   if (variant === 'list') {
@@ -134,7 +135,7 @@ export function NetworkSelector({
       <Text style={styles.helpText}>Select a blockchain network to connect your wallet</Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
