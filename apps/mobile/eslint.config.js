@@ -4,6 +4,9 @@ const globals = require('globals');
 module.exports = [
   ...reactNativeConfig,
   {
+    ignores: ['coverage/**', 'e2e/**', 'babel.config.js', 'jest.config.js', 'metro.config.js', 'eslint.config.js'],
+  },
+  {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       parserOptions: {

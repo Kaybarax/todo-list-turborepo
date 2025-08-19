@@ -1,12 +1,14 @@
-import { create } from 'zustand';
+/* eslint-disable no-unused-vars */
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BlockchainNetwork } from '@todo/services';
+import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+
 import {
   createMobileBlockchainService,
   todoToBlockchainTodo,
   type TransactionResult,
 } from '../services/blockchainService';
-import { BlockchainNetwork } from '@todo/services';
 
 export interface Todo {
   id: string;
@@ -30,15 +32,15 @@ interface TodoStore {
   error: string | null;
 
   // Actions
-  addTodo: (todo: Omit<Todo, 'id' | 'createdAt' | 'updatedAt' | 'userId'>) => void;
-  updateTodo: (id: string, updates: Partial<Todo>) => void;
-  deleteTodo: (id: string) => void;
-  toggleTodo: (id: string) => void;
-  syncToBlockchain: (id: string, network: BlockchainNetwork) => Promise<void>;
+  addTodo: (_todo: Omit<Todo, 'id' | 'createdAt' | 'updatedAt' | 'userId'>) => void;
+  updateTodo: (_id: string, _updates: Partial<Todo>) => void;
+  deleteTodo: (_id: string) => void;
+  toggleTodo: (_id: string) => void;
+  syncToBlockchain: (_id: string, _network: BlockchainNetwork) => Promise<void>;
 
   // API actions (will be implemented when API is ready)
   fetchTodos: () => Promise<void>;
-  saveTodo: (todo: Todo) => Promise<void>;
+  saveTodo: (_todo: Todo) => Promise<void>;
 }
 
 // Mock user ID for now
@@ -130,7 +132,7 @@ export const useTodoStore = create<TodoStore>()(
           // Wait for transaction confirmation in the background
           blockchainService
             .waitForTransaction(result.hash)
-            .then(_confirmedResult => {
+            .then(() => {
               set(state => ({
                 todos: state.todos.map(todo =>
                   todo.id === id && todo.transactionHash === result.hash

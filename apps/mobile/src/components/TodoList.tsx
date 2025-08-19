@@ -1,15 +1,17 @@
+/* eslint-disable no-unused-vars */
+import { type BlockchainNetwork } from '@todo/services';
 import React, { useState, useMemo } from 'react';
 import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+
 import { TodoItem } from './TodoItem';
-import { BlockchainNetwork } from '@todo/services';
-import type { Todo } from '../store/todoStore';
+import { type Todo } from '../store/todoStore';
 
 interface TodoListProps {
   todos: Todo[];
-  onToggle: (id: string) => void;
-  onEdit: (todo: Todo) => void;
-  onDelete: (id: string) => void;
-  onBlockchainSync?: (id: string, network: BlockchainNetwork) => void;
+  onToggle: (_id: string) => void;
+  onEdit: (_todo: Todo) => void;
+  onDelete: (_id: string) => void;
+  onBlockchainSync?: (_id: string, _network: BlockchainNetwork) => void;
   onRefresh?: () => void;
   refreshing?: boolean;
 }
@@ -17,7 +19,7 @@ interface TodoListProps {
 type FilterType = 'all' | 'active' | 'completed';
 type SortType = 'created' | 'priority' | 'dueDate' | 'title';
 
-export function TodoList({
+export const TodoList = ({
   todos,
   onToggle,
   onEdit,
@@ -25,7 +27,7 @@ export function TodoList({
   onBlockchainSync,
   onRefresh,
   refreshing = false,
-}: TodoListProps) {
+}: TodoListProps) => {
   const [filter, setFilter] = useState<FilterType>('all');
   const [sort, setSort] = useState<SortType>('created');
   const [searchTerm, setSearchTerm] = useState('');
@@ -51,7 +53,7 @@ export function TodoList({
       filtered = filtered.filter(
         todo =>
           todo.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          todo.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (todo.description?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
           todo.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())),
       );
     }
@@ -59,9 +61,10 @@ export function TodoList({
     // Apply sort
     filtered.sort((a, b) => {
       switch (sort) {
-        case 'priority':
+        case 'priority': {
           const priorityOrder = { high: 3, medium: 2, low: 1 };
           return priorityOrder[b.priority] - priorityOrder[a.priority];
+        }
         case 'dueDate':
           if (!a.dueDate && !b.dueDate) return 0;
           if (!a.dueDate) return 1;
@@ -195,7 +198,7 @@ export function TodoList({
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

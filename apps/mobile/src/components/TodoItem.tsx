@@ -1,18 +1,20 @@
+/* eslint-disable no-unused-vars */
+import { BlockchainNetwork, getNetworkDisplayInfo } from '@todo/services';
+import { Card, CardContent, Badge, Button } from '@todo/ui-mobile';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { Card, CardContent, Badge, Button } from '@todo/ui-mobile';
-import { BlockchainNetwork, getNetworkDisplayInfo } from '@todo/services';
-import type { Todo } from '../store/todoStore';
+
+import { type Todo } from '../store/todoStore';
 
 interface TodoItemProps {
   todo: Todo;
-  onToggle: (id: string) => void;
-  onEdit: (todo: Todo) => void;
-  onDelete: (id: string) => void;
-  onBlockchainSync?: (id: string, network: BlockchainNetwork) => void;
+  onToggle: (_id: string) => void;
+  onEdit: (_todo: Todo) => void;
+  onDelete: (_id: string) => void;
+  onBlockchainSync?: (_id: string, _network: BlockchainNetwork) => void;
 }
 
-export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }: TodoItemProps) {
+export const TodoItem = ({ todo, onToggle, onEdit, onDelete, onBlockchainSync }: TodoItemProps) => {
   const [showActions, setShowActions] = useState(false);
 
   const priorityColors = {
@@ -164,7 +166,7 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
       </Card>
     </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

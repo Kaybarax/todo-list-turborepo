@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import { Button, Card, CardContent } from '@todo/ui-mobile';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Card, CardContent } from '@todo/ui-mobile';
+
 import { WalletConnect } from '../src/components/WalletConnect';
 import { useWallet } from '../src/providers/WalletProvider';
 
-export default function WalletScreen() {
+const WalletScreen = () => {
   const { isConnected, account, signMessage, sendTransaction } = useWallet();
 
   const handleSignMessage = async () => {
@@ -118,7 +120,9 @@ export default function WalletScreen() {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
+
+export default WalletScreen;
 
 const styles = StyleSheet.create({
   container: {

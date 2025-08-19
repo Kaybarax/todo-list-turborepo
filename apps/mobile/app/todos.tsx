@@ -1,16 +1,18 @@
+/* eslint-disable @typescript-eslint/no-floating-promises, @typescript-eslint/no-misused-promises */
+import { type BlockchainNetwork } from '@todo/services';
+import { Button, Card, CardContent } from '@todo/ui-mobile';
+import { Link } from 'expo-router';
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Modal, Alert, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link } from 'expo-router';
-import { Button, Card, CardContent } from '@todo/ui-mobile';
+
+import { BlockchainStats } from '../src/components/BlockchainStats';
 import { TodoForm } from '../src/components/TodoForm';
 import { TodoList } from '../src/components/TodoList';
-import { BlockchainStats } from '../src/components/BlockchainStats';
-import { useTodoStore, type Todo } from '../src/store/todoStore';
 import { useWallet } from '../src/providers/WalletProvider';
-import { BlockchainNetwork } from '@todo/services';
+import { useTodoStore, type Todo } from '../src/store/todoStore';
 
-export default function TodosScreen() {
+const TodosScreen = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
 
@@ -147,7 +149,7 @@ export default function TodosScreen() {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -236,3 +238,5 @@ const styles = StyleSheet.create({
     width: 60,
   },
 });
+
+export default TodosScreen;

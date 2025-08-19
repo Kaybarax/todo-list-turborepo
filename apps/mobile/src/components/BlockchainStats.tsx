@@ -1,14 +1,15 @@
+import { getNetworkColor } from '@todo/services';
+import { Card, CardContent, Badge } from '@todo/ui-mobile';
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Card, CardContent, Badge } from '@todo/ui-mobile';
-import type { Todo } from '../store/todoStore';
-import { getNetworkColor } from '@todo/services';
+
+import { type Todo } from '../store/todoStore';
 
 interface BlockchainStatsProps {
   todos: Todo[];
 }
 
-export function BlockchainStats({ todos }: BlockchainStatsProps) {
+export const BlockchainStats = ({ todos }: BlockchainStatsProps) => {
   const stats = useMemo(() => {
     const total = todos.length;
     const onChain = todos.filter(todo => todo.blockchainNetwork).length;
@@ -95,7 +96,7 @@ export function BlockchainStats({ todos }: BlockchainStatsProps) {
       </CardContent>
     </Card>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

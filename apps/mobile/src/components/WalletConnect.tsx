@@ -1,10 +1,12 @@
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars, @typescript-eslint/require-await, @typescript-eslint/no-misused-promises */
+import { getNetworkColor } from '@todo/services';
+import { Card, CardContent, Button, Badge } from '@todo/ui-mobile';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Alert, ActivityIndicator } from 'react-native';
-import { Card, CardContent, Button, Badge } from '@todo/ui-mobile';
-import { useWallet } from '../providers/WalletProvider';
-import { getNetworkColor } from '@todo/services';
 
-export function WalletConnect() {
+import { useWallet } from '../providers/WalletProvider';
+
+export const WalletConnect = () => {
   const {
     isConnected,
     isConnecting,
@@ -176,7 +178,7 @@ export function WalletConnect() {
       </CardContent>
     </Card>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

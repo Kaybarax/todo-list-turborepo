@@ -1,27 +1,29 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, fireEvent } from '@testing-library/react-native';
+import { type BlockchainNetwork } from '@todo/services';
+import React from 'react';
+
 import { TodoItem } from '../TodoItem';
-import { BlockchainNetwork } from '@todo/services';
 
 // Mock the UI components
 jest.mock('@todo/ui-mobile', () => ({
-  Button: ({ title, onPress }: any) => {
-    const { TouchableOpacity, Text } = require('react-native');
-    return (
-      <TouchableOpacity onPress={onPress} testID={`button-${title}`}>
-        <Text>{title}</Text>
-      </TouchableOpacity>
-    );
-  },
-  Card: ({ children }: any) => {
+  Card: ({ children, style }: any) => {
     const { View } = require('react-native');
-    return <View testID="card">{children}</View>;
+    return <View style={style}>{children}</View>;
   },
-  Badge: ({ children, variant }: any) => {
+  CardContent: ({ children }: any) => {
+    const { View } = require('react-native');
+    return <View>{children}</View>;
+  },
+  Badge: ({ text, style }: any) => {
+    const { Text } = require('react-native');
+    return <Text style={style}>{text}</Text>;
+  },
+  Button: ({ title }: any) => {
     const { View, Text } = require('react-native');
     return (
-      <View testID={`badge-${variant}`}>
-        <Text>{children}</Text>
+      <View testID="button">
+        <Text>{title}</Text>
       </View>
     );
   },

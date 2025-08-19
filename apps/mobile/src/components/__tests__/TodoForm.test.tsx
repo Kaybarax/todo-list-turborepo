@@ -1,5 +1,7 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-misused-promises */
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import React from 'react';
+
 import { TodoForm } from '../TodoForm';
 
 // Mock the UI components
@@ -7,7 +9,7 @@ jest.mock('@todo/ui-mobile', () => ({
   Button: ({ title, onPress, disabled, loading }: any) => {
     const { TouchableOpacity, Text } = require('react-native');
     return (
-      <TouchableOpacity onPress={onPress} disabled={disabled || loading} testID="button">
+      <TouchableOpacity onPress={onPress} disabled={disabled ?? loading} testID="button">
         <Text>{loading ? 'Loading...' : title}</Text>
       </TouchableOpacity>
     );

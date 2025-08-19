@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Alert } from 'react-native';
+/* eslint-disable no-unused-vars */
 import { BlockchainNetwork } from '@todo/services';
-import type { Todo } from '../store/todoStore';
+import { Alert } from 'react-native';
+
+import { type Todo } from '../store/todoStore';
 
 export interface BlockchainTodo {
   id: string;
@@ -25,15 +26,15 @@ export interface TransactionResult {
 
 export interface BlockchainServiceInterface {
   // Todo operations
-  createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult>;
-  updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult>;
-  deleteTodo(id: string): Promise<TransactionResult>;
-  getTodo(id: string): Promise<BlockchainTodo | null>;
-  getUserTodos(userAddress: string): Promise<BlockchainTodo[]>;
+  createTodo(_todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult>;
+  updateTodo(_id: string, _updates: Partial<BlockchainTodo>): Promise<TransactionResult>;
+  deleteTodo(_id: string): Promise<TransactionResult>;
+  getTodo(_id: string): Promise<BlockchainTodo | null>;
+  getUserTodos(_userAddress: string): Promise<BlockchainTodo[]>;
 
   // Transaction monitoring
-  getTransactionStatus(hash: string): Promise<'pending' | 'confirmed' | 'failed'>;
-  waitForTransaction(hash: string): Promise<TransactionResult>;
+  getTransactionStatus(_hash: string): Promise<'pending' | 'confirmed' | 'failed'>;
+  waitForTransaction(_hash: string): Promise<TransactionResult>;
 }
 
 // Base mobile blockchain service with common mobile-specific functionality
@@ -45,12 +46,12 @@ abstract class MobileBlockchainService implements BlockchainServiceInterface {
   }
 
   abstract createTodo(
-    todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>,
+    _todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>,
   ): Promise<TransactionResult>;
-  abstract updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult>;
-  abstract deleteTodo(id: string): Promise<TransactionResult>;
-  abstract getTodo(id: string): Promise<BlockchainTodo | null>;
-  abstract getUserTodos(userAddress: string): Promise<BlockchainTodo[]>;
+  abstract updateTodo(_id: string, _updates: Partial<BlockchainTodo>): Promise<TransactionResult>;
+  abstract deleteTodo(_id: string): Promise<TransactionResult>;
+  abstract getTodo(_id: string): Promise<BlockchainTodo | null>;
+  abstract getUserTodos(_userAddress: string): Promise<BlockchainTodo[]>;
 
   async getTransactionStatus(_hash: string): Promise<'pending' | 'confirmed' | 'failed'> {
     await this.simulateNetworkDelay(500);
@@ -68,16 +69,25 @@ abstract class MobileBlockchainService implements BlockchainServiceInterface {
         [
           {
             text: 'OK',
-            onPress: async () => {
+            onPress: () => {
               // Simulate waiting for confirmation
-              await this.simulateNetworkDelay(3000);
-
-              resolve({
-                hash,
-                blockNumber: Math.floor(Math.random() * 1000000),
-                gasUsed: Math.floor(Math.random() * 50000),
-                status: 'confirmed',
-              });
+              this.simulateNetworkDelay(3000)
+                .then(() => {
+                  resolve({
+                    hash,
+                    blockNumber: Math.floor(Math.random() * 1000000),
+                    gasUsed: Math.floor(Math.random() * 50000),
+                    status: 'confirmed',
+                  });
+                })
+                .catch(() => {
+                  resolve({
+                    hash,
+                    blockNumber: Math.floor(Math.random() * 1000000),
+                    gasUsed: Math.floor(Math.random() * 50000),
+                    status: 'failed',
+                  });
+                });
             },
           },
         ],
@@ -107,7 +117,9 @@ export class SolanaMobileBlockchainService extends MobileBlockchainService {
     this._programId = programId;
   }
 
-  async createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
+  async createTodo(
+    _todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>,
+  ): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1500);
 
     const result = {
@@ -120,7 +132,7 @@ export class SolanaMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
+  async updateTodo(_id: string, _updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1200);
 
     const result = {
@@ -133,7 +145,7 @@ export class SolanaMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async deleteTodo(id: string): Promise<TransactionResult> {
+  async deleteTodo(_id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1000);
 
     const result = {
@@ -149,12 +161,12 @@ export class SolanaMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async getTodo(id: string): Promise<BlockchainTodo | null> {
+  async getTodo(_id: string): Promise<BlockchainTodo | null> {
     await this.simulateNetworkDelay();
     return null;
   }
 
-  async getUserTodos(userAddress: string): Promise<BlockchainTodo[]> {
+  async getUserTodos(_userAddress: string): Promise<BlockchainTodo[]> {
     await this.simulateNetworkDelay();
     return [];
   }
@@ -166,7 +178,9 @@ export class PolkadotMobileBlockchainService extends MobileBlockchainService {
     super('Polkadot');
   }
 
-  async createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
+  async createTodo(
+    _todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>,
+  ): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1800);
 
     const result = {
@@ -182,7 +196,7 @@ export class PolkadotMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
+  async updateTodo(_id: string, _updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1500);
 
     const result = {
@@ -198,7 +212,7 @@ export class PolkadotMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async deleteTodo(id: string): Promise<TransactionResult> {
+  async deleteTodo(_id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1200);
 
     const result = {
@@ -214,12 +228,12 @@ export class PolkadotMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async getTodo(id: string): Promise<BlockchainTodo | null> {
+  async getTodo(_id: string): Promise<BlockchainTodo | null> {
     await this.simulateNetworkDelay();
     return null;
   }
 
-  async getUserTodos(userAddress: string): Promise<BlockchainTodo[]> {
+  async getUserTodos(_userAddress: string): Promise<BlockchainTodo[]> {
     await this.simulateNetworkDelay();
     return [];
   }
@@ -234,7 +248,9 @@ export class PolygonMobileBlockchainService extends MobileBlockchainService {
     this.contractAddress = contractAddress;
   }
 
-  async createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
+  async createTodo(
+    _todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>,
+  ): Promise<TransactionResult> {
     await this.simulateNetworkDelay(2000);
 
     const result = {
@@ -250,7 +266,7 @@ export class PolygonMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
+  async updateTodo(_id: string, _updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1700);
 
     const result = {
@@ -266,7 +282,7 @@ export class PolygonMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async deleteTodo(id: string): Promise<TransactionResult> {
+  async deleteTodo(_id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1400);
 
     const result = {
@@ -282,12 +298,12 @@ export class PolygonMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async getTodo(id: string): Promise<BlockchainTodo | null> {
+  async getTodo(_id: string): Promise<BlockchainTodo | null> {
     await this.simulateNetworkDelay();
     return null;
   }
 
-  async getUserTodos(userAddress: string): Promise<BlockchainTodo[]> {
+  async getUserTodos(_userAddress: string): Promise<BlockchainTodo[]> {
     await this.simulateNetworkDelay();
     return [];
   }
@@ -302,7 +318,9 @@ export class MoonbeamMobileBlockchainService extends MobileBlockchainService {
     this.contractAddress = contractAddress;
   }
 
-  async createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
+  async createTodo(
+    _todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>,
+  ): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1800);
 
     const result = {
@@ -318,7 +336,7 @@ export class MoonbeamMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
+  async updateTodo(_id: string, _updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1500);
 
     const result = {
@@ -334,7 +352,7 @@ export class MoonbeamMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async deleteTodo(id: string): Promise<TransactionResult> {
+  async deleteTodo(_id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1300);
 
     const result = {
@@ -350,12 +368,12 @@ export class MoonbeamMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async getTodo(id: string): Promise<BlockchainTodo | null> {
+  async getTodo(_id: string): Promise<BlockchainTodo | null> {
     await this.simulateNetworkDelay();
     return null;
   }
 
-  async getUserTodos(userAddress: string): Promise<BlockchainTodo[]> {
+  async getUserTodos(_userAddress: string): Promise<BlockchainTodo[]> {
     await this.simulateNetworkDelay();
     return [];
   }
@@ -370,7 +388,9 @@ export class BaseMobileBlockchainService extends MobileBlockchainService {
     this.contractAddress = contractAddress;
   }
 
-  async createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult> {
+  async createTodo(
+    _todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>,
+  ): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1600);
 
     const result = {
@@ -383,7 +403,7 @@ export class BaseMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
+  async updateTodo(_id: string, _updates: Partial<BlockchainTodo>): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1300);
 
     const result = {
@@ -396,7 +416,7 @@ export class BaseMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async deleteTodo(id: string): Promise<TransactionResult> {
+  async deleteTodo(_id: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(1100);
 
     const result = {
@@ -412,12 +432,12 @@ export class BaseMobileBlockchainService extends MobileBlockchainService {
     return result;
   }
 
-  async getTodo(id: string): Promise<BlockchainTodo | null> {
+  async getTodo(_id: string): Promise<BlockchainTodo | null> {
     await this.simulateNetworkDelay();
     return null;
   }
 
-  async getUserTodos(userAddress: string): Promise<BlockchainTodo[]> {
+  async getUserTodos(_userAddress: string): Promise<BlockchainTodo[]> {
     await this.simulateNetworkDelay();
     return [];
   }

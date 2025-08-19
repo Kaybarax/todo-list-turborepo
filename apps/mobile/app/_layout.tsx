@@ -1,9 +1,10 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import { WalletProvider } from '../src/providers/WalletProvider';
 
-export default function RootLayout() {
+const RootLayout = () => {
   return (
     <SafeAreaProvider>
       <WalletProvider>
@@ -44,4 +45,6 @@ export default function RootLayout() {
       </WalletProvider>
     </SafeAreaProvider>
   );
-}
+};
+
+export default RootLayout;

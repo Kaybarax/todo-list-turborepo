@@ -1,10 +1,10 @@
+import { Card, CardContent } from '@todo/ui-mobile';
+import { Link } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Card, CardContent } from '@todo/ui-mobile';
 
-export default function HomeScreen() {
+const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -56,7 +56,9 @@ export default function HomeScreen() {
       </View>
     </SafeAreaView>
   );
-}
+};
+
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {

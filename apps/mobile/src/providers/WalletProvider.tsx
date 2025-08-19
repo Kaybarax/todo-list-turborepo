@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+/* eslint-disable no-unused-vars */
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getSupportedWalletNetworks, generateMockAddress } from '@todo/services';
+import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { Alert } from 'react-native';
-import { getSupportedWalletNetworks, getWalletConnectionUrls, generateMockAddress } from '@todo/services';
 
 // Types for wallet connection
 export interface WalletAccount {
@@ -18,11 +19,11 @@ export interface WalletContextType {
   supportedNetworks: ('solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base')[];
 
   // Actions
-  connect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => Promise<void>;
+  connect: (_network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => Promise<void>;
   disconnect: () => Promise<void>;
-  switchNetwork: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => Promise<void>;
-  signMessage: (message: string) => Promise<string>;
-  sendTransaction: (to: string, amount: string, data?: string) => Promise<string>;
+  switchNetwork: (_network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => Promise<void>;
+  signMessage: (_message: string) => Promise<string>;
+  sendTransaction: (_to: string, _amount: string, _data?: string) => Promise<string>;
 }
 
 const WalletContext = createContext<WalletContextType | null>(null);
@@ -39,7 +40,7 @@ interface WalletProviderProps {
   children: ReactNode;
 }
 
-export function WalletProvider({ children }: WalletProviderProps) {
+export const WalletProvider = ({ children }: WalletProviderProps) => {
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [account, setAccount] = useState<WalletAccount | null>(null);
@@ -157,17 +158,17 @@ export function WalletProvider({ children }: WalletProviderProps) {
         },
         {
           text: 'Sign',
-          onPress: async () => {
-            try {
-              // Simulate signing delay
-              await new Promise<void>(res => setTimeout(() => res(), 1000));
-
-              // Mock signature
-              const signature = `0x${Math.random().toString(16).substr(2, 128)}`;
-              resolve(signature);
-            } catch (error) {
-              reject(error);
-            }
+          onPress: () => {
+            // Simulate signing delay
+            new Promise<void>(_resolve => setTimeout(() => _resolve(), 1000))
+              .then(() => {
+                // Mock signature
+                const signature = `0x${Math.random().toString(16).substr(2, 128)}`;
+                resolve(signature);
+              })
+              .catch(error => {
+                reject(error);
+              });
           },
         },
       ]);
@@ -188,17 +189,17 @@ export function WalletProvider({ children }: WalletProviderProps) {
         },
         {
           text: 'Send',
-          onPress: async () => {
-            try {
-              // Simulate transaction delay
-              await new Promise<void>(res => setTimeout(() => res(), 3000));
-
-              // Mock transaction hash
-              const txHash = `0x${Math.random().toString(16).substr(2, 64)}`;
-              resolve(txHash);
-            } catch (error) {
-              reject(error);
-            }
+          onPress: () => {
+            // Simulate transaction delay
+            new Promise<void>(_resolve => setTimeout(() => _resolve(), 3000))
+              .then(() => {
+                // Mock transaction hash
+                const txHash = `0x${Math.random().toString(16).substr(2, 64)}`;
+                resolve(txHash);
+              })
+              .catch(error => {
+                reject(error);
+              });
           },
         },
       ]);
@@ -224,7 +225,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
       }
     };
 
-    restoreWalletConnection();
+    void restoreWalletConnection();
   }, []);
 
   const value: WalletContextType = {
@@ -241,7 +242,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
   };
 
   return <WalletContext.Provider value={value}>{children}</WalletContext.Provider>;
-}
+};
 
 // Helper functions for mock data
 function generateMockBalance(): string {

@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
+import { Input, Button } from '@todo/ui-mobile';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, Alert, TouchableOpacity } from 'react-native';
-import { Input, Button } from '@todo/ui-mobile';
 // import { Picker } from '@react-native-picker/picker';
 
 interface TodoFormProps {
-  onSubmit: (todo: {
+  onSubmit: (_todo: {
     title: string;
     description?: string;
     completed: boolean;
@@ -22,13 +23,13 @@ interface TodoFormProps {
   };
 }
 
-export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
-  const [title, setTitle] = useState(initialData?.title || '');
-  const [description, setDescription] = useState(initialData?.description || '');
-  const [priority, setPriority] = useState<'low' | 'medium' | 'high'>(initialData?.priority || 'medium');
-  const [dueDate, setDueDate] = useState(initialData?.dueDate || '');
+export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => {
+  const [title, setTitle] = useState(initialData?.title ?? '');
+  const [description, setDescription] = useState(initialData?.description ?? '');
+  const [priority, setPriority] = useState<'low' | 'medium' | 'high'>(initialData?.priority ?? 'medium');
+  const [dueDate, setDueDate] = useState(initialData?.dueDate ?? '');
   const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState<string[]>(initialData?.tags || []);
+  const [tags, setTags] = useState<string[]>(initialData?.tags ?? []);
 
   const handleSubmit = () => {
     if (!title.trim()) {
@@ -146,7 +147,7 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
       </View>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
