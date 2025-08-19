@@ -16,9 +16,10 @@ module.exports = [
     languageOptions: {
       parser: tsparser,
       parserOptions: {
-        ecmaVersion: 2022,
+        ecmaVersion: 'latest',
         sourceType: 'module',
-        project: './tsconfig.json',
+        project: true,
+        tsconfigRootDir: process.cwd(),
         ecmaFeatures: {
           jsx: true,
         },
@@ -32,6 +33,9 @@ module.exports = [
         FormData: 'readonly',
         navigator: 'readonly',
         XMLHttpRequest: 'readonly',
+        // Expo globals
+        expo: 'readonly',
+        ExpoConstants: 'readonly',
       },
     },
     plugins: {
@@ -55,24 +59,36 @@ module.exports = [
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
         },
       ],
       '@typescript-eslint/prefer-nullish-coalescing': 'error',
       '@typescript-eslint/prefer-optional-chain': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/await-thenable': 'error',
+      '@typescript-eslint/no-misused-promises': 'error',
+      '@typescript-eslint/require-await': 'warn',
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+      ],
+      '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+      '@typescript-eslint/prefer-as-const': 'error',
 
-      // Import rules
+      // Import rules with React Native support
       'import/order': [
         'error',
         {
-          groups: ['builtin', 'external', 'internal', ['parent', 'sibling'], 'index'],
+          groups: ['builtin', 'external', 'internal', ['parent', 'sibling'], 'index', 'type'],
           'newlines-between': 'always',
           alphabetize: { order: 'asc', caseInsensitive: true },
+          warnOnUnassignedImports: true,
         },
       ],
-      'import/no-duplicates': 'error',
-      'import/no-unresolved': ['error', { ignore: ['expo'] }],
+      'import/no-duplicates': ['error', { 'prefer-inline': true }],
+      'import/no-unresolved': ['error', { ignore: ['expo', '@expo/*', 'react-native'] }],
+      'import/consistent-type-specifier-style': ['error', 'prefer-inline'],
 
       // General rules
       'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
@@ -81,6 +97,13 @@ module.exports = [
       'no-var': 'error',
       'prefer-arrow-callback': 'error',
       'object-shorthand': 'error',
+      'no-duplicate-imports': 'off', // Handled by import/no-duplicates
+
+      // Promise rules
+      'promise/always-return': 'warn',
+      'promise/catch-or-return': 'error',
+      'promise/param-names': 'error',
+      'promise/no-return-wrap': 'error',
 
       // React specific rules
       'react/prop-types': 'off', // TypeScript handles prop types
@@ -88,6 +111,15 @@ module.exports = [
       'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
       'react/jsx-props-no-spreading': 'off',
       'react/require-default-props': 'off', // TypeScript handles default props
+      'react/function-component-definition': [
+        'error',
+        {
+          namedComponents: 'arrow-function',
+          unnamedComponents: 'arrow-function',
+        },
+      ],
+      'react/jsx-no-useless-fragment': 'warn',
+      'react/self-closing-comp': 'warn',
 
       // React Hooks rules
       'react-hooks/rules-of-hooks': 'error',
@@ -106,7 +138,7 @@ module.exports = [
       'jsx-a11y/anchor-is-valid': 'off', // Not applicable in React Native
       'jsx-a11y/alt-text': 'off', // Different accessibility model in RN
 
-      // Performance
+      // Performance optimizations for React Native
       'react/jsx-no-bind': [
         'warn',
         {
@@ -129,9 +161,24 @@ module.exports = [
         'react-native': {},
         typescript: {
           alwaysTryTypes: true,
-          project: './tsconfig.json',
+          project: ['./tsconfig.json', './packages/*/tsconfig.json', './apps/*/tsconfig.json'],
+        },
+        node: {
+          extensions: ['.js', '.jsx', '.ts', '.tsx', '.native.js', '.native.ts'],
         },
       },
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx'],
+      },
+    },
+  },
+  {
+    files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
+    rules: {
+      // Disable TypeScript-specific rules for JavaScript files
+      '@typescript-eslint/no-var-requires': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/consistent-type-imports': 'off',
     },
   },
 ];

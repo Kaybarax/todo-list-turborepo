@@ -7,8 +7,11 @@ const reactHooksPlugin = require('eslint-plugin-react-hooks');
 const jsxA11yPlugin = require('eslint-plugin-jsx-a11y');
 const globals = require('globals');
 
-// Try to load Next.js ESLint config
+// Try to load Next.js ESLint config with better error handling
 let nextConfig = {};
+let nextRules = {};
+let nextSettings = {};
+
 try {
   const { FlatCompat } = require('@eslint/eslintrc');
   const compat = new FlatCompat({
@@ -17,9 +20,21 @@ try {
   });
 
   // Convert Next.js config to flat config
-  nextConfig = compat.extends('next/core-web-vitals')[0] || {};
+  const nextConfigs = compat.extends('next/core-web-vitals');
+  if (nextConfigs && nextConfigs.length > 0) {
+    nextConfig = nextConfigs[0] || {};
+    nextRules = nextConfig.rules || {};
+    nextSettings = nextConfig.settings || {};
+  }
 } catch (error) {
-  console.warn('Could not load Next.js ESLint config:', error.message);
+  console.warn('Could not load Next.js ESLint config, using fallback configuration:', error.message);
+  // Fallback Next.js rules
+  nextRules = {
+    '@next/next/no-html-link-for-pages': 'error',
+    '@next/next/no-img-element': 'warn',
+    '@next/next/no-unwanted-polyfillio': 'error',
+    '@next/next/no-page-custom-font': 'error',
+  };
 }
 
 module.exports = [
@@ -29,9 +44,10 @@ module.exports = [
     languageOptions: {
       parser: tsparser,
       parserOptions: {
-        ecmaVersion: 2022,
+        ecmaVersion: 'latest',
         sourceType: 'module',
-        project: './tsconfig.json',
+        project: true,
+        tsconfigRootDir: process.cwd(),
         ecmaFeatures: {
           jsx: true,
         },
@@ -56,9 +72,9 @@ module.exports = [
       ...js.configs.recommended.rules,
 
       // Next.js rules
-      ...nextConfig.rules,
+      ...nextRules,
 
-      // Base TypeScript rules
+      // Base TypeScript rules with improved configuration
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': [
@@ -66,6 +82,8 @@ module.exports = [
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
         },
       ],
       '@typescript-eslint/prefer-nullish-coalescing': 'warn',
@@ -81,6 +99,12 @@ module.exports = [
       '@typescript-eslint/require-await': 'warn',
       '@typescript-eslint/ban-ts-comment': 'warn',
       '@typescript-eslint/restrict-template-expressions': 'warn',
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+      ],
+      '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+      '@typescript-eslint/prefer-as-const': 'error',
 
       // General rules
       'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
@@ -90,7 +114,12 @@ module.exports = [
       'prefer-arrow-callback': 'error',
       'object-shorthand': 'error',
       'no-case-declarations': 'warn',
+      'no-duplicate-imports': 'off', // Handled by TypeScript
+
+      // Promise rules
       'promise/always-return': 'warn',
+      'promise/catch-or-return': 'error',
+      'promise/param-names': 'error',
 
       // React specific rules
       'react/prop-types': 'off', // TypeScript handles prop types
@@ -98,6 +127,15 @@ module.exports = [
       'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
       'react/jsx-props-no-spreading': 'off',
       'react/require-default-props': 'off', // TypeScript handles default props
+      'react/function-component-definition': [
+        'error',
+        {
+          namedComponents: 'arrow-function',
+          unnamedComponents: 'arrow-function',
+        },
+      ],
+      'react/jsx-no-useless-fragment': 'warn',
+      'react/self-closing-comp': 'warn',
 
       // React Hooks rules
       'react-hooks/rules-of-hooks': 'error',
@@ -105,6 +143,12 @@ module.exports = [
 
       // Accessibility rules
       'jsx-a11y/label-has-associated-control': 'warn',
+      'jsx-a11y/alt-text': 'error',
+      'jsx-a11y/aria-props': 'error',
+      'jsx-a11y/aria-proptypes': 'error',
+      'jsx-a11y/aria-unsupported-elements': 'error',
+      'jsx-a11y/role-has-required-aria-props': 'error',
+      'jsx-a11y/role-supports-aria-props': 'error',
 
       // Override React rules for Next.js
       'jsx-a11y/anchor-is-valid': 'off', // Next.js handles this differently
@@ -114,9 +158,27 @@ module.exports = [
         version: 'detect',
       },
       next: {
-        rootDir: ['apps/web/'],
+        rootDir: ['apps/web/', 'packages/ui-web/'],
       },
-      ...nextConfig.settings,
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: ['./tsconfig.json', './packages/*/tsconfig.json', './apps/*/tsconfig.json'],
+        },
+        node: {
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        },
+      },
+      ...nextSettings,
+    },
+  },
+  {
+    files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
+    rules: {
+      // Disable TypeScript-specific rules for JavaScript files
+      '@typescript-eslint/no-var-requires': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/consistent-type-imports': 'off',
     },
   },
 ];

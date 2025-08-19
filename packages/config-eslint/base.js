@@ -12,9 +12,10 @@ module.exports = [
     languageOptions: {
       parser: tsparser,
       parserOptions: {
-        ecmaVersion: 2022,
+        ecmaVersion: 'latest',
         sourceType: 'module',
-        project: './tsconfig.json',
+        project: true,
+        tsconfigRootDir: process.cwd(),
       },
       globals: {
         ...globals.node,
@@ -31,7 +32,7 @@ module.exports = [
       // ESLint recommended rules
       ...js.configs.recommended.rules,
 
-      // TypeScript specific rules
+      // TypeScript specific rules - using latest recommended patterns
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': [
@@ -39,24 +40,37 @@ module.exports = [
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
         },
       ],
       '@typescript-eslint/prefer-nullish-coalescing': 'error',
       '@typescript-eslint/prefer-optional-chain': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/await-thenable': 'error',
+      '@typescript-eslint/no-misused-promises': 'error',
+      '@typescript-eslint/require-await': 'warn',
+      '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+      '@typescript-eslint/prefer-as-const': 'error',
+      '@typescript-eslint/no-non-null-assertion': 'warn',
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+      ],
 
-      // Import rules
+      // Import rules with better TypeScript support
       'import/order': [
         'error',
         {
-          groups: ['builtin', 'external', 'internal', ['parent', 'sibling'], 'index'],
+          groups: ['builtin', 'external', 'internal', ['parent', 'sibling'], 'index', 'type'],
           'newlines-between': 'always',
           alphabetize: { order: 'asc', caseInsensitive: true },
+          warnOnUnassignedImports: true,
         },
       ],
-      'import/no-duplicates': 'error',
+      'import/no-duplicates': ['error', { 'prefer-inline': true }],
       'import/no-unresolved': 'error',
+      'import/consistent-type-specifier-style': ['error', 'prefer-inline'],
 
       // General rules
       'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
@@ -65,14 +79,40 @@ module.exports = [
       'no-var': 'error',
       'prefer-arrow-callback': 'error',
       'object-shorthand': 'error',
+      'no-duplicate-imports': 'off', // Handled by import/no-duplicates
+
+      // Promise rules
+      'promise/always-return': 'warn',
+      'promise/catch-or-return': 'error',
+      'promise/param-names': 'error',
+      'promise/no-return-wrap': 'error',
     },
     settings: {
       'import/resolver': {
         typescript: {
           alwaysTryTypes: true,
-          project: './tsconfig.json',
+          project: ['./tsconfig.json', './packages/*/tsconfig.json', './apps/*/tsconfig.json'],
+        },
+        node: {
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
       },
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx'],
+      },
+    },
+  },
+  {
+    files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
+    rules: {
+      // Disable TypeScript-specific rules for JavaScript files
+      '@typescript-eslint/no-var-requires': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-floating-promises': 'off',
+      '@typescript-eslint/await-thenable': 'off',
+      '@typescript-eslint/no-misused-promises': 'off',
+      '@typescript-eslint/require-await': 'off',
+      '@typescript-eslint/consistent-type-imports': 'off',
     },
   },
 ];
