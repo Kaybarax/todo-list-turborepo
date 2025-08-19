@@ -62,7 +62,7 @@
   - Fix any Storybook build errors from v9 changes
   - _Requirements: 3.1, 3.2, 4.4_
 
-- [ ] 9. Update Vite and build tools to latest versions
+- [x] 9. Update Vite and build tools to latest versions
   - Update Vite to v7.x in UI packages
   - Update vite-plugin-dts and other Vite plugins
   - Update Vitest to latest compatible version

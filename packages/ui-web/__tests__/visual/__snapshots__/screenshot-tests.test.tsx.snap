@@ -8,7 +8,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
     class="flex flex-wrap gap-1"
   >
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -17,7 +17,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
       </span>
     </div>
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -26,7 +26,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
       </span>
     </div>
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -35,7 +35,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
       </span>
     </div>
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -48,7 +48,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
     class="flex flex-wrap gap-1"
   >
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -57,7 +57,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
       </span>
     </div>
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -66,7 +66,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
       </span>
     </div>
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -82,7 +82,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
       Status:
     </span>
     <div
-      class="0 1"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full border-green-500 text-green-700"
     >
       <span
         class="truncate"
@@ -105,7 +105,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
     class="flex flex-wrap gap-2"
   >
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -114,7 +114,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
       </span>
     </div>
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -123,7 +123,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
       </span>
     </div>
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -132,7 +132,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
       </span>
     </div>
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -141,7 +141,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
       </span>
     </div>
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -150,7 +150,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
       </span>
     </div>
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -162,7 +162,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
       </span>
     </div>
     <div
-      class="0"
+      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
     >
       <span
         class="truncate"
@@ -179,18 +179,18 @@ exports[`Visual Regression Tests > Button Component Screenshots > should match b
   class="p-4 space-y-2 bg-white"
 >
   <button
-    class="0"
+    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
   >
     Normal
   </button>
   <button
-    class="0"
+    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
     disabled=""
   >
     Disabled
   </button>
   <button
-    class="0"
+    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
     disabled=""
   >
     <svg
@@ -216,7 +216,7 @@ exports[`Visual Regression Tests > Button Component Screenshots > should match b
     Loading
   </button>
   <button
-    class="0"
+    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
     disabled=""
   >
     <svg
@@ -252,32 +252,32 @@ exports[`Visual Regression Tests > Button Component Screenshots > should match b
     class="space-x-2"
   >
     <button
-      class="0"
+      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
     >
       Default
     </button>
     <button
-      class="0"
+      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2"
     >
       Destructive
     </button>
     <button
-      class="0"
+      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
     >
       Outline
     </button>
     <button
-      class="0"
+      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
     >
       Secondary
     </button>
     <button
-      class="0"
+      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
     >
       Ghost
     </button>
     <button
-      class="0"
+      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary underline-offset-4 hover:underline h-10 px-4 py-2"
     >
       Link
     </button>
@@ -286,22 +286,22 @@ exports[`Visual Regression Tests > Button Component Screenshots > should match b
     class="space-x-2"
   >
     <button
-      class="0"
+      class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3 bg-primary text-primary-foreground hover:bg-primary/90"
     >
       Small
     </button>
     <button
-      class="0"
+      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
     >
       Default
     </button>
     <button
-      class="0"
+      class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 rounded-md px-8 bg-primary text-primary-foreground hover:bg-primary/90"
     >
       Large
     </button>
     <button
-      class="0"
+      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10 bg-primary text-primary-foreground hover:bg-primary/90"
     >
       🔍
     </button>
@@ -310,13 +310,13 @@ exports[`Visual Regression Tests > Button Component Screenshots > should match b
     class="space-x-2"
   >
     <button
-      class="0"
+      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
       disabled=""
     >
       Disabled
     </button>
     <button
-      class="0"
+      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
       disabled=""
     >
       <svg
@@ -342,7 +342,7 @@ exports[`Visual Regression Tests > Button Component Screenshots > should match b
       Loading
     </button>
     <button
-      class="0"
+      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
     >
       <span
         class="mr-2"
@@ -362,55 +362,55 @@ exports[`Visual Regression Tests > Card Component Screenshots > should match car
   class="p-4 space-y-4 bg-gray-50"
 >
   <div
-    class="0"
+    class="rounded-lg border bg-card text-card-foreground shadow-sm border-border"
   >
     <div
-      class="0"
+      class="flex flex-col space-y-1.5 p-6"
     >
       <h3
-        class="0"
+        class="text-2xl font-semibold leading-none tracking-tight"
       >
         Basic Card
       </h3>
       <p
-        class="0"
+        class="text-sm text-muted-foreground"
       >
         Simple card layout
       </p>
     </div>
     <div
-      class="0"
+      class="p-6 pt-0"
     >
       <p>
         This is the card content.
       </p>
     </div>
     <div
-      class="0"
+      class="flex items-center p-6 pt-0"
     >
       <button
-        class="0"
+        class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3 bg-primary text-primary-foreground hover:bg-primary/90"
       >
         Action
       </button>
     </div>
   </div>
   <div
-    class="0"
+    class="rounded-lg border bg-card text-card-foreground shadow-sm border-border"
   >
     <div
-      class="0"
+      class="flex flex-col space-y-1.5 p-6"
     >
       <div
         class="flex items-center justify-between"
       >
         <h3
-          class="0"
+          class="text-2xl font-semibold leading-none tracking-tight"
         >
           Card with Badge
         </h3>
         <div
-          class="0"
+          class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
         >
           <span
             class="truncate"
@@ -421,7 +421,7 @@ exports[`Visual Regression Tests > Card Component Screenshots > should match car
       </div>
     </div>
     <div
-      class="0"
+      class="p-6 pt-0"
     >
       <p>
         Card with badge in header.
@@ -436,28 +436,28 @@ exports[`Visual Regression Tests > Card Component Screenshots > should match com
   class="p-4 bg-white"
 >
   <div
-    class="0"
+    class="rounded-lg border bg-card text-card-foreground shadow-sm border-border"
   >
     <div
-      class="0"
+      class="flex flex-col space-y-1.5 p-6"
     >
       <div
         class="flex items-start justify-between"
       >
         <div>
           <h3
-            class="0"
+            class="text-2xl font-semibold leading-none tracking-tight"
           >
             Project Dashboard
           </h3>
           <p
-            class="0"
+            class="text-sm text-muted-foreground"
           >
             Overview of your projects
           </p>
         </div>
         <div
-          class="0"
+          class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 px-2.5 py-0.5 text-xs rounded-full"
         >
           <span
             class="truncate"
@@ -468,7 +468,7 @@ exports[`Visual Regression Tests > Card Component Screenshots > should match com
       </div>
     </div>
     <div
-      class="0 1"
+      class="p-6 pt-0 space-y-4"
     >
       <div
         class="grid grid-cols-2 gap-4"
@@ -512,7 +512,7 @@ exports[`Visual Regression Tests > Card Component Screenshots > should match com
             Website Redesign
           </span>
           <div
-            class="0"
+            class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
           >
             <span
               class="truncate"
@@ -528,7 +528,7 @@ exports[`Visual Regression Tests > Card Component Screenshots > should match com
             Mobile App
           </span>
           <div
-            class="0"
+            class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
           >
             <span
               class="truncate"
@@ -540,15 +540,15 @@ exports[`Visual Regression Tests > Card Component Screenshots > should match com
       </div>
     </div>
     <div
-      class="0 1"
+      class="items-center p-6 pt-0 flex justify-between"
     >
       <button
-        class="0"
+        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
       >
         View All
       </button>
       <button
-        class="0"
+        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
       >
         New Project
       </button>
@@ -565,21 +565,21 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
     class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl"
   >
     <div
-      class="0"
+      class="rounded-lg border bg-card text-card-foreground shadow-sm border-border"
     >
       <div
-        class="0"
+        class="flex flex-col space-y-1.5 p-6"
       >
         <div
           class="flex items-center justify-between"
         >
           <h3
-            class="0"
+            class="text-2xl font-semibold leading-none tracking-tight"
           >
             User Profile
           </h3>
           <div
-            class="0"
+            class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
           >
             <span
               class="truncate"
@@ -589,20 +589,20 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
           </div>
         </div>
         <p
-          class="0"
+          class="text-sm text-muted-foreground"
         >
           Manage your account settings
         </p>
       </div>
       <div
-        class="0 1"
+        class="p-6 pt-0 space-y-3"
       >
         <div
           class="relative w-full"
         >
           <label
-            class="0"
-            for=":rc:"
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block"
+            for="«rc»"
           >
             Display Name
           </label>
@@ -613,7 +613,7 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
               class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
             >
               <span
-                class="0"
+                class="text-muted-foreground"
               >
                 <span>
                   👤
@@ -621,8 +621,8 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
               </span>
             </div>
             <input
-              class="0 1"
-              id=":rc:"
+              class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2 pl-10"
+              id="«rc»"
               value="John Doe"
             />
           </div>
@@ -631,8 +631,8 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
           class="relative w-full"
         >
           <label
-            class="0"
-            for=":rd:"
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block"
+            for="«rd»"
           >
             Email
           </label>
@@ -643,7 +643,7 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
               class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
             >
               <span
-                class="0"
+                class="text-muted-foreground"
               >
                 <span>
                   ✉️
@@ -651,8 +651,8 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
               </span>
             </div>
             <input
-              class="0 1"
-              id=":rd:"
+              class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2 pl-10"
+              id="«rd»"
               type="email"
               value="john@example.com"
             />
@@ -660,39 +660,39 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
         </div>
       </div>
       <div
-        class="0 1"
+        class="items-center p-6 pt-0 flex justify-between"
       >
         <button
-          class="0"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
         >
           Cancel
         </button>
         <button
-          class="0"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
         >
           Save Changes
         </button>
       </div>
     </div>
     <div
-      class="0"
+      class="rounded-lg border bg-card text-card-foreground shadow-sm border-border"
     >
       <div
-        class="0"
+        class="flex flex-col space-y-1.5 p-6"
       >
         <h3
-          class="0"
+          class="text-2xl font-semibold leading-none tracking-tight"
         >
           Project Status
         </h3>
         <p
-          class="0"
+          class="text-sm text-muted-foreground"
         >
           Current project overview
         </p>
       </div>
       <div
-        class="0"
+        class="p-6 pt-0"
       >
         <div
           class="space-y-2"
@@ -704,7 +704,7 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
               Website
             </span>
             <div
-              class="0"
+              class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
             >
               <span
                 class="truncate"
@@ -720,7 +720,7 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
               Mobile App
             </span>
             <div
-              class="0"
+              class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 px-2.5 py-0.5 text-xs rounded-full"
             >
               <span
                 class="truncate"
@@ -736,7 +736,7 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
               API
             </span>
             <div
-              class="0"
+              class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 px-2.5 py-0.5 text-xs rounded-full"
             >
               <span
                 class="truncate"
@@ -748,10 +748,10 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
         </div>
       </div>
       <div
-        class="0"
+        class="flex items-center p-6 pt-0"
       >
         <button
-          class="0"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
         >
           View Details
         </button>
@@ -772,40 +772,40 @@ exports[`Visual Regression Tests > Dark Mode Screenshots > should match dark mod
       class="space-x-2"
     >
       <button
-        class="0"
+        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
       >
         Default
       </button>
       <button
-        class="0"
+        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2"
       >
         Destructive
       </button>
       <button
-        class="0"
+        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
       >
         Outline
       </button>
     </div>
     <div
-      class="0"
+      class="rounded-lg border bg-card text-card-foreground shadow-sm border-border"
     >
       <div
-        class="0"
+        class="flex flex-col space-y-1.5 p-6"
       >
         <h3
-          class="0 1"
+          class="text-2xl font-semibold leading-none tracking-tight text-white"
         >
           Dark Card
         </h3>
         <p
-          class="0 1"
+          class="text-sm text-muted-foreground text-slate-300"
         >
           Card in dark theme
         </p>
       </div>
       <div
-        class="0"
+        class="p-6 pt-0"
       >
         <div
           class="relative w-full"
@@ -814,18 +814,18 @@ exports[`Visual Regression Tests > Dark Mode Screenshots > should match dark mod
             class="relative"
           >
             <input
-              class="0 3"
-              id=":re:"
+              class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2 bg-slate-700 border-slate-600 text-white"
+              id="«re»"
               placeholder="Dark input..."
             />
           </div>
         </div>
       </div>
       <div
-        class="0"
+        class="flex items-center p-6 pt-0"
       >
         <button
-          class="0"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
         >
           Dark Action
         </button>
@@ -835,7 +835,7 @@ exports[`Visual Regression Tests > Dark Mode Screenshots > should match dark mod
       class="flex gap-2"
     >
       <div
-        class="0"
+        class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
       >
         <span
           class="truncate"
@@ -844,7 +844,7 @@ exports[`Visual Regression Tests > Dark Mode Screenshots > should match dark mod
         </span>
       </div>
       <div
-        class="0"
+        class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
       >
         <span
           class="truncate"
@@ -869,8 +869,8 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
         class="relative w-full"
       >
         <label
-          class="0"
-          for=":r8:"
+          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block"
+          for="«r8»"
         >
           First Name
         </label>
@@ -878,8 +878,8 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
           class="relative"
         >
           <input
-            class="0"
-            id=":r8:"
+            class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2"
+            id="«r8»"
             placeholder="Enter first name..."
             value="John"
           />
@@ -891,8 +891,8 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
         class="relative w-full"
       >
         <label
-          class="0"
-          for=":r9:"
+          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block"
+          for="«r9»"
         >
           Email
         </label>
@@ -903,7 +903,7 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
             class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
           >
             <span
-              class="0"
+              class="text-muted-foreground"
             >
               <span>
                 ✉️
@@ -911,8 +911,8 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
             </span>
           </div>
           <input
-            class="0 1"
-            id=":r9:"
+            class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2 pl-10"
+            id="«r9»"
             placeholder="Enter email..."
             type="email"
             value="john@example.com"
@@ -925,8 +925,8 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
         class="relative w-full"
       >
         <label
-          class="0"
-          for=":ra:"
+          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block"
+          for="«ra»"
         >
           Phone
         </label>
@@ -934,16 +934,16 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
           class="relative"
         >
           <input
-            aria-describedby=":ra:-helper"
-            class="0"
-            id=":ra:"
+            aria-describedby="«ra»-helper"
+            class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2"
+            id="«ra»"
             placeholder="Enter phone..."
             type="tel"
           />
         </div>
         <p
-          class="0 1"
-          id=":ra:-helper"
+          class="mt-1 text-xs text-muted-foreground"
+          id="«ra»-helper"
         >
           Include country code
         </p>
@@ -954,8 +954,8 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
         class="relative w-full"
       >
         <label
-          class="0 1"
-          for=":rb:"
+          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block text-destructive"
+          for="«rb»"
         >
           Password
         </label>
@@ -963,16 +963,16 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
           class="relative"
         >
           <input
-            aria-describedby=":rb:-helper"
-            class="0"
-            id=":rb:"
+            aria-describedby="«rb»-helper"
+            class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-destructive focus-visible:ring-destructive h-10 px-3 py-2"
+            id="«rb»"
             placeholder="Enter password..."
             type="password"
           />
         </div>
         <p
-          class="0 1"
-          id=":rb:-helper"
+          class="mt-1 text-xs text-destructive"
+          id="«rb»-helper"
         >
           Password must be at least 8 characters
         </p>
@@ -993,8 +993,8 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
       class="relative"
     >
       <input
-        class="0"
-        id=":r0:"
+        class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2"
+        id="«r0»"
         placeholder="Default input"
       />
     </div>
@@ -1006,8 +1006,8 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
       class="relative"
     >
       <input
-        class="0"
-        id=":r1:"
+        class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2"
+        id="«r1»"
         placeholder="Email input"
         type="email"
       />
@@ -1020,9 +1020,9 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
       class="relative"
     >
       <input
-        class="0"
+        class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2"
         disabled=""
-        id=":r2:"
+        id="«r2»"
         placeholder="Disabled input"
       />
     </div>
@@ -1034,8 +1034,8 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
       class="relative"
     >
       <input
-        class="0"
-        id=":r3:"
+        class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-destructive focus-visible:ring-destructive h-10 px-3 py-2"
+        id="«r3»"
         placeholder="Error input"
       />
     </div>
@@ -1050,7 +1050,7 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
         class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
       >
         <span
-          class="0"
+          class="text-muted-foreground"
         >
           <span>
             🔍
@@ -1058,8 +1058,8 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
         </span>
       </div>
       <input
-        class="0 1"
-        id=":r4:"
+        class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2 pl-10"
+        id="«r4»"
         placeholder="With left icon"
       />
     </div>
@@ -1071,15 +1071,15 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
       class="relative"
     >
       <input
-        class="0 2"
-        id=":r5:"
+        class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2 pr-10"
+        id="«r5»"
         placeholder="With right icon"
       />
       <div
         class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
       >
         <span
-          class="0"
+          class="text-muted-foreground"
         >
           <span>
             ✓
@@ -1093,8 +1093,8 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
       class="relative w-full"
     >
       <label
-        class="0"
-        for=":r6:"
+        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block"
+        for="«r6»"
       >
         Complete Input
       </label>
@@ -1102,15 +1102,15 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
         class="relative"
       >
         <input
-          aria-describedby=":r6:-helper"
-          class="0"
-          id=":r6:"
+          aria-describedby="«r6»-helper"
+          class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2"
+          id="«r6»"
           placeholder="With label and helper"
         />
       </div>
       <p
-        class="0 1"
-        id=":r6:-helper"
+        class="mt-1 text-xs text-muted-foreground"
+        id="«r6»-helper"
       >
         This is helper text
       </p>
@@ -1121,8 +1121,8 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
       class="relative w-full"
     >
       <label
-        class="0 1"
-        for=":r7:"
+        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block text-destructive"
+        for="«r7»"
       >
         Error Input
       </label>
@@ -1130,15 +1130,15 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
         class="relative"
       >
         <input
-          aria-describedby=":r7:-helper"
-          class="0"
-          id=":r7:"
+          aria-describedby="«r7»-helper"
+          class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-destructive focus-visible:ring-destructive h-10 px-3 py-2"
+          id="«r7»"
           placeholder="With error state"
         />
       </div>
       <p
-        class="0 1"
-        id=":r7:-helper"
+        class="mt-1 text-xs text-destructive"
+        id="«r7»-helper"
       >
         This is an error message
       </p>
