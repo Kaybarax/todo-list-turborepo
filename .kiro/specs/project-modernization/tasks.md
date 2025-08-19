@@ -22,7 +22,7 @@
   - Regenerate pnpm-lock.yaml
   - _Requirements: 2.1, 2.2, 2.5_
 
-- [ ] 5. Update shared package dependencies
+- [x] 5. Update shared package dependencies
   - Update dependencies in packages/config-eslint/package.json
   - Update dependencies in packages/config-jest/package.json
   - Update dependencies in packages/config-ts/package.json
