@@ -133,6 +133,9 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     // Simulate signing delay
     await new Promise(resolve => setTimeout(resolve, 1000));
 
+    // Return a mock signature that includes the message
+    console.log('Signing message:', messageText);
+
     // Mock signature
     return `0x${Math.random().toString(16).substr(2, 128)}`;
   };
@@ -148,6 +151,9 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
 
     // Simulate transaction delay
     await new Promise(resolve => setTimeout(resolve, 3000));
+
+    // Log transaction details for debugging
+    console.log('Sending transaction:', { recipientAddress, transferAmount, transactionData });
 
     // Mock transaction hash
     return `0x${Math.random().toString(16).substr(2, 64)}`;

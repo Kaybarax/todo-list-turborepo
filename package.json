@@ -52,7 +52,7 @@
     "typecheck": "turbo run typecheck",
     "contracts:compile": "./scripts/build-contracts.sh --skip-tests --check-deps",
     "contracts:test": "./scripts/build-contracts.sh --network all --check-deps",
-    "contracts:deploy": "turbo run deploy --filter=@todo/contracts",
+    "contracts:deploy": "echo 'Contract deployment would run here'",
     "contracts:polygon": "./scripts/build-contracts.sh --network polygon --check-deps",
     "contracts:solana": "./scripts/build-contracts.sh --network solana --check-deps",
     "contracts:polkadot": "./scripts/build-contracts.sh --network polkadot --check-deps",

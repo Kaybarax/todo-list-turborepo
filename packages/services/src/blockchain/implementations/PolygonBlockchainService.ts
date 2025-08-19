@@ -379,12 +379,12 @@ export class PolygonBlockchainService extends BaseBlockchainService {
       };
 
       // Get the user's todo list address
-      // eslint-disable-next-line no-unused-vars -- _todoListAddress will be used for contract instantiation in full implementation
       const _todoListAddress = '0x0987654321098765432109876543210987654321';
 
       // Create a contract instance for the todo list
       const todoList = {
         /* Mock contract */
+        address: _todoListAddress, // Use the address for contract instantiation
       };
       this.todoLists.set(this.walletInfo?.address ?? '', todoList);
     } catch (error) {

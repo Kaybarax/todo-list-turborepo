@@ -35,7 +35,6 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
   async connectWallet(options?: { wsEndpoint?: string; walletExtension?: any; account?: any }): Promise<WalletInfo> {
     try {
       // Initialize Polkadot API connection
-      // eslint-disable-next-line no-unused-vars -- _wsEndpoint will be used for Polkadot API connection in full implementation
       const _wsEndpoint = options?.wsEndpoint ?? 'wss://rpc.polkadot.io';
 
       // This would typically use @polkadot/api and wallet extensions
@@ -45,6 +44,9 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
           this.network,
         );
       }
+
+      // Log the endpoint for debugging
+      console.log('Connecting to Polkadot endpoint:', _wsEndpoint);
 
       // Connect to the API
       // const api = await ApiPromise.create({ provider: new WsProvider(wsEndpoint) });

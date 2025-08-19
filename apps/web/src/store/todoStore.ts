@@ -164,6 +164,7 @@ export const useTodoStore = create<TodoStore>()(
 
         try {
           // Mock API call - will be replaced with actual API integration
+          console.log('Saving todo data:', todoData);
           await new Promise(resolve => setTimeout(resolve, 500));
 
           set({ isLoading: false });

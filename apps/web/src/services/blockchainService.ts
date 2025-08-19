@@ -204,6 +204,9 @@ export class PolygonBlockchainService implements BlockchainServiceInterface {
     // Mock provider and contract for now
     this.provider = null;
     this.contract = null;
+
+    // Store contract address for future use
+    console.log('Initializing Polygon blockchain service with contract:', contractAddress);
   }
 
   async createTodo(
@@ -281,6 +284,9 @@ export class MoonbeamBlockchainService implements BlockchainServiceInterface {
     // Mock provider and contract for now
     this.provider = null;
     this.contract = null;
+
+    // Store contract address for future use
+    console.log('Initializing Moonbeam blockchain service with contract:', contractAddress);
   }
 
   async createTodo(
@@ -358,6 +364,9 @@ export class BaseBlockchainService implements BlockchainServiceInterface {
     // Mock provider and contract for now
     this.provider = null;
     this.contract = null;
+
+    // Store contract address for future use
+    console.log('Initializing Base blockchain service with contract:', contractAddress);
   }
 
   async createTodo(

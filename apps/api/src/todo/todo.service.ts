@@ -207,7 +207,7 @@ export class TodoService {
     ]);
 
     const byPriority = priorityStats.reduce(
-      (acc, stat) => {
+      (acc, stat: any) => {
         acc[stat._id] = stat.count;
         return acc;
       },
@@ -215,7 +215,7 @@ export class TodoService {
     );
 
     const byBlockchainNetwork = blockchainStats.reduce(
-      (acc, stat) => {
+      (acc, stat: any) => {
         acc[stat._id] = stat.count;
         return acc;
       },

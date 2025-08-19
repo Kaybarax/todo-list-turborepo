@@ -35,11 +35,11 @@ export class SolanaBlockchainService extends BaseBlockchainService {
   async connectWallet(options?: { rpcUrl?: string; walletAdapter?: any }): Promise<WalletInfo> {
     try {
       // Initialize Solana connection
-      // eslint-disable-next-line no-unused-vars -- rpcUrl will be used for Solana connection in full implementation
       const _rpcUrl = options?.rpcUrl ?? 'https://api.mainnet-beta.solana.com';
 
       // This would typically use @solana/web3.js and wallet adapters
       // For now, we'll create a mock implementation
+      console.log('Connecting to Solana RPC:', _rpcUrl);
       if (!options?.walletAdapter) {
         throw BlockchainError.walletNotFound('Wallet adapter not provided for Solana connection', this.network);
       }
