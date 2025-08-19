@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@todo/ui-web';
 
-export default function HomePage() {
+const HomePage = () => {
   return (
     <div className="px-4 py-6 sm:px-0">
       <div className="text-center">
@@ -47,4 +47,6 @@ export default function HomePage() {
       </div>
     </div>
   );
-}
+};
+
+export default HomePage;

@@ -2,21 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import { createBlockchainService } from '@/services/blockchainService';
-import { BlockchainNetwork } from '@todo/services';
+import type { BlockchainNetwork } from '@todo/services';
 
 interface TransactionStatusProps {
   transactionHash: string;
   network: BlockchainNetwork;
-  onStatusChange?: (status: 'pending' | 'confirmed' | 'failed') => void;
+  onStatusChange?: (transactionStatus: 'pending' | 'confirmed' | 'failed') => void;
 }
 
-export function TransactionStatus({ transactionHash, network, onStatusChange }: TransactionStatusProps) {
+export const TransactionStatus = ({ transactionHash, network, onStatusChange }: TransactionStatusProps) => {
   const [status, setStatus] = useState<'pending' | 'confirmed' | 'failed'>('pending');
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-    let timeoutId: NodeJS.Timeout;
+    const intervalId: NodeJS.Timeout = setInterval(() => {}, 1000);
+    const timeoutId: NodeJS.Timeout = setTimeout(() => {}, 1000);
 
     const checkStatus = async () => {
       try {
@@ -41,23 +41,25 @@ export function TransactionStatus({ transactionHash, network, onStatusChange }: 
     };
 
     // Check status immediately
-    checkStatus();
+    void checkStatus();
 
     // Set up polling for status updates
-    intervalId = setInterval(checkStatus, 3000); // Check every 3 seconds
+    clearInterval(intervalId);
+    const newIntervalId = setInterval(() => void checkStatus(), 3000); // Check every 3 seconds
 
     // Set timeout to stop checking after 5 minutes
-    timeoutId = setTimeout(
+    clearTimeout(timeoutId);
+    const newTimeoutId = setTimeout(
       () => {
         setIsChecking(false);
-        clearInterval(intervalId);
+        clearInterval(newIntervalId);
       },
       5 * 60 * 1000,
     );
 
     return () => {
-      clearInterval(intervalId);
-      clearTimeout(timeoutId);
+      clearInterval(newIntervalId);
+      clearTimeout(newTimeoutId);
     };
   }, [transactionHash, network, onStatusChange]);
 
@@ -79,12 +81,12 @@ export function TransactionStatus({ transactionHash, network, onStatusChange }: 
       case 'pending':
         return (
           <svg className="animate-spin h-3 w-3" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path
               className="opacity-75"
               fill="currentColor"
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
+            />
           </svg>
         );
       case 'confirmed':
@@ -122,4 +124,4 @@ export function TransactionStatus({ transactionHash, network, onStatusChange }: 
       {isChecking && status === 'pending' && <span className="text-gray-400 text-xs">Checking...</span>}
     </div>
   );
-}
+};

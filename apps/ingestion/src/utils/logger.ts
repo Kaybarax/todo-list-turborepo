@@ -2,7 +2,7 @@ import winston from 'winston';
 
 // Create a logger instance
 export const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.LOG_LEVEL ?? 'info',
   format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
   defaultMeta: { service: 'ingestion-service' },
   transports: [

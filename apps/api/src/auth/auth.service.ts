@@ -99,10 +99,10 @@ export class AuthService {
   }
 
   @Trace('AuthService.verifyToken')
-  async verifyToken(token: string): Promise<any> {
+  verifyToken(token: string): { sub: string; email: string; name: string } {
     try {
       return this.jwtService.verify(token);
-    } catch (error) {
+    } catch (_error) {
       throw new UnauthorizedException('Invalid token');
     }
   }

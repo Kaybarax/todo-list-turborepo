@@ -3,7 +3,7 @@
 import { WalletConnect } from '@/components/WalletConnect';
 import { useWallet } from '@/components/WalletProvider';
 
-export default function WalletPage() {
+const WalletPage = () => {
   const { isConnected, account, signMessage, sendTransaction } = useWallet();
 
   const handleSignMessage = async () => {
@@ -48,14 +48,14 @@ export default function WalletPage() {
 
               <div className="space-y-3">
                 <button
-                  onClick={handleSignMessage}
+                  onClick={() => void handleSignMessage()}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                 >
                   Sign Message
                 </button>
 
                 <button
-                  onClick={handleSendTransaction}
+                  onClick={() => void handleSendTransaction()}
                   className="w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                 >
                   Send Test Transaction
@@ -89,7 +89,7 @@ export default function WalletPage() {
 
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-purple-500 rounded-full" />
                 <div>
                   <p className="text-sm font-medium text-gray-900">Solana</p>
                   <p className="text-xs text-gray-500">Fast and low-cost transactions</p>
@@ -97,7 +97,7 @@ export default function WalletPage() {
               </div>
 
               <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 bg-pink-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-pink-500 rounded-full" />
                 <div>
                   <p className="text-sm font-medium text-gray-900">Polkadot</p>
                   <p className="text-xs text-gray-500">Interoperable blockchain network</p>
@@ -105,7 +105,7 @@ export default function WalletPage() {
               </div>
 
               <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-indigo-500 rounded-full" />
                 <div>
                   <p className="text-sm font-medium text-gray-900">Polygon</p>
                   <p className="text-xs text-gray-500">Ethereum-compatible scaling solution</p>
@@ -117,4 +117,6 @@ export default function WalletPage() {
       </div>
     </div>
   );
-}
+};
+
+export default WalletPage;

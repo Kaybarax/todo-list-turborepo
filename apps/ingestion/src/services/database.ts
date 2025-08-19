@@ -1,4 +1,5 @@
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient, type Db } from 'mongodb';
+
 import { logger } from '../utils/logger';
 
 let db: Db;
@@ -13,8 +14,8 @@ export async function connectToDatabase(): Promise<Db> {
   }
 
   try {
-    const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
-    const dbName = process.env.MONGODB_DB_NAME || 'todos';
+    const uri = process.env.MONGODB_URI ?? 'mongodb://localhost:27017';
+    const dbName = process.env.MONGODB_DB_NAME ?? 'todos';
 
     logger.info('Connecting to MongoDB...', { uri, dbName });
 

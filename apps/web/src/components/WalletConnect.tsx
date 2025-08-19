@@ -6,7 +6,7 @@ import { Button, Badge } from '@todo/ui-web';
 import { useWallet } from './WalletProvider';
 import { getNetworkColor } from '@todo/services';
 
-export function WalletConnect() {
+export const WalletConnect = () => {
   const { isConnected, isConnecting, account, error, supportedNetworks, connect, disconnect, switchNetwork } =
     useWallet();
 
@@ -62,7 +62,7 @@ export function WalletConnect() {
       <div className="bg-white rounded-lg shadow-sm border p-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-medium text-gray-900">Wallet Connected</h3>
-          <Button onClick={handleDisconnect} disabled={isConnecting} variant="destructive" size="sm">
+          <Button onClick={() => void handleDisconnect()} disabled={isConnecting} variant="destructive" size="sm">
             Disconnect
           </Button>
         </div>
@@ -92,7 +92,7 @@ export function WalletConnect() {
                 {supportedNetworks.map(network => (
                   <Button
                     key={network}
-                    onClick={() => handleNetworkSwitch(network)}
+                    onClick={() => void handleNetworkSwitch(network)}
                     disabled={isConnecting || network === account.network}
                     variant={network === account.network ? 'secondary' : 'outline'}
                     size="sm"
@@ -119,7 +119,7 @@ export function WalletConnect() {
 
         {isConnecting && (
           <div className="mt-4 flex items-center justify-center">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-600"></div>
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-600" />
             <span className="ml-2 text-sm text-gray-600">Processing...</span>
           </div>
         )}
@@ -139,7 +139,9 @@ export function WalletConnect() {
 
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Select Network:</label>
+          <label htmlFor="network-selector" className="block text-sm font-medium text-gray-700 mb-2">
+            Select Network:
+          </label>
           <div className="grid grid-cols-3 gap-2">
             {supportedNetworks.map(network => (
               <Button
@@ -154,10 +156,10 @@ export function WalletConnect() {
           </div>
         </div>
 
-        <Button onClick={handleConnect} disabled={isConnecting} className="w-full">
+        <Button onClick={() => void handleConnect()} disabled={isConnecting} className="w-full">
           {isConnecting ? (
             <>
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
               Connecting...
             </>
           ) : (
@@ -178,4 +180,4 @@ export function WalletConnect() {
       </div>
     </div>
   );
-}
+};

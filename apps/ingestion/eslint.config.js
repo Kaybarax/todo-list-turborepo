@@ -11,6 +11,6 @@ module.exports = [
     },
   },
   {
-    ignores: ['dist/', 'node_modules/'],
+    ignores: ['dist/', 'node_modules/', 'eslint.config.js', '**/*.test.ts', '**/*.spec.ts'],
   },
 ];

@@ -1,9 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test, type TestingModule } from '@nestjs/testing';
 
-import { CreateTodoDto } from './dto/create-todo.dto';
-import { QueryTodoDto } from './dto/query-todo.dto';
-import { UpdateTodoDto } from './dto/update-todo.dto';
-import { Todo } from './schemas/todo.schema';
+import { type CreateTodoDto } from './dto/create-todo.dto';
+import { type QueryTodoDto } from './dto/query-todo.dto';
+import { type UpdateTodoDto } from './dto/update-todo.dto';
+import { type Todo } from './schemas/todo.schema';
 import { TodoController } from './todo.controller';
 import { TodoService } from './todo.service';
 
@@ -250,7 +250,7 @@ describe('TodoController', () => {
 
     it('should handle toggle from completed to incomplete', async () => {
       const todoId = 'todo123';
-      const completedTodo = { ...mockTodo, completed: true };
+      // const completedTodo = { ...mockTodo, completed: true };
       const toggledTodo = { ...mockTodo, completed: false };
 
       todoService.toggleComplete.mockResolvedValue(toggledTodo);

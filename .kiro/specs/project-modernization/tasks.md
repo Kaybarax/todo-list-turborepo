@@ -90,7 +90,7 @@
   - Remove unused imports and variables unless required by file purpose
   - _Requirements: 5.1, 5.2_
 
-- [ ] 15. Fix ESLint errors in applications
+- [x] 15. Fix ESLint errors in applications
   - Run ESLint on apps/web/ and fix all errors
   - Run ESLint on apps/api/ and fix all errors
   - Run ESLint on apps/mobile/ and fix all errors

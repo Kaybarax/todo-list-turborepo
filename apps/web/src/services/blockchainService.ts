@@ -23,23 +23,23 @@ export interface TransactionResult {
 
 export interface BlockchainServiceInterface {
   // Todo operations
-  createTodo(todo: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult>;
-  updateTodo(id: string, updates: Partial<BlockchainTodo>): Promise<TransactionResult>;
-  deleteTodo(id: string): Promise<TransactionResult>;
-  getTodo(id: string): Promise<BlockchainTodo | null>;
-  getUserTodos(userAddress: string): Promise<BlockchainTodo[]>;
+  createTodo(todoData: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult>;
+  updateTodo(todoId: string, todoUpdates: Partial<BlockchainTodo>): Promise<TransactionResult>;
+  deleteTodo(todoId: string): Promise<TransactionResult>;
+  getTodo(todoId: string): Promise<BlockchainTodo | null>;
+  getUserTodos(walletAddress: string): Promise<BlockchainTodo[]>;
 
   // Transaction monitoring
-  getTransactionStatus(_hash: string): Promise<'pending' | 'confirmed' | 'failed'>;
-  waitForTransaction(hash: string): Promise<TransactionResult>;
+  getTransactionStatus(transactionHash: string): Promise<'pending' | 'confirmed' | 'failed'>;
+  waitForTransaction(transactionHash: string): Promise<TransactionResult>;
 }
 
 // Solana blockchain service implementation
 export class SolanaBlockchainService implements BlockchainServiceInterface {
-  // @ts-ignore - Used in real implementation
+  // @ts-expect-error - Used in real implementation
   private programId: string;
-  // @ts-ignore - Used in real implementation
-  private connection: any; // Will be replaced with actual Solana connection
+  // @ts-expect-error - Used in real implementation
+  private connection: unknown; // Will be replaced with actual Solana connection
 
   constructor(programId: string) {
     this.programId = programId;
@@ -121,8 +121,8 @@ export class SolanaBlockchainService implements BlockchainServiceInterface {
 
 // Polkadot blockchain service implementation
 export class PolkadotBlockchainService implements BlockchainServiceInterface {
-  // @ts-ignore - Used in real implementation
-  private api: any; // Will be replaced with actual Polkadot API
+  // @ts-expect-error - Used in real implementation
+  private api: unknown; // Will be replaced with actual Polkadot API
 
   constructor() {
     // Mock API for now
@@ -195,12 +195,12 @@ export class PolkadotBlockchainService implements BlockchainServiceInterface {
 
 // Polygon blockchain service implementation
 export class PolygonBlockchainService implements BlockchainServiceInterface {
-  // @ts-ignore - Used in real implementation
-  private provider: any; // Will be replaced with actual Web3 provider
-  // @ts-ignore - Used in real implementation
-  private contract: any; // Will be replaced with actual contract instance
+  // @ts-expect-error - Used in real implementation
+  private provider: unknown; // Will be replaced with actual Web3 provider
+  // @ts-expect-error - Used in real implementation
+  private contract: unknown; // Will be replaced with actual contract instance
 
-  constructor(_contractAddress: string) {
+  constructor(contractAddress: string) {
     // Mock provider and contract for now
     this.provider = null;
     this.contract = null;
@@ -272,12 +272,12 @@ export class PolygonBlockchainService implements BlockchainServiceInterface {
 
 // Moonbeam blockchain service implementation
 export class MoonbeamBlockchainService implements BlockchainServiceInterface {
-  // @ts-ignore - Used in real implementation
-  private provider: any; // Will be replaced with actual Web3 provider
-  // @ts-ignore - Used in real implementation
-  private contract: any; // Will be replaced with actual contract instance
+  // @ts-expect-error - Used in real implementation
+  private provider: unknown; // Will be replaced with actual Web3 provider
+  // @ts-expect-error - Used in real implementation
+  private contract: unknown; // Will be replaced with actual contract instance
 
-  constructor(_contractAddress: string) {
+  constructor(contractAddress: string) {
     // Mock provider and contract for now
     this.provider = null;
     this.contract = null;
@@ -349,12 +349,12 @@ export class MoonbeamBlockchainService implements BlockchainServiceInterface {
 
 // Base blockchain service implementation
 export class BaseBlockchainService implements BlockchainServiceInterface {
-  // @ts-ignore - Used in real implementation
-  private provider: any; // Will be replaced with actual Web3 provider
-  // @ts-ignore - Used in real implementation
-  private contract: any; // Will be replaced with actual contract instance
+  // @ts-expect-error - Used in real implementation
+  private provider: unknown; // Will be replaced with actual Web3 provider
+  // @ts-expect-error - Used in real implementation
+  private contract: unknown; // Will be replaced with actual contract instance
 
-  constructor(_contractAddress: string) {
+  constructor(contractAddress: string) {
     // Mock provider and contract for now
     this.provider = null;
     this.contract = null;
@@ -466,33 +466,33 @@ export function createBlockchainServiceLegacy(network: 'solana' | 'polkadot' | '
 }
 
 // Utility function to convert Todo to BlockchainTodo
-export function todoToBlockchainTodo(_todo: Todo): Omit<BlockchainTodo, 'owner'> {
+export function todoToBlockchainTodo(todoData: Todo): Omit<BlockchainTodo, 'owner'> {
   return {
-    id: _todo.id,
-    title: _todo.title,
-    description: _todo.description,
-    completed: _todo.completed,
-    priority: _todo.priority,
-    dueDate: _todo.dueDate ? Math.floor(_todo.dueDate.getTime() / 1000) : undefined,
-    tags: _todo.tags,
-    createdAt: Math.floor(_todo.createdAt.getTime() / 1000),
-    updatedAt: Math.floor(_todo.updatedAt.getTime() / 1000),
+    id: todoData.id,
+    title: todoData.title,
+    description: todoData.description,
+    completed: todoData.completed,
+    priority: todoData.priority,
+    dueDate: todoData.dueDate ? Math.floor(todoData.dueDate.getTime() / 1000) : undefined,
+    tags: todoData.tags,
+    createdAt: Math.floor(todoData.createdAt.getTime() / 1000),
+    updatedAt: Math.floor(todoData.updatedAt.getTime() / 1000),
   };
 }
 
 // Utility function to convert BlockchainTodo to Todo
-export function blockchainTodoToTodo(_blockchainTodo: BlockchainTodo, _userId: string): Todo {
+export function blockchainTodoToTodo(blockchainTodoData: BlockchainTodo, userId: string): Todo {
   return {
-    id: _blockchainTodo.id,
-    title: _blockchainTodo.title,
-    description: _blockchainTodo.description,
-    completed: _blockchainTodo.completed,
-    priority: _blockchainTodo.priority,
-    dueDate: _blockchainTodo.dueDate ? new Date(_blockchainTodo.dueDate * 1000) : undefined,
-    tags: _blockchainTodo.tags,
-    createdAt: new Date(_blockchainTodo.createdAt * 1000),
-    updatedAt: new Date(_blockchainTodo.updatedAt * 1000),
-    userId: _userId,
-    blockchainAddress: _blockchainTodo.owner,
+    id: blockchainTodoData.id,
+    title: blockchainTodoData.title,
+    description: blockchainTodoData.description,
+    completed: blockchainTodoData.completed,
+    priority: blockchainTodoData.priority,
+    dueDate: blockchainTodoData.dueDate ? new Date(blockchainTodoData.dueDate * 1000) : undefined,
+    tags: blockchainTodoData.tags,
+    createdAt: new Date(blockchainTodoData.createdAt * 1000),
+    updatedAt: new Date(blockchainTodoData.updatedAt * 1000),
+    userId: userId,
+    blockchainAddress: blockchainTodoData.owner,
   };
 }

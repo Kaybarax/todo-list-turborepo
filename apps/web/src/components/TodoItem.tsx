@@ -23,13 +23,13 @@ export interface Todo {
 
 interface TodoItemProps {
   todo: Todo;
-  onToggle: (id: string) => void;
-  onEdit: (todo: Todo) => void;
-  onDelete: (id: string) => void;
-  onBlockchainSync?: (id: string, network: BlockchainNetwork) => void;
+  onToggle: (todoId: string) => void;
+  onEdit: (todoData: Todo) => void;
+  onDelete: (todoId: string) => void;
+  onBlockchainSync?: (todoId: string, network: BlockchainNetwork) => void;
 }
 
-export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }: TodoItemProps) {
+export const TodoItem = ({ todo, onToggle, onEdit, onDelete, onBlockchainSync }: TodoItemProps) => {
   const [showActions, setShowActions] = useState(false);
 
   // Priority colors are handled by Badge variant prop
@@ -176,4 +176,4 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
       </div>
     </div>
   );
-}
+};

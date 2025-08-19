@@ -17,7 +17,7 @@ export class HealthService {
     try {
       await this.redisClient.ping();
       redisStatus = 'connected';
-    } catch (error) {
+    } catch (_error) {
       redisStatus = 'disconnected';
     }
 
@@ -45,7 +45,7 @@ export class HealthService {
     try {
       await this.redisClient.ping();
       isRedisReady = true;
-    } catch (error) {
+    } catch (_error) {
       isRedisReady = false;
     }
 

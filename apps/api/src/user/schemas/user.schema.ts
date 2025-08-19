@@ -64,7 +64,7 @@ export class User {
   updatedAt: Date;
 
   // Virtual method to compare passwords
-  comparePassword: (candidatePassword: string) => Promise<boolean>;
+  comparePassword: (password: string) => Promise<boolean>;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

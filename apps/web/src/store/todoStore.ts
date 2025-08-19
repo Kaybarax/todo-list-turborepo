@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Todo } from '@/components/TodoItem';
 import { createBlockchainService, todoToBlockchainTodo, type TransactionResult } from '@/services/blockchainService';
-import { BlockchainNetwork } from '@todo/services';
+import type { BlockchainNetwork } from '@todo/services';
 
 interface TodoStore {
   todos: Todo[];
@@ -10,15 +10,15 @@ interface TodoStore {
   error: string | null;
 
   // Actions
-  addTodo: (todo: Omit<Todo, 'id' | 'createdAt' | 'updatedAt' | 'userId'>) => void;
-  updateTodo: (id: string, updates: Partial<Todo>) => void;
-  deleteTodo: (id: string) => void;
-  toggleTodo: (id: string) => void;
-  syncToBlockchain: (id: string, network: BlockchainNetwork) => Promise<void>;
+  addTodo: (todoData: Omit<Todo, 'id' | 'createdAt' | 'updatedAt' | 'userId'>) => void;
+  updateTodo: (todoId: string, todoUpdates: Partial<Todo>) => void;
+  deleteTodo: (todoId: string) => void;
+  toggleTodo: (todoId: string) => void;
+  syncToBlockchain: (todoId: string, selectedNetwork: BlockchainNetwork) => Promise<void>;
 
   // API actions (will be implemented when API is ready)
   fetchTodos: () => Promise<void>;
-  saveTodo: (todo: Todo) => Promise<void>;
+  saveTodo: (todoData: Todo) => Promise<void>;
 }
 
 // Mock user ID for now
@@ -51,39 +51,41 @@ export const useTodoStore = create<TodoStore>()(
         }));
       },
 
-      updateTodo: (id, updates) => {
-        set(state => ({
-          todos: state.todos.map(todo => (todo.id === id ? { ...todo, ...updates, updatedAt: new Date() } : todo)),
-        }));
-      },
-
-      deleteTodo: id => {
-        set(state => ({
-          todos: state.todos.filter(todo => todo.id !== id),
-        }));
-      },
-
-      toggleTodo: id => {
+      updateTodo: (todoId, todoUpdates) => {
         set(state => ({
           todos: state.todos.map(todo =>
-            todo.id === id ? { ...todo, completed: !todo.completed, updatedAt: new Date() } : todo,
+            todo.id === todoId ? { ...todo, ...todoUpdates, updatedAt: new Date() } : todo,
           ),
         }));
       },
 
-      syncToBlockchain: async (id, network) => {
+      deleteTodo: todoId => {
+        set(state => ({
+          todos: state.todos.filter(todo => todo.id !== todoId),
+        }));
+      },
+
+      toggleTodo: todoId => {
+        set(state => ({
+          todos: state.todos.map(todo =>
+            todo.id === todoId ? { ...todo, completed: !todo.completed, updatedAt: new Date() } : todo,
+          ),
+        }));
+      },
+
+      syncToBlockchain: async (todoId, selectedNetwork) => {
         set({ isLoading: true, error: null });
 
         try {
           const state = get();
-          const todo = state.todos.find(t => t.id === id);
+          const todo = state.todos.find(t => t.id === todoId);
 
           if (!todo) {
             throw new Error('Todo not found');
           }
 
           // Create blockchain service for the selected network
-          const blockchainService = createBlockchainService(network);
+          const blockchainService = createBlockchainService(selectedNetwork);
 
           // Convert todo to blockchain format
           const blockchainTodo = todoToBlockchainTodo(todo);
@@ -94,12 +96,12 @@ export const useTodoStore = create<TodoStore>()(
           // Update todo with blockchain information
           set(state => ({
             todos: state.todos.map(todo =>
-              todo.id === id
+              todo.id === todoId
                 ? {
                     ...todo,
-                    blockchainNetwork: network,
+                    blockchainNetwork: selectedNetwork,
                     transactionHash: result.hash,
-                    blockchainAddress: `${network}-${id}`,
+                    blockchainAddress: `${selectedNetwork}-${todoId}`,
                     updatedAt: new Date(),
                   }
                 : todo,
@@ -110,10 +112,10 @@ export const useTodoStore = create<TodoStore>()(
           // Wait for transaction confirmation in the background
           blockchainService
             .waitForTransaction(result.hash)
-            .then(_confirmedResult => {
+            .then(() => {
               set(state => ({
                 todos: state.todos.map(todo =>
-                  todo.id === id && todo.transactionHash === result.hash
+                  todo.id === todoId && todo.transactionHash === result.hash
                     ? {
                         ...todo,
                         // Could add more blockchain metadata here
@@ -157,7 +159,7 @@ export const useTodoStore = create<TodoStore>()(
         }
       },
 
-      saveTodo: async _todo => {
+      saveTodo: async todoData => {
         set({ isLoading: true, error: null });
 
         try {

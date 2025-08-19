@@ -1,7 +1,7 @@
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
-import { Test, TestingModule } from '@nestjs/testing';
-import { Model } from 'mongoose';
+import { Test, type TestingModule } from '@nestjs/testing';
+import { type Model } from 'mongoose';
 
 import { User } from './schemas/user.schema';
 import { UserService } from './user.service';
@@ -343,7 +343,7 @@ describe('UserService', () => {
 
   describe('getUserStats', () => {
     it('should get user statistics', async () => {
-      const userId = '507f1f77bcf86cd799439011';
+      const _userId = '507f1f77bcf86cd799439011';
       const mockStats = [
         {
           totalTodos: 10,
@@ -362,7 +362,7 @@ describe('UserService', () => {
     });
 
     it('should handle user with no todos', async () => {
-      const userId = '507f1f77bcf86cd799439011';
+      const _userId = '507f1f77bcf86cd799439011';
 
       userModel.aggregate.mockResolvedValue([]);
 

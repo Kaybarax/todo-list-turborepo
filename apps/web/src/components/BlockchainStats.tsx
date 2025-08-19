@@ -8,7 +8,7 @@ interface BlockchainStatsProps {
   todos: Todo[];
 }
 
-export function BlockchainStats({ todos }: BlockchainStatsProps) {
+export const BlockchainStats = ({ todos }: BlockchainStatsProps) => {
   const stats = useMemo(() => {
     const total = todos.length;
     const onChain = todos.filter(todo => todo.blockchainNetwork).length;
@@ -111,4 +111,4 @@ export function BlockchainStats({ todos }: BlockchainStatsProps) {
       )}
     </div>
   );
-}
+};

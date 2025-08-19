@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongodb';
+import { type ObjectId } from 'mongodb';
 
 /**
  * Todo item interface
@@ -29,15 +29,15 @@ export function createTodo(data: Partial<Todo>): Todo {
   const now = new Date();
 
   return {
-    title: data.title || '',
+    title: data.title ?? '',
     description: data.description,
-    completed: data.completed || false,
-    createdAt: data.createdAt || now,
-    updatedAt: data.updatedAt || now,
-    userId: data.userId || '',
+    completed: data.completed ?? false,
+    createdAt: data.createdAt ?? now,
+    updatedAt: data.updatedAt ?? now,
+    userId: data.userId ?? '',
     priority: data.priority,
     dueDate: data.dueDate,
-    tags: data.tags || [],
+    tags: data.tags ?? [],
     schemaVersion: CURRENT_SCHEMA_VERSION,
   };
 }

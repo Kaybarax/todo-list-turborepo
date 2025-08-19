@@ -39,7 +39,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Refresh access token' })
   @ApiResponse({ status: 200, description: 'Token refreshed successfully', type: AuthResponseDto })
   @ApiResponse({ status: 401, description: 'Invalid token' })
-  async refresh(@CurrentUser() user: any): Promise<AuthResponseDto> {
+  async refresh(@CurrentUser() user: { id: string }): Promise<AuthResponseDto> {
     return this.authService.refreshToken(user.id);
   }
 
@@ -49,7 +49,9 @@ export class AuthController {
   @ApiOperation({ summary: 'Get current user profile' })
   @ApiResponse({ status: 200, description: 'Profile retrieved successfully' })
   @ApiResponse({ status: 401, description: 'Authentication required' })
-  async getProfile(@CurrentUser() user: any) {
+  getProfile(
+    @CurrentUser() user: { id: string; email: string; name: string; walletAddress?: string; preferredNetwork?: string },
+  ) {
     return {
       id: user.id,
       email: user.email,

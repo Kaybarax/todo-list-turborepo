@@ -1,12 +1,12 @@
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test, type TestingModule } from '@nestjs/testing';
 import * as bcrypt from 'bcrypt';
 
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
+import { type LoginDto } from './dto/login.dto';
+import { type RegisterDto } from './dto/register.dto';
 
 // Mock bcrypt
 jest.mock('bcrypt');
@@ -23,11 +23,11 @@ describe('AuthService', () => {
     password: 'hashedPassword',
     name: 'Test User',
     walletAddress: '0x123',
-    preferredNetwork: 'polygon' as 'polygon',
+    preferredNetwork: 'polygon' as const,
     settings: {
-      theme: 'light' as 'light',
+      theme: 'light' as const,
       notifications: true,
-      defaultPriority: 'medium' as 'medium',
+      defaultPriority: 'medium' as const,
     },
     isVerified: false,
     isActive: true,

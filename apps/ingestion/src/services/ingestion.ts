@@ -1,7 +1,8 @@
-import { Collection } from 'mongodb';
+import { type Collection } from 'mongodb';
+
 import { getDb } from './database';
+import { createTodo, type Todo } from '../models/todo';
 import { logger } from '../utils/logger';
-import { Todo, createTodo } from '../models/todo';
 
 /**
  * Start the data ingestion process
@@ -52,16 +53,18 @@ function setupPeriodicIngestion(collection: Collection<Todo>): void {
   // - Reading from a message queue
   // - Processing files from a directory
 
-  const INGESTION_INTERVAL = parseInt(process.env.INGESTION_INTERVAL || '60000', 10);
+  const INGESTION_INTERVAL = parseInt(process.env.INGESTION_INTERVAL ?? '60000', 10);
 
   logger.info(`Setting up periodic ingestion every ${INGESTION_INTERVAL}ms`);
 
-  setInterval(async () => {
-    try {
-      await processIncomingData(collection);
-    } catch (error) {
-      logger.error('Error during periodic ingestion', { error });
-    }
+  setInterval(() => {
+    void (async () => {
+      try {
+        await processIncomingData(collection);
+      } catch (error) {
+        logger.error('Error during periodic ingestion', { error });
+      }
+    })();
   }, INGESTION_INTERVAL);
 }
 

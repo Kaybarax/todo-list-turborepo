@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { getSupportedWalletNetworks, generateMockAddress } from '@todo/services';
 
 // Types for wallet connection
@@ -18,11 +18,11 @@ export interface WalletContextType {
   supportedNetworks: ('solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base')[];
 
   // Actions
-  connect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => Promise<void>;
+  connect: (selectedNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => Promise<void>;
   disconnect: () => Promise<void>;
-  switchNetwork: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => Promise<void>;
-  signMessage: (message: string) => Promise<string>;
-  sendTransaction: (to: string, amount: string, data?: string) => Promise<string>;
+  switchNetwork: (selectedNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => Promise<void>;
+  signMessage: (messageText: string) => Promise<string>;
+  sendTransaction: (recipientAddress: string, transferAmount: string, transactionData?: string) => Promise<string>;
 }
 
 const WalletContext = createContext<WalletContextType | null>(null);
@@ -39,7 +39,7 @@ interface WalletProviderProps {
   children: ReactNode;
 }
 
-export function WalletProvider({ children }: WalletProviderProps) {
+export const WalletProvider = ({ children }: WalletProviderProps) => {
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [account, setAccount] = useState<WalletAccount | null>(null);
@@ -48,7 +48,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
   const supportedNetworks = getSupportedWalletNetworks();
 
   // Mock wallet connection - will be replaced with actual WalletConnect integration
-  const connect = async (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => {
+  const connect = async (selectedNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => {
     setIsConnecting(true);
     setError(null);
 
@@ -58,8 +58,8 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
       // Mock wallet connection
       const mockAccount: WalletAccount = {
-        address: generateMockAddress(network),
-        network,
+        address: generateMockAddress(selectedNetwork),
+        network: selectedNetwork,
         balance: generateMockBalance(),
       };
 
@@ -97,7 +97,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
     }
   };
 
-  const switchNetwork = async (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => {
+  const switchNetwork = async (selectedNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => {
     if (!account) {
       throw new Error('No wallet connected');
     }
@@ -111,8 +111,8 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
       const updatedAccount: WalletAccount = {
         ...account,
-        address: generateMockAddress(network),
-        network,
+        address: generateMockAddress(selectedNetwork),
+        network: selectedNetwork,
         balance: generateMockBalance(),
       };
 
@@ -125,7 +125,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
     }
   };
 
-  const signMessage = async (_message: string): Promise<string> => {
+  const signMessage = async (messageText: string): Promise<string> => {
     if (!account) {
       throw new Error('No wallet connected');
     }
@@ -137,7 +137,11 @@ export function WalletProvider({ children }: WalletProviderProps) {
     return `0x${Math.random().toString(16).substr(2, 128)}`;
   };
 
-  const sendTransaction = async (_to: string, _amount: string, _data?: string): Promise<string> => {
+  const sendTransaction = async (
+    recipientAddress: string,
+    transferAmount: string,
+    transactionData?: string,
+  ): Promise<string> => {
     if (!account) {
       throw new Error('No wallet connected');
     }
@@ -156,7 +160,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
     if (isWalletConnected && storedAccount) {
       try {
-        const parsedAccount = JSON.parse(storedAccount);
+        const parsedAccount = JSON.parse(storedAccount) as WalletAccount;
         setAccount(parsedAccount);
         setIsConnected(true);
       } catch (err) {
@@ -181,7 +185,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
   };
 
   return <WalletContext.Provider value={value}>{children}</WalletContext.Provider>;
-}
+};
 
 // Helper functions for mock data
 function generateMockBalance(): string {

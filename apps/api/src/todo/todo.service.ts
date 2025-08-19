@@ -83,7 +83,6 @@ export class TodoService {
     const sort: Record<string, 1 | -1> = {};
     if (sortBy === 'priority') {
       // Custom priority sorting: high -> medium -> low
-      const priorityOrder = { high: 3, medium: 2, low: 1 };
       sort.priority = sortOrder === 'asc' ? 1 : -1;
     } else {
       sort[sortBy] = sortOrder === 'asc' ? 1 : -1;

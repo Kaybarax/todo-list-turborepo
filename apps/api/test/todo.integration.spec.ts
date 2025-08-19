@@ -1,15 +1,11 @@
-import { INestApplication } from '@nestjs/common';
+import { type INestApplication } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test, type TestingModule } from '@nestjs/testing';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import request from 'supertest';
 
 import { AppModule } from '../src/app.module';
-import { AuthModule } from '../src/auth/auth.module';
-import { DatabaseModule } from '../src/database/database.module';
-import { TodoModule } from '../src/todo/todo.module';
-import { UserModule } from '../src/user/user.module';
 
 describe('Todo Integration Tests', () => {
   let app: INestApplication;

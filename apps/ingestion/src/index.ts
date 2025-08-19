@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
+
 import { connectToDatabase } from './services/database';
-import { logger } from './utils/logger';
 import { startIngestion } from './services/ingestion';
+import { logger } from './utils/logger';
 
 // Load environment variables
 dotenv.config();
@@ -35,4 +36,4 @@ process.on('uncaughtException', error => {
 });
 
 // Start the application
-main();
+void main();

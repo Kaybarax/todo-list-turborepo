@@ -7,10 +7,10 @@ import { TodoList } from '@/components/TodoList';
 import { BlockchainStats } from '@/components/BlockchainStats';
 import { useTodoStore } from '@/store/todoStore';
 import { useWallet } from '@/components/WalletProvider';
-import { BlockchainNetwork } from '@todo/services';
+import type { BlockchainNetwork } from '@todo/services';
 import type { Todo } from '@/components/TodoItem';
 
-export default function TodosPage() {
+const TodosPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
 
@@ -20,7 +20,7 @@ export default function TodosPage() {
   const { isConnected } = useWallet();
 
   useEffect(() => {
-    fetchTodos();
+    void fetchTodos();
   }, [fetchTodos]);
 
   const handleSubmit = (todoData: {
@@ -173,8 +173,10 @@ export default function TodosPage() {
         onToggle={toggleTodo}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        onBlockchainSync={isConnected ? handleBlockchainSync : undefined}
+        onBlockchainSync={isConnected ? (id, network) => void handleBlockchainSync(id, network) : undefined}
       />
     </div>
   );
-}
+};
+
+export default TodosPage;

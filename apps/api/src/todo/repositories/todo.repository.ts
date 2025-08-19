@@ -59,7 +59,7 @@ export class TodoRepository {
     return !!result;
   }
 
-  async aggregate(pipeline: any[]): Promise<any[]> {
+  async aggregate(pipeline: Record<string, unknown>[]): Promise<Record<string, unknown>[]> {
     return this.todoModel.aggregate(pipeline).exec();
   }
 

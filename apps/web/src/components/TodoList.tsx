@@ -3,20 +3,20 @@
 import { useState, useMemo } from 'react';
 import { Input } from '@todo/ui-web';
 import { TodoItem, type Todo } from './TodoItem';
-import { BlockchainNetwork } from '@todo/services';
+import type { BlockchainNetwork } from '@todo/services';
 
 interface TodoListProps {
   todos: Todo[];
-  onToggle: (id: string) => void;
-  onEdit: (todo: Todo) => void;
-  onDelete: (id: string) => void;
-  onBlockchainSync?: (id: string, network: BlockchainNetwork) => void;
+  onToggle: (todoId: string) => void;
+  onEdit: (todoData: Todo) => void;
+  onDelete: (todoId: string) => void;
+  onBlockchainSync?: (todoId: string, network: BlockchainNetwork) => void;
 }
 
 type FilterType = 'all' | 'active' | 'completed';
 type SortType = 'created' | 'priority' | 'dueDate' | 'title';
 
-export function TodoList({ todos, onToggle, onEdit, onDelete, onBlockchainSync }: TodoListProps) {
+export const TodoList = ({ todos, onToggle, onEdit, onDelete, onBlockchainSync }: TodoListProps) => {
   const [filter, setFilter] = useState<FilterType>('all');
   const [sort, setSort] = useState<SortType>('created');
   const [searchTerm, setSearchTerm] = useState('');
@@ -49,9 +49,10 @@ export function TodoList({ todos, onToggle, onEdit, onDelete, onBlockchainSync }
     // Apply sort
     filtered.sort((a, b) => {
       switch (sort) {
-        case 'priority':
+        case 'priority': {
           const priorityOrder = { high: 3, medium: 2, low: 1 };
           return priorityOrder[b.priority] - priorityOrder[a.priority];
+        }
         case 'dueDate':
           if (!a.dueDate && !b.dueDate) return 0;
           if (!a.dueDate) return 1;
@@ -173,4 +174,4 @@ export function TodoList({ todos, onToggle, onEdit, onDelete, onBlockchainSync }
       </div>
     </div>
   );
-}
+};

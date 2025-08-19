@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button, Input, Badge } from '@todo/ui-web';
 
 interface TodoFormProps {
-  onSubmit: (todo: {
+  onSubmit: (todoData: {
     title: string;
     description?: string;
     priority: 'low' | 'medium' | 'high';
@@ -21,13 +21,13 @@ interface TodoFormProps {
   };
 }
 
-export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
-  const [title, setTitle] = useState(initialData?.title || '');
-  const [description, setDescription] = useState(initialData?.description || '');
-  const [priority, setPriority] = useState<'low' | 'medium' | 'high'>(initialData?.priority || 'medium');
-  const [dueDate, setDueDate] = useState(initialData?.dueDate || '');
+export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => {
+  const [title, setTitle] = useState(initialData?.title ?? '');
+  const [description, setDescription] = useState(initialData?.description ?? '');
+  const [priority, setPriority] = useState<'low' | 'medium' | 'high'>(initialData?.priority ?? 'medium');
+  const [dueDate, setDueDate] = useState(initialData?.dueDate ?? '');
   const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState<string[]>(initialData?.tags || []);
+  const [tags, setTags] = useState<string[]>(initialData?.tags ?? []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -173,4 +173,4 @@ export function TodoForm({ onSubmit, onCancel, initialData }: TodoFormProps) {
       </div>
     </form>
   );
-}
+};

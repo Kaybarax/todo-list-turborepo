@@ -1,11 +1,11 @@
 import { UnauthorizedException, ConflictException } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test, type TestingModule } from '@nestjs/testing';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { AuthResponseDto } from './dto/auth-response.dto';
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
+import { type AuthResponseDto } from './dto/auth-response.dto';
+import { type LoginDto } from './dto/login.dto';
+import { type RegisterDto } from './dto/register.dto';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -16,11 +16,11 @@ describe('AuthController', () => {
     email: 'test@example.com',
     name: 'Test User',
     walletAddress: '0x123456789',
-    preferredNetwork: 'polygon' as 'polygon',
+    preferredNetwork: 'polygon' as const,
     settings: {
-      theme: 'light' as 'light',
+      theme: 'light' as const,
       notifications: true,
-      defaultPriority: 'medium' as 'medium',
+      defaultPriority: 'medium' as const,
     },
     isVerified: false,
     isActive: true,

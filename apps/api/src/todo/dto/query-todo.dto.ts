@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
-import { IsOptional, IsEnum, IsString, IsBoolean, IsNumberString, Min, Max } from 'class-validator';
+import { IsOptional, IsEnum, IsString, IsBoolean, Min, Max } from 'class-validator';
 
 export class QueryTodoDto {
   @ApiProperty({ description: 'Page number for pagination', example: 1, required: false })
