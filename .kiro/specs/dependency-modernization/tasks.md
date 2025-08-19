@@ -78,7 +78,7 @@
   - Fix any contract compilation errors from dependency updates
   - _Requirements: 3.1, 3.2, 4.1_
 
-- [ ] 11. Update Polkadot and Solana blockchain dependencies
+- [x] 11. Update Polkadot and Solana blockchain dependencies
   - Update @polkadot/api to v16.4.4 in all packages
   - Update @polkadot/util and related packages to latest versions
   - Update @coral-xyz/anchor to v0.31.1

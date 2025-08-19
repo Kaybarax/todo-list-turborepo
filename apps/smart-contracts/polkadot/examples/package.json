@@ -7,9 +7,9 @@
     "start": "node client.js"
   },
   "dependencies": {
-    "@polkadot/api": "^10.9.1",
-    "@polkadot/keyring": "^12.5.1",
-    "@polkadot/util": "^12.5.1",
-    "@polkadot/util-crypto": "^12.5.1"
+    "@polkadot/api": "^16.4.4",
+    "@polkadot/keyring": "^13.2.3",
+    "@polkadot/util": "^13.2.3",
+    "@polkadot/util-crypto": "^13.2.3"
   }
 }
