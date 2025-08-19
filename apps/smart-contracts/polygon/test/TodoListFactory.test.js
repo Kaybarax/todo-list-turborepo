@@ -20,12 +20,12 @@ describe('TodoListFactory Contract Tests', function () {
     // Deploy TodoListFactory
     TodoListFactory = await ethers.getContractFactory('TodoListFactory');
     todoListFactory = await TodoListFactory.deploy();
-    await todoListFactory.deployed();
+    await todoListFactory.waitForDeployment();
   });
 
   describe('Deployment', function () {
     it('Should deploy successfully', async function () {
-      expect(todoListFactory.address).to.be.properAddress;
+      expect(await todoListFactory.getAddress()).to.be.properAddress;
     });
 
     it('Should initialize with empty state', async function () {
@@ -46,7 +46,7 @@ describe('TodoListFactory Contract Tests', function () {
         .withArgs(user1.address);
 
       const userTodoListAddress = await todoListFactory.getUserTodoList(user1.address);
-      expect(userTodoListAddress).to.not.equal(ethers.constants.AddressZero);
+      expect(userTodoListAddress).to.not.equal(ethers.ZeroAddress);
     });
 
     it('Should increment user count after creation', async function () {

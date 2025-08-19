@@ -62,9 +62,7 @@ contract TodoList is Ownable {
   /**
    * @dev Constructor that sets the contract owner
    */
-  constructor() {
-    _transferOwnership(msg.sender);
-  }
+  constructor() Ownable(msg.sender) {}
 
   /**
    * @dev Create a new todo
@@ -121,7 +119,7 @@ contract TodoList is Ownable {
    * @param id The ID of the todo to update
    * @param title The new title (pass empty string to keep current)
    * @param description The new description (pass empty string to keep current)
-   * @param priority The new priority (pass uint256 max value to keep current)
+   * @param priorityValue The new priority (pass uint256 max value to keep current)
    */
   function updateTodo(uint256 id, string calldata title, string calldata description, uint256 priorityValue) external {
     // Get todo index

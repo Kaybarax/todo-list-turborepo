@@ -21,9 +21,7 @@ contract TodoListFactory is Ownable {
   /**
    * @dev Constructor that sets the contract owner
    */
-  constructor() {
-    _transferOwnership(msg.sender);
-  }
+  constructor() Ownable(msg.sender) {}
 
   /**
    * @dev Create a new TodoList contract for the caller
