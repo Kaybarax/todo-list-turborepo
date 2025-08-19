@@ -46,7 +46,7 @@
   - Verify Cargo package manager is working
   - _Requirements: 3.3, 4.4_
 
-- [ ] 8. Install Solana CLI tools
+- [x] 8. Install Solana CLI tools
   - Install the latest stable Solana CLI
   - Configure Solana CLI with appropriate network settings
   - Verify Solana CLI installation and functionality
