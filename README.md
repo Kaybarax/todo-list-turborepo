@@ -8,7 +8,7 @@ A modern, full-stack Todo application built as a comprehensive monorepo showcasi
 
 ### Core Applications
 
-- **Web App**: Next.js 14 with App Router, TypeScript, and Tailwind CSS
+- **Web App**: Next.js 15 with App Router, TypeScript, and Tailwind CSS
 - **Mobile App**: Expo React Native with cross-platform support
 - **API**: NestJS with MongoDB, Redis, and comprehensive validation
 - **Ingestion Service**: Background processing for blockchain data
@@ -34,7 +34,7 @@ A modern, full-stack Todo application built as a comprehensive monorepo showcasi
 ```
 .
 ├── apps/
-│   ├── web/                 # Next.js 14 with App Router and Tailwind CSS
+│   ├── web/                 # Next.js 15 with App Router and Tailwind CSS
 │   ├── mobile/              # Expo React Native with TypeScript
 │   ├── api/                 # NestJS with MongoDB and Redis
 │   ├── ingestion/           # Blockchain data processing service
@@ -157,7 +157,7 @@ This monorepo has been comprehensively modernized with enterprise-grade features
 
 ### 🚀 Application Modernization
 
-- **Next.js 14 Web App**: Rebuilt with App Router, server components, and optimized performance
+- **Next.js 15 Web App**: Rebuilt with App Router, server components, and optimized performance
 - **NestJS API**: Complete rewrite with proper architecture, validation, and OpenTelemetry tracing
 - **Expo React Native**: Modern mobile app with blockchain wallet integration
 - **Shared Libraries**: Rebuilt UI components and services with TypeScript and modern patterns

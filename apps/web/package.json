@@ -24,7 +24,7 @@
     "@opentelemetry/sdk-trace-web": "^2.0.1",
     "@todo/services": "workspace:*",
     "@todo/ui-web": "workspace:*",
-    "@web3modal/wagmi": "^5.1.11",
+
     "@walletconnect/ethereum-provider": "^2.21.8",
     "@polkadot/extension-dapp": "^0.61.6",
     "@polkadot/api": "^16.4.4",

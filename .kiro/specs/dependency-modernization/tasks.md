@@ -118,7 +118,7 @@
   - Test Storybook functionality for both web and mobile UI packages
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 5.1, 5.2_
 
-- [ ] 16. Clean up and optimize package configurations
+- [-] 16. Clean up and optimize package configurations
   - Remove any unused dependencies from package.json files
   - Consolidate duplicate dependencies across packages
   - Update package.json scripts that may reference old versions

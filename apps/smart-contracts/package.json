@@ -2,7 +2,6 @@
   "name": "@todo/smart-contracts",
   "version": "0.0.1",
   "private": true,
-
   "description": "Multi-network smart contracts for todo management",
   "scripts": {
     "compile": "hardhat compile",
@@ -57,17 +56,17 @@
     "@typechain/hardhat": "^9.1.0",
     "@types/chai": "^4.3.20",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^20.17.9",
+    "@types/node": "^20.19.9",
     "chai": "^4.5.0",
     "ethers": "^6.13.4",
-    "hardhat": "^2.22.18",
+    "hardhat": "^3.0.0",
     "hardhat-gas-reporter": "^1.0.10",
     "solidity-coverage": "^0.8.14",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
     "typescript": "^5.9.2",
     "prettier": "^3.4.2",
-    "prettier-plugin-solidity": "^1.4.1",
+    "prettier-plugin-solidity": "^2.1.0",
     "solhint": "^5.0.3"
   },
   "optionalDependencies": {
