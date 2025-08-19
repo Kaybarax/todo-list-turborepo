@@ -98,7 +98,7 @@
   - Remove unused declarations and resolve TypeScript errors
   - _Requirements: 5.1, 5.2, 5.5_
 
-- [ ] 16. Fix ESLint errors in smart contracts
+- [x] 16. Fix ESLint errors in smart contracts
   - Run ESLint/Solhint on smart contract code
   - Fix any linting issues in Solidity contracts
   - Resolve any Rust clippy warnings in Solana/Polkadot code

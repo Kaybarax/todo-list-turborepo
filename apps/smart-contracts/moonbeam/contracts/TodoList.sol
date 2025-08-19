@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title TodoList
@@ -36,15 +36,6 @@ contract TodoList is Ownable {
     uint256 highPriority;
   }
 
-  // Mapping from user address to their todos
-  mapping(address => Todo[]) private _userTodos;
-
-  // Mapping from user address to their todo IDs
-  mapping(address => mapping(uint256 => uint256)) private _todoIndexes;
-
-  // Counter for todo IDs
-  mapping(address => uint256) private _todoIds;
-
   // Maximum length for todo title
   uint256 public constant MAX_TITLE_LENGTH = 100;
 
@@ -54,18 +45,33 @@ contract TodoList is Ownable {
   // Maximum number of todos per user
   uint256 public constant MAX_TODOS_PER_USER = 50;
 
+  // Mapping from user address to their todos
+  mapping(address => Todo[]) private _userTodos;
+
+  // Mapping from user address to their todo IDs
+  mapping(address => mapping(uint256 => uint256)) private _todoIndexes;
+
+  // Counter for todo IDs
+  mapping(address => uint256) private _todoIds;
+
   // Events
   event TodoCreated(address indexed user, uint256 indexed id, string title, Priority priority);
   event TodoUpdated(address indexed user, uint256 indexed id, string title, Priority priority);
   event TodoCompletionToggled(address indexed user, uint256 indexed id, bool completed);
   event TodoDeleted(address indexed user, uint256 indexed id);
 
+  // Custom errors
+  error TitleEmpty();
+  error TitleTooLong();
+  error DescriptionTooLong();
+  error TodoListFull();
+  error TodoNotFound();
+  error InvalidPriority();
+
   /**
    * @dev Constructor that sets the contract owner
    */
-  constructor() {
-    _transferOwnership(msg.sender);
-  }
+  constructor() Ownable(msg.sender) {}
 
   /**
    * @dev Create a new todo
@@ -80,28 +86,29 @@ contract TodoList is Ownable {
     Priority priority
   ) external returns (uint256) {
     // Check title length
-    require(bytes(title).length > 0, "Title cannot be empty");
-    require(bytes(title).length <= MAX_TITLE_LENGTH, "Title is too long");
+    if (bytes(title).length == 0) revert TitleEmpty();
+    if (bytes(title).length > MAX_TITLE_LENGTH) revert TitleTooLong();
 
     // Check description length
-    require(bytes(description).length <= MAX_DESCRIPTION_LENGTH, "Description is too long");
+    if (bytes(description).length > MAX_DESCRIPTION_LENGTH) revert DescriptionTooLong();
 
     // Check todo list size
-    require(_userTodos[msg.sender].length < MAX_TODOS_PER_USER, "Todo list is full");
+    if (_userTodos[msg.sender].length >= MAX_TODOS_PER_USER) revert TodoListFull();
 
     // Get next ID
     _todoIds[msg.sender]++;
     uint256 todoId = _todoIds[msg.sender];
 
     // Create new todo
+    // solhint-disable-next-line not-rely-on-time
     Todo memory newTodo = Todo({
       id: todoId,
       title: title,
       description: description,
       completed: false,
       priority: priority,
-      createdAt: block.timestamp,
-      updatedAt: block.timestamp,
+      createdAt: block.timestamp, // solhint-disable-line not-rely-on-time
+      updatedAt: block.timestamp, // solhint-disable-line not-rely-on-time
       completedAt: 0
     });
 
@@ -130,23 +137,24 @@ contract TodoList is Ownable {
 
     // Check title length if provided
     if (bytes(title).length > 0) {
-      require(bytes(title).length <= MAX_TITLE_LENGTH, "Title is too long");
+      if (bytes(title).length > MAX_TITLE_LENGTH) revert TitleTooLong();
       _userTodos[msg.sender][index].title = title;
     }
 
     // Check description length if provided
     if (bytes(description).length > 0) {
-      require(bytes(description).length <= MAX_DESCRIPTION_LENGTH, "Description is too long");
+      if (bytes(description).length > MAX_DESCRIPTION_LENGTH) revert DescriptionTooLong();
       _userTodos[msg.sender][index].description = description;
     }
 
     // Update priority if provided
     if (priorityValue != type(uint256).max) {
-      require(priorityValue <= uint256(Priority.High), "Invalid priority value");
+      if (priorityValue > uint256(Priority.High)) revert InvalidPriority();
       _userTodos[msg.sender][index].priority = Priority(priorityValue);
     }
 
     // Update timestamp
+    // solhint-disable-next-line not-rely-on-time
     _userTodos[msg.sender][index].updatedAt = block.timestamp;
 
     // Emit event
@@ -165,8 +173,10 @@ contract TodoList is Ownable {
     _userTodos[msg.sender][index].completed = !_userTodos[msg.sender][index].completed;
 
     // Update timestamps
+    // solhint-disable-next-line not-rely-on-time
     _userTodos[msg.sender][index].updatedAt = block.timestamp;
     if (_userTodos[msg.sender][index].completed) {
+      // solhint-disable-next-line not-rely-on-time
       _userTodos[msg.sender][index].completedAt = block.timestamp;
     } else {
       _userTodos[msg.sender][index].completedAt = 0;
@@ -254,7 +264,7 @@ contract TodoList is Ownable {
    * @return The index of the todo
    */
   function _getTodoIndex(address user, uint256 id) internal view returns (uint256) {
-    require(_todoExists(user, id), "Todo not found");
+    if (!_todoExists(user, id)) revert TodoNotFound();
     return _todoIndexes[user][id];
   }
 

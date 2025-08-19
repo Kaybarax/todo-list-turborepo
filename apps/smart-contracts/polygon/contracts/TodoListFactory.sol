@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "./TodoList.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import {TodoList} from "./TodoList.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title TodoListFactory
@@ -18,6 +18,9 @@ contract TodoListFactory is Ownable {
   // Events
   event TodoListCreated(address indexed user, address todoList);
 
+  // Custom errors
+  error TodoListAlreadyExists();
+
   /**
    * @dev Constructor that sets the contract owner
    */
@@ -28,7 +31,7 @@ contract TodoListFactory is Ownable {
    * @return The address of the created TodoList contract
    */
   function createTodoList() external returns (address) {
-    require(address(userTodoLists[msg.sender]) == address(0), "TodoList already exists for this user");
+    if (address(userTodoLists[msg.sender]) != address(0)) revert TodoListAlreadyExists();
 
     // Create new TodoList contract
     TodoList todoList = new TodoList();

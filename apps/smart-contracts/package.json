@@ -34,7 +34,7 @@
     "deploy:solana:mainnet": "cd solana && pnpm deploy:mainnet",
     "verify": "hardhat verify",
     "coverage": "hardhat coverage",
-    "lint": "solhint --config .solhint.json 'polygon/contracts/**/*.sol' 'moonbeam/contracts/**/*.sol' 'base/contracts/**/*.sol' && cd polkadot && cargo clippy",
+    "lint": "solhint --config .solhint.json 'polygon/contracts/**/*.sol' 'moonbeam/contracts/**/*.sol' 'base/contracts/**/*.sol' && cd polkadot/pallet-todo && cargo clippy",
     "lint:polygon": "cd polygon && pnpm lint",
     "lint:moonbeam": "cd moonbeam && pnpm lint",
     "lint:base": "cd base && pnpm lint",
