@@ -1,6 +1,6 @@
 {
   "name": "todo-list-monorepo",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "A modern TODO list monorepo with Next.js, NestJS, React Native, and blockchain integration",
   "private": true,
   "packageManager": "pnpm@9.12.0",
