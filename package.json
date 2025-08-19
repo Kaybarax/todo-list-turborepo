@@ -4,7 +4,6 @@
   "description": "A modern TODO list monorepo with Next.js, NestJS, React Native, and blockchain integration",
   "private": true,
   "packageManager": "pnpm@9.12.0",
-
   "scripts": {
     "build": "./scripts/build.sh",
     "build:quick": "./scripts/build-quick.sh",
@@ -73,7 +72,7 @@
     "deploy:contracts": "./scripts/deploy-contracts.sh",
     "deploy:k8s": "./scripts/deploy.sh --environment production",
     "deploy:docker": "./scripts/deploy.sh --docker-compose",
-    "prepare": "husky install",
+    "prepare": "husky",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "./scripts/build-production.sh && changeset publish",
@@ -101,14 +100,14 @@
     "publish-packages:dry-run": "./scripts/publish-packages.sh --dry-run"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.1",
-    "@commitlint/cli": "^18.4.3",
-    "@commitlint/config-conventional": "^18.4.3",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "prettier": "^3.1.1",
-    "prettier-plugin-solidity": "^1.2.0",
-    "turbo": "^1.13.0",
+    "@changesets/cli": "^2.29.6",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.5",
+    "prettier": "^3.4.2",
+    "prettier-plugin-solidity": "^2.1.0",
+    "turbo": "^2.5.6",
     "typescript": "^5.9.2"
   },
   "optionalDependencies": {

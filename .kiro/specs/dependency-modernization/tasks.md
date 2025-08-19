@@ -94,7 +94,7 @@
   - Fix any mobile app compilation errors from updates
   - _Requirements: 3.1, 3.2, 4.1_
 
-- [ ] 13. Update development and build tooling
+- [x] 13. Update development and build tooling
   - Update Turbo to v2.5.5 for monorepo orchestration
   - Update Prettier and prettier-plugin-solidity to latest versions
   - Update lint-staged and husky to latest versions
