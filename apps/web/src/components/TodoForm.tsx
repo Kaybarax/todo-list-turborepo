@@ -1,7 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, Input, Badge } from '@todo/ui-web';
+import {
+  Button,
+  Input,
+  Badge,
+  Textarea,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@todo/ui-web';
 
 interface TodoFormProps {
   // eslint-disable-next-line no-unused-vars
@@ -74,63 +85,61 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+        <Label htmlFor="title" className="block text-gray-700 mb-1">
           Title *
-        </label>
+        </Label>
         <Input
           id="title"
           value={title}
           onChange={e => setTitle(e.target.value)}
           placeholder="Enter todo title"
           required
-          className="mt-1"
         />
       </div>
 
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+        <Label htmlFor="description" className="block text-gray-700 mb-1">
           Description
-        </label>
-        <textarea
+        </Label>
+        <Textarea
           id="description"
           value={description}
           onChange={e => setDescription(e.target.value)}
           rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
           placeholder="Enter todo description"
         />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="priority" className="block text-sm font-medium text-gray-700">
+          <Label htmlFor="priority" className="block text-gray-700 mb-1">
             Priority
-          </label>
-          <select
-            id="priority"
-            value={priority}
-            onChange={e => setPriority(e.target.value as 'low' | 'medium' | 'high')}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
-          >
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
+          </Label>
+          <Select value={priority} onValueChange={(value: 'low' | 'medium' | 'high') => setPriority(value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select priority" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="low">Low</SelectItem>
+              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="high">High</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <div>
-          <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700">
+          <Label htmlFor="dueDate" className="block text-gray-700 mb-1">
             Due Date
-          </label>
-          <Input type="date" id="dueDate" value={dueDate} onChange={e => setDueDate(e.target.value)} className="mt-1" />
+          </Label>
+          <Input type="date" id="dueDate" value={dueDate} onChange={e => setDueDate(e.target.value)} />
         </div>
       </div>
 
       <div>
-        <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
+        <Label htmlFor="tags" className="block text-gray-700 mb-1">
           Tags
-        </label>
-        <div className="mt-1 flex rounded-md shadow-sm">
+        </Label>
+        <div className="flex rounded-md shadow-sm">
           <Input
             type="text"
             id="tags"

@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Badge, Button } from '@todo/ui-web';
+import { Badge, Button, Checkbox, IconButton } from '@todo/ui-web';
+import { Edit, Trash2 } from 'lucide-react';
 import { TransactionStatus } from './TransactionStatus';
 import { BlockchainNetwork, getNetworkDisplayInfo } from '@todo/services';
 
@@ -60,12 +61,7 @@ export const TodoItem = ({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
     >
       <div className="flex items-start space-x-3">
         <div className="flex-shrink-0">
-          <input
-            type="checkbox"
-            checked={todo.completed}
-            onChange={() => onToggle(todo.id)}
-            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-          />
+          <Checkbox checked={todo.completed} onCheckedChange={() => onToggle(todo.id)} />
         </div>
 
         <div className="flex-1 min-w-0">
@@ -76,30 +72,18 @@ export const TodoItem = ({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
 
             {showActions && (
               <div className="flex items-center space-x-2">
-                <button onClick={() => onEdit(todo)} className="text-gray-400 hover:text-gray-600" title="Edit todo">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                    />
-                  </svg>
-                </button>
-                <button
+                <IconButton onClick={() => onEdit(todo)} variant="ghost" size="sm" title="Edit todo">
+                  <Edit className="h-4 w-4" />
+                </IconButton>
+                <IconButton
                   onClick={() => onDelete(todo.id)}
-                  className="text-gray-400 hover:text-red-600"
+                  variant="ghost"
+                  size="sm"
                   title="Delete todo"
+                  className="hover:text-red-600"
                 >
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                    />
-                  </svg>
-                </button>
+                  <Trash2 className="h-4 w-4" />
+                </IconButton>
               </div>
             )}
           </div>

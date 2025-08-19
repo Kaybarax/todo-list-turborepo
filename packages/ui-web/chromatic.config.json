@@ -1,9 +1,13 @@
 {
-  "projectToken": "CHROMATIC_PROJECT_TOKEN",
-  "buildScriptName": "build-storybook",
-  "storybookBuildDir": "storybook-static",
-  "exitZeroOnChanges": false,
-  "exitOnceUploaded": false,
   "autoAcceptChanges": false,
-  "ignoreLastBuildOnBranch": "main"
+  "buildScriptName": "build-storybook",
+  "exitOnceUploaded": false,
+  "exitZeroOnChanges": false,
+  "ignoreLastBuildOnBranch": "main",
+  "onlyChanged": true,
+  "projectId": "Project:68a509e2239206f05e7bab14",
+  "projectToken": "CHROMATIC_PROJECT_TOKEN",
+  "storybookBaseDir": "packages/ui-web",
+  "storybookBuildDir": "storybook-static",
+  "zip": true
 }
