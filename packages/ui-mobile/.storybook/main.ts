@@ -43,7 +43,7 @@ const config: StorybookConfig = {
               ['@babel/preset-react', { runtime: 'automatic' }],
               ['@babel/preset-typescript', { isTSX: true, allExtensions: true }],
             ],
-            plugins: ['@babel/plugin-proposal-class-properties', '@babel/plugin-proposal-object-rest-spread'],
+            plugins: [],
           },
         },
       ],
