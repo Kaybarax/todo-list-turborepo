@@ -327,15 +327,15 @@ async create(
 // Good - Solidity example
 pragma solidity ^0.8.19;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 
 /**
  * @title TodoContract
  * @dev Manages todo items on the blockchain
  */
 contract TodoContract is Ownable, ReentrancyGuard {
-    // implementation
+  // implementation
 }
 ```
 

@@ -14,7 +14,7 @@ This feature involves identifying and replacing all deprecated pnpm dependencies
 
 1. WHEN scanning the monorepo THEN the system SHALL identify all deprecated dependencies including:
    - `@testing-library/jest-native` (deprecated)
-   - `react-native-testing-library` (deprecated) 
+   - `react-native-testing-library` (deprecated)
    - `react-native-vector-icons` (deprecated)
 
 2. WHEN replacing deprecated dependencies THEN the system SHALL find appropriate non-deprecated alternatives for each package

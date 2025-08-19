@@ -2,9 +2,7 @@ import React from 'react';
 import type { Preview } from '@storybook/react';
 
 // Custom theme provider wrapper for stories using the existing custom theme
-const ThemeProvider = ({ children }: { children: React.ReactNode }) => (
-  <div style={styles.container}>{children}</div>
-);
+const ThemeProvider = ({ children }: { children: React.ReactNode }) => <div style={styles.container}>{children}</div>;
 
 const styles = {
   container: {

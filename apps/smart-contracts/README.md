@@ -153,16 +153,16 @@ All networks implement the same core todo functionality:
 
 ```solidity
 struct Todo {
-    uint256 id;
-    string title;
-    string description;
-    bool completed;
-    uint8 priority;      // 0=low, 1=medium, 2=high
-    uint256 dueDate;     // Unix timestamp
-    string[] tags;
-    uint256 createdAt;
-    uint256 updatedAt;
-    address owner;
+  uint256 id;
+  string title;
+  string description;
+  bool completed;
+  uint8 priority; // 0=low, 1=medium, 2=high
+  uint256 dueDate; // Unix timestamp
+  string[] tags;
+  uint256 createdAt;
+  uint256 updatedAt;
+  address owner;
 }
 ```
 

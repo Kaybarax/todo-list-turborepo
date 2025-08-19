@@ -36,11 +36,5 @@
     "func-param-name-mixedcase": "error",
     "var-name-mixedcase": "error"
   },
-  "excludedFiles": [
-    "node_modules/**",
-    "artifacts/**",
-    "cache/**",
-    "coverage/**",
-    "typechain-types/**"
-  ]
+  "excludedFiles": ["node_modules/**", "artifacts/**", "cache/**", "coverage/**", "typechain-types/**"]
 }

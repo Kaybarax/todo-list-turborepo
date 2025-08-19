@@ -15,7 +15,7 @@ try {
     baseDirectory: __dirname,
     recommendedConfig: js.configs.recommended,
   });
-  
+
   // Convert Next.js config to flat config
   nextConfig = compat.extends('next/core-web-vitals')[0] || {};
 } catch (error) {
@@ -54,10 +54,10 @@ module.exports = [
     rules: {
       // ESLint recommended rules
       ...js.configs.recommended.rules,
-      
+
       // Next.js rules
       ...nextConfig.rules,
-      
+
       // Base TypeScript rules
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
@@ -105,7 +105,7 @@ module.exports = [
 
       // Accessibility rules
       'jsx-a11y/label-has-associated-control': 'warn',
-      
+
       // Override React rules for Next.js
       'jsx-a11y/anchor-is-valid': 'off', // Next.js handles this differently
     },

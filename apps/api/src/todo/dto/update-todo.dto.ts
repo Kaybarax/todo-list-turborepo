@@ -1,4 +1,4 @@
-import { PartialType , ApiProperty } from '@nestjs/swagger';
+import { PartialType, ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsBoolean, IsEnum, IsString } from 'class-validator';
 
 import { CreateTodoDto } from './create-todo.dto';

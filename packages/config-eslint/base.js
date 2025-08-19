@@ -30,7 +30,7 @@ module.exports = [
     rules: {
       // ESLint recommended rules
       ...js.configs.recommended.rules,
-      
+
       // TypeScript specific rules
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',

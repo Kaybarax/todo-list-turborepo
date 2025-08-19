@@ -6,9 +6,7 @@ module.exports = {
   preset: 'react-native',
   testEnvironment: 'node',
   setupFiles: ['<rootDir>/../../packages/config-jest/setup-react-native.js'],
-  setupFilesAfterEnv: [
-    '<rootDir>/../../packages/config-jest/setup-tests-react-native.js',
-  ],
+  setupFilesAfterEnv: ['<rootDir>/../../packages/config-jest/setup-tests-react-native.js'],
   testMatch: ['**/__tests__/**/*.test.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',

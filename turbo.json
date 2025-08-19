@@ -8,11 +8,7 @@
     ".solhint.json",
     "clippy.toml"
   ],
-  "globalEnv": [
-    "NODE_ENV",
-    "CI",
-    "ESLINT_USE_FLAT_CONFIG"
-  ],
+  "globalEnv": ["NODE_ENV", "CI", "ESLINT_USE_FLAT_CONFIG"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -36,12 +32,8 @@
         "tsconfig.json",
         "tsconfig.*.json"
       ],
-      "outputs": [
-        ".eslintcache"
-      ],
-      "dependsOn": [
-        "^build"
-      ]
+      "outputs": [".eslintcache"],
+      "dependsOn": ["^build"]
     },
     "lint:fix": {
       "inputs": [
@@ -63,9 +55,7 @@
       ],
       "outputs": [],
       "cache": false,
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     },
     "dev": {
       "cache": false,
@@ -109,28 +99,16 @@
         "tsconfig.*.json",
         "package.json"
       ],
-      "outputs": [
-        "tsconfig.tsbuildinfo"
-      ],
+      "outputs": ["tsconfig.tsbuildinfo"],
       "dependsOn": ["^build"]
     },
     "lint:solidity": {
-      "inputs": [
-        "contracts/**/*.sol",
-        ".solhint.json",
-        "package.json"
-      ],
+      "inputs": ["contracts/**/*.sol", ".solhint.json", "package.json"],
       "outputs": [],
       "dependsOn": []
     },
     "lint:rust": {
-      "inputs": [
-        "programs/**/*.rs",
-        "pallet-*/**/*.rs",
-        "Cargo.toml",
-        "Cargo.lock",
-        "clippy.toml"
-      ],
+      "inputs": ["programs/**/*.rs", "pallet-*/**/*.rs", "Cargo.toml", "Cargo.lock", "clippy.toml"],
       "outputs": [],
       "dependsOn": []
     },
@@ -148,12 +126,8 @@
         "tsconfig.json",
         "tsconfig.*.json"
       ],
-      "outputs": [
-        ".eslintcache"
-      ],
-      "dependsOn": [
-        "^build"
-      ]
+      "outputs": [".eslintcache"],
+      "dependsOn": ["^build"]
     },
     "format": {
       "inputs": [

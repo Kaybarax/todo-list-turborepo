@@ -210,8 +210,6 @@ describe('AuthService', () => {
     });
   });
 
-
-
   describe('validateUser', () => {
     it('should validate user successfully', async () => {
       const userId = mockUser._id;

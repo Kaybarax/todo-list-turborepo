@@ -2,5 +2,5 @@
 pragma solidity ^0.8.20;
 
 contract Test {
-    uint256 public value = 42;
+  uint256 public value = 42;
 }

@@ -144,18 +144,18 @@ Both Moonbeam and Base will use identical Solidity contracts to Polygon:
 ```solidity
 // Reusable contract for all EVM networks
 contract TodoList {
-    struct Todo {
-        uint256 id;
-        string title;
-        string description;
-        bool completed;
-        address owner;
-        uint256 createdAt;
-        uint256 updatedAt;
-    }
+  struct Todo {
+    uint256 id;
+    string title;
+    string description;
+    bool completed;
+    address owner;
+    uint256 createdAt;
+    uint256 updatedAt;
+  }
 
-    // Contract implementation remains the same
-    // Network-specific deployment configurations
+  // Contract implementation remains the same
+  // Network-specific deployment configurations
 }
 ```
 
@@ -164,8 +164,8 @@ contract TodoList {
 ```solidity
 // Factory pattern for creating TodoList instances
 contract TodoListFactory {
-    // Implementation remains consistent across EVM networks
-    // Network-specific gas optimizations
+  // Implementation remains consistent across EVM networks
+  // Network-specific gas optimizations
 }
 ```
 

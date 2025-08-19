@@ -40,7 +40,7 @@ module.exports = [
     rules: {
       // ESLint recommended rules
       ...js.configs.recommended.rules,
-      
+
       // Base TypeScript rules
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
@@ -76,7 +76,7 @@ module.exports = [
       'no-var': 'error',
       'prefer-arrow-callback': 'error',
       'object-shorthand': 'error',
-      
+
       // React specific rules
       'react/prop-types': 'off', // TypeScript handles prop types
       'react/react-in-jsx-scope': 'off', // Not needed in React 17+

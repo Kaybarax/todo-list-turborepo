@@ -38,11 +38,5 @@
     "custom-errors": "warn",
     "no-global-import": "warn"
   },
-  "excludedFiles": [
-    "node_modules/**",
-    "artifacts/**",
-    "cache/**",
-    "coverage/**",
-    "typechain-types/**"
-  ]
+  "excludedFiles": ["node_modules/**", "artifacts/**", "cache/**", "coverage/**", "typechain-types/**"]
 }
