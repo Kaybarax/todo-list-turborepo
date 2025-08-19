@@ -52,7 +52,7 @@
   - Verify Solana CLI installation and functionality
   - _Requirements: 3.2, 4.2_
 
-- [ ] 9. Install Anchor CLI for Solana development
+- [x] 9. Install Anchor CLI for Solana development
   - Install the latest stable Anchor CLI
   - Verify Anchor CLI installation and configuration
   - Test Anchor CLI with sample project creation
