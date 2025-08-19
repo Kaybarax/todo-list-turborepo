@@ -158,7 +158,7 @@ export class TransactionMonitor {
           }
 
           // Continue polling
-          setTimeout(checkStatus, txOptions.pollingInterval);
+          setTimeout(() => void checkStatus(), txOptions.pollingInterval);
         } catch (error) {
           this.cleanupTransaction(txHash);
           reject(

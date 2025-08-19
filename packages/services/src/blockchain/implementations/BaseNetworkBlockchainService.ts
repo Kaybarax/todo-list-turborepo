@@ -450,6 +450,7 @@ export class BaseNetworkBlockchainService extends BaseBlockchainService {
     // that are unique to Base's L2 implementation or sequencer issues
     const errorMessage = error?.message?.toLowerCase() ?? '';
 
+    /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
     return (
       errorMessage.includes('base') ||
       errorMessage.includes('l2') ||
@@ -459,5 +460,6 @@ export class BaseNetworkBlockchainService extends BaseBlockchainService {
       errorMessage.includes('bridge error') ||
       errorMessage.includes('rollup error')
     );
+    /* eslint-enable @typescript-eslint/prefer-nullish-coalescing */
   }
 }

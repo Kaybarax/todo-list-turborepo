@@ -351,7 +351,7 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
 
       // Mock implementation
       const receipt = await this.getTransactionReceipt(txHash);
-      return receipt?.status || TransactionStatus.PENDING;
+      return receipt?.status ?? TransactionStatus.PENDING;
     } catch (error) {
       throw BlockchainError.networkError(
         `Failed to get transaction status for ${txHash} on Moonbeam`,
@@ -449,8 +449,9 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
   private isMoonbeamSpecificError(error: any): boolean {
     // In a real implementation, we would check for specific error patterns
     // that are unique to Moonbeam's EVM implementation or Substrate integration
-    const errorMessage = error?.message?.toLowerCase() || '';
+    const errorMessage = error?.message?.toLowerCase() ?? '';
 
+    /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
     return (
       errorMessage.includes('moonbeam') ||
       errorMessage.includes('substrate') ||
@@ -459,5 +460,6 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
       errorMessage.includes('glmr') ||
       errorMessage.includes('dev token')
     );
+    /* eslint-enable @typescript-eslint/prefer-nullish-coalescing */
   }
 }

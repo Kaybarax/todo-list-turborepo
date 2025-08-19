@@ -311,7 +311,7 @@ export class PolygonBlockchainService extends BaseBlockchainService {
 
       // Mock implementation
       const receipt = await this.getTransactionReceipt(txHash);
-      return receipt?.status || TransactionStatus.PENDING;
+      return receipt?.status ?? TransactionStatus.PENDING;
     } catch (error) {
       throw BlockchainError.networkError(`Failed to get transaction status for ${txHash}`, error, this.network);
     }
