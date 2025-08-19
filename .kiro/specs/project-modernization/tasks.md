@@ -16,7 +16,7 @@
   - Install and switch to the new Node.js version
   - _Requirements: 1.1, 1.3_
 
-- [ ] 4. Update root package.json dependencies
+- [x] 4. Update root package.json dependencies
   - Analyze and update all dependencies in the root package.json
   - Update devDependencies to latest stable versions
   - Regenerate pnpm-lock.yaml
