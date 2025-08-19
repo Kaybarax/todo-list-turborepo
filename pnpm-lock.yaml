@@ -78,7 +78,7 @@ importers:
         specifier: ^6.2.1
         version: 6.4.0(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.6)(reflect-metadata@0.2.2)
       '@opentelemetry/api':
-        specifier: ^1.7.0
+        specifier: ^1.9.0
         version: 1.9.0
       '@opentelemetry/auto-instrumentations-node':
         specifier: ^0.62.1
@@ -96,11 +96,11 @@ importers:
         specifier: ^0.5.1
         version: 0.5.1
       class-validator:
-        specifier: ^0.14.0
+        specifier: ^0.14.1
         version: 0.14.2
       helmet:
-        specifier: ^7.2.0
-        version: 7.2.0
+        specifier: ^8.0.0
+        version: 8.1.0
       mongoose:
         specifier: ^8.17.2
         version: 8.17.2(socks@2.8.6)
@@ -123,7 +123,7 @@ importers:
         specifier: ^7.8.1
         version: 7.8.2
       swagger-ui-express:
-        specifier: ^5.0.0
+        specifier: ^5.0.1
         version: 5.0.1(express@5.1.0)
       zod:
         specifier: ^3.25.76
@@ -145,8 +145,8 @@ importers:
         specifier: ^5.0.2
         version: 5.0.2
       '@types/express':
-        specifier: ^4.17.23
-        version: 4.17.23
+        specifier: ^5.0.0
+        version: 5.0.3
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0
@@ -160,7 +160,7 @@ importers:
         specifier: ^1.0.38
         version: 1.0.38
       '@types/supertest':
-        specifier: ^6.0.0
+        specifier: ^6.0.2
         version: 6.0.3
       eslint:
         specifier: ^9.18.0
@@ -184,10 +184,10 @@ importers:
         specifier: ^29.4.1
         version: 29.4.1(@babel/core@7.28.0)(@jest/transform@30.0.5)(@jest/types@30.0.5)(babel-jest@30.0.5(@babel/core@7.28.0))(esbuild@0.25.8)(jest-util@30.0.5)(jest@30.0.5(@types/node@20.19.9)(esbuild-register@3.6.0(esbuild@0.25.8))(ts-node@10.9.2(@swc/core@1.13.3(@swc/helpers@0.5.17))(@types/node@20.19.9)(typescript@5.9.2)))(typescript@5.9.2)
       ts-loader:
-        specifier: ^9.4.3
+        specifier: ^9.5.1
         version: 9.5.2(typescript@5.9.2)(webpack@5.100.2(@swc/core@1.13.3(@swc/helpers@0.5.17))(esbuild@0.25.8))
       ts-node:
-        specifier: ^10.9.1
+        specifier: ^10.9.2
         version: 10.9.2(@swc/core@1.13.3(@swc/helpers@0.5.17))(@types/node@20.19.9)(typescript@5.9.2)
       tsconfig-paths:
         specifier: ^4.2.0
@@ -202,10 +202,10 @@ importers:
         specifier: ^17.2.1
         version: 17.2.1
       mongodb:
-        specifier: ^6.3.0
+        specifier: ^6.12.0
         version: 6.18.0(socks@2.8.6)
       winston:
-        specifier: ^3.11.0
+        specifier: ^3.17.0
         version: 3.17.0
     devDependencies:
       '@todo/config-eslint':
@@ -305,11 +305,11 @@ importers:
         specifier: 4.2.0
         version: 4.2.0(react-native@0.76.5(@babel/core@7.28.0)(@babel/preset-env@7.28.0(@babel/core@7.28.0))(@react-native-community/cli-server-api@11.3.7(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.1.10)(bufferutil@4.0.9)(react@19.1.1)(utf-8-validate@5.0.10))(react@19.1.1)
       zustand:
-        specifier: ^4.5.7
-        version: 4.5.7(@types/react@19.1.10)(immer@10.0.2)(react@19.1.1)
+        specifier: ^5.0.2
+        version: 5.0.7(@types/react@19.1.10)(immer@10.0.2)(react@19.1.1)(use-sync-external-store@1.5.0(react@19.1.1))
     devDependencies:
       '@babel/core':
-        specifier: ^7.25.0
+        specifier: ^7.26.0
         version: 7.28.0
       '@testing-library/react-native':
         specifier: ^13.3.0
@@ -675,7 +675,7 @@ importers:
   apps/web:
     dependencies:
       '@opentelemetry/api':
-        specifier: ^1.7.0
+        specifier: ^1.9.0
         version: 1.9.0
       '@opentelemetry/context-zone':
         specifier: ^2.0.1
@@ -735,8 +735,8 @@ importers:
         specifier: ^3.25.76
         version: 3.25.76
       zustand:
-        specifier: ^4.5.7
-        version: 4.5.7(@types/react@19.1.10)(immer@10.0.2)(react@19.1.1)
+        specifier: ^5.0.2
+        version: 5.0.7(@types/react@19.1.10)(immer@10.0.2)(react@19.1.1)(use-sync-external-store@1.5.0(react@19.1.1))
     devDependencies:
       '@playwright/test':
         specifier: ^1.54.2
@@ -766,7 +766,7 @@ importers:
         specifier: ^19.1.1
         version: 19.1.7(@types/react@19.1.10)
       autoprefixer:
-        specifier: ^10.4.16
+        specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
       eslint:
         specifier: ^9.18.0
@@ -784,7 +784,7 @@ importers:
         specifier: ^2.10.5
         version: 2.10.5(@types/node@22.7.5)(typescript@5.9.2)
       postcss:
-        specifier: ^8.4.32
+        specifier: ^8.5.1
         version: 8.5.6
       tailwindcss:
         specifier: ^3.4.17
@@ -8420,13 +8420,13 @@ packages:
     resolution:
       { integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w== }
 
-  '@types/express-serve-static-core@4.19.6':
+  '@types/express-serve-static-core@5.0.7':
     resolution:
-      { integrity: sha512-N4LZ2xG7DatVqhCZzOGb1Yi5lMbXSZcmdLDe9EzSndPV2HpWYWzRbaerl2n27irrm94EPpprqa8KpskPT085+A== }
+      { integrity: sha512-R+33OsgWw7rOhD1emjU7dzCDHucJrgJXMA5PYCzJxVil0dsyx5iBEPHqpPfiKNJQb7lZ1vxwoLR4Z87bBUpeGQ== }
 
-  '@types/express@4.17.23':
+  '@types/express@5.0.3':
     resolution:
-      { integrity: sha512-Crp6WY9aTYP3qPi2wGDo9iUe/rceX01UMhnF1jmwDcKCFM6cx7YhGP/Mpr3y9AASpfHixIG0E6azCcL5OcDHsQ== }
+      { integrity: sha512-wGA0NX93b19/dZC1J18tKWVIYWyyF2ZjT9vin/NRu0qzzvfVzWjs04iq2rQ3H65vCTQYlRqs3YHfY7zjdV+9Kw== }
 
   '@types/form-data@0.0.33':
     resolution:
@@ -13379,10 +13379,10 @@ packages:
     resolution:
       { integrity: sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg== }
 
-  helmet@7.2.0:
+  helmet@8.1.0:
     resolution:
-      { integrity: sha512-ZRiwvN089JfMXokizgqEPXsl2Guk094yExfoDXR0cBYWxtBbaSww/w+vT4WEJsBW2iTUi1GgZ6swmoug3Oy4Xw== }
-    engines: { node: '>=16.0.0' }
+      { integrity: sha512-jOiHyAZsmnr8LqoPGmCjYAaiuWwjAPLgY8ZX2XrmHawt99/u1y6RgrZMTeoPfpUbV96HOalYgz1qzkRbw54Pmg== }
+    engines: { node: '>=18.0.0' }
 
   hermes-estree@0.23.1:
     resolution:
@@ -20305,20 +20305,23 @@ packages:
     resolution:
       { integrity: sha512-XE96n56IQpJM7NAoXswY3XRLcWFW83xe0BiAOeMD7K5k5xecOeul3Qcpx6GqEeeHNkW5DWL5zOyTbEfB4eti8w== }
 
-  zustand@4.5.7:
+  zustand@5.0.7:
     resolution:
-      { integrity: sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw== }
-    engines: { node: '>=12.7.0' }
+      { integrity: sha512-Ot6uqHDW/O2VdYsKLLU8GQu8sCOM1LcoE8RwvLv9uuRT9s6SOHCKs0ZEOhxg+I1Ld+A1Q5lwx+UlKXXUoCZITg== }
+    engines: { node: '>=12.20.0' }
     peerDependencies:
-      '@types/react': '>=16.8'
+      '@types/react': '>=18.0.0'
       immer: '>=9.0.6'
-      react: '>=16.8'
+      react: '>=18.0.0'
+      use-sync-external-store: '>=1.2.0'
     peerDependenciesMeta:
       '@types/react':
         optional: true
       immer:
         optional: true
       react:
+        optional: true
+      use-sync-external-store:
         optional: true
 
 snapshots:
@@ -21549,7 +21552,7 @@ snapshots:
   '@commitlint/format@19.8.1':
     dependencies:
       '@commitlint/types': 19.8.1
-      chalk: 5.4.1
+      chalk: 5.6.0
 
   '@commitlint/is-ignored@19.8.1':
     dependencies:
@@ -21569,7 +21572,7 @@ snapshots:
       '@commitlint/execute-rule': 19.8.1
       '@commitlint/resolve-extends': 19.8.1
       '@commitlint/types': 19.8.1
-      chalk: 5.4.1
+      chalk: 5.6.0
       cosmiconfig: 9.0.0(typescript@5.9.2)
       cosmiconfig-typescript-loader: 6.1.0(@types/node@22.7.5)(cosmiconfig@9.0.0(typescript@5.9.2))(typescript@5.9.2)
       lodash.isplainobject: 4.0.6
@@ -21620,7 +21623,7 @@ snapshots:
   '@commitlint/types@19.8.1':
     dependencies:
       '@types/conventional-commits-parser': 5.0.1
-      chalk: 5.4.1
+      chalk: 5.6.0
 
   '@coral-xyz/anchor-errors@0.31.1': {}
 
@@ -27554,13 +27557,13 @@ snapshots:
 
   '@solana/errors@2.0.0-rc.1(typescript@5.9.2)':
     dependencies:
-      chalk: 5.4.1
+      chalk: 5.6.0
       commander: 12.1.0
       typescript: 5.9.2
 
   '@solana/errors@2.3.0(typescript@5.9.2)':
     dependencies:
-      chalk: 5.4.1
+      chalk: 5.6.0
       commander: 14.0.0
       typescript: 5.9.2
 
@@ -29466,18 +29469,17 @@ snapshots:
 
   '@types/estree@1.0.8': {}
 
-  '@types/express-serve-static-core@4.19.6':
+  '@types/express-serve-static-core@5.0.7':
     dependencies:
       '@types/node': 20.19.9
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.5
 
-  '@types/express@4.17.23':
+  '@types/express@5.0.3':
     dependencies:
       '@types/body-parser': 1.19.6
-      '@types/express-serve-static-core': 4.19.6
-      '@types/qs': 6.14.0
+      '@types/express-serve-static-core': 5.0.7
       '@types/serve-static': 1.15.8
 
   '@types/form-data@0.0.33':
@@ -29603,18 +29605,18 @@ snapshots:
 
   '@types/passport-local@1.0.38':
     dependencies:
-      '@types/express': 4.17.23
+      '@types/express': 5.0.3
       '@types/passport': 1.0.17
       '@types/passport-strategy': 0.2.38
 
   '@types/passport-strategy@0.2.38':
     dependencies:
-      '@types/express': 4.17.23
+      '@types/express': 5.0.3
       '@types/passport': 1.0.17
 
   '@types/passport@1.0.17':
     dependencies:
-      '@types/express': 4.17.23
+      '@types/express': 5.0.3
 
   '@types/pbkdf2@3.1.2':
     dependencies:
@@ -30156,7 +30158,7 @@ snapshots:
 
   '@wallet-standard/errors@0.1.1':
     dependencies:
-      chalk: 5.4.1
+      chalk: 5.6.0
       commander: 13.1.0
 
   '@wallet-standard/features@1.1.0':
@@ -35267,7 +35269,7 @@ snapshots:
 
   heap@0.2.7: {}
 
-  helmet@7.2.0: {}
+  helmet@8.1.0: {}
 
   hermes-estree@0.23.1: {}
 
@@ -42224,10 +42226,9 @@ snapshots:
 
   zone.js@0.15.1: {}
 
-  zustand@4.5.7(@types/react@19.1.10)(immer@10.0.2)(react@19.1.1):
-    dependencies:
-      use-sync-external-store: 1.5.0(react@19.1.1)
+  zustand@5.0.7(@types/react@19.1.10)(immer@10.0.2)(react@19.1.1)(use-sync-external-store@1.5.0(react@19.1.1)):
     optionalDependencies:
       '@types/react': 19.1.10
       immer: 10.0.2
       react: 19.1.1
+      use-sync-external-store: 1.5.0(react@19.1.1)

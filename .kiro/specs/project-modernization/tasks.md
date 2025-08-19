@@ -32,7 +32,7 @@
   - Update dependencies in packages/ui-mobile/package.json
   - _Requirements: 2.1, 2.3, 2.4_
 
-- [ ] 6. Update application dependencies
+- [x] 6. Update application dependencies
   - Update dependencies in apps/web/package.json
   - Update dependencies in apps/api/package.json
   - Update dependencies in apps/mobile/package.json
