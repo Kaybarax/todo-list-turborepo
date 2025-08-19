@@ -18,10 +18,14 @@ export interface WalletContextType {
   supportedNetworks: ('solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base')[];
 
   // Actions
+  // eslint-disable-next-line no-unused-vars
   connect: (selectedNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => Promise<void>;
   disconnect: () => Promise<void>;
+  // eslint-disable-next-line no-unused-vars
   switchNetwork: (selectedNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => Promise<void>;
+  // eslint-disable-next-line no-unused-vars
   signMessage: (messageText: string) => Promise<string>;
+  // eslint-disable-next-line no-unused-vars
   sendTransaction: (recipientAddress: string, transferAmount: string, transactionData?: string) => Promise<string>;
 }
 
@@ -134,7 +138,7 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     // Return a mock signature that includes the message
-    console.log('Signing message:', messageText);
+    console.info('Signing message:', messageText);
 
     // Mock signature
     return `0x${Math.random().toString(16).substr(2, 128)}`;
@@ -153,7 +157,7 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     await new Promise(resolve => setTimeout(resolve, 3000));
 
     // Log transaction details for debugging
-    console.log('Sending transaction:', { recipientAddress, transferAmount, transactionData });
+    console.info('Sending transaction:', { recipientAddress, transferAmount, transactionData });
 
     // Mock transaction hash
     return `0x${Math.random().toString(16).substr(2, 64)}`;

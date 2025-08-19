@@ -12,7 +12,10 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    // eslint-disable-next-line no-unused-vars
+    private readonly authService: AuthService,
+  ) {}
 
   @Public()
   @Post('register')

@@ -13,7 +13,9 @@ export class AuthService {
   private readonly logger = new Logger(AuthService.name);
 
   constructor(
+    // eslint-disable-next-line no-unused-vars
     private readonly userService: UserService,
+    // eslint-disable-next-line no-unused-vars
     private readonly jwtService: JwtService,
   ) {}
 
@@ -102,7 +104,7 @@ export class AuthService {
   verifyToken(token: string): { sub: string; email: string; name: string } {
     try {
       return this.jwtService.verify(token);
-    } catch (_error) {
+    } catch {
       throw new UnauthorizedException('Invalid token');
     }
   }

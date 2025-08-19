@@ -343,7 +343,7 @@ describe('UserService', () => {
 
   describe('getUserStats', () => {
     it('should get user statistics', async () => {
-      const _userId = '507f1f77bcf86cd799439011';
+      // const userId = '507f1f77bcf86cd799439011';
       const mockStats = [
         {
           totalTodos: 10,
@@ -362,7 +362,7 @@ describe('UserService', () => {
     });
 
     it('should handle user with no todos', async () => {
-      const _userId = '507f1f77bcf86cd799439011';
+      // const userId = '507f1f77bcf86cd799439011';
 
       userModel.aggregate.mockResolvedValue([]);
 

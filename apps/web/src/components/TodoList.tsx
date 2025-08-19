@@ -7,9 +7,13 @@ import type { BlockchainNetwork } from '@todo/services';
 
 interface TodoListProps {
   todos: Todo[];
+  // eslint-disable-next-line no-unused-vars
   onToggle: (todoId: string) => void;
+  // eslint-disable-next-line no-unused-vars
   onEdit: (todoData: Todo) => void;
+  // eslint-disable-next-line no-unused-vars
   onDelete: (todoId: string) => void;
+  // eslint-disable-next-line no-unused-vars
   onBlockchainSync?: (todoId: string, network: BlockchainNetwork) => void;
 }
 

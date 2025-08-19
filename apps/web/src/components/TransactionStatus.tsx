@@ -7,6 +7,7 @@ import type { BlockchainNetwork } from '@todo/services';
 interface TransactionStatusProps {
   transactionHash: string;
   network: BlockchainNetwork;
+  // eslint-disable-next-line no-unused-vars
   onStatusChange?: (transactionStatus: 'pending' | 'confirmed' | 'failed') => void;
 }
 

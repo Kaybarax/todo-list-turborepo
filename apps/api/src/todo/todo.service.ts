@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException, Logger } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { FilterQuery } from 'mongoose';
 
 import { TodoRepository } from './repositories/todo.repository';
@@ -23,7 +23,9 @@ export class TodoService {
   private readonly CACHE_TTL = 300; // 5 minutes
 
   constructor(
+    // eslint-disable-next-line no-unused-vars
     private readonly todoRepository: TodoRepository,
+    // eslint-disable-next-line no-unused-vars
     private readonly cacheService: CacheService,
   ) {}
 

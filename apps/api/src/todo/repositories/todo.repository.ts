@@ -6,7 +6,10 @@ import { Todo, TodoDocument } from '../schemas/todo.schema';
 
 @Injectable()
 export class TodoRepository {
-  constructor(@InjectModel(Todo.name) private todoModel: Model<TodoDocument>) {}
+  constructor(
+    // eslint-disable-next-line no-unused-vars
+    @InjectModel(Todo.name) private todoModel: Model<TodoDocument>,
+  ) {}
 
   async create(todoData: Partial<Todo>): Promise<Todo> {
     const todo = new this.todoModel(todoData);

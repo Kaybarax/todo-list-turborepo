@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Todo } from '@/components/TodoItem';
@@ -10,15 +11,15 @@ interface TodoStore {
   error: string | null;
 
   // Actions
-  addTodo: (todoData: Omit<Todo, 'id' | 'createdAt' | 'updatedAt' | 'userId'>) => void;
-  updateTodo: (todoId: string, todoUpdates: Partial<Todo>) => void;
-  deleteTodo: (todoId: string) => void;
-  toggleTodo: (todoId: string) => void;
-  syncToBlockchain: (todoId: string, selectedNetwork: BlockchainNetwork) => Promise<void>;
+  addTodo: (_todoData: Omit<Todo, 'id' | 'createdAt' | 'updatedAt' | 'userId'>) => void;
+  updateTodo: (_todoId: string, _todoUpdates: Partial<Todo>) => void;
+  deleteTodo: (_todoId: string) => void;
+  toggleTodo: (_todoId: string) => void;
+  syncToBlockchain: (_todoId: string, _selectedNetwork: BlockchainNetwork) => Promise<void>;
 
   // API actions (will be implemented when API is ready)
   fetchTodos: () => Promise<void>;
-  saveTodo: (todoData: Todo) => Promise<void>;
+  saveTodo: (_todoData: Todo) => Promise<void>;
 }
 
 // Mock user ID for now
@@ -124,6 +125,7 @@ export const useTodoStore = create<TodoStore>()(
                     : todo,
                 ),
               }));
+              return;
             })
             .catch(error => {
               console.error('Transaction confirmation failed:', error);
@@ -164,7 +166,7 @@ export const useTodoStore = create<TodoStore>()(
 
         try {
           // Mock API call - will be replaced with actual API integration
-          console.log('Saving todo data:', todoData);
+          console.info('Saving todo data:', todoData);
           await new Promise(resolve => setTimeout(resolve, 500));
 
           set({ isLoading: false });

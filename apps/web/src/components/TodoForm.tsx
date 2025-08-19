@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button, Input, Badge } from '@todo/ui-web';
 
 interface TodoFormProps {
+  // eslint-disable-next-line no-unused-vars
   onSubmit: (todoData: {
     title: string;
     description?: string;

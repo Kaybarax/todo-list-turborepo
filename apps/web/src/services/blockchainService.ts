@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import type { Todo } from '@/components/TodoItem';
 import { BlockchainNetwork } from '@todo/services';
 
@@ -23,15 +24,15 @@ export interface TransactionResult {
 
 export interface BlockchainServiceInterface {
   // Todo operations
-  createTodo(todoData: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult>;
-  updateTodo(todoId: string, todoUpdates: Partial<BlockchainTodo>): Promise<TransactionResult>;
-  deleteTodo(todoId: string): Promise<TransactionResult>;
-  getTodo(todoId: string): Promise<BlockchainTodo | null>;
-  getUserTodos(walletAddress: string): Promise<BlockchainTodo[]>;
+  createTodo(_todoData: Omit<BlockchainTodo, 'id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<TransactionResult>;
+  updateTodo(_todoId: string, _todoUpdates: Partial<BlockchainTodo>): Promise<TransactionResult>;
+  deleteTodo(_todoId: string): Promise<TransactionResult>;
+  getTodo(_todoId: string): Promise<BlockchainTodo | null>;
+  getUserTodos(_walletAddress: string): Promise<BlockchainTodo[]>;
 
   // Transaction monitoring
-  getTransactionStatus(transactionHash: string): Promise<'pending' | 'confirmed' | 'failed'>;
-  waitForTransaction(transactionHash: string): Promise<TransactionResult>;
+  getTransactionStatus(_transactionHash: string): Promise<'pending' | 'confirmed' | 'failed'>;
+  waitForTransaction(_transactionHash: string): Promise<TransactionResult>;
 }
 
 // Solana blockchain service implementation
@@ -98,12 +99,12 @@ export class SolanaBlockchainService implements BlockchainServiceInterface {
     return Math.random() > 0.3 ? 'confirmed' : 'pending';
   }
 
-  async waitForTransaction(hash: string): Promise<TransactionResult> {
+  async waitForTransaction(_hash: string): Promise<TransactionResult> {
     // Simulate waiting for confirmation
     await this.simulateNetworkDelay(3000);
 
     return {
-      hash,
+      hash: _hash,
       blockNumber: Math.floor(Math.random() * 1000000),
       gasUsed: Math.floor(Math.random() * 50000),
       status: 'confirmed',
@@ -206,7 +207,7 @@ export class PolygonBlockchainService implements BlockchainServiceInterface {
     this.contract = null;
 
     // Store contract address for future use
-    console.log('Initializing Polygon blockchain service with contract:', contractAddress);
+    console.info('Initializing Polygon blockchain service with contract:', contractAddress);
   }
 
   async createTodo(
@@ -253,11 +254,11 @@ export class PolygonBlockchainService implements BlockchainServiceInterface {
     return Math.random() > 0.3 ? 'confirmed' : 'pending';
   }
 
-  async waitForTransaction(hash: string): Promise<TransactionResult> {
+  async waitForTransaction(_hash: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(3000);
 
     return {
-      hash,
+      hash: _hash,
       blockNumber: Math.floor(Math.random() * 1000000),
       gasUsed: Math.floor(Math.random() * 50000),
       status: 'confirmed',
@@ -286,7 +287,7 @@ export class MoonbeamBlockchainService implements BlockchainServiceInterface {
     this.contract = null;
 
     // Store contract address for future use
-    console.log('Initializing Moonbeam blockchain service with contract:', contractAddress);
+    console.info('Initializing Moonbeam blockchain service with contract:', contractAddress);
   }
 
   async createTodo(
@@ -333,11 +334,11 @@ export class MoonbeamBlockchainService implements BlockchainServiceInterface {
     return Math.random() > 0.3 ? 'confirmed' : 'pending';
   }
 
-  async waitForTransaction(hash: string): Promise<TransactionResult> {
+  async waitForTransaction(_hash: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(3000);
 
     return {
-      hash,
+      hash: _hash,
       blockNumber: Math.floor(Math.random() * 1000000),
       gasUsed: Math.floor(Math.random() * 50000),
       status: 'confirmed',
@@ -366,7 +367,7 @@ export class BaseBlockchainService implements BlockchainServiceInterface {
     this.contract = null;
 
     // Store contract address for future use
-    console.log('Initializing Base blockchain service with contract:', contractAddress);
+    console.info('Initializing Base blockchain service with contract:', contractAddress);
   }
 
   async createTodo(
@@ -413,11 +414,11 @@ export class BaseBlockchainService implements BlockchainServiceInterface {
     return Math.random() > 0.3 ? 'confirmed' : 'pending';
   }
 
-  async waitForTransaction(hash: string): Promise<TransactionResult> {
+  async waitForTransaction(_hash: string): Promise<TransactionResult> {
     await this.simulateNetworkDelay(3000);
 
     return {
-      hash,
+      hash: _hash,
       blockNumber: Math.floor(Math.random() * 1000000),
       gasUsed: Math.floor(Math.random() * 50000),
       status: 'confirmed',
@@ -458,7 +459,7 @@ export function createBlockchainService(network: BlockchainNetwork): BlockchainS
 
     default:
       throw new Error(
-        `Unsupported network: ${network}. Available networks: ${Object.values(BlockchainNetwork).join(', ')}`,
+        `Unsupported network: ${String(network)}. Available networks: ${Object.values(BlockchainNetwork).join(', ')}`,
       );
   }
 }
@@ -501,7 +502,7 @@ export function blockchainTodoToTodo(blockchainTodoData: BlockchainTodo, userId:
     tags: blockchainTodoData.tags,
     createdAt: new Date(blockchainTodoData.createdAt * 1000),
     updatedAt: new Date(blockchainTodoData.updatedAt * 1000),
-    userId: userId,
+    userId,
     blockchainAddress: blockchainTodoData.owner,
   };
 }

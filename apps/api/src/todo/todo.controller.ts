@@ -26,7 +26,10 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class TodoController {
-  constructor(private readonly todoService: TodoService) {}
+  constructor(
+    // eslint-disable-next-line no-unused-vars
+    private readonly todoService: TodoService,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new todo' })

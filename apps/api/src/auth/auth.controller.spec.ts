@@ -212,7 +212,7 @@ describe('AuthController', () => {
   });
 
   describe('getProfile', () => {
-    it('should return user profile for authenticated user', async () => {
+    it('should return user profile for authenticated user', () => {
       const user = {
         id: 'user123',
         email: 'test@example.com',
@@ -221,7 +221,7 @@ describe('AuthController', () => {
         preferredNetwork: 'polygon',
       };
 
-      const result = await controller.getProfile(user);
+      const result = controller.getProfile(user);
 
       expect(result).toEqual({
         id: user.id,
@@ -232,7 +232,7 @@ describe('AuthController', () => {
       });
     });
 
-    it('should return profile with minimal user data', async () => {
+    it('should return profile with minimal user data', () => {
       const user = {
         id: 'user123',
         email: 'test@example.com',
@@ -241,7 +241,7 @@ describe('AuthController', () => {
         preferredNetwork: undefined,
       };
 
-      const result = await controller.getProfile(user);
+      const result = controller.getProfile(user);
 
       expect(result).toEqual({
         id: user.id,
@@ -252,16 +252,16 @@ describe('AuthController', () => {
       });
     });
 
-    it('should handle user with blockchain-related fields', async () => {
+    it('should handle blockchain-specific user data', () => {
       const user = {
         id: 'user123',
-        email: 'crypto@example.com',
-        name: 'Crypto User',
+        email: 'blockchain@example.com',
+        name: 'Blockchain User',
         walletAddress: '0xabcdef123456789',
         preferredNetwork: 'solana',
       };
 
-      const result = await controller.getProfile(user);
+      const result = controller.getProfile(user);
 
       expect(result).toEqual({
         id: user.id,
@@ -297,8 +297,9 @@ describe('AuthController', () => {
       await expect(controller.register(registerDto)).rejects.toThrow('Unexpected error');
     });
 
-    it('should handle null or undefined user context', async () => {
-      const result = await controller.getProfile(null as any);
+    it('should handle null or undefined user context', () => {
+      const user = null;
+      const result = controller.getProfile(user);
 
       expect(result).toEqual({
         id: undefined,

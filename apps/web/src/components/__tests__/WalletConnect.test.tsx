@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment */
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { WalletConnect } from '../WalletConnect';

@@ -8,8 +8,10 @@ import { AuthService } from '../auth.service';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
+    // eslint-disable-next-line no-unused-vars
     private readonly authService: AuthService,
-    private readonly configService: ConfigService,
+
+    private configService: ConfigService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
