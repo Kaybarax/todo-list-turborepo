@@ -13,17 +13,23 @@ const Navigation: React.FC<NavigationProps> = ({ components, activeComponent, on
     <nav className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Components</h2>
       <div className="space-y-2">
-        {components.map(component => (
-          <Button
-            key={component.name}
-            variant={activeComponent === component.name ? 'default' : 'ghost'}
-            size="sm"
-            className="w-full justify-start"
-            onClick={() => onComponentSelect(component.name)}
-          >
-            {component.name}
-          </Button>
-        ))}
+        {components.map(component => {
+          const isActive = activeComponent === component.name;
+          return (
+            <Button
+              key={component.name}
+              variant={isActive ? 'default' : 'ghost'}
+              size="sm"
+              className={`w-full justify-start ${
+                isActive ? 'ring-1 ring-blue-500/20 shadow-sm' : 'hover:bg-gray-50 dark:hover:bg-gray-700'
+              }`}
+              aria-current={isActive ? 'page' : undefined}
+              onClick={() => onComponentSelect(component.name)}
+            >
+              {component.name}
+            </Button>
+          );
+        })}
       </div>
 
       <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">

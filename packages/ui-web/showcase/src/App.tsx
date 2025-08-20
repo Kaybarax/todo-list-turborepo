@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Badge } from '../../src';
+import ThemeToggle from './components/ThemeToggle';
 import ComponentShowcase from './components/ComponentShowcase';
 import Navigation from './components/Navigation';
 import './App.css';
@@ -53,16 +54,19 @@ function App() {
   const currentComponent = components.find(comp => comp.name === activeComponent);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="app-container min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-transparent via-blue-50/50 to-transparent dark:via-gray-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between py-6">
+            <div className="min-w-0">
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">UI Web Components</h1>
               <p className="text-gray-600 dark:text-gray-300 mt-1">Interactive showcase of DaisyUI-based components</p>
             </div>
-            <Badge variant="default">v0.1.0</Badge>
+            <div className="flex items-center gap-3 self-start md:self-auto">
+              <ThemeToggle />
+              <Badge variant="default">v0.1.0</Badge>
+            </div>
           </div>
         </div>
       </header>
