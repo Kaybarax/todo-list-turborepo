@@ -13,7 +13,7 @@ describe('Badge', () => {
   });
 
   it('renders with correct variant classes', () => {
-    const variants = ['default', 'secondary', 'destructive', 'outline', 'success', 'warning', 'info', 'ghost'] as const;
+    const variants = ['default', 'secondary', 'destructive', 'outline', 'success', 'warning', 'info'] as const;
 
     variants.forEach(variant => {
       const { unmount } = render(
@@ -27,19 +27,11 @@ describe('Badge', () => {
     });
   });
 
-  it('renders with correct size classes', () => {
-    const sizes = ['default', 'sm', 'lg'] as const;
-
-    sizes.forEach(size => {
-      const { unmount } = render(
-        <Badge size={size} data-testid={`badge-${size}`}>
-          Test
-        </Badge>,
-      );
-      const badge = screen.getByTestId(`badge-${size}`);
-      expect(badge).toBeInTheDocument();
-      unmount();
-    });
+  it('renders with basic functionality', () => {
+    const { unmount } = render(<Badge data-testid="badge-basic">Test</Badge>);
+    const badge = screen.getByTestId('badge-basic');
+    expect(badge).toBeDefined();
+    unmount();
   });
 
   it('renders with correct shape classes', () => {

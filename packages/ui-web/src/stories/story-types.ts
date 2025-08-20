@@ -353,7 +353,7 @@ export function createStoryMeta<T>(config: {
   layout?: 'centered' | 'fullscreen' | 'padded';
   argTypes?: Record<string, ArgTypeConfig>;
   args?: Partial<T>;
-}): StoryMeta<T> {
+}): Meta<T> {
   return {
     title: config.title,
     component: config.component,
@@ -366,9 +366,9 @@ export function createStoryMeta<T>(config: {
       },
     },
     tags: ['autodocs'],
-    argTypes: config.argTypes ?? {},
-    args: config.args ?? {},
-  };
+    argTypes: config.argTypes,
+    args: config.args,
+  } as Meta<T>;
 }
 
 /**
@@ -380,7 +380,7 @@ export function createA11yStory<T>(
     'aria-describedby'?: string;
   },
   description?: string,
-): ComponentStory<T> {
+): StoryObj<T> {
   return {
     args,
     parameters: {
@@ -390,16 +390,13 @@ export function createA11yStory<T>(
         },
       },
     },
-  };
+  } as unknown as StoryObj<T>;
 }
 
 /**
  * Helper function to create interactive stories
  */
-export function createInteractiveStory<T>(
-  renderFunction: () => ReactNode,
-  description?: string,
-): StoryObj<StoryMeta<T>> {
+export function createInteractiveStory<T>(renderFunction: () => ReactNode, description?: string): StoryObj<T> {
   return {
     render: renderFunction,
     parameters: {
@@ -409,16 +406,13 @@ export function createInteractiveStory<T>(
         },
       },
     },
-  };
+  } as unknown as StoryObj<T>;
 }
 
 /**
  * Helper function to create visual regression stories
  */
-export function createVisualRegressionStory<T>(
-  renderFunction: () => ReactNode,
-  description?: string,
-): ComponentStory<T> {
+export function createVisualRegressionStory<T>(renderFunction: () => ReactNode, description?: string): StoryObj<T> {
   return {
     render: renderFunction,
     parameters: {
@@ -428,5 +422,5 @@ export function createVisualRegressionStory<T>(
         },
       },
     },
-  };
+  } as unknown as StoryObj<T>;
 }
