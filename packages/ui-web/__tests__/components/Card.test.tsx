@@ -8,7 +8,7 @@ import {
   CardContent,
   CardFooter,
   cardVariants,
-} from '../../lib/components/Card/Card';
+} from '../../src/components/Card/Card';
 
 describe('Card', () => {
   it('renders correctly with default props', () => {

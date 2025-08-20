@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
-import { Input, Label, inputVariants } from '../../lib/components/Input/Input';
+import { Input, Label, inputVariants } from '../../src/components/Input/Input';
 
 describe('Input', () => {
   it('renders correctly with default props', () => {

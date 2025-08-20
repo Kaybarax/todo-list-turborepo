@@ -258,7 +258,7 @@ export const AccessibilityDemo: Story = {
       <label htmlFor="component-demo" className="block mb-2">
         Component with proper labeling:
       </label>
-      <ComponentName {...args} id="component-demo" />
+      <ComponentName {...args} />
       <p className="mt-2 text-sm text-gray-600">
         This component includes proper ARIA labels and can be navigated with keyboard. Try using Tab to focus and
         Enter/Space to activate.

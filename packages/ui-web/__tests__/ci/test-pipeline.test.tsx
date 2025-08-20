@@ -1,12 +1,13 @@
-// React import removed as it's not used in this test file
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
 
 // Import all components to ensure they're tested
-import { Button } from '../../lib/components/Button/Button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../lib/components/Card/Card';
-import { Input } from '../../lib/components/Input/Input';
-import { Badge } from '../../lib/components/Badge/Badge';
+import { Button } from '../../src/components/Button/Button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../src/components/Card/Card';
+import { Input } from '../../src/components/Input/Input';
+import { Badge } from '../../src/components/Badge/Badge';
+import { cn } from '../../src/lib/utils';
 
 describe('CI/CD Pipeline Tests', () => {
   describe('Component Functionality Tests', () => {
@@ -24,9 +25,9 @@ describe('CI/CD Pipeline Tests', () => {
 
     it('Input component renders and handles value changes', () => {
       const handleChange = vi.fn();
-      render(<Input placeholder="Test input" onChange={handleChange} />);
+      render(<Input placeholder="Test Input" onChange={handleChange} />);
 
-      const input = screen.getByPlaceholderText('Test input');
+      const input = screen.getByPlaceholderText('Test Input');
       expect(input).toBeInTheDocument();
 
       fireEvent.change(input, { target: { value: 'test value' } });
@@ -117,7 +118,7 @@ describe('CI/CD Pipeline Tests', () => {
     });
 
     it('Button handles loading state', () => {
-      render(<Button isLoading>Loading Button</Button>);
+      render(<Button loading={true}>Loading Button</Button>);
       const button = screen.getByRole('button');
       expect(button).toBeDisabled();
       // Loading spinner should be present
