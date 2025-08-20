@@ -1,5 +1,5 @@
 import type { Preview } from '@storybook/react';
-import React from 'react';
+import React from 'react'; // Required for JSX in decorators
 import '../src/styles.css';
 
 const preview: Preview = {

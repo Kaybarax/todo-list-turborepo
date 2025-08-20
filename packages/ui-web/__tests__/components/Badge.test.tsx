@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; // Required for JSX
 import { render, screen } from '@testing-library/react';
 import { Badge } from '../../src/components/Badge/Badge';
 
