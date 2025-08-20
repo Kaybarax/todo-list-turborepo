@@ -1,5 +1,5 @@
 import type { Preview } from '@storybook/react';
-import React from 'react'; // Required for JSX in decorators
+import React from 'react';
 import '../src/styles.css';
 
 const preview: Preview = {
@@ -85,11 +85,9 @@ const preview: Preview = {
   },
   // Global decorators for consistent styling
   decorators: [
-    Story => (
-      <div className="font-sans antialiased">
-        <Story />
-      </div>
-    ),
+    Story => {
+      return React.createElement('div', { className: 'font-sans antialiased' }, React.createElement(Story));
+    },
   ],
   // Tags for organizing stories - moved to individual stories
 };
