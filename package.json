@@ -50,6 +50,8 @@
     "clean": "turbo run clean && rm -rf build/ && rm -rf dist/",
     "clean:docker": "docker system prune -f && docker image prune -f",
     "typecheck": "turbo run typecheck",
+    "quality": "pnpm lint && pnpm typecheck",
+    "quality:fix": "pnpm lint:fix && pnpm typecheck",
     "contracts:compile": "./scripts/build-contracts.sh --skip-tests --check-deps",
     "contracts:test": "./scripts/build-contracts.sh --network all --check-deps",
     "contracts:deploy": "echo 'Contract deployment would run here'",

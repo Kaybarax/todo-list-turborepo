@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from '../../../lib';
+import { Button } from '../../../src';
 
 interface CodeBlockProps {
   code: string;

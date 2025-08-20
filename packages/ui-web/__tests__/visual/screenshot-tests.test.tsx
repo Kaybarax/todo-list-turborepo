@@ -9,12 +9,9 @@ expect.extend({ toMatchImageSnapshot });
 
 // Import components for screenshot testing
 import { Button } from '../../src/components/Button/Button';
+import { Badge } from '../../src/components/Badge/Badge';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../src/components/Card/Card';
 import { Input } from '../../src/components/Input/Input';
-import { Select } from '../../src/components/Select/Select';
-import { Checkbox } from '../../src/components/Checkbox/Checkbox';
-import { Textarea } from '../../src/components/Textarea/Textarea';
-import { Label } from '../../src/components/Label/Label';
 
 // Mock HTML canvas for consistent screenshots
 Object.defineProperty(HTMLCanvasElement.prototype, 'getContext', {
@@ -94,7 +91,7 @@ describe('Visual Regression Tests', () => {
           </div>
           <div className="space-x-2">
             <Button disabled>Disabled</Button>
-            <Button isLoading>Loading</Button>
+            <Button loading>Loading Button</Button>
             <Button leftIcon={<span>←</span>}>With Icon</Button>
           </div>
         </div>
@@ -108,8 +105,8 @@ describe('Visual Regression Tests', () => {
         <div className="p-4 space-y-2 bg-white">
           <Button>Normal</Button>
           <Button disabled>Disabled</Button>
-          <Button isLoading>Loading</Button>
-          <Button isLoading loadingText="Please wait...">
+          <Button loading>Loading</Button>
+          <Button loading loadingText="Processing...">
             Loading with text
           </Button>
         </div>
@@ -211,10 +208,10 @@ describe('Visual Regression Tests', () => {
           <Input leftIcon={<span>🔍</span>} placeholder="With left icon" />
           <Input rightIcon={<span>✓</span>} placeholder="With right icon" />
           <div>
-            <Input label="Complete Input" placeholder="With label and helper" helperText="This is helper text" />
+            <Input placeholder="With label and helper" helperText="This is helper text" />
           </div>
           <div>
-            <Input label="Error Input" error placeholder="With error state" helperText="This is an error message" />
+            <Input error placeholder="With error state" helperText="This is an error message" />
           </div>
         </div>
       );
@@ -227,23 +224,16 @@ describe('Visual Regression Tests', () => {
         <div className="p-4 bg-white">
           <form className="space-y-4 w-80">
             <div>
-              <Input label="First Name" placeholder="Enter first name..." value="John" />
+              <Input placeholder="Enter first name..." value="John" />
+            </div>
+            <div>
+              <Input type="email" placeholder="Enter email..." leftIcon={<span>✉️</span>} value="john@example.com" />
+            </div>
+            <div>
+              <Input placeholder="Enter name..." />
             </div>
             <div>
               <Input
-                label="Email"
-                type="email"
-                placeholder="Enter email..."
-                leftIcon={<span>✉️</span>}
-                value="john@example.com"
-              />
-            </div>
-            <div>
-              <Input label="Phone" type="tel" placeholder="Enter phone..." helperText="Include country code" />
-            </div>
-            <div>
-              <Input
-                label="Password"
                 type="password"
                 error
                 placeholder="Enter password..."
@@ -325,8 +315,8 @@ describe('Visual Regression Tests', () => {
                 <CardDescription>Manage your account settings</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Input label="Display Name" value="John Doe" leftIcon={<span>👤</span>} />
-                <Input label="Email" type="email" value="john@example.com" leftIcon={<span>✉️</span>} />
+                <Input value="John Doe" leftIcon={<span>👤</span>} />
+                <Input type="email" value="john@example.com" leftIcon={<span>✉️</span>} />
               </CardContent>
               <CardFooter className="flex justify-between">
                 <Button variant="outline">Cancel</Button>

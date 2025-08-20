@@ -1,5 +1,5 @@
 // React import removed as it's not used in this file
-import { Button } from '../../../lib';
+import { Button } from '../../../src';
 import type { ComponentExample } from '../App';
 
 export const buttonExamples: ComponentExample[] = [

@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
-import { Button } from '../../lib/components/Button/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '../../lib/components/Card/Card';
-import { Input } from '../../lib/components/Input/Input';
-import { Badge } from '../../lib/components/Badge/Badge';
+import { Button } from '../../src/components/Button/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '../../src/components/Card/Card';
+import { Input } from '../../src/components/Input/Input';
+import { Badge } from '../../src/components/Badge/Badge';
 
 describe('Component Interactions', () => {
   describe('Form with Button and Input', () => {
@@ -16,7 +16,7 @@ describe('Component Interactions', () => {
         <div>
           <Input
             value={value}
-            onChange={e => setValue(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
             placeholder="Enter text"
             data-testid="form-input"
           />
@@ -70,7 +70,7 @@ describe('Component Interactions', () => {
           <CardContent>
             <div className="space-y-4">
               <Badge variant={status === 'success' ? 'default' : 'secondary'}>Status: {status}</Badge>
-              <Button onClick={handleAction} isLoading={status === 'loading'} disabled={status === 'success'}>
+              <Button onClick={handleAction} loading={status === 'loading'} disabled={status === 'success'}>
                 {status === 'success' ? 'Completed' : 'Start Action'}
               </Button>
             </div>
@@ -128,7 +128,7 @@ describe('Component Interactions', () => {
               <div className="flex gap-2">
                 <Input
                   value={inputValue}
-                  onChange={e => setInputValue(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
                   placeholder="Add new item"
                   data-testid="item-input"
                 />

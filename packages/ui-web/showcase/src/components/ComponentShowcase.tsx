@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent, Button, Badge } from '../../../lib';
+import { Card, CardHeader, CardTitle, CardContent, Button, Badge } from '../../../src';
 import CodeBlock from './CodeBlock';
 import PropsTable from './PropsTable';
 import InteractivePlayground from './InteractivePlayground';
@@ -28,9 +28,7 @@ const ComponentShowcase: React.FC<ComponentShowcaseProps> = ({ name, description
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-4">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{name}</h1>
-          <Badge variant="secondary" size="sm">
-            Component
-          </Badge>
+          <Badge variant="secondary">Component</Badge>
         </div>
         <p className="text-lg text-gray-600 dark:text-gray-300">{description}</p>
       </div>

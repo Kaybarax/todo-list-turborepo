@@ -1,5 +1,5 @@
-import { Button } from '../../../lib';
-import { Input } from '../../../lib';
+import { Button } from '../../../src';
+import { Input } from '../../../src';
 import type { ComponentExample } from '../App';
 
 export const inputExamples: ComponentExample[] = [

@@ -1,5 +1,5 @@
 // React import removed as it's not used in this file
-import { Badge } from '../../../lib';
+import { Badge } from '../../../src';
 import type { ComponentExample } from '../App';
 
 export const badgeExamples: ComponentExample[] = [
@@ -31,9 +31,9 @@ export const badgeExamples: ComponentExample[] = [
 <Badge size="lg">Large</Badge>`,
     component: (
       <>
-        <Badge size="sm">Small</Badge>
-        <Badge size="default">Default</Badge>
-        <Badge size="lg">Large</Badge>
+        <Badge>Small</Badge>
+        <Badge>Default</Badge>
+        <Badge>Large</Badge>
       </>
     ),
   },
@@ -78,21 +78,15 @@ export const badgeExamples: ComponentExample[] = [
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <span>Messages</span>
-          <Badge variant="destructive" size="sm">
-            3
-          </Badge>
+          <Badge variant="destructive">3</Badge>
         </div>
         <div className="flex items-center gap-2">
           <span>Notifications</span>
-          <Badge variant="default" size="sm">
-            12
-          </Badge>
+          <Badge variant="default">12</Badge>
         </div>
         <div className="flex items-center gap-2">
           <span>Updates</span>
-          <Badge variant="secondary" size="sm">
-            99+
-          </Badge>
+          <Badge variant="secondary">99+</Badge>
         </div>
       </div>
     ),

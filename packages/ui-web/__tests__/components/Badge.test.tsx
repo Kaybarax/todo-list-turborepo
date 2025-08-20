@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
-import { Badge, badgeVariants } from '../../lib/components/Badge/Badge';
+import { Badge, badgeVariants } from '../../src/components/Badge/Badge';
 
 describe('Badge', () => {
   it('renders correctly with default props', () => {

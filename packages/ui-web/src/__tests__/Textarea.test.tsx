@@ -84,10 +84,10 @@ describe('Textarea', () => {
 
     render(<TestComponent />);
     const textarea = screen.getByRole('textbox');
-    expect(textarea.value).toBe('Initial text');
+    expect((textarea as HTMLTextAreaElement).value).toBe('Initial text');
 
     fireEvent.change(textarea, { target: { value: 'Updated text' } });
-    expect(textarea.value).toBe('Updated text');
+    expect((textarea as HTMLTextAreaElement).value).toBe('Updated text');
   });
 
   it('handles focus and blur events', () => {

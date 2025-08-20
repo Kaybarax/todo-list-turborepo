@@ -117,10 +117,10 @@ describe('Select', () => {
 
     render(<TestComponent />);
     const select = screen.getByRole('combobox');
-    expect(select.value).toBe('option1');
+    expect((select as HTMLSelectElement).value).toBe('option1');
 
     fireEvent.change(select, { target: { value: 'option2' } });
-    expect(select.value).toBe('option2');
+    expect((select as HTMLSelectElement).value).toBe('option2');
   });
 
   it('provides accessibility with aria-label', () => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card, CardHeader, CardTitle, CardContent, Input, Badge } from '../../../lib';
+import { Button, Card, CardHeader, CardTitle, CardContent, Input, Badge } from '../../../src';
 
 interface InteractivePlaygroundProps {
   componentName: string;
@@ -21,11 +21,7 @@ const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({ component
           </Button>
         );
       case 'Badge':
-        return (
-          <Badge variant={props.variant} size={props.size}>
-            {props.children}
-          </Badge>
-        );
+        return <Badge variant={props.variant}>{props.children}</Badge>;
       case 'Input':
         return <Input placeholder={props.placeholder} disabled={props.disabled} type={props.type} />;
       default:
@@ -142,7 +138,7 @@ const InteractivePlayground: React.FC<InteractivePlaygroundProps> = ({ component
               <label className="block text-sm font-medium mb-2">Placeholder</label>
               <Input
                 value={props.placeholder}
-                onChange={e => updateProp('placeholder', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateProp('placeholder', e.target.value)}
                 placeholder="Enter placeholder text"
               />
             </div>

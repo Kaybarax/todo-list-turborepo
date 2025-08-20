@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Badge } from '../../lib';
+import { Button, Badge } from '../../src';
 import ComponentShowcase from './components/ComponentShowcase';
 import Navigation from './components/Navigation';
 import './App.css';
@@ -62,9 +62,7 @@ function App() {
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">UI Web Components</h1>
               <p className="text-gray-600 dark:text-gray-300 mt-1">Interactive showcase of DaisyUI-based components</p>
             </div>
-            <Badge variant="default" size="sm">
-              v0.1.0
-            </Badge>
+            <Badge variant="default">v0.1.0</Badge>
           </div>
         </div>
       </header>
