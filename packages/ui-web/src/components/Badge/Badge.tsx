@@ -1,37 +1,50 @@
 import React from 'react';
+import { Badge as FlowbiteBadge } from 'flowbite-react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../utils';
 
-const badgeVariants = cva(
-  'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
-  {
-    variants: {
-      variant: {
-        default: 'border-transparent bg-primary text-primary-foreground hover:bg-primary/80',
-        secondary: 'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        destructive: 'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
-        outline: 'text-foreground',
-        success: 'border-transparent bg-green-500 text-white hover:bg-green-500/80',
-        warning: 'border-transparent bg-yellow-500 text-white hover:bg-yellow-500/80',
-        info: 'border-transparent bg-blue-500 text-white hover:bg-blue-500/80',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
+// Map our variants to Flowbite variants
+const variantMap = {
+  default: 'info',
+  secondary: 'gray',
+  destructive: 'failure',
+  outline: 'gray',
+  success: 'success',
+  warning: 'warning',
+  info: 'info',
+} as const;
+
+const badgeVariants = cva('', {
+  variants: {
+    variant: {
+      default: '',
+      secondary: '',
+      destructive: '',
+      outline: '',
+      success: '',
+      warning: '',
+      info: '',
     },
   },
-);
+  defaultVariants: {
+    variant: 'default',
+  },
+});
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {
+export interface BadgeProps
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'color'>,
+    VariantProps<typeof badgeVariants> {
   icon?: React.ReactNode;
 }
 
-function Badge({ className, variant, icon, children, ...props }: BadgeProps) {
+function Badge({ className, variant = 'default', icon, children, ...props }: BadgeProps) {
+  const flowbiteVariant = variant ? variantMap[variant] || 'info' : 'info';
+
   return (
-    <div className={cn(badgeVariants({ variant }), className)} {...props}>
+    <FlowbiteBadge color={flowbiteVariant as any} className={cn(badgeVariants({ variant }), className)} {...props}>
       {icon && <span className="mr-1">{icon}</span>}
       {children}
-    </div>
+    </FlowbiteBadge>
   );
 }
 

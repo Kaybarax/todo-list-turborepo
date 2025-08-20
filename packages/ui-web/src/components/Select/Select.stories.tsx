@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './Select';
+import { Select } from './Select';
 
 const meta: Meta<typeof Select> = {
   title: 'Components/Select',
@@ -9,71 +9,120 @@ const meta: Meta<typeof Select> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
+  argTypes: {
+    error: {
+      control: 'boolean',
+      description: 'Whether the select has an error state',
+    },
+    helperText: {
+      control: 'text',
+      description: 'Helper text to display below the select',
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Whether the select is disabled',
+    },
+    className: {
+      control: 'text',
+      description: 'Additional CSS classes to apply',
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => (
-    <Select>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select a fruit" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="apple">Apple</SelectItem>
-        <SelectItem value="banana">Banana</SelectItem>
-        <SelectItem value="blueberry">Blueberry</SelectItem>
-        <SelectItem value="grapes">Grapes</SelectItem>
-        <SelectItem value="pineapple">Pineapple</SelectItem>
-      </SelectContent>
-    </Select>
-  ),
+  args: {
+    className: 'w-[180px]',
+    children: (
+      <>
+        <option value="">Select a fruit</option>
+        <option value="apple">Apple</option>
+        <option value="banana">Banana</option>
+        <option value="blueberry">Blueberry</option>
+        <option value="grapes">Grapes</option>
+        <option value="pineapple">Pineapple</option>
+      </>
+    ),
+  },
+};
+
+export const WithHelperText: Story = {
+  args: {
+    className: 'w-[180px]',
+    helperText: 'Choose your favorite fruit',
+    children: (
+      <>
+        <option value="">Select a fruit</option>
+        <option value="apple">Apple</option>
+        <option value="banana">Banana</option>
+        <option value="blueberry">Blueberry</option>
+        <option value="grapes">Grapes</option>
+        <option value="pineapple">Pineapple</option>
+      </>
+    ),
+  },
+};
+
+export const WithError: Story = {
+  args: {
+    className: 'w-[180px]',
+    error: true,
+    helperText: 'Please select a fruit',
+    children: (
+      <>
+        <option value="">Select a fruit</option>
+        <option value="apple">Apple</option>
+        <option value="banana">Banana</option>
+        <option value="blueberry">Blueberry</option>
+        <option value="grapes">Grapes</option>
+        <option value="pineapple">Pineapple</option>
+      </>
+    ),
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    className: 'w-[180px]',
+    disabled: true,
+    children: (
+      <>
+        <option value="">Select a fruit</option>
+        <option value="apple">Apple</option>
+        <option value="banana">Banana</option>
+        <option value="blueberry">Blueberry</option>
+        <option value="grapes">Grapes</option>
+        <option value="pineapple">Pineapple</option>
+      </>
+    ),
+  },
 };
 
 export const WithGroups: Story = {
-  render: () => (
-    <Select>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select a timezone" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>North America</SelectLabel>
-          <SelectItem value="est">Eastern Standard Time (EST)</SelectItem>
-          <SelectItem value="cst">Central Standard Time (CST)</SelectItem>
-          <SelectItem value="mst">Mountain Standard Time (MST)</SelectItem>
-          <SelectItem value="pst">Pacific Standard Time (PST)</SelectItem>
-          <SelectItem value="akst">Alaska Standard Time (AKST)</SelectItem>
-          <SelectItem value="hst">Hawaii Standard Time (HST)</SelectItem>
-        </SelectGroup>
-        <SelectGroup>
-          <SelectLabel>Europe & Africa</SelectLabel>
-          <SelectItem value="gmt">Greenwich Mean Time (GMT)</SelectItem>
-          <SelectItem value="cet">Central European Time (CET)</SelectItem>
-          <SelectItem value="eet">Eastern European Time (EET)</SelectItem>
-          <SelectItem value="west">Western European Summer Time (WEST)</SelectItem>
-          <SelectItem value="cat">Central Africa Time (CAT)</SelectItem>
-          <SelectItem value="eat">East Africa Time (EAT)</SelectItem>
-        </SelectGroup>
-        <SelectGroup>
-          <SelectLabel>Asia</SelectLabel>
-          <SelectItem value="msk">Moscow Time (MSK)</SelectItem>
-          <SelectItem value="ist">India Standard Time (IST)</SelectItem>
-          <SelectItem value="cst_china">China Standard Time (CST)</SelectItem>
-          <SelectItem value="jst">Japan Standard Time (JST)</SelectItem>
-          <SelectItem value="kst">Korea Standard Time (KST)</SelectItem>
-          <SelectItem value="ist_indonesia">Indonesia Central Standard Time (WITA)</SelectItem>
-        </SelectGroup>
-        <SelectGroup>
-          <SelectLabel>Australia & Pacific</SelectLabel>
-          <SelectItem value="awst">Australian Western Standard Time (AWST)</SelectItem>
-          <SelectItem value="acst">Australian Central Standard Time (ACST)</SelectItem>
-          <SelectItem value="aest">Australian Eastern Standard Time (AEST)</SelectItem>
-          <SelectItem value="nzst">New Zealand Standard Time (NZST)</SelectItem>
-          <SelectItem value="fjt">Fiji Time (FJT)</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  ),
+  args: {
+    className: 'w-[200px]',
+    children: (
+      <>
+        <option value="">Select a timezone</option>
+        <optgroup label="North America">
+          <option value="est">Eastern Standard Time (EST)</option>
+          <option value="cst">Central Standard Time (CST)</option>
+          <option value="mst">Mountain Standard Time (MST)</option>
+          <option value="pst">Pacific Standard Time (PST)</option>
+        </optgroup>
+        <optgroup label="Europe & Africa">
+          <option value="gmt">Greenwich Mean Time (GMT)</option>
+          <option value="cet">Central European Time (CET)</option>
+          <option value="eet">Eastern European Time (EET)</option>
+        </optgroup>
+        <optgroup label="Asia">
+          <option value="ist">India Standard Time (IST)</option>
+          <option value="jst">Japan Standard Time (JST)</option>
+          <option value="kst">Korea Standard Time (KST)</option>
+        </optgroup>
+      </>
+    ),
+  },
 };

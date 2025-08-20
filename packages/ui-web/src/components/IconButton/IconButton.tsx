@@ -1,44 +1,73 @@
 import React from 'react';
-import { Slot } from '@radix-ui/react-slot';
+import { Button } from 'flowbite-react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../utils';
 
-const iconButtonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
-  {
-    variants: {
-      variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
-      },
-      size: {
-        default: 'h-10 w-10',
-        sm: 'h-9 w-9',
-        lg: 'h-11 w-11',
-        xs: 'h-8 w-8',
-      },
+// Map our variants to Flowbite variants
+const variantMap = {
+  default: 'info',
+  destructive: 'failure',
+  outline: 'light',
+  secondary: 'alternative',
+  ghost: 'light',
+  link: 'light',
+} as const;
+
+const sizeMap = {
+  default: 'md',
+  sm: 'sm',
+  lg: 'lg',
+  xs: 'xs',
+} as const;
+
+const iconButtonVariants = cva('aspect-square', {
+  variants: {
+    variant: {
+      default: '',
+      destructive: '',
+      outline: '',
+      secondary: '',
+      ghost: '',
+      link: '',
     },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
+    size: {
+      default: '',
+      sm: '',
+      lg: '',
+      xs: '',
     },
   },
-);
+  defaultVariants: {
+    variant: 'default',
+    size: 'default',
+  },
+});
 
 export interface IconButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color' | 'size'>,
     VariantProps<typeof iconButtonVariants> {
   asChild?: boolean;
 }
 
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button';
-    return <Comp className={cn(iconButtonVariants({ variant, size, className }))} ref={ref} {...props} />;
+  ({ className, variant = 'default', size = 'default', asChild = false, ...props }, ref) => {
+    const flowbiteVariant = variant ? variantMap[variant] || 'info' : 'info';
+    const flowbiteSize = size ? sizeMap[size] || 'md' : 'md';
+
+    // Handle asChild by rendering a span wrapper if needed
+    if (asChild) {
+      return <span className={cn(iconButtonVariants({ variant, size, className }))}>{props.children}</span>;
+    }
+
+    return (
+      <Button
+        ref={ref}
+        color={flowbiteVariant as any}
+        size={flowbiteSize as any}
+        className={cn(iconButtonVariants({ variant, size }), 'p-2', className)}
+        {...props}
+      />
+    );
   },
 );
 IconButton.displayName = 'IconButton';

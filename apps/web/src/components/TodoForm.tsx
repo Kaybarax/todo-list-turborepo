@@ -1,18 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Button,
-  Input,
-  Badge,
-  Textarea,
-  Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@todo/ui-web';
+import { Button, Input, Badge, Textarea, Label, Select, SelectItem } from '@todo/ui-web';
 
 interface TodoFormProps {
   // eslint-disable-next-line no-unused-vars
@@ -115,15 +104,11 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
           <Label htmlFor="priority" className="block text-gray-700 mb-1">
             Priority
           </Label>
-          <Select value={priority} onValueChange={(value: 'low' | 'medium' | 'high') => setPriority(value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select priority" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="low">Low</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="high">High</SelectItem>
-            </SelectContent>
+          <Select value={priority} onChange={e => setPriority(e.target.value as 'low' | 'medium' | 'high')}>
+            <SelectItem value="">Select priority</SelectItem>
+            <SelectItem value="low">Low</SelectItem>
+            <SelectItem value="medium">Medium</SelectItem>
+            <SelectItem value="high">High</SelectItem>
           </Select>
         </div>
 

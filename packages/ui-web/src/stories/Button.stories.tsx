@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { Button } from '../components/Button';
@@ -9,7 +10,7 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A versatile button component built on Radix UI with multiple variants and states.',
+        component: 'A versatile button component built on Flowbite with multiple variants and states.',
       },
     },
   },
