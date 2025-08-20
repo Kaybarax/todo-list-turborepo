@@ -1,6 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import { Edit, Trash2, Settings, Plus, Heart, Star } from 'lucide-react';
-import React from 'react';
 
 import { IconButton } from '../components/IconButton/IconButton';
 

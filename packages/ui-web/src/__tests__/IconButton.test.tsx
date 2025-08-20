@@ -1,5 +1,4 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import React from 'react';
 import { vi } from 'vitest';
 
 import { IconButton } from '../components/IconButton/IconButton';

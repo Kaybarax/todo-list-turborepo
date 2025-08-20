@@ -236,8 +236,10 @@ export const commonArgTypes = {
 
   // Select controls
   variant: {
-    control: { type: 'select' },
-    options: ['default', 'primary', 'secondary', 'destructive', 'outline', 'ghost', 'link'],
+    control: {
+      type: 'select',
+      options: ['default', 'primary', 'secondary', 'destructive', 'outline', 'ghost', 'link'],
+    },
     description: 'Visual variant of the component',
     table: {
       type: { summary: 'CommonVariant' },
@@ -246,8 +248,7 @@ export const commonArgTypes = {
   },
 
   size: {
-    control: { type: 'select' },
-    options: ['sm', 'md', 'lg', 'xl'],
+    control: { type: 'select', options: ['sm', 'md', 'lg', 'xl'] },
     description: 'Size of the component',
     table: {
       type: { summary: 'CommonSize' },

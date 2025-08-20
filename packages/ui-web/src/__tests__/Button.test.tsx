@@ -1,5 +1,4 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import React from 'react';
 import { vi } from 'vitest';
 
 import { Button } from '../components/Button/Button';
@@ -72,14 +71,14 @@ describe('Button', () => {
   });
 
   it('shows loading state', () => {
-    render(<Button isLoading>Submit</Button>);
+    render(<Button loading>Submit</Button>);
     expect(screen.getByRole('button')).toBeDisabled();
     expect(document.querySelector('svg')).toBeInTheDocument();
   });
 
   it('shows loading text when provided', () => {
     render(
-      <Button isLoading loadingText="Loading...">
+      <Button loading loadingText="Loading...">
         Submit
       </Button>,
     );

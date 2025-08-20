@@ -1,5 +1,4 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import React from 'react';
 import { vi } from 'vitest';
 
 import { Label } from '../components/Label/Label';
