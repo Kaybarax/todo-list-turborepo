@@ -1,5 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
+import { clsx } from 'clsx';
 import React from 'react';
 
 // TODO: Replace with actual component import
@@ -8,10 +9,10 @@ import React from 'react';
 // TODO: Replace with actual component interface
 interface ComponentNameProps {
   children?: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'outline';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'secondary' | 'accent' | 'ghost' | 'outline';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   disabled?: boolean;
-  isLoading?: boolean;
+  loading?: boolean;
   onClick?: () => void;
   className?: string;
   'aria-label'?: string;
@@ -23,20 +24,47 @@ const ComponentName: React.FC<ComponentNameProps> = ({
   variant = 'primary',
   size = 'md',
   disabled = false,
-  isLoading = false,
+  loading = false,
   onClick,
   className = '',
   ...props
-}) => (
-  <button
-    className={`component-${variant} component-${size} ${className}`}
-    disabled={disabled || isLoading}
-    onClick={onClick}
-    {...props}
-  >
-    {isLoading ? 'Loading...' : children}
-  </button>
-);
+}) => {
+  const baseClasses = 'btn';
+  const variantClasses = {
+    primary: 'btn-primary',
+    secondary: 'btn-secondary',
+    accent: 'btn-accent',
+    ghost: 'btn-ghost',
+    outline: 'btn-outline',
+  };
+  const sizeClasses = {
+    xs: 'btn-xs',
+    sm: 'btn-sm',
+    md: '',
+    lg: 'btn-lg',
+  };
+
+  return (
+    <button
+      className={clsx(
+        baseClasses,
+        variantClasses[variant],
+        sizeClasses[size],
+        {
+          'btn-disabled': disabled,
+          loading,
+        },
+        className,
+      )}
+      disabled={disabled || loading}
+      onClick={onClick}
+      {...props}
+    >
+      {loading && <span className="loading loading-spinner" />}
+      {children}
+    </button>
+  );
+};
 
 const meta: Meta<typeof ComponentName> = {
   title: 'Templates/ComponentTemplate',
@@ -62,19 +90,19 @@ const meta: Meta<typeof ComponentName> = {
     },
     variant: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'outline'],
+      options: ['primary', 'secondary', 'accent', 'ghost', 'outline'],
       description: 'Visual variant of the component',
       table: {
-        type: { summary: 'primary | secondary | outline' },
+        type: { summary: 'primary | secondary | accent | ghost | outline' },
         defaultValue: { summary: 'primary' },
       },
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg'],
       description: 'Size of the component',
       table: {
-        type: { summary: 'sm | md | lg' },
+        type: { summary: 'xs | sm | md | lg' },
         defaultValue: { summary: 'md' },
       },
     },
@@ -86,7 +114,7 @@ const meta: Meta<typeof ComponentName> = {
         defaultValue: { summary: 'false' },
       },
     },
-    isLoading: {
+    loading: {
       control: { type: 'boolean' },
       description: 'Whether the component is in loading state',
       table: {
@@ -141,6 +169,20 @@ export const Secondary: Story = {
   },
 };
 
+export const Accent: Story = {
+  args: {
+    variant: 'accent',
+    children: 'Accent Variant',
+  },
+};
+
+export const Ghost: Story = {
+  args: {
+    variant: 'ghost',
+    children: 'Ghost Variant',
+  },
+};
+
 export const Outline: Story = {
   args: {
     variant: 'outline',
@@ -149,6 +191,13 @@ export const Outline: Story = {
 };
 
 // Size stories - show each size option
+export const ExtraSmall: Story = {
+  args: {
+    size: 'xs',
+    children: 'Extra Small',
+  },
+};
+
 export const Small: Story = {
   args: {
     size: 'sm',
@@ -180,7 +229,7 @@ export const Disabled: Story = {
 
 export const Loading: Story = {
   args: {
-    isLoading: true,
+    loading: true,
     children: 'Loading State',
   },
 };
@@ -192,16 +241,19 @@ export const AllVariants: Story = {
       <div className="space-x-2">
         <ComponentName variant="primary">Primary</ComponentName>
         <ComponentName variant="secondary">Secondary</ComponentName>
+        <ComponentName variant="accent">Accent</ComponentName>
+        <ComponentName variant="ghost">Ghost</ComponentName>
         <ComponentName variant="outline">Outline</ComponentName>
       </div>
       <div className="space-x-2">
+        <ComponentName size="xs">XS</ComponentName>
         <ComponentName size="sm">Small</ComponentName>
         <ComponentName size="md">Medium</ComponentName>
         <ComponentName size="lg">Large</ComponentName>
       </div>
       <div className="space-x-2">
         <ComponentName disabled>Disabled</ComponentName>
-        <ComponentName isLoading>Loading</ComponentName>
+        <ComponentName loading>Loading</ComponentName>
       </div>
     </div>
   ),
@@ -218,22 +270,22 @@ export const AllVariants: Story = {
 export const Interactive: Story = {
   render: function InteractiveRender() {
     const [clickCount, setClickCount] = React.useState(0);
-    const [isLoading, setIsLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
 
     const handleClick = () => {
-      setIsLoading(true);
+      setLoading(true);
       // Simulate async operation
       setTimeout(() => {
         setClickCount(prev => prev + 1);
-        setIsLoading(false);
+        setLoading(false);
       }, 1000);
     };
 
     return (
       <div className="space-y-4 text-center">
-        <p>Clicked {clickCount} times</p>
-        <ComponentName onClick={handleClick} isLoading={isLoading}>
-          {isLoading ? 'Processing...' : 'Click Me'}
+        <p className="text-base-content">Clicked {clickCount} times</p>
+        <ComponentName onClick={handleClick} loading={loading}>
+          {loading ? 'Processing...' : 'Click Me'}
         </ComponentName>
       </div>
     );
@@ -278,7 +330,7 @@ export const AccessibilityDemo: Story = {
 export const ResponsiveDemo: Story = {
   render: () => (
     <div className="w-full space-y-4">
-      <ComponentName className="w-full">Full Width</ComponentName>
+      <ComponentName className="btn-block">Full Width (btn-block)</ComponentName>
       <ComponentName className="w-1/2">Half Width</ComponentName>
       <ComponentName className="w-1/4">Quarter Width</ComponentName>
     </div>
@@ -319,12 +371,15 @@ export const WithError: Story = {
   args: {
     children: 'Component with Error',
     // Add error-related props here
-    className: 'border-red-500 text-red-600',
+    className: 'btn-error',
+    variant: 'outline',
   },
   render: args => (
     <div>
       <ComponentName {...args} />
-      <p className="mt-1 text-sm text-red-600">Error message would appear here</p>
+      <div className="alert alert-error mt-2">
+        <span>Error message would appear here</span>
+      </div>
     </div>
   ),
   parameters: {
