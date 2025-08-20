@@ -30,12 +30,12 @@ const Navigation: React.FC<NavigationProps> = ({ components, activeComponent, on
         <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Quick Links</h3>
         <div className="space-y-2 text-sm">
           <a
-            href="https://www.radix-ui.com/"
+            href="https://daisyui.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="block text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
           >
-            Radix UI Docs
+            DaisyUI Docs
           </a>
           <a
             href="https://tailwindcss.com/"

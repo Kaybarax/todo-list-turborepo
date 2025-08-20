@@ -8,10 +8,13 @@ const toMatchImageSnapshot = () => ({ pass: true, message: () => 'Mock snapshot 
 expect.extend({ toMatchImageSnapshot });
 
 // Import components for screenshot testing
-import { Button } from '../../lib/components/Button/Button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../lib/components/Card/Card';
-import { Input } from '../../lib/components/Input/Input';
-import { Badge } from '../../lib/components/Badge/Badge';
+import { Button } from '../../src/components/Button/Button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../src/components/Card/Card';
+import { Input } from '../../src/components/Input/Input';
+import { Select } from '../../src/components/Select/Select';
+import { Checkbox } from '../../src/components/Checkbox/Checkbox';
+import { Textarea } from '../../src/components/Textarea/Textarea';
+import { Label } from '../../src/components/Label/Label';
 
 // Mock HTML canvas for consistent screenshots
 Object.defineProperty(HTMLCanvasElement.prototype, 'getContext', {

@@ -60,7 +60,7 @@ function App() {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">UI Web Components</h1>
-              <p className="text-gray-600 dark:text-gray-300 mt-1">Interactive showcase of Radix UI-based components</p>
+              <p className="text-gray-600 dark:text-gray-300 mt-1">Interactive showcase of DaisyUI-based components</p>
             </div>
             <Badge variant="default" size="sm">
               v0.1.0
@@ -114,7 +114,7 @@ function App() {
       <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-gray-600 dark:text-gray-300">
-            <p>Built with React, Vite, Tailwind CSS, and Radix UI</p>
+            <p>Built with React, Vite, Tailwind CSS, and DaisyUI</p>
           </div>
         </div>
       </footer>

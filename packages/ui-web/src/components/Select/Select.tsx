@@ -1,21 +1,41 @@
 import React from 'react';
-import { Select as FlowbiteSelect } from 'flowbite-react';
 import { cn } from '../../utils';
 
 // Simple wrapper around Flowbite Select
 export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'color' | 'size'> {
   helperText?: string;
   error?: boolean;
+  'aria-label'?: string;
+  'aria-labelledby'?: string;
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, helperText, error, children, ...props }, ref) => {
+  (
+    { className, helperText, error, children, 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledby, ...props },
+    ref,
+  ) => {
+    // Ensure accessibility by providing a fallback aria-label if none is provided
+    const accessibilityProps = {
+      'aria-label': ariaLabel || (ariaLabelledby ? undefined : 'Select option'),
+      'aria-labelledby': ariaLabelledby,
+    };
+
     return (
       <div className="w-full">
-        <FlowbiteSelect ref={ref} color={error ? 'failure' : 'gray'} className={cn(className)} {...props}>
+        <select
+          ref={ref}
+          className={cn('select select-bordered w-full', error && 'select-error', className)}
+          {...accessibilityProps}
+          {...props}
+        >
           {children}
-        </FlowbiteSelect>
-        {helperText && <p className={cn('mt-1 text-xs', error ? 'text-red-600' : 'text-gray-600')}>{helperText}</p>}
+        </select>
+
+        {helperText && (
+          <div className="label">
+            <span className={cn('label-text-alt', error && 'text-error')}>{helperText}</span>
+          </div>
+        )}
       </div>
     );
   },

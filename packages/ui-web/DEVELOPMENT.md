@@ -6,7 +6,7 @@ This document provides comprehensive guidelines for developing components in the
 
 ### Foundation Technologies
 
-- **Radix UI**: Accessible, unstyled primitives as the foundation
+- **DaisyUI**: Complete CSS component framework as the foundation
 - **Tailwind CSS**: Utility-first styling with design tokens
 - **Class Variance Authority (CVA)**: Type-safe variant generation
 - **TypeScript**: Full type safety with comprehensive interfaces
@@ -60,7 +60,7 @@ Create `ComponentName.tsx` with this structure:
 
 ```tsx
 import * as React from 'react';
-import { Slot } from '@radix-ui/react-slot';
+// DaisyUI components use native HTML elements with CSS classes
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../utils';
 

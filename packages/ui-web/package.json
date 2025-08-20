@@ -45,12 +45,12 @@
   },
   "dependencies": {
     "@todo/services": "workspace:*",
-    "flowbite": "^3.1.2",
-    "flowbite-react": "^0.12.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "daisyui": "^5.0.50",
     "lucide-react": "^0.540.0",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^3.4.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^2.0.2",
@@ -82,7 +82,6 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "storybook": "^8.6.14",
-    "tailwindcss": "^4.1.12",
     "typescript": "^5.9.2",
     "vite": "^7.1.2",
     "vite-plugin-dts": "^4.5.4",

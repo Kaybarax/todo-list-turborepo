@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
-import { Button, buttonVariants } from '../../lib/components/Button/Button';
+import { Button } from '../../src/components/Button/Button';
 
 describe('Button', () => {
   it('renders correctly with default props', () => {

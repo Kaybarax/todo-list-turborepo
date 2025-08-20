@@ -1,5 +1,4 @@
 import React from 'react';
-import { Modal } from 'flowbite-react';
 import { cn } from '../../utils';
 
 // Wrapper around Flowbite Modal
@@ -10,10 +9,21 @@ export interface DialogProps {
 }
 
 const Dialog: React.FC<DialogProps> = ({ open, onOpenChange, children }) => {
+  if (!open) return null;
+
   return (
-    <Modal show={open} onClose={() => onOpenChange?.(false)}>
-      {children}
-    </Modal>
+    <div className="modal modal-open">
+      <div className="modal-box">
+        <button
+          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          onClick={() => onOpenChange?.(false)}
+        >
+          ✕
+        </button>
+        {children}
+      </div>
+      <div className="modal-backdrop" onClick={() => onOpenChange?.(false)}></div>
+    </div>
   );
 };
 
@@ -30,25 +40,22 @@ const DialogContent: React.FC<{ className?: string; children: React.ReactNode }>
 );
 
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('flex flex-col space-y-1.5 text-center sm:text-left p-6 pb-0', className)} {...props} />
+  <div className={cn('flex flex-col space-y-2 text-center sm:text-left p-6 pb-4', className)} {...props} />
 );
 DialogHeader.displayName = 'DialogHeader';
 
 const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 p-6 border-t', className)}
-    {...props}
-  />
+  <div className={cn('modal-action', className)} {...props} />
 );
 DialogFooter.displayName = 'DialogFooter';
 
 const DialogTitle: React.FC<{ className?: string; children: React.ReactNode }> = ({ className, children }) => (
-  <h3 className={cn('text-lg font-semibold leading-none tracking-tight', className)}>{children}</h3>
+  <h3 className={cn('text-xl font-bold', className)}>{children}</h3>
 );
 DialogTitle.displayName = 'DialogTitle';
 
 const DialogDescription: React.FC<{ className?: string; children: React.ReactNode }> = ({ className, children }) => (
-  <p className={cn('text-sm text-gray-600', className)}>{children}</p>
+  <p className={cn('text-sm opacity-70', className)}>{children}</p>
 );
 DialogDescription.displayName = 'DialogDescription';
 

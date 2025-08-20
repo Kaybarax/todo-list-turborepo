@@ -168,7 +168,7 @@ pnpm build-storybook     # Build Storybook for production
 
 ### Design System
 
-The application uses a custom design system built with Tailwind CSS and Radix UI primitives.
+The application uses a custom design system built with Tailwind CSS and DaisyUI components.
 
 #### Core Components
 

@@ -381,7 +381,7 @@ Provide clear, comprehensive descriptions:
 ```typescript
 docs: {
   description: {
-    component: 'A versatile button component built on Radix UI with multiple variants, sizes, and states. Supports icons, loading states, and full accessibility compliance. Used throughout the application for user interactions.';
+    component: 'A versatile button component built with DaisyUI styling with multiple variants, sizes, and states. Supports icons, loading states, and full accessibility compliance. Used throughout the application for user interactions.';
   }
 }
 ```

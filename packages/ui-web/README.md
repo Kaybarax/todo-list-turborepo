@@ -1,10 +1,10 @@
 # @todo/ui-web
 
-A modern, accessible React component library built on **Radix UI** primitives with **Tailwind CSS** styling. Designed for the Todo app web interface with comprehensive TypeScript support, visual regression testing, and Storybook documentation.
+A modern, accessible React component library built with **DaisyUI** and **Tailwind CSS** styling. Designed for the Todo app web interface with comprehensive TypeScript support, visual regression testing, and Storybook documentation.
 
 ## ✨ Features
 
-- 🎨 **Built on Radix UI**: Accessible, unstyled primitives as foundation
+- 🎨 **Built with DaisyUI**: Modern UI component framework with Tailwind CSS
 - 🎯 **TypeScript First**: Full TypeScript support with comprehensive type definitions
 - 🌈 **Tailwind CSS**: Utility-first styling with customizable design tokens
 - 📱 **Responsive Design**: Mobile-first approach with responsive variants
@@ -56,12 +56,16 @@ function LoginForm() {
 
 ### Core Components
 
-| Component  | Description                                         | Radix Primitive        |
-| ---------- | --------------------------------------------------- | ---------------------- |
-| **Button** | Versatile button with variants, sizes, and states   | `@radix-ui/react-slot` |
-| **Card**   | Flexible container with header, content, and footer | Custom implementation  |
-| **Input**  | Form input with validation, icons, and labels       | Custom implementation  |
-| **Badge**  | Status indicators and labels                        | Custom implementation  |
+| Component    | Description                                         | Implementation   |
+| ------------ | --------------------------------------------------- | ---------------- |
+| **Button**   | Versatile button with variants, sizes, and states   | Native + DaisyUI |
+| **Card**     | Flexible container with header, content, and footer | Native + DaisyUI |
+| **Input**    | Form input with validation, icons, and labels       | Native + DaisyUI |
+| **Select**   | Dropdown select with custom styling                 | Native + DaisyUI |
+| **Checkbox** | Checkbox input with enhanced styling                | Native + DaisyUI |
+| **Textarea** | Multi-line text input with validation               | Native + DaisyUI |
+| **Label**    | Form labels with variant support                    | Native + DaisyUI |
+| **Dialog**   | Modal dialogs with backdrop and animations          | Native + DaisyUI |
 
 ### Button Component
 
@@ -84,8 +88,8 @@ import { Button } from '@todo/ui-web';
 
 // States
 <Button disabled>Disabled</Button>
-<Button isLoading>Loading...</Button>
-<Button isLoading loadingText="Please wait...">Submit</Button>
+<Button loading>Loading...</Button>
+<Button loading loadingText="Please wait...">Submit</Button>
 
 // With icons
 <Button leftIcon={<ArrowLeft />}>Back</Button>
@@ -119,9 +123,8 @@ import { Input } from '@todo/ui-web';
 // Basic input
 <Input placeholder="Enter text..." />
 
-// With label and helper text
+// With helper text
 <Input
-  label="Email Address"
   placeholder="Enter your email"
   helperText="We'll never share your email"
   type="email"
@@ -137,75 +140,104 @@ import { Input } from '@todo/ui-web';
 // Error state
 <Input
   error
-  label="Password"
   helperText="Password must be at least 8 characters"
   type="password"
+  placeholder="Enter password"
 />
 ```
 
-### Badge Component
+### Select Component
 
 ```tsx
-import { Badge } from '@todo/ui-web';
+import { Select } from '@todo/ui-web';
 
-// Variants
-<Badge>Default</Badge>
-<Badge variant="secondary">Secondary</Badge>
-<Badge variant="destructive">Error</Badge>
-<Badge variant="outline">Outline</Badge>
+// Basic select
+<Select>
+  <option value="">Choose option...</option>
+  <option value="1">Option 1</option>
+  <option value="2">Option 2</option>
+</Select>
 
-// With content
-<Badge>
-  <span className="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
-  Online
-</Badge>
+// With error state
+<Select error helperText="Please select an option">
+  <option value="">Choose option...</option>
+  <option value="1">Option 1</option>
+</Select>
+```
+
+### Form Components
+
+```tsx
+import { Checkbox, Textarea, Label } from '@todo/ui-web';
+
+// Checkbox
+<Checkbox id="terms" />
+<Label htmlFor="terms">I agree to the terms</Label>
+
+// Textarea
+<Textarea
+  placeholder="Enter your message..."
+  helperText="Maximum 500 characters"
+/>
+
+// Label variants
+<Label variant="required">Required Field</Label>
+<Label variant="optional">Optional Field</Label>
+<Label variant="error">Error Field</Label>
 ```
 
 ## 🎨 Theming and Customization
 
-### CSS Variables
+### DaisyUI Theming
 
-The library uses CSS variables for theming. Customize by overriding these variables:
+The library uses DaisyUI themes for consistent styling. Customize by configuring DaisyUI themes:
 
-```css
-:root {
-  /* Colors */
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 221.2 83.2% 53.3%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96%;
-  --secondary-foreground: 222.2 84% 4.9%;
-  --muted: 210 40% 96%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96%;
-  --accent-foreground: 222.2 84% 4.9%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 221.2 83.2% 53.3%;
-
-  /* Border radius */
-  --radius: 0.5rem;
-}
-
-.dark {
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-  --card: 222.2 84% 4.9%;
-  --card-foreground: 210 40% 98%;
-  /* ... other dark mode variables */
-}
+```js
+// tailwind.config.js
+module.exports = {
+  plugins: [require('daisyui')],
+  daisyui: {
+    themes: [
+      'light',
+      'dark',
+      'cupcake',
+      'bumblebee',
+      'emerald',
+      'corporate',
+      'synthwave',
+      'retro',
+      'cyberpunk',
+      'valentine',
+      'halloween',
+      'garden',
+      'forest',
+      'aqua',
+      'lofi',
+      'pastel',
+      'fantasy',
+      'wireframe',
+      'black',
+      'luxury',
+      'dracula',
+      'cmyk',
+      'autumn',
+      'business',
+      'acid',
+      'lemonade',
+      'night',
+      'coffee',
+      'winter',
+      'dim',
+      'nord',
+      'sunset',
+    ],
+  },
+};
 ```
 
 ### Tailwind CSS Integration
 
-The library is built with Tailwind CSS. Extend your Tailwind config:
+The library is built with Tailwind CSS and DaisyUI. Extend your Tailwind config:
 
 ```js
 // tailwind.config.js
@@ -214,21 +246,13 @@ module.exports = {
     './node_modules/@todo/ui-web/dist/**/*.{js,ts,jsx,tsx}',
     // ... your content paths
   ],
-  theme: {
-    extend: {
-      colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
-        // ... other color definitions
-      },
-    },
+  plugins: [require('daisyui')],
+  daisyui: {
+    themes: ['light', 'dark'], // or your preferred themes
+    darkTheme: 'dark',
+    base: true,
+    styled: true,
+    utils: true,
   },
 };
 ```
@@ -328,9 +352,9 @@ See [Visual Testing Guide](./__tests__/visual/VISUAL_TESTING.md) for detailed in
 
 ### Directory Structure
 
-```
+```text
 packages/ui-web/
-├── lib/                        # Source code (new structure)
+├── src/                        # Source code
 │   ├── components/            # Component implementations
 │   │   ├── Button/
 │   │   │   ├── Button.tsx     # Component implementation
@@ -340,7 +364,7 @@ packages/ui-web/
 │   ├── utils/                 # Utility functions
 │   ├── styles.css            # Global styles
 │   └── index.ts              # Main exports
-├── __tests__/                 # Test files (new structure)
+├── __tests__/                 # Test files
 │   ├── components/           # Component tests
 │   ├── integration/          # Integration tests
 │   ├── visual/              # Visual regression tests
@@ -354,53 +378,69 @@ packages/ui-web/
 
 Components are built using:
 
-1. **Radix UI Primitives**: Accessible, unstyled foundation components
-2. **Class Variance Authority (CVA)**: Type-safe variant generation
-3. **Tailwind Merge**: Intelligent class merging for customization
-4. **TypeScript**: Full type safety with proper prop interfaces
+1. **DaisyUI Components**: Pre-styled, accessible UI components
+2. **Native HTML Elements**: Standard form elements with enhanced styling
+3. **Class Variance Authority (CVA)**: Type-safe variant generation
+4. **Tailwind Merge**: Intelligent class merging for customization
+5. **TypeScript**: Full type safety with proper prop interfaces
 
 ### Example Component Structure
 
 ```tsx
 import * as React from 'react';
-import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../../utils';
 
-const buttonVariants = cva('inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors', {
-  variants: {
-    variant: {
-      default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-      destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-      // ... other variants
+const buttonVariants = cva(
+  'btn transition-all duration-200 transform active:scale-95 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed',
+  {
+    variants: {
+      variant: {
+        default: 'btn-primary shadow-lg hover:shadow-xl',
+        destructive: 'btn-error shadow-lg hover:shadow-xl',
+        outline: 'btn-outline shadow-md hover:shadow-lg',
+        secondary: 'btn-secondary shadow-md hover:shadow-lg',
+        ghost: 'btn-ghost hover:shadow-md',
+        link: 'btn-link underline-offset-4',
+      },
+      size: {
+        default: 'btn-md min-w-[120px]',
+        sm: 'btn-sm min-w-[100px]',
+        lg: 'btn-lg min-w-[140px]',
+        icon: 'btn-square btn-md',
+      },
     },
-    size: {
-      default: 'h-10 px-4 py-2',
-      sm: 'h-9 rounded-md px-3',
-      lg: 'h-11 rounded-md px-8',
-      // ... other sizes
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
     },
   },
-  defaultVariants: {
-    variant: 'default',
-    size: 'default',
-  },
-});
+);
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
-  isLoading?: boolean;
+  loading?: boolean;
   loadingText?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button';
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+  ({ className, variant, size, loading, loadingText, leftIcon, rightIcon, children, disabled, ...props }, ref) => {
+    return (
+      <button
+        className={cn(buttonVariants({ variant, size }), className)}
+        disabled={disabled || loading}
+        ref={ref}
+        {...props}
+      >
+        {loading && <span className="loading loading-spinner loading-sm mr-2"></span>}
+        {!loading && leftIcon && <span className="mr-2">{leftIcon}</span>}
+        {loading && loadingText ? loadingText : children}
+        {!loading && rightIcon && <span className="ml-2">{rightIcon}</span>}
+      </button>
+    );
   },
 );
 
@@ -413,22 +453,22 @@ export { Button, buttonVariants };
 
 ### Adding New Components
 
-1. **Create component directory**: `lib/components/ComponentName/`
+1. **Create component directory**: `src/components/ComponentName/`
 2. **Implement component**: `ComponentName.tsx` with proper TypeScript types
 3. **Create stories**: `ComponentName.stories.tsx` with comprehensive examples
 4. **Write tests**: Add to `__tests__/components/ComponentName.test.tsx`
-5. **Add exports**: Update `lib/index.ts` and component `index.ts`
+5. **Add exports**: Update `src/index.ts` and component `index.ts`
 6. **Update documentation**: Add to this README and Storybook docs
 
 ### Component Guidelines
 
-- **Use Radix UI primitives** when available for accessibility
+- **Use DaisyUI classes** for consistent styling and theming
 - **Implement proper TypeScript types** with VariantProps
 - **Follow naming conventions** (PascalCase for components)
 - **Include comprehensive tests** (unit, integration, visual)
 - **Document all props** in Storybook stories
-- **Support dark mode** with CSS variables
-- **Ensure accessibility** with proper ARIA attributes
+- **Support dark mode** with DaisyUI themes
+- **Ensure accessibility** with proper ARIA attributes and semantic HTML
 
 ### Testing Guidelines
 
