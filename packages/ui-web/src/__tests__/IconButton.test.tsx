@@ -1,7 +1,8 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { IconButton } from '../components/IconButton/IconButton';
+import React from 'react';
 import { vi } from 'vitest';
+
+import { IconButton } from '../components/IconButton/IconButton';
 
 describe('IconButton', () => {
   it('renders correctly', () => {

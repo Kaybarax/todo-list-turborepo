@@ -2,8 +2,8 @@
  * Common TypeScript types and interfaces for Storybook stories in ui-web package
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
-import type { ComponentType, ReactNode } from 'react';
+import { type Meta, type StoryObj } from '@storybook/react';
+import { type ComponentType, type ReactNode } from 'react';
 
 /**
  * Base story configuration interface
@@ -357,7 +357,7 @@ export function createStoryMeta<T>(config: {
     title: config.title,
     component: config.component,
     parameters: {
-      layout: config.layout || 'centered',
+      layout: config.layout ?? 'centered',
       docs: {
         description: {
           component: config.description,
@@ -365,8 +365,8 @@ export function createStoryMeta<T>(config: {
       },
     },
     tags: ['autodocs'],
-    argTypes: config.argTypes || {},
-    args: config.args || {},
+    argTypes: config.argTypes ?? {},
+    args: config.args ?? {},
   };
 }
 
@@ -385,7 +385,7 @@ export function createA11yStory<T>(
     parameters: {
       docs: {
         description: {
-          story: description || 'Demonstrates proper accessibility attributes and screen reader support.',
+          story: description ?? 'Demonstrates proper accessibility attributes and screen reader support.',
         },
       },
     },
@@ -401,7 +401,7 @@ export function createInteractiveStory<T>(renderFunction: () => ReactNode, descr
     parameters: {
       docs: {
         description: {
-          story: description || 'Interactive example demonstrating component behavior.',
+          story: description ?? 'Shows interactive behavior and state management.',
         },
       },
     },
@@ -420,7 +420,7 @@ export function createVisualRegressionStory<T>(
     parameters: {
       docs: {
         description: {
-          story: description || 'Visual regression test showing component variants.',
+          story: description ?? 'Shows responsive behavior across different screen sizes.',
         },
       },
     },

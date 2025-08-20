@@ -1,7 +1,8 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Label } from '../components/Label/Label';
+import React from 'react';
 import { vi } from 'vitest';
+
+import { Label } from '../components/Label/Label';
 
 describe('Label', () => {
   it('renders correctly', () => {

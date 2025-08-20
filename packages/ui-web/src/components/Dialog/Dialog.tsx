@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { cn } from '../../utils';
 
 // Wrapper around Flowbite Modal
@@ -22,7 +23,7 @@ const Dialog: React.FC<DialogProps> = ({ open, onOpenChange, children }) => {
         </button>
         {children}
       </div>
-      <div className="modal-backdrop" onClick={() => onOpenChange?.(false)}></div>
+      <div className="modal-backdrop" onClick={() => onOpenChange?.(false)} />
     </div>
   );
 };

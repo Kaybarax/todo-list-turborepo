@@ -1,7 +1,8 @@
-import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
-import { Input } from '../components/Input/Input';
+import { type Meta, type StoryObj } from '@storybook/react';
 import { Search, Mail, Eye, EyeOff } from 'lucide-react';
+import React from 'react';
+
+import { Input } from '../components/Input/Input';
 
 const meta: Meta<typeof Input> = {
   title: 'Components/Input',
@@ -115,7 +116,7 @@ export const WithBothIcons: Story = {
 };
 
 export const PasswordToggle: Story = {
-  render: () => {
+  render: function PasswordToggleRender() {
     const [showPassword, setShowPassword] = React.useState(false);
     return (
       <Input

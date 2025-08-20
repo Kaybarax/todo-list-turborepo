@@ -1,5 +1,6 @@
-import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import React from 'react';
+
 import { cn } from '../../utils';
 
 const badgeVariants = cva(
@@ -28,13 +29,13 @@ export interface BadgeProps
   icon?: React.ReactNode;
 }
 
-function Badge({ className, variant = 'default', icon, children, ...props }: BadgeProps) {
+const Badge = ({ className, variant = 'default', icon, children, ...props }: BadgeProps) => {
   return (
     <span className={cn(badgeVariants({ variant }), className)} {...props}>
       {icon && <span className="flex-shrink-0 transition-transform duration-200 group-hover:rotate-12">{icon}</span>}
       <span className="truncate">{children}</span>
     </span>
   );
-}
+};
 
 export { Badge, badgeVariants };

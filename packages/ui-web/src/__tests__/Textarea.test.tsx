@@ -1,7 +1,8 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Textarea } from '../components/Textarea/Textarea';
+import React from 'react';
 import { vi } from 'vitest';
+
+import { Textarea } from '../components/Textarea/Textarea';
 
 describe('Textarea', () => {
   it('renders correctly', () => {
@@ -82,7 +83,7 @@ describe('Textarea', () => {
     };
 
     render(<TestComponent />);
-    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
+    const textarea = screen.getByRole('textbox');
     expect(textarea.value).toBe('Initial text');
 
     fireEvent.change(textarea, { target: { value: 'Updated text' } });

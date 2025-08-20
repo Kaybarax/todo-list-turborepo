@@ -1,7 +1,8 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Checkbox } from '../components/Checkbox/Checkbox';
+import React from 'react';
 import { vi } from 'vitest';
+
+import { Checkbox } from '../components/Checkbox/Checkbox';
 
 describe('Checkbox', () => {
   it('renders correctly', () => {

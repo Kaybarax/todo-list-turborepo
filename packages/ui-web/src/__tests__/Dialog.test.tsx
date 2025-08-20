@@ -1,5 +1,7 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import React from 'react';
+import { vi } from 'vitest';
+
 import {
   Dialog,
   DialogContent,
@@ -8,12 +10,11 @@ import {
   DialogTitle,
   DialogDescription,
 } from '../components/Dialog/Dialog';
-import { vi } from 'vitest';
 
 describe('Dialog', () => {
   it('renders when open is true', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogTitle>Test Dialog</DialogTitle>
         </DialogContent>
@@ -36,7 +37,7 @@ describe('Dialog', () => {
   it('calls onOpenChange when closed', () => {
     const handleOpenChange = vi.fn();
     render(
-      <Dialog open={true} onOpenChange={handleOpenChange}>
+      <Dialog open onOpenChange={handleOpenChange}>
         <DialogContent>
           <DialogTitle>Test Dialog</DialogTitle>
         </DialogContent>
@@ -51,7 +52,7 @@ describe('Dialog', () => {
 
   it('renders with complex content structure', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Complex Dialog</DialogTitle>
@@ -100,7 +101,7 @@ describe('Dialog', () => {
 describe('DialogContent', () => {
   it('renders with custom className', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent className="custom-content">
           <DialogTitle>Test</DialogTitle>
         </DialogContent>
@@ -113,7 +114,7 @@ describe('DialogContent', () => {
 
   it('applies default padding', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogTitle>Test</DialogTitle>
         </DialogContent>
@@ -128,7 +129,7 @@ describe('DialogContent', () => {
 describe('DialogHeader', () => {
   it('renders with correct structure', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Header Title</DialogTitle>
@@ -144,7 +145,7 @@ describe('DialogHeader', () => {
 
   it('applies custom className', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogHeader className="custom-header">
             <DialogTitle>Test</DialogTitle>
@@ -159,7 +160,7 @@ describe('DialogHeader', () => {
 
   it('has default styling classes', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogHeader data-testid="dialog-header">
             <DialogTitle>Test</DialogTitle>
@@ -176,7 +177,7 @@ describe('DialogHeader', () => {
 describe('DialogFooter', () => {
   it('renders with correct structure', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogFooter>
             <button>Cancel</button>
@@ -192,7 +193,7 @@ describe('DialogFooter', () => {
 
   it('applies custom className', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogFooter className="custom-footer">
             <button>Test</button>
@@ -207,7 +208,7 @@ describe('DialogFooter', () => {
 
   it('has default styling classes', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogFooter data-testid="dialog-footer">
             <button>Test</button>
@@ -224,7 +225,7 @@ describe('DialogFooter', () => {
 describe('DialogTitle', () => {
   it('renders correctly', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogTitle>Test Title</DialogTitle>
         </DialogContent>
@@ -236,7 +237,7 @@ describe('DialogTitle', () => {
 
   it('applies custom className', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogTitle className="custom-title">Test Title</DialogTitle>
         </DialogContent>
@@ -249,7 +250,7 @@ describe('DialogTitle', () => {
 
   it('has default styling classes', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogTitle>Test Title</DialogTitle>
         </DialogContent>
@@ -262,7 +263,7 @@ describe('DialogTitle', () => {
 
   it('renders as h3 element', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogTitle>Test Title</DialogTitle>
         </DialogContent>
@@ -276,7 +277,7 @@ describe('DialogTitle', () => {
 describe('DialogDescription', () => {
   it('renders correctly', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogDescription>Test Description</DialogDescription>
         </DialogContent>
@@ -288,7 +289,7 @@ describe('DialogDescription', () => {
 
   it('applies custom className', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogDescription className="custom-description">Test Description</DialogDescription>
         </DialogContent>
@@ -301,7 +302,7 @@ describe('DialogDescription', () => {
 
   it('has default styling classes', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogDescription>Test Description</DialogDescription>
         </DialogContent>
@@ -314,7 +315,7 @@ describe('DialogDescription', () => {
 
   it('renders as p element', () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogDescription>Test Description</DialogDescription>
         </DialogContent>
@@ -330,7 +331,7 @@ describe('Dialog Integration', () => {
     const handleSubmit = vi.fn(e => e.preventDefault());
 
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <form onSubmit={handleSubmit}>
             <DialogHeader>
@@ -353,7 +354,7 @@ describe('Dialog Integration', () => {
     const handleClick = vi.fn();
 
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Interactive Dialog</DialogTitle>

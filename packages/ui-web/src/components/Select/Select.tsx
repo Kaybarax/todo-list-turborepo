@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { cn } from '../../utils';
 
 // Simple wrapper around Flowbite Select
@@ -16,7 +17,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   ) => {
     // Ensure accessibility by providing a fallback aria-label if none is provided
     const accessibilityProps = {
-      'aria-label': ariaLabel || (ariaLabelledby ? undefined : 'Select option'),
+      'aria-label': ariaLabel ?? (ariaLabelledby ? undefined : 'Select option'),
       'aria-labelledby': ariaLabelledby,
     };
 

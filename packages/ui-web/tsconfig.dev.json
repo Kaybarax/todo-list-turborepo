@@ -11,9 +11,9 @@
     "resolveJsonModule": true,
     "strict": true,
     "paths": {
-      "@/*": ["./lib/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["lib/**/*", "__tests__/**/*", ".storybook/**/*", "showcase/**/*"],
+  "include": ["src/**/*", "__tests__/**/*", ".storybook/**/*", "showcase/**/*"],
   "exclude": ["node_modules", "dist"]
 }

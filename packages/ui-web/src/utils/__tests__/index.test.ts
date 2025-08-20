@@ -6,7 +6,7 @@ describe('cn utility', () => {
   });
 
   it('handles conditional class names', () => {
-    expect(cn('class1', true && 'class2', false && 'class3')).toBe('class1 class2');
+    expect(cn('class1', 'class2', undefined)).toBe('class1 class2');
   });
 
   it('handles array of class names', () => {

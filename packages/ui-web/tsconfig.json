@@ -6,7 +6,7 @@
     "lib": ["dom", "esnext"],
     "baseUrl": ".",
     "outDir": "./dist",
-    "rootDir": "./lib",
+    "rootDir": "./src",
     "declaration": true,
     "jsx": "react-jsx",
     "skipLibCheck": true,
@@ -18,9 +18,9 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@/*": ["./lib/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["lib/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "__tests__", ".storybook", "showcase"]
 }

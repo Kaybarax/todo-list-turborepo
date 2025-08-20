@@ -1,7 +1,7 @@
+import { type Meta, type StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+
 import { Button } from '../components/Button/Button';
-import { Input } from '../components/Input/Input';
 import {
   Dialog,
   DialogContent,
@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '../components/Dialog/Dialog';
+import { Input } from '../components/Input/Input';
 
 const meta: Meta<typeof Dialog> = {
   title: 'Components/Dialog',
@@ -34,7 +35,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => {
+  render: function DefaultRender() {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -74,7 +75,7 @@ export const Default: Story = {
 };
 
 export const ConfirmationDialog: Story = {
-  render: () => {
+  render: function ConfirmationDialogRender() {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -107,7 +108,7 @@ export const ConfirmationDialog: Story = {
 };
 
 export const LargeDialog: Story = {
-  render: () => {
+  render: function LargeDialogRender() {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -141,7 +142,7 @@ export const LargeDialog: Story = {
 };
 
 export const SimpleDialog: Story = {
-  render: () => {
+  render: function SimpleDialogRender() {
     const [isOpen, setIsOpen] = useState(false);
 
     return (

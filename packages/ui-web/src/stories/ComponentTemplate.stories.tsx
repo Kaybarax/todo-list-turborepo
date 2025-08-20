@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import React from 'react';
 
@@ -216,11 +216,11 @@ export const AllVariants: Story = {
 
 // Interactive story - demonstrate component behavior
 export const Interactive: Story = {
-  render: () => {
+  render: function InteractiveRender() {
     const [clickCount, setClickCount] = React.useState(0);
     const [isLoading, setIsLoading] = React.useState(false);
 
-    const handleClick = async () => {
+    const handleClick = () => {
       setIsLoading(true);
       // Simulate async operation
       setTimeout(() => {

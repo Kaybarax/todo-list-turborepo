@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { cn } from '../../utils';
 
 export interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'color'> {
@@ -42,7 +43,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               isFocused && !error && 'opacity-20',
             )}
           >
-            <div className="w-full h-full bg-white rounded-[10px]"></div>
+            <div className="w-full h-full bg-white rounded-[10px]" />
           </div>
 
           {/* Resize handle indicator */}
@@ -54,7 +55,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               isFocused && 'opacity-40',
             )}
           >
-            <div className="w-full h-full bg-current"></div>
+            <div className="w-full h-full bg-current" />
           </div>
         </div>
 

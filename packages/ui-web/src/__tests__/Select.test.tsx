@@ -1,7 +1,8 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Select, SelectItem } from '../components/Select/Select';
+import React from 'react';
 import { vi } from 'vitest';
+
+import { Select, SelectItem } from '../components/Select/Select';
 
 describe('Select', () => {
   it('renders correctly', () => {
@@ -115,7 +116,7 @@ describe('Select', () => {
     };
 
     render(<TestComponent />);
-    const select = screen.getByRole('combobox') as HTMLSelectElement;
+    const select = screen.getByRole('combobox');
     expect(select.value).toBe('option1');
 
     fireEvent.change(select, { target: { value: 'option2' } });

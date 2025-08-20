@@ -1,7 +1,7 @@
-import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import React from 'react';
+
 import { cn } from '../../utils';
-import { Loader2 } from 'lucide-react';
 
 const buttonVariants = cva('btn', {
   variants: {
@@ -67,8 +67,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {loading ? (
           <>
-            <span className="loading loading-spinner loading-sm"></span>
-            {loadingText || 'Loading...'}
+            <span className="loading loading-spinner loading-sm" />
+            {loadingText ?? 'Loading...'}
           </>
         ) : (
           <>

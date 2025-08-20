@@ -1,5 +1,6 @@
-import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import React from 'react';
+
 import { cn } from '../../utils';
 
 const labelVariants = cva(
@@ -45,7 +46,7 @@ const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
           ? 'required'
           : optional
             ? 'optional'
-            : variant || 'default';
+            : (variant ?? 'default');
 
     return (
       <label

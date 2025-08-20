@@ -1,24 +1,7 @@
-import React from 'react';
-import { Button } from 'flowbite-react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import React from 'react';
+
 import { cn } from '../../utils';
-
-// Map our variants to Flowbite variants
-const variantMap = {
-  default: 'info',
-  destructive: 'failure',
-  outline: 'light',
-  secondary: 'alternative',
-  ghost: 'light',
-  link: 'light',
-} as const;
-
-const sizeMap = {
-  default: 'md',
-  sm: 'sm',
-  lg: 'lg',
-  xs: 'xs',
-} as const;
 
 const iconButtonVariants = cva(
   'relative inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 transform active:scale-95 focus:outline-none focus:ring-4 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none overflow-hidden group aspect-square',

@@ -1,7 +1,8 @@
-import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
-import { Badge } from '../components/Badge/Badge';
+import { type Meta, type StoryObj } from '@storybook/react';
 import { Check, AlertTriangle, Info as InfoIcon, X } from 'lucide-react';
+import React from 'react';
+
+import { Badge } from '../components/Badge/Badge';
 
 const meta: Meta<typeof Badge> = {
   title: 'Components/Badge',

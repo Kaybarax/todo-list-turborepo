@@ -1,7 +1,8 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Button } from '../components/Button/Button';
+import React from 'react';
 import { vi } from 'vitest';
+
+import { Button } from '../components/Button/Button';
 
 describe('Button', () => {
   it('renders correctly', () => {
