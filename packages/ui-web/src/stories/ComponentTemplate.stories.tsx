@@ -38,7 +38,7 @@ const ComponentName: React.FC<ComponentNameProps> = ({
   </button>
 );
 
-const meta = {
+const meta: Meta<typeof ComponentName> = {
   title: 'Templates/ComponentTemplate',
   component: ComponentName,
   parameters: {
