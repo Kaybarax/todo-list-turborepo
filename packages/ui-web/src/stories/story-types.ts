@@ -396,7 +396,10 @@ export function createA11yStory<T>(
 /**
  * Helper function to create interactive stories
  */
-export function createInteractiveStory<T>(renderFunction: () => ReactNode, description?: string): ComponentStory<T> {
+export function createInteractiveStory<T>(
+  renderFunction: () => ReactNode,
+  description?: string,
+): StoryObj<StoryMeta<T>> {
   return {
     render: renderFunction,
     parameters: {
