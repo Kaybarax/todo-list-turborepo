@@ -80,7 +80,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({ style, children }) => {
 
 const CardTitle: React.FC<CardTitleProps> = ({ style, children, category = 'h5' }) => {
   return (
-    <Text category={category} style={[styles.title, style]}>
+    <Text category={category} style={[styles.title, style] as any}>
       {typeof children === 'string' ? children : String(children)}
     </Text>
   );

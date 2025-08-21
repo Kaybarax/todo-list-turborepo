@@ -1,7 +1,7 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { Input as KittenInput, type InputProps as KittenInputProps, Text } from '@ui-kitten/components';
 import React from 'react';
 import { View, StyleSheet, type ViewStyle, type TextStyle, type StyleProp } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export type InputVariant = 'default' | 'outline' | 'filled';
 export type InputSize = 'small' | 'medium' | 'large';
@@ -15,8 +15,8 @@ export interface InputProps extends Omit<KittenInputProps, 'status' | 'size' | '
   error?: boolean;
   errorMessage?: string;
   helperText?: string;
-  leftIcon?: string;
-  rightIcon?: string;
+  leftIcon?: keyof typeof MaterialIcons.glyphMap;
+  rightIcon?: keyof typeof MaterialIcons.glyphMap;
   iconColor?: string;
   containerStyle?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
@@ -121,7 +121,7 @@ const Input: React.FC<InputProps> = ({
     const labelText = required ? `${label} *` : label;
 
     return (
-      <Text category="label" style={[styles.label, labelStyle]}>
+      <Text category="p2" style={[styles.label, labelStyle] as any}>
         {labelText}
       </Text>
     );
@@ -132,7 +132,7 @@ const Input: React.FC<InputProps> = ({
     if (!error || !errorMessage) return null;
 
     return (
-      <Text category="c2" status="danger" style={[styles.errorText, errorStyle]}>
+      <Text category="c2" status="danger" style={[styles.errorText, errorStyle] as any}>
         {errorMessage}
       </Text>
     );
@@ -143,7 +143,7 @@ const Input: React.FC<InputProps> = ({
     if (!helperText || error) return null;
 
     return (
-      <Text category="c2" appearance="hint" style={[styles.helperText, helperStyle]}>
+      <Text category="c2" appearance="hint" style={[styles.helperText, helperStyle] as any}>
         {helperText}
       </Text>
     );

@@ -3,13 +3,16 @@
  */
 
 // Components
-export { default as Button } from './components/Button/Button';
-export type { ButtonProps } from './components/Button/Button';
+export { default as Button } from '../lib/components/Button';
+export type { ButtonProps } from '../lib/components/Button';
 
-export { default as TodoItem } from './components/TodoItem/TodoItem';
-export type { TodoItemProps } from './components/TodoItem/TodoItem';
+export { default as Avatar } from '../lib/components/Avatar';
+export type { AvatarProps, AvatarSize } from '../lib/components/Avatar';
 
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/Card/Card';
+export { default as Badge } from '../lib/components/Badge';
+export type { BadgeProps, BadgeVariant, BadgeSize } from '../lib/components/Badge';
+
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../lib/components/Card';
 export type {
   CardProps,
   CardHeaderProps,
@@ -17,23 +20,20 @@ export type {
   CardDescriptionProps,
   CardContentProps,
   CardFooterProps,
-} from './components/Card/Card';
+} from '../lib/components/Card';
 
-export { default as Input } from './components/Input/Input';
-export type { InputProps } from './components/Input/Input';
+export { default as Checkbox } from '../lib/components/Checkbox';
+export type { CheckboxProps } from '../lib/components/Checkbox';
 
-export { default as Badge } from './components/Badge/Badge';
-export type { BadgeProps, BadgeVariant, BadgeSize } from './components/Badge/Badge';
+export { default as Input } from '../lib/components/Input';
+export type { InputProps } from '../lib/components/Input';
 
-export { default as Avatar } from './components/Avatar/Avatar';
-export type { AvatarProps, AvatarSize } from './components/Avatar/Avatar';
+export { NetworkSelector } from '../lib/components/NetworkSelector';
+export type { NetworkSelectorProps } from '../lib/components/NetworkSelector';
 
-export { default as Switch } from './components/Switch/Switch';
-export type { SwitchProps } from './components/Switch/Switch';
-
-export { default as Checkbox } from './components/Checkbox/Checkbox';
-export type { CheckboxProps } from './components/Checkbox/Checkbox';
+export { default as Switch } from '../lib/components/Switch';
+export type { SwitchProps } from '../lib/components/Switch';
 
 // Theme
-export { default as theme } from './theme';
-export { colors, spacing, fontSizes, fontWeights, borderRadius, shadows } from './theme';
+export { default as theme } from '../lib/theme';
+export { colors, spacing, fontSizes, fontWeights, borderRadius, shadows } from '../lib/theme';

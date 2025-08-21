@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 // Web-compatible Card components for Storybook
 interface CardProps {
@@ -519,8 +519,8 @@ export const WideCard: Story = {
 // Interactive states
 export const InteractiveCard: Story = {
   render: () => {
-    const [liked, setLiked] = React.useState(false);
-    const [saved, setSaved] = React.useState(false);
+    const [liked, setLiked] = useState(false);
+    const [saved, setSaved] = useState(false);
 
     return (
       <Card style={{ width: 300 }}>

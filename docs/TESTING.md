@@ -108,7 +108,7 @@ npm run deploy:moonbase
 
 Unit and integration tests are located in `__tests__` directories adjacent to the code they test. For example:
 
-- `packages/ui-web/src/components/Button/__tests__/Button.test.tsx`
+- `packages/ui-web/__tests__/Button.test.tsx`
 - `packages/services/src/todo/__tests__/todoService.test.ts`
 - `apps/api/src/models/__tests__/Todo.test.ts`
 
@@ -120,7 +120,7 @@ E2E tests are located in the `apps/web/e2e` directory and use Playwright to simu
 
 Visual regression tests are implemented as Storybook stories located alongside the components they test. For example:
 
-- `packages/ui-web/src/components/Button/Button.stories.tsx`
+- `packages/ui-web/src/stories/Button.stories.tsx`
 
 ### Smart Contract Tests
 

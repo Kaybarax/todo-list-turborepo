@@ -85,7 +85,7 @@ const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'medium
 
   return (
     <View style={badgeStyles} testID={testID}>
-      <Text category={getTextCategory()} style={combinedTextStyle} numberOfLines={1}>
+      <Text category={getTextCategory()} style={combinedTextStyle as any} numberOfLines={1}>
         {text}
       </Text>
     </View>

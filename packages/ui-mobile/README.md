@@ -385,15 +385,17 @@ Interactive component documentation is available in Storybook for React Native:
 - **Accessibility testing** with React Native accessibility features
 - **Code examples** with copy functionality
 
-### Running Showcase Application
+### Development Commands
 
 ```bash
-# Start the Expo showcase application
-pnpm showcase:start
+# Start Storybook development server
+pnpm storybook
 
-# Start with specific platform
-pnpm showcase:ios
-pnpm showcase:android
+# Build the library
+pnpm build
+
+# Run tests
+pnpm test
 ```
 
 ## 🏗️ Architecture
@@ -402,22 +404,23 @@ pnpm showcase:android
 
 ```
 packages/ui-mobile/
-├── lib/                        # Source code (new structure)
+├── lib/                        # Source code (consolidated structure)
 │   ├── components/            # Component implementations
 │   │   ├── Button/
 │   │   │   ├── Button.tsx     # Component implementation
-│   │   │   ├── Button.stories.tsx # Storybook stories
 │   │   │   └── index.ts       # Exports
 │   │   └── ...
 │   ├── theme/                 # Theme configuration
 │   └── index.ts              # Main exports
-├── __tests__/                 # Test files (new structure)
-│   ├── components/           # Component tests
-│   ├── ci/                   # CI-specific tests
-│   └── __mocks__/           # Test mocks
-├── .storybook/              # Storybook configuration
-├── showcase/                # Expo showcase application
-└── dist/                   # Built output
+├── src/                       # Development files
+│   ├── stories/              # Storybook stories
+│   ├── test/                 # Test setup
+│   └── index.ts              # Package exports
+├── __tests__/                 # All test files
+│   ├── __mocks__/            # Test mocks
+│   └── *.test.tsx            # Component tests
+├── .storybook/               # Storybook configuration
+└── dist/                     # Built output
 ```
 
 ### Component Architecture
@@ -522,8 +525,8 @@ const styles = StyleSheet.create({
 
 1. **Create component directory**: `lib/components/ComponentName/`
 2. **Implement component**: `ComponentName.tsx` with UI Kitten integration
-3. **Create stories**: `ComponentName.stories.tsx` with React Native examples
-4. **Write tests**: Add to `__tests__/components/ComponentName.test.tsx`
+3. **Create stories**: Add to `src/stories/ComponentName.stories.tsx` with React Native examples
+4. **Write tests**: Add to `__tests__/ComponentName.test.tsx`
 5. **Add exports**: Update `lib/index.ts` and component `index.ts`
 6. **Update documentation**: Add to this README and Storybook docs
 
@@ -590,8 +593,8 @@ For questions, issues, or contributions, please refer to the main repository doc
 ## 🚀 Getting Started with Development
 
 1. **Clone the monorepo** and install dependencies
-2. **Start the showcase app**: `pnpm showcase:start`
-3. **Open Storybook**: `pnpm storybook`
+2. **Start Storybook**: `pnpm storybook`
+3. **Build the library**: `pnpm build`
 4. **Run tests**: `pnpm test`
 5. **Make changes** and see them reflected in real-time
 

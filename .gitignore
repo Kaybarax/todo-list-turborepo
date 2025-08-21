@@ -16,6 +16,7 @@ build
 out
 .turbo
 storybook-static
+chromatic-output
 
 # Logs
 logs
@@ -77,3 +78,5 @@ target/
 
 # Documentation
 .docusaurus
+
+*storybook.log

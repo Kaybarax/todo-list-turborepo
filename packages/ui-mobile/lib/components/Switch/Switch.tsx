@@ -43,7 +43,7 @@ const Switch: React.FC<SwitchProps> = ({
   return (
     <View style={[styles.container, disabled && styles.containerDisabled, containerStyle]}>
       {label && (
-        <Text category="p1" style={[styles.label, disabled && styles.labelDisabled, labelStyle]}>
+        <Text category="p1" style={[styles.label, disabled && styles.labelDisabled, labelStyle] as any}>
           {label}
         </Text>
       )}

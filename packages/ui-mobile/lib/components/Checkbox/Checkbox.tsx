@@ -44,7 +44,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
     if (!label) return undefined;
 
     return (
-      <Text category="p1" style={[styles.label, disabled && styles.labelDisabled, labelStyle]}>
+      <Text category="p1" style={[styles.label, disabled && styles.labelDisabled, labelStyle] as any}>
         {label}
       </Text>
     );

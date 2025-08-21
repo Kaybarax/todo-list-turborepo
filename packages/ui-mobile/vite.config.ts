@@ -9,6 +9,7 @@ export default defineConfig({
     dts({
       include: ['lib/**/*'],
       exclude: ['lib/**/*.stories.tsx', 'lib/**/*.test.tsx'],
+      insertTypesEntry: true,
     }),
   ],
   resolve: {
@@ -31,6 +32,8 @@ export default defineConfig({
         'react-native-vector-icons/MaterialIcons',
         'react-native-vector-icons/FontAwesome',
         'react-native-vector-icons/Ionicons',
+        '@expo/vector-icons',
+        '@expo/vector-icons/MaterialIcons',
         '@ui-kitten/components',
         '@eva-design/eva',
         'react-native-svg',
@@ -43,7 +46,7 @@ export default defineConfig({
         },
       },
     },
-    sourcemap: true,
+    sourcemap: false,
     emptyOutDir: true,
   },
 });

@@ -96,7 +96,10 @@ const Avatar: React.FC<AvatarProps> = ({
     if (!initials || source) return null;
 
     return (
-      <Text category={getTextCategory()} style={[styles.initialsText, { color: textColor ?? '#FFFFFF' }, textStyle]}>
+      <Text
+        category={getTextCategory()}
+        style={[styles.initialsText, { color: textColor ?? '#FFFFFF' }, textStyle] as any}
+      >
         {initials}
       </Text>
     );
@@ -112,14 +115,8 @@ const Avatar: React.FC<AvatarProps> = ({
   if (initials && !source) {
     return (
       <View
-        style={[
-          styles.customAvatar,
-          styles[`${size}Avatar`],
-          styles[`${shape}Shape`],
-          getCustomStyles(),
-          containerStyle,
-        ]}
-        {...props}
+        style={[styles.customAvatar, styles[`${size}Avatar`], styles[`${shape}Shape`], getCustomStyles(), style] as any}
+        {...(props as any)}
       >
         {renderInitials()}
       </View>

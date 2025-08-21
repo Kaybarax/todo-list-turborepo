@@ -453,7 +453,7 @@ export { Button, buttonVariants };
 
 ### Adding New Components
 
-1. **Create component directory**: `src/components/ComponentName/`
+1. **Create component directory**: `lib/components/ComponentName/`
 2. **Implement component**: `ComponentName.tsx` with proper TypeScript types
 3. **Create stories**: `ComponentName.stories.tsx` with comprehensive examples
 4. **Write tests**: Add to `__tests__/components/ComponentName.test.tsx`

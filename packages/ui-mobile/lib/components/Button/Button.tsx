@@ -1,7 +1,7 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { Button as KittenButton, type ButtonProps as KittenButtonProps } from '@ui-kitten/components';
 import React from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'danger' | 'success' | 'ghost';
 export type ButtonSize = 'small' | 'medium' | 'large';
@@ -11,8 +11,8 @@ export interface ButtonProps extends Omit<KittenButtonProps, 'status' | 'size' |
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
-  leftIcon?: string;
-  rightIcon?: string;
+  leftIcon?: keyof typeof MaterialIcons.glyphMap;
+  rightIcon?: keyof typeof MaterialIcons.glyphMap;
   iconColor?: string;
   fullWidth?: boolean;
   rounded?: boolean;

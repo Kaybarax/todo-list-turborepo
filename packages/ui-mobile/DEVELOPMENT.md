@@ -280,7 +280,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { ApplicationProvider } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
-import { ComponentName } from '../../lib/components/ComponentName';
+import { ComponentName } from '../lib/components/ComponentName';
 
 // Test wrapper with UI Kitten provider
 const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
