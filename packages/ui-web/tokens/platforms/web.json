@@ -1,0 +1,17 @@
+{
+  "platform": {
+    "web": {
+      "transformGroup": "css",
+      "buildPath": "dist/tokens/",
+      "files": [
+        {
+          "destination": "variables.css",
+          "format": "css/variables",
+          "options": {
+            "outputReferences": true
+          }
+        }
+      ]
+    }
+  }
+}

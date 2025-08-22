@@ -1,0 +1,15 @@
+{
+  "platform": {
+    "tailwind": {
+      "transformGroup": "js",
+      "buildPath": "dist/tokens/",
+      "files": [
+        {
+          "destination": "tailwind-tokens.js",
+          "format": "javascript/object",
+          "filter": "tailwind-compatible"
+        }
+      ]
+    }
+  }
+}

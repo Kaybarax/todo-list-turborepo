@@ -1,0 +1,36 @@
+{
+  "component": {
+    "button": {
+      "padding": {
+        "xs": { "value": "{space.1} {space.2}" },
+        "sm": { "value": "{space.2} {space.3}" },
+        "md": { "value": "{space.3} {space.4}" },
+        "lg": { "value": "{space.4} {space.6}" },
+        "xl": { "value": "{space.5} {space.8}" }
+      },
+      "borderRadius": { "value": "{borderRadius.base}" },
+      "fontSize": {
+        "xs": { "value": "{fontSize.xs}" },
+        "sm": { "value": "{fontSize.sm}" },
+        "md": { "value": "{fontSize.base}" },
+        "lg": { "value": "{fontSize.lg}" },
+        "xl": { "value": "{fontSize.xl}" }
+      }
+    },
+    "input": {
+      "padding": { "value": "{space.3} {space.4}" },
+      "borderRadius": { "value": "{borderRadius.base}" },
+      "borderWidth": { "value": "{borderWidth.1}" },
+      "fontSize": { "value": "{fontSize.base}" }
+    },
+    "card": {
+      "padding": { "value": "{space.6}" },
+      "borderRadius": { "value": "{borderRadius.lg}" },
+      "shadow": { "value": "{boxShadow.xl}" }
+    },
+    "modal": {
+      "borderRadius": { "value": "{borderRadius.lg}" },
+      "shadow": { "value": "{boxShadow.2xl}" }
+    }
+  }
+}
