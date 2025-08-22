@@ -174,7 +174,7 @@
   - _Requirements: 1.6, 3.6, 4.6_
 
 - [ ] 9. Update apps/web to use revised design system
-- [ ] 9.1 Replace hardcoded styles with Style Dictionary tokens
+- [x] 9.1 Replace hardcoded styles with Style Dictionary tokens
   - Audit apps/web for hardcoded color, spacing, and typography values
   - Replace hardcoded values with Style Dictionary generated tokens
   - Update custom CSS to use generated CSS custom properties

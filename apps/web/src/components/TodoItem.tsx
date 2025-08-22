@@ -53,113 +53,127 @@ export const TodoItem = ({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
 
   return (
     <div
-      className={`bg-white rounded-lg shadow-sm border p-4 hover:shadow-md transition-shadow ${
+      className={`card bg-base-100 shadow-sm border border-base-300 hover:shadow-md transition-shadow ${
         todo.completed ? 'opacity-75' : ''
-      } ${isOverdue ? 'border-red-200' : 'border-gray-200'}`}
+      } ${isOverdue ? 'border-error' : ''}`}
       onMouseEnter={() => setShowActions(true)}
       onMouseLeave={() => setShowActions(false)}
     >
-      <div className="flex items-start space-x-3">
-        <div className="flex-shrink-0">
-          <Checkbox checked={todo.completed} onCheckedChange={() => onToggle(todo.id)} />
-        </div>
+      <div className="card-body p-4">
+        <div className="flex items-start space-x-3">
+          <div className="flex-shrink-0">
+            <Checkbox checked={todo.completed} onChange={() => onToggle(todo.id)} />
+          </div>
 
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between">
-            <h3 className={`text-sm font-medium ${todo.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
-              {todo.title}
-            </h3>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between">
+              <h3
+                className={`text-sm font-medium ${todo.completed ? 'line-through text-base-content/50' : 'text-base-content'}`}
+              >
+                {todo.title}
+              </h3>
 
-            {showActions && (
-              <div className="flex items-center space-x-2">
-                <IconButton onClick={() => onEdit(todo)} variant="ghost" size="sm" title="Edit todo">
-                  <Edit className="h-4 w-4" />
-                </IconButton>
-                <IconButton
-                  onClick={() => onDelete(todo.id)}
-                  variant="ghost"
-                  size="sm"
-                  title="Delete todo"
-                  className="hover:text-red-600"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </IconButton>
+              {showActions && (
+                <div className="flex items-center space-x-2">
+                  <IconButton onClick={() => onEdit(todo)} variant="ghost" size="sm" title="Edit todo">
+                    <Edit className="h-4 w-4" />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => onDelete(todo.id)}
+                    variant="ghost"
+                    size="sm"
+                    title="Delete todo"
+                    className="hover:text-red-600"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </IconButton>
+                </div>
+              )}
+            </div>
+
+            {todo.description && (
+              <p className={`mt-1 text-sm ${todo.completed ? 'text-base-content/40' : 'text-base-content/70'}`}>
+                {todo.description}
+              </p>
+            )}
+
+            <div className="mt-2 flex items-center space-x-2 flex-wrap gap-1">
+              <Badge
+                variant={
+                  todo.priority === 'high' ? 'destructive' : todo.priority === 'medium' ? 'default' : 'secondary'
+                }
+              >
+                {todo.priority}
+              </Badge>
+
+              {todo.dueDate && (
+                <Badge variant={isOverdue ? 'destructive' : 'outline'}>Due: {formatDate(todo.dueDate)}</Badge>
+              )}
+
+              {todo.blockchainNetwork && (
+                <Badge variant="secondary">{getNetworkDisplayInfo(todo.blockchainNetwork).displayName}</Badge>
+              )}
+
+              {todo.tags.map(tag => (
+                <Badge key={tag} variant="outline">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+
+            {todo.transactionHash && todo.blockchainNetwork && (
+              <div className="mt-2">
+                <TransactionStatus transactionHash={todo.transactionHash} network={todo.blockchainNetwork} />
+              </div>
+            )}
+
+            {onBlockchainSync && !todo.blockchainNetwork && (
+              <div className="mt-2">
+                <details className="text-xs">
+                  <summary className="cursor-pointer text-primary-600 hover:text-primary-800">
+                    Sync to blockchain
+                  </summary>
+                  <div className="mt-1 flex flex-wrap gap-2">
+                    <Button
+                      onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.SOLANA)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      Solana
+                    </Button>
+                    <Button
+                      onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.POLKADOT)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      Polkadot
+                    </Button>
+                    <Button
+                      onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.POLYGON)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      Polygon
+                    </Button>
+                    <Button
+                      onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.MOONBEAM)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      Moonbeam
+                    </Button>
+                    <Button
+                      onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.BASE)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      Base
+                    </Button>
+                  </div>
+                </details>
               </div>
             )}
           </div>
-
-          {todo.description && (
-            <p className={`mt-1 text-sm ${todo.completed ? 'text-gray-400' : 'text-gray-600'}`}>{todo.description}</p>
-          )}
-
-          <div className="mt-2 flex items-center space-x-2 flex-wrap gap-1">
-            <Badge
-              variant={todo.priority === 'high' ? 'destructive' : todo.priority === 'medium' ? 'default' : 'secondary'}
-            >
-              {todo.priority}
-            </Badge>
-
-            {todo.dueDate && (
-              <Badge variant={isOverdue ? 'destructive' : 'outline'}>Due: {formatDate(todo.dueDate)}</Badge>
-            )}
-
-            {todo.blockchainNetwork && (
-              <Badge variant="secondary">{getNetworkDisplayInfo(todo.blockchainNetwork).displayName}</Badge>
-            )}
-
-            {todo.tags.map(tag => (
-              <Badge key={tag} variant="outline">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-
-          {todo.transactionHash && todo.blockchainNetwork && (
-            <div className="mt-2">
-              <TransactionStatus transactionHash={todo.transactionHash} network={todo.blockchainNetwork} />
-            </div>
-          )}
-
-          {onBlockchainSync && !todo.blockchainNetwork && (
-            <div className="mt-2">
-              <details className="text-xs">
-                <summary className="cursor-pointer text-primary-600 hover:text-primary-800">Sync to blockchain</summary>
-                <div className="mt-1 flex flex-wrap gap-2">
-                  <Button
-                    onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.SOLANA)}
-                    variant="outline"
-                    size="sm"
-                  >
-                    Solana
-                  </Button>
-                  <Button
-                    onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.POLKADOT)}
-                    variant="outline"
-                    size="sm"
-                  >
-                    Polkadot
-                  </Button>
-                  <Button
-                    onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.POLYGON)}
-                    variant="outline"
-                    size="sm"
-                  >
-                    Polygon
-                  </Button>
-                  <Button
-                    onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.MOONBEAM)}
-                    variant="outline"
-                    size="sm"
-                  >
-                    Moonbeam
-                  </Button>
-                  <Button onClick={() => onBlockchainSync(todo.id, BlockchainNetwork.BASE)} variant="outline" size="sm">
-                    Base
-                  </Button>
-                </div>
-              </details>
-            </div>
-          )}
         </div>
       </div>
     </div>
