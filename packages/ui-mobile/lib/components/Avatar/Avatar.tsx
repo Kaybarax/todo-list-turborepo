@@ -8,6 +8,7 @@ import {
   type StyleProp,
   type ImageSourcePropType,
 } from 'react-native';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
 export type AvatarSize = 'tiny' | 'small' | 'medium' | 'large' | 'giant';
 export type AvatarShape = 'round' | 'rounded' | 'square';
@@ -35,6 +36,7 @@ const Avatar: React.FC<AvatarProps> = ({
   style,
   ...props
 }) => {
+  const { theme, evaTheme } = useEnhancedTheme();
   // Map our sizes to UI Kitten sizes
   const getKittenSize = (): KittenAvatarProps['size'] => {
     switch (size) {
@@ -82,11 +84,14 @@ const Avatar: React.FC<AvatarProps> = ({
     }
   };
 
-  // Get custom styles for background and text color
+  // Get custom styles for background and text color using Eva Design tokens
   const getCustomStyles = () => {
     const customStyles: ViewStyle = {};
     if (backgroundColor) {
       customStyles.backgroundColor = backgroundColor;
+    } else {
+      // Use Eva Design primary color as default
+      customStyles.backgroundColor = evaTheme['color-primary-default'] || '#3366FF';
     }
     return customStyles;
   };
@@ -98,7 +103,9 @@ const Avatar: React.FC<AvatarProps> = ({
     return (
       <Text
         category={getTextCategory()}
-        style={[styles.initialsText, { color: textColor ?? '#FFFFFF' }, textStyle] as any}
+        style={
+          [styles.initialsText, { color: textColor ?? evaTheme['text-control-color'] ?? '#FFFFFF' }, textStyle] as any
+        }
       >
         {initials}
       </Text>
@@ -134,8 +141,7 @@ const Avatar: React.FC<AvatarProps> = ({
 const styles = StyleSheet.create({
   customAvatar: {
     alignItems: 'center',
-    backgroundColor: '#3366FF',
-    justifyContent: 'center', // UI Kitten primary color
+    justifyContent: 'center',
   },
   initialsText: {
     fontWeight: '600',
