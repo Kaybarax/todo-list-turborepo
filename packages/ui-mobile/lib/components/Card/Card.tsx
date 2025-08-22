@@ -1,18 +1,20 @@
 /**
  * Card Component
- * Enhanced card component with design tokens and theme integration
+ * Enhanced card component with Eva Design and UI Kitten integration
+ * Maintains backward compatibility while using Eva Design theming
  */
 
 import React from 'react';
-import { View, ViewStyle, TouchableOpacity, TouchableOpacityProps, TextStyle } from 'react-native';
-import { useTheme } from '../../theme/useTheme';
+import { ViewStyle, TextStyle, View } from 'react-native';
+import { Card as UIKittenCard, CardProps as UIKittenCardProps } from '@ui-kitten/components';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { Text } from '../Text/Text';
 
 export type CardVariant = 'elevated' | 'outlined' | 'filled';
 
-export interface CardProps extends Omit<TouchableOpacityProps, 'style'> {
+export interface CardProps {
   variant?: CardVariant;
-  padding?: keyof ReturnType<typeof useTheme>['theme']['spacing'];
+  padding?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   children: React.ReactNode;
   onPress?: () => void;
   testID?: string;
@@ -64,62 +66,53 @@ const CardBase: React.FC<CardProps> = ({
   style,
   ...props
 }) => {
-  const { theme } = useTheme();
+  const { theme, evaTheme } = useEnhancedTheme();
 
-  // Get card styles based on variant
-  const getCardStyles = () => {
-    const baseStyles = {
-      borderRadius: theme.borders.radius.lg,
-      padding: theme.spacing[padding],
-    };
-
-    const variantStyles = {
-      elevated: {
-        backgroundColor: theme.colors.surface,
-        ...theme.shadows.md,
-      },
-      outlined: {
-        backgroundColor: theme.colors.surface,
-        borderWidth: theme.borders.width.thin,
-        borderColor: theme.colors.border.default,
-      },
-      filled: {
-        backgroundColor: theme.colors.neutral[50],
-      },
-    };
-
-    return {
-      ...baseStyles,
-      ...variantStyles[variant],
-    };
+  // Map our variants to UI Kitten appearances
+  const getUIKittenAppearance = (): string => {
+    switch (variant) {
+      case 'elevated':
+        return 'filled';
+      case 'outlined':
+        return 'outline';
+      case 'filled':
+        return 'filled';
+      default:
+        return 'filled';
+    }
   };
 
-  const cardStyles = [getCardStyles(), style];
-
-  if (onPress) {
-    return (
-      <TouchableOpacity style={cardStyles} onPress={onPress} testID={testID} accessibilityRole="button" {...props}>
-        {children}
-      </TouchableOpacity>
-    );
-  }
+  // Custom styles for padding and variant-specific styling
+  const customStyles = [
+    {
+      padding: theme.spacing[padding],
+    },
+    variant === 'elevated' && {
+      elevation: 4,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
+    style,
+  ] as any;
 
   return (
-    <View style={cardStyles} testID={testID}>
+    <UIKittenCard appearance={getUIKittenAppearance()} onPress={onPress} style={customStyles} testID={testID}>
       {children}
-    </View>
+    </UIKittenCard>
   );
 };
 
 const CardHeader: React.FC<CardHeaderProps> = ({ style, children }) => {
-  const { theme } = useTheme();
+  const { theme, evaTheme } = useEnhancedTheme();
 
   const headerStyles = [
     {
       paddingBottom: theme.spacing.sm,
       marginBottom: theme.spacing.sm,
       borderBottomWidth: theme.borders.width.thin,
-      borderBottomColor: theme.colors.border.default,
+      borderBottomColor: evaTheme['border-basic-color-3'] || theme.colors.border.default,
     },
     style,
   ];
@@ -158,7 +151,7 @@ const CardDescription: React.FC<CardDescriptionProps> = ({ style, children }) =>
 };
 
 const CardContent: React.FC<CardContentProps> = ({ style, children }) => {
-  const { theme } = useTheme();
+  const { theme, evaTheme } = useEnhancedTheme();
 
   const contentStyles = [
     {
@@ -171,7 +164,7 @@ const CardContent: React.FC<CardContentProps> = ({ style, children }) => {
 };
 
 const CardFooter: React.FC<CardFooterProps> = ({ style, children, alignment = 'right' }) => {
-  const { theme } = useTheme();
+  const { theme, evaTheme } = useEnhancedTheme();
 
   const getJustifyContent = () => {
     switch (alignment) {
@@ -195,7 +188,7 @@ const CardFooter: React.FC<CardFooterProps> = ({ style, children, alignment = 'r
       paddingTop: theme.spacing.sm,
       marginTop: theme.spacing.sm,
       borderTopWidth: theme.borders.width.thin,
-      borderTopColor: theme.colors.border.default,
+      borderTopColor: evaTheme['border-basic-color-3'] || theme.colors.border.default,
     },
     style,
   ];
