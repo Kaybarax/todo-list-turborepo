@@ -137,11 +137,11 @@
   - Update Checkbox tests for Eva Design integration
   - _Requirements: 3.1, 3.2, 3.4, 8.1_
 
-- [ ] 7.5 Migrate NetworkSelector component to Eva Design
+- [x] 7.5 Migrate NetworkSelector component to Eva Design
   - Rebuild NetworkSelector using UI Kitten Select as base
   - Maintain existing NetworkSelectorProps interface
-  - Implement Eva Design select appearances and theming
-  - Add Eva Design select option rendering and icons
+  - Implement Eva Design network selector theming and styling
+  - Add Eva Design network selector animations and interactions
   - Update NetworkSelector tests for Eva Design integration
   - _Requirements: 3.1, 3.2, 3.4, 8.1_
 
