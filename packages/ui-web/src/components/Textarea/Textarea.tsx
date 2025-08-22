@@ -1,29 +1,113 @@
 import React from 'react';
 
-import { cn } from '../../utils';
+import { cn, cv, type VariantProps } from '../../utils';
 
-export interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'color'> {
-  error?: boolean;
+const textareaVariants = cv('textarea textarea-bordered w-full', {
+  variants: {
+    size: {
+      xs: 'textarea-xs',
+      sm: 'textarea-sm',
+      md: 'textarea-md',
+      lg: 'textarea-lg',
+      xl: 'textarea-lg text-lg',
+    },
+    state: {
+      default: '',
+      success: 'textarea-success',
+      error: 'textarea-error',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+    state: 'default',
+  },
+});
+
+export type TextareaSize = NonNullable<VariantProps<typeof textareaVariants>['size']>;
+export type TextareaState = NonNullable<VariantProps<typeof textareaVariants>['state']>;
+
+export interface TextareaProps
+  extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'color'>,
+    Partial<Pick<VariantProps<typeof textareaVariants>, 'size' | 'state'>> {
+  error?: boolean; // legacy, maps to state="error"
   helperText?: string;
+  autoResize?: boolean;
+  showCount?: boolean;
+  characterCountFormatter?: (count: number, maxLength?: number) => string;
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, error, helperText, ...props }, ref) => {
+  (
+    {
+      className,
+      error,
+      helperText,
+      autoResize = false,
+      showCount = false,
+      characterCountFormatter,
+      size = 'md',
+      state = 'default',
+      id,
+      onInput,
+      value,
+      defaultValue,
+      maxLength,
+      ...props
+    },
+    ref,
+  ) => {
+    const effectiveState: TextareaState = error ? 'error' : (state ?? 'default');
+    const helperId = helperText ? `${id ?? 'textarea'}-help` : undefined;
+    const innerRef = React.useRef<HTMLTextAreaElement | null>(null);
+    const combinedRef = (node: HTMLTextAreaElement | null) => {
+      innerRef.current = node;
+      if (typeof ref === 'function') ref(node);
+      else if (ref && 'current' in ref) (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = node;
+    };
+
     const [isFocused, setIsFocused] = React.useState(false);
+    const [count, setCount] = React.useState(() => {
+      const initial = (value ?? defaultValue ?? '') as string;
+      return initial.length;
+    });
 
-    const textareaClasses = cn('textarea textarea-bordered w-full', error && 'textarea-error', className);
+    const classes = textareaVariants({ size, state: effectiveState });
 
-    const containerClasses = cn(
-      'relative w-full group',
-      isFocused && 'transform scale-[1.01] transition-transform duration-200',
-    );
+    const resize = React.useCallback(() => {
+      if (!autoResize || !innerRef.current) return;
+      const el = innerRef.current;
+      el.style.height = 'auto';
+      el.style.height = `${el.scrollHeight}px`;
+    }, [autoResize]);
+
+    React.useEffect(() => {
+      resize();
+    }, [resize, value]);
+
+    const handleInput: React.FormEventHandler<HTMLTextAreaElement> = e => {
+      if (showCount) setCount((e.currentTarget.value ?? '').length);
+      if (autoResize) resize();
+      onInput?.(e);
+    };
 
     return (
-      <div className="w-full space-y-2">
-        <div className={containerClasses}>
+      <div className="w-full space-y-1.5">
+        <div
+          className={cn(
+            'relative w-full group',
+            isFocused && 'transform scale-[1.01] transition-transform duration-200',
+          )}
+        >
           <textarea
-            ref={ref}
-            className={textareaClasses}
+            ref={combinedRef}
+            id={id}
+            className={cn(classes, className)}
+            aria-invalid={effectiveState === 'error'}
+            aria-describedby={helperId}
+            maxLength={maxLength}
+            value={value as any}
+            defaultValue={defaultValue as any}
+            onInput={handleInput}
             onFocus={e => {
               setIsFocused(true);
               props.onFocus?.(e);
@@ -40,30 +124,32 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             className={cn(
               'absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 pointer-events-none',
               'bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 p-[2px]',
-              isFocused && !error && 'opacity-20',
+              isFocused && effectiveState !== 'error' && 'opacity-20',
             )}
           >
             <div className="w-full h-full bg-white rounded-[10px]" />
           </div>
-
-          {/* Resize handle indicator */}
-          <div
-            className={cn(
-              'absolute bottom-2 right-2 w-4 h-4 opacity-20 transition-opacity duration-200',
-              'bg-gradient-to-br from-gray-400 to-gray-600',
-              'mask-image-[radial-gradient(circle_at_center,_black_30%,_transparent_30%)]',
-              isFocused && 'opacity-40',
-            )}
-          >
-            <div className="w-full h-full bg-current" />
-          </div>
         </div>
 
-        {helperText && (
-          <div className="label">
-            <span className={cn('label-text-alt', error && 'text-error')}>{helperText}</span>
-          </div>
-        )}
+        <div className="flex items-start justify-between">
+          {helperText && (
+            <div className="label py-0">
+              <span id={helperId} className={cn('label-text-alt', effectiveState === 'error' && 'text-error')}>
+                {helperText}
+              </span>
+            </div>
+          )}
+
+          {showCount && (
+            <div className="label py-0 ml-auto">
+              <span className="label-text-alt">
+                {characterCountFormatter
+                  ? characterCountFormatter(count, maxLength)
+                  : `${count}${maxLength ? ` / ${maxLength}` : ''}`}
+              </span>
+            </div>
+          )}
+        </div>
       </div>
     );
   },

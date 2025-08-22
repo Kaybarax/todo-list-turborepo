@@ -32,7 +32,7 @@
   - Create Storybook stories with all variants and documentation
   - _Requirements: 2.1, 3.1, 3.2, 5.1, 5.4, 6.1, 6.4_
 
-- [ ] 4.2 Create enhanced Textarea component
+- [x] 4.2 Create enhanced Textarea component
   - Build Textarea component with auto-resize functionality
   - Add size and state variants matching Input component
   - Implement character count and validation features
