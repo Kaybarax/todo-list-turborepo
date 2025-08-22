@@ -8,8 +8,8 @@ A modern, full-stack Todo application built as a comprehensive monorepo showcasi
 
 ### Core Applications
 
-- **Web App**: Next.js 15 with App Router, TypeScript, and Tailwind CSS
-- **Mobile App**: Expo React Native with cross-platform support
+- **Web App**: Next.js 15 with App Router, TypeScript, and comprehensive design system
+- **Mobile App**: Expo React Native with design system integration and theme support
 - **API**: NestJS with MongoDB, Redis, and comprehensive validation
 - **Ingestion Service**: Background processing for blockchain data
 
@@ -45,8 +45,8 @@ A modern, full-stack Todo application built as a comprehensive monorepo showcasi
 │       ├── moonbeam/        # Moonbeam EVM contracts with Hardhat
 │       └── base/            # Base L2 contracts with Hardhat
 ├── packages/
-│   ├── ui-web/              # React component library with Storybook
-│   ├── ui-mobile/           # React Native component library
+│   ├── ui-web/              # React component library with DaisyUI and Storybook
+│   ├── ui-mobile/           # React Native design system with theme support
 │   ├── services/            # Shared blockchain and API services
 │   ├── config-eslint/       # ESLint configurations for all frameworks
 │   ├── config-ts/           # TypeScript configurations
@@ -157,10 +157,10 @@ This monorepo has been comprehensively modernized with enterprise-grade features
 
 ### 🚀 Application Modernization
 
-- **Next.js 15 Web App**: Rebuilt with App Router, server components, and optimized performance
+- **Next.js 15 Web App**: Rebuilt with App Router, server components, and comprehensive design system
 - **NestJS API**: Complete rewrite with proper architecture, validation, and OpenTelemetry tracing
-- **Expo React Native**: Modern mobile app with blockchain wallet integration
-- **Shared Libraries**: Rebuilt UI components and services with TypeScript and modern patterns
+- **Expo React Native**: Modern mobile app with design system integration and theme support
+- **Shared Libraries**: Complete design system with UI components, design tokens, and theme support
 
 ### 🧪 Testing Excellence
 

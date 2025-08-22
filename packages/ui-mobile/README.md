@@ -1,13 +1,13 @@
 # @todo/ui-mobile
 
-A comprehensive React Native component library built on **UI Kitten** foundation with **Eva Design System** theming. Designed for the Todo app mobile interface with full TypeScript support, cross-platform compatibility, and comprehensive testing.
+A comprehensive React Native design system with complete component library, design tokens, and theme support. Designed for the Todo app mobile interface with full TypeScript support, cross-platform compatibility, and comprehensive testing.
 
 ## ✨ Features
 
-- 📱 **Built on UI Kitten**: Production-ready React Native components with Eva Design System
+- 🎨 **Complete Design System**: Comprehensive component library with design tokens and theme support
 - 🎯 **TypeScript First**: Full TypeScript support with comprehensive type definitions
-- 🎨 **Eva Design System**: Customizable design system with built-in theming
-- 🌙 **Dark Mode Support**: Built-in light and dark theme switching
+- 🌙 **Theme Support**: Built-in light/dark theme switching with ThemeProvider integration
+- 🎨 **Design Tokens**: Semantic colors, spacing, typography, and styling tokens
 - ♿ **Accessibility**: React Native accessibility features with proper labels and hints
 - 🧪 **Comprehensive Testing**: Unit tests, integration tests, and visual regression testing
 - 📚 **Storybook**: Interactive component documentation for React Native
