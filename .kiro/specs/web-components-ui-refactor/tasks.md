@@ -107,28 +107,28 @@
   - Add accessibility tests and achieve minimum 80% code coverage
   - _Requirements: 5.2, 5.3, 7.1, 7.4, 7.5_
 
-- [ ] 5. Migrate TodoList component with filtering and sorting
+- [x] 5. Migrate TodoList component with filtering and sorting
   - Move TodoList from apps/web to packages/ui-web with enhanced functionality
   - Implement comprehensive filtering, sorting, and search capabilities
   - Create reusable statistics display and empty state handling
   - Add support for different layout variants (default, compact, grid)
   - _Requirements: 2.3, 2.4, 5.2, 5.3_
 
-- [ ] 5.1 Implement TodoList component structure
+- [x] 5.1 Implement TodoList component structure
   - Create TodoList component in packages/ui-web/src/components/todo/TodoList/
   - Define comprehensive TypeScript interfaces for TodoListProps and filtering options
   - Implement efficient filtering, sorting, and search algorithms
   - Add support for customizable empty states and loading indicators
   - _Requirements: 2.3, 2.4, 5.4_
 
-- [ ] 5.2 Create TodoList statistics and controls
+- [x] 5.2 Create TodoList statistics and controls
   - Implement statistics calculation for total, active, completed, and overdue todos
   - Create reusable filter and sort controls with proper accessibility
   - Add search functionality with debounced input handling
   - Implement responsive design for different screen sizes
   - _Requirements: 2.3, 7.4_
 
-- [ ] 5.3 Create TodoList Storybook stories and tests
+- [x] 5.3 Create TodoList Storybook stories and tests
   - Write comprehensive stories covering all TodoList variants and states
   - Include stories for different data sets, filtering scenarios, and empty states
   - Create unit tests for filtering, sorting, and search functionality
