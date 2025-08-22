@@ -7,22 +7,44 @@ const buttonVariants = cva('btn', {
   variants: {
     variant: {
       default: 'btn-primary',
-      destructive: 'btn-error',
-      outline: 'btn-outline',
+      primary: 'btn-primary',
       secondary: 'btn-secondary',
+      accent: 'btn-accent',
+      neutral: 'btn-neutral',
+      info: 'btn-info',
+      success: 'btn-success',
+      warning: 'btn-warning',
+      error: 'btn-error',
       ghost: 'btn-ghost',
       link: 'btn-link',
+      outline: 'btn-outline',
+      active: 'btn-active',
+      disabled: 'btn-disabled',
     },
     size: {
-      default: 'btn-md',
+      xs: 'btn-xs',
       sm: 'btn-sm',
+      default: 'btn-md',
+      md: 'btn-md',
       lg: 'btn-lg',
-      icon: 'btn-square btn-md',
+    },
+    shape: {
+      default: '',
+      square: 'btn-square',
+      circle: 'btn-circle',
+      wide: 'btn-wide',
+    },
+    glass: {
+      true: 'glass',
+    },
+    block: {
+      true: 'btn-block',
     },
   },
   defaultVariants: {
     variant: 'default',
     size: 'default',
+    shape: 'default',
   },
 });
 
@@ -34,6 +56,8 @@ export interface ButtonProps
   rightIcon?: React.ReactNode;
   loading?: boolean;
   loadingText?: string;
+  /** Custom loading spinner size */
+  loadingSize?: 'xs' | 'sm' | 'md' | 'lg';
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -42,12 +66,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       variant = 'default',
       size = 'default',
+      shape = 'default',
+      glass,
+      block,
       asChild = false,
       leftIcon,
       rightIcon,
       children,
       loading = false,
       loadingText,
+      loadingSize = 'sm',
       disabled,
       ...props
     },
@@ -55,21 +83,23 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     // Handle asChild by rendering a span wrapper if needed
     if (asChild) {
-      return <span className={cn(buttonVariants({ variant, size }), className)}>{children}</span>;
+      return <span className={cn(buttonVariants({ variant, size, shape, glass, block }), className)}>{children}</span>;
     }
+
+    const loadingSpinnerClass = `loading loading-spinner loading-${loadingSize}`;
 
     return (
       <button
         ref={ref}
-        className={cn(buttonVariants({ variant, size }), className)}
+        className={cn(buttonVariants({ variant, size, shape, glass, block }), className)}
         disabled={loading || disabled}
         aria-busy={loading || undefined}
         {...props}
       >
         {loading ? (
           <>
-            <span className="loading loading-spinner loading-sm" aria-hidden="true" />
-            <span>{loadingText ?? 'Loading...'}</span>
+            <span className={loadingSpinnerClass} aria-hidden="true" />
+            {loadingText && <span>{loadingText}</span>}
           </>
         ) : (
           <>

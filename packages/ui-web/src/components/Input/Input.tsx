@@ -13,8 +13,17 @@ const inputVariants = cv('input input-bordered w-full', {
     },
     state: {
       default: '',
+      primary: 'input-primary',
+      secondary: 'input-secondary',
+      accent: 'input-accent',
+      info: 'input-info',
       success: 'input-success',
+      warning: 'input-warning',
       error: 'input-error',
+    },
+    variant: {
+      bordered: 'input-bordered',
+      ghost: 'input-ghost',
     },
     hasLeftIcon: { true: 'pl-12', false: '' },
     hasRightIcon: { true: 'pr-12', false: '' },
@@ -22,6 +31,7 @@ const inputVariants = cv('input input-bordered w-full', {
   defaultVariants: {
     size: 'md',
     state: 'default',
+    variant: 'bordered',
     hasLeftIcon: false,
     hasRightIcon: false,
   },
@@ -32,7 +42,7 @@ export type InputState = NonNullable<VariantProps<typeof inputVariants>['state']
 
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'color' | 'size'>,
-    Partial<Pick<VariantProps<typeof inputVariants>, 'size' | 'state'>> {
+    Partial<Pick<VariantProps<typeof inputVariants>, 'size' | 'state' | 'variant'>> {
   error?: boolean; // deprecated in favor of state="error"; kept for backward compatibility
   helperText?: string;
   leftIcon?: React.ReactNode;
@@ -40,12 +50,28 @@ export interface InputProps
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, error, helperText, leftIcon, rightIcon, type, size = 'md', state = 'default', id, ...props }, ref) => {
+  (
+    {
+      className,
+      error,
+      helperText,
+      leftIcon,
+      rightIcon,
+      type,
+      size = 'md',
+      state = 'default',
+      variant = 'bordered',
+      id,
+      ...props
+    },
+    ref,
+  ) => {
     const effectiveState: InputState = error ? 'error' : (state ?? 'default');
     const helperId = helperText ? `${id ?? 'input'}-help` : undefined;
     const classes = inputVariants({
       size,
       state: effectiveState,
+      variant,
       hasLeftIcon: Boolean(leftIcon),
       hasRightIcon: Boolean(rightIcon),
       className: undefined as any,

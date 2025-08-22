@@ -10,13 +10,28 @@ const cardVariants = cv('card bg-base-100 transition-shadow', {
       md: 'shadow',
       lg: 'shadow-lg',
       xl: 'shadow-xl',
+      '2xl': 'shadow-2xl',
+    },
+    variant: {
+      default: '',
+      bordered: 'card-bordered',
+      compact: 'card-compact',
+      normal: 'card-normal',
+      side: 'card-side',
     },
     interactive: {
       false: '',
       true: 'hover:shadow-xl focus:shadow-xl cursor-pointer outline-none',
     },
+    glass: {
+      true: 'glass',
+    },
   },
-  defaultVariants: { elevation: 'xl', interactive: false },
+  defaultVariants: {
+    elevation: 'xl',
+    variant: 'default',
+    interactive: false,
+  },
 });
 
 export interface CardProps
@@ -26,10 +41,10 @@ export interface CardProps
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, elevation, interactive = false, ...props }, ref) => (
+  ({ className, elevation, variant, interactive = false, glass, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn(cardVariants({ elevation, interactive }), className)}
+      className={cn(cardVariants({ elevation, variant, interactive, glass }), className)}
       tabIndex={interactive ? 0 : undefined}
       role={interactive ? 'group' : undefined}
       {...props}
