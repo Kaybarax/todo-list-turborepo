@@ -7,9 +7,12 @@ import type { Theme, ThemeName } from './types';
 import type { ColorTokens } from '../tokens/colors';
 
 export class ThemeValidationError extends Error {
-  constructor(message: string) {
+  public readonly type: string;
+
+  constructor(message: string, type: string = 'validation') {
     super(message);
     this.name = 'ThemeValidationError';
+    this.type = type;
   }
 }
 

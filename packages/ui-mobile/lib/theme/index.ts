@@ -16,6 +16,14 @@ export { lightTheme as evaLightTheme, darkTheme as evaDarkTheme } from './eva-th
 export { customMapping } from './eva-mapping';
 export type { ThemeMode as EvaThemeMode } from './useEvaTheme';
 
+// Enhanced Theme System exports
+export { EnhancedThemeProvider } from './EnhancedThemeProvider';
+export { useEnhancedTheme } from './useEnhancedTheme';
+export { ThemeErrorBoundary } from './ThemeErrorBoundary';
+export { validateEvaTheme, getSafeEvaTheme, EvaThemeValidationError } from './enhanced-validation';
+export type { EvaThemeValidationResult, EvaThemeValidationOptions } from './enhanced-validation';
+export type { EnhancedThemeMode, EnhancedThemeContextValue } from './EnhancedThemeProvider';
+
 // Theme Configurations
 export { lightTheme, darkTheme, themes, getTheme } from './themes';
 
