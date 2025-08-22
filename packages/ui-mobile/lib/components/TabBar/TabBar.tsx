@@ -1,13 +1,15 @@
 /**
  * TabBar Component
- * Bottom navigation tab bar with indicators, icons, and badge support
+ * Enhanced bottom navigation with Eva Design and UI Kitten integration
+ * Maintains backward compatibility while using Eva Design theming
  */
 
 import React from 'react';
 import { View, ViewStyle, TouchableOpacity, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolateColor } from 'react-native-reanimated';
-import { useTheme } from '../../theme/useTheme';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { BottomNavigation, BottomNavigationTab } from '@ui-kitten/components';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { Text } from '../Text/Text';
 import { Icon } from '../Icon/Icon';
 import { Badge } from '../Badge/Badge';
@@ -50,7 +52,7 @@ export const TabBar: React.FC<TabBarProps> = ({
   testID,
   style,
 }) => {
-  const { theme } = useTheme();
+  const { theme, evaTheme } = useEnhancedTheme();
   const insets = useSafeAreaInsets();
 
   // Animation values
@@ -74,12 +76,16 @@ export const TabBar: React.FC<TabBarProps> = ({
   }, [activeIndex, tabs.length, indicatorPosition, indicatorWidth]);
 
   const containerStyles: ViewStyle = {
-    backgroundColor: backgroundColor || theme.colors.surface,
-    borderTopWidth: theme.borders.width.thin,
-    borderTopColor: theme.colors.border.default,
+    backgroundColor: backgroundColor || evaTheme['background-basic-color-1'] || theme.colors.surface,
+    borderTopWidth: 1,
+    borderTopColor: evaTheme['border-basic-color-3'] || theme.colors.border.default,
     paddingBottom: Platform.OS === 'ios' ? insets.bottom : theme.spacing.sm,
     paddingTop: theme.spacing.sm,
-    ...theme.shadows.sm,
+    elevation: 4,
+    shadowColor: evaTheme['color-basic-800'] || '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   };
 
   const tabContainerStyles: ViewStyle = {
@@ -108,7 +114,9 @@ export const TabBar: React.FC<TabBarProps> = ({
   const getLabelStyles = (isActive: boolean) => ({
     fontSize: 12,
     fontWeight: isActive ? ('600' as const) : ('400' as const),
-    color: isActive ? activeColor || theme.colors.primary[500] : inactiveColor || theme.colors.text.secondary,
+    color: isActive
+      ? activeColor || evaTheme['color-primary-default'] || theme.colors.primary[500]
+      : inactiveColor || evaTheme['text-hint-color'] || theme.colors.text.secondary,
   });
 
   const indicatorAnimatedStyle = useAnimatedStyle(() => ({
@@ -117,7 +125,7 @@ export const TabBar: React.FC<TabBarProps> = ({
     left: `${indicatorPosition.value}%`,
     width: `${indicatorWidth.value}%`,
     height: 3,
-    backgroundColor: indicatorColor || theme.colors.primary[500],
+    backgroundColor: indicatorColor || evaTheme['color-primary-default'] || theme.colors.primary[500],
     borderRadius: theme.borders.radius.sm,
   }));
 
@@ -131,7 +139,11 @@ export const TabBar: React.FC<TabBarProps> = ({
         ) : (
           <Icon
             size="sm"
-            color={isActive ? activeColor || theme.colors.primary[500] : inactiveColor || theme.colors.text.secondary}
+            color={
+              isActive
+                ? activeColor || evaTheme['color-primary-default'] || theme.colors.primary[500]
+                : inactiveColor || evaTheme['text-hint-color'] || theme.colors.text.secondary
+            }
           >
             {tab.icon}
           </Icon>
@@ -161,7 +173,7 @@ export const TabBar: React.FC<TabBarProps> = ({
     if (!showLabels) return null;
 
     return (
-      <Text variant="caption" style={getLabelStyles(isActive)} numberOfLines={1} ellipsizeMode="tail">
+      <Text variant="caption" style={getLabelStyles(isActive)} numberOfLines={1}>
         {tab.label}
       </Text>
     );
