@@ -1,11 +1,17 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ThemeToggle } from './ThemeToggle';
-import { ThemeProvider } from '../../../theme';
+import { ThemeProvider, useThemeContext } from '../../../theme';
 
 // Mock the theme context
 const mockSetMode = vi.fn();
 const mockSetTheme = vi.fn();
+
+// Mock the useThemeContext hook
+vi.mock('../../../theme', () => ({
+  ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+  useThemeContext: vi.fn(),
+}));
 
 const mockThemeContext = {
   mode: 'light' as const,
@@ -296,7 +302,7 @@ describe('ThemeToggle', () => {
       );
 
       const button = screen.getByRole('button');
-      expect(button).toHaveAttribute('aria-label', 'Switch to dark theme');
+      expect(button).toHaveAttribute('aria-label', 'Switch to Dark theme');
     });
 
     it('should have proper aria-label for light/dark toggle', () => {
@@ -307,7 +313,7 @@ describe('ThemeToggle', () => {
       );
 
       const button = screen.getByRole('button');
-      expect(button).toHaveAttribute('aria-label', 'Switch to dark theme');
+      expect(button).toHaveAttribute('aria-label', 'Switch to Dark theme');
     });
 
     it('should have proper aria-label for theme cycling', () => {
@@ -383,7 +389,7 @@ describe('ThemeToggle', () => {
         themes: [],
       };
 
-      vi.mocked(require('../../../theme').useThemeContext).mockReturnValue(contextWithMissingTheme);
+      vi.mocked(useThemeContext).mockReturnValue(contextWithMissingTheme);
 
       expect(() => {
         render(
