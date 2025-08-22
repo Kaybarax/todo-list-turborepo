@@ -15,10 +15,10 @@ const meta: Meta<typeof Textarea> = {
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
       description: 'Size variant',
     },
-    state: {
+    variant: {
       control: 'select',
-      options: ['default', 'success', 'error'],
-      description: 'State variant',
+      options: ['bordered', 'ghost'],
+      description: 'DaisyUI variant',
     },
     error: {
       control: 'boolean',
@@ -93,7 +93,18 @@ export const Sizes: Story = {
   ),
 };
 
-export const States: Story = {
+export const DaisyUIVariants: Story = {
+  name: 'DaisyUI Style Variants',
+  render: () => (
+    <div className="flex flex-col gap-3 w-96">
+      <Textarea placeholder="Bordered (Default)" variant="bordered" />
+      <Textarea placeholder="Ghost" variant="ghost" />
+    </div>
+  ),
+};
+
+export const LegacyStates: Story = {
+  name: 'Legacy States (Backward Compatible)',
   render: () => (
     <div className="flex flex-col gap-3 w-96">
       <Textarea placeholder="Default" state="default" />

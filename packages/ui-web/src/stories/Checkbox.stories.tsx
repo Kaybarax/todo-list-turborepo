@@ -12,9 +12,9 @@ const meta: Meta<typeof Checkbox> = {
       control: 'select',
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
-    state: {
+    variant: {
       control: 'select',
-      options: ['default', 'success', 'error'],
+      options: ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error'],
     },
     indeterminate: { control: 'boolean' },
     label: { control: 'text' },
@@ -56,7 +56,23 @@ export const Sizes: Story = {
   ),
 };
 
-export const States: Story = {
+export const DaisyUIVariants: Story = {
+  name: 'DaisyUI Color Variants',
+  render: () => (
+    <div className="flex flex-col gap-3">
+      <Checkbox variant="primary" label="Primary" aria-label="Primary variant" />
+      <Checkbox variant="secondary" label="Secondary" aria-label="Secondary variant" />
+      <Checkbox variant="accent" label="Accent" aria-label="Accent variant" />
+      <Checkbox variant="info" label="Info" aria-label="Info variant" />
+      <Checkbox variant="success" label="Success" aria-label="Success variant" />
+      <Checkbox variant="warning" label="Warning" aria-label="Warning variant" />
+      <Checkbox variant="error" label="Error" aria-label="Error variant" />
+    </div>
+  ),
+};
+
+export const LegacyStates: Story = {
+  name: 'Legacy States (Backward Compatible)',
   render: () => (
     <div className="flex flex-col gap-3">
       <Checkbox state="default" label="Default" aria-label="Default state" />

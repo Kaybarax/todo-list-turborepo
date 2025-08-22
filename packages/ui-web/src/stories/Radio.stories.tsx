@@ -12,9 +12,9 @@ const meta: Meta<typeof Radio> = {
       control: 'select',
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
-    state: {
+    variant: {
       control: 'select',
-      options: ['default', 'success', 'error'],
+      options: ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error'],
     },
     label: { control: 'text' },
     helperText: { control: 'text' },
@@ -56,7 +56,23 @@ export const Sizes: Story = {
   ),
 };
 
-export const States: Story = {
+export const DaisyUIVariants: Story = {
+  name: 'DaisyUI Color Variants',
+  render: () => (
+    <div className="flex flex-col gap-3">
+      <Radio variant="primary" name="variants" label="Primary" aria-label="Primary variant" />
+      <Radio variant="secondary" name="variants" label="Secondary" aria-label="Secondary variant" />
+      <Radio variant="accent" name="variants" label="Accent" aria-label="Accent variant" />
+      <Radio variant="info" name="variants" label="Info" aria-label="Info variant" />
+      <Radio variant="success" name="variants" label="Success" aria-label="Success variant" />
+      <Radio variant="warning" name="variants" label="Warning" aria-label="Warning variant" />
+      <Radio variant="error" name="variants" label="Error" aria-label="Error variant" />
+    </div>
+  ),
+};
+
+export const LegacyStates: Story = {
+  name: 'Legacy States (Backward Compatible)',
   render: () => (
     <div className="flex flex-col gap-3">
       <Radio state="default" name="st" label="Default" aria-label="Default" />

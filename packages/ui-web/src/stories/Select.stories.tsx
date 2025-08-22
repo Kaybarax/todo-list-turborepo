@@ -17,8 +17,13 @@ const meta: Meta<typeof Select> = {
     },
     state: {
       control: 'select',
-      options: ['default', 'success', 'error'],
-      description: 'State variant',
+      options: ['default', 'primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error'],
+      description: 'Color state variant',
+    },
+    variant: {
+      control: 'select',
+      options: ['bordered', 'ghost'],
+      description: 'Style variant',
     },
     error: {
       control: 'boolean',
@@ -164,7 +169,51 @@ export const Sizes: Story = {
   ),
 };
 
-export const States: Story = {
+export const DaisyUIColorStates: Story = {
+  name: 'DaisyUI Color States',
+  render: () => (
+    <div className="flex flex-col gap-3 w-96">
+      <Select state="primary" aria-label="Primary state">
+        <option value="">Primary</option>
+      </Select>
+      <Select state="secondary" aria-label="Secondary state">
+        <option value="">Secondary</option>
+      </Select>
+      <Select state="accent" aria-label="Accent state">
+        <option value="">Accent</option>
+      </Select>
+      <Select state="info" aria-label="Info state">
+        <option value="">Info</option>
+      </Select>
+      <Select state="success" aria-label="Success state">
+        <option value="">Success</option>
+      </Select>
+      <Select state="warning" aria-label="Warning state">
+        <option value="">Warning</option>
+      </Select>
+      <Select state="error" aria-label="Error state">
+        <option value="">Error</option>
+      </Select>
+    </div>
+  ),
+};
+
+export const DaisyUIStyleVariants: Story = {
+  name: 'DaisyUI Style Variants',
+  render: () => (
+    <div className="flex flex-col gap-3 w-96">
+      <Select variant="bordered" aria-label="Bordered variant">
+        <option value="">Bordered (Default)</option>
+      </Select>
+      <Select variant="ghost" aria-label="Ghost variant">
+        <option value="">Ghost</option>
+      </Select>
+    </div>
+  ),
+};
+
+export const LegacyStates: Story = {
+  name: 'Legacy States (Backward Compatible)',
   render: () => (
     <div className="flex flex-col gap-3 w-96">
       <Select state="default" aria-label="State default">
