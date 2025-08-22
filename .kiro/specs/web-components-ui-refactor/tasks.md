@@ -289,14 +289,14 @@
   - Include performance considerations and best practices for each component
   - _Requirements: 5.4_
 
-- [ ] 11.2 Update Storybook documentation
+- [x] 11.2 Update Storybook documentation
   - Ensure all migrated components have comprehensive Storybook documentation
   - Add component descriptions, usage guidelines, and accessibility notes
   - Include interactive examples and code snippets for easy copying
   - Organize components into logical categories for easy navigation
   - _Requirements: 5.2, 5.4_
 
-- [ ] 11.3 Finalize package versioning and publishing
+- [x] 11.3 Finalize package versioning and publishing
   - Update @todo/ui-web package version to reflect new components
   - Ensure proper semantic versioning for breaking changes
   - Update package dependencies and peer dependencies as needed

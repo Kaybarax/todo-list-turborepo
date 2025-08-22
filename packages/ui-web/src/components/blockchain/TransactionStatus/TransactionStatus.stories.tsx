@@ -31,8 +31,30 @@ const meta: Meta<typeof TransactionStatus> = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'A flexible transaction status component with real-time polling capabilities for blockchain transactions.',
+        component: `A flexible transaction status component with real-time polling capabilities for blockchain transactions.
+
+## Features
+- **Real-time Polling**: Automatically checks transaction status at configurable intervals
+- **Multiple Networks**: Support for Ethereum, Polygon, Base, Moonbeam, and Solana
+- **Status States**: Pending, confirmed, and failed transaction states
+- **Multiple Variants**: Default, compact, and detailed display options
+- **Error Handling**: Graceful handling of network errors and timeouts
+- **Configurable**: Customizable polling intervals and maximum polling time
+
+## Usage Guidelines
+- Use the **default** variant for general transaction displays
+- Use the **compact** variant for lists and tables
+- Use the **detailed** variant for transaction detail pages
+- Set appropriate **pollingInterval** based on network speed
+- Configure **maxPollingTime** to prevent infinite polling
+- Handle **onStatusChange** for application state updates
+
+## Accessibility
+- Screen reader announcements for status changes
+- Clear visual indicators for each status state
+- Semantic HTML with proper ARIA attributes
+- Color-blind friendly status indicators
+- Keyboard accessible when interactive`,
       },
     },
   },

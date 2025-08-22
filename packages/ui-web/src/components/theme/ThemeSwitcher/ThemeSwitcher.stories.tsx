@@ -6,10 +6,30 @@ const meta: Meta<typeof ThemeSwitcher> = {
   title: 'Theme/ThemeSwitcher',
   component: ThemeSwitcher,
   parameters: {
+    layout: 'centered',
     docs: {
       description: {
-        component:
-          'A flexible theme switcher component that supports multiple variants (select, dropdown, buttons) and works with both DaisyUI themes and custom theme configurations.',
+        component: `A flexible theme switcher component that supports multiple variants and works with both DaisyUI themes and custom theme configurations.
+
+## Features
+- **Multiple Variants**: Select, dropdown, and button group layouts
+- **Theme Grouping**: Organize themes by light/dark categories
+- **Accessibility**: Full keyboard navigation and screen reader support
+- **Responsive**: Adapts to different screen sizes
+- **Customizable**: Support for custom theme lists and styling
+
+## Usage Guidelines
+- Use the **select** variant for forms and settings pages
+- Use the **dropdown** variant for navigation bars and headers
+- Use the **buttons** variant for prominent theme switching
+- Enable **groupThemes** for better organization with many themes
+- Use **showLabel** based on available space and context
+
+## Accessibility
+- Keyboard navigation with arrow keys and Enter
+- Screen reader announcements for theme changes
+- Focus management and visible focus indicators
+- Semantic HTML with proper ARIA attributes`,
       },
     },
   },

@@ -8,10 +8,33 @@ const meta: Meta<typeof WalletConnect> = {
   title: 'Blockchain/WalletConnect',
   component: WalletConnect,
   parameters: {
+    layout: 'centered',
     docs: {
       description: {
-        component:
-          'A flexible wallet connection component that supports multiple blockchain networks and display variants.',
+        component: `A flexible wallet connection component that supports multiple blockchain networks and display variants.
+
+## Features
+- **Multi-Network Support**: Solana, Polkadot, Polygon, Moonbeam, and Base
+- **Multiple Variants**: Default, compact, and button-only layouts
+- **Real-time Balance**: Display wallet balance when connected
+- **Network Switching**: Easy network selection and switching
+- **Connection States**: Loading, connected, error, and disconnected states
+- **Responsive Design**: Adapts to different screen sizes
+
+## Usage Guidelines
+- Use the **default** variant for main wallet connection areas
+- Use the **compact** variant for navigation bars and headers
+- Use the **button-only** variant for minimal space requirements
+- Enable **showBalance** for financial applications
+- Use **showNetworkSelector** when supporting multiple networks
+- Handle connection errors gracefully with user feedback
+
+## Accessibility
+- Keyboard navigation support
+- Screen reader announcements for connection state changes
+- Focus management during network switching
+- Clear visual indicators for connection status
+- Semantic HTML with proper ARIA attributes`,
       },
     },
   },
