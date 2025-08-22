@@ -193,18 +193,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
     alignItems: 'center',
   },
-  priorityButtonActive: {
-    borderWidth: 2,
-  },
-  priorityButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#374151',
-  },
-  priorityButtonTextActive: {
-    color: '#ffffff',
-    fontWeight: '600',
-  },
   tagInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -215,39 +203,5 @@ const styles = StyleSheet.create({
   },
   addTagButton: {
     marginLeft: 8,
-  },
-  tagsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 8,
-  },
-  tag: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    marginRight: 8,
-    marginBottom: 8,
-  },
-  tagText: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  tagRemove: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginLeft: 6,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginTop: 20,
-  },
-  cancelButton: {
-    marginRight: 12,
-  },
-  submitButton: {
-    flex: 1,
   },
 });

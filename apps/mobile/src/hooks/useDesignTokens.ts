@@ -1,63 +1,73 @@
 /**
  * Design Tokens Hook for Mobile App
- * Provides easy access to design system tokens with fallbacks
+ * Provides easy access to design system tokens with theme support
  */
 
-import { lightColors, spacing, typography, borders, shadows } from '@todo/ui-mobile/lib/tokens';
+import { useTheme, lightTheme } from '@todo/ui-mobile/lib/theme';
 
 export const useDesignTokens = () => {
+  // Try to use theme context, fallback to light theme if not available
+  let theme;
+  try {
+    const themeContext = useTheme();
+    theme = themeContext?.theme || lightTheme;
+  } catch {
+    // Fallback if ThemeProvider is not available
+    theme = lightTheme;
+  }
+
   return {
     // Colors
     colors: {
-      background: lightColors.background,
-      surface: lightColors.surface,
-      primary: lightColors.primary[500],
-      secondary: lightColors.secondary[500],
-      success: lightColors.success[500],
-      warning: lightColors.warning[500],
-      error: lightColors.error[500],
+      background: theme.colors.background,
+      surface: theme.colors.surface,
+      primary: theme.colors.primary[500],
+      secondary: theme.colors.secondary[500],
+      success: theme.colors.success[500],
+      warning: theme.colors.warning[500],
+      error: theme.colors.error[500],
       text: {
-        primary: lightColors.text.primary,
-        secondary: lightColors.text.secondary,
-        disabled: lightColors.text.disabled,
-        inverse: lightColors.text.inverse,
+        primary: theme.colors.text.primary,
+        secondary: theme.colors.text.secondary,
+        disabled: theme.colors.text.disabled,
+        inverse: theme.colors.text.inverse,
       },
       border: {
-        default: lightColors.border.default,
-        focus: lightColors.border.focus,
-        error: lightColors.border.error,
+        default: theme.colors.border.default,
+        focus: theme.colors.border.focus,
+        error: theme.colors.border.error,
       },
-      neutral: lightColors.neutral,
+      neutral: theme.colors.neutral,
     },
 
     // Spacing
     spacing: {
-      xs: spacing.xs,
-      sm: spacing.sm,
-      md: spacing.md,
-      lg: spacing.lg,
-      xl: spacing.xl,
-      xxl: spacing.xxl,
-      xxxl: spacing.xxxl,
-      xxxxl: spacing.xxxxl,
+      xs: theme.spacing.xs,
+      sm: theme.spacing.sm,
+      md: theme.spacing.md,
+      lg: theme.spacing.lg,
+      xl: theme.spacing.xl,
+      xxl: theme.spacing.xxl,
+      xxxl: theme.spacing.xxxl,
+      xxxxl: theme.spacing.xxxxl,
     },
 
     // Typography
     typography: {
-      fontSize: typography.fontSizes,
-      fontWeight: typography.fontWeights,
-      lineHeight: typography.lineHeights,
-      letterSpacing: typography.letterSpacing,
+      fontSize: theme.typography.fontSizes,
+      fontWeight: theme.typography.fontWeights,
+      lineHeight: theme.typography.lineHeights,
+      letterSpacing: theme.typography.letterSpacing,
     },
 
     // Borders
     borders: {
-      radius: borders.radius,
-      width: borders.width,
+      radius: theme.borders.radius,
+      width: theme.borders.width,
     },
 
     // Shadows
-    shadows: shadows,
+    shadows: theme.shadows,
   };
 };
 

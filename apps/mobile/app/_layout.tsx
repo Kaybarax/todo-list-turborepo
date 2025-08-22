@@ -3,39 +3,41 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { WalletProvider } from '../src/providers/WalletProvider';
+import { ThemeProvider } from '@todo/ui-mobile/lib/theme';
 
 const RootLayout = () => {
   return (
     <SafeAreaProvider>
       <WalletProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false, // We'll use our own Header component
-          }}
-        >
-          <Stack.Screen
-            name="index"
-            options={{
-              title: 'Todo App',
+        <ThemeProvider>
+          <Stack
+            screenOptions={{
               headerShown: false,
             }}
-          />
-          <Stack.Screen
-            name="todos"
-            options={{
-              title: 'My Todos',
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="wallet"
-            options={{
-              title: 'Wallet',
-              headerShown: false,
-            }}
-          />
-        </Stack>
-        <StatusBar style="auto" />
+          >
+            <Stack.Screen
+              name="index"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="todos"
+              options={{
+                title: 'My Todos',
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="wallet"
+              options={{
+                title: 'Wallet',
+                headerShown: false,
+              }}
+            />
+          </Stack>
+          <StatusBar style="auto" />
+        </ThemeProvider>
       </WalletProvider>
     </SafeAreaProvider>
   );
