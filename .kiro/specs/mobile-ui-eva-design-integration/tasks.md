@@ -129,7 +129,7 @@
   - Update Switch tests for Eva Design integration
   - _Requirements: 3.1, 3.2, 3.4, 8.1_
 
-- [ ] 7.4 Migrate Checkbox component to Eva Design
+- [x] 7.4 Migrate Checkbox component to Eva Design
   - Rebuild Checkbox using UI Kitten CheckBox as base
   - Maintain existing CheckboxProps interface and status
   - Implement Eva Design checkbox appearances and theming

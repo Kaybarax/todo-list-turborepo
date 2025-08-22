@@ -1,6 +1,7 @@
 import { CheckBox, type CheckBoxProps as KittenCheckBoxProps, Text } from '@ui-kitten/components';
 import React from 'react';
 import { View, StyleSheet, type ViewStyle, type TextStyle, type StyleProp } from 'react-native';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
 export type CheckboxStatus = 'basic' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
 
@@ -27,6 +28,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
   style,
   ...props
 }) => {
+  const { theme, evaTheme } = useEnhancedTheme();
   // Map our status to UI Kitten status
   const getKittenStatus = (): KittenCheckBoxProps['status'] => {
     return status;
@@ -39,12 +41,28 @@ const Checkbox: React.FC<CheckboxProps> = ({
     }
   };
 
+  // Get Eva Design colors
+  const getDisabledOpacity = () => parseFloat(evaTheme['opacity-disabled'] || '0.6');
+  const getHintColor = () => evaTheme['text-hint-color'] || theme.colors.text.secondary;
+
   // Render label text
   const renderLabel = () => {
     if (!label) return undefined;
 
     return (
-      <Text category="p1" style={[styles.label, disabled && styles.labelDisabled, labelStyle] as any}>
+      <Text
+        category="p1"
+        style={
+          [
+            styles.label,
+            {
+              marginLeft: theme.spacing.sm, // Use theme spacing
+            },
+            disabled && { color: getHintColor() },
+            labelStyle,
+          ] as any
+        }
+      >
         {label}
       </Text>
     );
@@ -53,8 +71,11 @@ const Checkbox: React.FC<CheckboxProps> = ({
   // Combine checkbox styles
   const checkboxStyles = [styles.checkbox, style];
 
+  // Dynamic container styles with Eva Design tokens
+  const containerStyles = [styles.container, disabled && { opacity: getDisabledOpacity() }, containerStyle];
+
   return (
-    <View style={[styles.container, disabled && styles.containerDisabled, containerStyle]}>
+    <View style={containerStyles}>
       <CheckBox
         checked={checked}
         onChange={handleChange}
@@ -77,14 +98,8 @@ const styles = StyleSheet.create({
   container: {
     // Container styles handled by UI Kitten CheckBox
   },
-  containerDisabled: {
-    opacity: 0.6,
-  },
   label: {
-    marginLeft: 8,
-  },
-  labelDisabled: {
-    color: '#8F9BB3', // UI Kitten text-hint-color
+    // Label styles handled dynamically with Eva Design tokens
   },
 });
 
