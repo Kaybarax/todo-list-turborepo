@@ -1,12 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
-  stories: [
-    '../src/**/*.mdx',
-    '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '!../src/stories/NetworkSelector.stories.tsx',
-    '!../lib/**/*.stories.*',
-  ],
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)', '!../lib/**/*.stories.*'],
   addons: ['@storybook/addon-essentials', '@storybook/addon-onboarding', '@chromatic-com/storybook'],
   framework: {
     name: '@storybook/react-vite',
@@ -26,11 +21,20 @@ const config: StorybookConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       'react-native$': 'react-native-web',
+      'react-native/Libraries/Text/Text': 'react-native-web/dist/exports/Text',
+      'react-native/Libraries/Components/View/View': 'react-native-web/dist/exports/View',
     };
 
     // Configure optimizeDeps to exclude problematic packages
     config.optimizeDeps = config.optimizeDeps || {};
     config.optimizeDeps.exclude = [...(config.optimizeDeps.exclude || []), '@ui-kitten/components', 'react-native'];
+
+    // Add define for React Native environment
+    config.define = {
+      ...config.define,
+      __DEV__: true,
+      'process.env.NODE_ENV': JSON.stringify('development'),
+    };
 
     return config;
   },

@@ -1,21 +1,161 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { View } from 'react-native';
-import { ApplicationProvider } from '@ui-kitten/components';
-import * as eva from '@eva-design/eva';
 
-import { NetworkSelector } from '../../lib/components/NetworkSelector';
+// Mock NetworkSelector for Storybook (web-compatible)
+interface NetworkSelectorProps {
+  selectedNetwork: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base';
+  onNetworkSelect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') => void;
+  disabled?: boolean;
+  variant?: 'grid' | 'list';
+  showTestnets?: boolean;
+  style?: any;
+  testID?: string;
+}
 
-// Test wrapper with UI Kitten provider
+const NETWORK_INFO = {
+  solana: { name: 'Solana', description: 'High-performance blockchain', icon: '◎', color: '#9333ea' },
+  polkadot: { name: 'Polkadot', description: 'Interoperable blockchain', icon: '●', color: '#ec4899' },
+  polygon: { name: 'Polygon', description: 'Ethereum scaling solution', icon: '⬟', color: '#6366f1' },
+  moonbeam: { name: 'Moonbeam', description: 'Ethereum on Polkadot', icon: '🌙', color: '#14b8a6' },
+  base: { name: 'Base', description: 'Coinbase L2 solution', icon: '🔵', color: '#3b82f6' },
+};
+
+const MockNetworkSelector: React.FC<NetworkSelectorProps> = ({
+  selectedNetwork,
+  onNetworkSelect,
+  disabled = false,
+  variant = 'grid',
+}) => {
+  const supportedNetworks: ('solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base')[] = [
+    'solana',
+    'polkadot',
+    'polygon',
+    'moonbeam',
+    'base',
+  ];
+
+  const containerStyle: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: variant === 'grid' ? 'row' : 'column',
+    flexWrap: variant === 'grid' ? 'wrap' : 'nowrap',
+    gap: '12px',
+    maxWidth: '600px',
+  };
+
+  const itemStyle = (network: string): React.CSSProperties => {
+    const isSelected = selectedNetwork === network;
+    const networkInfo = NETWORK_INFO[network as keyof typeof NETWORK_INFO];
+
+    return {
+      display: 'flex',
+      flexDirection: variant === 'grid' ? 'column' : 'row',
+      alignItems: 'center',
+      padding: '16px',
+      border: `2px solid ${isSelected ? networkInfo.color : '#e5e7eb'}`,
+      borderRadius: '12px',
+      backgroundColor: isSelected ? `${networkInfo.color}20` : '#ffffff',
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      opacity: disabled ? 0.5 : 1,
+      flex: variant === 'grid' ? '1 1 45%' : 'none',
+      minWidth: variant === 'grid' ? '150px' : 'auto',
+      position: 'relative',
+      transition: 'all 0.2s ease',
+    };
+  };
+
+  return (
+    <div style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      <div style={containerStyle}>
+        {supportedNetworks.map(network => {
+          const isSelected = selectedNetwork === network;
+          const networkInfo = NETWORK_INFO[network];
+
+          return (
+            <div key={network} style={itemStyle(network)} onClick={() => !disabled && onNetworkSelect(network)}>
+              <div
+                style={{
+                  fontSize: '24px',
+                  marginBottom: variant === 'grid' ? '8px' : '0',
+                  marginRight: variant === 'list' ? '12px' : '0',
+                }}
+              >
+                {networkInfo.icon}
+              </div>
+              <div
+                style={{
+                  textAlign: variant === 'grid' ? 'center' : 'left',
+                  flex: variant === 'list' ? 1 : 'none',
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: isSelected ? networkInfo.color : '#1f2937',
+                    marginBottom: '4px',
+                  }}
+                >
+                  {networkInfo.name}
+                </div>
+                <div
+                  style={{
+                    fontSize: '11px',
+                    color: '#6b7280',
+                    lineHeight: '14px',
+                  }}
+                >
+                  {networkInfo.description}
+                </div>
+              </div>
+              {isSelected && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '-4px',
+                    right: '-4px',
+                    backgroundColor: networkInfo.color,
+                    color: 'white',
+                    borderRadius: '50%',
+                    width: '20px',
+                    height: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '12px',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  ✓
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      {variant === 'grid' && (
+        <div
+          style={{
+            textAlign: 'center',
+            marginTop: '12px',
+            fontSize: '12px',
+            color: '#6b7280',
+          }}
+        >
+          Select a blockchain network to connect your wallet
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Test wrapper
 const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <ApplicationProvider {...eva} theme={eva.light}>
-    <View style={{ padding: 16 }}>{children}</View>
-  </ApplicationProvider>
+  <div style={{ padding: '16px', backgroundColor: '#f9fafb', minHeight: '400px' }}>{children}</div>
 );
 
-const meta: Meta<typeof NetworkSelector> = {
+const meta: Meta<typeof MockNetworkSelector> = {
   title: 'Components/NetworkSelector',
-  component: NetworkSelector,
+  component: MockNetworkSelector,
   decorators: [
     Story => (
       <TestWrapper>
@@ -161,42 +301,42 @@ export const Interactive: Story = {
     const [variant, setVariant] = React.useState<'grid' | 'list'>('grid');
 
     return (
-      <View style={{ gap: 16 }}>
-        <View style={{ flexDirection: 'row', gap: 8, marginBottom: 16 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '8px', marginBottom: '16px' }}>
           <button
-            onClick={() => setVariant('grid')}
             style={{
               padding: '8px 16px',
               backgroundColor: variant === 'grid' ? '#007AFF' : '#F2F2F7',
               color: variant === 'grid' ? 'white' : 'black',
               border: 'none',
-              borderRadius: 8,
+              borderRadius: '8px',
               cursor: 'pointer',
             }}
+            onClick={() => setVariant('grid')}
           >
             Grid
           </button>
           <button
-            onClick={() => setVariant('list')}
             style={{
               padding: '8px 16px',
               backgroundColor: variant === 'list' ? '#007AFF' : '#F2F2F7',
               color: variant === 'list' ? 'white' : 'black',
               border: 'none',
-              borderRadius: 8,
+              borderRadius: '8px',
               cursor: 'pointer',
             }}
+            onClick={() => setVariant('list')}
           >
             List
           </button>
-        </View>
-        <NetworkSelector selectedNetwork={selectedNetwork} variant={variant} onNetworkSelect={setSelectedNetwork} />
-        <View style={{ marginTop: 16, padding: 12, backgroundColor: '#F7F9FC', borderRadius: 8 }}>
-          <text style={{ fontSize: 14, fontWeight: '600' }}>
+        </div>
+        <MockNetworkSelector selectedNetwork={selectedNetwork} variant={variant} onNetworkSelect={setSelectedNetwork} />
+        <div style={{ marginTop: '16px', padding: '12px', backgroundColor: '#F7F9FC', borderRadius: '8px' }}>
+          <div style={{ fontSize: '14px', fontWeight: '600' }}>
             Selected: {selectedNetwork} | Variant: {variant}
-          </text>
-        </View>
-      </View>
+          </div>
+        </div>
+      </div>
     );
   },
   parameters: {
@@ -211,24 +351,24 @@ export const Interactive: Story = {
 // Comparison story
 export const VariantComparison: Story = {
   render: () => (
-    <View style={{ gap: 24 }}>
-      <View>
-        <text style={{ fontSize: 16, fontWeight: '600', marginBottom: 12 }}>Grid Variant</text>
-        <NetworkSelector
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div>
+        <div style={{ fontSize: '16px', fontWeight: '600', marginBottom: '12px' }}>Grid Variant</div>
+        <MockNetworkSelector
           selectedNetwork="solana"
           variant="grid"
           onNetworkSelect={network => console.log('Grid selected:', network)}
         />
-      </View>
-      <View>
-        <text style={{ fontSize: 16, fontWeight: '600', marginBottom: 12 }}>List Variant</text>
-        <NetworkSelector
+      </div>
+      <div>
+        <div style={{ fontSize: '16px', fontWeight: '600', marginBottom: '12px' }}>List Variant</div>
+        <MockNetworkSelector
           selectedNetwork="polkadot"
           variant="list"
           onNetworkSelect={network => console.log('List selected:', network)}
         />
-      </View>
-    </View>
+      </div>
+    </div>
   ),
   parameters: {
     docs: {
