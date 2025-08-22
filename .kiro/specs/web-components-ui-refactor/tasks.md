@@ -79,28 +79,28 @@
   - Achieve minimum 80% code coverage for TodoForm component
   - _Requirements: 5.3, 7.1, 7.4, 7.5_
 
-- [ ] 4. Migrate TodoItem component with blockchain integration
+- [x] 4. Migrate TodoItem component with blockchain integration
   - Move TodoItem from apps/web to packages/ui-web with proper abstraction
   - Maintain blockchain network display and transaction status integration
   - Create flexible component that accepts callback functions for actions
   - Implement multiple display variants and customization options
   - _Requirements: 2.2, 2.4, 3.4, 5.2, 5.3_
 
-- [ ] 4.1 Implement TodoItem component structure
+- [x] 4.1 Implement TodoItem component structure
   - Create TodoItem component in packages/ui-web/src/components/todo/TodoItem/
   - Define comprehensive TypeScript interfaces for TodoItemProps and TodoData
   - Implement proper callback handling for toggle, edit, delete, and blockchain sync actions
   - Add support for different variants (default, compact, detailed) and customization
   - _Requirements: 2.2, 2.4, 5.4_
 
-- [ ] 4.2 Integrate TodoItem with blockchain services
+- [x] 4.2 Integrate TodoItem with blockchain services
   - Ensure TodoItem works properly with @todo/services blockchain abstractions
   - Implement network-specific styling and behavior while keeping component generic
   - Add proper error handling for blockchain operations and network failures
   - Test integration with different blockchain networks and transaction states
   - _Requirements: 3.4, 3.5_
 
-- [ ] 4.3 Create TodoItem Storybook stories and tests
+- [x] 4.3 Create TodoItem Storybook stories and tests
   - Write comprehensive stories covering all TodoItem variants and blockchain states
   - Include stories for different priority levels, due dates, and completion states
   - Create unit tests for user interactions and blockchain integration
