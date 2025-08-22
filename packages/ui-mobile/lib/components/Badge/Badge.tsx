@@ -1,6 +1,7 @@
 import { Text } from '@ui-kitten/components';
 import React from 'react';
 import { View, StyleSheet, type ViewStyle, type TextStyle, type StyleProp } from 'react-native';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
 export type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
 export type BadgeSize = 'small' | 'medium' | 'large';
@@ -15,28 +16,28 @@ export interface BadgeProps {
 }
 
 const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'medium', style, textStyle, testID }) => {
-  // Note: UI Kitten doesn't have a Badge component, so we implement our own styling
+  const { theme, evaTheme } = useEnhancedTheme();
 
-  // Get badge background color based on variant
-  const getBadgeStyle = () => {
+  // Get badge background color based on variant using Eva Design tokens
+  const getBadgeBackgroundColor = () => {
     switch (variant) {
       case 'primary':
-        return styles.primaryBadge;
+        return evaTheme['color-primary-default'] || '#3366FF';
       case 'secondary':
-        return styles.secondaryBadge;
+        return evaTheme['text-hint-color'] || '#8F9BB3';
       case 'success':
-        return styles.successBadge;
+        return evaTheme['color-success-default'] || '#00E096';
       case 'warning':
-        return styles.warningBadge;
+        return evaTheme['color-warning-default'] || '#FFAA00';
       case 'danger':
-        return styles.dangerBadge;
+        return evaTheme['color-danger-default'] || '#FF3D71';
       case 'default':
       default:
-        return styles.defaultBadge;
+        return evaTheme['background-basic-color-2'] || '#F7F9FC';
     }
   };
 
-  // Get text color based on variant
+  // Get text color based on variant using Eva Design tokens
   const getTextColor = () => {
     switch (variant) {
       case 'primary':
@@ -44,10 +45,10 @@ const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'medium
       case 'success':
       case 'warning':
       case 'danger':
-        return '#FFFFFF';
+        return evaTheme['text-control-color'] || '#FFFFFF';
       case 'default':
       default:
-        return '#8F9BB3'; // UI Kitten hint color
+        return evaTheme['text-hint-color'] || '#8F9BB3';
     }
   };
 
@@ -77,8 +78,8 @@ const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'medium
     }
   };
 
-  // Combine badge styles
-  const badgeStyles = [styles.badge, getBadgeStyle(), getSizeStyle(), style];
+  // Combine badge styles with dynamic background color
+  const badgeStyles = [styles.badge, getSizeStyle(), { backgroundColor: getBadgeBackgroundColor() }, style];
 
   // Combine text styles
   const combinedTextStyle = [styles.text, { color: getTextColor() }, textStyle];
@@ -103,26 +104,6 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: '600',
     textAlign: 'center',
-  },
-
-  // Variant styles - using UI Kitten color palette
-  defaultBadge: {
-    backgroundColor: '#F7F9FC', // UI Kitten background-basic-color-2
-  },
-  primaryBadge: {
-    backgroundColor: '#3366FF', // UI Kitten color-primary-500
-  },
-  secondaryBadge: {
-    backgroundColor: '#8F9BB3', // UI Kitten text-hint-color
-  },
-  successBadge: {
-    backgroundColor: '#00E096', // UI Kitten color-success-500
-  },
-  warningBadge: {
-    backgroundColor: '#FFAA00', // UI Kitten color-warning-500
-  },
-  dangerBadge: {
-    backgroundColor: '#FF3D71', // UI Kitten color-danger-500
   },
 
   // Size styles
