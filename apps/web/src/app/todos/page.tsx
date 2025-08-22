@@ -1,14 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Button } from '@todo/ui-web';
-import { TodoForm } from '@/components/TodoForm';
-import { TodoList } from '@/components/TodoList';
-import { BlockchainStats } from '@/components/BlockchainStats';
+import { TodoForm, TodoList, BlockchainStats } from '@todo/ui-web';
 import { useTodoStore } from '@/store/todoStore';
 import { useWallet } from '@/components/WalletProvider';
 import type { BlockchainNetwork } from '@todo/services';
-import type { Todo } from '@/components/TodoItem';
+import type { TodoData as Todo } from '@todo/ui-web';
 
 const TodosPage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -18,6 +16,33 @@ const TodosPage = () => {
     useTodoStore();
 
   const { isConnected } = useWallet();
+
+  const blockchainStats = useMemo(() => {
+    const total = todos.length;
+    const onChain = todos.filter(todo => todo.blockchainNetwork).length;
+    const offChain = total - onChain;
+
+    const networkBreakdown = todos.reduce(
+      (acc, todo) => {
+        if (todo.blockchainNetwork) {
+          acc[todo.blockchainNetwork] = (acc[todo.blockchainNetwork] || 0) + 1;
+        }
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+
+    const pendingTransactions = todos.filter(todo => todo.transactionHash && !todo.blockchainAddress).length;
+
+    return {
+      total,
+      onChain,
+      offChain,
+      networkBreakdown,
+      pendingTransactions,
+      syncPercentage: total > 0 ? Math.round((onChain / total) * 100) : 0,
+    };
+  }, [todos]);
 
   useEffect(() => {
     void fetchTodos();
@@ -58,20 +83,6 @@ const TodosPage = () => {
   const handleDelete = (id: string) => {
     if (window.confirm('Are you sure you want to delete this todo?')) {
       deleteTodo(id);
-    }
-  };
-
-  const handleBlockchainSync = async (id: string, network: BlockchainNetwork) => {
-    if (!isConnected) {
-      alert('Please connect your wallet first to sync todos to blockchain.');
-      return;
-    }
-
-    try {
-      await syncToBlockchain(id, network);
-    } catch (error) {
-      console.error('Failed to sync to blockchain:', error);
-      alert('Failed to sync to blockchain: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   };
 
@@ -160,7 +171,7 @@ const TodosPage = () => {
         </div>
       )}
 
-      <BlockchainStats todos={todos} />
+      {blockchainStats.total > 0 && <BlockchainStats data={blockchainStats} />}
 
       {isLoading && (
         <div className="flex justify-center py-8">
@@ -173,7 +184,9 @@ const TodosPage = () => {
         onToggle={toggleTodo}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        onBlockchainSync={isConnected ? (id, network) => void handleBlockchainSync(id, network) : undefined}
+        onBlockchainSync={
+          isConnected ? (todoId, network) => void syncToBlockchain(todoId, network as BlockchainNetwork) : undefined
+        }
       />
     </div>
   );

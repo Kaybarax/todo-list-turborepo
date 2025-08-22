@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useCallback } from 'react';
 import { useTheme, DaisyUITheme } from './theme-provider';
 import { validateTheme } from './theme-validator';

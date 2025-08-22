@@ -3,8 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Link from 'next/link';
 import { WalletProvider } from '../components/WalletProvider';
-import { ThemeProvider } from '../components/ThemeProvider';
-import { ThemeSwitcher } from '../components/ThemeSwitcher';
+import { ThemeProvider, ThemeSwitcher } from '@todo/ui-web';
 
 const inter = Inter({ subsets: ['latin'] });
 

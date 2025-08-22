@@ -1,6 +1,6 @@
 'use client';
 
-import { WalletConnect } from '@/components/WalletConnect';
+import { WalletConnect } from '@todo/ui-web';
 import { useWallet } from '@/components/WalletProvider';
 
 const WalletPage = () => {

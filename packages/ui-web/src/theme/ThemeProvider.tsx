@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { ThemeConfig, ThemeContextValue, ThemeMode, DaisyUITheme } from './types';
 import { defaultThemes, getDaisyUIThemeNames } from './themes';

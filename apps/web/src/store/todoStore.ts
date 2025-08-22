@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Todo } from '@/components/TodoItem';
+import type { TodoData as Todo } from '@todo/ui-web';
 import { createBlockchainService, todoToBlockchainTodo, type TransactionResult } from '@/services/blockchainService';
 import type { BlockchainNetwork } from '@todo/services';
 

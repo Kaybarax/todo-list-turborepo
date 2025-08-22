@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import type { Todo } from '@/components/TodoItem';
+import type { TodoData as Todo } from '@todo/ui-web';
 import { BlockchainNetwork } from '@todo/services';
 
 export interface BlockchainTodo {

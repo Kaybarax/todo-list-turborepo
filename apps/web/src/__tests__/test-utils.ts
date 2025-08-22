@@ -1,5 +1,5 @@
 import type { ApiTodo } from '@todo/services';
-import type { Todo } from '../components/TodoItem';
+import type { TodoData as Todo } from '@todo/ui-web';
 
 /**
  * Convert API Todo to component Todo format

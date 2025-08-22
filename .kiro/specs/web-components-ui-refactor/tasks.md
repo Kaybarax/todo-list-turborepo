@@ -219,28 +219,28 @@
   - Add accessibility tests and achieve minimum 80% code coverage
   - _Requirements: 5.2, 5.3, 7.1, 7.4, 7.5_
 
-- [ ] 9. Update web app imports and remove original components
+- [x] 9. Update web app imports and remove original components
   - Update all import statements in apps/web to use @todo/ui-web components
   - Remove original component files from apps/web after successful migration
   - Update package dependencies and ensure proper build configuration
   - Verify no circular dependencies exist between packages
   - _Requirements: 6.1, 6.2, 6.3, 6.5_
 
-- [ ] 9.1 Update import statements in web app
+- [x] 9.1 Update import statements in web app
   - Replace all component imports in apps/web to use @todo/ui-web imports
   - Update component usage to match new prop interfaces and APIs
   - Ensure all existing functionality is maintained with new component imports
   - Test that all pages and features work correctly with migrated components
   - _Requirements: 6.1, 6.3_
 
-- [ ] 9.2 Update package dependencies
+- [x] 9.2 Update package dependencies
   - Update apps/web package.json to properly depend on updated @todo/ui-web package
   - Verify no circular dependencies are created between packages
   - Update build configuration to handle new component structure
   - Test that the web app builds successfully with new dependencies
   - _Requirements: 6.2, 6.4_
 
-- [ ] 9.3 Remove original component files
+- [x] 9.3 Remove original component files
   - Delete original component files from apps/web/src/components/ after migration
   - Clean up unused imports and dependencies in web app
   - Update any remaining references to old component locations
