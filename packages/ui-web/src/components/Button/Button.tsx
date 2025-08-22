@@ -63,18 +63,27 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={cn(buttonVariants({ variant, size }), className)}
         disabled={loading || disabled}
+        aria-busy={loading || undefined}
         {...props}
       >
         {loading ? (
           <>
-            <span className="loading loading-spinner loading-sm" />
-            {loadingText ?? 'Loading...'}
+            <span className="loading loading-spinner loading-sm" aria-hidden="true" />
+            <span>{loadingText ?? 'Loading...'}</span>
           </>
         ) : (
           <>
-            {leftIcon && leftIcon}
-            {children}
-            {rightIcon && rightIcon}
+            {leftIcon && (
+              <span className="mr-2 inline-flex items-center" aria-hidden="true">
+                {leftIcon}
+              </span>
+            )}
+            <span>{children}</span>
+            {rightIcon && (
+              <span className="ml-2 inline-flex items-center" aria-hidden="true">
+                {rightIcon}
+              </span>
+            )}
           </>
         )}
       </button>
