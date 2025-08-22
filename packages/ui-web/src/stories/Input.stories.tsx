@@ -17,6 +17,16 @@ const meta: Meta<typeof Input> = {
       options: ['text', 'password', 'email', 'number', 'tel', 'url'],
       description: 'The type of the input',
     },
+    size: {
+      control: 'select',
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      description: 'Size variant',
+    },
+    state: {
+      control: 'select',
+      options: ['default', 'success', 'error'],
+      description: 'State variant',
+    },
     placeholder: {
       control: 'text',
       description: 'Placeholder text',
@@ -113,6 +123,28 @@ export const WithBothIcons: Story = {
     leftIcon: <Search className="h-4 w-4 text-muted-foreground" />,
     rightIcon: <Eye className="h-4 w-4 text-muted-foreground" />,
   },
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-3 w-80">
+      <Input placeholder="XS" size="xs" />
+      <Input placeholder="SM" size="sm" />
+      <Input placeholder="MD" size="md" />
+      <Input placeholder="LG" size="lg" />
+      <Input placeholder="XL" size="xl" />
+    </div>
+  ),
+};
+
+export const States: Story = {
+  render: () => (
+    <div className="flex flex-col gap-3 w-80">
+      <Input placeholder="Default" state="default" />
+      <Input placeholder="Success" state="success" helperText="Looks good!" />
+      <Input placeholder="Error" state="error" helperText="This field is required" />
+    </div>
+  ),
 };
 
 export const PasswordToggle: Story = {
