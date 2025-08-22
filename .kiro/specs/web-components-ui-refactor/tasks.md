@@ -135,28 +135,28 @@
   - Add integration tests with TodoItem components and achieve 80% coverage
   - _Requirements: 5.2, 5.3, 7.1, 7.5_
 
-- [ ] 6. Migrate BlockchainStats component with network visualization
+- [x] 6. Migrate BlockchainStats component with network visualization
   - Move BlockchainStats from apps/web to packages/ui-web with proper abstraction
   - Create flexible statistics display component with customizable data visualization
   - Implement network-specific styling using existing color utilities
   - Add support for different variants and display options
   - _Requirements: 3.1, 3.5, 5.2, 5.3_
 
-- [ ] 6.1 Implement BlockchainStats component structure
+- [x] 6.1 Implement BlockchainStats component structure
   - Create BlockchainStats component in packages/ui-web/src/components/blockchain/BlockchainStats/
   - Define comprehensive TypeScript interfaces for BlockchainStatsProps and data structures
   - Implement flexible statistics calculation and display logic
   - Add support for different variants (default, compact, detailed) and customization
   - _Requirements: 3.1, 5.4_
 
-- [ ] 6.2 Integrate BlockchainStats with network utilities
+- [x] 6.2 Integrate BlockchainStats with network utilities
   - Ensure component works with existing getNetworkColor and network display utilities
   - Implement proper network breakdown visualization with color coding
   - Add responsive design for different screen sizes and data amounts
   - Create proper error handling for missing or invalid data
   - _Requirements: 3.5_
 
-- [ ] 6.3 Create BlockchainStats Storybook stories and tests
+- [x] 6.3 Create BlockchainStats Storybook stories and tests
   - Write comprehensive stories covering all variants and data scenarios
   - Include stories for different network distributions and sync percentages
   - Create unit tests for statistics calculation and network visualization
