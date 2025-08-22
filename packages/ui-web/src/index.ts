@@ -42,6 +42,9 @@ export * from './components/todo';
 // Blockchain Components
 export * from './components/blockchain';
 
+// Theme Components
+export * from './components/theme';
+
 // Core utilities
 export { cn, type VariantProps } from './utils';
 

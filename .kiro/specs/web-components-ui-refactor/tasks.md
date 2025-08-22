@@ -24,27 +24,27 @@
   - Update package.json exports field for optimal bundling
   - _Requirements: 8.1, 8.3_
 
-- [ ] 2. Migrate and consolidate theme system components
+- [x] 2. Migrate and consolidate theme system components
   - Merge web app ThemeProvider with existing ui-web ThemeProvider
   - Create unified theme context supporting both custom and DaisyUI themes
   - Migrate ThemeSwitcher and ThemeToggle components to ui-web
   - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-- [ ] 2.1 Create unified ThemeProvider component
+- [x] 2.1 Create unified ThemeProvider component
   - Merge functionality from apps/web ThemeProvider and packages/ui-web ThemeProvider
   - Implement backward compatibility for both theme systems
   - Add support for DaisyUI themes alongside custom theme configurations
   - Write comprehensive TypeScript interfaces for unified theme system
   - _Requirements: 4.1, 4.2, 4.3_
 
-- [ ] 2.2 Migrate ThemeSwitcher component to ui-web
+- [x] 2.2 Migrate ThemeSwitcher component to ui-web
   - Move ThemeSwitcher from apps/web to packages/ui-web/src/components/theme/
   - Enhance component to support multiple variants (dropdown, toggle, buttons, select)
   - Update component to work with unified theme context
   - Create comprehensive Storybook stories for all ThemeSwitcher variants
   - _Requirements: 4.4, 5.2, 5.3_
 
-- [ ] 2.3 Create enhanced ThemeToggle component
+- [x] 2.3 Create enhanced ThemeToggle component
   - Move and enhance ThemeToggle component to support unified theme system
   - Add proper accessibility attributes and keyboard navigation
   - Implement smooth theme transition animations

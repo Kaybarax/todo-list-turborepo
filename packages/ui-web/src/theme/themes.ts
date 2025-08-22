@@ -1,9 +1,10 @@
-import type { ThemeConfig } from './types';
+import type { ThemeConfig, DaisyUITheme } from './types';
 
 export const lightTheme: ThemeConfig = {
   name: 'light',
   displayName: 'Light',
   type: 'light',
+  daisyUITheme: 'light',
   cssVars: {
     '--background': '0 0% 100%',
     '--foreground': '222.2 47.4% 11.2%',
@@ -32,6 +33,7 @@ export const darkTheme: ThemeConfig = {
   name: 'dark',
   displayName: 'Dark',
   type: 'dark',
+  daisyUITheme: 'dark',
   cssVars: {
     '--background': '222.2 84% 4.9%',
     '--foreground': '210 40% 98%',
@@ -56,4 +58,74 @@ export const darkTheme: ThemeConfig = {
   },
 };
 
-export const defaultThemes: ThemeConfig[] = [lightTheme, darkTheme];
+// DaisyUI theme configurations
+export const daisyUIThemes: ThemeConfig[] = [
+  { name: 'cupcake', displayName: 'Cupcake', type: 'light', daisyUITheme: 'cupcake' },
+  { name: 'bumblebee', displayName: 'Bumblebee', type: 'light', daisyUITheme: 'bumblebee' },
+  { name: 'emerald', displayName: 'Emerald', type: 'light', daisyUITheme: 'emerald' },
+  { name: 'corporate', displayName: 'Corporate', type: 'light', daisyUITheme: 'corporate' },
+  { name: 'synthwave', displayName: 'Synthwave', type: 'dark', daisyUITheme: 'synthwave' },
+  { name: 'retro', displayName: 'Retro', type: 'light', daisyUITheme: 'retro' },
+  { name: 'cyberpunk', displayName: 'Cyberpunk', type: 'dark', daisyUITheme: 'cyberpunk' },
+  { name: 'valentine', displayName: 'Valentine', type: 'light', daisyUITheme: 'valentine' },
+  { name: 'halloween', displayName: 'Halloween', type: 'dark', daisyUITheme: 'halloween' },
+  { name: 'garden', displayName: 'Garden', type: 'light', daisyUITheme: 'garden' },
+  { name: 'forest', displayName: 'Forest', type: 'dark', daisyUITheme: 'forest' },
+  { name: 'aqua', displayName: 'Aqua', type: 'dark', daisyUITheme: 'aqua' },
+  { name: 'lofi', displayName: 'Lo-Fi', type: 'light', daisyUITheme: 'lofi' },
+  { name: 'pastel', displayName: 'Pastel', type: 'light', daisyUITheme: 'pastel' },
+  { name: 'fantasy', displayName: 'Fantasy', type: 'light', daisyUITheme: 'fantasy' },
+  { name: 'wireframe', displayName: 'Wireframe', type: 'light', daisyUITheme: 'wireframe' },
+  { name: 'black', displayName: 'Black', type: 'dark', daisyUITheme: 'black' },
+  { name: 'luxury', displayName: 'Luxury', type: 'dark', daisyUITheme: 'luxury' },
+  { name: 'dracula', displayName: 'Dracula', type: 'dark', daisyUITheme: 'dracula' },
+  { name: 'cmyk', displayName: 'CMYK', type: 'light', daisyUITheme: 'cmyk' },
+  { name: 'autumn', displayName: 'Autumn', type: 'light', daisyUITheme: 'autumn' },
+  { name: 'business', displayName: 'Business', type: 'light', daisyUITheme: 'business' },
+  { name: 'acid', displayName: 'Acid', type: 'light', daisyUITheme: 'acid' },
+  { name: 'lemonade', displayName: 'Lemonade', type: 'light', daisyUITheme: 'lemonade' },
+  { name: 'night', displayName: 'Night', type: 'dark', daisyUITheme: 'night' },
+  { name: 'coffee', displayName: 'Coffee', type: 'dark', daisyUITheme: 'coffee' },
+  { name: 'winter', displayName: 'Winter', type: 'light', daisyUITheme: 'winter' },
+  { name: 'dim', displayName: 'Dim', type: 'dark', daisyUITheme: 'dim' },
+  { name: 'nord', displayName: 'Nord', type: 'light', daisyUITheme: 'nord' },
+  { name: 'sunset', displayName: 'Sunset', type: 'dark', daisyUITheme: 'sunset' },
+];
+
+export const defaultThemes: ThemeConfig[] = [lightTheme, darkTheme, ...daisyUIThemes];
+
+// Helper function to get DaisyUI themes list
+export const getDaisyUIThemeNames = (): DaisyUITheme[] => [
+  'light',
+  'dark',
+  'cupcake',
+  'bumblebee',
+  'emerald',
+  'corporate',
+  'synthwave',
+  'retro',
+  'cyberpunk',
+  'valentine',
+  'halloween',
+  'garden',
+  'forest',
+  'aqua',
+  'lofi',
+  'pastel',
+  'fantasy',
+  'wireframe',
+  'black',
+  'luxury',
+  'dracula',
+  'cmyk',
+  'autumn',
+  'business',
+  'acid',
+  'lemonade',
+  'night',
+  'coffee',
+  'winter',
+  'dim',
+  'nord',
+  'sunset',
+];
