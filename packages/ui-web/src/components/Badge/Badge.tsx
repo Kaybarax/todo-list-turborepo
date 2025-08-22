@@ -4,7 +4,7 @@ import React from 'react';
 import { cn } from '../../utils';
 
 const badgeVariants = cva(
-  'badge badge-sm inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm',
+  'badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm',
   {
     variants: {
       variant: {
@@ -16,9 +16,16 @@ const badgeVariants = cva(
         warning: 'badge-warning shadow-warning/25 hover:shadow-lg hover:shadow-warning/40',
         info: 'badge-info shadow-info/25 hover:shadow-lg hover:shadow-info/40',
       },
+      size: {
+        xs: 'badge-xs',
+        sm: 'badge-sm',
+        md: 'badge-md',
+        lg: 'badge-lg',
+      },
     },
     defaultVariants: {
       variant: 'default',
+      size: 'sm',
     },
   },
 );
@@ -29,9 +36,9 @@ export interface BadgeProps
   icon?: React.ReactNode;
 }
 
-const Badge = ({ className, variant = 'default', icon, children, ...props }: BadgeProps) => {
+const Badge = ({ className, variant = 'default', size, icon, children, ...props }: BadgeProps) => {
   return (
-    <span className={cn(badgeVariants({ variant }), className)} {...props}>
+    <span className={cn(badgeVariants({ variant, size }), className)} {...props}>
       {icon && <span className="flex-shrink-0 transition-transform duration-200 group-hover:rotate-12">{icon}</span>}
       <span className="truncate">{children}</span>
     </span>
