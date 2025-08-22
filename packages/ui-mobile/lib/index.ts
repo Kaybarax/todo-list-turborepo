@@ -36,6 +36,13 @@ export type { SwitchProps, SwitchStatus } from './components/Switch';
 export { Checkbox } from './components/Checkbox';
 export type { CheckboxProps, CheckboxStatus } from './components/Checkbox';
 
-// Theme
+// Theme System
+export { ThemeProvider, useTheme, lightTheme, darkTheme, themes, getTheme, validateTheme, getSafeTheme } from './theme';
+export type { Theme, ThemeName, ThemeContextValue } from './theme';
+
+// Design Tokens
+export * from './tokens';
+
+// Legacy theme export for backward compatibility
 export { default as theme } from './theme';
 export { colors, spacing, fontSizes, fontWeights, borderRadius, shadows } from './theme';

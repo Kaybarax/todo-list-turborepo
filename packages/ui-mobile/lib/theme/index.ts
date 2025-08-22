@@ -1,89 +1,28 @@
 /**
- * Theme configuration for the UI mobile package
+ * Theme System
+ * Central export for theme system components and utilities
  */
 
-export const colors = {
-  primary: '#007AFF',
-  secondary: '#5856D6',
-  success: '#34C759',
-  warning: '#FF9500',
-  danger: '#FF3B30',
-  dark: '#1C1C1E',
-  medium: '#8E8E93',
-  light: '#F2F2F7',
-  white: '#FFFFFF',
-  black: '#000000',
-  background: '#F9F9F9',
-  card: '#FFFFFF',
-  text: '#000000',
-  border: '#CECED2',
-};
+// Theme Provider and Hook
+export { ThemeProvider } from './ThemeProvider';
+export { useTheme } from './useTheme';
 
-export const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  xxl: 48,
-};
+// Theme Types
+export type { Theme, ThemeName, ThemeContextValue } from './types';
 
-export const fontSizes = {
-  xs: 12,
-  sm: 14,
-  md: 16,
-  lg: 18,
-  xl: 20,
-  xxl: 24,
-  xxxl: 30,
-};
+// Theme Configurations
+export { lightTheme, darkTheme, themes, getTheme } from './themes';
 
-export const fontWeights = {
-  regular: '400' as const,
-  medium: '500' as const,
-  bold: '700' as const,
-};
+// Theme Validation
+export { validateTheme, validateColorTokens, getSafeTheme, ThemeValidationError } from './validation';
 
-export const borderRadius = {
-  xs: 4,
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 24,
-  round: 9999,
-};
+// Default export is light theme for backward compatibility
+export { lightTheme as default } from './themes/light';
 
-export const shadows = {
-  sm: {
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.18,
-    shadowRadius: 1.0,
-    elevation: 1,
-  },
-  md: {
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-  },
-  lg: {
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
-  },
-};
-
-export const theme = {
-  colors,
-  spacing,
-  fontSizes,
-  fontWeights,
-  borderRadius,
-  shadows,
-};
-
-export default theme;
+// Legacy exports for backward compatibility
+export { lightColors as colors } from '../tokens/colors';
+export { spacing } from '../tokens/spacing';
+export { fontSizes } from '../tokens/typography';
+export { fontWeights } from '../tokens/typography';
+export { borders as borderRadius } from '../tokens/borders';
+export { shadows } from '../tokens/shadows';
