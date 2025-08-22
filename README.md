@@ -45,7 +45,7 @@ A modern, full-stack Todo application built as a comprehensive monorepo showcasi
 │       ├── moonbeam/        # Moonbeam EVM contracts with Hardhat
 │       └── base/            # Base L2 contracts with Hardhat
 ├── packages/
-│   ├── ui-web/              # React component library with DaisyUI and Storybook
+│   ├── ui-web/              # React component library with DaisyUI + Style Dictionary integration
 │   ├── ui-mobile/           # React Native UI library with Eva Design integration
 │   ├── services/            # Shared blockchain and API services
 │   ├── config-eslint/       # ESLint configurations for all frameworks
@@ -160,7 +160,16 @@ This monorepo has been comprehensively modernized with enterprise-grade features
 - **Next.js 15 Web App**: Rebuilt with App Router, server components, and comprehensive design system
 - **NestJS API**: Complete rewrite with proper architecture, validation, and OpenTelemetry tracing
 - **Expo React Native**: Modern mobile app with design system integration and theme support
-- **Shared Libraries**: Complete design system with UI components, design tokens, and theme support
+- **Design System**: DaisyUI + Style Dictionary integration with 30+ themes and design tokens
+
+### 🎨 Design System Integration
+
+- **Style Dictionary**: Token-based design system with automated generation
+- **DaisyUI Integration**: 30+ built-in themes with semantic color system
+- **Component Library**: React components built on DaisyUI foundation
+- **Theme Switching**: Runtime theme switching with persistence and system preference detection
+- **Design Tokens**: Centralized tokens for colors, spacing, typography, and more
+- **Visual Testing**: Chromatic integration for cross-theme visual regression testing
 
 ### 🧪 Testing Excellence
 
@@ -491,6 +500,12 @@ pnpm test --watch
 - **[Blockchain Setup Guide](docs/BLOCKCHAIN_SETUP.md)** - Comprehensive setup instructions for blockchain development
 - **[Blockchain Commands Reference](docs/BLOCKCHAIN_COMMANDS.md)** - Quick reference for dependency management commands
 - **[Troubleshooting Guide](docs/TROUBLESHOOTING.md)** - Solutions to common development issues
+
+### Design System Documentation
+
+- **[DaisyUI + Style Dictionary Integration Guide](docs/DAISYUI_STYLE_DICTIONARY_INTEGRATION.md)** - Complete integration architecture and setup
+- **[Token Management Guide](docs/TOKEN_MANAGEMENT_GUIDE.md)** - Design token creation and customization
+- **[Component Development Workflow](docs/COMPONENT_DEVELOPMENT_WORKFLOW.md)** - Best practices for component development
 
 ### Additional Guides
 

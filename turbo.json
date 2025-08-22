@@ -187,6 +187,24 @@
     "build-storybook": {
       "dependsOn": ["^build"],
       "outputs": ["storybook-static/**"]
+    },
+    "tokens:build": {
+      "inputs": ["tokens/**/*.json", "build-tokens.cjs", "package.json"],
+      "outputs": ["dist/tokens/**", "dist/css/**", "dist/js/**", "dist/tailwind/**"]
+    },
+    "tokens:watch": {
+      "cache": false,
+      "persistent": true
+    },
+    "tokens:validate": {
+      "dependsOn": ["tokens:build"],
+      "inputs": ["tokens/**/*.json", "dist/tokens/**"],
+      "outputs": []
+    },
+    "test:visual": {
+      "dependsOn": ["build-storybook"],
+      "outputs": ["chromatic-results/**"],
+      "inputs": ["src/**/*.{ts,tsx}", "src/**/*.stories.{ts,tsx}", "storybook-static/**"]
     }
   }
 }

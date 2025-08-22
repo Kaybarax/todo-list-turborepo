@@ -187,10 +187,40 @@ jobs:
           BASE_RPC_URL: http://localhost:8545
           SOLANA_RPC_URL: http://localhost:8899
 
+  design-system:
+    name: Design System Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build design tokens
+        run: npm run tokens:build
+
+      - name: Validate design tokens
+        run: npm run tokens:validate
+
+      - name: Build Storybook
+        run: npm run storybook:build:web
+
+      - name: Run visual regression tests
+        run: npm run design-system:test
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: [lint, type-check, test, e2e-tests, contract-tests]
+    needs: [lint, type-check, test, e2e-tests, contract-tests, design-system]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout repository
