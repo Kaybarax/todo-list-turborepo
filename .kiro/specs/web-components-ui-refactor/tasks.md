@@ -163,28 +163,28 @@
   - Add accessibility tests and achieve minimum 80% code coverage
   - _Requirements: 5.2, 5.3, 7.1, 7.4, 7.5_
 
-- [ ] 7. Migrate TransactionStatus component with real-time updates
+- [x] 7. Migrate TransactionStatus component with real-time updates
   - Move TransactionStatus from apps/web to packages/ui-web with enhanced functionality
   - Implement proper blockchain service integration for status checking
   - Add support for different display variants and auto-refresh capabilities
   - Create comprehensive error handling for network failures
   - _Requirements: 3.2, 3.5, 5.2, 5.3_
 
-- [ ] 7.1 Implement TransactionStatus component structure
+- [x] 7.1 Implement TransactionStatus component structure
   - Create TransactionStatus component in packages/ui-web/src/components/blockchain/TransactionStatus/
   - Define comprehensive TypeScript interfaces for TransactionStatusProps and status types
   - Implement proper polling logic for transaction status updates
   - Add support for different variants (default, compact, detailed) and display options
   - _Requirements: 3.2, 5.4_
 
-- [ ] 7.2 Integrate TransactionStatus with blockchain services
+- [x] 7.2 Integrate TransactionStatus with blockchain services
   - Ensure component works with createBlockchainService from @todo/services
   - Implement proper error handling for network failures and timeout scenarios
   - Add support for different blockchain networks and transaction formats
   - Create efficient polling mechanism with proper cleanup and memory management
   - _Requirements: 3.5_
 
-- [ ] 7.3 Create TransactionStatus Storybook stories and tests
+- [x] 7.3 Create TransactionStatus Storybook stories and tests
   - Write comprehensive stories covering all status states and network scenarios
   - Include stories for loading states, error conditions, and different variants
   - Create unit tests for status polling, error handling, and user interactions
