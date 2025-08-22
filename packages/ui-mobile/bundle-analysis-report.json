@@ -1,0 +1,45 @@
+{
+  "timestamp": "2025-08-22T15:51:33.091Z",
+  "bundleAnalysis": {
+    "packages": {
+      "@eva-design/eva": 0,
+      "@ui-kitten/components": 0,
+      "style-dictionary": 0,
+      "react-native-svg": 0
+    },
+    "totalSize": 0,
+    "isWithinLimits": true
+  },
+  "treeShakingAnalysis": {
+    "barrelImports": 17,
+    "directImports": 0,
+    "recommendations": ["Consider using direct imports from @ui-kitten/components for better tree shaking"]
+  },
+  "styleDictionaryAnalysis": {
+    "tokenFiles": [
+      {
+        "file": "lib/theme/tokens/eva-tokens.ts",
+        "size": 0,
+        "exists": false
+      },
+      {
+        "file": "lib/theme/tokens/eva-tokens.json",
+        "size": 0,
+        "exists": false
+      }
+    ],
+    "totalTokens": 0,
+    "fileSize": 0
+  },
+  "recommendations": [
+    "Consider using direct imports from @ui-kitten/components for better tree shaking",
+    "Use React.memo for components with complex Eva Design styling",
+    "Implement theme caching to avoid repeated calculations",
+    "Consider using Eva Design's built-in performance optimizations"
+  ],
+  "summary": {
+    "totalSize": 0,
+    "withinLimits": true,
+    "optimizationScore": 60
+  }
+}

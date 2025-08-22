@@ -9,7 +9,7 @@ A modern, full-stack Todo application built as a comprehensive monorepo showcasi
 ### Core Applications
 
 - **Web App**: Next.js 15 with App Router, TypeScript, and comprehensive design system
-- **Mobile App**: Expo React Native with design system integration and theme support
+- **Mobile App**: Expo React Native with Eva Design integration and comprehensive theming
 - **API**: NestJS with MongoDB, Redis, and comprehensive validation
 - **Ingestion Service**: Background processing for blockchain data
 
@@ -46,7 +46,7 @@ A modern, full-stack Todo application built as a comprehensive monorepo showcasi
 │       └── base/            # Base L2 contracts with Hardhat
 ├── packages/
 │   ├── ui-web/              # React component library with DaisyUI and Storybook
-│   ├── ui-mobile/           # React Native design system with theme support
+│   ├── ui-mobile/           # React Native UI library with Eva Design integration
 │   ├── services/            # Shared blockchain and API services
 │   ├── config-eslint/       # ESLint configurations for all frameworks
 │   ├── config-ts/           # TypeScript configurations

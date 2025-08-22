@@ -1,6 +1,6 @@
 module.exports = {
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['./src/test/setup.ts'],
+  setupFilesAfterEnv: ['./src/test/setup.ts', './src/test/eva-setup.ts'],
   testMatch: ['**/__tests__/**/*.test.{js,jsx,ts,tsx}', '**/lib/**/*.test.{js,jsx,ts,tsx}'],
   collectCoverageFrom: [
     'lib/**/*.{js,jsx,ts,tsx}',
