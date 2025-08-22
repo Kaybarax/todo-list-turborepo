@@ -22,8 +22,8 @@
     "./styles.css": "./dist/style.css"
   },
   "scripts": {
-    "tokens:build": "style-dictionary build --config style-dictionary.config.json",
-    "tokens:watch": "style-dictionary build --watch --config style-dictionary.config.json",
+    "tokens:build": "node scripts/build-tokens.cjs",
+    "tokens:watch": "nodemon --watch tokens --exec \"node scripts/build-tokens.cjs\"",
     "prebuild": "npm run tokens:build",
     "build": "vite build",
     "dev": "concurrently \"npm run tokens:watch\" \"vite build --watch\"",
@@ -81,6 +81,7 @@
     "eslint": "^9.33.0",
     "jest-image-snapshot": "^6.4.0",
     "jsdom": "^26.1.0",
+    "nodemon": "^3.1.10",
     "postcss": "^8.4.32",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

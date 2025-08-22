@@ -15,22 +15,70 @@
         "md": { "value": "{fontSize.base}" },
         "lg": { "value": "{fontSize.lg}" },
         "xl": { "value": "{fontSize.xl}" }
+      },
+      "minHeight": {
+        "xs": { "value": "{space.6}" },
+        "sm": { "value": "{space.8}" },
+        "md": { "value": "{space.12}" },
+        "lg": { "value": "{space.14}" },
+        "xl": { "value": "{space.16}" }
       }
     },
     "input": {
       "padding": { "value": "{space.3} {space.4}" },
       "borderRadius": { "value": "{borderRadius.base}" },
       "borderWidth": { "value": "{borderWidth.1}" },
-      "fontSize": { "value": "{fontSize.base}" }
+      "fontSize": { "value": "{fontSize.base}" },
+      "minHeight": { "value": "{space.12}" }
+    },
+    "textarea": {
+      "padding": { "value": "{space.3} {space.4}" },
+      "borderRadius": { "value": "{borderRadius.base}" },
+      "borderWidth": { "value": "{borderWidth.1}" },
+      "fontSize": { "value": "{fontSize.base}" },
+      "minHeight": { "value": "{space.24}" }
+    },
+    "select": {
+      "padding": { "value": "{space.3} {space.4}" },
+      "borderRadius": { "value": "{borderRadius.base}" },
+      "borderWidth": { "value": "{borderWidth.1}" },
+      "fontSize": { "value": "{fontSize.base}" },
+      "minHeight": { "value": "{space.12}" }
+    },
+    "checkbox": {
+      "size": { "value": "{space.5}" },
+      "borderRadius": { "value": "{borderRadius.sm}" },
+      "borderWidth": { "value": "{borderWidth.2}" }
+    },
+    "radio": {
+      "size": { "value": "{space.5}" },
+      "borderRadius": { "value": "{borderRadius.full}" },
+      "borderWidth": { "value": "{borderWidth.2}" }
     },
     "card": {
       "padding": { "value": "{space.6}" },
       "borderRadius": { "value": "{borderRadius.lg}" },
-      "shadow": { "value": "{boxShadow.xl}" }
+      "shadow": { "value": "{boxShadow.xl}" },
+      "borderWidth": { "value": "{borderWidth.1}" }
     },
     "modal": {
       "borderRadius": { "value": "{borderRadius.lg}" },
-      "shadow": { "value": "{boxShadow.2xl}" }
+      "shadow": { "value": "{boxShadow.2xl}" },
+      "padding": { "value": "{space.6}" }
+    },
+    "alert": {
+      "padding": { "value": "{space.4}" },
+      "borderRadius": { "value": "{borderRadius.base}" },
+      "borderWidth": { "value": "{borderWidth.1}" }
+    },
+    "badge": {
+      "padding": { "value": "{space.1} {space.2}" },
+      "borderRadius": { "value": "{borderRadius.full}" },
+      "fontSize": { "value": "{fontSize.xs}" }
+    },
+    "progress": {
+      "height": { "value": "{space.2}" },
+      "borderRadius": { "value": "{borderRadius.full}" }
     }
   }
 }

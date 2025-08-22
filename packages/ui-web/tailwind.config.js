@@ -1,53 +1,24 @@
+const tokens = require('./dist/tokens/tailwind-tokens.js');
+const daisyuiThemes = require('./dist/tokens/daisyui-themes.js');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        serif: ['var(--font-serif)', 'ui-serif', 'Georgia', 'serif'],
-        mono: ['var(--font-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+      // Extend Tailwind with Style Dictionary tokens
+      colors: tokens.color || {},
+      spacing: tokens.space || {},
+      fontFamily: tokens.fontFamily || {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        serif: ['ui-serif', 'Georgia', 'Cambria', 'serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace'],
       },
-      colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
-      },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
-      },
+      fontSize: tokens.fontSize || {},
+      fontWeight: tokens.fontWeight || {},
+      borderRadius: tokens.borderRadius || {},
+      boxShadow: tokens.boxShadow || {},
+      // Keep existing custom styles for compatibility
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
@@ -67,6 +38,13 @@ module.exports = {
   plugins: [require('daisyui')],
   daisyui: {
     themes: [
+      // Include generated custom themes
+      ...(daisyuiThemes
+        ? Object.keys(daisyuiThemes).map(themeName => ({
+            [themeName]: daisyuiThemes[themeName],
+          }))
+        : []),
+      // Include default DaisyUI themes
       'light',
       'dark',
       'cupcake',
@@ -96,7 +74,11 @@ module.exports = {
       'night',
       'coffee',
       'winter',
+      'dim',
+      'nord',
+      'sunset',
     ],
+    darkTheme: 'todo-dark',
     base: true,
     styled: true,
     utils: true,
