@@ -69,13 +69,23 @@ export const WalletConnect = () => {
           <View style={styles.header}>
             <Text style={styles.title}>Wallet Connected</Text>
             <Button
+              variant="primary"
+              size="lg"
+              onPress={handleConnect}
+              disabled={isConnecting}
+              style={styles.connectButton}
+            >
+              Connect Wallet
+            </Button>
+            <Button
               variant="outline"
-              size="small"
-              title="Disconnect"
+              size="sm"
               onPress={handleDisconnect}
               disabled={isConnecting}
               style={styles.disconnectButton}
-            />
+            >
+              Disconnect
+            </Button>
           </View>
 
           <View style={styles.accountInfo}>
@@ -90,12 +100,13 @@ export const WalletConnect = () => {
                 />
                 <Button
                   variant="outline"
-                  size="small"
-                  title="Switch"
+                  size="sm"
                   onPress={() => setShowNetworkSelector(!showNetworkSelector)}
                   disabled={isConnecting}
                   style={styles.switchButton}
-                />
+                >
+                  Switch
+                </Button>
               </View>
             </View>
 
