@@ -1,4 +1,4 @@
-import { Ref, MutableRefObject } from 'react';
+import { type Ref, type MutableRefObject } from 'react';
 
 /**
  * Converts a truthy value to 'true' for aria attributes, otherwise undefined.
@@ -51,7 +51,7 @@ export function isFocusable(el: HTMLElement | null): boolean {
     'embed',
     '*[tabindex]',
   ];
-  if ((el as any).disabled) return false;
+  if (el.hasAttribute('disabled')) return false;
   const nodeName = el.nodeName.toLowerCase();
   if (nodeName === 'input' && (el as HTMLInputElement).type === 'hidden') return false;
   const style = window.getComputedStyle(el);

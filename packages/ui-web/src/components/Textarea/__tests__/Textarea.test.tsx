@@ -1,6 +1,6 @@
+import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
 
 import { Textarea } from '../Textarea';
 
@@ -21,7 +21,7 @@ describe('Textarea', () => {
   it('applies state variants and sets aria-invalid', () => {
     const { rerender } = render(<Textarea placeholder="p" state="default" />);
     const el = screen.getByPlaceholderText('p');
-    expect(el).toHaveAttribute('aria-invalid', 'false');
+    expect(el.hasAttribute('aria-invalid')).toBe(false);
 
     rerender(<Textarea placeholder="p" state="error" helperText="Required" id="msg" />);
     const el2 = screen.getByPlaceholderText('p');
@@ -32,7 +32,7 @@ describe('Textarea', () => {
 
   it('auto-resizes when typing if enabled', () => {
     render(<Textarea placeholder="p" autoResize defaultValue="a" />);
-    const el = screen.getByPlaceholderText('p') as HTMLTextAreaElement;
+    const el = screen.getByPlaceholderText('p');
     const height1 = el.style.height;
     fireEvent.input(el, { target: { value: 'a\n'.repeat(5) } });
     const height2 = el.style.height;
