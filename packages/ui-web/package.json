@@ -19,6 +19,16 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./todo": {
+      "types": "./dist/components/todo/index.d.ts",
+      "import": "./dist/components/todo/index.js",
+      "require": "./dist/components/todo/index.cjs"
+    },
+    "./blockchain": {
+      "types": "./dist/components/blockchain/index.d.ts",
+      "import": "./dist/components/blockchain/index.js",
+      "require": "./dist/components/blockchain/index.cjs"
+    },
     "./styles.css": "./dist/style.css"
   },
   "scripts": {

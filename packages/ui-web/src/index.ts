@@ -36,6 +36,12 @@ export * from './components/List';
 export * from './components/Avatar';
 export * from './components/Image';
 
+// Todo Components
+export * from './components/todo';
+
+// Blockchain Components
+export * from './components/blockchain';
+
 // Core utilities
 export { cn, type VariantProps } from './utils';
 
@@ -55,6 +61,24 @@ export { Popover, type PopoverProps } from './components/Popover';
 export { Dropdown, type DropdownProps } from './components/Dropdown';
 export { Avatar, type AvatarProps } from './components/Avatar';
 export { Image, type ImageProps } from './components/Image';
+
+// Todo Components
+export { TodoForm, type TodoFormProps, type TodoFormData } from './components/todo/TodoForm';
+export { TodoItem, type TodoItemProps, type TodoData } from './components/todo/TodoItem';
+export { TodoList, type TodoListProps } from './components/todo/TodoList';
+
+// Blockchain Components
+export {
+  BlockchainStats,
+  type BlockchainStatsProps,
+  type BlockchainStatsData,
+} from './components/blockchain/BlockchainStats';
+export {
+  TransactionStatus,
+  type TransactionStatusProps,
+  type TransactionStatus as TransactionStatusType,
+} from './components/blockchain/TransactionStatus';
+export { WalletConnect, type WalletConnectProps, type WalletAccount } from './components/blockchain/WalletConnect';
 
 // Theme System (DaisyUI + Style Dictionary)
 export * from './theme';
