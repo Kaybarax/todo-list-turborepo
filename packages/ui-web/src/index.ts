@@ -16,5 +16,8 @@ export * from './utils';
 // Tokens
 export * from './tokens';
 
+// Theme
+export * from './theme';
+
 // Styles
 import './styles.css';
