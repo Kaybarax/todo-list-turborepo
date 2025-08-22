@@ -191,7 +191,7 @@
   - Add accessibility tests and achieve minimum 80% code coverage
   - _Requirements: 5.2, 5.3, 7.1, 7.4, 7.5_
 
-- [ ] 8. Migrate WalletConnect component with multi-network support
+- [x] 8. Migrate WalletConnect component with multi-network support
   - Move WalletConnect from apps/web to packages/ui-web with proper abstraction
   - Create flexible wallet connection component supporting multiple networks
   - Implement proper integration with existing wallet provider patterns
@@ -205,14 +205,14 @@
   - Add support for different variants (default, compact, button-only) and customization
   - _Requirements: 3.3, 5.4_
 
-- [ ] 8.2 Integrate WalletConnect with network services
+- [x] 8.2 Integrate WalletConnect with network services
   - Ensure component works with existing blockchain network abstractions
   - Implement proper network switching and validation logic
   - Add support for displaying wallet balance and network information
   - Create proper error handling for connection failures and network issues
   - _Requirements: 3.5_
 
-- [ ] 8.3 Create WalletConnect Storybook stories and tests
+- [x] 8.3 Create WalletConnect Storybook stories and tests
   - Write comprehensive stories covering all connection states and network scenarios
   - Include stories for different wallet types, error conditions, and variants
   - Create unit tests for connection logic, network switching, and error handling

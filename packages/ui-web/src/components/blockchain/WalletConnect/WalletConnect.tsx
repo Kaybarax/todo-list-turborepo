@@ -2,9 +2,17 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { Button, Badge } from '../../core';
-import { getNetworkColor } from '@todo/services';
-import type { BlockchainNetwork } from '@todo/services';
+import { cn } from '../../../utils';
+import {
+  getNetworkColor,
+  getNetworkDisplayInfo,
+  getSupportedWalletNetworks,
+  mapWalletNetworkToBlockchainNetwork,
+  mapBlockchainNetworkToWalletNetwork,
+  generateMockAddress as generateServiceMockAddress,
+  type BlockchainNetwork,
+  type NetworkDisplayInfo,
+} from '@todo/services';
 
 // Types for wallet connection
 export interface WalletAccount {
@@ -41,7 +49,7 @@ export interface WalletConnectProps extends VariantProps<typeof walletConnectVar
   'data-testid'?: string;
 }
 
-const walletConnectVariants = cva('bg-white rounded-lg shadow-sm border p-4', {
+const walletConnectVariants = cva('bg-base-100 rounded-lg shadow-sm border border-base-300 p-4', {
   variants: {
     variant: {
       default: '',
@@ -92,11 +100,12 @@ export const WalletConnect: React.FC<WalletConnectProps> = ({
   const handleConnect = useCallback(async () => {
     try {
       if (onConnect) {
-        // Create a mock account for demonstration
+        // Use the service's mock address generator for better network compatibility
         const mockAccount: WalletAccount = {
-          address: generateMockAddress(selectedNetwork),
+          address: generateServiceMockAddress(mapBlockchainNetworkToWalletNetwork(selectedNetwork) || 'polygon'),
           network: selectedNetwork,
           balance: generateMockBalance(),
+          chainId: getNetworkDisplayInfo(selectedNetwork).chainId.toString(),
         };
         onConnect(mockAccount);
       }
@@ -129,17 +138,29 @@ export const WalletConnect: React.FC<WalletConnectProps> = ({
     [onNetworkSwitch],
   );
 
-  const getNetworkColorClasses = useCallback((network: string) => {
-    const baseColor = getNetworkColor(network);
-    // Convert hex color to Tailwind classes
-    const colorMap: Record<string, string> = {
-      '#9333ea': 'bg-purple-100 text-purple-800 border-purple-200',
-      '#ec4899': 'bg-pink-100 text-pink-800 border-pink-200',
-      '#6366f1': 'bg-indigo-100 text-indigo-800 border-indigo-200',
-      '#14b8a6': 'bg-teal-100 text-teal-800 border-teal-200',
-      '#3b82f6': 'bg-blue-100 text-blue-800 border-blue-200',
-    };
-    return colorMap[baseColor] || 'bg-gray-100 text-gray-800 border-gray-200';
+  const getNetworkBadgeClasses = useCallback((network: BlockchainNetwork) => {
+    try {
+      const networkInfo = getNetworkDisplayInfo(network);
+      const baseColor = networkInfo.color;
+
+      // Convert hex color to DaisyUI badge classes
+      const colorMap: Record<string, string> = {
+        '#9333ea': 'badge-primary',
+        '#ec4899': 'badge-secondary',
+        '#6366f1': 'badge-accent',
+        '#14b8a6': 'badge-info',
+        '#3b82f6': 'badge-info',
+        '#a855f7': 'badge-primary',
+        '#f472b6': 'badge-secondary',
+        '#818cf8': 'badge-accent',
+        '#5eead4': 'badge-info',
+        '#93c5fd': 'badge-info',
+      };
+
+      return `badge ${colorMap[baseColor] || 'badge-neutral'}`;
+    } catch {
+      return 'badge badge-neutral';
+    }
   }, []);
 
   const formatAddress = useCallback(
@@ -152,50 +173,57 @@ export const WalletConnect: React.FC<WalletConnectProps> = ({
     [showHash],
   );
 
+  const getNetworkDisplayName = useCallback((network: BlockchainNetwork) => {
+    try {
+      return getNetworkDisplayInfo(network).displayName;
+    } catch {
+      return network;
+    }
+  }, []);
+
   const containerClasses = useMemo(
     () => walletConnectVariants({ variant, size, className }),
     [variant, size, className],
   );
 
+  const buttonSizeClass = size === 'lg' ? 'btn-lg' : size === 'sm' ? 'btn-sm' : 'btn-md';
+
   // Button-only variant renders just the connect/disconnect button
   if (variant === 'button-only') {
     if (isConnected && account) {
       return (
-        <Button
+        <button
           onClick={handleDisconnect}
           disabled={isConnecting}
-          variant="destructive"
-          size={size === 'lg' ? 'lg' : size === 'sm' ? 'sm' : 'md'}
-          className={className}
+          className={cn('btn btn-error', buttonSizeClass, className)}
           data-testid={dataTestId}
         >
           Disconnect
-        </Button>
+        </button>
       );
     }
 
     return (
-      <Button
+      <button
         onClick={handleConnect}
         disabled={isConnecting}
-        size={size === 'lg' ? 'lg' : size === 'sm' ? 'sm' : 'md'}
-        className={className}
+        className={cn('btn btn-primary', buttonSizeClass, className)}
         data-testid={dataTestId}
       >
         {isConnecting ? (
           <>
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+            <span className="loading loading-spinner loading-sm"></span>
             Connecting...
           </>
         ) : (
           <>
-            <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
             Connect Wallet
           </>
         )}
-      </Button>
+      </button>
     );
   }
 
@@ -205,80 +233,129 @@ export const WalletConnect: React.FC<WalletConnectProps> = ({
       <div className={containerClasses} data-testid={dataTestId}>
         <div className="flex items-center justify-between mb-4">
           <h3
-            className={`font-medium text-gray-900 ${size === 'lg' ? 'text-lg' : size === 'sm' ? 'text-base' : 'text-lg'}`}
+            className={cn('font-semibold text-base-content', {
+              'text-lg': size === 'lg',
+              'text-base': size === 'md',
+              'text-sm': size === 'sm',
+            })}
           >
             {variant === 'compact' ? 'Connected' : 'Wallet Connected'}
           </h3>
-          <Button
+          <button
             onClick={handleDisconnect}
             disabled={isConnecting}
-            variant="destructive"
-            size={size === 'lg' ? 'md' : 'sm'}
+            className={cn('btn btn-error', size === 'lg' ? 'btn-md' : 'btn-sm')}
           >
             Disconnect
-          </Button>
+          </button>
         </div>
 
         <div className="space-y-3">
           {showNetworkSelector && (
             <div className="flex items-center justify-between">
-              <span className={`font-medium text-gray-700 ${size === 'sm' ? 'text-xs' : 'text-sm'}`}>Network:</span>
+              <span
+                className={cn('font-medium text-base-content', {
+                  'text-sm': size === 'md',
+                  'text-xs': size === 'sm',
+                })}
+              >
+                Network:
+              </span>
               <div className="flex items-center space-x-2">
-                <Badge variant="secondary" className={getNetworkColorClasses(account.network)}>
-                  {account.network}
-                </Badge>
-                <Button
+                <span className={getNetworkBadgeClasses(account.network)}>
+                  {getNetworkDisplayName(account.network)}
+                </span>
+                <button
                   onClick={() => setShowNetworkSwitcher(!showNetworkSwitcher)}
                   disabled={isConnecting}
-                  variant="link"
-                  size="sm"
+                  className="btn btn-ghost btn-sm"
                 >
                   Switch
-                </Button>
+                </button>
               </div>
             </div>
           )}
 
           {showNetworkSwitcher && showNetworkSelector && (
-            <div className="border rounded-md p-3 bg-gray-50">
-              <p className={`font-medium text-gray-700 mb-2 ${size === 'sm' ? 'text-xs' : 'text-sm'}`}>
+            <div className="border border-base-300 rounded-md p-3 bg-base-200">
+              <p
+                className={cn('font-medium text-base-content mb-2', {
+                  'text-sm': size === 'md',
+                  'text-xs': size === 'sm',
+                })}
+              >
                 Select Network:
               </p>
               <div className="grid grid-cols-3 gap-2">
                 {supportedNetworks.map(network => (
-                  <Button
+                  <button
                     key={network}
                     onClick={() => handleNetworkSwitch(network)}
                     disabled={isConnecting || network === account.network}
-                    variant={network === account.network ? 'secondary' : 'outline'}
-                    size="sm"
+                    className={cn('btn btn-sm', {
+                      'btn-primary': network === account.network,
+                      'btn-outline': network !== account.network,
+                    })}
                   >
-                    {network}
-                  </Button>
+                    {getNetworkDisplayName(network)}
+                  </button>
                 ))}
               </div>
             </div>
           )}
 
           <div className="flex items-center justify-between">
-            <span className={`font-medium text-gray-700 ${size === 'sm' ? 'text-xs' : 'text-sm'}`}>Address:</span>
-            <code className={`bg-gray-100 px-2 py-1 rounded ${size === 'sm' ? 'text-xs' : 'text-sm'}`}>
+            <span
+              className={cn('font-medium text-base-content', {
+                'text-sm': size === 'md',
+                'text-xs': size === 'sm',
+              })}
+            >
+              Address:
+            </span>
+            <code
+              className={cn('bg-base-200 px-2 py-1 rounded text-base-content', {
+                'text-sm': size === 'md',
+                'text-xs': size === 'sm',
+              })}
+            >
               {formatAddress(account.address)}
             </code>
           </div>
 
           {showBalance && account.balance && (
             <div className="flex items-center justify-between">
-              <span className={`font-medium text-gray-700 ${size === 'sm' ? 'text-xs' : 'text-sm'}`}>Balance:</span>
-              <span className={`font-mono ${size === 'sm' ? 'text-xs' : 'text-sm'}`}>{account.balance} ETH</span>
+              <span
+                className={cn('font-medium text-base-content', {
+                  'text-sm': size === 'md',
+                  'text-xs': size === 'sm',
+                })}
+              >
+                Balance:
+              </span>
+              <span
+                className={cn('font-mono text-base-content', {
+                  'text-sm': size === 'md',
+                  'text-xs': size === 'sm',
+                })}
+              >
+                {account.balance} {getNetworkDisplayInfo(account.network).name === 'Solana' ? 'SOL' : 'ETH'}
+              </span>
             </div>
           )}
         </div>
 
         {isConnecting && (
           <div className="mt-4 flex items-center justify-center">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-600" />
-            <span className={`ml-2 text-gray-600 ${size === 'sm' ? 'text-xs' : 'text-sm'}`}>Processing...</span>
+            <span className="loading loading-spinner loading-sm"></span>
+            <span
+              className={cn('ml-2 text-base-content/70', {
+                'text-sm': size === 'md',
+                'text-xs': size === 'sm',
+              })}
+            >
+              Processing...
+            </span>
           </div>
         )}
       </div>
@@ -289,14 +366,38 @@ export const WalletConnect: React.FC<WalletConnectProps> = ({
   return (
     <div className={containerClasses} data-testid={dataTestId}>
       <h3
-        className={`font-medium text-gray-900 mb-4 ${size === 'lg' ? 'text-lg' : size === 'sm' ? 'text-base' : 'text-lg'}`}
+        className={cn('font-semibold text-base-content mb-4', {
+          'text-lg': size === 'lg',
+          'text-base': size === 'md',
+          'text-sm': size === 'sm',
+        })}
       >
         {variant === 'compact' ? 'Connect' : 'Connect Wallet'}
       </h3>
 
       {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-          <p className={`text-red-800 ${size === 'sm' ? 'text-xs' : 'text-sm'}`}>{error}</p>
+        <div className="alert alert-error mb-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span
+            className={cn({
+              'text-sm': size === 'md',
+              'text-xs': size === 'sm',
+            })}
+          >
+            {error}
+          </span>
         </div>
       )}
 
@@ -305,43 +406,57 @@ export const WalletConnect: React.FC<WalletConnectProps> = ({
           <div>
             <label
               htmlFor="network-selector"
-              className={`block font-medium text-gray-700 mb-2 ${size === 'sm' ? 'text-xs' : 'text-sm'}`}
+              className={cn('block font-medium text-base-content mb-2', {
+                'text-sm': size === 'md',
+                'text-xs': size === 'sm',
+              })}
             >
               Select Network:
             </label>
             <div className="grid grid-cols-3 gap-2">
               {supportedNetworks.map(network => (
-                <Button
+                <button
                   key={network}
                   onClick={() => setSelectedNetwork(network)}
-                  variant={selectedNetwork === network ? 'default' : 'outline'}
-                  size="sm"
+                  className={cn('btn btn-sm', {
+                    'btn-primary': selectedNetwork === network,
+                    'btn-outline': selectedNetwork !== network,
+                  })}
                 >
-                  {network}
-                </Button>
+                  {getNetworkDisplayName(network)}
+                </button>
               ))}
             </div>
           </div>
         )}
 
-        <Button onClick={handleConnect} disabled={isConnecting} className="w-full">
+        <button
+          onClick={handleConnect}
+          disabled={isConnecting}
+          className={cn('btn btn-primary w-full', buttonSizeClass)}
+        >
           {isConnecting ? (
             <>
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+              <span className="loading loading-spinner loading-sm"></span>
               Connecting...
             </>
           ) : (
             <>
-              <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              Connect to {selectedNetwork}
+              Connect to {getNetworkDisplayName(selectedNetwork)}
             </>
           )}
-        </Button>
+        </button>
 
         {variant !== 'compact' && (
-          <div className={`text-gray-500 space-y-1 ${size === 'sm' ? 'text-xs' : 'text-xs'}`}>
+          <div
+            className={cn('text-base-content/60 space-y-1', {
+              'text-xs': size === 'md',
+              'text-xs': size === 'sm',
+            })}
+          >
             <p>• This is a demo implementation</p>
             <p>• Real wallet integration will be added in production</p>
             <p>• Supports multiple blockchain networks</p>
@@ -352,19 +467,7 @@ export const WalletConnect: React.FC<WalletConnectProps> = ({
   );
 };
 
-// Helper functions for mock data
-function generateMockAddress(network: BlockchainNetwork): string {
-  const prefixes: Record<string, string> = {
-    solana: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-    polkadot: '1' + Math.random().toString(36).substring(2, 15),
-    polygon: '0x' + Math.random().toString(16).substring(2, 42),
-    moonbeam: '0x' + Math.random().toString(16).substring(2, 42),
-    base: '0x' + Math.random().toString(16).substring(2, 42),
-  };
-
-  return prefixes[network] || '0x' + Math.random().toString(16).substring(2, 42);
-}
-
+// Helper function for mock data
 function generateMockBalance(): string {
   return (Math.random() * 100).toFixed(4);
 }

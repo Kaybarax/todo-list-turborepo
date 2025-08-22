@@ -1,6 +1,7 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { WalletConnect, type WalletConnectProps } from './WalletConnect';
+import { WalletConnect, type WalletConnectProps, type WalletAccount } from './WalletConnect';
 import type { BlockchainNetwork } from '@todo/services';
 
 const meta: Meta<typeof WalletConnect> = {
@@ -257,10 +258,10 @@ export const InteractiveDemo: Story = {
   render: args => {
     const [isConnected, setIsConnected] = React.useState(false);
     const [isConnecting, setIsConnecting] = React.useState(false);
-    const [account, setAccount] = React.useState<typeof mockAccount | null>(null);
+    const [account, setAccount] = React.useState<WalletAccount | null>(null);
     const [error, setError] = React.useState<string | null>(null);
 
-    const handleConnect = async (newAccount: typeof mockAccount) => {
+    const handleConnect = async (newAccount: WalletAccount) => {
       setIsConnecting(true);
       setError(null);
 

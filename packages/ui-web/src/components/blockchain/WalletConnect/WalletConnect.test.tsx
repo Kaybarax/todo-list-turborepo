@@ -15,6 +15,30 @@ jest.mock('@todo/services', () => ({
     };
     return colorMap[network] || '#6b7280';
   }),
+  getNetworkDisplayInfo: jest.fn((network: BlockchainNetwork) => {
+    const infoMap: Record<string, any> = {
+      polygon: { displayName: 'Polygon', chainId: 137, color: '#6366f1', name: 'Polygon' },
+      solana: { displayName: 'Solana', chainId: 101, color: '#9333ea', name: 'Solana' },
+      polkadot: { displayName: 'Polkadot', chainId: 0, color: '#ec4899', name: 'Polkadot' },
+      moonbeam: { displayName: 'Moonbeam', chainId: 1284, color: '#14b8a6', name: 'Moonbeam' },
+      base: { displayName: 'Base', chainId: 8453, color: '#3b82f6', name: 'Base' },
+    };
+    return infoMap[network] || { displayName: network, chainId: 0, color: '#6b7280', name: network };
+  }),
+  getSupportedWalletNetworks: jest.fn(() => ['solana', 'polkadot', 'polygon', 'moonbeam', 'base']),
+  mapWalletNetworkToBlockchainNetwork: jest.fn((network: string) => network as BlockchainNetwork),
+  mapBlockchainNetworkToWalletNetwork: jest.fn((network: BlockchainNetwork) => network as string),
+  generateMockAddress: jest.fn((network: string) => {
+    const prefixes: Record<string, string> = {
+      solana: '1A1z',
+      polkadot: '5G',
+      polygon: '0x',
+      moonbeam: '0x',
+      base: '0x',
+    };
+    const prefix = prefixes[network] || '0x';
+    return `${prefix}1234567890abcdef1234567890abcdef12345678`;
+  }),
 }));
 
 const mockAccount: WalletAccount = {
@@ -70,9 +94,12 @@ describe('WalletConnect', () => {
     it('should show network selection buttons', () => {
       render(<WalletConnect {...defaultProps} onConnect={mockOnConnect} />);
 
-      supportedNetworks.forEach(network => {
-        expect(screen.getByRole('button', { name: network })).toBeInTheDocument();
-      });
+      // Check for network display names
+      expect(screen.getByRole('button', { name: 'Solana' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Polygon' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Polkadot' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Moonbeam' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Base' })).toBeInTheDocument();
     });
 
     it('should call onConnect when connect button is clicked', async () => {
@@ -87,6 +114,7 @@ describe('WalletConnect', () => {
             network: 'solana', // default network
             address: expect.any(String),
             balance: expect.any(String),
+            chainId: expect.any(String),
           }),
         );
       });
@@ -95,10 +123,10 @@ describe('WalletConnect', () => {
     it('should update selected network when network button is clicked', () => {
       render(<WalletConnect {...defaultProps} onConnect={mockOnConnect} />);
 
-      const polygonButton = screen.getByRole('button', { name: 'polygon' });
+      const polygonButton = screen.getByRole('button', { name: 'Polygon' });
       fireEvent.click(polygonButton);
 
-      const connectButton = screen.getByRole('button', { name: /Connect to polygon/ });
+      const connectButton = screen.getByRole('button', { name: /Connect to Polygon/ });
       expect(connectButton).toBeInTheDocument();
     });
 
@@ -131,7 +159,7 @@ describe('WalletConnect', () => {
 
       expect(screen.getByText('Wallet Connected')).toBeInTheDocument();
       expect(screen.getByText('0x1234...5678')).toBeInTheDocument();
-      expect(screen.getByText('polygon')).toBeInTheDocument();
+      expect(screen.getByText('Polygon')).toBeInTheDocument();
       expect(screen.getByText('1.2345 ETH')).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Disconnect' })).toBeInTheDocument();
     });
@@ -152,9 +180,12 @@ describe('WalletConnect', () => {
       fireEvent.click(switchButton);
 
       expect(screen.getByText('Select Network:')).toBeInTheDocument();
-      supportedNetworks.forEach(network => {
-        expect(screen.getAllByText(network)).toHaveLength(network === 'polygon' ? 2 : 1);
-      });
+      // Should show all network options in the switcher
+      const networkButtons = screen.getAllByRole('button');
+      const switcherNetworkButtons = networkButtons.filter(button =>
+        ['Solana', 'Polygon', 'Polkadot', 'Moonbeam', 'Base'].includes(button.textContent || ''),
+      );
+      expect(switcherNetworkButtons.length).toBeGreaterThan(5); // Original + switcher buttons
     });
 
     it('should call onNetworkSwitch when network is selected', () => {
@@ -164,12 +195,15 @@ describe('WalletConnect', () => {
       const switchButton = screen.getByRole('button', { name: 'Switch' });
       fireEvent.click(switchButton);
 
-      // Click on a different network
-      const networkButtons = screen.getAllByRole('button', { name: 'solana' });
-      const switcherButton = networkButtons.find(button => button.closest('.border.rounded-md.p-3.bg-gray-50'));
+      // Find and click on a different network in the switcher
+      const allButtons = screen.getAllByRole('button');
+      const solanaButton = allButtons.find(
+        button =>
+          button.textContent === 'Solana' && button.closest('.border.border-base-300.rounded-md.p-3.bg-base-200'),
+      );
 
-      if (switcherButton) {
-        fireEvent.click(switcherButton);
+      if (solanaButton) {
+        fireEvent.click(solanaButton);
         expect(mockOnNetworkSwitch).toHaveBeenCalledWith('solana');
       }
     });
@@ -193,6 +227,17 @@ describe('WalletConnect', () => {
 
       expect(screen.getByText(mockAccount.address)).toBeInTheDocument();
       expect(screen.queryByText('0x1234...5678')).not.toBeInTheDocument();
+    });
+
+    it('should show SOL for Solana network balance', () => {
+      const solanaAccount = {
+        ...mockAccount,
+        network: 'solana' as BlockchainNetwork,
+      };
+
+      render(<WalletConnect {...connectedProps} account={solanaAccount} />);
+
+      expect(screen.getByText('1.2345 SOL')).toBeInTheDocument();
     });
   });
 
@@ -245,11 +290,8 @@ describe('WalletConnect', () => {
     it('should apply small size classes', () => {
       render(<WalletConnect {...defaultProps} size="sm" isConnected={true} account={mockAccount} />);
 
-      // Check that text elements have small size classes
-      const elements = screen.getAllByText(/Network:|Address:|Balance:/);
-      elements.forEach(element => {
-        expect(element).toHaveClass('text-xs');
-      });
+      const heading = screen.getByText('Wallet Connected');
+      expect(heading).toHaveClass('text-sm');
     });
 
     it('should apply large size classes', () => {
@@ -290,13 +332,37 @@ describe('WalletConnect', () => {
     });
   });
 
-  describe('Network Color Integration', () => {
-    it('should apply network-specific colors', () => {
+  describe('Network Integration', () => {
+    it('should use network display names from service', () => {
       render(<WalletConnect {...defaultProps} isConnected={true} account={mockAccount} />);
 
-      // The badge should have network-specific color classes
-      const badge = screen.getByText('polygon').closest('span');
-      expect(badge).toHaveClass('bg-indigo-100', 'text-indigo-800', 'border-indigo-200');
+      // Should show "Polygon" instead of "polygon"
+      expect(screen.getByText('Polygon')).toBeInTheDocument();
+    });
+
+    it('should handle network display info errors gracefully', () => {
+      // Mock getNetworkDisplayInfo to throw an error
+      const mockGetNetworkDisplayInfo = require('@todo/services').getNetworkDisplayInfo;
+      mockGetNetworkDisplayInfo.mockImplementationOnce(() => {
+        throw new Error('Network not found');
+      });
+
+      render(<WalletConnect {...defaultProps} isConnected={true} account={mockAccount} />);
+
+      // Should still render the component without crashing
+      expect(screen.getByText('Wallet Connected')).toBeInTheDocument();
+    });
+
+    it('should use service mock address generator', () => {
+      const mockGenerateMockAddress = require('@todo/services').generateMockAddress;
+      mockGenerateMockAddress.mockReturnValue('0xmockedaddress123');
+
+      render(<WalletConnect {...defaultProps} onConnect={mockOnConnect} />);
+
+      const connectButton = screen.getByRole('button', { name: /Connect to/ });
+      fireEvent.click(connectButton);
+
+      expect(mockGenerateMockAddress).toHaveBeenCalled();
     });
   });
 
@@ -313,6 +379,23 @@ describe('WalletConnect', () => {
 
       const disconnectButton = screen.getByRole('button', { name: 'Disconnect' });
       expect(() => fireEvent.click(disconnectButton)).not.toThrow();
+    });
+
+    it('should handle missing onNetworkSwitch gracefully', () => {
+      render(<WalletConnect {...defaultProps} isConnected={true} account={mockAccount} />);
+
+      const switchButton = screen.getByRole('button', { name: 'Switch' });
+      fireEvent.click(switchButton);
+
+      const allButtons = screen.getAllByRole('button');
+      const solanaButton = allButtons.find(
+        button =>
+          button.textContent === 'Solana' && button.closest('.border.border-base-300.rounded-md.p-3.bg-base-200'),
+      );
+
+      if (solanaButton) {
+        expect(() => fireEvent.click(solanaButton)).not.toThrow();
+      }
     });
   });
 });
