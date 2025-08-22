@@ -6,28 +6,38 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'lib'),
+      '@': resolve(__dirname, 'src'),
     },
   },
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./__tests__/setup.ts'],
-    include: ['__tests__/**/*.test.{ts,tsx}', 'lib/**/*.test.{ts,tsx}'],
-    exclude: ['node_modules', 'dist', '.storybook'],
+    setupFiles: ['./src/__tests__/setup.ts'],
+    include: ['src/**/*.test.{ts,tsx}', 'src/components/**/__tests__/**/*.test.{ts,tsx}'],
+    exclude: ['node_modules', 'dist', '.storybook', 'src/stories/**/*'],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
-      include: ['lib/**/*'],
-      exclude: ['lib/**/*.stories.tsx', 'lib/**/*.test.tsx', 'lib/test/**/*'],
+      reporter: ['text', 'json', 'html', 'lcov'],
+      include: ['src/**/*'],
+      exclude: [
+        'src/**/*.stories.tsx',
+        'src/**/*.test.tsx',
+        'src/__tests__/**/*',
+        'src/stories/**/*',
+        'src/types/**/*',
+      ],
       thresholds: {
         global: {
-          branches: 80,
-          functions: 80,
-          lines: 80,
-          statements: 80,
+          branches: 85,
+          functions: 85,
+          lines: 85,
+          statements: 85,
         },
       },
+    },
+    reporters: ['default', 'junit'],
+    outputFile: {
+      junit: './coverage/junit.xml',
     },
   },
 });

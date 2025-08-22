@@ -20,7 +20,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'TodoUIWeb',
-      fileName: 'index',
+      fileName: format => `index.${format === 'es' ? 'js' : 'cjs'}`,
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
@@ -32,16 +32,34 @@ export default defineConfig({
         'clsx',
         'lucide-react',
         'tailwind-merge',
+        'tailwindcss',
+        'daisyui',
       ],
-      output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          'react/jsx-runtime': 'jsxRuntime',
+      output: [
+        {
+          format: 'es',
+          entryFileNames: 'index.js',
+          chunkFileNames: '[name]-[hash].js',
+          preserveModules: true,
+          preserveModulesRoot: 'src',
+          exports: 'named',
         },
-      },
+        {
+          format: 'cjs',
+          entryFileNames: 'index.cjs',
+          chunkFileNames: '[name]-[hash].cjs',
+          exports: 'named',
+        },
+      ],
     },
     sourcemap: true,
     emptyOutDir: true,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
   },
 });

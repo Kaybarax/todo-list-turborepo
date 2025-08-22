@@ -1,0 +1,21 @@
+import type { TestRunnerConfig } from '@storybook/test-runner';
+import { injectAxe, checkA11y } from 'axe-playwright';
+
+const config: TestRunnerConfig = {
+  setup() {
+    // Global setup for test runner
+  },
+  async preVisit(page) {
+    await injectAxe(page);
+  },
+  async postVisit(page) {
+    await checkA11y(page, '#storybook-root', {
+      detailedReport: true,
+      detailedReportOptions: {
+        html: true,
+      },
+    });
+  },
+};
+
+export default config;
