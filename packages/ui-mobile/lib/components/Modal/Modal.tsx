@@ -1,23 +1,24 @@
 /**
  * Modal Component
- * Modal dialog with backdrop, animations, focus management, and accessibility
+ * Enhanced modal dialog with Eva Design and UI Kitten integration
+ * Maintains backward compatibility while using Eva Design theming
  */
 
 import React, { useEffect, useRef } from 'react';
 import {
   View,
   ViewStyle,
-  Modal as RNModal,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   Dimensions,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Modal as RNModal,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSpring, runOnJS } from 'react-native-reanimated';
-import { useTheme } from '../../theme/useTheme';
+import { Modal as UIKittenModal, Card } from '@ui-kitten/components';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { Text } from '../Text/Text';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
@@ -54,7 +55,7 @@ export const Modal: React.FC<ModalProps> = ({
   animationType = 'slide',
   keyboardAvoidingBehavior = 'padding',
 }) => {
-  const { theme } = useTheme();
+  const { theme, evaTheme } = useEnhancedTheme();
   const insets = useSafeAreaInsets();
   const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -95,9 +96,13 @@ export const Modal: React.FC<ModalProps> = ({
 
   const getModalSize = (): ViewStyle => {
     const baseStyles: ViewStyle = {
-      backgroundColor: theme.colors.surface,
-      borderRadius: theme.borders.radius.lg,
-      ...theme.shadows.lg,
+      backgroundColor: evaTheme['background-basic-color-1'] || theme.colors.surface,
+      borderRadius: parseInt(evaTheme['border-radius']) || theme.borders.radius.lg,
+      elevation: 8,
+      shadowColor: evaTheme['color-basic-800'] || '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.15,
+      shadowRadius: 8,
     };
 
     switch (size) {
@@ -172,8 +177,8 @@ export const Modal: React.FC<ModalProps> = ({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: theme.spacing.lg,
-    borderBottomWidth: theme.borders.width.thin,
-    borderBottomColor: theme.colors.border.default,
+    borderBottomWidth: 1,
+    borderBottomColor: evaTheme['border-basic-color-3'] || theme.colors.border.default,
   };
 
   const contentStyles: ViewStyle = {
@@ -186,8 +191,8 @@ export const Modal: React.FC<ModalProps> = ({
     justifyContent: 'flex-end',
     alignItems: 'center',
     padding: theme.spacing.lg,
-    borderTopWidth: theme.borders.width.thin,
-    borderTopColor: theme.colors.border.default,
+    borderTopWidth: 1,
+    borderTopColor: evaTheme['border-basic-color-3'] || theme.colors.border.default,
     gap: theme.spacing.sm,
   };
 
@@ -223,7 +228,7 @@ export const Modal: React.FC<ModalProps> = ({
               <View style={headerStyles}>
                 <View style={{ flex: 1 }}>
                   {title && (
-                    <Text variant="h3" color="primary" weight="semibold" accessibilityRole="header">
+                    <Text variant="h3" color="primary" weight="semibold">
                       {title}
                     </Text>
                   )}
@@ -241,9 +246,11 @@ export const Modal: React.FC<ModalProps> = ({
                     accessibilityRole="button"
                     accessibilityHint="Closes the modal dialog"
                   >
-                    <Icon size="md" color={theme.colors.text.secondary}>
-                      ✕
-                    </Icon>
+                    <Icon
+                      name="close-outline"
+                      size="md"
+                      color={evaTheme['text-hint-color'] || theme.colors.text.secondary}
+                    />
                   </TouchableOpacity>
                 )}
               </View>
