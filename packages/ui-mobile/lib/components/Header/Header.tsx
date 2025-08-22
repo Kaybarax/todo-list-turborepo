@@ -1,12 +1,14 @@
 /**
  * Header Component
- * Navigation header with title, left/right actions, and safe area handling
+ * Enhanced navigation header with Eva Design and UI Kitten integration
+ * Maintains backward compatibility while using Eva Design theming
  */
 
 import React from 'react';
 import { View, ViewStyle, Platform, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from '../../theme/useTheme';
+import { TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { Text } from '../Text/Text';
 
 export interface HeaderProps {
@@ -30,17 +32,21 @@ export const Header: React.FC<HeaderProps> = ({
   showBorder = true,
   statusBarStyle = 'dark-content',
 }) => {
-  const { theme } = useTheme();
+  const { theme, evaTheme } = useEnhancedTheme();
   const insets = useSafeAreaInsets();
 
   const headerStyles: ViewStyle = {
-    backgroundColor: backgroundColor || theme.colors.surface,
+    backgroundColor: backgroundColor || evaTheme['background-basic-color-1'] || theme.colors.surface,
     paddingTop: insets.top,
     paddingHorizontal: theme.spacing.md,
     paddingBottom: theme.spacing.sm,
-    borderBottomWidth: showBorder ? theme.borders.width.thin : 0,
-    borderBottomColor: theme.colors.border.default,
-    ...theme.shadows.sm,
+    borderBottomWidth: showBorder ? 1 : 0,
+    borderBottomColor: evaTheme['border-basic-color-3'] || theme.colors.border.default,
+    elevation: 4,
+    shadowColor: evaTheme['color-basic-800'] || '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   };
 
   const contentStyles: ViewStyle = {
@@ -83,15 +89,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Title */}
           <View style={titleContainerStyles}>
-            <Text
-              variant="h4"
-              color="primary"
-              weight="semibold"
-              align="center"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-              accessibilityRole="header"
-            >
+            <Text variant="h4" color="primary" weight="semibold" align="center" numberOfLines={1}>
               {title}
             </Text>
           </View>
