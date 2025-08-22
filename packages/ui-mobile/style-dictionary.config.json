@@ -1,0 +1,25 @@
+{
+  "source": ["tokens/source/**/*.json"],
+  "platforms": {
+    "eva-design": {
+      "transformGroup": "js",
+      "buildPath": "tokens/build/",
+      "files": [
+        {
+          "destination": "eva-theme.js",
+          "format": "javascript/es6"
+        }
+      ]
+    },
+    "typescript": {
+      "transformGroup": "js",
+      "buildPath": "tokens/build/",
+      "files": [
+        {
+          "destination": "tokens.d.ts",
+          "format": "typescript/es6-declarations"
+        }
+      ]
+    }
+  }
+}
