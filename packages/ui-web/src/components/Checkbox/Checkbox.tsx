@@ -1,28 +1,78 @@
 import React from 'react';
 
-import { cn } from '../../utils';
+import { cn, cv, type VariantProps } from '../../utils';
 
-export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'color'> {
-  onCheckedChange?: (checked: boolean) => void;
-  error?: boolean;
+const checkboxVariants = cv('checkbox', {
+  variants: {
+    size: {
+      xs: 'checkbox-xs',
+      sm: 'checkbox-sm',
+      md: 'checkbox-md',
+      lg: 'checkbox-lg',
+      xl: 'checkbox-lg',
+    },
+    state: {
+      default: '',
+      success: 'checkbox-success',
+      error: 'checkbox-error',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+    state: 'default',
+  },
+});
+
+export type CheckboxSize = NonNullable<VariantProps<typeof checkboxVariants>['size']>;
+export type CheckboxState = NonNullable<VariantProps<typeof checkboxVariants>['state']>;
+
+export interface CheckboxProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'>,
+    Partial<Pick<VariantProps<typeof checkboxVariants>, 'size' | 'state'>> {
+  indeterminate?: boolean;
+  label?: React.ReactNode;
   helperText?: string;
 }
 
-const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, onCheckedChange, onChange, error, helperText, ...props }, ref) => {
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      onChange?.(event);
-      onCheckedChange?.(event.target.checked);
+export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
+  ({ className, size = 'md', state = 'default', indeterminate, label, helperText, id, ...props }, ref) => {
+    const innerRef = React.useRef<HTMLInputElement | null>(null);
+    const combinedRef = (node: HTMLInputElement | null) => {
+      innerRef.current = node;
+      if (typeof ref === 'function') ref(node);
+      else if (ref && 'current' in ref) (ref as React.MutableRefObject<HTMLInputElement | null>).current = node;
     };
 
-    const checkboxClasses = cn('checkbox', error && 'checkbox-error', className);
+    React.useEffect(() => {
+      if (innerRef.current) {
+        innerRef.current.indeterminate = Boolean(indeterminate);
+        // Keep aria-checked mixed for screen readers when indeterminate
+        if (indeterminate) innerRef.current.setAttribute('aria-checked', 'mixed');
+        else innerRef.current.removeAttribute('aria-checked');
+      }
+    }, [indeterminate]);
+
+    const classes = checkboxVariants({ size, state });
+    const helperId = helperText ? `${id ?? 'checkbox'}-help` : undefined;
 
     return (
-      <div className="relative inline-flex items-center">
-        <input ref={ref} type="checkbox" className={checkboxClasses} onChange={handleChange} {...props} />
+      <div className="form-control w-full">
+        <label className="label cursor-pointer justify-start gap-3">
+          <input
+            ref={combinedRef}
+            id={id}
+            type="checkbox"
+            className={cn(classes, className)}
+            aria-describedby={helperId}
+            {...props}
+          />
+          {label && <span className="label-text">{label}</span>}
+        </label>
         {helperText && (
-          <div className="label">
-            <span className={cn('label-text-alt', error && 'text-error')}>{helperText}</span>
+          <div className="label py-0">
+            <span id={helperId} className={cn('label-text-alt', state === 'error' && 'text-error')}>
+              {helperText}
+            </span>
           </div>
         )}
       </div>
@@ -30,5 +80,3 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
   },
 );
 Checkbox.displayName = 'Checkbox';
-
-export { Checkbox };

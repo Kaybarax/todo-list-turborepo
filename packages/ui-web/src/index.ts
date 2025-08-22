@@ -9,6 +9,9 @@ export * from './components/Checkbox';
 export * from './components/Textarea';
 export * from './components/Label';
 export * from './components/IconButton';
+export * from './components/Radio';
+export * from './components/Combobox';
+export * from './components/FormField';
 
 // Utils
 export * from './utils';

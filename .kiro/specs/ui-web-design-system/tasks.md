@@ -46,7 +46,7 @@
   - Add comprehensive testing and Storybook stories
   - _Requirements: 2.1, 3.1, 3.2, 5.1, 5.4, 6.1, 6.4_
 
-- [ ] 4.4 Create enhanced Checkbox and Radio components
+- [x] 4.4 Create enhanced Checkbox and Radio components
   - Build Checkbox component with indeterminate state support
   - Create Radio component with proper group management
   - Add size variants and custom styling options
