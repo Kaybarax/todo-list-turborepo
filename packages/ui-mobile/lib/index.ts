@@ -40,6 +40,9 @@ export type { HeaderProps } from './components/Header';
 export { Modal } from './components/Modal';
 export type { ModalProps, ModalSize, ModalType } from './components/Modal';
 
+export { TabBar } from './components/TabBar';
+export type { TabBarProps, TabItem } from './components/TabBar';
+
 export { Badge } from './components/Badge';
 export type { BadgeProps, BadgeVariant, BadgeSize } from './components/Badge';
 
