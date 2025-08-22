@@ -1,0 +1,23 @@
+{
+  "projectToken": "PROJECT_TOKEN_PLACEHOLDER",
+  "buildScriptName": "build-storybook",
+  "storybookBuildDir": "storybook-static",
+  "onlyChanged": true,
+  "externals": ["packages/ui-mobile/lib/**"],
+  "ignoreLastBuildOnBranch": "main",
+  "skip": "dependabot/**",
+  "exitZeroOnChanges": true,
+  "exitOnceUploaded": true,
+  "allowConsoleErrors": false,
+  "debug": false,
+  "diagnostics": false,
+  "fileHashing": true,
+  "zip": true,
+  "junitReport": true,
+  "autoAcceptChanges": "main",
+  "branchName": "main",
+  "forceRebuild": false,
+  "preserveMissing": true,
+  "uploadMetadata": true,
+  "traceChanged": "expanded"
+}

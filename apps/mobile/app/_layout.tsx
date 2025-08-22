@@ -10,34 +10,28 @@ const RootLayout = () => {
       <WalletProvider>
         <Stack
           screenOptions={{
-            headerStyle: {
-              backgroundColor: '#f8f9fa',
-            },
-            headerTintColor: '#000',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
+            headerShown: false, // We'll use our own Header component
           }}
         >
           <Stack.Screen
             name="index"
             options={{
               title: 'Todo App',
-              headerShown: true,
+              headerShown: false,
             }}
           />
           <Stack.Screen
             name="todos"
             options={{
               title: 'My Todos',
-              headerShown: true,
+              headerShown: false,
             }}
           />
           <Stack.Screen
             name="wallet"
             options={{
               title: 'Wallet',
-              headerShown: true,
+              headerShown: false,
             }}
           />
         </Stack>

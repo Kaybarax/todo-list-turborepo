@@ -93,13 +93,9 @@ const TodosScreen = () => {
               <Text style={styles.walletWarningTitle}>Wallet Not Connected</Text>
               <Text style={styles.walletWarningText}>Connect your wallet to sync todos to blockchain networks.</Text>
               <Link href="/wallet" asChild>
-                <Button
-                  variant="primary"
-                  size="small"
-                  title="Connect Wallet"
-                  onPress={() => {}}
-                  style={styles.walletWarningButton}
-                />
+                <Button variant="primary" size="sm" onPress={() => {}} style={styles.walletWarningButton}>
+                  Connect Wallet
+                </Button>
               </Link>
             </CardContent>
           </Card>
@@ -119,12 +115,16 @@ const TodosScreen = () => {
           />
         </View>
 
-        <Button variant="primary" size="large" title="+" style={styles.fab} onPress={() => setShowForm(true)} />
+        <Button variant="primary" size="lg" style={styles.fab} onPress={() => setShowForm(true)}>
+          +
+        </Button>
 
         <Modal visible={showForm} animationType="slide" presentationStyle="pageSheet">
           <SafeAreaView style={styles.modalContainer}>
             <View style={styles.modalHeader}>
-              <Button variant="outline" size="small" title="Cancel" onPress={handleCancel} />
+              <Button variant="outline" size="sm" onPress={handleCancel}>
+                Cancel
+              </Button>
               <Text style={styles.modalTitle}>{editingTodo ? 'Edit Todo' : 'New Todo'}</Text>
               <View style={styles.modalHeaderSpacer} />
             </View>
@@ -154,40 +154,30 @@ const TodosScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   content: {
     flex: 1,
     padding: 16,
   },
   errorContainer: {
-    backgroundColor: '#fef2f2',
-    borderColor: '#fecaca',
-    borderWidth: 1,
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
   },
   errorText: {
-    color: '#dc2626',
     fontSize: 14,
     textAlign: 'center',
   },
   walletWarningContainer: {
-    backgroundColor: '#fef3c7',
-    borderColor: '#fbbf24',
-    borderWidth: 1,
     marginBottom: 16,
   },
   walletWarningTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#92400e',
     marginBottom: 8,
   },
   walletWarningText: {
     fontSize: 14,
-    color: '#92400e',
     textAlign: 'center',
     marginBottom: 12,
     lineHeight: 20,
@@ -217,7 +207,6 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: '#ffffff',
   },
   modalHeader: {
     flexDirection: 'row',
@@ -226,13 +215,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
   },
-
   modalTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1f2937',
   },
   modalHeaderSpacer: {
     width: 60,

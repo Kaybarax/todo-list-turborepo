@@ -72,15 +72,16 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.form}>
         <View style={styles.inputGroup}>
-          <Input label="Title" value={title} onChangeText={setTitle} placeholder="Enter todo title" />
+          <Text style={styles.label}>Title</Text>
+          <Input value={title} onChangeText={setTitle} placeholder="Enter todo title" />
         </View>
 
         <View style={styles.inputGroup}>
+          <Text style={styles.label}>Description</Text>
           <Input
-            label="Description"
             value={description}
             onChangeText={setDescription}
-            placeholder="Enter todo description"
+            placeholder="Enter description (optional)"
             multiline
           />
         </View>
@@ -92,18 +93,20 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
               {(['low', 'medium', 'high'] as const).map(level => (
                 <Button
                   key={level}
-                  title={level.charAt(0).toUpperCase() + level.slice(1)}
                   variant={priority === level ? 'primary' : 'outline'}
-                  size="small"
+                  size="sm"
                   onPress={() => setPriority(level)}
                   style={styles.priorityButton}
-                />
+                >
+                  {level.charAt(0).toUpperCase() + level.slice(1)}
+                </Button>
               ))}
             </View>
           </View>
 
           <View style={[styles.inputGroup, styles.halfWidth]}>
-            <Input label="Due Date" value={dueDate} onChangeText={setDueDate} placeholder="YYYY-MM-DD" />
+            <Text style={styles.label}>Due Date</Text>
+            <Input value={dueDate} onChangeText={setDueDate} placeholder="YYYY-MM-DD" />
           </View>
         </View>
 
@@ -117,7 +120,9 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
               placeholder="Add a tag"
               onSubmitEditing={addTag}
             />
-            <Button variant="outline" size="small" title="Add" onPress={addTag} style={styles.addTagButton} />
+            <Button variant="outline" size="sm" onPress={addTag} style={styles.addTagButton}>
+              Add
+            </Button>
           </View>
 
           {tags.length > 0 && (
@@ -134,15 +139,13 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
 
         <View style={styles.buttonContainer}>
           {onCancel && (
-            <Button variant="outline" size="large" title="Cancel" onPress={onCancel} style={styles.cancelButton} />
+            <Button variant="outline" size="lg" onPress={onCancel} style={styles.cancelButton}>
+              Cancel
+            </Button>
           )}
-          <Button
-            variant="primary"
-            size="large"
-            title={initialData ? 'Update Todo' : 'Create Todo'}
-            onPress={handleSubmit}
-            style={styles.submitButton}
-          />
+          <Button variant="primary" size="lg" onPress={handleSubmit} style={styles.submitButton}>
+            {initialData ? 'Update Todo' : 'Create Todo'}
+          </Button>
         </View>
       </View>
     </ScrollView>
@@ -152,7 +155,6 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   form: {
     padding: 20,
@@ -218,7 +220,6 @@ const styles = StyleSheet.create({
   tag: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#dbeafe',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
@@ -226,12 +227,10 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   tagText: {
-    color: '#1e40af',
     fontSize: 14,
     fontWeight: '500',
   },
   tagRemove: {
-    color: '#1e40af',
     fontSize: 18,
     fontWeight: 'bold',
     marginLeft: 6,

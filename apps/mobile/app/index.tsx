@@ -1,7 +1,7 @@
-import { Card, CardContent } from '@todo/ui-mobile';
+import { Card, CardContent, Button } from '@todo/ui-mobile';
 import { Link } from 'expo-router';
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const HomeScreen = () => {
@@ -13,15 +13,15 @@ const HomeScreen = () => {
 
         <View style={styles.buttonContainer}>
           <Link href="/todos" asChild>
-            <TouchableOpacity style={[styles.button, styles.primaryButton]}>
-              <Text style={styles.primaryButtonText}>Get Started</Text>
-            </TouchableOpacity>
+            <Button variant="primary" size="lg" style={styles.button} onPress={() => {}}>
+              Get Started
+            </Button>
           </Link>
 
           <Link href="/wallet" asChild>
-            <TouchableOpacity style={[styles.button, styles.secondaryButton]}>
-              <Text style={styles.secondaryButtonText}>Connect Wallet</Text>
-            </TouchableOpacity>
+            <Button variant="outline" size="lg" style={styles.button} onPress={() => {}}>
+              Connect Wallet
+            </Button>
           </Link>
         </View>
 
@@ -63,7 +63,6 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   content: {
     flex: 1,
@@ -73,13 +72,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#1f2937',
     textAlign: 'center',
     marginBottom: 16,
   },
   subtitle: {
     fontSize: 16,
-    color: '#6b7280',
     textAlign: 'center',
     marginBottom: 32,
     lineHeight: 24,
@@ -89,29 +86,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   button: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
     marginBottom: 12,
-    alignItems: 'center',
-  },
-  primaryButton: {
-    backgroundColor: '#2563eb',
-  },
-  primaryButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  secondaryButton: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-  },
-  secondaryButtonText: {
-    color: '#1f2937',
-    fontSize: 16,
-    fontWeight: '600',
   },
   featureContainer: {
     width: '100%',
@@ -122,12 +97,10 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1f2937',
     marginBottom: 8,
   },
   featureDescription: {
     fontSize: 14,
-    color: '#6b7280',
     lineHeight: 20,
   },
 });

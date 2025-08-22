@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { BlockchainNetwork, getNetworkDisplayInfo } from '@todo/services';
-import { Card, CardContent, Badge, Button } from '@todo/ui-mobile';
+import { Badge, Button, Card, CardContent } from '@todo/ui-mobile';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert, Modal, TouchableOpacity } from 'react-native';
 
 import { type Todo } from '../store/todoStore';
 
@@ -60,7 +60,11 @@ export const TodoItem = ({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
   return (
     <TouchableOpacity onPress={() => setShowActions(!showActions)} activeOpacity={0.7}>
       <Card
-        style={[styles.container, todo.completed && styles.completedContainer, isOverdue && styles.overdueContainer]}
+        style={StyleSheet.flatten([
+          styles.container,
+          todo.completed && styles.completedContainer,
+          isOverdue && styles.overdueContainer,
+        ])}
       >
         <CardContent>
           <View style={styles.header}>
@@ -135,30 +139,18 @@ export const TodoItem = ({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
 
           {showActions && (
             <View style={styles.actionsContainer}>
-              <Button
-                variant="outline"
-                size="small"
-                title="Edit"
-                style={styles.actionButton}
-                onPress={() => onEdit(todo)}
-              />
+              <Button variant="outline" size="sm" style={styles.actionButton} onPress={() => onEdit(todo)}>
+                Edit
+              </Button>
 
-              <Button
-                variant="outline"
-                size="small"
-                title="Delete"
-                style={styles.actionButton}
-                onPress={handleDelete}
-              />
+              <Button variant="outline" size="sm" style={styles.actionButton} onPress={handleDelete}>
+                Delete
+              </Button>
 
               {onBlockchainSync && !todo.blockchainNetwork && (
-                <Button
-                  variant="primary"
-                  size="small"
-                  title="Sync"
-                  style={styles.actionButton}
-                  onPress={handleBlockchainSync}
-                />
+                <Button variant="primary" size="sm" style={styles.actionButton} onPress={handleBlockchainSync}>
+                  Sync
+                </Button>
               )}
             </View>
           )}
