@@ -1,18 +1,19 @@
 /**
  * Input Component
- * Enhanced input component with design tokens and theme integration
+ * Enhanced input component with Eva Design and UI Kitten integration
+ * Maintains backward compatibility while using Eva Design theming
  */
 
-import React, { ReactNode, useState } from 'react';
-import { TextInput, View, StyleSheet, TextInputProps, ViewStyle, TouchableOpacity } from 'react-native';
-import { useTheme } from '../../theme/useTheme';
-import { Text } from '../Text/Text';
+import React, { ReactNode } from 'react';
+import { ViewStyle, StyleSheet } from 'react-native';
+import { Input as UIKittenInput, InputProps as UIKittenInputProps } from '@ui-kitten/components';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
 export type InputVariant = 'outline' | 'filled' | 'underline';
 export type InputSize = 'sm' | 'md' | 'lg';
 export type InputStatus = 'default' | 'error' | 'success';
 
-export interface InputProps extends Omit<TextInputProps, 'style'> {
+export interface InputProps {
   variant?: InputVariant;
   size?: InputSize;
   status?: InputStatus;
@@ -48,133 +49,70 @@ export const Input: React.FC<InputProps> = ({
   style,
   ...props
 }) => {
-  const { theme } = useTheme();
-  const [isFocused, setIsFocused] = useState(false);
+  const { theme, evaTheme } = useEnhancedTheme();
 
-  // Get input container styles based on variant, size, and status
-  const getContainerStyles = () => {
-    const baseStyles = {
-      flexDirection: 'row' as const,
-      alignItems: 'center' as const,
-      borderRadius: theme.borders.radius.md,
-    };
-
-    const sizeStyles = {
-      sm: {
-        paddingHorizontal: theme.spacing.md,
-        paddingVertical: theme.spacing.sm,
-        minHeight: 32,
-      },
-      md: {
-        paddingHorizontal: theme.spacing.lg,
-        paddingVertical: theme.spacing.md,
-        minHeight: 44,
-      },
-      lg: {
-        paddingHorizontal: theme.spacing.xl,
-        paddingVertical: theme.spacing.lg,
-        minHeight: 52,
-      },
-    };
-
-    const getBorderColor = () => {
-      if (status === 'error') return theme.colors.error[500];
-      if (status === 'success') return theme.colors.success[500];
-      if (isFocused) return theme.colors.border.focus;
-      return theme.colors.border.default;
-    };
-
-    const getBackgroundColor = () => {
-      if (variant === 'filled') return theme.colors.surface;
-      return 'transparent';
-    };
-
-    const variantStyles = {
-      outline: {
-        borderWidth: theme.borders.width.thin,
-        borderColor: getBorderColor(),
-        backgroundColor: getBackgroundColor(),
-      },
-      filled: {
-        borderWidth: 0,
-        backgroundColor: theme.colors.surface,
-      },
-      underline: {
-        borderWidth: 0,
-        borderBottomWidth: theme.borders.width.thin,
-        borderBottomColor: getBorderColor(),
-        borderRadius: 0,
-        backgroundColor: 'transparent',
-      },
-    };
-
-    return {
-      ...baseStyles,
-      ...sizeStyles[size],
-      ...variantStyles[variant],
-      ...(disabled && { opacity: 0.5 }),
-    };
+  // Map our sizes to UI Kitten sizes
+  const getUIKittenSize = (): string => {
+    switch (size) {
+      case 'sm':
+        return 'small';
+      case 'md':
+        return 'medium';
+      case 'lg':
+        return 'large';
+      default:
+        return 'medium';
+    }
   };
 
-  // Get text input styles
-  const getTextInputStyles = () => {
-    const textVariant = size === 'sm' ? 'body2' : 'body1';
-    const variantStyles = theme.typography.textVariants[textVariant];
-
-    return {
-      flex: 1,
-      fontSize: variantStyles.fontSize,
-      fontWeight: variantStyles.fontWeight as any,
-      lineHeight: variantStyles.fontSize * variantStyles.lineHeight,
-      color: disabled ? theme.colors.text.disabled : theme.colors.text.primary,
-      fontFamily: theme.typography.fontFamilies.primary,
-    };
+  // Map our status to UI Kitten status
+  const getUIKittenStatus = (): string | undefined => {
+    switch (status) {
+      case 'error':
+        return 'danger';
+      case 'success':
+        return 'success';
+      default:
+        return 'basic';
+    }
   };
 
-  // Get placeholder text color
-  const getPlaceholderColor = () => {
-    return disabled ? theme.colors.text.disabled : theme.colors.text.secondary;
-  };
+  // Render left icon accessory
+  const renderLeftIcon = (props: any) => leftIcon;
 
-  const containerStyles = [getContainerStyles(), style];
-  const textInputStyles = getTextInputStyles();
+  // Render right icon accessory
+  const renderRightIcon = (props: any) => rightIcon;
+
+  // Custom styles for variant handling
+  const customStyles = [
+    variant === 'filled' && styles.filledVariant,
+    variant === 'underline' && styles.underlineVariant,
+    style,
+  ] as any;
 
   return (
-    <View style={containerStyles}>
-      {leftIcon && <View style={styles.leftIcon}>{leftIcon}</View>}
-
-      <TextInput
-        style={textInputStyles}
-        value={value}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-        placeholderTextColor={getPlaceholderColor()}
-        editable={!disabled}
-        multiline={multiline}
-        secureTextEntry={secureTextEntry}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        testID={testID}
-        accessibilityLabel={accessibilityLabel}
-        accessibilityRole="text"
-        {...props}
-      />
-
-      {rightIcon && (
-        <TouchableOpacity style={styles.rightIcon} onPress={onRightIconPress} disabled={!onRightIconPress}>
-          {rightIcon}
-        </TouchableOpacity>
-      )}
-    </View>
+    <UIKittenInput
+      size={getUIKittenSize()}
+      status={getUIKittenStatus()}
+      disabled={disabled}
+      placeholder={placeholder}
+      value={value}
+      onChangeText={onChangeText}
+      multiline={multiline}
+      secureTextEntry={secureTextEntry}
+      style={customStyles}
+      testID={testID}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  leftIcon: {
-    marginRight: 8,
+  filledVariant: {
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
   },
-  rightIcon: {
-    marginLeft: 8,
+  underlineVariant: {
+    borderRadius: 0,
+    borderBottomWidth: 1,
   },
 });
 

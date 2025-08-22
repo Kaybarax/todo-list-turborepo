@@ -1,11 +1,12 @@
 /**
  * Text Component
- * Enhanced text component with typography variants and theme integration
+ * Enhanced text component with Eva Design and UI Kitten integration
+ * Maintains backward compatibility while using Eva Design theming
  */
 
 import React from 'react';
-import { Text as RNText, TextProps as RNTextProps, StyleSheet } from 'react-native';
-import { useTheme } from '../../theme/useTheme';
+import { Text as UIKittenText, TextProps as UIKittenTextProps } from '@ui-kitten/components';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import type { TypographyVariant } from '../../tokens/typography';
 
 export type TextVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'body1' | 'body2' | 'caption' | 'overline';
@@ -13,7 +14,7 @@ export type TextColor = 'primary' | 'secondary' | 'disabled' | 'inverse' | strin
 export type TextAlign = 'left' | 'center' | 'right' | 'justify';
 export type FontWeight = 'regular' | 'medium' | 'semibold' | 'bold';
 
-export interface TextProps extends Omit<RNTextProps, 'style'> {
+export interface TextProps {
   variant?: TextVariant;
   color?: TextColor;
   align?: TextAlign;
@@ -21,7 +22,7 @@ export interface TextProps extends Omit<RNTextProps, 'style'> {
   numberOfLines?: number;
   children: React.ReactNode;
   testID?: string;
-  style?: RNTextProps['style'];
+  style?: any;
 }
 
 export const Text: React.FC<TextProps> = ({
@@ -35,59 +36,57 @@ export const Text: React.FC<TextProps> = ({
   style,
   ...props
 }) => {
-  const { theme } = useTheme();
+  const { theme, evaTheme } = useEnhancedTheme();
 
-  // Get typography variant styles
-  const getVariantStyles = (variantName: TextVariant): TypographyVariant => {
-    return theme.typography.textVariants[variantName];
+  // Map our variants to UI Kitten categories
+  const getUIKittenCategory = (): string => {
+    switch (variant) {
+      case 'h1':
+        return 'h1';
+      case 'h2':
+        return 'h2';
+      case 'h3':
+        return 'h3';
+      case 'h4':
+        return 'h4';
+      case 'body1':
+        return 'p1';
+      case 'body2':
+        return 'p2';
+      case 'caption':
+        return 'c1';
+      case 'overline':
+        return 'c2';
+      default:
+        return 'p1';
+    }
   };
 
-  // Get text color
+  // Get text color from Eva theme or fallback to legacy theme
   const getTextColor = (colorName: TextColor): string => {
-    if (colorName === 'primary') return theme.colors.text.primary;
-    if (colorName === 'secondary') return theme.colors.text.secondary;
-    if (colorName === 'disabled') return theme.colors.text.disabled;
-    if (colorName === 'inverse') return theme.colors.text.inverse;
+    if (colorName === 'primary') return evaTheme['text-basic-color'] || theme.colors.text.primary;
+    if (colorName === 'secondary') return evaTheme['text-hint-color'] || theme.colors.text.secondary;
+    if (colorName === 'disabled') return evaTheme['text-disabled-color'] || theme.colors.text.disabled;
+    if (colorName === 'inverse') return evaTheme['text-control-color'] || theme.colors.text.inverse;
     return colorName; // Custom color string
   };
 
-  // Get font weight
-  const getFontWeight = (weightName?: FontWeight): string => {
-    if (!weightName) return getVariantStyles(variant).fontWeight;
-    return theme.typography.fontWeights[weightName];
-  };
-
-  const variantStyles = getVariantStyles(variant);
-  const textColor = getTextColor(color);
-  const fontWeight = getFontWeight(weight);
-
-  const textStyles = [
-    styles.base,
+  // Create custom styles combining Eva Design tokens with legacy theme fallbacks
+  const customStyles = [
     {
-      fontSize: variantStyles.fontSize,
-      fontWeight: fontWeight as any,
-      lineHeight: variantStyles.fontSize * variantStyles.lineHeight,
-      letterSpacing: variantStyles.letterSpacing || 0,
-      color: textColor,
+      color: getTextColor(color),
       textAlign: align,
-      fontFamily: theme.typography.fontFamilies.primary,
+      ...(weight && { fontWeight: theme.typography.fontWeights[weight] }),
     },
     style,
   ];
 
   return (
-    <RNText style={textStyles} numberOfLines={numberOfLines} testID={testID} accessibilityRole="text" {...props}>
+    <UIKittenText category={getUIKittenCategory()} style={customStyles} numberOfLines={numberOfLines} testID={testID}>
       {children}
-    </RNText>
+    </UIKittenText>
   );
 };
-
-const styles = StyleSheet.create({
-  base: {
-    includeFontPadding: false,
-    textAlignVertical: 'center',
-  },
-});
 
 Text.displayName = 'Text';
 

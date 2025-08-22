@@ -1,27 +1,38 @@
 /**
  * Icon Component
- * Icon component with consistent sizing and theming
+ * Enhanced icon component with Eva Design and UI Kitten integration
+ * Maintains backward compatibility while using Eva Design theming
  */
 
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
-import { useTheme } from '../../theme/useTheme';
+import { ViewStyle } from 'react-native';
+import { Icon as UIKittenIcon, IconProps as UIKittenIconProps } from '@ui-kitten/components';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 export interface IconProps {
+  name?: string;
   size?: IconSize;
   color?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   testID?: string;
   accessibilityLabel?: string;
   style?: ViewStyle;
 }
 
-export const Icon: React.FC<IconProps> = ({ size = 'md', color, children, testID, accessibilityLabel, style }) => {
-  const { theme } = useTheme();
+export const Icon: React.FC<IconProps> = ({
+  name,
+  size = 'md',
+  color,
+  children,
+  testID,
+  accessibilityLabel,
+  style,
+}) => {
+  const { theme, evaTheme } = useEnhancedTheme();
 
-  // Get icon size in pixels
+  // Get icon size in pixels for Eva Design
   const getIconSize = () => {
     const sizeMap = {
       xs: 12,
@@ -33,42 +44,43 @@ export const Icon: React.FC<IconProps> = ({ size = 'md', color, children, testID
     return sizeMap[size];
   };
 
-  // Get icon color
+  // Get icon color from Eva theme or fallback to legacy theme
   const getIconColor = () => {
-    return color || theme.colors.text.primary;
+    if (color) return color;
+    return evaTheme['text-basic-color'] || theme.colors.text.primary;
   };
 
   const iconSize = getIconSize();
   const iconColor = getIconColor();
 
-  const containerStyles = [
-    styles.container,
+  const customStyles = [
     {
       width: iconSize,
       height: iconSize,
+      tintColor: iconColor,
     },
     style,
   ];
 
-  return (
-    <View style={containerStyles} testID={testID} accessibilityLabel={accessibilityLabel} accessibilityRole="image">
-      {React.isValidElement(children)
-        ? React.cloneElement(children, {
-            width: iconSize,
-            height: iconSize,
-            color: iconColor,
-          } as any)
-        : children}
-    </View>
-  );
-};
+  // If name is provided, use UI Kitten Icon with Eva Design icon pack
+  if (name) {
+    return <UIKittenIcon name={name} style={customStyles} fill={iconColor} />;
+  }
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  // Fallback to children for custom icons
+  if (children) {
+    return React.isValidElement(children)
+      ? React.cloneElement(children, {
+          width: iconSize,
+          height: iconSize,
+          color: iconColor,
+          style: customStyles,
+        } as any)
+      : children;
+  }
+
+  return null;
+};
 
 Icon.displayName = 'Icon';
 

@@ -1,17 +1,18 @@
 /**
  * Button Component
- * Enhanced button component with design tokens and theme integration
+ * Enhanced button component with Eva Design and UI Kitten integration
+ * Maintains backward compatibility while using Eva Design theming
  */
 
 import React, { ReactNode } from 'react';
-import { TouchableOpacity, View, ActivityIndicator, StyleSheet, ViewStyle, TouchableOpacityProps } from 'react-native';
-import { useTheme } from '../../theme/useTheme';
-import { Text } from '../Text/Text';
+import { ViewStyle, ActivityIndicator, View, StyleSheet } from 'react-native';
+import { Button as UIKittenButton, ButtonProps as UIKittenButtonProps, Spinner } from '@ui-kitten/components';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
-export interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
+export interface ButtonProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
   disabled?: boolean;
@@ -41,154 +42,97 @@ export const Button: React.FC<ButtonProps> = ({
   style,
   ...props
 }) => {
-  const { theme } = useTheme();
+  const { theme, evaTheme } = useEnhancedTheme();
 
-  // Get button styles based on variant and theme
-  const getButtonStyles = () => {
-    const baseStyles = {
-      borderRadius: theme.borders.radius.md,
-      borderWidth: theme.borders.width.thin,
-      alignItems: 'center' as const,
-      justifyContent: 'center' as const,
-      flexDirection: 'row' as const,
-    };
-
-    const sizeStyles = {
-      sm: {
-        paddingHorizontal: theme.spacing.md,
-        paddingVertical: theme.spacing.sm,
-        minHeight: 32,
-      },
-      md: {
-        paddingHorizontal: theme.spacing.lg,
-        paddingVertical: theme.spacing.md,
-        minHeight: 44,
-      },
-      lg: {
-        paddingHorizontal: theme.spacing.xl,
-        paddingVertical: theme.spacing.lg,
-        minHeight: 52,
-      },
-    };
-
-    const variantStyles = {
-      primary: {
-        backgroundColor: theme.colors.primary[500],
-        borderColor: theme.colors.primary[500],
-      },
-      secondary: {
-        backgroundColor: theme.colors.secondary[500],
-        borderColor: theme.colors.secondary[500],
-      },
-      outline: {
-        backgroundColor: 'transparent',
-        borderColor: theme.colors.primary[500],
-      },
-      ghost: {
-        backgroundColor: 'transparent',
-        borderColor: 'transparent',
-      },
-      link: {
-        backgroundColor: 'transparent',
-        borderColor: 'transparent',
-        paddingHorizontal: 0,
-        paddingVertical: 0,
-        minHeight: undefined,
-      },
-    };
-
-    return {
-      ...baseStyles,
-      ...sizeStyles[size],
-      ...variantStyles[variant],
-      ...(fullWidth && { width: '100%' as const }),
-      ...(disabled && { opacity: 0.5 }),
-    };
-  };
-
-  // Get text color based on variant
-  const getTextColor = () => {
+  // Map our variants to UI Kitten appearances
+  const getUIKittenAppearance = (): string => {
     switch (variant) {
       case 'primary':
+        return 'filled';
       case 'secondary':
-        return theme.colors.text.inverse;
+        return 'filled';
       case 'outline':
-        return theme.colors.primary[500];
+        return 'outline';
       case 'ghost':
+        return 'ghost';
       case 'link':
-        return theme.colors.primary[500];
+        return 'ghost';
       default:
-        return theme.colors.text.primary;
+        return 'filled';
     }
   };
 
-  // Get text variant based on size
-  const getTextVariant = () => {
+  // Map our sizes to UI Kitten sizes
+  const getUIKittenSize = (): string => {
     switch (size) {
       case 'sm':
-        return 'body2' as const;
-      case 'lg':
-        return 'body1' as const;
+        return 'small';
       case 'md':
+        return 'medium';
+      case 'lg':
+        return 'large';
       default:
-        return 'body1' as const;
+        return 'medium';
     }
   };
 
-  // Render button content
-  const renderContent = () => {
-    if (loading) {
-      return <ActivityIndicator size="small" color={getTextColor()} testID={`${testID}-loading`} />;
+  // Get status for secondary variant
+  const getUIKittenStatus = (): string | undefined => {
+    switch (variant) {
+      case 'secondary':
+        return 'basic';
+      default:
+        return undefined;
     }
-
-    const iconElement = icon && (
-      <View style={[styles.iconContainer, iconPosition === 'right' && styles.iconRight]}>{icon}</View>
-    );
-
-    return (
-      <View style={styles.contentContainer}>
-        {iconPosition === 'left' && iconElement}
-        <Text variant={getTextVariant()} color={getTextColor()} weight="medium" style={styles.text}>
-          {children}
-        </Text>
-        {iconPosition === 'right' && iconElement}
-      </View>
-    );
   };
 
-  const buttonStyles = [getButtonStyles(), style];
+  // Render loading indicator
+  const LoadingIndicator = (props: any) => (
+    <View style={[props.style, styles.loadingContainer]}>
+      <Spinner size="small" />
+    </View>
+  );
+
+  // Render icon accessory
+  const renderIcon = (props: any) => <View style={[props.style, styles.iconContainer]}>{icon}</View>;
+
+  // Custom styles for fullWidth and link variant
+  const customStyles = [fullWidth && styles.fullWidth, variant === 'link' && styles.linkButton, style] as any;
 
   return (
-    <TouchableOpacity
-      style={buttonStyles}
-      onPress={onPress}
+    <UIKittenButton
+      appearance={getUIKittenAppearance()}
+      size={getUIKittenSize()}
+      status={getUIKittenStatus()}
       disabled={disabled || loading}
+      onPress={onPress}
+      accessoryLeft={loading ? LoadingIndicator : iconPosition === 'left' && icon ? renderIcon : undefined}
+      accessoryRight={iconPosition === 'right' && icon && !loading ? renderIcon : undefined}
+      style={customStyles}
       testID={testID}
-      accessibilityLabel={accessibilityLabel}
-      accessibilityRole="button"
-      accessibilityState={{ disabled: disabled || loading }}
-      {...props}
     >
-      {renderContent()}
-    </TouchableOpacity>
+      {children}
+    </UIKittenButton>
   );
 };
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
+  loadingContainer: {
     justifyContent: 'center',
+    alignItems: 'center',
   },
   iconContainer: {
-    marginRight: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  iconRight: {
-    marginRight: 0,
-    marginLeft: 8,
+  fullWidth: {
+    width: '100%',
   },
-  text: {
-    textAlign: 'center',
+  linkButton: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    paddingHorizontal: 0,
+    paddingVertical: 0,
   },
 });
 
