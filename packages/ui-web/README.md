@@ -30,24 +30,56 @@ yarn add @todo/ui-web
 ## 🚀 Quick Start
 
 ```tsx
-import { Button, Card, CardContent, CardHeader, CardTitle, Input, Badge } from '@todo/ui-web';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  Badge,
+  // Todo Components
+  TodoForm,
+  TodoItem,
+  TodoList,
+  // Blockchain Components
+  BlockchainStats,
+  TransactionStatus,
+  WalletConnect,
+  // Theme Components
+  ThemeProvider,
+  ThemeSwitcher,
+} from '@todo/ui-web';
 import '@todo/ui-web/styles.css'; // Import styles
 
-function LoginForm() {
+function App() {
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Welcome Back</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <Input type="email" placeholder="Enter your email" leftIcon={<MailIcon />} label="Email Address" />
-        <Input type="password" placeholder="Enter your password" label="Password" />
-        <Button className="w-full" size="lg">
-          Sign In
-        </Button>
-        <Badge variant="secondary">New User?</Badge>
-      </CardContent>
-    </Card>
+    <ThemeProvider>
+      <div className="container mx-auto p-4">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Todo App</h1>
+          <ThemeSwitcher variant="dropdown" />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <TodoForm onSubmit={data => console.log('New todo:', data)} />
+            <TodoList
+              todos={todos}
+              onToggle={handleToggle}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              className="mt-6"
+            />
+          </div>
+
+          <div className="space-y-6">
+            <BlockchainStats data={blockchainStats} />
+            <WalletConnect onConnect={handleWalletConnect} onDisconnect={handleWalletDisconnect} />
+          </div>
+        </div>
+      </div>
+    </ThemeProvider>
   );
 }
 ```
@@ -66,6 +98,29 @@ function LoginForm() {
 | **Textarea** | Multi-line text input with validation               | Native + DaisyUI |
 | **Label**    | Form labels with variant support                    | Native + DaisyUI |
 | **Dialog**   | Modal dialogs with backdrop and animations          | Native + DaisyUI |
+
+### Todo Components
+
+| Component    | Description                                       | Implementation   |
+| ------------ | ------------------------------------------------- | ---------------- |
+| **TodoForm** | Comprehensive form for creating and editing todos | Native + DaisyUI |
+| **TodoItem** | Individual todo item with blockchain integration  | Native + DaisyUI |
+| **TodoList** | List with filtering, sorting, and search features | Native + DaisyUI |
+
+### Blockchain Components
+
+| Component             | Description                                   | Implementation   |
+| --------------------- | --------------------------------------------- | ---------------- |
+| **BlockchainStats**   | Statistics display for blockchain integration | Native + DaisyUI |
+| **TransactionStatus** | Real-time transaction status monitoring       | Native + DaisyUI |
+| **WalletConnect**     | Multi-network wallet connection component     | Native + DaisyUI |
+
+### Theme Components
+
+| Component         | Description                                | Implementation   |
+| ----------------- | ------------------------------------------ | ---------------- |
+| **ThemeProvider** | Unified theme context with DaisyUI support | Native + DaisyUI |
+| **ThemeSwitcher** | Theme selection with multiple variants     | Native + DaisyUI |
 
 ### Button Component
 
@@ -185,6 +240,401 @@ import { Checkbox, Textarea, Label } from '@todo/ui-web';
 <Label variant="optional">Optional Field</Label>
 <Label variant="error">Error Field</Label>
 ```
+
+## 📋 Todo Components
+
+### TodoForm Component
+
+A comprehensive form component for creating and editing todos with validation, tag management, and multiple variants.
+
+```tsx
+import { TodoForm, type TodoFormData } from '@todo/ui-web';
+
+// Basic usage
+<TodoForm
+  onSubmit={(data: TodoFormData) => console.log('Todo created:', data)}
+  onCancel={() => console.log('Cancelled')}
+/>
+
+// Compact variant for inline editing
+<TodoForm
+  variant="compact"
+  onSubmit={handleSubmit}
+  initialData={{
+    title: 'Existing todo',
+    priority: 'high',
+    tags: ['work', 'urgent']
+  }}
+/>
+
+// Inline variant for quick todo creation
+<TodoForm
+  variant="inline"
+  onSubmit={handleQuickAdd}
+  placeholder="Add a quick todo..."
+/>
+
+// With loading state
+<TodoForm
+  onSubmit={handleSubmit}
+  loading={isSubmitting}
+  disabled={!canEdit}
+/>
+```
+
+**Props:**
+
+- `onSubmit: (data: TodoFormData) => void` - Called when form is submitted
+- `onCancel?: () => void` - Called when form is cancelled
+- `initialData?: Partial<TodoFormData>` - Pre-populate form fields
+- `variant?: 'default' | 'compact' | 'inline'` - Form layout variant
+- `disabled?: boolean` - Disable all form inputs
+- `loading?: boolean` - Show loading state
+
+### TodoItem Component
+
+Individual todo item component with blockchain integration, action buttons, and multiple display variants.
+
+```tsx
+import { TodoItem, type TodoData } from '@todo/ui-web';
+import { TransactionStatus } from '@todo/ui-web';
+
+// Basic usage
+<TodoItem
+  todo={todoData}
+  onToggle={(id) => toggleTodo(id)}
+  onEdit={(todo) => editTodo(todo)}
+  onDelete={(id) => deleteTodo(id)}
+/>
+
+// With blockchain integration
+<TodoItem
+  todo={todoData}
+  onToggle={handleToggle}
+  onEdit={handleEdit}
+  onDelete={handleDelete}
+  onBlockchainSync={(id, network) => syncToBlockchain(id, network)}
+  TransactionStatusComponent={TransactionStatus}
+  showBlockchainInfo={true}
+/>
+
+// Compact variant for lists
+<TodoItem
+  todo={todoData}
+  variant="compact"
+  onToggle={handleToggle}
+  onEdit={handleEdit}
+  onDelete={handleDelete}
+  showActions={false}
+/>
+
+// Detailed variant with full information
+<TodoItem
+  todo={todoData}
+  variant="detailed"
+  onToggle={handleToggle}
+  onEdit={handleEdit}
+  onDelete={handleDelete}
+  showBlockchainInfo={true}
+  supportedNetworks={['solana', 'polygon', 'base']}
+/>
+```
+
+**Props:**
+
+- `todo: TodoData` - Todo data object
+- `onToggle: (id: string) => void` - Toggle completion status
+- `onEdit: (todo: TodoData) => void` - Edit todo
+- `onDelete: (id: string) => void` - Delete todo
+- `onBlockchainSync?: (id: string, network: BlockchainNetwork) => void` - Sync to blockchain
+- `variant?: 'default' | 'compact' | 'detailed'` - Display variant
+- `showActions?: boolean` - Show edit/delete buttons
+- `showBlockchainInfo?: boolean` - Show blockchain status
+
+### TodoList Component
+
+List component with filtering, sorting, search, and statistics display.
+
+```tsx
+import { TodoList, type TodoData, type FilterType, type SortType } from '@todo/ui-web';
+
+// Basic usage
+<TodoList
+  todos={todos}
+  onToggle={handleToggle}
+  onEdit={handleEdit}
+  onDelete={handleDelete}
+/>
+
+// With blockchain integration and custom empty state
+<TodoList
+  todos={todos}
+  onToggle={handleToggle}
+  onEdit={handleEdit}
+  onDelete={handleDelete}
+  onBlockchainSync={handleBlockchainSync}
+  TransactionStatusComponent={TransactionStatus}
+  emptyState={<CustomEmptyState />}
+/>
+
+// Grid layout with filters disabled
+<TodoList
+  todos={todos}
+  variant="grid"
+  onToggle={handleToggle}
+  onEdit={handleEdit}
+  onDelete={handleDelete}
+  showFilters={false}
+  showStats={true}
+/>
+
+// Compact variant with initial filters
+<TodoList
+  todos={todos}
+  variant="compact"
+  onToggle={handleToggle}
+  onEdit={handleEdit}
+  onDelete={handleDelete}
+  initialFilter="active"
+  initialSort="priority"
+  initialSearchTerm="work"
+/>
+```
+
+**Props:**
+
+- `todos: TodoData[]` - Array of todo items
+- `onToggle: (id: string) => void` - Toggle completion status
+- `onEdit: (todo: TodoData) => void` - Edit todo
+- `onDelete: (id: string) => void` - Delete todo
+- `variant?: 'default' | 'compact' | 'grid'` - Layout variant
+- `showStats?: boolean` - Show statistics summary
+- `showFilters?: boolean` - Show filter controls
+- `loading?: boolean` - Show loading state
+- `emptyState?: React.ReactNode` - Custom empty state component
+
+## ⛓️ Blockchain Components
+
+### BlockchainStats Component
+
+Statistics display component for blockchain integration with network breakdown and sync status.
+
+```tsx
+import { BlockchainStats, type BlockchainStatsData } from '@todo/ui-web';
+
+const statsData: BlockchainStatsData = {
+  total: 25,
+  onChain: 15,
+  offChain: 10,
+  networkBreakdown: {
+    'solana': 8,
+    'polygon': 4,
+    'base': 3
+  },
+  pendingTransactions: 2,
+  syncPercentage: 85
+};
+
+// Basic usage
+<BlockchainStats data={statsData} />
+
+// Compact variant without network breakdown
+<BlockchainStats
+  data={statsData}
+  variant="compact"
+  showNetworkBreakdown={false}
+  showSyncPercentage={true}
+/>
+
+// Detailed variant with custom network colors
+<BlockchainStats
+  data={statsData}
+  variant="detailed"
+  getNetworkColor={(network) => getCustomNetworkColor(network)}
+/>
+```
+
+**Props:**
+
+- `data: BlockchainStatsData` - Statistics data object
+- `variant?: 'default' | 'compact' | 'detailed'` - Display variant
+- `showNetworkBreakdown?: boolean` - Show network distribution
+- `showSyncPercentage?: boolean` - Show sync percentage
+- `getNetworkColor?: (network: string) => string` - Custom network colors
+
+### TransactionStatus Component
+
+Real-time transaction status monitoring with automatic polling and status updates.
+
+```tsx
+import { TransactionStatus, type TransactionStatusType } from '@todo/ui-web';
+
+// Basic usage
+<TransactionStatus
+  transactionHash="0x1234567890abcdef..."
+  network="polygon"
+  onStatusChange={(status) => console.log('Status:', status)}
+/>
+
+// Compact variant without hash display
+<TransactionStatus
+  transactionHash="0x1234567890abcdef..."
+  network="solana"
+  variant="compact"
+  showHash={false}
+  autoRefresh={true}
+/>
+
+// Detailed variant with custom polling
+<TransactionStatus
+  transactionHash="0x1234567890abcdef..."
+  network="base"
+  variant="detailed"
+  showHash={true}
+  autoRefresh={true}
+  pollingInterval={5000}
+  maxPollingTime={600000}
+  createBlockchainService={createCustomBlockchainService}
+/>
+```
+
+**Props:**
+
+- `transactionHash: string` - Transaction hash to monitor
+- `network: string` - Blockchain network
+- `variant?: 'default' | 'compact' | 'detailed'` - Display variant
+- `showHash?: boolean` - Show transaction hash
+- `autoRefresh?: boolean` - Enable automatic status polling
+- `onStatusChange?: (status: TransactionStatusType) => void` - Status change callback
+
+### WalletConnect Component
+
+Multi-network wallet connection component with balance display and network switching.
+
+```tsx
+import { WalletConnect, type WalletAccount } from '@todo/ui-web';
+
+// Basic usage
+<WalletConnect
+  onConnect={(account) => setConnectedAccount(account)}
+  onDisconnect={() => setConnectedAccount(null)}
+  onNetworkSwitch={(network) => switchNetwork(network)}
+/>
+
+// Button-only variant
+<WalletConnect
+  variant="button-only"
+  onConnect={handleConnect}
+  isConnected={!!account}
+  account={account}
+/>
+
+// Compact variant with custom networks
+<WalletConnect
+  variant="compact"
+  supportedNetworks={['solana', 'polygon', 'base']}
+  defaultNetwork="solana"
+  showBalance={true}
+  showNetworkSelector={true}
+  onConnect={handleConnect}
+  onDisconnect={handleDisconnect}
+/>
+
+// Connected state with error handling
+<WalletConnect
+  isConnected={true}
+  account={connectedAccount}
+  error={connectionError}
+  onDisconnect={handleDisconnect}
+  onNetworkSwitch={handleNetworkSwitch}
+/>
+```
+
+**Props:**
+
+- `onConnect?: (account: WalletAccount) => void` - Connection callback
+- `onDisconnect?: () => void` - Disconnection callback
+- `onNetworkSwitch?: (network: BlockchainNetwork) => void` - Network switch callback
+- `variant?: 'default' | 'compact' | 'button-only'` - Display variant
+- `supportedNetworks?: BlockchainNetwork[]` - Supported blockchain networks
+- `showBalance?: boolean` - Show wallet balance
+- `showNetworkSelector?: boolean` - Show network selector
+- `isConnected?: boolean` - Connection state
+- `account?: WalletAccount | null` - Connected account data
+
+## 🎨 Theme Components
+
+### ThemeProvider Component
+
+Unified theme context provider with DaisyUI theme support and system theme detection.
+
+```tsx
+import { ThemeProvider } from '@todo/ui-web';
+
+// Basic usage with DaisyUI themes
+<ThemeProvider
+  themes={['light', 'dark', 'cupcake', 'synthwave']}
+  defaultMode="system"
+  defaultThemeName="light"
+>
+  <App />
+</ThemeProvider>
+
+// With custom themes and storage
+<ThemeProvider
+  themes={customThemes}
+  defaultMode="dark"
+  storage={localStorage}
+  rootElement={document.documentElement}
+  enableDaisyUI={true}
+>
+  <App />
+</ThemeProvider>
+```
+
+### ThemeSwitcher Component
+
+Theme selection component with multiple variants and theme grouping.
+
+```tsx
+import { ThemeSwitcher } from '@todo/ui-web';
+
+// Dropdown variant
+<ThemeSwitcher
+  variant="dropdown"
+  showLabel={true}
+  size="md"
+/>
+
+// Button group variant
+<ThemeSwitcher
+  variant="buttons"
+  groupThemes={true}
+  customThemes={customThemeList}
+/>
+
+// Select variant with custom styling
+<ThemeSwitcher
+  variant="select"
+  className="w-full"
+  size="lg"
+/>
+
+// Toggle variant for light/dark switching
+<ThemeSwitcher
+  variant="toggle"
+  showLabel={false}
+  size="sm"
+/>
+```
+
+**Props:**
+
+- `variant?: 'dropdown' | 'toggle' | 'buttons' | 'select'` - Switcher variant
+- `showLabel?: boolean` - Show theme labels
+- `size?: 'sm' | 'md' | 'lg'` - Component size
+- `groupThemes?: boolean` - Group themes by type
+- `customThemes?: ThemeConfig[]` - Custom theme configurations
 
 ## 🎨 Theming and Customization
 
@@ -360,7 +810,21 @@ packages/ui-web/
 │   │   │   ├── Button.tsx     # Component implementation
 │   │   │   ├── Button.stories.tsx # Storybook stories
 │   │   │   └── index.ts       # Exports
-│   │   └── ...
+│   │   ├── todo/              # Todo components
+│   │   │   ├── TodoForm/
+│   │   │   ├── TodoItem/
+│   │   │   ├── TodoList/
+│   │   │   └── index.ts
+│   │   ├── blockchain/        # Blockchain components
+│   │   │   ├── BlockchainStats/
+│   │   │   ├── TransactionStatus/
+│   │   │   ├── WalletConnect/
+│   │   │   └── index.ts
+│   │   ├── theme/            # Theme components
+│   │   │   ├── ThemeProvider/
+│   │   │   ├── ThemeSwitcher/
+│   │   │   └── index.ts
+│   │   └── ...               # Other core components
 │   ├── utils/                 # Utility functions
 │   ├── styles.css            # Global styles
 │   └── index.ts              # Main exports
