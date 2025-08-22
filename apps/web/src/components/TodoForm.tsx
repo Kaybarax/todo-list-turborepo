@@ -74,7 +74,7 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <Label htmlFor="title" className="block text-gray-700 mb-1">
+        <Label htmlFor="title" className="block text-base-content mb-1">
           Title *
         </Label>
         <Input
@@ -87,7 +87,7 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
       </div>
 
       <div>
-        <Label htmlFor="description" className="block text-gray-700 mb-1">
+        <Label htmlFor="description" className="block text-base-content mb-1">
           Description
         </Label>
         <Textarea
@@ -101,7 +101,7 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <Label htmlFor="priority" className="block text-gray-700 mb-1">
+          <Label htmlFor="priority" className="block text-base-content mb-1">
             Priority
           </Label>
           <Select value={priority} onChange={e => setPriority(e.target.value as 'low' | 'medium' | 'high')}>
@@ -113,7 +113,7 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
         </div>
 
         <div>
-          <Label htmlFor="dueDate" className="block text-gray-700 mb-1">
+          <Label htmlFor="dueDate" className="block text-base-content mb-1">
             Due Date
           </Label>
           <Input type="date" id="dueDate" value={dueDate} onChange={e => setDueDate(e.target.value)} />
@@ -121,7 +121,7 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
       </div>
 
       <div>
-        <Label htmlFor="tags" className="block text-gray-700 mb-1">
+        <Label htmlFor="tags" className="block text-base-content mb-1">
           Tags
         </Label>
         <div className="flex rounded-md shadow-sm">
@@ -146,7 +146,7 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
                 <button
                   type="button"
                   onClick={() => removeTag(tag)}
-                  className="ml-1 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-gray-200 focus:outline-none"
+                  className="ml-1 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-base-200 focus:outline-none"
                 >
                   ×
                 </button>
