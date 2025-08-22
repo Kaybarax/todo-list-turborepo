@@ -16,6 +16,11 @@ const meta: Meta<typeof Badge> = {
       options: ['default', 'secondary', 'destructive', 'outline', 'success', 'warning', 'info'],
       description: 'The visual style of the badge',
     },
+    size: {
+      control: 'select',
+      options: ['xs', 'sm', 'md', 'lg'],
+      description: 'Badge size',
+    },
     icon: {
       control: { disable: true },
       description: 'Icon to display in the badge',
@@ -28,12 +33,24 @@ const meta: Meta<typeof Badge> = {
 };
 
 export default meta;
+
 type Story = StoryObj<typeof Badge>;
 
 export const Default: Story = {
   args: {
     children: 'Badge',
   },
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex items-center gap-2">
+      <Badge size="xs">XS</Badge>
+      <Badge size="sm">SM</Badge>
+      <Badge size="md">MD</Badge>
+      <Badge size="lg">LG</Badge>
+    </div>
+  ),
 };
 
 export const Secondary: Story = {

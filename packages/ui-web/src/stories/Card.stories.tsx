@@ -1,88 +1,55 @@
 import { type Meta, type StoryObj } from '@storybook/react';
+import React from 'react';
 
 import { Button } from '../components/Button/Button';
-import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from '../components/Card/Card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/Card/Card';
 
 const meta: Meta<typeof Card> = {
-  title: 'Components/Card',
+  title: 'Data Display/Card',
   component: Card,
-  parameters: {
-    layout: 'centered',
-  },
   tags: ['autodocs'],
+  parameters: { layout: 'padded' },
+  argTypes: {
+    elevation: { control: 'select', options: ['none', 'sm', 'md', 'lg', 'xl'] },
+    interactive: { control: 'boolean' },
+  },
 };
-
 export default meta;
-type Story = StoryObj<typeof Card>;
+
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => (
-    <Card className="w-[350px]">
+  args: { elevation: 'xl', interactive: false },
+  render: args => (
+    <Card {...args}>
       <CardHeader>
         <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardDescription>Short description of the card content.</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
+        <p>Body content goes here.</p>
       </CardContent>
       <CardFooter>
-        <p>Card Footer</p>
+        <Button>Action</Button>
       </CardFooter>
     </Card>
   ),
 };
 
-export const WithActions: Story = {
-  render: () => (
-    <Card className="w-[350px]">
+export const Interactive: Story = {
+  args: { elevation: 'md', interactive: true },
+  render: args => (
+    <Card {...args}>
       <CardHeader>
-        <CardTitle>Create project</CardTitle>
-        <CardDescription>Deploy your new project in one-click.</CardDescription>
+        <CardTitle>Interactive Card</CardTitle>
+        <CardDescription>Hover or focus to see elevation change.</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>This is the main content area of the card. You can add any content here.</p>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
-      </CardFooter>
-    </Card>
-  ),
-};
-
-export const NoHeader: Story = {
-  render: () => (
-    <Card className="w-[350px]">
-      <CardContent>
-        <p>This card has no header, just content.</p>
+        <p>Keyboard focusable when interactive.</p>
       </CardContent>
       <CardFooter>
-        <p>Card Footer</p>
+        <Button>Primary</Button>
       </CardFooter>
-    </Card>
-  ),
-};
-
-export const NoFooter: Story = {
-  render: () => (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card Description</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p>This card has no footer, just content.</p>
-      </CardContent>
-    </Card>
-  ),
-};
-
-export const ContentOnly: Story = {
-  render: () => (
-    <Card className="w-[350px]">
-      <CardContent className="pt-6">
-        <p>This card has only content, no header or footer.</p>
-      </CardContent>
     </Card>
   ),
 };
