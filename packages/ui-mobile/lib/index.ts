@@ -24,13 +24,14 @@ export type {
   CardDescriptionProps,
   CardContentProps,
   CardFooterProps,
+  CardVariant,
 } from './components/Card';
 
 export { FormField } from './components/FormField';
 export type { FormFieldProps } from './components/FormField';
 
 export { ListItem } from './components/ListItem';
-export type { ListItemProps, ListItemSize } from './components/ListItem';
+export type { ListItemProps } from './components/ListItem';
 
 export { Badge } from './components/Badge';
 export type { BadgeProps, BadgeVariant, BadgeSize } from './components/Badge';

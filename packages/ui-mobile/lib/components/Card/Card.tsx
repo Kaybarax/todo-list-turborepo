@@ -1,182 +1,217 @@
-import { Card as KittenCard, type CardProps as KittenCardProps, Text } from '@ui-kitten/components';
-import React from 'react';
-import { View, StyleSheet, type ViewStyle, type TextStyle, type StyleProp } from 'react-native';
+/**
+ * Card Component
+ * Enhanced card component with design tokens and theme integration
+ */
 
-export interface CardProps extends Omit<KittenCardProps, 'children'> {
-  children?: React.ReactNode;
-  variant?: 'default' | 'outlined' | 'filled';
-  elevation?: 'none' | 'low' | 'medium' | 'high';
+import React from 'react';
+import { View, ViewStyle, TouchableOpacity, TouchableOpacityProps, TextStyle } from 'react-native';
+import { useTheme } from '../../theme/useTheme';
+import { Text } from '../Text/Text';
+
+export type CardVariant = 'elevated' | 'outlined' | 'filled';
+
+export interface CardProps extends Omit<TouchableOpacityProps, 'style'> {
+  variant?: CardVariant;
+  padding?: keyof ReturnType<typeof useTheme>['theme']['spacing'];
+  children: React.ReactNode;
+  onPress?: () => void;
+  testID?: string;
+  style?: ViewStyle;
 }
 
 export interface CardHeaderProps {
-  style?: StyleProp<ViewStyle>;
+  style?: ViewStyle;
   children?: React.ReactNode;
 }
 
 export interface CardTitleProps {
-  style?: StyleProp<TextStyle>;
+  style?: TextStyle;
   children?: React.ReactNode;
-  category?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  variant?: 'h1' | 'h2' | 'h3' | 'h4';
 }
 
 export interface CardDescriptionProps {
-  style?: StyleProp<TextStyle>;
+  style?: TextStyle;
   children?: React.ReactNode;
-  category?: 'p1' | 'p2' | 's1' | 's2' | 'c1' | 'c2';
 }
 
 export interface CardContentProps {
-  style?: StyleProp<ViewStyle>;
+  style?: ViewStyle;
   children?: React.ReactNode;
 }
 
 export interface CardFooterProps {
-  style?: StyleProp<ViewStyle>;
+  style?: ViewStyle;
   children?: React.ReactNode;
   alignment?: 'left' | 'center' | 'right' | 'space-between';
 }
 
-const Card: React.FC<CardProps> = ({ children, variant = 'default', elevation = 'medium', style, ...props }) => {
-  // Map our variants to UI Kitten appearance
-  const getKittenAppearance = (): KittenCardProps['appearance'] => {
-    switch (variant) {
-      case 'outlined':
-        return 'outline';
-      case 'filled':
-        return 'filled';
-      case 'default':
-      default:
-        return 'filled';
-    }
+// Define compound component type
+interface CardComponent extends React.FC<CardProps> {
+  Header: React.FC<CardHeaderProps>;
+  Title: React.FC<CardTitleProps>;
+  Description: React.FC<CardDescriptionProps>;
+  Content: React.FC<CardContentProps>;
+  Footer: React.FC<CardFooterProps>;
+}
+
+const CardBase: React.FC<CardProps> = ({
+  variant = 'elevated',
+  padding = 'lg',
+  children,
+  onPress,
+  testID,
+  style,
+  ...props
+}) => {
+  const { theme } = useTheme();
+
+  // Get card styles based on variant
+  const getCardStyles = () => {
+    const baseStyles = {
+      borderRadius: theme.borders.radius.lg,
+      padding: theme.spacing[padding],
+    };
+
+    const variantStyles = {
+      elevated: {
+        backgroundColor: theme.colors.surface,
+        ...theme.shadows.md,
+      },
+      outlined: {
+        backgroundColor: theme.colors.surface,
+        borderWidth: theme.borders.width.thin,
+        borderColor: theme.colors.border.default,
+      },
+      filled: {
+        backgroundColor: theme.colors.neutral[50],
+      },
+    };
+
+    return {
+      ...baseStyles,
+      ...variantStyles[variant],
+    };
   };
 
-  // Apply elevation styles
-  const getElevationStyle = () => {
-    switch (elevation) {
-      case 'none':
-        return styles.elevationNone;
-      case 'low':
-        return styles.elevationLow;
-      case 'high':
-        return styles.elevationHigh;
-      case 'medium':
-      default:
-        return styles.elevationMedium;
-    }
-  };
+  const cardStyles = [getCardStyles(), style];
 
-  const cardStyles = [getElevationStyle(), style];
+  if (onPress) {
+    return (
+      <TouchableOpacity style={cardStyles} onPress={onPress} testID={testID} accessibilityRole="button" {...props}>
+        {children}
+      </TouchableOpacity>
+    );
+  }
 
   return (
-    <KittenCard appearance={getKittenAppearance()} style={cardStyles} {...props}>
+    <View style={cardStyles} testID={testID}>
       {children}
-    </KittenCard>
+    </View>
   );
 };
 
 const CardHeader: React.FC<CardHeaderProps> = ({ style, children }) => {
-  return <View style={[styles.header, style]}>{children}</View>;
+  const { theme } = useTheme();
+
+  const headerStyles = [
+    {
+      paddingBottom: theme.spacing.sm,
+      marginBottom: theme.spacing.sm,
+      borderBottomWidth: theme.borders.width.thin,
+      borderBottomColor: theme.colors.border.default,
+    },
+    style,
+  ];
+
+  return <View style={headerStyles}>{children}</View>;
 };
 
-const CardTitle: React.FC<CardTitleProps> = ({ style, children, category = 'h5' }) => {
+const CardTitle: React.FC<CardTitleProps> = ({ style, children, variant = 'h4' }) => {
+  const titleStyles = [
+    {
+      marginBottom: 4,
+    },
+    style,
+  ];
+
   return (
-    <Text category={category} style={[styles.title, style] as any}>
-      {typeof children === 'string' ? children : String(children)}
+    <Text variant={variant} color="primary" weight="semibold" style={titleStyles}>
+      {children}
     </Text>
   );
 };
 
-const CardDescription: React.FC<CardDescriptionProps> = ({ style, children, category = 'p2' }) => {
+const CardDescription: React.FC<CardDescriptionProps> = ({ style, children }) => {
+  const descriptionStyles = [
+    {
+      marginBottom: 8,
+    },
+    style,
+  ];
+
   return (
-    <Text category={category} appearance="hint" style={[styles.description, style]}>
-      {typeof children === 'string' ? children : String(children)}
+    <Text variant="body2" color="secondary" style={descriptionStyles}>
+      {children}
     </Text>
   );
 };
 
 const CardContent: React.FC<CardContentProps> = ({ style, children }) => {
-  return <View style={[styles.content, style]}>{children}</View>;
+  const { theme } = useTheme();
+
+  const contentStyles = [
+    {
+      paddingVertical: theme.spacing.xs,
+    },
+    style,
+  ];
+
+  return <View style={contentStyles}>{children}</View>;
 };
 
 const CardFooter: React.FC<CardFooterProps> = ({ style, children, alignment = 'right' }) => {
-  const getAlignmentStyle = () => {
+  const { theme } = useTheme();
+
+  const getJustifyContent = () => {
     switch (alignment) {
       case 'left':
-        return styles.footerLeft;
+        return 'flex-start';
       case 'center':
-        return styles.footerCenter;
+        return 'center';
       case 'space-between':
-        return styles.footerSpaceBetween;
+        return 'space-between';
       case 'right':
       default:
-        return styles.footerRight;
+        return 'flex-end';
     }
   };
 
-  return <View style={[styles.footer, getAlignmentStyle(), style]}>{children}</View>;
+  const footerStyles = [
+    {
+      flexDirection: 'row' as const,
+      alignItems: 'center' as const,
+      justifyContent: getJustifyContent() as any,
+      paddingTop: theme.spacing.sm,
+      marginTop: theme.spacing.sm,
+      borderTopWidth: theme.borders.width.thin,
+      borderTopColor: theme.colors.border.default,
+    },
+    style,
+  ];
+
+  return <View style={footerStyles}>{children}</View>;
 };
 
-const styles = StyleSheet.create({
-  // Elevation styles
-  elevationNone: {
-    elevation: 0,
-    shadowOpacity: 0,
-  },
-  elevationLow: {
-    elevation: 2,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  elevationMedium: {
-    elevation: 4,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-  },
-  elevationHigh: {
-    elevation: 8,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-  },
+// Create the compound component
+const Card = CardBase as CardComponent;
 
-  // Component styles
-  header: {
-    paddingBottom: 8,
-    paddingHorizontal: 16,
-    paddingTop: 16,
-  },
-  title: {
-    marginBottom: 4,
-  },
-  description: {
-    // UI Kitten Text with appearance="hint" will handle the styling
-  },
-  content: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  footer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingBottom: 16,
-    paddingHorizontal: 16,
-    paddingTop: 8,
-  },
-  footerLeft: {
-    justifyContent: 'flex-start',
-  },
-  footerCenter: {
-    justifyContent: 'center',
-  },
-  footerRight: {
-    justifyContent: 'flex-end',
-  },
-  footerSpaceBetween: {
-    justifyContent: 'space-between',
-  },
-});
+// Attach subcomponents to Card for compound component pattern
+Card.Header = CardHeader;
+Card.Title = CardTitle;
+Card.Description = CardDescription;
+Card.Content = CardContent;
+Card.Footer = CardFooter;
 
 // Set display names for debugging
 Card.displayName = 'Card';
@@ -187,12 +222,4 @@ CardContent.displayName = 'CardContent';
 CardFooter.displayName = 'CardFooter';
 
 export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter };
-
-export default {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-};
+export default Card;

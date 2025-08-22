@@ -7,6 +7,7 @@ export type {
   CardDescriptionProps,
   CardContentProps,
   CardFooterProps,
+  CardVariant,
 } from './Card';
 
 export { default } from './Card';
