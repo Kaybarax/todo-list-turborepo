@@ -1,198 +1,183 @@
-import { MaterialIcons } from '@expo/vector-icons';
-import { Input as KittenInput, type InputProps as KittenInputProps, Text } from '@ui-kitten/components';
-import React from 'react';
-import { View, StyleSheet, type ViewStyle, type TextStyle, type StyleProp } from 'react-native';
+/**
+ * Input Component
+ * Enhanced input component with design tokens and theme integration
+ */
 
-export type InputVariant = 'default' | 'outline' | 'filled';
-export type InputSize = 'small' | 'medium' | 'large';
-export type InputStatus = 'basic' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
+import React, { ReactNode, useState } from 'react';
+import { TextInput, View, StyleSheet, TextInputProps, ViewStyle, TouchableOpacity } from 'react-native';
+import { useTheme } from '../../theme/useTheme';
+import { Text } from '../Text/Text';
 
-export interface InputProps extends Omit<KittenInputProps, 'status' | 'size' | 'accessoryLeft' | 'accessoryRight'> {
+export type InputVariant = 'outline' | 'filled' | 'underline';
+export type InputSize = 'sm' | 'md' | 'lg';
+export type InputStatus = 'default' | 'error' | 'success';
+
+export interface InputProps extends Omit<TextInputProps, 'style'> {
   variant?: InputVariant;
   size?: InputSize;
   status?: InputStatus;
-  label?: string;
-  error?: boolean;
-  errorMessage?: string;
-  helperText?: string;
-  leftIcon?: keyof typeof MaterialIcons.glyphMap;
-  rightIcon?: keyof typeof MaterialIcons.glyphMap;
-  iconColor?: string;
-  containerStyle?: StyleProp<ViewStyle>;
-  labelStyle?: StyleProp<TextStyle>;
-  errorStyle?: StyleProp<TextStyle>;
-  helperStyle?: StyleProp<TextStyle>;
-  fullWidth?: boolean;
-  required?: boolean;
+  disabled?: boolean;
+  placeholder?: string;
+  value?: string;
+  onChangeText?: (text: string) => void;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
+  onRightIconPress?: () => void;
+  multiline?: boolean;
+  secureTextEntry?: boolean;
+  testID?: string;
+  accessibilityLabel?: string;
+  style?: ViewStyle;
 }
 
-const Input: React.FC<InputProps> = ({
-  variant = 'default',
-  size = 'medium',
-  status = 'basic',
-  label,
-  error = false,
-  errorMessage,
-  helperText,
+export const Input: React.FC<InputProps> = ({
+  variant = 'outline',
+  size = 'md',
+  status = 'default',
+  disabled = false,
+  placeholder,
+  value,
+  onChangeText,
   leftIcon,
   rightIcon,
-  iconColor,
-  containerStyle,
-  labelStyle,
-  errorStyle,
-  helperStyle,
-  fullWidth = false,
-  required = false,
-  disabled,
+  onRightIconPress,
+  multiline = false,
+  secureTextEntry = false,
+  testID,
+  accessibilityLabel,
   style,
   ...props
 }) => {
-  // Map our variants to UI Kitten appearance
-  const getKittenAppearance = (): KittenInputProps['appearance'] => {
-    switch (variant) {
-      case 'outline':
-        return 'outline';
-      case 'filled':
-        return 'filled';
-      case 'default':
-      default:
-        return 'outline'; // UI Kitten default
-    }
+  const { theme } = useTheme();
+  const [isFocused, setIsFocused] = useState(false);
+
+  // Get input container styles based on variant, size, and status
+  const getContainerStyles = () => {
+    const baseStyles = {
+      flexDirection: 'row' as const,
+      alignItems: 'center' as const,
+      borderRadius: theme.borders.radius.md,
+    };
+
+    const sizeStyles = {
+      sm: {
+        paddingHorizontal: theme.spacing.md,
+        paddingVertical: theme.spacing.sm,
+        minHeight: 32,
+      },
+      md: {
+        paddingHorizontal: theme.spacing.lg,
+        paddingVertical: theme.spacing.md,
+        minHeight: 44,
+      },
+      lg: {
+        paddingHorizontal: theme.spacing.xl,
+        paddingVertical: theme.spacing.lg,
+        minHeight: 52,
+      },
+    };
+
+    const getBorderColor = () => {
+      if (status === 'error') return theme.colors.error[500];
+      if (status === 'success') return theme.colors.success[500];
+      if (isFocused) return theme.colors.border.focus;
+      return theme.colors.border.default;
+    };
+
+    const getBackgroundColor = () => {
+      if (variant === 'filled') return theme.colors.surface;
+      return 'transparent';
+    };
+
+    const variantStyles = {
+      outline: {
+        borderWidth: theme.borders.width.thin,
+        borderColor: getBorderColor(),
+        backgroundColor: getBackgroundColor(),
+      },
+      filled: {
+        borderWidth: 0,
+        backgroundColor: theme.colors.surface,
+      },
+      underline: {
+        borderWidth: 0,
+        borderBottomWidth: theme.borders.width.thin,
+        borderBottomColor: getBorderColor(),
+        borderRadius: 0,
+        backgroundColor: 'transparent',
+      },
+    };
+
+    return {
+      ...baseStyles,
+      ...sizeStyles[size],
+      ...variantStyles[variant],
+      ...(disabled && { opacity: 0.5 }),
+    };
   };
 
-  // Map our sizes to UI Kitten sizes
-  const getKittenSize = (): KittenInputProps['size'] => {
-    switch (size) {
-      case 'small':
-        return 'small';
-      case 'large':
-        return 'large';
-      case 'medium':
-      default:
-        return 'medium';
-    }
+  // Get text input styles
+  const getTextInputStyles = () => {
+    const textVariant = size === 'sm' ? 'body2' : 'body1';
+    const variantStyles = theme.typography.textVariants[textVariant];
+
+    return {
+      flex: 1,
+      fontSize: variantStyles.fontSize,
+      fontWeight: variantStyles.fontWeight as any,
+      lineHeight: variantStyles.fontSize * variantStyles.lineHeight,
+      color: disabled ? theme.colors.text.disabled : theme.colors.text.primary,
+      fontFamily: theme.typography.fontFamilies.primary,
+    };
   };
 
-  // Determine the status (error takes precedence)
-  const getKittenStatus = (): KittenInputProps['status'] => {
-    if (error) return 'danger';
-    return status;
+  // Get placeholder text color
+  const getPlaceholderColor = () => {
+    return disabled ? theme.colors.text.disabled : theme.colors.text.secondary;
   };
 
-  // Get icon size based on input size
-  const getIconSize = () => {
-    switch (size) {
-      case 'small':
-        return 16;
-      case 'large':
-        return 24;
-      case 'medium':
-      default:
-        return 20;
-    }
-  };
-
-  // Get icon color
-  const getIconColor = () => {
-    if (iconColor) return iconColor;
-    if (error) return '#FF3D71'; // UI Kitten danger color
-    if (disabled) return '#8F9BB3'; // UI Kitten disabled color
-    return '#8F9BB3'; // UI Kitten hint color
-  };
-
-  // Render left accessory (icon)
-  const renderLeftAccessory = () => {
-    if (!leftIcon) return undefined;
-
-    return <MaterialIcons name={leftIcon} size={getIconSize()} color={getIconColor()} />;
-  };
-
-  // Render right accessory (icon)
-  const renderRightAccessory = () => {
-    if (!rightIcon) return undefined;
-
-    return <MaterialIcons name={rightIcon} size={getIconSize()} color={getIconColor()} />;
-  };
-
-  // Render label with required indicator
-  const renderLabel = () => {
-    if (!label) return null;
-
-    const labelText = required ? `${label} *` : label;
-
-    return (
-      <Text category="p2" style={[styles.label, labelStyle] as any}>
-        {labelText}
-      </Text>
-    );
-  };
-
-  // Render error message
-  const renderError = () => {
-    if (!error || !errorMessage) return null;
-
-    return (
-      <Text category="c2" status="danger" style={[styles.errorText, errorStyle] as any}>
-        {errorMessage}
-      </Text>
-    );
-  };
-
-  // Render helper text
-  const renderHelper = () => {
-    if (!helperText || error) return null;
-
-    return (
-      <Text category="c2" appearance="hint" style={[styles.helperText, helperStyle] as any}>
-        {helperText}
-      </Text>
-    );
-  };
-
-  // Combine input styles
-  const inputStyles = [fullWidth && styles.fullWidth, style];
+  const containerStyles = [getContainerStyles(), style];
+  const textInputStyles = getTextInputStyles();
 
   return (
-    <View style={[styles.container, containerStyle]}>
-      {renderLabel()}
-      <KittenInput
-        appearance={getKittenAppearance()}
-        size={getKittenSize()}
-        status={getKittenStatus()}
-        disabled={disabled}
-        accessoryLeft={renderLeftAccessory()}
-        accessoryRight={renderRightAccessory()}
-        style={inputStyles}
+    <View style={containerStyles}>
+      {leftIcon && <View style={styles.leftIcon}>{leftIcon}</View>}
+
+      <TextInput
+        style={textInputStyles}
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        placeholderTextColor={getPlaceholderColor()}
+        editable={!disabled}
+        multiline={multiline}
+        secureTextEntry={secureTextEntry}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        testID={testID}
+        accessibilityLabel={accessibilityLabel}
+        accessibilityRole="text"
         {...props}
       />
-      {renderError()}
-      {renderHelper()}
+
+      {rightIcon && (
+        <TouchableOpacity style={styles.rightIcon} onPress={onRightIconPress} disabled={!onRightIconPress}>
+          {rightIcon}
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 16,
+  leftIcon: {
+    marginRight: 8,
   },
-  errorText: {
-    marginTop: 4,
-  },
-  fullWidth: {
-    width: '100%',
-  },
-  helperText: {
-    marginTop: 4,
-  },
-  label: {
-    marginBottom: 8,
-  },
-  required: {
-    color: '#FF3D71', // UI Kitten danger color
+  rightIcon: {
+    marginLeft: 8,
   },
 });
 
 Input.displayName = 'Input';
 
-export { Input };
 export default Input;

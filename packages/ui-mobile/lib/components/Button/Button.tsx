@@ -1,155 +1,176 @@
-import { MaterialIcons } from '@expo/vector-icons';
-import { Button as KittenButton, type ButtonProps as KittenButtonProps } from '@ui-kitten/components';
-import React from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+/**
+ * Button Component
+ * Enhanced button component with design tokens and theme integration
+ */
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'danger' | 'success' | 'ghost';
-export type ButtonSize = 'small' | 'medium' | 'large';
+import React, { ReactNode } from 'react';
+import { TouchableOpacity, View, ActivityIndicator, StyleSheet, ViewStyle, TouchableOpacityProps } from 'react-native';
+import { useTheme } from '../../theme/useTheme';
+import { Text } from '../Text/Text';
 
-export interface ButtonProps extends Omit<KittenButtonProps, 'status' | 'size' | 'children'> {
-  title: string;
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link';
+export type ButtonSize = 'sm' | 'md' | 'lg';
+
+export interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  disabled?: boolean;
   loading?: boolean;
-  leftIcon?: keyof typeof MaterialIcons.glyphMap;
-  rightIcon?: keyof typeof MaterialIcons.glyphMap;
-  iconColor?: string;
+  icon?: ReactNode;
+  iconPosition?: 'left' | 'right';
   fullWidth?: boolean;
-  rounded?: boolean;
+  onPress: () => void;
+  children: ReactNode;
+  testID?: string;
+  accessibilityLabel?: string;
+  style?: ViewStyle;
 }
 
-const Button: React.FC<ButtonProps> = ({
-  title,
+export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
-  size = 'medium',
+  size = 'md',
+  disabled = false,
   loading = false,
-  leftIcon,
-  rightIcon,
-  iconColor,
+  icon,
+  iconPosition = 'left',
   fullWidth = false,
-  rounded = false,
-  disabled,
+  onPress,
+  children,
+  testID,
+  accessibilityLabel,
   style,
   ...props
 }) => {
-  // Map our variants to UI Kitten status
-  const getKittenStatus = (): KittenButtonProps['status'] => {
+  const { theme } = useTheme();
+
+  // Get button styles based on variant and theme
+  const getButtonStyles = () => {
+    const baseStyles = {
+      borderRadius: theme.borders.radius.md,
+      borderWidth: theme.borders.width.thin,
+      alignItems: 'center' as const,
+      justifyContent: 'center' as const,
+      flexDirection: 'row' as const,
+    };
+
+    const sizeStyles = {
+      sm: {
+        paddingHorizontal: theme.spacing.md,
+        paddingVertical: theme.spacing.sm,
+        minHeight: 32,
+      },
+      md: {
+        paddingHorizontal: theme.spacing.lg,
+        paddingVertical: theme.spacing.md,
+        minHeight: 44,
+      },
+      lg: {
+        paddingHorizontal: theme.spacing.xl,
+        paddingVertical: theme.spacing.lg,
+        minHeight: 52,
+      },
+    };
+
+    const variantStyles = {
+      primary: {
+        backgroundColor: theme.colors.primary[500],
+        borderColor: theme.colors.primary[500],
+      },
+      secondary: {
+        backgroundColor: theme.colors.secondary[500],
+        borderColor: theme.colors.secondary[500],
+      },
+      outline: {
+        backgroundColor: 'transparent',
+        borderColor: theme.colors.primary[500],
+      },
+      ghost: {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+      },
+      link: {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        minHeight: undefined,
+      },
+    };
+
+    return {
+      ...baseStyles,
+      ...sizeStyles[size],
+      ...variantStyles[variant],
+      ...(fullWidth && { width: '100%' as const }),
+      ...(disabled && { opacity: 0.5 }),
+    };
+  };
+
+  // Get text color based on variant
+  const getTextColor = () => {
     switch (variant) {
       case 'primary':
-        return 'primary';
       case 'secondary':
-        return 'basic';
+        return theme.colors.text.inverse;
       case 'outline':
-        return 'primary';
-      case 'danger':
-        return 'danger';
-      case 'success':
-        return 'success';
+        return theme.colors.primary[500];
       case 'ghost':
-        return 'basic';
+      case 'link':
+        return theme.colors.primary[500];
       default:
-        return 'primary';
+        return theme.colors.text.primary;
     }
   };
 
-  // Map our variants to UI Kitten appearance
-  const getKittenAppearance = (): KittenButtonProps['appearance'] => {
-    switch (variant) {
-      case 'outline':
-        return 'outline';
-      case 'ghost':
-        return 'ghost';
-      default:
-        return 'filled';
-    }
-  };
-
-  // Map our sizes to UI Kitten sizes
-  const getKittenSize = (): KittenButtonProps['size'] => {
+  // Get text variant based on size
+  const getTextVariant = () => {
     switch (size) {
-      case 'small':
-        return 'small';
-      case 'large':
-        return 'large';
-      case 'medium':
+      case 'sm':
+        return 'body2' as const;
+      case 'lg':
+        return 'body1' as const;
+      case 'md':
       default:
-        return 'medium';
+        return 'body1' as const;
     }
-  };
-
-  // Get icon size based on button size
-  const getIconSize = () => {
-    switch (size) {
-      case 'small':
-        return 16;
-      case 'large':
-        return 24;
-      case 'medium':
-      default:
-        return 20;
-    }
-  };
-
-  // Get icon color based on variant and UI Kitten theme
-  const getIconColor = () => {
-    if (iconColor) return iconColor;
-
-    // UI Kitten will handle the color based on status and appearance
-    // We'll use a default that works with most themes
-    switch (variant) {
-      case 'outline':
-      case 'ghost':
-        return '#3366FF'; // UI Kitten primary color
-      default:
-        return '#FFFFFF';
-    }
-  };
-
-  // Render left icon
-  const renderLeftIcon = () => {
-    if (!leftIcon) return null;
-
-    return <MaterialIcons name={leftIcon} size={getIconSize()} color={getIconColor()} style={styles.leftIcon} />;
-  };
-
-  // Render right icon
-  const renderRightIcon = () => {
-    if (!rightIcon) return null;
-
-    return <MaterialIcons name={rightIcon} size={getIconSize()} color={getIconColor()} style={styles.rightIcon} />;
   };
 
   // Render button content
   const renderContent = () => {
     if (loading) {
-      return (
-        <ActivityIndicator size="small" color={variant === 'outline' || variant === 'ghost' ? '#3366FF' : '#FFFFFF'} />
-      );
+      return <ActivityIndicator size="small" color={getTextColor()} testID={`${testID}-loading`} />;
     }
+
+    const iconElement = icon && (
+      <View style={[styles.iconContainer, iconPosition === 'right' && styles.iconRight]}>{icon}</View>
+    );
 
     return (
       <View style={styles.contentContainer}>
-        {renderLeftIcon()}
-        {title}
-        {renderRightIcon()}
+        {iconPosition === 'left' && iconElement}
+        <Text variant={getTextVariant()} color={getTextColor()} weight="medium" style={styles.text}>
+          {children}
+        </Text>
+        {iconPosition === 'right' && iconElement}
       </View>
     );
   };
 
-  // Combine styles
-  const buttonStyles = [fullWidth && styles.fullWidth, rounded && styles.rounded, style];
+  const buttonStyles = [getButtonStyles(), style];
 
   return (
-    <KittenButton
-      status={getKittenStatus()}
-      appearance={getKittenAppearance()}
-      size={getKittenSize()}
-      disabled={disabled ?? loading}
+    <TouchableOpacity
       style={buttonStyles}
+      onPress={onPress}
+      disabled={disabled || loading}
+      testID={testID}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: disabled || loading }}
       {...props}
     >
       {renderContent()}
-    </KittenButton>
+    </TouchableOpacity>
   );
 };
 
@@ -159,21 +180,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  fullWidth: {
-    width: '100%',
-  },
-  leftIcon: {
+  iconContainer: {
     marginRight: 8,
   },
-  rightIcon: {
+  iconRight: {
+    marginRight: 0,
     marginLeft: 8,
   },
-  rounded: {
-    borderRadius: 25,
+  text: {
+    textAlign: 'center',
   },
 });
 
 Button.displayName = 'Button';
 
-export { Button };
 export default Button;
