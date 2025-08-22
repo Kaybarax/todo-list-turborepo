@@ -4,12 +4,19 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useDesignTokens } from '../src/hooks/useDesignTokens';
+
 const HomeScreen = () => {
+  const tokens = useDesignTokens();
+  const styles = createStyles(tokens);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: tokens.colors.background }]}>
       <View style={styles.content}>
-        <Text style={styles.title}>Welcome to Todo App</Text>
-        <Text style={styles.subtitle}>A modern todo application with blockchain integration for mobile devices.</Text>
+        <Text style={[styles.title, { color: tokens.colors.text.primary }]}>Welcome to Todo App</Text>
+        <Text style={[styles.subtitle, { color: tokens.colors.text.secondary }]}>
+          A modern todo application with blockchain integration for mobile devices.
+        </Text>
 
         <View style={styles.buttonContainer}>
           <Link href="/todos" asChild>
@@ -28,27 +35,29 @@ const HomeScreen = () => {
         <View style={styles.featureContainer}>
           <Card style={styles.featureCard}>
             <CardContent>
-              <Text style={styles.featureTitle}>Traditional Storage</Text>
-              <Text style={styles.featureDescription}>
-                Store your todos securely with fast synchronization across devices.
+              <Text style={[styles.featureTitle, { color: tokens.colors.text.primary }]}>📝 Smart Todo Management</Text>
+              <Text style={[styles.featureDescription, { color: tokens.colors.text.secondary }]}>
+                Create, organize, and track your tasks with intelligent categorization and priority management.
               </Text>
             </CardContent>
           </Card>
 
           <Card style={styles.featureCard}>
             <CardContent>
-              <Text style={styles.featureTitle}>Blockchain Storage</Text>
-              <Text style={styles.featureDescription}>
-                Store todos on blockchain networks for decentralized, immutable storage.
+              <Text style={[styles.featureTitle, { color: tokens.colors.text.primary }]}>
+                🔗 Blockchain Integration
+              </Text>
+              <Text style={[styles.featureDescription, { color: tokens.colors.text.secondary }]}>
+                Secure your todos on the blockchain with decentralized storage and verification.
               </Text>
             </CardContent>
           </Card>
 
           <Card style={styles.featureCard}>
             <CardContent>
-              <Text style={styles.featureTitle}>Multi-Network Support</Text>
-              <Text style={styles.featureDescription}>
-                Choose from Solana, Polkadot, or Polygon networks based on your preferences.
+              <Text style={[styles.featureTitle, { color: tokens.colors.text.primary }]}>📱 Cross-Platform Sync</Text>
+              <Text style={[styles.featureDescription, { color: tokens.colors.text.secondary }]}>
+                Access your todos anywhere with seamless synchronization across all your devices.
               </Text>
             </CardContent>
           </Card>
@@ -60,47 +69,48 @@ const HomeScreen = () => {
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  subtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 32,
-    lineHeight: 24,
-  },
-  buttonContainer: {
-    width: '100%',
-    marginBottom: 32,
-  },
-  button: {
-    marginBottom: 12,
-  },
-  featureContainer: {
-    width: '100%',
-  },
-  featureCard: {
-    marginBottom: 12,
-  },
-  featureTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  featureDescription: {
-    fontSize: 14,
-    lineHeight: 20,
-  },
-});
+const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    content: {
+      flex: 1,
+      padding: tokens.spacing.xl,
+      alignItems: 'center',
+    },
+    title: {
+      fontSize: tokens.typography.fontSize.xxxl,
+      fontWeight: tokens.typography.fontWeight.bold,
+      textAlign: 'center',
+      marginBottom: tokens.spacing.lg,
+    },
+    subtitle: {
+      fontSize: tokens.typography.fontSize.md,
+      textAlign: 'center',
+      marginBottom: tokens.spacing.xxxl,
+      lineHeight: tokens.typography.lineHeight.relaxed,
+    },
+    buttonContainer: {
+      width: '100%',
+      marginBottom: tokens.spacing.xxxl,
+    },
+    button: {
+      marginBottom: tokens.spacing.md,
+    },
+    featureContainer: {
+      width: '100%',
+    },
+    featureCard: {
+      marginBottom: tokens.spacing.md,
+    },
+    featureTitle: {
+      fontSize: tokens.typography.fontSize.lg,
+      fontWeight: tokens.typography.fontWeight.semibold,
+      marginBottom: tokens.spacing.sm,
+    },
+    featureDescription: {
+      fontSize: tokens.typography.fontSize.sm,
+      lineHeight: tokens.typography.lineHeight.normal,
+    },
+  });

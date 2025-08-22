@@ -164,12 +164,14 @@
   - Create performance benchmarks for component rendering
   - _Requirements: 7.4, 7.6_
 
-- [ ] 9. Update mobile app to use design system
-- [ ] 9.1 Replace existing components with design system components
-  - Update all Button usages to use design system Button component
-  - Replace Text components with design system Text component
-  - Update Input components to use design system Input component
-  - Replace Card components with design system Card component
+### Task 9: Update Mobile App to Use Design System
+
+#### 9.1 Replace existing components with design system components
+
+- [x] Update all screens to use new Button, Input, Card components
+- [x] Replace hardcoded UI elements with design system equivalents
+- [x] Update component imports and props to use design system Input component
+- [x] Replace Card components with design system Card component
   - _Requirements: 4.1, 4.2, 4.5, 8.1_
 
 - [ ] 9.2 Implement design tokens throughout mobile app

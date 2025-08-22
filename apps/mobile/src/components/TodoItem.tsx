@@ -2,8 +2,9 @@
 import { BlockchainNetwork, getNetworkDisplayInfo } from '@todo/services';
 import { Badge, Button, Card, CardContent } from '@todo/ui-mobile';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Alert, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 
+import { useDesignTokens } from '../hooks/useDesignTokens';
 import { type Todo } from '../store/todoStore';
 
 interface TodoItemProps {
@@ -16,11 +17,14 @@ interface TodoItemProps {
 
 export const TodoItem = ({ todo, onToggle, onEdit, onDelete, onBlockchainSync }: TodoItemProps) => {
   const [showActions, setShowActions] = useState(false);
+  const [showNetworkSelector, setShowNetworkSelector] = useState(false);
+  const tokens = useDesignTokens();
+  const styles = createStyles(tokens);
 
   const priorityColors = {
-    low: '#10b981',
-    medium: '#f59e0b',
-    high: '#ef4444',
+    low: tokens.colors.success,
+    medium: tokens.colors.warning,
+    high: tokens.colors.error,
   };
 
   const getNetworkColor = (network: BlockchainNetwork): string => {
@@ -160,157 +164,158 @@ export const TodoItem = ({ todo, onToggle, onEdit, onDelete, onBlockchainSync }:
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 12,
-  },
-  completedContainer: {
-    opacity: 0.7,
-  },
-  overdueContainer: {
-    borderLeftWidth: 4,
-    borderLeftColor: '#ef4444',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  checkbox: {
-    marginRight: 12,
-    marginTop: 2,
-  },
-  checkboxInner: {
-    width: 20,
-    height: 20,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: '#d1d5db',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  checkboxChecked: {
-    backgroundColor: '#2563eb',
-    borderColor: '#2563eb',
-  },
-  checkmark: {
-    color: '#ffffff',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  content: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#1f2937',
-    marginBottom: 4,
-  },
-  completedTitle: {
-    textDecorationLine: 'line-through',
-    color: '#6b7280',
-  },
-  description: {
-    fontSize: 14,
-    color: '#6b7280',
-    marginBottom: 8,
-    lineHeight: 20,
-  },
-  completedDescription: {
-    color: '#9ca3af',
-  },
-  metadata: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  priorityBadge: {
-    marginRight: 8,
-    marginBottom: 4,
-  },
-  dueDateBadge: {
-    backgroundColor: '#f3f4f6',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginRight: 8,
-    marginBottom: 4,
-  },
-  overdueBadge: {
-    backgroundColor: '#fef2f2',
-  },
-  dueDateText: {
-    color: '#374151',
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  overdueText: {
-    color: '#dc2626',
-  },
-  networkBadge: {
-    marginRight: 8,
-    marginBottom: 4,
-  },
-  tagsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  tag: {
-    backgroundColor: '#dbeafe',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginRight: 6,
-    marginBottom: 4,
-  },
-  tagText: {
-    color: '#1e40af',
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  moreTagsText: {
-    color: '#6b7280',
-    fontSize: 12,
-    fontStyle: 'italic',
-  },
-  transactionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 4,
-  },
-  transactionLabel: {
-    fontSize: 12,
-    color: '#6b7280',
-    fontWeight: '500',
-    marginRight: 4,
-  },
-  transactionHash: {
-    fontSize: 12,
-    color: '#374151',
-    fontFamily: 'monospace',
-    backgroundColor: '#f3f4f6',
-    paddingHorizontal: 4,
-    paddingVertical: 2,
-    borderRadius: 4,
-  },
-  actionsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginTop: 12,
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#f3f4f6',
-  },
-  actionButton: {
-    marginLeft: 8,
-  },
-  deleteButton: {
-    // Custom styling can be added here if needed
-  },
-  syncButton: {
-    // Custom styling can be added here if needed
-  },
-});
+const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
+  StyleSheet.create({
+    container: {
+      marginBottom: tokens.spacing.md,
+    },
+    completedContainer: {
+      opacity: 0.7,
+    },
+    overdueContainer: {
+      borderLeftWidth: 4,
+      borderLeftColor: tokens.colors.error,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+    },
+    checkbox: {
+      marginRight: 12,
+      marginTop: 2,
+    },
+    checkboxInner: {
+      width: 20,
+      height: 20,
+      borderRadius: 4,
+      borderWidth: 2,
+      borderColor: '#d1d5db',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    checkboxChecked: {
+      backgroundColor: '#2563eb',
+      borderColor: '#2563eb',
+    },
+    checkmark: {
+      color: '#ffffff',
+      fontSize: 12,
+      fontWeight: 'bold',
+    },
+    content: {
+      flex: 1,
+    },
+    title: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: '#1f2937',
+      marginBottom: 4,
+    },
+    completedTitle: {
+      textDecorationLine: 'line-through',
+      color: '#6b7280',
+    },
+    description: {
+      fontSize: 14,
+      color: '#6b7280',
+      marginBottom: 8,
+      lineHeight: 20,
+    },
+    completedDescription: {
+      color: '#9ca3af',
+    },
+    metadata: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    priorityBadge: {
+      marginRight: 8,
+      marginBottom: 4,
+    },
+    dueDateBadge: {
+      backgroundColor: '#f3f4f6',
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+      borderRadius: 12,
+      marginRight: 8,
+      marginBottom: 4,
+    },
+    overdueBadge: {
+      backgroundColor: '#fef2f2',
+    },
+    dueDateText: {
+      color: '#374151',
+      fontSize: 12,
+      fontWeight: '500',
+    },
+    overdueText: {
+      color: '#dc2626',
+    },
+    networkBadge: {
+      marginRight: 8,
+      marginBottom: 4,
+    },
+    tagsContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    tag: {
+      backgroundColor: '#dbeafe',
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+      borderRadius: 12,
+      marginRight: 6,
+      marginBottom: 4,
+    },
+    tagText: {
+      color: '#1e40af',
+      fontSize: 12,
+      fontWeight: '500',
+    },
+    moreTagsText: {
+      color: '#6b7280',
+      fontSize: 12,
+      fontStyle: 'italic',
+    },
+    transactionContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 4,
+    },
+    transactionLabel: {
+      fontSize: 12,
+      color: '#6b7280',
+      fontWeight: '500',
+      marginRight: 4,
+    },
+    transactionHash: {
+      fontSize: 12,
+      color: '#374151',
+      fontFamily: 'monospace',
+      backgroundColor: '#f3f4f6',
+      paddingHorizontal: 4,
+      paddingVertical: 2,
+      borderRadius: 4,
+    },
+    actionsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      marginTop: 12,
+      paddingTop: 12,
+      borderTopWidth: 1,
+      borderTopColor: '#f3f4f6',
+    },
+    actionButton: {
+      marginLeft: 8,
+    },
+    deleteButton: {
+      // Custom styling can be added here if needed
+    },
+    syncButton: {
+      // Custom styling can be added here if needed
+    },
+  });

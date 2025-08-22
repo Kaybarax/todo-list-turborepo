@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { Input, Button } from '@todo/ui-mobile';
+import { Button, Input } from '@todo/ui-mobile';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
+
+import { useDesignTokens } from '../hooks/useDesignTokens';
 // import { Picker } from '@react-native-picker/picker';
 
 interface TodoFormProps {
@@ -27,6 +29,8 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
   const [title, setTitle] = useState(initialData?.title ?? '');
   const [description, setDescription] = useState(initialData?.description ?? '');
   const [priority, setPriority] = useState<'low' | 'medium' | 'high'>(initialData?.priority ?? 'medium');
+  const tokens = useDesignTokens();
+  const styles = createStyles(tokens);
   const [dueDate, setDueDate] = useState(initialData?.dueDate ?? '');
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState<string[]>(initialData?.tags ?? []);
