@@ -47,30 +47,27 @@
   - Add theme persistence and system preference detection
   - _Requirements: 3.6, 5.2, 7.3_
 
-- [ ] 4. Revise ui-web components to strictly use DaisyUI patterns
-- [ ] 4.1 Update Button component to use DaisyUI foundation
+- [x] 4. Revise ui-web components to strictly use DaisyUI patterns
+- [x] 4.1 Update Button component to use DaisyUI foundation
   - Refactor Button component to use DaisyUI btn classes as base
   - Map component variants to DaisyUI button modifiers (btn-primary, btn-outline, etc.)
-  - Implement DaisyUI size variants (btn-xs, btn-sm, btn-lg, etc.)
-  - Add DaisyUI state modifiers (loading, disabled) using DaisyUI classes
-  - Update TypeScript interfaces to reflect DaisyUI variant options
-  - _Requirements: 1.1, 1.2, 1.3, 4.1, 4.6, 6.1, 6.4_
+  - Ensure loading states use DaisyUI loading spinner classes
+  - Add support for DaisyUI button sizes and shapes (btn-sm, btn-lg, btn-square, btn-circle)
+  - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-- [ ] 4.2 Update Input component to use DaisyUI foundation
-  - Refactor Input component to use DaisyUI input classes as base
-  - Implement DaisyUI input variants (input-bordered, input-ghost, etc.)
-  - Add DaisyUI size modifiers (input-xs, input-sm, input-lg, etc.)
-  - Integrate DaisyUI color variants and error states
-  - Update component to work with DaisyUI form patterns
-  - _Requirements: 1.1, 1.2, 1.3, 4.1, 4.6, 6.1, 6.4_
+- [x] 4.2 Update Input component to use DaisyUI patterns
+  - Refactor Input component to use DaisyUI input classes
+  - Map input states to DaisyUI modifiers (input-bordered, input-error, input-success)
+  - Ensure helper text uses DaisyUI label system
+  - Add support for DaisyUI input variants and sizes
+  - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-- [ ] 4.3 Update Card component to use DaisyUI foundation
-  - Refactor Card component to use DaisyUI card classes as base
-  - Implement DaisyUI card variants (card-compact, card-bordered, etc.)
-  - Add DaisyUI layout modifiers (card-side, image-full, etc.)
-  - Use DaisyUI semantic colors (bg-base-100, shadow-xl, etc.)
-  - Update card sub-components (CardHeader, CardBody, CardActions) to use DaisyUI structure
-  - _Requirements: 1.1, 1.2, 1.3, 4.1, 4.6, 6.1, 6.4_
+- [x] 4.3 Update Card component to use DaisyUI structure
+  - Refactor Card component to use DaisyUI card classes
+  - Update CardHeader, CardContent, CardFooter to use card-body, card-actions
+  - Ensure proper DaisyUI card hierarchy and spacing
+  - Add support for DaisyUI card variants (card-bordered, card-compact, card-side)
+  - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
 - [ ] 4.4 Update form components to use DaisyUI patterns
   - Refactor Textarea, Select, Checkbox, Radio components to use DaisyUI classes

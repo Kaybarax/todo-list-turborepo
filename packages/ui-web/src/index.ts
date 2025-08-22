@@ -56,19 +56,46 @@ export { Dropdown, type DropdownProps } from './components/Dropdown';
 export { Avatar, type AvatarProps } from './components/Avatar';
 export { Image, type ImageProps } from './components/Image';
 
-// Theme
-export { ThemeProvider, useThemeContext, type ThemeProviderProps } from './theme/ThemeProvider';
-export type { ThemeConfig, ThemeContextValue, ThemeMode } from './theme/types';
-export { defaultThemes } from './theme/themes';
-
-// Utils
-export * from './utils';
-
-// Tokens
-export * from './tokens';
-
-// Theme
+// Theme System (DaisyUI + Style Dictionary)
 export * from './theme';
+
+// TypeScript Types (explicit re-exports to avoid conflicts)
+export type {
+  DesignTokens,
+  ColorTokens,
+  SpacingTokens,
+  TypographyTokens,
+  BorderTokens,
+  ShadowTokens,
+  SemanticTokens,
+  ThemeTokens,
+  ComponentTokens,
+  DaisyUIColor,
+  DaisyUISize,
+  DaisyUIButtonVariants,
+  DaisyUIInputVariants,
+  DaisyUICardVariants,
+  ValidationResult,
+  TokenValidationResult,
+  ComponentValidationResult,
+} from './types';
+
+export {
+  isDaisyUIColor,
+  isDaisyUISize,
+  isDaisyUIButtonVariant,
+  validateButtonProps,
+  validateInputProps,
+  validateCardProps,
+  validateComponentProps,
+  createTypeSafeProps,
+  generateDaisyUIClasses,
+  DAISYUI_COLORS,
+  DAISYUI_SIZES,
+} from './types';
+
+// Token Utilities
+export * from './utils/tokens';
 
 // Styles
 import './styles.css';
