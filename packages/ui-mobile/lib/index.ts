@@ -37,6 +37,9 @@ export type { ListItemProps } from './components/ListItem';
 export { Header } from './components/Header';
 export type { HeaderProps } from './components/Header';
 
+export { Modal } from './components/Modal';
+export type { ModalProps, ModalSize, ModalType } from './components/Modal';
+
 export { Badge } from './components/Badge';
 export type { BadgeProps, BadgeVariant, BadgeSize } from './components/Badge';
 
