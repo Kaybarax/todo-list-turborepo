@@ -1,11 +1,13 @@
 /**
  * ListItem Component
- * Flexible list item component with leading/trailing elements
+ * Enhanced list item component with Eva Design and UI Kitten integration
+ * Maintains backward compatibility while using Eva Design theming
  */
 
 import React, { ReactNode } from 'react';
-import { TouchableOpacity, View, StyleSheet, ViewStyle } from 'react-native';
-import { useTheme } from '../../theme/useTheme';
+import { ListItem as UIKittenListItem } from '@ui-kitten/components';
+import { View, ViewStyle, TouchableOpacity } from 'react-native';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { Text } from '../Text/Text';
 
 export type ListItemSize = 'sm' | 'md' | 'lg';
@@ -37,29 +39,20 @@ export const ListItem: React.FC<ListItemProps> = ({
   accessibilityLabel,
   style,
 }) => {
-  const { theme } = useTheme();
+  const { theme, evaTheme } = useEnhancedTheme();
 
-  // Get size-based styles
-  const getSizeStyles = () => {
-    const sizeStyles = {
-      sm: {
-        paddingHorizontal: theme.spacing.md,
-        paddingVertical: theme.spacing.sm,
-        minHeight: 40,
-      },
-      md: {
-        paddingHorizontal: theme.spacing.lg,
-        paddingVertical: theme.spacing.md,
-        minHeight: 56,
-      },
-      lg: {
-        paddingHorizontal: theme.spacing.xl,
-        paddingVertical: theme.spacing.lg,
-        minHeight: 72,
-      },
-    };
-
-    return sizeStyles[size];
+  // Map our sizes to UI Kitten sizes
+  const getUIKittenSize = (): string => {
+    switch (size) {
+      case 'sm':
+        return 'small';
+      case 'md':
+        return 'medium';
+      case 'lg':
+        return 'large';
+      default:
+        return 'medium';
+    }
   };
 
   // Get text variants based on size
@@ -85,16 +78,25 @@ export const ListItem: React.FC<ListItemProps> = ({
     return variants[size];
   };
 
-  const sizeStyles = getSizeStyles();
   const textVariants = getTextVariants();
 
+  // Get Eva Design colors with fallbacks
+  const getTextColor = (type: 'primary' | 'secondary') => {
+    if (type === 'primary') return evaTheme['text-basic-color'] || theme.colors.text.primary;
+    return evaTheme['text-hint-color'] || theme.colors.text.secondary;
+  };
+
+  // Custom styles for size-based styling
   const containerStyles = [
-    styles.container,
-    sizeStyles,
     {
-      backgroundColor: theme.colors.surface,
-      borderBottomWidth: theme.borders.width.thin,
-      borderBottomColor: theme.colors.border.default,
+      minHeight: size === 'sm' ? 40 : size === 'lg' ? 72 : 56,
+      paddingHorizontal: theme.spacing[size === 'sm' ? 'md' : size === 'lg' ? 'xl' : 'lg'],
+      paddingVertical: theme.spacing[size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'],
+      flexDirection: 'row' as const,
+      alignItems: 'center' as const,
+      backgroundColor: evaTheme['background-basic-color-1'] || theme.colors.surface,
+      borderBottomWidth: 1,
+      borderBottomColor: evaTheme['border-basic-color-3'] || theme.colors.border.default,
     },
     disabled && { opacity: 0.5 },
     style,
@@ -102,27 +104,37 @@ export const ListItem: React.FC<ListItemProps> = ({
 
   const content = (
     <>
-      {leading && <View style={styles.leading}>{leading}</View>}
+      {leading && <View style={{ marginRight: 12, alignItems: 'center', justifyContent: 'center' }}>{leading}</View>}
 
-      <View style={styles.content}>
-        <Text variant={textVariants.title} color="primary" weight="medium" numberOfLines={1}>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <Text variant={textVariants.title} color={getTextColor('primary')} weight="medium" numberOfLines={1}>
           {title}
         </Text>
 
         {subtitle && (
-          <Text variant={textVariants.subtitle} color="secondary" numberOfLines={1} style={styles.subtitle}>
+          <Text
+            variant={textVariants.subtitle}
+            color={getTextColor('secondary')}
+            numberOfLines={1}
+            style={{ marginTop: 2 }}
+          >
             {subtitle}
           </Text>
         )}
 
         {description && (
-          <Text variant={textVariants.description} color="secondary" numberOfLines={2} style={styles.description}>
+          <Text
+            variant={textVariants.description}
+            color={getTextColor('secondary')}
+            numberOfLines={2}
+            style={{ marginTop: 4 }}
+          >
             {description}
           </Text>
         )}
       </View>
 
-      {trailing && <View style={styles.trailing}>{trailing}</View>}
+      {trailing && <View style={{ marginLeft: 12, alignItems: 'center', justifyContent: 'center' }}>{trailing}</View>}
     </>
   );
 
@@ -147,34 +159,6 @@ export const ListItem: React.FC<ListItemProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-  },
-  leading: {
-    marginRight: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  trailing: {
-    marginLeft: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  subtitle: {
-    marginTop: 2,
-  },
-  description: {
-    marginTop: 4,
-  },
-});
 
 ListItem.displayName = 'ListItem';
 

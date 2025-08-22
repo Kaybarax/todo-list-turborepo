@@ -1,11 +1,12 @@
 /**
  * FormField Component
- * Wrapper component with label, error, and hint support
+ * Enhanced form field wrapper with Eva Design and UI Kitten integration
+ * Maintains backward compatibility while using Eva Design theming
  */
 
 import React, { ReactNode } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
-import { useTheme } from '../../theme/useTheme';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { Text } from '../Text/Text';
 
 export interface FormFieldProps {
@@ -27,24 +28,27 @@ export const FormField: React.FC<FormFieldProps> = ({
   testID,
   style,
 }) => {
-  const { theme } = useTheme();
+  const { theme, evaTheme } = useEnhancedTheme();
+
+  // Get Eva Design colors with fallbacks
+  const getErrorColor = () => evaTheme['color-danger-default'] || theme.colors.error[500];
+  const getHintColor = () => evaTheme['text-hint-color'] || theme.colors.text.secondary;
+  const getLabelColor = () => evaTheme['text-basic-color'] || theme.colors.text.primary;
 
   // Render label with required indicator
   const renderLabel = () => {
     if (!label) return null;
 
-    const labelText = required ? `${label} *` : label;
-
     return (
       <View style={styles.labelContainer}>
-        <Text variant="body2" color="primary" weight="medium" style={styles.label}>
-          {labelText}
+        <Text variant="body2" color={getLabelColor()} weight="medium" style={styles.label}>
+          {label}
+          {required && (
+            <Text variant="body2" color={getErrorColor()} style={styles.required}>
+              {' *'}
+            </Text>
+          )}
         </Text>
-        {required && (
-          <Text variant="body2" color={theme.colors.error[500]} style={styles.required}>
-            *
-          </Text>
-        )}
       </View>
     );
   };
@@ -56,7 +60,7 @@ export const FormField: React.FC<FormFieldProps> = ({
     return (
       <Text
         variant="caption"
-        color={theme.colors.error[500]}
+        color={getErrorColor()}
         style={[styles.message, styles.errorMessage]}
         testID={`${testID}-error`}
       >
@@ -70,7 +74,12 @@ export const FormField: React.FC<FormFieldProps> = ({
     if (!hint || error) return null; // Don't show hint when there's an error
 
     return (
-      <Text variant="caption" color="secondary" style={[styles.message, styles.hintMessage]} testID={`${testID}-hint`}>
+      <Text
+        variant="caption"
+        color={getHintColor()}
+        style={[styles.message, styles.hintMessage]}
+        testID={`${testID}-hint`}
+      >
         {hint}
       </Text>
     );
