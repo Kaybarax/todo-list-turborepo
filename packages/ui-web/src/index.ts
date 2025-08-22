@@ -13,5 +13,8 @@ export * from './components/IconButton';
 // Utils
 export * from './utils';
 
+// Tokens
+export * from './tokens';
+
 // Styles
 import './styles.css';
