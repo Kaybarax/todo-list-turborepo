@@ -1,8 +1,8 @@
 {
   "activity": {},
   "announcedBuild": {
-    "id": "68a7b0696be072d7f92e5a70",
-    "number": 14,
+    "id": "68a7b35d2d35179b8763e409",
+    "number": 15,
     "status": "ANNOUNCED",
     "autoAcceptChanges": false,
     "app": {
@@ -55,10 +55,10 @@
   "git": {
     "version": "2.49.0",
     "gitUserEmail": "Kaybarax@users.noreply.github.com",
-    "uncommittedHash": "c207bb363decf5db0b7b3141affb4f32b55945ff",
+    "uncommittedHash": "",
     "rootPath": "/Users/kevin/workspace/todo-list-turborepo",
-    "commit": "cf093f9f5400735ffe2c54930887f924ddde7862",
-    "committedAt": 1755660428000,
+    "commit": "fe167e236b7a849f51f70ad519ad6dc6ce6951ac",
+    "committedAt": 1755820866000,
     "committerEmail": "Kaybarax@users.noreply.github.com",
     "committerName": "Kaybarax",
     "branch": "main",
@@ -106,7 +106,9 @@
     "main": "dist/index.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts",
-    "files": ["dist/**"],
+    "files": [
+      "dist/**"
+    ],
     "exports": {
       ".": {
         "types": "./dist/index.d.ts",
@@ -231,9 +233,9 @@
     "packageManager": "pnpm",
     "packageManagerVersion": "9.12.0"
   },
-  "sessionId": "0f3c82c3-868b-4ead-bd16-93e5807ca6fb",
+  "sessionId": "db7244d1-b497-4d8d-9f76-b5939363a5e6",
   "sourceDir": "chromatic-output",
-  "startedAt": 1755820137687,
+  "startedAt": 1755820893686,
   "storybook": {
     "version": "8.6.14",
     "baseDir": "packages/ui-mobile"

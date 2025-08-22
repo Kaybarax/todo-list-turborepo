@@ -17,6 +17,7 @@ out
 .turbo
 storybook-static
 chromatic-output
+chromatic-diagnostics.json
 
 # Logs
 logs
