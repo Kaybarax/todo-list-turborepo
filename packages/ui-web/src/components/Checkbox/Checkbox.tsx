@@ -11,31 +11,38 @@ const checkboxVariants = cv('checkbox', {
       lg: 'checkbox-lg',
       xl: 'checkbox-lg',
     },
-    state: {
+    variant: {
       default: '',
+      primary: 'checkbox-primary',
+      secondary: 'checkbox-secondary',
+      accent: 'checkbox-accent',
+      info: 'checkbox-info',
       success: 'checkbox-success',
+      warning: 'checkbox-warning',
       error: 'checkbox-error',
     },
   },
   defaultVariants: {
     size: 'md',
-    state: 'default',
+    variant: 'default',
   },
 });
 
 export type CheckboxSize = NonNullable<VariantProps<typeof checkboxVariants>['size']>;
-export type CheckboxState = NonNullable<VariantProps<typeof checkboxVariants>['state']>;
+export type CheckboxVariant = NonNullable<VariantProps<typeof checkboxVariants>['variant']>;
 
 export interface CheckboxProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'>,
-    Partial<Pick<VariantProps<typeof checkboxVariants>, 'size' | 'state'>> {
+    Partial<Pick<VariantProps<typeof checkboxVariants>, 'size' | 'variant'>> {
   indeterminate?: boolean;
   label?: React.ReactNode;
   helperText?: string;
+  /** @deprecated Use variant instead */
+  state?: CheckboxVariant;
 }
 
 export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, size = 'md', state = 'default', indeterminate, label, helperText, id, ...props }, ref) => {
+  ({ className, size = 'md', variant = 'default', state, indeterminate, label, helperText, id, ...props }, ref) => {
     const innerRef = React.useRef<HTMLInputElement | null>(null);
     const combinedRef = (node: HTMLInputElement | null) => {
       innerRef.current = node;
@@ -52,7 +59,9 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       }
     }, [indeterminate]);
 
-    const classes = checkboxVariants({ size, state });
+    // Support legacy state prop by mapping to variant
+    const effectiveVariant = state || variant;
+    const classes = checkboxVariants({ size, variant: effectiveVariant });
     const helperId = helperText ? `${id ?? 'checkbox'}-help` : undefined;
 
     return (
@@ -70,7 +79,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         </label>
         {helperText && (
           <div className="label py-0">
-            <span id={helperId} className={cn('label-text-alt', state === 'error' && 'text-error')}>
+            <span id={helperId} className={cn('label-text-alt', effectiveVariant === 'error' && 'text-error')}>
               {helperText}
             </span>
           </div>

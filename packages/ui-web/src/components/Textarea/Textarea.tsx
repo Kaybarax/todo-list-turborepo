@@ -13,13 +13,23 @@ const textareaVariants = cv('textarea textarea-bordered w-full', {
     },
     state: {
       default: '',
+      primary: 'textarea-primary',
+      secondary: 'textarea-secondary',
+      accent: 'textarea-accent',
+      info: 'textarea-info',
       success: 'textarea-success',
+      warning: 'textarea-warning',
       error: 'textarea-error',
+    },
+    variant: {
+      bordered: 'textarea-bordered',
+      ghost: 'textarea-ghost',
     },
   },
   defaultVariants: {
     size: 'md',
     state: 'default',
+    variant: 'bordered',
   },
 });
 
@@ -28,7 +38,7 @@ export type TextareaState = NonNullable<VariantProps<typeof textareaVariants>['s
 
 export interface TextareaProps
   extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'color'>,
-    Partial<Pick<VariantProps<typeof textareaVariants>, 'size' | 'state'>> {
+    Partial<Pick<VariantProps<typeof textareaVariants>, 'size' | 'state' | 'variant'>> {
   error?: boolean; // legacy, maps to state="error"
   helperText?: string;
   autoResize?: boolean;
@@ -47,6 +57,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       characterCountFormatter,
       size = 'md',
       state = 'default',
+      variant = 'bordered',
       id,
       onInput,
       value,
@@ -71,7 +82,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       return initial.length;
     });
 
-    const classes = textareaVariants({ size, state: effectiveState });
+    const classes = textareaVariants({ size, state: effectiveState, variant });
 
     const resize = React.useCallback(() => {
       if (!autoResize || !innerRef.current) return;

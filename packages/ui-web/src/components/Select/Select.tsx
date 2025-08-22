@@ -13,13 +13,23 @@ const selectVariants = cv('select select-bordered w-full', {
     },
     state: {
       default: '',
+      primary: 'select-primary',
+      secondary: 'select-secondary',
+      accent: 'select-accent',
+      info: 'select-info',
       success: 'select-success',
+      warning: 'select-warning',
       error: 'select-error',
+    },
+    variant: {
+      bordered: 'select-bordered',
+      ghost: 'select-ghost',
     },
   },
   defaultVariants: {
     size: 'md',
     state: 'default',
+    variant: 'bordered',
   },
 });
 
@@ -28,7 +38,7 @@ export type SelectState = NonNullable<VariantProps<typeof selectVariants>['state
 
 export interface SelectProps
   extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'color' | 'size'>,
-    Partial<Pick<VariantProps<typeof selectVariants>, 'size' | 'state'>> {
+    Partial<Pick<VariantProps<typeof selectVariants>, 'size' | 'state' | 'variant'>> {
   helperText?: string;
   error?: boolean; // legacy, maps to state="error"
   'aria-label'?: string;
@@ -47,6 +57,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       'aria-labelledby': ariaLabelledby,
       size = 'md',
       state = 'default',
+      variant = 'bordered',
       id,
       ...props
     },
@@ -61,7 +72,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       'aria-labelledby': ariaLabelledby,
     } as const;
 
-    const classes = selectVariants({ size, state: effectiveState });
+    const classes = selectVariants({ size, state: effectiveState, variant });
 
     return (
       <div className="w-full">

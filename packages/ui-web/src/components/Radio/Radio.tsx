@@ -11,31 +11,40 @@ const radioVariants = cv('radio', {
       lg: 'radio-lg',
       xl: 'radio-lg',
     },
-    state: {
+    variant: {
       default: '',
+      primary: 'radio-primary',
+      secondary: 'radio-secondary',
+      accent: 'radio-accent',
+      info: 'radio-info',
       success: 'radio-success',
+      warning: 'radio-warning',
       error: 'radio-error',
     },
   },
   defaultVariants: {
     size: 'md',
-    state: 'default',
+    variant: 'default',
   },
 });
 
 export type RadioSize = NonNullable<VariantProps<typeof radioVariants>['size']>;
-export type RadioState = NonNullable<VariantProps<typeof radioVariants>['state']>;
+export type RadioVariant = NonNullable<VariantProps<typeof radioVariants>['variant']>;
 
 export interface RadioProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'>,
-    Partial<Pick<VariantProps<typeof radioVariants>, 'size' | 'state'>> {
+    Partial<Pick<VariantProps<typeof radioVariants>, 'size' | 'variant'>> {
   label?: React.ReactNode;
   helperText?: string;
+  /** @deprecated Use variant instead */
+  state?: RadioVariant;
 }
 
 export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
-  ({ className, size = 'md', state = 'default', label, helperText, id, name, ...props }, ref) => {
-    const classes = radioVariants({ size, state });
+  ({ className, size = 'md', variant = 'default', state, label, helperText, id, name, ...props }, ref) => {
+    // Support legacy state prop by mapping to variant
+    const effectiveVariant = state || variant;
+    const classes = radioVariants({ size, variant: effectiveVariant });
     const helperId = helperText ? `${id ?? name ?? 'radio'}-help` : undefined;
 
     return (
@@ -54,7 +63,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
         </label>
         {helperText && (
           <div className="label py-0">
-            <span id={helperId} className={cn('label-text-alt', state === 'error' && 'text-error')}>
+            <span id={helperId} className={cn('label-text-alt', effectiveVariant === 'error' && 'text-error')}>
               {helperText}
             </span>
           </div>
