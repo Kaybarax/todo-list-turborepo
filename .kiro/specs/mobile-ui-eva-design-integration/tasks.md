@@ -121,11 +121,11 @@
   - Update Avatar tests for Eva Design integration
   - _Requirements: 3.1, 3.2, 3.4, 8.1_
 
-- [ ] 7.3 Migrate Switch component to Eva Design
+- [x] 7.3 Migrate Switch component to Eva Design
   - Rebuild Switch using UI Kitten Toggle as base
   - Maintain existing SwitchProps interface and status
-  - Implement Eva Design toggle appearances and theming
-  - Add Eva Design toggle animation and interaction states
+  - Implement Eva Design switch appearances and status
+  - Add Eva Design switch animations and interactions
   - Update Switch tests for Eva Design integration
   - _Requirements: 3.1, 3.2, 3.4, 8.1_
 

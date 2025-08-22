@@ -1,6 +1,7 @@
 import { Toggle, type ToggleProps as KittenToggleProps, Text } from '@ui-kitten/components';
 import React from 'react';
 import { View, StyleSheet, type ViewStyle, type TextStyle, type StyleProp } from 'react-native';
+import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
 export type SwitchStatus = 'basic' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
 
@@ -25,6 +26,7 @@ const Switch: React.FC<SwitchProps> = ({
   style,
   ...props
 }) => {
+  const { theme, evaTheme } = useEnhancedTheme();
   // Map our status to UI Kitten status
   const getKittenStatus = (): KittenToggleProps['status'] => {
     return status;
@@ -37,13 +39,37 @@ const Switch: React.FC<SwitchProps> = ({
     }
   };
 
+  // Get Eva Design colors
+  const getDisabledOpacity = () => parseFloat(evaTheme['opacity-disabled'] || '0.6');
+  const getHintColor = () => evaTheme['text-hint-color'] || theme.colors.text.secondary;
+
   // Combine switch styles
   const switchStyles = [styles.switch, style];
 
+  // Dynamic container styles with Eva Design tokens
+  const containerStyles = [
+    styles.container,
+    {
+      minHeight: theme.spacing.xl * 1.25, // Use theme spacing
+    },
+    disabled && { opacity: getDisabledOpacity() },
+    containerStyle,
+  ];
+
+  // Dynamic label styles with Eva Design tokens
+  const labelStyles = [
+    styles.label,
+    {
+      marginRight: theme.spacing.md, // Use theme spacing
+    },
+    disabled && { color: getHintColor() },
+    labelStyle,
+  ];
+
   return (
-    <View style={[styles.container, disabled && styles.containerDisabled, containerStyle]}>
+    <View style={containerStyles}>
       {label && (
-        <Text category="p1" style={[styles.label, disabled && styles.labelDisabled, labelStyle] as any}>
+        <Text category="p1" style={labelStyles as any}>
           {label}
         </Text>
       )}
@@ -64,17 +90,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    minHeight: 40,
-  },
-  containerDisabled: {
-    opacity: 0.6,
   },
   label: {
     flex: 1,
-    marginRight: 16,
-  },
-  labelDisabled: {
-    color: '#8F9BB3', // UI Kitten text-hint-color
   },
   switch: {
     // UI Kitten Toggle handles its own styling
