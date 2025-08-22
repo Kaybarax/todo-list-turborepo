@@ -1,8 +1,19 @@
 import React from 'react';
 import type { Preview } from '@storybook/react';
+import { ThemeProvider } from '../lib/theme';
 
-// Custom theme provider wrapper for stories using the existing custom theme
-const ThemeProvider = ({ children }: { children: React.ReactNode }) => <div style={styles.container}>{children}</div>;
+// Theme decorator with theme switching support
+const withTheme = (Story: any, context: any) => {
+  const themeName = context.globals.theme === 'dark' ? 'dark' : 'light';
+
+  return (
+    <ThemeProvider initialTheme={themeName} followSystemTheme={false}>
+      <div style={styles.container}>
+        <Story />
+      </div>
+    </ThemeProvider>
+  );
+};
 
 const styles = {
   container: {
@@ -16,13 +27,22 @@ const styles = {
 };
 
 const preview: Preview = {
-  decorators: [
-    Story => (
-      <ThemeProvider>
-        <Story />
-      </ThemeProvider>
-    ),
-  ],
+  decorators: [withTheme],
+  globalTypes: {
+    theme: {
+      description: 'Global theme for components',
+      defaultValue: 'light',
+      toolbar: {
+        title: 'Theme',
+        icon: 'paintbrush',
+        items: [
+          { value: 'light', title: 'Light', icon: 'sun' },
+          { value: 'dark', title: 'Dark', icon: 'moon' },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
@@ -33,21 +53,29 @@ const preview: Preview = {
     },
     layout: 'centered',
     backgrounds: {
-      default: 'light',
-      values: [
-        {
-          name: 'light',
-          value: '#f9f9f9',
-        },
-        {
-          name: 'dark',
-          value: '#333333',
-        },
-        {
-          name: 'white',
-          value: '#ffffff',
-        },
-      ],
+      disable: true, // Use theme switching instead
+    },
+    a11y: {
+      config: {
+        rules: [
+          {
+            id: 'color-contrast',
+            enabled: true,
+          },
+          {
+            id: 'focus-visible',
+            enabled: true,
+          },
+        ],
+      },
+    },
+    docs: {
+      extractComponentDescription: (component: any, { notes }: any) => {
+        if (notes) {
+          return typeof notes === 'string' ? notes : notes.markdown || notes.text;
+        }
+        return null;
+      },
     },
     viewport: {
       viewports: {
