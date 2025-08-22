@@ -4,12 +4,23 @@ const fs = require('fs');
 
 // Try to import Style Dictionary generated tokens
 let tokens = {};
+let daisyuiThemes = {};
 const tokensPath = path.resolve(__dirname, '../../packages/ui-web/dist/tokens/tailwind-tokens.js');
+const themesPath = path.resolve(__dirname, '../../packages/ui-web/dist/tokens/daisyui-themes.js');
+
 if (fs.existsSync(tokensPath)) {
   try {
     tokens = require(tokensPath);
   } catch (error) {
     console.warn('Failed to load Style Dictionary tokens:', error.message);
+  }
+}
+
+if (fs.existsSync(themesPath)) {
+  try {
+    daisyuiThemes = require(themesPath);
+  } catch (error) {
+    console.warn('Failed to load DaisyUI themes:', error.message);
   }
 }
 
@@ -34,6 +45,9 @@ module.exports = {
   plugins: [require('daisyui')],
   daisyui: {
     themes: [
+      // Include Style Dictionary generated themes if available
+      ...(daisyuiThemes.themes || []),
+      // Standard DaisyUI themes
       'light',
       'dark',
       'cupcake',

@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
+    "prebuild": "cd ../../packages/ui-web && npm run tokens:build",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
