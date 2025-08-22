@@ -82,6 +82,7 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
           value={title}
           onChange={e => setTitle(e.target.value)}
           placeholder="Enter todo title"
+          variant="bordered"
           required
         />
       </div>
@@ -96,6 +97,7 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
           onChange={e => setDescription(e.target.value)}
           rows={3}
           placeholder="Enter todo description"
+          variant="bordered"
         />
       </div>
 
@@ -104,7 +106,11 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
           <Label htmlFor="priority" className="block text-base-content mb-1">
             Priority
           </Label>
-          <Select value={priority} onChange={e => setPriority(e.target.value as 'low' | 'medium' | 'high')}>
+          <Select
+            value={priority}
+            onChange={e => setPriority(e.target.value as 'low' | 'medium' | 'high')}
+            variant="bordered"
+          >
             <SelectItem value="">Select priority</SelectItem>
             <SelectItem value="low">Low</SelectItem>
             <SelectItem value="medium">Medium</SelectItem>
@@ -116,7 +122,13 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
           <Label htmlFor="dueDate" className="block text-base-content mb-1">
             Due Date
           </Label>
-          <Input type="date" id="dueDate" value={dueDate} onChange={e => setDueDate(e.target.value)} />
+          <Input
+            type="date"
+            id="dueDate"
+            value={dueDate}
+            onChange={e => setDueDate(e.target.value)}
+            variant="bordered"
+          />
         </div>
       </div>
 
@@ -132,6 +144,7 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
             onChange={e => setTagInput(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Add a tag"
+            variant="bordered"
             className="flex-1 rounded-r-none"
           />
           <Button type="button" onClick={addTag} variant="outline" className="rounded-l-none border-l-0">
