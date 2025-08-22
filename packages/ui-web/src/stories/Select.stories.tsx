@@ -10,6 +10,16 @@ const meta: Meta<typeof Select> = {
   },
   tags: ['autodocs'],
   argTypes: {
+    size: {
+      control: 'select',
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      description: 'Size variant',
+    },
+    state: {
+      control: 'select',
+      options: ['default', 'success', 'error'],
+      description: 'State variant',
+    },
     error: {
       control: 'boolean',
       description: 'Whether the select has an error state',
@@ -35,6 +45,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     className: 'w-[180px]',
+    'aria-label': 'Select a fruit',
     children: (
       <>
         <option value="">Select a fruit</option>
@@ -51,6 +62,7 @@ export const Default: Story = {
 export const WithHelperText: Story = {
   args: {
     className: 'w-[180px]',
+    'aria-label': 'Select a fruit with helper',
     helperText: 'Choose your favorite fruit',
     children: (
       <>
@@ -68,6 +80,7 @@ export const WithHelperText: Story = {
 export const WithError: Story = {
   args: {
     className: 'w-[180px]',
+    'aria-label': 'Select a fruit with error',
     error: true,
     helperText: 'Please select a fruit',
     children: (
@@ -86,6 +99,7 @@ export const WithError: Story = {
 export const Disabled: Story = {
   args: {
     className: 'w-[180px]',
+    'aria-label': 'Disabled select',
     disabled: true,
     children: (
       <>
@@ -103,6 +117,7 @@ export const Disabled: Story = {
 export const WithGroups: Story = {
   args: {
     className: 'w-[200px]',
+    'aria-label': 'Select a timezone',
     children: (
       <>
         <option value="">Select a timezone</option>
@@ -122,6 +137,61 @@ export const WithGroups: Story = {
           <option value="jst">Japan Standard Time (JST)</option>
           <option value="kst">Korea Standard Time (KST)</option>
         </optgroup>
+      </>
+    ),
+  },
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-3 w-96">
+      <Select size="xs" aria-label="Size XS">
+        <option value="">XS</option>
+      </Select>
+      <Select size="sm" aria-label="Size SM">
+        <option value="">SM</option>
+      </Select>
+      <Select size="md" aria-label="Size MD">
+        <option value="">MD</option>
+      </Select>
+      <Select size="lg" aria-label="Size LG">
+        <option value="">LG</option>
+      </Select>
+      <Select size="xl" aria-label="Size XL">
+        <option value="">XL</option>
+      </Select>
+    </div>
+  ),
+};
+
+export const States: Story = {
+  render: () => (
+    <div className="flex flex-col gap-3 w-96">
+      <Select state="default" aria-label="State default">
+        <option value="">Default</option>
+      </Select>
+      <Select state="success" helperText="Looks good!" aria-label="State success">
+        <option value="">Success</option>
+      </Select>
+      <Select state="error" helperText="Please fix this" aria-label="State error">
+        <option value="">Error</option>
+      </Select>
+    </div>
+  ),
+};
+
+export const Multiple: Story = {
+  args: {
+    className: 'w-[220px] h-40',
+    'aria-label': 'Select multiple fruits',
+    multiple: true,
+    children: (
+      <>
+        <option value="apple">Apple</option>
+        <option value="banana">Banana</option>
+        <option value="blueberry">Blueberry</option>
+        <option value="grapes">Grapes</option>
+        <option value="pineapple">Pineapple</option>
       </>
     ),
   },

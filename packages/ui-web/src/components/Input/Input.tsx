@@ -59,7 +59,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             id={id}
             type={type}
             className={cn(classes, className)}
-            aria-invalid={effectiveState === 'error'}
+            aria-invalid={effectiveState === 'error' ? true : undefined}
             aria-describedby={helperId}
             {...props}
           />

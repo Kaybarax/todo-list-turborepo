@@ -1,31 +1,76 @@
 import React from 'react';
 
-import { cn } from '../../utils';
+import { cn, cv, type VariantProps } from '../../utils';
 
-// Simple wrapper around Flowbite Select
-export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'color' | 'size'> {
+const selectVariants = cv('select select-bordered w-full', {
+  variants: {
+    size: {
+      xs: 'select-xs',
+      sm: 'select-sm',
+      md: 'select-md',
+      lg: 'select-lg',
+      xl: 'select-lg text-lg',
+    },
+    state: {
+      default: '',
+      success: 'select-success',
+      error: 'select-error',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+    state: 'default',
+  },
+});
+
+export type SelectSize = NonNullable<VariantProps<typeof selectVariants>['size']>;
+export type SelectState = NonNullable<VariantProps<typeof selectVariants>['state']>;
+
+export interface SelectProps
+  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'color' | 'size'>,
+    Partial<Pick<VariantProps<typeof selectVariants>, 'size' | 'state'>> {
   helperText?: string;
-  error?: boolean;
+  error?: boolean; // legacy, maps to state="error"
   'aria-label'?: string;
   'aria-labelledby'?: string;
+  id?: string;
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   (
-    { className, helperText, error, children, 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledby, ...props },
+    {
+      className,
+      helperText,
+      error,
+      children,
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledby,
+      size = 'md',
+      state = 'default',
+      id,
+      ...props
+    },
     ref,
   ) => {
+    const effectiveState: SelectState = error ? 'error' : (state ?? 'default');
+    const helperId = helperText ? `${id ?? 'select'}-help` : undefined;
+
     // Ensure accessibility by providing a fallback aria-label if none is provided
     const accessibilityProps = {
       'aria-label': ariaLabel ?? (ariaLabelledby ? undefined : 'Select option'),
       'aria-labelledby': ariaLabelledby,
-    };
+    } as const;
+
+    const classes = selectVariants({ size, state: effectiveState });
 
     return (
       <div className="w-full">
         <select
           ref={ref}
-          className={cn('select select-bordered w-full', error && 'select-error', className)}
+          id={id}
+          className={cn(classes, className)}
+          aria-invalid={effectiveState === 'error' ? true : undefined}
+          aria-describedby={helperId}
           {...accessibilityProps}
           {...props}
         >
@@ -34,7 +79,9 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 
         {helperText && (
           <div className="label">
-            <span className={cn('label-text-alt', error && 'text-error')}>{helperText}</span>
+            <span id={helperId} className={cn('label-text-alt', effectiveState === 'error' && 'text-error')}>
+              {helperText}
+            </span>
           </div>
         )}
       </div>

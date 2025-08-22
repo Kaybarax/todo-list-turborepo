@@ -102,7 +102,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             ref={combinedRef}
             id={id}
             className={cn(classes, className)}
-            aria-invalid={effectiveState === 'error'}
+            aria-invalid={effectiveState === 'error' ? true : undefined}
             aria-describedby={helperId}
             maxLength={maxLength}
             value={value as any}
