@@ -33,6 +33,10 @@ export type { FormFieldProps } from './components/FormField';
 export { ListItem } from './components/ListItem';
 export type { ListItemProps } from './components/ListItem';
 
+// Organism Components
+export { Header } from './components/Header';
+export type { HeaderProps } from './components/Header';
+
 export { Badge } from './components/Badge';
 export type { BadgeProps, BadgeVariant, BadgeSize } from './components/Badge';
 
