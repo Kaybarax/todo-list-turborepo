@@ -61,8 +61,39 @@ export { Checkbox } from './components/Checkbox';
 export type { CheckboxProps, CheckboxStatus } from './components/Checkbox';
 
 // Theme System
-export { ThemeProvider, useTheme, lightTheme, darkTheme, themes, getTheme, validateTheme, getSafeTheme } from './theme';
-export type { Theme, ThemeName, ThemeContextValue } from './theme';
+export { ThemeProvider, useTheme } from './theme';
+export type { Theme } from './theme';
+
+// Utilities
+export {
+  generateAccessibilityLabel,
+  generateAccessibilityHint,
+  calculateContrastRatio,
+  validateContrastRatio,
+  validateTouchTargetSize,
+  getAccessibilityRole,
+  createAccessibilityState,
+  createAccessibilityValue,
+  formatNumberForScreenReader,
+  createAccessibilityProps,
+  getScreenInfo,
+  matchesBreakpoint,
+  getResponsiveValue,
+  scaleByDensity,
+  scaleFontSize,
+  getPlatformValue,
+  isLandscape,
+  getSafeMargins,
+  getGridColumns,
+  createResponsiveStyle,
+  clampByScreenSize,
+  getResponsiveSpacing,
+} from './utils';
+
+export type { AccessibilityProps, ScreenInfo } from './utils';
+
+// Hooks
+export * from './hooks';
 
 // Design Tokens
 export * from './tokens';

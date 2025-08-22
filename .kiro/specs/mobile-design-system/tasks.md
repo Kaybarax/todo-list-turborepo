@@ -99,21 +99,21 @@
   - _Requirements: 2.2, 6.2, 7.1, 8.1_
 
 - [ ] 6. Implement utility functions and hooks
-- [ ] 6.1 Create accessibility utilities
+- [x] 6.1 Create accessibility utilities
   - Implement accessibility helper functions for labels, hints, and roles
   - Add contrast ratio calculation and validation utilities
   - Create touch target size validation functions
   - Write unit tests for all accessibility utilities
   - _Requirements: 6.1, 6.3, 6.4, 7.1_
 
-- [ ] 6.2 Implement responsive utilities
+- [x] 6.2 Implement responsive utilities
   - Create responsive helper functions for different screen sizes
   - Add breakpoint utilities for conditional rendering
   - Implement platform-specific utilities (iOS/Android)
   - Write unit tests for responsive behavior
   - _Requirements: 1.6, 7.1, 8.1_
 
-- [ ] 6.3 Create custom hooks
+- [x] 6.3 Create custom hooks
   - Implement useAccessibility hook for accessibility features
   - Create useResponsive hook for responsive design
   - Add usePlatform hook for platform-specific behavior
