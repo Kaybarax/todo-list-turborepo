@@ -15,8 +15,9 @@ export * from './implementations/PolkadotBlockchainService';
 export * from './implementations/MoonbeamBlockchainService';
 export * from './implementations/BaseNetworkBlockchainService';
 
-// Utils
-export * from './utils/TransactionMonitor';
+// Utils - re-export specific items to avoid conflicts
+export { TransactionMonitor } from '@todo/utils/blockchain/monitoring';
+export { BlockchainError } from '@todo/utils/blockchain/errors';
 
 // Factory
 export * from './BlockchainServiceFactory';

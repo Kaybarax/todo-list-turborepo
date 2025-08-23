@@ -3,7 +3,7 @@ import {
   MoonbeamBlockchainServiceOptions,
 } from '../implementations/MoonbeamBlockchainService';
 import { BlockchainNetwork, TransactionStatus, BlockchainTodoStatus } from '../types';
-import { BlockchainError } from '../utils/BlockchainError';
+import { BlockchainError } from '@todo/utils/blockchain/errors';
 
 // Mock the TransactionMonitor
 jest.mock('../utils/TransactionMonitor', () => ({

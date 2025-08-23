@@ -15,7 +15,7 @@ export interface RenderResult {
 }
 
 // Mock render function for environments without React Native
-const mockRender = (ui: React.ReactElement, options?: RenderOptions): RenderResult => {
+const mockRender = (_ui: React.ReactElement, _options?: RenderOptions): RenderResult => {
   return {
     getByText: (text: string) => ({ textContent: text }),
     getByRole: (role: string) => ({ role }),

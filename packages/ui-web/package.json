@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@todo/services": "workspace:*",
+    "@todo/utils": "workspace:*",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "daisyui": "^5.0.50",

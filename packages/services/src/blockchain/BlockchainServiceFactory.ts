@@ -14,7 +14,7 @@ import {
 import { SolanaBlockchainService } from './implementations/SolanaBlockchainService';
 import { type BlockchainService } from './interfaces/BlockchainService';
 import { BlockchainNetwork } from './types';
-import { BlockchainError } from './utils/BlockchainError';
+import { BlockchainError } from '@todo/utils/blockchain/errors';
 
 /**
  * Configuration for blockchain services

@@ -61,6 +61,6 @@ export type {
 export * from './api';
 
 // Utilities
-export { getEnvVar } from './utils/env';
+export { getEnvVar } from '@todo/utils/common/env';
 
 // Add more services as they are created

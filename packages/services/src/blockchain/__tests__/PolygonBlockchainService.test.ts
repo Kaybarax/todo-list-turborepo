@@ -1,5 +1,5 @@
 import { PolygonBlockchainService } from '../implementations/PolygonBlockchainService';
-import { BlockchainError } from '../utils/BlockchainError';
+import { BlockchainError } from '@todo/utils/blockchain/errors';
 import { ethers } from 'ethers';
 
 // Mock ethers

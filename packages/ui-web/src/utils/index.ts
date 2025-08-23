@@ -1,16 +1,6 @@
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
 /**
- * Combines multiple class names and merges Tailwind CSS classes
- * @param inputs - Class names to combine
- * @returns Merged class names
+ * Re-export utilities from the centralized utils package
+ * This maintains compatibility with existing @/utils imports
  */
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
 
-export * from './cva';
-export * from './a11y';
-export * from './responsive';
-export * from './type-guards';
+export * from '@todo/utils/ui/web';

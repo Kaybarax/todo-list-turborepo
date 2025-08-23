@@ -9,8 +9,8 @@ import {
   BlockchainTodoStatus,
 } from '../types';
 import { BaseBlockchainService } from './BaseBlockchainService';
-import { BlockchainError } from '../utils/BlockchainError';
-import { type TransactionMonitorOptions } from '../utils/TransactionMonitor';
+import { BlockchainError } from '@todo/utils/blockchain/errors';
+import { type TransactionMonitorOptions } from '@todo/utils/blockchain/monitoring';
 
 /**
  * Options for Polygon blockchain service

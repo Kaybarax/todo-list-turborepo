@@ -8,8 +8,8 @@ import {
   type UpdateBlockchainTodoInput,
   type WalletInfo,
 } from '../types';
-import { BlockchainError } from '../utils/BlockchainError';
-import { TransactionMonitor, type TransactionMonitorOptions } from '../utils/TransactionMonitor';
+import { BlockchainError } from '@todo/utils/blockchain/errors';
+import { TransactionMonitor, type TransactionMonitorOptions } from '@todo/utils/blockchain/monitoring';
 
 /**
  * Base abstract class for blockchain service implementations

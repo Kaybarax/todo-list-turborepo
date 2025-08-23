@@ -27,6 +27,7 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@todo/utils": "workspace:*",
     "axios": "^1.11.0",
     "date-fns": "^4.1.0",
     "zod": "^4.0.17",

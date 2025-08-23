@@ -1,4 +1,16 @@
-import type { ApiTodo } from '@todo/services';
+// Local type definition to avoid circular dependency with @todo/services
+interface ApiTodo {
+  id: string;
+  title: string;
+  description?: string;
+  completed: boolean;
+  priority: 'low' | 'medium' | 'high';
+  dueDate?: string;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+}
 
 // Define TodoData interface to match the ui-web package
 export interface TodoData {
@@ -23,7 +35,9 @@ export interface TodoData {
  * @param apiTodo - Partial API todo data
  * @returns TodoData object for UI components
  */
-export function apiTodoToTodo(apiTodo: Partial<ApiTodo>): TodoData {
+export function apiTodoToTodo(
+  apiTodo: Partial<ApiTodo> & { blockchainNetwork?: string; transactionHash?: string; blockchainAddress?: string },
+): TodoData {
   return {
     id: apiTodo.id ?? '1',
     title: apiTodo.title ?? 'Test Todo',

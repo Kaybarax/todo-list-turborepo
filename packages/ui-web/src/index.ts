@@ -46,7 +46,7 @@ export * from '../lib/components/blockchain';
 export * from '../lib/components/theme';
 
 // Core utilities
-export { cn, type VariantProps } from './utils';
+export { cn, type VariantProps } from '@todo/utils/ui/web';
 
 // Components
 export { Button, type ButtonProps } from '../lib/components/Button';
@@ -122,7 +122,7 @@ export {
 } from './types';
 
 // Token Utilities
-export * from './utils/tokens';
+export * from '@todo/utils/ui/web/tokens';
 
 // Styles
 import './styles.css';

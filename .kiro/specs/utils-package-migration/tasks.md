@@ -94,50 +94,50 @@
     - Include contribution guidelines for adding new utilities
     - _Requirements: 6.1, 6.3, 6.4_
 
-- [ ] 8. Update package dependencies and imports
-  - [ ] 8.1 Update services package
+- [x] 8. Update package dependencies and imports
+  - [x] 8.1 Update services package
     - Remove old utils directory from services package
     - Update all imports to use `@todo/utils` instead of local utils
     - Update package.json to depend on `@todo/utils`
     - Run tests to ensure no functionality is broken
     - _Requirements: 3.1, 3.2, 3.4_
 
-  - [ ] 8.2 Update ui-web package
+  - [x] 8.2 Update ui-web package
     - Remove old utils directory from ui-web package
     - Update all imports to use `@todo/utils/ui/web` instead of local utils
     - Update package.json to depend on `@todo/utils`
     - Run tests and Storybook to ensure UI components work correctly
     - _Requirements: 3.1, 3.2, 3.4_
 
-  - [ ] 8.3 Update ui-mobile package
+  - [x] 8.3 Update ui-mobile package
     - Remove old test utils from ui-mobile package
     - Update test imports to use `@todo/utils/testing/mobile`
     - Update package.json to depend on `@todo/utils`
     - Run tests to ensure mobile testing works correctly
     - _Requirements: 3.1, 3.2, 3.4_
 
-  - [ ] 8.4 Update web app
+  - [x] 8.4 Update web app
     - Remove old test utils from web app
     - Update test imports to use `@todo/utils/testing/api`
     - Update package.json to depend on `@todo/utils`
     - Run all tests to ensure web app functionality is preserved
     - _Requirements: 3.1, 3.2, 3.4_
 
-  - [ ] 8.5 Update ingestion app
+  - [x] 8.5 Update ingestion app
     - Remove old logger utils from ingestion app
     - Update logger imports to use `@todo/utils/logging`
     - Update package.json to depend on `@todo/utils`
     - Test ingestion service to ensure logging works correctly
     - _Requirements: 3.1, 3.2, 3.4_
 
-- [ ] 9. Update monorepo build configuration
-  - [ ] 9.1 Update workspace dependencies
+- [x] 9. Update monorepo build configuration
+  - [x] 9.1 Update workspace dependencies
     - Add `@todo/utils` to pnpm workspace configuration
     - Update Turborepo configuration to build utils package before dependent packages
     - Ensure proper build order in CI/CD pipeline
     - _Requirements: 4.3, 4.4_
 
-  - [ ] 9.2 Update root package.json and scripts
+  - [x] 9.2 Update root package.json and scripts
     - Update any root-level scripts that might reference old utility paths
     - Ensure linting and formatting rules apply to the new utils package
     - Update any documentation that references old utility locations

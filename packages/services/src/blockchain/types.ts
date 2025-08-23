@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { getEnvVar } from '../utils/env';
+import { getEnvVar } from '@todo/utils/common/env';
+import { TransactionStatus, type TransactionReceipt } from '@todo/utils/blockchain/monitoring';
+
+// Re-export types from utils for convenience
+export { TransactionStatus, type TransactionReceipt };
 
 /**
  * Supported blockchain networks
@@ -19,16 +23,7 @@ export enum BlockchainNetwork {
   BASE_TESTNET = 'base_testnet',
 }
 
-/**
- * Transaction status
- */
-/* eslint-disable no-unused-vars -- Public API enum for transaction status */
-export enum TransactionStatus {
-  PENDING = 'pending',
-  CONFIRMED = 'confirmed',
-  FAILED = 'failed',
-  UNKNOWN = 'unknown',
-}
+// TransactionStatus is re-exported from @todo/utils/blockchain/monitoring
 
 /**
  * Todo status on blockchain
@@ -74,10 +69,7 @@ export const transactionReceiptSchema = z.object({
   fee: z.string().optional(),
 });
 
-/**
- * Type for transaction receipt
- */
-export type TransactionReceipt = z.infer<typeof transactionReceiptSchema>;
+// TransactionReceipt type is re-exported from @todo/utils/blockchain/monitoring
 
 /**
  * Schema for blockchain todo
