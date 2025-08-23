@@ -106,7 +106,11 @@ describe('Label', () => {
     );
     expect(screen.getByText('Bold')).toBeInTheDocument();
     expect(screen.getByText('italic')).toBeInTheDocument();
-    expect(screen.getByText('and')).toBeInTheDocument();
+    expect(
+      screen.getByText((content, element) => {
+        return (element?.tagName === 'LABEL' && element?.textContent?.includes('and')) ?? false;
+      }),
+    ).toBeInTheDocument();
   });
 
   it('maintains accessibility with screen readers', () => {

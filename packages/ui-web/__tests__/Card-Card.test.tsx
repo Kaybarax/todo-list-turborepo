@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, it, expect } from 'vitest';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../lib/Card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../lib/components/Card';
 
 describe('Card', () => {
   it('renders content with elevation and non-interactive by default', () => {

@@ -8,17 +8,10 @@ const toMatchImageSnapshot = () => ({ pass: true, message: () => 'Mock snapshot 
 expect.extend({ toMatchImageSnapshot });
 
 // Import components for screenshot testing
-import { Button } from '../lib/../src/components/Button/Button';
-import { Badge } from '../lib/../src/components/Badge/Badge';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '../lib/../src/components/Card/Card';
-import { Input } from '../lib/../src/components/Input/Input';
+import { Button } from '../../lib/components/Button';
+import { Badge } from '../../lib/components/Badge';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../lib/components/Card';
+import { Input } from '../../lib/components/Input';
 
 // Mock HTML canvas for consistent screenshots
 Object.defineProperty(HTMLCanvasElement.prototype, 'getContext', {
@@ -84,7 +77,7 @@ describe('Visual Regression Tests', () => {
         <div className="p-4 space-y-2 bg-white">
           <div className="space-x-2">
             <Button>Default</Button>
-            <Button variant="destructive">Destructive</Button>
+            <Button variant="error">Destructive</Button>
             <Button variant="outline">Outline</Button>
             <Button variant="secondary">Secondary</Button>
             <Button variant="ghost">Ghost</Button>
@@ -94,7 +87,7 @@ describe('Visual Regression Tests', () => {
             <Button size="sm">Small</Button>
             <Button>Default</Button>
             <Button size="lg">Large</Button>
-            <Button size="icon">🔍</Button>
+            <Button size="sm">🔍</Button>
           </div>
           <div className="space-x-2">
             <Button disabled>Disabled</Button>
@@ -262,7 +255,7 @@ describe('Visual Regression Tests', () => {
           <div className="flex flex-wrap gap-2">
             <Badge>Default</Badge>
             <Badge variant="secondary">Secondary</Badge>
-            <Badge variant="destructive">Destructive</Badge>
+            <Badge variant="error">Destructive</Badge>
             <Badge variant="outline">Outline</Badge>
 
             <Badge>123</Badge>
@@ -291,7 +284,7 @@ describe('Visual Regression Tests', () => {
           <div className="flex flex-wrap gap-1">
             <Badge>New</Badge>
             <Badge variant="secondary">Updated</Badge>
-            <Badge variant="destructive">Deprecated</Badge>
+            <Badge variant="error">Deprecated</Badge>
           </div>
 
           <div className="flex items-center gap-2">
@@ -348,7 +341,7 @@ describe('Visual Regression Tests', () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <span>API</span>
-                    <Badge variant="destructive">Blocked</Badge>
+                    <Badge variant="error">Blocked</Badge>
                   </div>
                 </div>
               </CardContent>
@@ -371,7 +364,7 @@ describe('Visual Regression Tests', () => {
           <div className="space-y-4">
             <div className="space-x-2">
               <Button>Default</Button>
-              <Button variant="destructive">Destructive</Button>
+              <Button variant="error">Destructive</Button>
               <Button variant="outline">Outline</Button>
             </div>
 

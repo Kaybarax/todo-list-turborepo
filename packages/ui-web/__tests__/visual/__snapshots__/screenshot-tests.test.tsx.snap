@@ -7,73 +7,73 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
   <div
     class="flex flex-wrap gap-1"
   >
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-outline hover:shadow-md badge-sm"
     >
       <span
         class="truncate"
       >
         React
       </span>
-    </div>
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
+    </span>
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-outline hover:shadow-md badge-sm"
     >
       <span
         class="truncate"
       >
         TypeScript
       </span>
-    </div>
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
+    </span>
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-outline hover:shadow-md badge-sm"
     >
       <span
         class="truncate"
       >
         Tailwind
       </span>
-    </div>
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
+    </span>
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-outline hover:shadow-md badge-sm"
     >
       <span
         class="truncate"
       >
         Storybook
       </span>
-    </div>
+    </span>
   </div>
   <div
     class="flex flex-wrap gap-1"
   >
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-neutral shadow-neutral/25 hover:shadow-lg hover:shadow-neutral/40 badge-sm"
     >
       <span
         class="truncate"
       >
         New
       </span>
-    </div>
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 px-2.5 py-0.5 text-xs rounded-full"
+    </span>
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-secondary shadow-secondary/20 hover:shadow-md badge-sm"
     >
       <span
         class="truncate"
       >
         Updated
       </span>
-    </div>
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 px-2.5 py-0.5 text-xs rounded-full"
+    </span>
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-error shadow-error/25 hover:shadow-lg hover:shadow-error/40 badge-sm"
     >
       <span
         class="truncate"
       >
         Deprecated
       </span>
-    </div>
+    </span>
   </div>
   <div
     class="flex items-center gap-2"
@@ -81,8 +81,8 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
     <span>
       Status:
     </span>
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full border-green-500 text-green-700"
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-outline hover:shadow-md badge-sm border-green-500 text-green-700"
     >
       <span
         class="truncate"
@@ -92,7 +92,7 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
         />
         Active
       </span>
-    </div>
+    </span>
   </div>
 </div>
 `;
@@ -104,53 +104,53 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
   <div
     class="flex flex-wrap gap-2"
   >
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-neutral shadow-neutral/25 hover:shadow-lg hover:shadow-neutral/40 badge-sm"
     >
       <span
         class="truncate"
       >
         Default
       </span>
-    </div>
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 px-2.5 py-0.5 text-xs rounded-full"
+    </span>
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-secondary shadow-secondary/20 hover:shadow-md badge-sm"
     >
       <span
         class="truncate"
       >
         Secondary
       </span>
-    </div>
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 px-2.5 py-0.5 text-xs rounded-full"
+    </span>
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-error shadow-error/25 hover:shadow-lg hover:shadow-error/40 badge-sm"
     >
       <span
         class="truncate"
       >
         Destructive
       </span>
-    </div>
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
+    </span>
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-outline hover:shadow-md badge-sm"
     >
       <span
         class="truncate"
       >
         Outline
       </span>
-    </div>
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
+    </span>
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-neutral shadow-neutral/25 hover:shadow-lg hover:shadow-neutral/40 badge-sm"
     >
       <span
         class="truncate"
       >
         123
       </span>
-    </div>
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 px-2.5 py-0.5 text-xs rounded-full"
+    </span>
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-secondary shadow-secondary/20 hover:shadow-md badge-sm"
     >
       <span
         class="truncate"
@@ -160,16 +160,16 @@ exports[`Visual Regression Tests > Badge Component Screenshots > should match ba
         />
         Online
       </span>
-    </div>
-    <div
-      class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
+    </span>
+    <span
+      class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-outline hover:shadow-md badge-sm"
     >
       <span
         class="truncate"
       >
         🔥 Hot
       </span>
-    </div>
+    </span>
   </div>
 </div>
 `;
@@ -179,22 +179,29 @@ exports[`Visual Regression Tests > Button Component Screenshots > should match b
   class="p-4 space-y-2 bg-white"
 >
   <button
-    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+    class="btn bg-primary h-10 btn-primary btn-md"
+    type="button"
   >
     Normal
   </button>
   <button
-    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+    aria-disabled="true"
+    class="btn bg-primary h-10 btn-primary btn-md"
     disabled=""
+    type="button"
   >
     Disabled
   </button>
   <button
-    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+    aria-busy="true"
+    aria-disabled="true"
+    class="btn bg-primary h-10 btn-primary btn-md loading"
     disabled=""
+    type="button"
   >
     <svg
-      class="mr-2 h-4 w-4 animate-spin"
+      aria-hidden="true"
+      class="animate-spin h-4 w-4"
       fill="none"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
@@ -209,18 +216,21 @@ exports[`Visual Regression Tests > Button Component Screenshots > should match b
       />
       <path
         class="opacity-75"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
         fill="currentColor"
       />
     </svg>
-    Loading
   </button>
   <button
-    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+    aria-busy="true"
+    aria-disabled="true"
+    class="btn bg-primary h-10 btn-primary btn-md loading"
     disabled=""
+    type="button"
   >
     <svg
-      class="mr-2 h-4 w-4 animate-spin"
+      aria-hidden="true"
+      class="animate-spin h-4 w-4"
       fill="none"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
@@ -235,11 +245,13 @@ exports[`Visual Regression Tests > Button Component Screenshots > should match b
       />
       <path
         class="opacity-75"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
         fill="currentColor"
       />
     </svg>
-    Please wait...
+    <span>
+      Processing...
+    </span>
   </button>
 </div>
 `;
@@ -252,32 +264,38 @@ exports[`Visual Regression Tests > Button Component Screenshots > should match b
     class="space-x-2"
   >
     <button
-      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+      class="btn bg-primary h-10 btn-primary btn-md"
+      type="button"
     >
       Default
     </button>
     <button
-      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2"
+      class="btn bg-primary h-10 btn-error btn-md"
+      type="button"
     >
       Destructive
     </button>
     <button
-      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+      class="btn bg-primary h-10 btn-outline btn-md"
+      type="button"
     >
       Outline
     </button>
     <button
-      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
+      class="btn bg-primary h-10 btn-secondary btn-md"
+      type="button"
     >
       Secondary
     </button>
     <button
-      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+      class="btn bg-primary h-10 btn-ghost btn-md"
+      type="button"
     >
       Ghost
     </button>
     <button
-      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary underline-offset-4 hover:underline h-10 px-4 py-2"
+      class="btn bg-primary h-10 btn-link btn-md"
+      type="button"
     >
       Link
     </button>
@@ -286,22 +304,26 @@ exports[`Visual Regression Tests > Button Component Screenshots > should match b
     class="space-x-2"
   >
     <button
-      class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3 bg-primary text-primary-foreground hover:bg-primary/90"
+      class="btn bg-primary h-10 btn-primary btn-sm"
+      type="button"
     >
       Small
     </button>
     <button
-      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+      class="btn bg-primary h-10 btn-primary btn-md"
+      type="button"
     >
       Default
     </button>
     <button
-      class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 rounded-md px-8 bg-primary text-primary-foreground hover:bg-primary/90"
+      class="btn bg-primary h-10 btn-primary btn-lg"
+      type="button"
     >
       Large
     </button>
     <button
-      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10 bg-primary text-primary-foreground hover:bg-primary/90"
+      class="btn bg-primary h-10 btn-primary btn-sm"
+      type="button"
     >
       🔍
     </button>
@@ -310,17 +332,23 @@ exports[`Visual Regression Tests > Button Component Screenshots > should match b
     class="space-x-2"
   >
     <button
-      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+      aria-disabled="true"
+      class="btn bg-primary h-10 btn-primary btn-md"
       disabled=""
+      type="button"
     >
       Disabled
     </button>
     <button
-      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+      aria-busy="true"
+      aria-disabled="true"
+      class="btn bg-primary h-10 btn-primary btn-md loading"
       disabled=""
+      type="button"
     >
       <svg
-        class="mr-2 h-4 w-4 animate-spin"
+        aria-hidden="true"
+        class="animate-spin h-4 w-4"
         fill="none"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
@@ -335,17 +363,18 @@ exports[`Visual Regression Tests > Button Component Screenshots > should match b
         />
         <path
           class="opacity-75"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
           fill="currentColor"
         />
       </svg>
-      Loading
     </button>
     <button
-      class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+      class="btn bg-primary h-10 btn-primary btn-md"
+      type="button"
     >
       <span
-        class="mr-2"
+        aria-hidden="true"
+        class="mr-2 inline-flex items-center"
       >
         <span>
           ←
@@ -362,13 +391,13 @@ exports[`Visual Regression Tests > Card Component Screenshots > should match car
   class="p-4 space-y-4 bg-gray-50"
 >
   <div
-    class="rounded-lg border bg-card text-card-foreground shadow-sm border-border"
+    class="card bg-base-100 transition-shadow shadow-xl w-80"
   >
     <div
-      class="flex flex-col space-y-1.5 p-6"
+      class="card-body flex flex-col space-y-1.5 p-6"
     >
       <h3
-        class="text-2xl font-semibold leading-none tracking-tight"
+        class="card-title text-2xl font-semibold"
       >
         Basic Card
       </h3>
@@ -379,49 +408,50 @@ exports[`Visual Regression Tests > Card Component Screenshots > should match car
       </p>
     </div>
     <div
-      class="p-6 pt-0"
+      class="card-body p-6 pt-0"
     >
       <p>
         This is the card content.
       </p>
     </div>
     <div
-      class="flex items-center p-6 pt-0"
+      class="card-actions justify-end flex items-center p-6 pt-0"
     >
       <button
-        class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3 bg-primary text-primary-foreground hover:bg-primary/90"
+        class="btn bg-primary h-10 btn-primary btn-sm"
+        type="button"
       >
         Action
       </button>
     </div>
   </div>
   <div
-    class="rounded-lg border bg-card text-card-foreground shadow-sm border-border"
+    class="card bg-base-100 transition-shadow shadow-xl w-80"
   >
     <div
-      class="flex flex-col space-y-1.5 p-6"
+      class="card-body flex flex-col space-y-1.5 p-6"
     >
       <div
         class="flex items-center justify-between"
       >
         <h3
-          class="text-2xl font-semibold leading-none tracking-tight"
+          class="card-title text-2xl font-semibold"
         >
           Card with Badge
         </h3>
-        <div
-          class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
+        <span
+          class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-neutral shadow-neutral/25 hover:shadow-lg hover:shadow-neutral/40 badge-sm"
         >
           <span
             class="truncate"
           >
             New
           </span>
-        </div>
+        </span>
       </div>
     </div>
     <div
-      class="p-6 pt-0"
+      class="card-body p-6 pt-0"
     >
       <p>
         Card with badge in header.
@@ -436,17 +466,17 @@ exports[`Visual Regression Tests > Card Component Screenshots > should match com
   class="p-4 bg-white"
 >
   <div
-    class="rounded-lg border bg-card text-card-foreground shadow-sm border-border"
+    class="card bg-base-100 transition-shadow shadow-xl w-96"
   >
     <div
-      class="flex flex-col space-y-1.5 p-6"
+      class="card-body flex flex-col space-y-1.5 p-6"
     >
       <div
         class="flex items-start justify-between"
       >
         <div>
           <h3
-            class="text-2xl font-semibold leading-none tracking-tight"
+            class="card-title text-2xl font-semibold"
           >
             Project Dashboard
           </h3>
@@ -456,19 +486,19 @@ exports[`Visual Regression Tests > Card Component Screenshots > should match com
             Overview of your projects
           </p>
         </div>
-        <div
-          class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 px-2.5 py-0.5 text-xs rounded-full"
+        <span
+          class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-secondary shadow-secondary/20 hover:shadow-md badge-sm"
         >
           <span
             class="truncate"
           >
             3 Active
           </span>
-        </div>
+        </span>
       </div>
     </div>
     <div
-      class="p-6 pt-0 space-y-4"
+      class="card-body p-6 pt-0 space-y-4"
     >
       <div
         class="grid grid-cols-2 gap-4"
@@ -511,15 +541,15 @@ exports[`Visual Regression Tests > Card Component Screenshots > should match com
           <span>
             Website Redesign
           </span>
-          <div
-            class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
+          <span
+            class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-outline hover:shadow-md badge-sm"
           >
             <span
               class="truncate"
             >
               Design
             </span>
-          </div>
+          </span>
         </div>
         <div
           class="flex items-center justify-between"
@@ -527,28 +557,30 @@ exports[`Visual Regression Tests > Card Component Screenshots > should match com
           <span>
             Mobile App
           </span>
-          <div
-            class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
+          <span
+            class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-neutral shadow-neutral/25 hover:shadow-lg hover:shadow-neutral/40 badge-sm"
           >
             <span
               class="truncate"
             >
               Development
             </span>
-          </div>
+          </span>
         </div>
       </div>
     </div>
     <div
-      class="items-center p-6 pt-0 flex justify-between"
+      class="card-actions items-center p-6 pt-0 flex justify-between"
     >
       <button
-        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+        class="btn bg-primary h-10 btn-outline btn-md"
+        type="button"
       >
         View All
       </button>
       <button
-        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+        class="btn bg-primary h-10 btn-primary btn-md"
+        type="button"
       >
         New Project
       </button>
@@ -565,28 +597,28 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
     class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl"
   >
     <div
-      class="rounded-lg border bg-card text-card-foreground shadow-sm border-border"
+      class="card bg-base-100 transition-shadow shadow-xl"
     >
       <div
-        class="flex flex-col space-y-1.5 p-6"
+        class="card-body flex flex-col space-y-1.5 p-6"
       >
         <div
           class="flex items-center justify-between"
         >
           <h3
-            class="text-2xl font-semibold leading-none tracking-tight"
+            class="card-title text-2xl font-semibold"
           >
             User Profile
           </h3>
-          <div
-            class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
+          <span
+            class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-neutral shadow-neutral/25 hover:shadow-lg hover:shadow-neutral/40 badge-sm"
           >
             <span
               class="truncate"
             >
               Active
             </span>
-          </div>
+          </span>
         </div>
         <p
           class="text-sm text-muted-foreground"
@@ -595,93 +627,73 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
         </p>
       </div>
       <div
-        class="p-6 pt-0 space-y-3"
+        class="card-body p-6 pt-0 space-y-3"
       >
         <div
-          class="relative w-full"
+          class="w-full"
         >
-          <label
-            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block"
-            for="«rc»"
-          >
-            Display Name
-          </label>
           <div
-            class="relative"
+            class="relative w-full"
           >
-            <div
-              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-            >
-              <span
-                class="text-muted-foreground"
-              >
-                <span>
-                  👤
-                </span>
-              </span>
-            </div>
             <input
-              class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2 pl-10"
-              id="«rc»"
+              class="input input-bordered w-full input-md input-bordered pl-10"
               value="John Doe"
             />
+            <div
+              class="absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none"
+            >
+              <span>
+                👤
+              </span>
+            </div>
           </div>
         </div>
         <div
-          class="relative w-full"
+          class="w-full"
         >
-          <label
-            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block"
-            for="«rd»"
-          >
-            Email
-          </label>
           <div
-            class="relative"
+            class="relative w-full"
           >
-            <div
-              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-            >
-              <span
-                class="text-muted-foreground"
-              >
-                <span>
-                  ✉️
-                </span>
-              </span>
-            </div>
             <input
-              class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2 pl-10"
-              id="«rd»"
+              class="input input-bordered w-full input-md input-bordered pl-10"
               type="email"
               value="john@example.com"
             />
+            <div
+              class="absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none"
+            >
+              <span>
+                ✉️
+              </span>
+            </div>
           </div>
         </div>
       </div>
       <div
-        class="items-center p-6 pt-0 flex justify-between"
+        class="card-actions items-center p-6 pt-0 flex justify-between"
       >
         <button
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+          class="btn bg-primary h-10 btn-outline btn-md"
+          type="button"
         >
           Cancel
         </button>
         <button
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+          class="btn bg-primary h-10 btn-primary btn-md"
+          type="button"
         >
           Save Changes
         </button>
       </div>
     </div>
     <div
-      class="rounded-lg border bg-card text-card-foreground shadow-sm border-border"
+      class="card bg-base-100 transition-shadow shadow-xl"
     >
       <div
-        class="flex flex-col space-y-1.5 p-6"
+        class="card-body flex flex-col space-y-1.5 p-6"
       >
         <h3
-          class="text-2xl font-semibold leading-none tracking-tight"
+          class="card-title text-2xl font-semibold"
         >
           Project Status
         </h3>
@@ -692,7 +704,7 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
         </p>
       </div>
       <div
-        class="p-6 pt-0"
+        class="card-body p-6 pt-0"
       >
         <div
           class="space-y-2"
@@ -703,15 +715,15 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
             <span>
               Website
             </span>
-            <div
-              class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
+            <span
+              class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-neutral shadow-neutral/25 hover:shadow-lg hover:shadow-neutral/40 badge-sm"
             >
               <span
                 class="truncate"
               >
                 In Progress
               </span>
-            </div>
+            </span>
           </div>
           <div
             class="flex items-center justify-between"
@@ -719,15 +731,15 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
             <span>
               Mobile App
             </span>
-            <div
-              class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 px-2.5 py-0.5 text-xs rounded-full"
+            <span
+              class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-secondary shadow-secondary/20 hover:shadow-md badge-sm"
             >
               <span
                 class="truncate"
               >
                 Planning
               </span>
-            </div>
+            </span>
           </div>
           <div
             class="flex items-center justify-between"
@@ -735,23 +747,24 @@ exports[`Visual Regression Tests > Cross-platform Consistency > should match com
             <span>
               API
             </span>
-            <div
-              class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 px-2.5 py-0.5 text-xs rounded-full"
+            <span
+              class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-error shadow-error/25 hover:shadow-lg hover:shadow-error/40 badge-sm"
             >
               <span
                 class="truncate"
               >
                 Blocked
               </span>
-            </div>
+            </span>
           </div>
         </div>
       </div>
       <div
-        class="flex items-center p-6 pt-0"
+        class="card-actions justify-end flex items-center p-6 pt-0"
       >
         <button
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+          class="btn bg-primary h-10 btn-primary btn-md w-full"
+          type="button"
         >
           View Details
         </button>
@@ -772,60 +785,63 @@ exports[`Visual Regression Tests > Dark Mode Screenshots > should match dark mod
       class="space-x-2"
     >
       <button
-        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+        class="btn bg-primary h-10 btn-primary btn-md"
+        type="button"
       >
         Default
       </button>
       <button
-        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2"
+        class="btn bg-primary h-10 btn-error btn-md"
+        type="button"
       >
         Destructive
       </button>
       <button
-        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+        class="btn bg-primary h-10 btn-outline btn-md"
+        type="button"
       >
         Outline
       </button>
     </div>
     <div
-      class="rounded-lg border bg-card text-card-foreground shadow-sm border-border"
+      class="card transition-shadow shadow-xl w-80 bg-slate-800 border-slate-700"
     >
       <div
-        class="flex flex-col space-y-1.5 p-6"
+        class="card-body flex flex-col space-y-1.5 p-6"
       >
         <h3
-          class="text-2xl font-semibold leading-none tracking-tight text-white"
+          class="card-title text-2xl font-semibold text-white"
         >
           Dark Card
         </h3>
         <p
-          class="text-sm text-muted-foreground text-slate-300"
+          class="text-sm text-slate-300"
         >
           Card in dark theme
         </p>
       </div>
       <div
-        class="p-6 pt-0"
+        class="card-body p-6 pt-0"
       >
         <div
-          class="relative w-full"
+          class="w-full"
         >
           <div
-            class="relative"
+            class="relative w-full"
           >
             <input
-              class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2 bg-slate-700 border-slate-600 text-white"
-              id="«re»"
+              class="input input-bordered w-full input-md input-bordered bg-slate-700 border-slate-600 text-white"
               placeholder="Dark input..."
             />
           </div>
         </div>
       </div>
       <div
-        class="flex items-center p-6 pt-0"
+        class="card-actions justify-end flex items-center p-6 pt-0"
       >
         <button
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+          class="btn bg-primary h-10 btn-primary btn-md"
+          type="button"
         >
           Dark Action
         </button>
@@ -834,24 +850,24 @@ exports[`Visual Regression Tests > Dark Mode Screenshots > should match dark mod
     <div
       class="flex gap-2"
     >
-      <div
-        class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 px-2.5 py-0.5 text-xs rounded-full"
+      <span
+        class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-neutral shadow-neutral/25 hover:shadow-lg hover:shadow-neutral/40 badge-sm"
       >
         <span
           class="truncate"
         >
           Dark Badge
         </span>
-      </div>
-      <div
-        class="inline-flex items-center border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border px-2.5 py-0.5 text-xs rounded-full"
+      </span>
+      <span
+        class="badge inline-flex items-center gap-1.5 font-semibold transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1 shadow-sm badge-outline hover:shadow-md badge-sm"
       >
         <span
           class="truncate"
         >
           Dark Outline
         </span>
-      </div>
+      </span>
     </div>
   </div>
 </div>
@@ -866,20 +882,13 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
   >
     <div>
       <div
-        class="relative w-full"
+        class="w-full"
       >
-        <label
-          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block"
-          for="«r8»"
-        >
-          First Name
-        </label>
         <div
-          class="relative"
+          class="relative w-full"
         >
           <input
-            class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2"
-            id="«r8»"
+            class="input input-bordered w-full input-md input-bordered"
             placeholder="Enter first name..."
             value="John"
           />
@@ -888,94 +897,66 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
     </div>
     <div>
       <div
-        class="relative w-full"
+        class="w-full"
       >
-        <label
-          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block"
-          for="«r9»"
-        >
-          Email
-        </label>
         <div
-          class="relative"
+          class="relative w-full"
         >
-          <div
-            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-          >
-            <span
-              class="text-muted-foreground"
-            >
-              <span>
-                ✉️
-              </span>
-            </span>
-          </div>
           <input
-            class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2 pl-10"
-            id="«r9»"
+            class="input input-bordered w-full input-md input-bordered pl-10"
             placeholder="Enter email..."
             type="email"
             value="john@example.com"
           />
+          <div
+            class="absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none"
+          >
+            <span>
+              ✉️
+            </span>
+          </div>
         </div>
       </div>
     </div>
     <div>
       <div
-        class="relative w-full"
+        class="w-full"
       >
-        <label
-          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block"
-          for="«ra»"
-        >
-          Phone
-        </label>
         <div
-          class="relative"
+          class="relative w-full"
         >
           <input
-            aria-describedby="«ra»-helper"
-            class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2"
-            id="«ra»"
-            placeholder="Enter phone..."
-            type="tel"
+            class="input input-bordered w-full input-md input-bordered"
+            placeholder="Enter name..."
           />
         </div>
-        <p
-          class="mt-1 text-xs text-muted-foreground"
-          id="«ra»-helper"
-        >
-          Include country code
-        </p>
       </div>
     </div>
     <div>
       <div
-        class="relative w-full"
+        class="w-full"
       >
-        <label
-          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block text-destructive"
-          for="«rb»"
-        >
-          Password
-        </label>
         <div
-          class="relative"
+          class="relative w-full"
         >
           <input
-            aria-describedby="«rb»-helper"
-            class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-destructive focus-visible:ring-destructive h-10 px-3 py-2"
-            id="«rb»"
+            aria-describedby="input-help"
+            aria-invalid="true"
+            class="input input-bordered w-full input-md input-error border-destructive input-bordered"
             placeholder="Enter password..."
             type="password"
           />
         </div>
-        <p
-          class="mt-1 text-xs text-destructive"
-          id="«rb»-helper"
+        <div
+          class="label"
         >
-          Password must be at least 8 characters
-        </p>
+          <span
+            class="label-text-alt text-destructive"
+            id="input-help"
+          >
+            Password must be at least 8 characters
+          </span>
+        </div>
       </div>
     </div>
   </form>
@@ -987,161 +968,143 @@ exports[`Visual Regression Tests > Input Component Screenshots > should match in
   class="p-4 space-y-4 bg-white w-80"
 >
   <div
-    class="relative w-full"
+    class="w-full"
   >
     <div
-      class="relative"
+      class="relative w-full"
     >
       <input
-        class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2"
-        id="«r0»"
+        class="input input-bordered w-full input-md input-bordered"
         placeholder="Default input"
       />
     </div>
   </div>
   <div
-    class="relative w-full"
+    class="w-full"
   >
     <div
-      class="relative"
+      class="relative w-full"
     >
       <input
-        class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2"
-        id="«r1»"
+        class="input input-bordered w-full input-md input-bordered"
         placeholder="Email input"
         type="email"
       />
     </div>
   </div>
   <div
-    class="relative w-full"
+    class="w-full"
   >
     <div
-      class="relative"
+      class="relative w-full"
     >
       <input
-        class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2"
+        class="input input-bordered w-full input-md input-bordered"
         disabled=""
-        id="«r2»"
         placeholder="Disabled input"
       />
     </div>
   </div>
   <div
-    class="relative w-full"
+    class="w-full"
   >
     <div
-      class="relative"
+      class="relative w-full"
     >
       <input
-        class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-destructive focus-visible:ring-destructive h-10 px-3 py-2"
-        id="«r3»"
+        aria-invalid="true"
+        class="input input-bordered w-full input-md input-error border-destructive input-bordered"
         placeholder="Error input"
       />
     </div>
   </div>
   <div
-    class="relative w-full"
+    class="w-full"
   >
     <div
-      class="relative"
+      class="relative w-full"
     >
-      <div
-        class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-      >
-        <span
-          class="text-muted-foreground"
-        >
-          <span>
-            🔍
-          </span>
-        </span>
-      </div>
       <input
-        class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2 pl-10"
-        id="«r4»"
+        class="input input-bordered w-full input-md input-bordered pl-10"
         placeholder="With left icon"
       />
+      <div
+        class="absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none"
+      >
+        <span>
+          🔍
+        </span>
+      </div>
     </div>
   </div>
   <div
-    class="relative w-full"
+    class="w-full"
   >
     <div
-      class="relative"
+      class="relative w-full"
     >
       <input
-        class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2 pr-10"
-        id="«r5»"
+        class="input input-bordered w-full input-md input-bordered pr-10"
         placeholder="With right icon"
       />
       <div
-        class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+        class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none"
       >
-        <span
-          class="text-muted-foreground"
-        >
-          <span>
-            ✓
-          </span>
+        <span>
+          ✓
         </span>
       </div>
     </div>
   </div>
   <div>
     <div
-      class="relative w-full"
+      class="w-full"
     >
-      <label
-        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block"
-        for="«r6»"
-      >
-        Complete Input
-      </label>
       <div
-        class="relative"
+        class="relative w-full"
       >
         <input
-          aria-describedby="«r6»-helper"
-          class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 h-10 px-3 py-2"
-          id="«r6»"
+          aria-describedby="input-help"
+          class="input input-bordered w-full input-md input-bordered"
           placeholder="With label and helper"
         />
       </div>
-      <p
-        class="mt-1 text-xs text-muted-foreground"
-        id="«r6»-helper"
+      <div
+        class="label"
       >
-        This is helper text
-      </p>
+        <span
+          class="label-text-alt"
+          id="input-help"
+        >
+          This is helper text
+        </span>
+      </div>
     </div>
   </div>
   <div>
     <div
-      class="relative w-full"
+      class="w-full"
     >
-      <label
-        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block text-destructive"
-        for="«r7»"
-      >
-        Error Input
-      </label>
       <div
-        class="relative"
+        class="relative w-full"
       >
         <input
-          aria-describedby="«r7»-helper"
-          class="flex w-full rounded-md border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-destructive focus-visible:ring-destructive h-10 px-3 py-2"
-          id="«r7»"
+          aria-describedby="input-help"
+          aria-invalid="true"
+          class="input input-bordered w-full input-md input-error border-destructive input-bordered"
           placeholder="With error state"
         />
       </div>
-      <p
-        class="mt-1 text-xs text-destructive"
-        id="«r7»-helper"
+      <div
+        class="label"
       >
-        This is an error message
-      </p>
+        <span
+          class="label-text-alt text-destructive"
+          id="input-help"
+        >
+          This is an error message
+        </span>
+      </div>
     </div>
   </div>
 </div>

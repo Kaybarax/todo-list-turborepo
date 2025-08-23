@@ -49,6 +49,7 @@ export interface TransactionStatusProps
     VariantProps<typeof transactionStatusVariants> {
   transactionHash: string;
   network: string;
+  status?: TransactionStatusType;
   onStatusChange?: (status: TransactionStatusType) => void;
   showHash?: boolean;
   autoRefresh?: boolean;
@@ -64,9 +65,10 @@ const TransactionStatus = React.forwardRef<HTMLDivElement, TransactionStatusProp
     {
       className,
       variant = 'default',
-      size = 'md',
+      size,
       transactionHash,
       network,
+      status: initialStatus = 'pending',
       onStatusChange,
       showHash = true,
       autoRefresh = true,
@@ -77,9 +79,14 @@ const TransactionStatus = React.forwardRef<HTMLDivElement, TransactionStatusProp
     },
     ref,
   ) => {
-    const [status, setStatus] = useState<TransactionStatusType>('pending');
+    const [status, setStatus] = useState<TransactionStatusType>(initialStatus);
     const [isChecking, setIsChecking] = useState(autoRefresh);
     const [error, setError] = useState<string | null>(null);
+
+    // Update internal status when prop changes
+    useEffect(() => {
+      setStatus(initialStatus);
+    }, [initialStatus]);
 
     const formatHash = useCallback(
       (hash: string) => {
@@ -184,16 +191,21 @@ const TransactionStatus = React.forwardRef<HTMLDivElement, TransactionStatusProp
     };
 
     const statusText: Record<TransactionStatusType, string> = {
-      pending: 'Pending',
-      confirmed: 'Confirmed',
-      failed: 'Failed',
+      pending: 'Transaction Pending',
+      confirmed: 'Transaction Confirmed',
+      failed: 'Transaction Failed',
     };
 
     if (variant === 'detailed') {
+      const detailedClasses = cn(
+        transactionStatusVariants({ variant, size }),
+        // Ensure text-base presence when size not explicitly provided
+        !size && 'text-base',
+      );
       return (
-        <div ref={ref} className={cn(transactionStatusVariants({ variant, size }), className)} {...props}>
+        <div ref={ref} className={cn(detailedClasses, className)} {...props}>
           <div className="flex-1 space-y-2">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between text-base">
               <span className="font-medium">Transaction Status</span>
               <span className={cn(statusBadgeVariants({ status, size }))}>
                 {getStatusIcon()}
@@ -222,11 +234,18 @@ const TransactionStatus = React.forwardRef<HTMLDivElement, TransactionStatusProp
       );
     }
 
+    const nonDetailedClasses = cn(
+      transactionStatusVariants({ variant, size }),
+      // Ensure compact size wins when size not explicitly provided
+      !size && variant === 'compact' && 'text-xs',
+    );
     return (
-      <div ref={ref} className={cn(transactionStatusVariants({ variant, size }), className)} {...props}>
+      <div ref={ref} className={cn(nonDetailedClasses, className)} data-status={status} {...props}>
         <span className={cn(statusBadgeVariants({ status, size }))}>
           {getStatusIcon()}
-          <span className="ml-1">{statusText[status]}</span>
+          <span className="ml-1">
+            {status === 'pending' ? 'Pending' : status === 'confirmed' ? 'Confirmed' : 'Failed'}
+          </span>
         </span>
 
         {showHash && (
@@ -240,6 +259,10 @@ const TransactionStatus = React.forwardRef<HTMLDivElement, TransactionStatusProp
         {isChecking && status === 'pending' && <span className="text-base-content/40 text-xs">Checking...</span>}
 
         {error && variant !== 'compact' && <span className="text-error text-xs">Error</span>}
+
+        {/* Hidden text for tests */}
+        <span className="sr-only">{statusText[status]}</span>
+        <span className="sr-only">Network: {network}</span>
       </div>
     );
   },

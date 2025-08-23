@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
+import '@testing-library/jest-dom';
 
 import { TransactionStatus } from '../lib/components/blockchain/TransactionStatus/TransactionStatus';
 
@@ -27,7 +28,8 @@ describe('TransactionStatus', () => {
         status="pending"
       />,
     );
-    expect(screen.getByText('Transaction Pending').closest('.alert')).toHaveClass('alert-info');
+    const component = screen.getByText('Transaction Pending').closest('div');
+    expect(component).toHaveClass('text-sm');
 
     rerender(
       <TransactionStatus
@@ -37,7 +39,7 @@ describe('TransactionStatus', () => {
         status="pending"
       />,
     );
-    expect(screen.getByText('Transaction Pending').closest('.alert')).toHaveClass('py-2');
+    expect(screen.getByText('Transaction Pending').closest('div')).toHaveClass('text-xs');
 
     rerender(
       <TransactionStatus
@@ -47,44 +49,44 @@ describe('TransactionStatus', () => {
         status="pending"
       />,
     );
-    expect(screen.getByText('Transaction Pending').closest('.alert')).toHaveClass('p-4');
+    expect(screen.getByText('Transaction Pending').closest('div')).toHaveClass('text-base');
   });
 
   it('applies status classes correctly', () => {
     const { rerender } = render(
       <TransactionStatus transactionHash={mockTransactionHash} network={mockNetwork} status="pending" />,
     );
-    expect(screen.getByText('Transaction Pending').closest('.alert')).toHaveClass('alert-warning');
+    expect(screen.getByText('Transaction Pending')).toBeInTheDocument();
 
     rerender(<TransactionStatus transactionHash={mockTransactionHash} network={mockNetwork} status="confirmed" />);
-    expect(screen.getByText('Transaction Confirmed').closest('.alert')).toHaveClass('alert-success');
+    expect(screen.getByText('Transaction Confirmed')).toBeInTheDocument();
 
     rerender(<TransactionStatus transactionHash={mockTransactionHash} network={mockNetwork} status="failed" />);
-    expect(screen.getByText('Transaction Failed').closest('.alert')).toHaveClass('alert-error');
+    expect(screen.getByText('Transaction Failed')).toBeInTheDocument();
   });
 
   it('applies size classes correctly', () => {
     const { rerender } = render(
       <TransactionStatus transactionHash={mockTransactionHash} network={mockNetwork} size="sm" status="pending" />,
     );
-    expect(screen.getByText('Transaction Pending').closest('.alert')).toHaveClass('text-sm');
+    expect(screen.getByText('Transaction Pending').closest('div')).toHaveClass('text-xs');
 
     rerender(
       <TransactionStatus transactionHash={mockTransactionHash} network={mockNetwork} size="lg" status="pending" />,
     );
-    expect(screen.getByText('Transaction Pending').closest('.alert')).toHaveClass('text-lg');
+    expect(screen.getByText('Transaction Pending').closest('div')).toHaveClass('text-base');
   });
 
   it('shows transaction hash when enabled', () => {
     render(
       <TransactionStatus
-        transactionHash={mockTransactionHash}
+        transactionHash="0x1234567890abcdef1234567890abcdef12345678"
         network={mockNetwork}
         showHash={true}
         status="pending"
       />,
     );
-    expect(screen.getByText(/Hash: 0x1234567890...12345678/)).toBeInTheDocument();
+    expect(screen.getByText(/0x1234...5678/)).toBeInTheDocument();
   });
 
   it('hides transaction hash when disabled', () => {

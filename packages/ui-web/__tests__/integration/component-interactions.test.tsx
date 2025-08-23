@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { Button } from '../lib/../src/components/Button/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '../lib/../src/components/Card/Card';
-import { Input } from '../lib/../src/components/Input/Input';
-import { Badge } from '../lib/../src/components/Badge/Badge';
+import { Button } from '../../lib/components/Button/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '../../lib/components/Card/Card';
+import { Input } from '../../lib/components/Input/Input';
+import { Badge } from '../../lib/components/Badge/Badge';
 
 describe('Component Interactions', () => {
   describe('Form with Button and Input', () => {
@@ -140,12 +141,7 @@ describe('Component Interactions', () => {
                 {items.map((item, index) => (
                   <div key={index} className="flex items-center justify-between">
                     <Badge variant="outline">{item}</Badge>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => removeItem(index)}
-                      data-testid={`remove-${index}`}
-                    >
+                    <Button variant="error" size="sm" onClick={() => removeItem(index)} data-testid={`remove-${index}`}>
                       Remove
                     </Button>
                   </div>
@@ -238,19 +234,20 @@ describe('Component Interactions', () => {
       expect(document.activeElement).toBe(secondButton);
     });
 
-    it('supports keyboard navigation', () => {
+    it('supports keyboard navigation', async () => {
       const handleClick = vi.fn();
+      const user = userEvent.setup();
       render(<Button onClick={handleClick}>Keyboard Button</Button>);
 
       const button = screen.getByRole('button');
-      button.focus();
+      await user.tab(); // Focus the button
 
       // Enter key should trigger click
-      fireEvent.keyDown(button, { key: 'Enter' });
+      await user.keyboard('{Enter}');
       expect(handleClick).toHaveBeenCalledTimes(1);
 
       // Space key should trigger click
-      fireEvent.keyDown(button, { key: ' ' });
+      await user.keyboard(' ');
       expect(handleClick).toHaveBeenCalledTimes(2);
     });
   });

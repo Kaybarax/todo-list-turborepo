@@ -10,30 +10,30 @@ describe('Badge', () => {
 
   it('applies custom className', () => {
     render(<Badge className="test-class">Test Badge</Badge>);
-    expect(screen.getByText('Test Badge')).toHaveClass('test-class');
+    expect(screen.getByText('Test Badge').parentElement).toHaveClass('test-class');
   });
 
   it('applies variant classes correctly', () => {
     const { rerender } = render(<Badge variant="default">Default</Badge>);
-    expect(screen.getByText('Default')).toHaveClass('bg-primary');
+    expect(screen.getByText('Default').parentElement).toHaveClass('badge-neutral');
 
     rerender(<Badge variant="secondary">Secondary</Badge>);
-    expect(screen.getByText('Secondary')).toHaveClass('bg-secondary');
+    expect(screen.getByText('Secondary').parentElement).toHaveClass('badge-secondary');
 
     rerender(<Badge variant="destructive">Destructive</Badge>);
-    expect(screen.getByText('Destructive')).toHaveClass('bg-destructive');
+    expect(screen.getByText('Destructive').parentElement).toHaveClass('badge-error');
 
     rerender(<Badge variant="outline">Outline</Badge>);
-    expect(screen.getByText('Outline')).toHaveClass('text-foreground');
+    expect(screen.getByText('Outline').parentElement).toHaveClass('badge-outline');
 
     rerender(<Badge variant="success">Success</Badge>);
-    expect(screen.getByText('Success')).toHaveClass('bg-green-500');
+    expect(screen.getByText('Success').parentElement).toHaveClass('badge-success');
 
     rerender(<Badge variant="warning">Warning</Badge>);
-    expect(screen.getByText('Warning')).toHaveClass('bg-yellow-500');
+    expect(screen.getByText('Warning').parentElement).toHaveClass('badge-warning');
 
     rerender(<Badge variant="info">Info</Badge>);
-    expect(screen.getByText('Info')).toHaveClass('bg-blue-500');
+    expect(screen.getByText('Info').parentElement).toHaveClass('badge-info');
   });
 
   it('renders with icon', () => {

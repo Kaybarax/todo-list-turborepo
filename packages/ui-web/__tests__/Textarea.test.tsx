@@ -31,14 +31,14 @@ describe('Textarea', () => {
     render(<Textarea error helperText="This field is required" />);
     const helperText = screen.getByText('This field is required');
     expect(helperText).toBeInTheDocument();
-    expect(helperText).toHaveClass('text-red-600');
+    expect(helperText).toHaveClass('text-error');
   });
 
   it('displays normal helper text with correct styles', () => {
     render(<Textarea helperText="Optional message" />);
     const helperText = screen.getByText('Optional message');
     expect(helperText).toBeInTheDocument();
-    expect(helperText).toHaveClass('text-gray-600');
+    expect(helperText).toHaveClass('label-text-alt');
   });
 
   it('renders with error state styling', () => {

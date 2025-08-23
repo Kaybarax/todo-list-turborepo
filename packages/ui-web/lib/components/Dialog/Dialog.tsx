@@ -77,12 +77,12 @@ const DialogContent: React.FC<{ className?: string; children: React.ReactNode }>
 );
 
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('flex flex-col space-y-2 text-center sm:text-left p-6 pb-4', className)} {...props} />
+  <div className={cn('flex flex-col space-y-1.5 p-6 pb-0', className)} {...props} />
 );
 DialogHeader.displayName = 'DialogHeader';
 
 const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('modal-action', className)} {...props} />
+  <div className={cn('modal-action flex flex-col-reverse sm:flex-row sm:justify-end border-t', className)} {...props} />
 );
 DialogFooter.displayName = 'DialogFooter';
 
@@ -91,14 +91,14 @@ const DialogTitle: React.FC<{ className?: string; children: React.ReactNode; id?
   children,
   id,
 }) => (
-  <h3 id={id} className={cn('text-xl font-bold', className)}>
+  <h3 id={id} className={cn('text-lg font-semibold leading-none tracking-tight', className)}>
     {children}
   </h3>
 );
 DialogTitle.displayName = 'DialogTitle';
 
 const DialogDescription: React.FC<{ className?: string; children: React.ReactNode }> = ({ className, children }) => (
-  <p className={cn('text-sm opacity-70', className)}>{children}</p>
+  <p className={cn('text-sm text-gray-600', className)}>{children}</p>
 );
 DialogDescription.displayName = 'DialogDescription';
 

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, it, expect } from 'vitest';
 
-import { Avatar } from '../lib/Avatar';
+import { Avatar } from '../lib/components/Avatar';
 
 describe('Avatar', () => {
   it('renders image when src is provided', () => {

@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 
-import { Alert } from '../lib/Alert';
+import { Alert } from '../lib/components/Alert';
 
 describe('Alert', () => {
   it('renders with role alert and content', () => {

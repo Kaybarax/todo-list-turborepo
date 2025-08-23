@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, it, expect } from 'vitest';
 
-import { Select } from '../lib/Select';
+import { Select } from '../lib/components/Select';
 
 function options() {
   return (

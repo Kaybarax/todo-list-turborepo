@@ -3,7 +3,7 @@ import React from 'react';
 
 import { cn } from '@/utils';
 
-const iconButtonVariants = cva('btn', {
+const iconButtonVariants = cva('btn aspect-square', {
   variants: {
     variant: {
       default: 'btn-primary',
@@ -20,11 +20,11 @@ const iconButtonVariants = cva('btn', {
       outline: 'btn-outline',
     },
     size: {
-      xs: 'btn-xs btn-square',
-      sm: 'btn-sm btn-square',
-      default: 'btn-md btn-square',
-      md: 'btn-md btn-square',
-      lg: 'btn-lg btn-square',
+      xs: 'btn-xs btn-square p-1',
+      sm: 'btn-sm btn-square p-1',
+      default: 'btn-md btn-square p-2',
+      md: 'btn-md btn-square p-2',
+      lg: 'btn-lg btn-square p-3',
     },
     shape: {
       default: 'btn-square',

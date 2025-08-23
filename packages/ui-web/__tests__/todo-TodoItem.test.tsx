@@ -1,19 +1,20 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { TodoItem, type TodoData } from './TodoItem';
+import { describe, it, expect, vi } from 'vitest';
+import { TodoItem, type TodoData } from '../lib/components/todo/TodoItem';
 import { BlockchainNetwork } from '@todo/services';
 
 // Mock Lucide React icons
-jest.mock('lucide-react', () => ({
+vi.mock('lucide-react', () => ({
   Edit: ({ className }: { className?: string }) => <div data-testid="edit-icon" className={className} />,
   Trash2: ({ className }: { className?: string }) => <div data-testid="trash-icon" className={className} />,
 }));
 
 describe('TodoItem', () => {
-  const mockOnToggle = jest.fn();
-  const mockOnEdit = jest.fn();
-  const mockOnDelete = jest.fn();
-  const mockOnBlockchainSync = jest.fn();
+  const mockOnToggle = vi.fn();
+  const mockOnEdit = vi.fn();
+  const mockOnDelete = vi.fn();
+  const mockOnBlockchainSync = vi.fn();
 
   const baseTodo: TodoData = {
     id: '1',
@@ -40,7 +41,7 @@ describe('TodoItem', () => {
   });
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('Rendering', () => {
@@ -145,8 +146,8 @@ describe('TodoItem', () => {
 
       render(<TodoItem todo={highPriorityTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
-      const priorityBadge = screen.getByText('high');
-      expect(priorityBadge.closest('[data-variant="destructive"]')).toBeInTheDocument();
+      const priorityBadge = screen.getByText('high').closest('.badge');
+      expect(priorityBadge).toHaveClass('badge-error');
     });
 
     it('should render medium priority badge with default variant', () => {
@@ -156,8 +157,8 @@ describe('TodoItem', () => {
         <TodoItem todo={mediumPriorityTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />,
       );
 
-      const priorityBadge = screen.getByText('medium');
-      expect(priorityBadge.closest('[data-variant="default"]')).toBeInTheDocument();
+      const priorityBadge = screen.getByText('medium').closest('.badge');
+      expect(priorityBadge).toHaveClass('badge');
     });
 
     it('should render low priority badge with secondary variant', () => {
@@ -165,8 +166,8 @@ describe('TodoItem', () => {
 
       render(<TodoItem todo={lowPriorityTodo} onToggle={mockOnToggle} onEdit={mockOnEdit} onDelete={mockOnDelete} />);
 
-      const priorityBadge = screen.getByText('low');
-      expect(priorityBadge.closest('[data-variant="secondary"]')).toBeInTheDocument();
+      const priorityBadge = screen.getByText('low').closest('.badge');
+      expect(priorityBadge).toHaveClass('badge-secondary');
     });
   });
 
@@ -275,8 +276,8 @@ describe('TodoItem', () => {
       const todoContainer = container.firstChild as HTMLElement;
       expect(todoContainer).toHaveClass('border-error');
 
-      const dueDateBadge = screen.getByText(/Due:/);
-      expect(dueDateBadge.closest('[data-variant="destructive"]')).toBeInTheDocument();
+      const dueDateBadge = screen.getByText(/Due:/).closest('.badge');
+      expect(dueDateBadge).toHaveClass('badge-error');
     });
 
     it('should not highlight completed overdue todos', () => {
@@ -433,7 +434,7 @@ describe('TodoItem', () => {
 
       const checkbox = screen.getByRole('checkbox');
       expect(checkbox).toBeInTheDocument();
-      expect(checkbox).toHaveAttribute('aria-checked', 'false');
+      expect(checkbox).not.toBeChecked();
     });
 
     it('should have proper button titles for actions', async () => {

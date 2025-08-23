@@ -17,7 +17,7 @@ const todoItemVariants = cva('card bg-base-100 shadow-sm border border-base-300 
       detailed: 'card-normal',
     },
     completed: {
-      true: 'opacity-75',
+      true: 'opacity-60',
       false: '',
     },
     overdue: {
@@ -127,6 +127,17 @@ const TodoItem = React.forwardRef<HTMLDivElement, TodoItemProps>(
       }
     };
 
+    const priorityBorderClass = (priority: string) => {
+      switch (priority) {
+        case 'high':
+          return 'border-l-error';
+        case 'low':
+          return 'border-l-success';
+        default:
+          return '';
+      }
+    };
+
     return (
       <div
         ref={ref}
@@ -136,6 +147,7 @@ const TodoItem = React.forwardRef<HTMLDivElement, TodoItemProps>(
             completed: todo.completed,
             overdue: isOverdue,
           }),
+          priorityBorderClass(todo.priority),
           className,
         )}
         onMouseEnter={() => setShowActionsState(true)}

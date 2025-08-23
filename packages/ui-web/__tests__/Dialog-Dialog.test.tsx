@@ -1,11 +1,18 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 
-import { Dialog, DialogHeader, DialogTitle, DialogContent, DialogFooter, DialogDescription } from '../lib/Dialog';
+import {
+  Dialog,
+  DialogHeader,
+  DialogTitle,
+  DialogContent,
+  DialogFooter,
+  DialogDescription,
+} from '../lib/components/Dialog';
 
 describe('Dialog', () => {
-  it('renders with dialog role, aria-modal and labelledby', () => {
+  it('renders with dialog role, aria-modal and labelledby', async () => {
     const onOpenChange = vi.fn();
     const titleId = 'my-dialog-title';
     render(
@@ -24,7 +31,7 @@ describe('Dialog', () => {
     const dlg = screen.getByRole('dialog');
     expect(dlg).toHaveAttribute('aria-modal', 'true');
     expect(dlg).toHaveAttribute('aria-labelledby', titleId);
-    expect(dlg).toHaveFocus();
+    await waitFor(() => expect(dlg).toHaveFocus());
     expect(screen.getByText('Content')).toBeInTheDocument();
   });
 

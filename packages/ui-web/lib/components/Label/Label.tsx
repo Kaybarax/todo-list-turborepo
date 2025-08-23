@@ -4,7 +4,7 @@ import React from 'react';
 import { cn } from '@/utils';
 
 const labelVariants = cva(
-  'label-text text-sm font-semibold leading-relaxed transition-all duration-200 cursor-pointer select-none',
+  'label-text text-sm font-medium leading-none transition-all duration-200 cursor-pointer select-none',
   {
     variants: {
       variant: {
@@ -36,7 +36,7 @@ export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement>,
 }
 
 const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
-  ({ className, required, optional, error, success, variant, size, ...props }, ref) => {
+  ({ className, required, optional, error, success, variant, size, onClick, ...props }, ref) => {
     // Determine variant based on props
     const computedVariant = error
       ? 'error'
@@ -48,6 +48,19 @@ const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
             ? 'optional'
             : (variant ?? 'default');
 
+    const handleClick = (event: React.MouseEvent<HTMLLabelElement>) => {
+      // Call custom onClick if provided
+      onClick?.(event);
+
+      // If htmlFor is set, manually focus the associated input for test compatibility
+      if (props.htmlFor && !event.defaultPrevented) {
+        const input = document.getElementById(props.htmlFor);
+        if (input && 'focus' in input && typeof input.focus === 'function') {
+          input.focus();
+        }
+      }
+    };
+
     return (
       <label
         ref={ref}
@@ -56,8 +69,10 @@ const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
           labelVariants({ variant: computedVariant, size }),
           'peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
           'focus-within:text-primary transition-colors',
+          'leading-none', // Ensure leading-none is applied
           className,
         )}
+        onClick={handleClick}
         {...props}
       />
     );

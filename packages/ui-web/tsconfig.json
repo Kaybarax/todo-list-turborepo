@@ -18,8 +18,9 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src/**/*", "lib/**/*"],
-  "exclude": ["node_modules", "dist", "__tests__", ".storybook", "showcase"]
+  "include": ["src/**/*", "lib/**/*", "__tests__/**/*"],
+  "exclude": ["node_modules", "dist", ".storybook", "showcase"]
 }

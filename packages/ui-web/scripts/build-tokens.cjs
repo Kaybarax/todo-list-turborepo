@@ -108,33 +108,93 @@ StyleDictionary.registerFormat({
   }
 });
 
-// Custom format for DaisyUI theme configuration
+// Custom format for Tailwind tokens that ensures module export
+StyleDictionary.registerFormat({
+  name: 'javascript/tailwind-module',
+  format: function (dictionary) {
+    // Build a plain nested object from tokens: { [category]: { ...paths }: value }
+    const result = {};
+    for (const token of dictionary.allTokens) {
+      const category = token.attributes?.category || token.path[0];
+      if (!result[category]) result[category] = {};
+
+      // Build nested structure for remaining path segments
+      const path = token.path.slice(1);
+      let cursor = result[category];
+      for (let i = 0; i < path.length - 1; i++) {
+        const key = path[i];
+        if (!cursor[key]) cursor[key] = {};
+        cursor = cursor[key];
+      }
+      const leaf = path[path.length - 1];
+      cursor[leaf] = token.value;
+    }
+
+    return `// Generated Tailwind-compatible tokens\nmodule.exports = ${JSON.stringify(result, null, 2)};`;
+  },
+});
+
+// Custom format for DaisyUI theme configuration as CSS variables
 StyleDictionary.registerFormat({
   name: 'javascript/daisyui-themes',
-  format: function(dictionary) {
+  format: function (dictionary) {
     const tokens = dictionary.allTokens;
-    
+
     // Filter semantic color tokens
-    const semanticTokens = tokens.filter(token => 
-      token.path[0] === 'semantic' && token.path[1] === 'color'
+    const semanticTokens = tokens.filter(
+      token => token.path[0] === 'semantic' && token.path[1] === 'color'
     );
 
+    // Build theme -> { key: value } map first
     const themes = {};
-    
     semanticTokens.forEach(token => {
-      const themeName = token.path[2]; // light or dark
-      const colorKey = token.path.slice(3).join('-'); // primary, primary-focus, etc.
-      
-      if (!themes[`todo-${themeName}`]) {
-        themes[`todo-${themeName}`] = {};
-      }
-      
-      themes[`todo-${themeName}`][colorKey] = token.value;
+      const theme = `todo-${token.path[2]}`; // light | dark => todo-light | todo-dark
+      const key = token.path.slice(3).join('-');
+      if (!themes[theme]) themes[theme] = {};
+      themes[theme][key] = token.value;
     });
 
-    return `// Generated DaisyUI theme configuration
-module.exports = ${JSON.stringify(themes, null, 2)};`;
-  }
+    // Map semantic keys to DaisyUI CSS variable names
+    const mapKeyToCssVar = key => {
+      const map = {
+        'primary': '--p',
+        'primary-content': '--pc',
+        'secondary': '--s',
+        'secondary-content': '--sc',
+        'accent': '--a',
+        'accent-content': '--ac',
+        'neutral': '--n',
+        'neutral-content': '--nc',
+        'base-100': '--b1',
+        'base-200': '--b2',
+        'base-300': '--b3',
+        'base-content': '--bc',
+        'info': '--in',
+        'info-content': '--inc',
+        'success': '--su',
+        'success-content': '--suc',
+        'warning': '--wa',
+        'warning-content': '--wac',
+        'error': '--er',
+        'error-content': '--erc',
+      };
+      return map[key] || null; // ignore -focus keys for CSS variables
+    };
+
+    let css = `// Generated DaisyUI theme CSS variables\n`;
+    Object.entries(themes).forEach(([themeName, values]) => {
+      css += `[data-theme="${themeName}"]{\n`;
+      Object.entries(values).forEach(([k, v]) => {
+        const cssVar = mapKeyToCssVar(k);
+        if (cssVar) {
+          css += `  ${cssVar}: ${v};\n`;
+        }
+      });
+      css += `}\n\n`;
+    });
+
+    return css;
+  },
 });
 
 function generateInterface(obj, indent = 0) {
@@ -191,7 +251,7 @@ const config = {
       files: [
         {
           destination: 'tailwind-tokens.js',
-          format: 'javascript/object',
+          format: 'javascript/tailwind-module',
           filter: 'tailwind-compatible',
         },
       ],

@@ -18,36 +18,36 @@ describe('Button', () => {
 
   it('applies variant classes correctly', () => {
     const { rerender } = render(<Button variant="default">Default</Button>);
-    expect(screen.getByRole('button')).toHaveClass('bg-primary');
+    expect(screen.getByRole('button')).toHaveClass('btn-primary');
 
-    rerender(<Button variant="destructive">Destructive</Button>);
-    expect(screen.getByRole('button')).toHaveClass('bg-destructive');
+    rerender(<Button variant="error">Error</Button>);
+    expect(screen.getByRole('button')).toHaveClass('btn-error');
 
     rerender(<Button variant="outline">Outline</Button>);
-    expect(screen.getByRole('button')).toHaveClass('border-input');
+    expect(screen.getByRole('button')).toHaveClass('btn-outline');
 
     rerender(<Button variant="secondary">Secondary</Button>);
-    expect(screen.getByRole('button')).toHaveClass('bg-secondary');
+    expect(screen.getByRole('button')).toHaveClass('btn-secondary');
 
     rerender(<Button variant="ghost">Ghost</Button>);
-    expect(screen.getByRole('button')).toHaveClass('hover:bg-accent');
+    expect(screen.getByRole('button')).toHaveClass('btn-ghost');
 
     rerender(<Button variant="link">Link</Button>);
-    expect(screen.getByRole('button')).toHaveClass('text-primary');
+    expect(screen.getByRole('button')).toHaveClass('btn-link');
   });
 
   it('applies size classes correctly', () => {
     const { rerender } = render(<Button size="default">Default</Button>);
-    expect(screen.getByRole('button')).toHaveClass('h-10');
+    expect(screen.getByRole('button')).toHaveClass('btn-md');
 
     rerender(<Button size="sm">Small</Button>);
-    expect(screen.getByRole('button')).toHaveClass('h-9');
+    expect(screen.getByRole('button')).toHaveClass('btn-sm');
 
     rerender(<Button size="lg">Large</Button>);
-    expect(screen.getByRole('button')).toHaveClass('h-11');
+    expect(screen.getByRole('button')).toHaveClass('btn-lg');
 
-    rerender(<Button size="icon">Icon</Button>);
-    expect(screen.getByRole('button')).toHaveClass('h-10 w-10');
+    rerender(<Button size="xs">Extra Small</Button>);
+    expect(screen.getByRole('button')).toHaveClass('btn-xs');
   });
 
   it('renders as a div when asChild is true', () => {

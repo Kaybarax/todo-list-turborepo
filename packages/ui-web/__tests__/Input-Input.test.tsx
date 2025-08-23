@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, it, expect } from 'vitest';
 
-import { Input } from '../lib/Input';
+import { Input } from '../lib/components/Input';
 
 describe('Input', () => {
   it('renders with placeholder', () => {
@@ -43,7 +43,7 @@ describe('Input', () => {
     expect(screen.getByTestId('left')).toBeInTheDocument();
     expect(screen.getByTestId('right')).toBeInTheDocument();
     const input = screen.getByPlaceholderText('p');
-    expect(input.className).toMatch(/pl-12/);
-    expect(input.className).toMatch(/pr-12/);
+    expect(input.className).toMatch(/pl-10/);
+    expect(input.className).toMatch(/pr-10/);
   });
 });

@@ -19,14 +19,14 @@ const inputVariants = cv('input input-bordered w-full', {
       info: 'input-info',
       success: 'input-success',
       warning: 'input-warning',
-      error: 'input-error',
+      error: 'input-error border-destructive',
     },
     variant: {
       bordered: 'input-bordered',
       ghost: 'input-ghost',
     },
-    hasLeftIcon: { true: 'pl-12', false: '' },
-    hasRightIcon: { true: 'pr-12', false: '' },
+    hasLeftIcon: { true: 'pl-10', false: '' },
+    hasRightIcon: { true: 'pr-10', false: '' },
   },
   defaultVariants: {
     size: 'md',
@@ -101,7 +101,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
         {helperText && (
           <div className="label">
-            <span id={helperId} className={cn('label-text-alt', effectiveState === 'error' && 'text-error')}>
+            <span
+              id={helperId}
+              className={cn('label-text-alt', effectiveState === 'error' && 'text-error text-destructive')}
+            >
               {helperText}
             </span>
           </div>

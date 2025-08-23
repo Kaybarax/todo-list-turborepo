@@ -80,7 +80,8 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={id}
           className={cn(classes, className)}
-          aria-invalid={effectiveState === 'error' ? true : undefined}
+          aria-invalid={effectiveState === 'error' ? 'true' : undefined}
+          aria-disabled={props.disabled ? 'true' : undefined}
           aria-describedby={helperId}
           {...accessibilityProps}
           {...props}
@@ -90,7 +91,10 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 
         {helperText && (
           <div className="label">
-            <span id={helperId} className={cn('label-text-alt', effectiveState === 'error' && 'text-error')}>
+            <span
+              id={helperId}
+              className={cn('label-text-alt', effectiveState === 'error' ? 'text-error text-red-600' : 'text-gray-600')}
+            >
               {helperText}
             </span>
           </div>

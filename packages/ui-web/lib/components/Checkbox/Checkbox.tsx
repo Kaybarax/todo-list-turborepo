@@ -37,17 +37,38 @@ export interface CheckboxProps
   indeterminate?: boolean;
   label?: React.ReactNode;
   helperText?: string;
+  onCheckedChange?: (checked: boolean) => void;
   /** @deprecated Use variant instead */
   state?: CheckboxVariant;
 }
 
 export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, size = 'md', variant = 'default', state, indeterminate, label, helperText, id, ...props }, ref) => {
+  (
+    {
+      className,
+      size = 'md',
+      variant = 'default',
+      state,
+      indeterminate,
+      label,
+      helperText,
+      id,
+      onCheckedChange,
+      onChange,
+      ...props
+    },
+    ref,
+  ) => {
     const innerRef = React.useRef<HTMLInputElement | null>(null);
     const combinedRef = (node: HTMLInputElement | null) => {
       innerRef.current = node;
       if (typeof ref === 'function') ref(node);
       else if (ref && 'current' in ref) (ref as React.MutableRefObject<HTMLInputElement | null>).current = node;
+    };
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange?.(event);
+      onCheckedChange?.(event.target.checked);
     };
 
     React.useEffect(() => {
@@ -59,8 +80,8 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       }
     }, [indeterminate]);
 
-    // Support legacy state prop by mapping to variant
-    const effectiveVariant = state || variant;
+    // Support legacy state prop by mapping to variant, but variant takes priority
+    const effectiveVariant = variant !== 'default' ? variant : state || variant;
     const classes = checkboxVariants({ size, variant: effectiveVariant });
     const helperId = helperText ? `${id ?? 'checkbox'}-help` : undefined;
 
@@ -73,6 +94,8 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             className={cn(classes, className)}
             aria-describedby={helperId}
+            aria-disabled={props.disabled}
+            onChange={handleChange}
             {...props}
           />
           {label && <span className="label-text">{label}</span>}

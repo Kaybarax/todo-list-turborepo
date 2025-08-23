@@ -249,6 +249,7 @@ const TodoList = React.forwardRef<HTMLDivElement, TodoListProps>(
               </Select>
             </div>
           </div>
+          <div className="mt-2 text-sm text-base-content/70">{filteredAndSortedTodos.length} todos to display</div>
         </div>
       );
     };
