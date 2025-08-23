@@ -69,14 +69,14 @@
     - Ensure proper separation between web, mobile, and API testing utilities
     - _Requirements: 2.1, 2.3_
 
-- [ ] 6. Migrate logging utilities
-  - [ ] 6.1 Migrate Winston logger configuration
+- [x] 6. Migrate logging utilities
+  - [x] 6.1 Migrate Winston logger configuration
     - Move `apps/ingestion/src/utils/logger.ts` to `packages/utils/src/logging/winston.ts`
     - Generalize logger configuration for reuse across applications
     - Create tests for logger configuration
     - _Requirements: 5.5, 4.2_
 
-  - [ ] 6.2 Create logging utilities index
+  - [x] 6.2 Create logging utilities index
     - Create `packages/utils/src/logging/index.ts` with logger exports
     - Document logger usage patterns and configuration options
     - _Requirements: 2.3, 6.2_
