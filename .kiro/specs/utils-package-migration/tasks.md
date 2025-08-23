@@ -20,20 +20,20 @@
     - Create unit tests for all type guard functions
     - _Requirements: 2.2, 4.2_
 
-- [ ] 3. Migrate blockchain utilities
-  - [ ] 3.1 Migrate BlockchainError class
+- [x] 3. Migrate blockchain utilities
+  - [x] 3.1 Migrate BlockchainError class
     - Move `packages/services/src/blockchain/utils/BlockchainError.ts` to `packages/utils/src/blockchain/errors.ts`
     - Ensure all static factory methods are preserved
     - Create comprehensive tests for all error scenarios
     - _Requirements: 5.2, 4.2_
 
-  - [ ] 3.2 Migrate TransactionMonitor class
+  - [x] 3.2 Migrate TransactionMonitor class
     - Move `packages/services/src/blockchain/utils/TransactionMonitor.ts` to `packages/utils/src/blockchain/monitoring.ts`
     - Preserve all monitoring functionality and options
     - Create tests for transaction monitoring scenarios
     - _Requirements: 5.2, 4.2_
 
-  - [ ] 3.3 Create blockchain utilities index
+  - [x] 3.3 Create blockchain utilities index
     - Create `packages/utils/src/blockchain/index.ts` with proper exports
     - Ensure proper TypeScript declarations are generated
     - _Requirements: 2.3, 4.2_
