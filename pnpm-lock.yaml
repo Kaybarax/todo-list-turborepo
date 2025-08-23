@@ -1217,6 +1217,9 @@ importers:
       '@todo/services':
         specifier: workspace:*
         version: link:../services
+      '@todo/utils':
+        specifier: workspace:*
+        version: link:../utils
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.1

@@ -121,8 +121,7 @@ export {
   DAISYUI_SIZES,
 } from './types';
 
-// Token Utilities
-export * from '@todo/utils/ui/web/tokens';
+// Token Utilities are already exported via '@todo/utils/ui/web'
 
 // Styles
 import './styles.css';
