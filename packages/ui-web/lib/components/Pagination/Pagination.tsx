@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn, cv, type VariantProps } from '@/utils';
+import { cn, cv, type VariantProps } from '@todo/utils/ui/web';
 
 const paginationVariants = cv('inline-flex items-center gap-1', {
   variants: {

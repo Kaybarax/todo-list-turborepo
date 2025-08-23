@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn, cv, type VariantProps } from '@/utils';
+import { cn, cv, type VariantProps } from '@todo/utils/ui/web';
 
 const tooltipVariants = cv('tooltip', {
   variants: {
@@ -25,7 +25,7 @@ const tooltipVariants = cv('tooltip', {
 });
 
 export interface TooltipProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'>,
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'color' | 'content'>,
     VariantProps<typeof tooltipVariants> {
   content: React.ReactNode;
   children: React.ReactElement;
@@ -39,7 +39,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     // Clone child to add aria-describedby
     const child = React.cloneElement(children, {
       'aria-describedby': tooltipId,
-    });
+    } as any);
 
     return (
       <div className={cn(tooltipVariants({ placement, color }), className)} {...props} ref={ref}>

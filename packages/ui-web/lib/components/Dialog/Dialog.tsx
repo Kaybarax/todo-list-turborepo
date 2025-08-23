@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn } from '@/utils';
+import { cn } from '@todo/utils/ui/web';
 
 // Wrapper around Flowbite Modal
 export interface DialogProps extends React.HTMLAttributes<HTMLDivElement> {

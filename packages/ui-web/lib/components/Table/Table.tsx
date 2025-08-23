@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn } from '@/utils';
+import { cn } from '@todo/utils/ui/web';
 
 export interface Column<T> {
   key: keyof T | string;

@@ -36,14 +36,8 @@ export * from '../lib/components/List';
 export * from '../lib/components/Avatar';
 export * from '../lib/components/Image';
 
-// Todo Components
-export * from '../lib/components/todo';
-
-// Blockchain Components
-export * from '../lib/components/blockchain';
-
-// Theme Components
-export * from '../lib/components/theme';
+// Blockchain Components (excluding migrated components)
+export * from '../lib/components/blockchain/BlockchainStats';
 
 // Core utilities
 export { cn, type VariantProps } from '@todo/utils/ui/web';
@@ -65,25 +59,7 @@ export { Dropdown, type DropdownProps } from '../lib/components/Dropdown';
 export { Avatar, type AvatarProps } from '../lib/components/Avatar';
 export { Image, type ImageProps } from '../lib/components/Image';
 
-// Todo Components
-export { TodoForm, type TodoFormProps, type TodoFormData } from '../lib/components/todo/TodoForm';
-export { TodoItem, type TodoItemProps, type TodoData } from '../lib/components/todo/TodoItem';
-export { TodoList, type TodoListProps } from '../lib/components/todo/TodoList';
-
-// Blockchain Components
-export {
-  BlockchainStats,
-  type BlockchainStatsProps,
-  type BlockchainStatsData,
-} from '../lib/components/blockchain/BlockchainStats';
-export {
-  TransactionStatus,
-  type TransactionStatusProps,
-  type TransactionStatus as TransactionStatusType,
-} from '../lib/components/blockchain/TransactionStatus';
-export { WalletConnect, type WalletConnectProps, type WalletAccount } from '../lib/components/blockchain/WalletConnect';
-
-// Theme System (DaisyUI + Style Dictionary)
+// Theme System (DaisyUI + Style Dictionary) - types and utilities only
 export * from './theme';
 
 // TypeScript Types (explicit re-exports to avoid conflicts)

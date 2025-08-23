@@ -1,9 +1,9 @@
-import { DaisyUITheme } from './theme-provider';
+import { DaisyUITheme } from './types';
 
 // Import generated theme tokens for validation
 let daisyuiThemes: Record<string, any> = {};
 try {
-  daisyuiThemes = require('../../dist/tokens/daisyui-themes.js');
+  daisyuiThemes = require('../../dist/tokens/daisyui-themes.cjs');
 } catch (error) {
   console.warn('DaisyUI themes not found. Run token build first.');
 }

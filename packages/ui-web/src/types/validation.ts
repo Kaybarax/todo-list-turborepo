@@ -8,23 +8,13 @@ import type {
   DaisyUIColor,
   DaisyUISize,
   DaisyUIButtonVariant,
-  DaisyUIButtonSize,
   DaisyUIButtonShape,
-  DaisyUIInputState,
   DaisyUIInputVariant,
   DaisyUICardVariant,
-  DaisyUICardElevation,
   AllDaisyUIVariants,
 } from './daisyui';
 
-import type {
-  DesignTokens,
-  ColorTokenName,
-  SpacingTokenName,
-  FontSizeName,
-  BorderRadiusName,
-  ShadowName,
-} from './tokens';
+import type { ColorTokenName, SpacingTokenName, FontSizeName } from './tokens';
 
 // Type Guards for Runtime Validation
 export function isDaisyUITheme(value: string): value is DaisyUITheme {
@@ -346,7 +336,7 @@ export function validateTokenAccess(tokenPath: string): TokenValidationResult {
     return result;
   }
 
-  const [category, ...rest] = pathParts;
+  const [category] = pathParts;
   const validCategories = ['color', 'space', 'typography', 'border', 'shadow', 'semantic'];
 
   if (!validCategories.includes(category)) {

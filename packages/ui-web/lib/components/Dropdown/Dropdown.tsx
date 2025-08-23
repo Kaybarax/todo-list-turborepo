@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn } from '@/utils';
+import { cn } from '@todo/utils/ui/web';
 
 export interface DropdownItem {
   id: string;
@@ -18,7 +18,7 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
-  ({ className, open, defaultOpen, onOpenChange, items, label = 'Menu', ...props }, ref) => {
+  ({ className, open, defaultOpen, onOpenChange, items, label = 'Menu', ...props }, _ref) => {
     const isControlled = open !== undefined;
     const [internalOpen, setInternalOpen] = React.useState(!!defaultOpen);
     const actualOpen = isControlled ? (open as boolean) : internalOpen;
@@ -125,7 +125,9 @@ export const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
           {items.map((it, i) => (
             <li key={it.id} role="none">
               <button
-                ref={el => (buttonsRef.current[i] = el)}
+                ref={el => {
+                  buttonsRef.current[i] = el;
+                }}
                 role="menuitem"
                 type="button"
                 className="w-full text-left"

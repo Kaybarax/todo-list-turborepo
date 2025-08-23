@@ -134,7 +134,7 @@ StyleDictionary.registerFormat({
   },
 });
 
-// Custom format for DaisyUI theme configuration as CSS variables
+// Custom format for DaisyUI theme configuration as JavaScript module
 StyleDictionary.registerFormat({
   name: 'javascript/daisyui-themes',
   format: function (dictionary) {
@@ -181,19 +181,22 @@ StyleDictionary.registerFormat({
       return map[key] || null; // ignore -focus keys for CSS variables
     };
 
-    let css = `// Generated DaisyUI theme CSS variables\n`;
+    // Generate theme objects for DaisyUI configuration
+    const daisyuiThemes = {};
     Object.entries(themes).forEach(([themeName, values]) => {
-      css += `[data-theme="${themeName}"]{\n`;
+      const themeObj = {};
       Object.entries(values).forEach(([k, v]) => {
         const cssVar = mapKeyToCssVar(k);
         if (cssVar) {
-          css += `  ${cssVar}: ${v};\n`;
+          // Convert CSS variable name to DaisyUI theme key
+          const themeKey = cssVar.replace('--', '');
+          themeObj[themeKey] = v;
         }
       });
-      css += `}\n\n`;
+      daisyuiThemes[themeName] = themeObj;
     });
 
-    return css;
+    return `// Generated DaisyUI theme configuration\nmodule.exports = ${JSON.stringify(daisyuiThemes, null, 2)};`;
   },
 });
 
@@ -250,7 +253,7 @@ const config = {
       buildPath: 'dist/tokens/',
       files: [
         {
-          destination: 'tailwind-tokens.js',
+          destination: 'tailwind-tokens.cjs',
           format: 'javascript/tailwind-module',
           filter: 'tailwind-compatible',
         },
@@ -261,7 +264,7 @@ const config = {
       buildPath: 'dist/tokens/',
       files: [
         {
-          destination: 'daisyui-themes.js',
+          destination: 'daisyui-themes.cjs',
           format: 'javascript/daisyui-themes',
         },
       ],

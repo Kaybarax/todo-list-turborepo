@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn, cv, type VariantProps } from '@/utils';
+import { cn, cv, type VariantProps } from '@todo/utils/ui/web';
 
 const toastVariants = cv('alert shadow-lg', {
   variants: {
@@ -23,7 +23,9 @@ const toastVariants = cv('alert shadow-lg', {
   },
 });
 
-export interface ToastProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof toastVariants> {
+export interface ToastProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'>,
+    VariantProps<typeof toastVariants> {
   title?: React.ReactNode;
   description?: React.ReactNode;
   icon?: React.ReactNode;

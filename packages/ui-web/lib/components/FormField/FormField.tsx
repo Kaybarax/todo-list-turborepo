@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn } from '@/utils';
+import { cn } from '@todo/utils/ui/web';
 import { Label } from '../Label/Label';
 
 export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -21,10 +21,10 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
     const helpId = helperText ? `${fieldId}-help` : undefined;
 
     const control = React.cloneElement(children, {
-      id: children.props.id ?? fieldId,
-      'aria-describedby': cn(children.props['aria-describedby'], helpId),
-      'aria-invalid': error ? true : children.props['aria-invalid'],
-    });
+      id: (children.props as any).id ?? fieldId,
+      'aria-describedby': cn((children.props as any)['aria-describedby'], helpId),
+      'aria-invalid': error ? true : (children.props as any)['aria-invalid'],
+    } as any);
 
     return (
       <div ref={ref} className={cn('form-control w-full', className)} {...props}>
@@ -58,7 +58,7 @@ export const FormGroup = React.forwardRef<HTMLDivElement, FormGroupProps>(
     const descId = description ? `${groupId}-desc` : undefined;
 
     return (
-      <fieldset ref={ref as any} className={cn('w-full space-y-2 border-0', className)} {...props}>
+      <fieldset ref={ref as any} className={cn('w-full space-y-2 border-0', className)} {...(props as any)}>
         {(legend || description) && (
           <div className="space-y-1">
             {legend && <legend className="font-semibold text-sm">{legend}</legend>}

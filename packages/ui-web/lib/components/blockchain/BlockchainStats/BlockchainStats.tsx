@@ -1,6 +1,6 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/utils';
+import { cn } from '@todo/utils/ui/web';
 
 const blockchainStatsVariants = cva('bg-base-100 rounded-lg shadow-sm border', {
   variants: {

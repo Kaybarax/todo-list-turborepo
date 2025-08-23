@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn, cv, type VariantProps } from '@/utils';
+import { cn, cv, type VariantProps } from '@todo/utils/ui/web';
 
 const avatarVariants = cv('avatar', {
   variants: {
@@ -26,7 +26,6 @@ export interface AvatarProps
 
 export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
   ({ className, src, alt, fallback, size, shape, children, ...imgProps }, ref) => {
-    const [loaded, setLoaded] = React.useState(false);
     const [errored, setErrored] = React.useState(false);
 
     const showFallback = errored || !src;
@@ -41,7 +40,7 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
               src={src}
               alt={alt}
               className="w-full h-full object-cover"
-              onLoad={() => setLoaded(true)}
+              onLoad={() => {}}
               onError={() => setErrored(true)}
             />
           ) : (

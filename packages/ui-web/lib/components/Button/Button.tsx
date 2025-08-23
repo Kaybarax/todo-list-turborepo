@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
-import { cn } from '@/utils';
+import { cn } from '@todo/utils/ui/web';
 
 const buttonVariants = cva('btn bg-primary h-10', {
   variants: {
@@ -85,8 +85,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     if (asChild) {
       return <div className={cn(buttonVariants({ variant, size, shape, glass, block }), className)}>{children}</div>;
     }
-
-    const loadingSpinnerClass = `loading loading-spinner loading-${loadingSize}`;
 
     return (
       <button

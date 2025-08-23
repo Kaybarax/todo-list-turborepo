@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { cn, cv, type VariantProps } from '@/utils';
-import { ariaAttr, mergeRefs } from '@/utils/a11y';
+import { cn, cv, type VariantProps } from '@todo/utils/ui/web';
+import { ariaAttr, mergeRefs } from '@todo/utils/ui/web/a11y';
 
 export type ComboboxOption = { value: string; label: string };
 

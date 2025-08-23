@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn, cv, type VariantProps } from '@/utils';
+import { cn, cv, type VariantProps } from '@todo/utils/ui/web';
 
 const progressVariants = cv('progress w-full', {
   variants: {
@@ -48,7 +48,7 @@ export const Progress = React.forwardRef<HTMLProgressElement, ProgressProps>(
         aria-valuemin={String(min)}
         aria-valuemax={String(max)}
         className={cn(progressVariants({ size, variant }), className)}
-        {...props}
+        {...(props as any)}
       />
     );
   },

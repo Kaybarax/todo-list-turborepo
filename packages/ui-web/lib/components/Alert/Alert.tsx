@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn, cv, type VariantProps } from '@/utils';
+import { cn, cv, type VariantProps } from '@todo/utils/ui/web';
 
 const alertVariants = cv('alert', {
   variants: {
@@ -23,7 +23,9 @@ const alertVariants = cv('alert', {
   },
 });
 
-export interface AlertProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof alertVariants> {
+export interface AlertProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'>,
+    VariantProps<typeof alertVariants> {
   title?: React.ReactNode;
   description?: React.ReactNode;
   icon?: React.ReactNode;

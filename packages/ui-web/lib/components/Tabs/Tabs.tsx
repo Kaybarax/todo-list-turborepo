@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn, cv, type VariantProps } from '@/utils';
+import { cn, cv, type VariantProps } from '@todo/utils/ui/web';
 
 const tabsVariants = cv('flex', {
   variants: {
@@ -79,7 +79,7 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
       <div ref={ref} className={cn(tabsVariants({ orientation }), className)} {...props}>
         <div
           role="tablist"
-          aria-orientation={orientation}
+          aria-orientation={orientation || undefined}
           className={cn(tabListVariants({ orientation }))}
           onKeyDown={onKeyDown}
         >
@@ -90,7 +90,9 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
             return (
               <button
                 key={it.id}
-                ref={el => (tabsRef.current[i] = el)}
+                ref={el => {
+                  tabsRef.current[i] = el;
+                }}
                 role="tab"
                 id={tabId}
                 aria-selected={selected}

@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
-import { cn } from '@/utils';
+import { cn } from '@todo/utils/ui/web';
 
 const labelVariants = cva(
   'label-text text-sm font-medium leading-none transition-all duration-200 cursor-pointer select-none',

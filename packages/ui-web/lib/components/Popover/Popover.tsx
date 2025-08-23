@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { cn } from '@/utils';
+import { cn } from '@todo/utils/ui/web';
 
-export interface PopoverProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface PopoverProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -12,7 +12,7 @@ export interface PopoverProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(
-  ({ className, open, defaultOpen, onOpenChange, titleId, content, children, ...props }, ref) => {
+  ({ className, open, defaultOpen, onOpenChange, titleId, content, children, ...props }, _ref) => {
     const isControlled = open !== undefined;
     const [internalOpen, setInternalOpen] = React.useState(!!defaultOpen);
     const actualOpen = isControlled ? (open as boolean) : internalOpen;
@@ -46,10 +46,10 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(
       'aria-haspopup': 'dialog',
       'aria-expanded': actualOpen,
       onClick: (e: React.MouseEvent) => {
-        children.props.onClick?.(e);
+        (children.props as any).onClick?.(e);
         setOpen(!actualOpen);
       },
-    });
+    } as any);
 
     const dialogId = React.useId();
 
