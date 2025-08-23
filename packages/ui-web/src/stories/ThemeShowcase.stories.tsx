@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { Button } from '../components/Button/Button';
-import { Card } from '../components/Card/Card';
-import { Badge } from '../components/Badge/Badge';
-import { Alert } from '../components/Alert/Alert';
-import { Progress } from '../components/Progress/Progress';
-import { Checkbox } from '../components/Checkbox/Checkbox';
-import { Radio } from '../components/Radio/Radio';
-import { Select } from '../components/Select/Select';
-import { Textarea } from '../components/Textarea/Textarea';
+import { Button } from '../../lib/components/Button/Button';
+import { Card } from '../../lib/components/Card/Card';
+import { Badge } from '../../lib/components/Badge/Badge';
+import { Alert } from '../../lib/components/Alert/Alert';
+import { Progress } from '../../lib/components/Progress/Progress';
+import { Checkbox } from '../../lib/components/Checkbox/Checkbox';
+import { Radio } from '../../lib/components/Radio/Radio';
+import { Select } from '../../lib/components/Select/Select';
+import { Textarea } from '../../lib/components/Textarea/Textarea';
 
 const meta: Meta = {
   title: 'Foundation/DaisyUI Theme Showcase',

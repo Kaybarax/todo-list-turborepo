@@ -1,6 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import { List } from '../components/List/List';
+import { List } from '../../lib/components/List/List';
 
 const meta: Meta<typeof List> = {
   title: 'Data Display/List',

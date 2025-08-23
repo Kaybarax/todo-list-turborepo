@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { Button } from '../components/Button/Button';
-import { Input } from '../components/Input/Input';
-import { Dropdown } from '../components/Dropdown/Dropdown';
-import { Tabs } from '../components/Tabs/Tabs';
-import { Dialog } from '../components/Dialog/Dialog';
+import { Button } from '../../lib/components/Button/Button';
+import { Input } from '../../lib/components/Input/Input';
+import { Dropdown } from '../../lib/components/Dropdown/Dropdown';
+import { Tabs } from '../../lib/components/Tabs/Tabs';
+import { Dialog } from '../../lib/components/Dialog/Dialog';
 
 const meta: Meta = {
   title: 'Foundation/Accessibility',

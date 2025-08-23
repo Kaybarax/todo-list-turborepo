@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import { Stack } from '../components/Stack/Stack';
-import { Button } from '../components/Button/Button';
+import { Stack } from '../../lib/components/Stack/Stack';
+import { Button } from '../../lib/components/Button/Button';
 
 const meta: Meta<typeof Stack> = {
   title: 'Layout/Stack',

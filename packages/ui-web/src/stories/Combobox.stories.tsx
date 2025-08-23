@@ -1,6 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import { Combobox } from '../components/Combobox/Combobox';
+import { Combobox } from '../../lib/components/Combobox/Combobox';
 
 const fruits = [
   { value: 'apple', label: 'Apple' },

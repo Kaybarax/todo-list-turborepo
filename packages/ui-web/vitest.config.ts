@@ -12,17 +12,19 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./src/__tests__/setup.ts'],
-    include: ['src/**/*.test.{ts,tsx}', 'src/components/**/__tests__/**/*.test.{ts,tsx}'],
+    setupFiles: ['./__tests__/setup.ts'],
+    include: ['__tests__/**/*.test.{ts,tsx}'],
     exclude: ['node_modules', 'dist', '.storybook', 'src/stories/**/*'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
-      include: ['src/**/*'],
+      include: ['src/**/*', 'lib/**/*'],
       exclude: [
         'src/**/*.stories.tsx',
         'src/**/*.test.tsx',
-        'src/__tests__/**/*',
+        'lib/**/*.stories.tsx',
+        'lib/**/*.test.tsx',
+        '__tests__/**/*',
         'src/stories/**/*',
         'src/types/**/*',
       ],

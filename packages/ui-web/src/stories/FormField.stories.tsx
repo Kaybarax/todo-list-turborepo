@@ -1,9 +1,9 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import { FormField, FormGroup } from '../components/FormField/FormField';
-import { Input } from '../components/Input/Input';
-import { Textarea } from '../components/Textarea/Textarea';
-import { Select } from '../components/Select/Select';
+import { FormField, FormGroup } from '../../lib/components/FormField/FormField';
+import { Input } from '../../lib/components/Input/Input';
+import { Textarea } from '../../lib/components/Textarea/Textarea';
+import { Select } from '../../lib/components/Select/Select';
 
 const meta: Meta<typeof FormField> = {
   title: 'Components/FormField',

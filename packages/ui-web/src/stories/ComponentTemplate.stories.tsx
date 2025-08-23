@@ -4,7 +4,7 @@ import { clsx } from 'clsx';
 import React from 'react';
 
 // TODO: Replace with actual component import
-// import { ComponentName } from '../components/ComponentName';
+// import { ComponentName } from '../../lib/components/ComponentName';
 
 // TODO: Replace with actual component interface
 interface ComponentNameProps {

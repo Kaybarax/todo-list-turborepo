@@ -1,6 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import { Table, type Column } from '../components/Table/Table';
+import { Table, type Column } from '../../lib/components/Table/Table';
 
 type Row = { name: string; age: number };
 

@@ -1,6 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import { Toast, Toaster } from '../components/Toast/Toast';
+import { Toast, Toaster } from '../../lib/components/Toast/Toast';
 
 const meta: Meta<typeof Toast> = {
   title: 'Feedback/Toast',

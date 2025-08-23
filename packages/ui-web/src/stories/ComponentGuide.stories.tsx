@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { Button } from '../components/Button/Button';
-import { Input } from '../components/Input/Input';
-import { Card } from '../components/Card/Card';
+import { Button } from '../../lib/components/Button/Button';
+import { Input } from '../../lib/components/Input/Input';
+import { Card } from '../../lib/components/Card/Card';
 
 const meta: Meta = {
   title: 'Foundation/Component Guide',

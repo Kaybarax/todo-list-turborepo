@@ -1,8 +1,8 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { Button } from '../components/Button/Button';
-import { Popover } from '../components/Popover/Popover';
+import { Button } from '../../lib/components/Button/Button';
+import { Popover } from '../../lib/components/Popover/Popover';
 
 const meta: Meta<typeof Popover> = {
   title: 'Overlay/Popover',

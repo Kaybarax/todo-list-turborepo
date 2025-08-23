@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
-import { Button } from '../../src/components/Button/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '../../src/components/Card/Card';
-import { Input } from '../../src/components/Input/Input';
-import { Badge } from '../../src/components/Badge/Badge';
+import { Button } from '../lib/../src/components/Button/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '../lib/../src/components/Card/Card';
+import { Input } from '../lib/../src/components/Input/Input';
+import { Badge } from '../lib/../src/components/Badge/Badge';
 
 describe('Component Interactions', () => {
   describe('Form with Button and Input', () => {

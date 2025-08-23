@@ -2,7 +2,7 @@ import { type Meta, type StoryObj } from '@storybook/react';
 import { Search, Mail, Eye, EyeOff } from 'lucide-react';
 import React from 'react';
 
-import { Input } from '../components/Input/Input';
+import { Input } from '../../lib/components/Input/Input';
 
 const meta: Meta<typeof Input> = {
   title: 'Components/Input',

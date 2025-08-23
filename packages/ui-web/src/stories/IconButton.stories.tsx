@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import { Edit, Trash2, Settings, Plus, Heart, Star } from 'lucide-react';
 
-import { IconButton } from '../components/IconButton/IconButton';
+import { IconButton } from '../../lib/components/IconButton/IconButton';
 
 const meta: Meta<typeof IconButton> = {
   title: 'Components/IconButton',

@@ -7,8 +7,8 @@ export default defineConfig({
   plugins: [
     react(),
     dts({
-      include: ['src/**/*'],
-      exclude: ['src/**/*.stories.tsx', 'src/**/*.test.tsx'],
+      include: ['src/**/*', 'lib/**/*'],
+      exclude: ['src/**/*.stories.tsx', 'src/**/*.test.tsx', 'lib/**/*.stories.tsx', 'lib/**/*.test.tsx'],
     }),
   ],
   resolve: {

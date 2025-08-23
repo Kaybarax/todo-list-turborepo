@@ -1,6 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import { Tabs, type TabItem } from '../components/Tabs/Tabs';
+import { Tabs, type TabItem } from '../../lib/components/Tabs/Tabs';
 
 const meta: Meta<typeof Tabs> = {
   title: 'Navigation/Tabs',

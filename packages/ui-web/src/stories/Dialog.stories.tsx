@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { Button } from '../components/Button/Button';
+import { Button } from '../../lib/components/Button/Button';
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../components/Dialog/Dialog';
+} from '../../lib/components/Dialog/Dialog';
 
 const meta: Meta<typeof Dialog> = {
   title: 'Overlay/Dialog',
