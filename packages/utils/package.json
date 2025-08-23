@@ -87,17 +87,27 @@
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build"
   },
+  "dependencies": {
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^3.3.1"
+  },
   "devDependencies": {
     "@todo/config-eslint": "workspace:*",
     "@todo/config-ts": "workspace:*",
     "@types/node": "^22.10.5",
+    "@types/react": "^19.1.1",
     "@vitejs/plugin-react": "^5.0.0",
     "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^9.33.0",
     "jsdom": "^26.1.0",
+    "react": "^19.1.1",
     "typescript": "^5.9.2",
     "vite": "^7.1.2",
     "vite-plugin-dts": "^4.5.4",
     "vitest": "^3.2.4"
+  },
+  "peerDependencies": {
+    "react": "^19.1.1"
   }
 }

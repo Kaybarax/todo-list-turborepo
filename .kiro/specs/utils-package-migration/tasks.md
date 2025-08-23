@@ -38,14 +38,14 @@
     - Ensure proper TypeScript declarations are generated
     - _Requirements: 2.3, 4.2_
 
-- [ ] 4. Migrate UI utilities
-  - [ ] 4.1 Migrate web UI utilities
+- [x] 4. Migrate UI utilities
+  - [x] 4.1 Migrate web UI utilities
     - Move all files from `packages/ui-web/src/utils/` to `packages/utils/src/ui/web/`
     - Preserve all utility functions: cn, ariaAttr, mergeRefs, responsive utilities, token utilities
     - Create comprehensive tests for all UI utility functions
     - _Requirements: 5.3, 4.2_
 
-  - [ ] 4.2 Create UI utilities organization
+  - [x] 4.2 Create UI utilities organization
     - Create `packages/utils/src/ui/web/index.ts` with proper exports
     - Create `packages/utils/src/ui/mobile/index.ts` for future mobile utilities
     - Create main `packages/utils/src/ui/index.ts` with organized exports
