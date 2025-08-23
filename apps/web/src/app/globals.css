@@ -9,7 +9,7 @@
   }
 
   body {
-    @apply h-full bg-base-100 text-base-content font-sans;
+    @apply h-full bg-white text-gray-900 font-sans;
   }
 }
 

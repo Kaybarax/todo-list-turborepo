@@ -1,4 +1,4 @@
-import type { TodoData as Todo } from '@todo/ui-web';
+import type { TodoData as Todo } from '@/components/todo/TodoItem';
 import { BlockchainNetwork } from '@todo/services';
 
 export const sampleTodos: Todo[] = [

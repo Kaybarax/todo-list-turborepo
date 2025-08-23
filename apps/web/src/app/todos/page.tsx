@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Button } from '@todo/ui-web';
-import { TodoForm, TodoList, BlockchainStats } from '@todo/ui-web';
+import { Button, BlockchainStats } from '@todo/ui-web';
+import { TodoForm } from '@/components/todo/TodoForm';
+import { TodoList } from '@/components/todo/TodoList';
 import { useTodoStore } from '@/store/todoStore';
 import { useWallet } from '@/components/WalletProvider';
 import type { BlockchainNetwork } from '@todo/services';
-import type { TodoData as Todo } from '@todo/ui-web';
+import type { TodoData as Todo } from '@/components/todo/TodoItem';
 
 const TodosPage = () => {
   const [showForm, setShowForm] = useState(false);

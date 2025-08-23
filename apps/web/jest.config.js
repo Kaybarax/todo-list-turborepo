@@ -13,6 +13,10 @@ const customJestConfig = {
   moduleNameMapper: {
     ...baseConfig.moduleNameMapper,
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@todo/utils/ui/web$': '<rootDir>/../../packages/utils/src/ui/web',
+    '^@todo/utils/ui/web/(.*)$': '<rootDir>/../../packages/utils/src/ui/web/$1',
+    '^@todo/utils/(.*)$': '<rootDir>/../../packages/utils/src/$1',
+    '^@todo/ui-web$': '<rootDir>/../../packages/ui-web/src',
     '^@todo/(.*)$': '<rootDir>/../../packages/$1/src',
   },
   testEnvironment: 'jest-environment-jsdom',
