@@ -7,14 +7,14 @@
   - Configure Jest for testing with appropriate test environment
   - _Requirements: 1.2, 4.1, 4.2, 4.4_
 
-- [ ] 2. Migrate common utilities
-  - [ ] 2.1 Migrate environment utilities
+- [x] 2. Migrate common utilities
+  - [x] 2.1 Migrate environment utilities
     - Move `packages/services/src/utils/env.ts` to `packages/utils/src/common/env.ts`
     - Create comprehensive tests for environment utility functions
     - Update exports in common utilities index file
     - _Requirements: 5.1, 4.2_
 
-  - [ ] 2.2 Migrate type guard utilities
+  - [x] 2.2 Migrate type guard utilities
     - Move type guards from `packages/ui-web/src/utils/type-guards.ts` to `packages/utils/src/common/type-guards.ts`
     - Add additional common type guards that may be useful across packages
     - Create unit tests for all type guard functions
