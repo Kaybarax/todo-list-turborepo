@@ -1,0 +1,15 @@
+{
+  "extends": "@todo/config-ts/library.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "paths": {
+      "@todo/*": ["../*/src"]
+    },
+    "types": ["node", "vitest/globals"]
+  },
+  "include": ["src/**/*", "*.config.ts", "*.config.js"],
+  "exclude": ["node_modules", "dist", "build", "coverage"]
+}

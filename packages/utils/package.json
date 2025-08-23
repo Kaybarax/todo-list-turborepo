@@ -1,0 +1,103 @@
+{
+  "name": "@todo/utils",
+  "version": "0.1.0",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist/**"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./common": {
+      "types": "./dist/common/index.d.ts",
+      "import": "./dist/common/index.js",
+      "require": "./dist/common/index.cjs"
+    },
+    "./common/*": {
+      "types": "./dist/common/*.d.ts",
+      "import": "./dist/common/*.js",
+      "require": "./dist/common/*.cjs"
+    },
+    "./blockchain": {
+      "types": "./dist/blockchain/index.d.ts",
+      "import": "./dist/blockchain/index.js",
+      "require": "./dist/blockchain/index.cjs"
+    },
+    "./blockchain/*": {
+      "types": "./dist/blockchain/*.d.ts",
+      "import": "./dist/blockchain/*.js",
+      "require": "./dist/blockchain/*.cjs"
+    },
+    "./ui": {
+      "types": "./dist/ui/index.d.ts",
+      "import": "./dist/ui/index.js",
+      "require": "./dist/ui/index.cjs"
+    },
+    "./ui/web": {
+      "types": "./dist/ui/web/index.d.ts",
+      "import": "./dist/ui/web/index.js",
+      "require": "./dist/ui/web/index.cjs"
+    },
+    "./ui/mobile": {
+      "types": "./dist/ui/mobile/index.d.ts",
+      "import": "./dist/ui/mobile/index.js",
+      "require": "./dist/ui/mobile/index.cjs"
+    },
+    "./testing": {
+      "types": "./dist/testing/index.d.ts",
+      "import": "./dist/testing/index.js",
+      "require": "./dist/testing/index.cjs"
+    },
+    "./testing/*": {
+      "types": "./dist/testing/*.d.ts",
+      "import": "./dist/testing/*.js",
+      "require": "./dist/testing/*.cjs"
+    },
+    "./api": {
+      "types": "./dist/api/index.d.ts",
+      "import": "./dist/api/index.js",
+      "require": "./dist/api/index.cjs"
+    },
+    "./logging": {
+      "types": "./dist/logging/index.d.ts",
+      "import": "./dist/logging/index.js",
+      "require": "./dist/logging/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "devDependencies": {
+    "@todo/config-eslint": "workspace:*",
+    "@todo/config-ts": "workspace:*",
+    "@types/node": "^22.10.5",
+    "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^9.33.0",
+    "jsdom": "^26.1.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.2",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^3.2.4"
+  }
+}
