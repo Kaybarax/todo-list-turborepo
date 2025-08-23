@@ -51,20 +51,20 @@
     - Create main `packages/utils/src/ui/index.ts` with organized exports
     - _Requirements: 2.1, 2.2, 2.3_
 
-- [ ] 5. Migrate testing utilities
-  - [ ] 5.1 Migrate mobile testing utilities
+- [x] 5. Migrate testing utilities
+  - [x] 5.1 Migrate mobile testing utilities
     - Move `packages/ui-mobile/src/test/utils/eva-test-utils.tsx` to `packages/utils/src/testing/mobile.ts`
     - Ensure all Eva Design testing helpers are preserved
     - Create tests for testing utility functions
     - _Requirements: 5.4, 4.2_
 
-  - [ ] 5.2 Migrate API testing utilities
+  - [x] 5.2 Migrate API testing utilities
     - Move `apps/web/src/__tests__/test-utils.ts` to `packages/utils/src/testing/api.ts`
     - Preserve mock creation and data transformation utilities
     - Create tests for API testing utilities
     - _Requirements: 5.5, 4.2_
 
-  - [ ] 5.3 Create testing utilities index
+  - [x] 5.3 Create testing utilities index
     - Create `packages/utils/src/testing/index.ts` with organized exports
     - Ensure proper separation between web, mobile, and API testing utilities
     - _Requirements: 2.1, 2.3_
