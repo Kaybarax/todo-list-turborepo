@@ -181,14 +181,30 @@ StyleDictionary.registerFormat({
       return map[key] || null; // ignore -focus keys for CSS variables
     };
 
-    // Generate theme objects for DaisyUI configuration
+    // Generate CSS-style theme selectors with variables
+    let cssOutput = '// Generated DaisyUI theme configuration\n';
+    cssOutput += 'const themes = `\n';
+    
+    Object.entries(themes).forEach(([themeName, values]) => {
+      cssOutput += `[data-theme="${themeName}"] {\n`;
+      Object.entries(values).forEach(([k, v]) => {
+        const cssVar = mapKeyToCssVar(k);
+        if (cssVar) {
+          cssOutput += `  ${cssVar}: ${v};\n`;
+        }
+      });
+      cssOutput += '}\n\n';
+    });
+    
+    cssOutput += '`;\n\n';
+    
+    // Also export as JavaScript object for programmatic access
     const daisyuiThemes = {};
     Object.entries(themes).forEach(([themeName, values]) => {
       const themeObj = {};
       Object.entries(values).forEach(([k, v]) => {
         const cssVar = mapKeyToCssVar(k);
         if (cssVar) {
-          // Convert CSS variable name to DaisyUI theme key
           const themeKey = cssVar.replace('--', '');
           themeObj[themeKey] = v;
         }
@@ -196,7 +212,10 @@ StyleDictionary.registerFormat({
       daisyuiThemes[themeName] = themeObj;
     });
 
-    return `// Generated DaisyUI theme configuration\nmodule.exports = ${JSON.stringify(daisyuiThemes, null, 2)};`;
+    cssOutput += `const themeObjects = ${JSON.stringify(daisyuiThemes, null, 2)};\n\n`;
+    cssOutput += 'module.exports = { themes, themeObjects };';
+
+    return cssOutput;
   },
 });
 
@@ -253,7 +272,7 @@ const config = {
       buildPath: 'dist/tokens/',
       files: [
         {
-          destination: 'tailwind-tokens.cjs',
+          destination: 'tailwind-tokens.js',
           format: 'javascript/tailwind-module',
           filter: 'tailwind-compatible',
         },
@@ -264,7 +283,7 @@ const config = {
       buildPath: 'dist/tokens/',
       files: [
         {
-          destination: 'daisyui-themes.cjs',
+          destination: 'daisyui-themes.js',
           format: 'javascript/daisyui-themes',
         },
       ],
