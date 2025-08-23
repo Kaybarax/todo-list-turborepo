@@ -24,6 +24,7 @@ export default defineConfig({
         'ui/index': resolve(__dirname, 'src/ui/index.ts'),
         'ui/web/index': resolve(__dirname, 'src/ui/web/index.ts'),
         'ui/web/tokens': resolve(__dirname, 'src/ui/web/tokens.ts'),
+        'ui/web/a11y': resolve(__dirname, 'src/ui/web/a11y.ts'),
         'ui/mobile/index': resolve(__dirname, 'src/ui/mobile/index.ts'),
         'testing/index': resolve(__dirname, 'src/testing/index.ts'),
         'testing/api': resolve(__dirname, 'src/testing/api.ts'),

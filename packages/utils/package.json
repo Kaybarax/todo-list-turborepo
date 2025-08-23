@@ -54,6 +54,11 @@
       "import": "./dist/ui/web/tokens.js",
       "require": "./dist/ui/web/tokens.cjs"
     },
+    "./ui/web/a11y": {
+      "types": "./dist/ui/web/a11y.d.ts",
+      "import": "./dist/ui/web/a11y.js",
+      "require": "./dist/ui/web/a11y.cjs"
+    },
     "./ui/mobile": {
       "types": "./dist/ui/mobile/index.d.ts",
       "import": "./dist/ui/mobile/index.js",
