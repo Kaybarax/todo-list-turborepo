@@ -1,31 +1,73 @@
 // Mock React Native components
 /* eslint-disable no-undef */
-jest.mock('react-native', () => {
-  const RN = jest.requireActual('react-native');
+import '@testing-library/jest-dom';
 
+jest.mock('react-native', () => ({
   // Mock components
-  RN.TouchableOpacity = 'TouchableOpacity';
-  RN.TouchableWithoutFeedback = 'TouchableWithoutFeedback';
-  RN.View = 'View';
-  RN.Text = 'Text';
-  RN.TextInput = 'TextInput';
-  RN.Image = 'Image';
-  RN.ScrollView = 'ScrollView';
-  RN.FlatList = 'FlatList';
-  RN.SectionList = 'SectionList';
-  RN.ActivityIndicator = 'ActivityIndicator';
-  RN.Switch = 'Switch';
-  RN.Modal = 'Modal';
-  RN.Pressable = 'Pressable';
+  TouchableOpacity: 'TouchableOpacity',
+  TouchableWithoutFeedback: 'TouchableWithoutFeedback',
+  View: 'View',
+  Text: 'Text',
+  TextInput: 'TextInput',
+  Image: 'Image',
+  ScrollView: 'ScrollView',
+  FlatList: 'FlatList',
+  SectionList: 'SectionList',
+  ActivityIndicator: 'ActivityIndicator',
+  Switch: 'Switch',
+  Modal: 'Modal',
+  Pressable: 'Pressable',
+  SafeAreaView: 'SafeAreaView',
+  StatusBar: 'StatusBar',
 
-  // Mock methods
-  RN.StyleSheet.create = (styles: any) => styles;
-  RN.Dimensions.get = jest.fn().mockReturnValue({ width: 375, height: 812 });
-  RN.Platform.OS = 'ios';
-  RN.Platform.select = jest.fn(obj => obj.ios ?? obj.default);
+  // Mock StyleSheet
+  StyleSheet: {
+    create: jest.fn(styles => styles),
+    absoluteFillObject: {},
+    hairlineWidth: 1,
+    flatten: jest.fn(style => {
+      if (Array.isArray(style)) {
+        return Object.assign({}, ...style.filter(Boolean));
+      }
+      return style || {};
+    }),
+  },
 
-  return RN;
-});
+  // Mock Dimensions
+  Dimensions: {
+    get: jest.fn().mockReturnValue({ width: 375, height: 812 }),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+  },
+
+  // Mock Platform
+  Platform: {
+    OS: 'ios',
+    Version: '14.0',
+    select: jest.fn((obj: any) => obj.ios ?? obj.default),
+  },
+
+  // Mock Animated
+  Animated: {
+    View: 'Animated.View',
+    Text: 'Animated.Text',
+    Value: jest.fn(() => ({ setValue: jest.fn(), addListener: jest.fn() })),
+    timing: jest.fn(() => ({ start: jest.fn() })),
+    spring: jest.fn(() => ({ start: jest.fn() })),
+    sequence: jest.fn(() => ({ start: jest.fn() })),
+    parallel: jest.fn(() => ({ start: jest.fn() })),
+  },
+
+  // Mock other common APIs
+  Alert: {
+    alert: jest.fn(),
+  },
+
+  Linking: {
+    openURL: jest.fn(),
+    canOpenURL: jest.fn(() => Promise.resolve(true)),
+  },
+}));
 
 // Mock react-native-vector-icons
 jest.mock('react-native-vector-icons/MaterialIcons', () => 'MaterialIcons');

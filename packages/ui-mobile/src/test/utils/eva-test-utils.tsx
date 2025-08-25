@@ -2,7 +2,7 @@ import React from 'react';
 import { render, RenderOptions } from '@testing-library/react-native';
 import { ApplicationProvider } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
-import { EvaProvider } from '../../lib/theme';
+import { EvaProvider } from '../../../lib/theme';
 
 // Custom render function with Eva Design providers
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {

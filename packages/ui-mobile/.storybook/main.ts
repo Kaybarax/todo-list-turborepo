@@ -47,6 +47,15 @@ const config: StorybookConfig = {
       'process.env.NODE_ENV': JSON.stringify('development'),
     };
 
+    // Configure Vite to handle JSX in .js files from node_modules
+    config.optimizeDeps = config.optimizeDeps || {};
+    config.optimizeDeps.esbuildOptions = {
+      ...config.optimizeDeps.esbuildOptions,
+      loader: {
+        '.js': 'jsx',
+      },
+    };
+
     return config;
   },
 };

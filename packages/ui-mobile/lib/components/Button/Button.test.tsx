@@ -91,7 +91,7 @@ describe('Button', () => {
   it('applies custom style correctly', () => {
     const customStyle = { backgroundColor: 'red' };
     renderWithTheme(
-      <Button style={customStyle} testID="custom-style-button">
+      <Button style={customStyle} testID="custom-style-button" onPress={() => {}}>
         Custom Style Button
       </Button>,
     );

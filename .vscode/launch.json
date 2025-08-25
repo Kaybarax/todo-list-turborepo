@@ -1,0 +1,819 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Test UI Mobile",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": ["--config", "${workspaceFolder}/packages/ui-mobile/jest.config.js", "--runInBand"],
+      "cwd": "${workspaceFolder}/packages/ui-mobile",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "Test UI Mobile (Watch)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": ["--config", "${workspaceFolder}/packages/ui-mobile/jest.config.js", "--watch", "--runInBand"],
+      "cwd": "${workspaceFolder}/packages/ui-mobile",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "Test UI Web",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/vitest",
+      "args": ["run", "--config", "${workspaceFolder}/packages/ui-web/vitest.config.ts"],
+      "cwd": "${workspaceFolder}/packages/ui-web",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "Test UI Web (Watch)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/vitest",
+      "args": ["--config", "${workspaceFolder}/packages/ui-web/vitest.config.ts"],
+      "cwd": "${workspaceFolder}/packages/ui-web",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "Test UI Mobile (Specific File)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": ["--config", "${workspaceFolder}/packages/ui-mobile/jest.config.js", "${input:testFile}", "--runInBand"],
+      "cwd": "${workspaceFolder}/packages/ui-mobile",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "Test UI Web (Specific File)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/vitest",
+      "args": ["run", "--config", "${workspaceFolder}/packages/ui-web/vitest.config.ts", "${input:testFile}"],
+      "cwd": "${workspaceFolder}/packages/ui-web",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "pnpm: build",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run build",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: build:quick",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run build:quick",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: build:production",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run build:production",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: build:contracts",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run build:contracts",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: build:packages",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run build:packages",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:packages",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:packages",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: build:apps",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run build:apps",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: dev",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run dev",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: dev:all",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run dev:all",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: dev:frontend",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run dev:frontend",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: dev:backend",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run dev:backend",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: dev:blockchain",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run dev:blockchain",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: dev:web",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run dev:web",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: dev:api",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run dev:api",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: dev:mobile",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run dev:mobile",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: dev:ingestion",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run dev:ingestion",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: dev:contracts",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run dev:contracts",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: dev:storybook:web",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run dev:storybook:web",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: dev:storybook:mobile",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run dev:storybook:mobile",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: storybook:web",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run storybook:web",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: storybook:mobile",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run storybook:mobile",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: storybook:build:web",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run storybook:build:web",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: storybook:build:mobile",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run storybook:build:mobile",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: tokens:build",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run tokens:build",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: tokens:watch",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run tokens:watch",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: tokens:validate",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run tokens:validate",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: design-system:build",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run design-system:build",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: design-system:test",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run design-system:test",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: lint",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run lint",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: lint:fix",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run lint:fix",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:unit",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:unit",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:integration",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:integration",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:integration:blockchain",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:integration:blockchain",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:integration:web",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:integration:web",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:integration:mobile",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:integration:mobile",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:integration:all",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:integration:all",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:e2e",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:e2e",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:contracts",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:contracts",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:deps",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:deps",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:deps:unit",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:deps:unit",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:deps:integration",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:deps:integration",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:deps:cross-platform",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:deps:cross-platform",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:ui-mobile",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:ui-mobile",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:ui-web",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:ui-web",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:ui-mobile:watch",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:ui-mobile:watch",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:ui-web:watch",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:ui-web:watch",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:deps:error-handling",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:deps:error-handling",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: test:deps:coverage",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run test:deps:coverage",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: format",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run format",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: format:check",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run format:check",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: clean",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run clean",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: clean:docker",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run clean:docker",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: typecheck",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run typecheck",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: quality",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run quality",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: quality:fix",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run quality:fix",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: contracts:compile",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run contracts:compile",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: contracts:test",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run contracts:test",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: contracts:deploy",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run contracts:deploy",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: contracts:polygon",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run contracts:polygon",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: contracts:solana",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run contracts:solana",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: contracts:polkadot",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run contracts:polkadot",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: contracts:moonbeam",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run contracts:moonbeam",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: contracts:base",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run contracts:base",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: db:setup",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run db:setup",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: db:migrate",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run db:migrate",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: db:seed",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run db:seed",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: db:reset",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run db:reset",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: docker:build",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run docker:build",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: docker:build:prod",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run docker:build:prod",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: docker:clean",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run docker:clean",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: deploy",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run deploy",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: deploy:dev",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run deploy:dev",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: deploy:staging",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run deploy:staging",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: deploy:production",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run deploy:production",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: deploy:contracts",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run deploy:contracts",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: deploy:k8s",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run deploy:k8s",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: deploy:docker",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run deploy:docker",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: prepare",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run prepare",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: changeset",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run changeset",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: version-packages",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run version-packages",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: release",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run release",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: validate-packages",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run validate-packages",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: verify-dependencies",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run verify-dependencies",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: verify-dependencies:install",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run verify-dependencies:install",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: verify-dependencies:test",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run verify-dependencies:test",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:deps:check",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:deps:check",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:deps:check:verbose",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:deps:check:verbose",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:deps:check:polygon",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:deps:check:polygon",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:deps:check:solana",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:deps:check:solana",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:deps:check:polkadot",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:deps:check:polkadot",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:deps:fix",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:deps:fix",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:deps:fix:interactive",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:deps:fix:interactive",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:deps:diagnose",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:deps:diagnose",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:tools:install",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:tools:install",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:tools:install:rust",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:tools:install:rust",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:tools:install:solana",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:tools:install:solana",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:tools:install:anchor",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:tools:install:anchor",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:tools:install:substrate",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:tools:install:substrate",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:tools:install:interactive",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:tools:install:interactive",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:help",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:help",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: blockchain:help:interactive",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run blockchain:help:interactive",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: publish-packages",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run publish-packages",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: publish-packages:dry-run",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run publish-packages:dry-run",
+      "cwd": "${workspaceFolder}"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "testFile",
+      "description": "Test file path",
+      "default": "",
+      "type": "promptString"
+    }
+  ]
+}
