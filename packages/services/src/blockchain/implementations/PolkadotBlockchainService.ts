@@ -1,3 +1,5 @@
+import { BlockchainError } from '@todo/utils/blockchain/errors';
+
 import {
   BlockchainNetwork,
   TransactionStatus,
@@ -8,7 +10,6 @@ import {
   type WalletInfo,
 } from '../types';
 import { BaseBlockchainService } from './BaseBlockchainService';
-import { BlockchainError } from '@todo/utils/blockchain/errors';
 
 /**
  * Polkadot blockchain service implementation

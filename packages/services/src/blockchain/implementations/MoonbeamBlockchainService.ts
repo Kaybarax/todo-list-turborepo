@@ -1,3 +1,6 @@
+import { BlockchainError } from '@todo/utils/blockchain/errors';
+import { type TransactionMonitorOptions } from '@todo/utils/blockchain/monitoring';
+
 import {
   BlockchainNetwork,
   TransactionStatus,
@@ -9,8 +12,6 @@ import {
   BlockchainTodoStatus,
 } from '../types';
 import { BaseBlockchainService } from './BaseBlockchainService';
-import { BlockchainError } from '@todo/utils/blockchain/errors';
-import { type TransactionMonitorOptions } from '@todo/utils/blockchain/monitoring';
 
 /**
  * Options for Moonbeam blockchain service

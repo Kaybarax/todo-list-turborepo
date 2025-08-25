@@ -1,3 +1,6 @@
+import { BlockchainError } from '@todo/utils/blockchain/errors';
+
+import { BaseBlockchainService } from './BaseBlockchainService';
 import {
   BlockchainNetwork,
   TransactionStatus,
@@ -7,8 +10,6 @@ import {
   type UpdateBlockchainTodoInput,
   type WalletInfo,
 } from '../types';
-import { BaseBlockchainService } from './BaseBlockchainService';
-import { BlockchainError } from '@todo/utils/blockchain/errors';
 
 /**
  * Solana blockchain service implementation

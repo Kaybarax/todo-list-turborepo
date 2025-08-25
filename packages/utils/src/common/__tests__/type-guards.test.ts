@@ -136,7 +136,7 @@ describe('Type Guard Utilities', () => {
   describe('isFunction', () => {
     it('should return true for functions', () => {
       expect(isFunction(() => {})).toBe(true);
-      expect(isFunction(function () {})).toBe(true);
+      expect(isFunction(() => {})).toBe(true);
       expect(isFunction(async () => {})).toBe(true);
       expect(isFunction(Date)).toBe(true);
       expect(isFunction(Array.isArray)).toBe(true);

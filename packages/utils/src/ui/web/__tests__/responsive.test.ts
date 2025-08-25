@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+
 import { breakpoints, mqUp, mqDown, matches, isUp, isDown } from '../responsive';
 
 // Mock window.matchMedia

@@ -22,7 +22,7 @@ export type { VariantProps };
 /**
  * Utility that merges a cva output with an optional className.
  */
-export function cvm<T extends (...args: any[]) => string>(
+export function cvm<T extends (..._args: any[]) => string>(
   variantsFn: T,
   options?: Parameters<T>[0],
   className?: string,

@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+
 import { ariaAttr, dataAttr, mergeRefs, isFocusable } from '../a11y';
 
 describe('a11y utilities', () => {

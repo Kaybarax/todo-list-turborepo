@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import * as loggingUtils from '../index';
 
 describe('Logging Index Exports', () => {

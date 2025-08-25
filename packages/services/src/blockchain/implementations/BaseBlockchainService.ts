@@ -1,3 +1,6 @@
+import { BlockchainError } from '@todo/utils/blockchain/errors';
+import { TransactionMonitor, type TransactionMonitorOptions } from '@todo/utils/blockchain/monitoring';
+
 import { type BlockchainService } from '../interfaces/BlockchainService';
 import {
   type BlockchainNetwork,
@@ -8,8 +11,6 @@ import {
   type UpdateBlockchainTodoInput,
   type WalletInfo,
 } from '../types';
-import { BlockchainError } from '@todo/utils/blockchain/errors';
-import { TransactionMonitor, type TransactionMonitorOptions } from '@todo/utils/blockchain/monitoring';
 
 /**
  * Base abstract class for blockchain service implementations
