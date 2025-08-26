@@ -1,10 +1,4 @@
-import type { Preview } from '@storybook/react';
-import React from 'react';
-import * as eva from '@eva-design/eva';
-import { ApplicationProvider } from '@ui-kitten/components';
-import { EvaProvider } from '../lib/theme';
-
-const preview: Preview = {
+const preview = {
   parameters: {
     controls: {
       matchers: {

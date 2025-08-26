@@ -1,12 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
-  stories: [
-    '../lib/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../lib/**/*.mdx',
-    '../src/**/*.mdx',
-    '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-  ],
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
     '@storybook/addon-essentials',
     '@storybook/addon-a11y',
@@ -20,11 +15,8 @@ const config: StorybookConfig = {
   },
   typescript: {
     check: false,
-    reactDocgen: 'react-docgen-typescript',
-    reactDocgenTypescriptOptions: {
-      shouldExtractLiteralValuesFromEnum: true,
-      propFilter: prop => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
-    },
+    // Use built-in react-docgen for compatibility. The previous 'react-docgen-typescript' requires extra deps and breaks in this setup.
+    reactDocgen: 'react-docgen',
   },
   viteFinal: async config => {
     // Add React Native Web alias for better compatibility
@@ -47,7 +39,7 @@ const config: StorybookConfig = {
       'process.env.NODE_ENV': JSON.stringify('development'),
     };
 
-    // Configure Vite to handle JSX in .js files from node_modules
+    // Configure Vite to handle JSX in .js files from node_modules (dev prebundle)
     config.optimizeDeps = config.optimizeDeps || {};
     config.optimizeDeps.esbuildOptions = {
       ...config.optimizeDeps.esbuildOptions,
@@ -55,6 +47,14 @@ const config: StorybookConfig = {
         '.js': 'jsx',
       },
     };
+
+    // Workaround: disable Storybook's inject-export-order-plugin which fails to parse some TSX in this setup
+    // This avoids build-time parse errors; Story export order falls back to default alphabetical order
+    if (Array.isArray((config as any).plugins)) {
+      (config as any).plugins = (config as any).plugins.filter(
+        (p: any) => p && p.name !== 'storybook:inject-export-order-plugin',
+      );
+    }
 
     return config;
   },

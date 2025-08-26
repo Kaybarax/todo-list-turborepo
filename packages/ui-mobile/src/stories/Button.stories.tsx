@@ -1,26 +1,11 @@
-import * as eva from '@eva-design/eva';
 import { type Meta, type StoryObj } from '@storybook/react';
-import { ApplicationProvider } from '@ui-kitten/components';
+import React from 'react';
 
 import { Button } from './Button';
-
-// Wrapper component for UI Kitten
-const UIKittenWrapper = ({ children }: { children: React.ReactNode }) => (
-  <ApplicationProvider {...eva} theme={eva.light}>
-    {children}
-  </ApplicationProvider>
-);
 
 const meta: Meta<typeof Button> = {
   title: 'Mobile/Button',
   component: Button,
-  decorators: [
-    Story => (
-      <UIKittenWrapper>
-        <Story />
-      </UIKittenWrapper>
-    ),
-  ],
   parameters: {
     docs: {
       description: {
@@ -181,27 +166,25 @@ export const AllVariants: Story = {
     title: 'Button',
   },
   render: () => (
-    <UIKittenWrapper>
-      <div style={{ padding: 16, gap: 8 }}>
-        <Button title="Primary" variant="primary" onPress={() => {}} />
-        <Button title="Secondary" variant="secondary" onPress={() => {}} />
-        <Button title="Outline" variant="outline" onPress={() => {}} />
-        <Button title="Danger" variant="danger" onPress={() => {}} />
-        <Button title="Success" variant="success" onPress={() => {}} />
-        <Button title="Ghost" variant="ghost" onPress={() => {}} />
+    <div style={{ padding: 16, gap: 8 }}>
+      <Button title="Primary" variant="primary" onPress={() => {}} />
+      <Button title="Secondary" variant="secondary" onPress={() => {}} />
+      <Button title="Outline" variant="outline" onPress={() => {}} />
+      <Button title="Danger" variant="danger" onPress={() => {}} />
+      <Button title="Success" variant="success" onPress={() => {}} />
+      <Button title="Ghost" variant="ghost" onPress={() => {}} />
 
-        <Button title="Small" size="small" onPress={() => {}} />
-        <Button title="Medium" size="medium" onPress={() => {}} />
-        <Button title="Large" size="large" onPress={() => {}} />
+      <Button title="Small" size="small" onPress={() => {}} />
+      <Button title="Medium" size="medium" onPress={() => {}} />
+      <Button title="Large" size="large" onPress={() => {}} />
 
-        <Button title="Disabled" disabled onPress={() => {}} />
-        <Button title="Loading" loading onPress={() => {}} />
-        <Button title="Full Width" fullWidth onPress={() => {}} />
-        <Button title="Rounded" rounded onPress={() => {}} />
+      <Button title="Disabled" disabled onPress={() => {}} />
+      <Button title="Loading" loading onPress={() => {}} />
+      <Button title="Full Width" fullWidth onPress={() => {}} />
+      <Button title="Rounded" rounded onPress={() => {}} />
 
-        <Button title="With Icon" leftIcon="star" onPress={() => {}} />
-      </div>
-    </UIKittenWrapper>
+      <Button title="With Icon" leftIcon="star" onPress={() => {}} />
+    </div>
   ),
   parameters: {
     docs: {
@@ -218,27 +201,25 @@ export const ComplexButtons: Story = {
     title: 'Button',
   },
   render: () => (
-    <UIKittenWrapper>
-      <div style={{ padding: 16, gap: 12 }}>
-        <Button title="Complex Primary" variant="primary" size="large" leftIcon="check" rounded onPress={() => {}} />
-        <Button
-          title="Complex Secondary"
-          variant="secondary"
-          size="medium"
-          rightIcon="arrow-forward"
-          fullWidth
-          onPress={() => {}}
-        />
-        <Button
-          title="Complex Outline"
-          variant="outline"
-          size="small"
-          leftIcon="star"
-          rightIcon="heart"
-          onPress={() => {}}
-        />
-      </div>
-    </UIKittenWrapper>
+    <div style={{ padding: 16, gap: 12 }}>
+      <Button title="Complex Primary" variant="primary" size="large" leftIcon="check" rounded onPress={() => {}} />
+      <Button
+        title="Complex Secondary"
+        variant="secondary"
+        size="medium"
+        rightIcon="arrow-forward"
+        fullWidth
+        onPress={() => {}}
+      />
+      <Button
+        title="Complex Outline"
+        variant="outline"
+        size="small"
+        leftIcon="star"
+        rightIcon="heart"
+        onPress={() => {}}
+      />
+    </div>
   ),
 };
 
@@ -248,13 +229,11 @@ export const DarkTheme: Story = {
     title: 'Button',
   },
   render: () => (
-    <ApplicationProvider {...eva} theme={eva.dark}>
-      <div style={{ padding: 16, backgroundColor: '#1a1a1a' }}>
-        <Button title="Dark Theme Button" variant="primary" onPress={() => {}} />
-        <Button title="Dark Secondary" variant="secondary" onPress={() => {}} />
-        <Button title="Dark Outline" variant="outline" onPress={() => {}} />
-      </div>
-    </ApplicationProvider>
+    <div style={{ padding: 16, backgroundColor: '#1a1a1a' }}>
+      <Button title="Dark Theme Button" variant="primary" onPress={() => {}} />
+      <Button title="Dark Secondary" variant="secondary" onPress={() => {}} />
+      <Button title="Dark Outline" variant="outline" onPress={() => {}} />
+    </div>
   ),
   parameters: {
     backgrounds: { default: 'dark' },
@@ -267,11 +246,9 @@ export const ButtonGroup: Story = {
     title: 'Button',
   },
   render: () => (
-    <UIKittenWrapper>
-      <div style={{ padding: 16, flexDirection: 'row', gap: 8 }}>
-        <Button title="Cancel" variant="outline" onPress={() => {}} />
-        <Button title="Save" variant="primary" onPress={() => {}} />
-      </div>
-    </UIKittenWrapper>
+    <div style={{ padding: 16, flexDirection: 'row', gap: 8 }}>
+      <Button title="Cancel" variant="outline" onPress={() => {}} />
+      <Button title="Save" variant="primary" onPress={() => {}} />
+    </div>
   ),
 };

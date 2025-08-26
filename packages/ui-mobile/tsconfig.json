@@ -8,7 +8,7 @@
     "outDir": "./dist",
     "rootDir": "./lib",
     "declaration": true,
-    "jsx": "react-native",
+    "jsx": "react-jsx",
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "strict": true,

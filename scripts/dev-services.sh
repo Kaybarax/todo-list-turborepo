@@ -65,45 +65,45 @@ start_dependencies() {
         print_warning "Skipping dependencies"
         return
     fi
-    
+
     print_status "Starting service dependencies..."
-    
+
     # Check if Docker is running
     if ! docker info &> /dev/null; then
         print_error "Docker is not running. Please start Docker Desktop."
         exit 1
     fi
-    
+
     case $SERVICE in
         api|ingestion)
             # API and ingestion need databases
             print_status "Starting database services..."
             docker-compose -f docker-compose.dev.yml up -d mongodb redis
-            
+
             # Wait for databases
             print_status "Waiting for databases to be ready..."
             local max_attempts=30
             local attempt=1
-            
+
             while [ $attempt -le $max_attempts ]; do
                 if docker-compose -f docker-compose.dev.yml exec -T mongodb mongosh --eval "db.adminCommand('ping')" &>/dev/null; then
                     break
                 fi
-                
+
                 if [ $attempt -eq $max_attempts ]; then
                     print_error "MongoDB failed to start"
                     exit 1
                 fi
-                
+
                 sleep 2
                 ((attempt++))
             done
-            
+
             # Setup database
             print_status "Setting up database..."
             pnpm db:setup || print_warning "Database setup failed"
             ;;
-            
+
         web|mobile)
             # Frontend apps need API
             if ! nc -z localhost 3001 2>/dev/null; then
@@ -111,41 +111,41 @@ start_dependencies() {
                 start_dependencies_for_service "api"
                 pnpm dev:api &
                 API_DEP_PID=$!
-                
+
                 # Wait for API
                 local max_attempts=30
                 local attempt=1
-                
+
                 while [ $attempt -le $max_attempts ]; do
                     if nc -z localhost 3001 2>/dev/null; then
                         print_success "API dependency is ready"
                         break
                     fi
-                    
+
                     if [ $attempt -eq $max_attempts ]; then
                         print_warning "API dependency may not be ready"
                         break
                     fi
-                    
+
                     sleep 2
                     ((attempt++))
                 done
             fi
             ;;
-            
+
         contracts)
             # Contracts might need specific blockchain tools
             print_status "Blockchain development dependencies are managed by dev-blockchain.sh"
             ;;
     esac
-    
+
     print_success "Dependencies started"
 }
 
 # Function to start specific service
 start_service() {
     print_status "Starting $SERVICE service..."
-    
+
     case $SERVICE in
         api)
             print_status "Starting NestJS API server..."
@@ -157,7 +157,7 @@ start_service() {
                 cd ../..
             fi
             ;;
-            
+
         web)
             print_status "Starting Next.js web application..."
             if [ "$WATCH" = "true" ]; then
@@ -168,7 +168,7 @@ start_service() {
                 cd ../..
             fi
             ;;
-            
+
         mobile)
             print_status "Starting React Native/Expo mobile app..."
             if [ "$WATCH" = "true" ]; then
@@ -179,7 +179,7 @@ start_service() {
                 cd ../..
             fi
             ;;
-            
+
         ingestion)
             print_status "Starting ingestion service..."
             if [ "$WATCH" = "true" ]; then
@@ -190,26 +190,26 @@ start_service() {
                 cd ../..
             fi
             ;;
-            
+
         contracts)
             print_status "Starting blockchain contract development..."
             ./scripts/dev-blockchain.sh
             ;;
-            
+
         storybook-web)
             print_status "Starting web component Storybook..."
             cd packages/ui-web
             pnpm storybook
             cd ../..
             ;;
-            
+
         storybook-mobile)
             print_status "Starting mobile component Storybook..."
             cd packages/ui-mobile
             pnpm storybook
             cd ../..
             ;;
-            
+
         *)
             print_error "Unknown service: $SERVICE"
             show_help
@@ -222,7 +222,7 @@ start_service() {
 show_service_info() {
     print_success "$SERVICE service is ready!"
     echo ""
-    
+
     case $SERVICE in
         api)
             echo "🔧 API Service:"
@@ -231,42 +231,42 @@ show_service_info() {
             echo "  Health Check:     curl http://localhost:3001/health"
             echo "  Metrics:          curl http://localhost:3001/metrics"
             ;;
-            
+
         web)
             echo "🌐 Web Application:"
             echo "  Application:      http://localhost:3000"
             echo "  Health Check:     curl http://localhost:3000/api/health"
             ;;
-            
+
         mobile)
             echo "📱 Mobile Application:"
             echo "  Expo DevTools:    http://localhost:19000"
             echo "  Metro Bundler:    http://localhost:8081"
             echo "  QR Code:          Scan with Expo Go app"
             ;;
-            
+
         ingestion)
             echo "⚙️  Ingestion Service:"
             echo "  Service:          Background process"
             echo "  Logs:             Check console output"
             ;;
-            
+
         contracts)
             echo "⛓️  Blockchain Development:"
             echo "  See blockchain development output above"
             ;;
-            
+
         storybook-web)
             echo "📚 Web Storybook:"
             echo "  Storybook:        http://localhost:6006"
             ;;
-            
+
         storybook-mobile)
             echo "📚 Mobile Storybook:"
-            echo "  Storybook:        http://localhost:6007"
+            echo "  Storybook:        http://localhost:6006"
             ;;
     esac
-    
+
     echo ""
     echo "Press Ctrl+C to stop the service"
 }
@@ -274,12 +274,12 @@ show_service_info() {
 # Function to handle shutdown
 shutdown_handler() {
     print_status "Shutting down $SERVICE service..."
-    
+
     # Stop dependency processes if we started them
     if [ -n "$API_DEP_PID" ]; then
         kill $API_DEP_PID 2>/dev/null || true
     fi
-    
+
     # Stop Docker services if we started them
     if [ "$WITH_DEPS" = "true" ]; then
         case $SERVICE in
@@ -289,7 +289,7 @@ shutdown_handler() {
                 ;;
         esac
     fi
-    
+
     print_success "$SERVICE service stopped"
     exit 0
 }
@@ -301,7 +301,7 @@ main() {
         SERVICE="$1"
         shift
     fi
-    
+
     while [[ $# -gt 0 ]]; do
         case $1 in
             --no-deps)
@@ -323,18 +323,18 @@ main() {
                 ;;
         esac
     done
-    
+
     print_status "Starting $SERVICE service development..."
-    
+
     # Setup shutdown handler
     trap shutdown_handler SIGINT SIGTERM
-    
+
     # Start dependencies
     start_dependencies
-    
+
     # Show service info
     show_service_info
-    
+
     # Start the service
     start_service
 }

@@ -1,18 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 // Web-compatible Badge component for Storybook
-export type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
-export type BadgeSize = 'small' | 'medium' | 'large';
-
-interface BadgeProps {
-  text: string;
-  variant?: BadgeVariant;
-  size?: BadgeSize;
-  testID?: string;
-}
-
-const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'medium', testID }) => {
+const Badge = ({ text, variant = 'default', size = 'medium', testID }) => {
   // Theme colors matching the React Native theme
   const colors = {
     primary: '#007AFF',
@@ -80,7 +69,7 @@ const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'medium
     },
   };
 
-  const containerStyle: React.CSSProperties = {
+  const containerStyle = {
     borderRadius: 9999, // round
     paddingLeft: spacing.sm,
     paddingRight: spacing.sm,
@@ -94,7 +83,7 @@ const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'medium
     fontFamily: 'system-ui, -apple-system, sans-serif',
   };
 
-  const textStyle: React.CSSProperties = {
+  const textStyle = {
     fontSize: sizeStyles[size].fontSize,
     fontWeight: '500',
     color: variantStyles[variant].color,
@@ -112,7 +101,7 @@ const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'medium
   );
 };
 
-const meta: Meta<typeof Badge> = {
+const meta = {
   title: 'Components/Badge',
   component: Badge,
   parameters: {
@@ -144,45 +133,44 @@ const meta: Meta<typeof Badge> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
 // Default story
-export const Default: Story = {
+export const Default = {
   args: {
     text: 'Badge',
   },
 };
 
 // Variant stories
-export const Primary: Story = {
+export const Primary = {
   args: {
     text: 'Primary',
     variant: 'primary',
   },
 };
 
-export const Secondary: Story = {
+export const Secondary = {
   args: {
     text: 'Secondary',
     variant: 'secondary',
   },
 };
 
-export const Success: Story = {
+export const Success = {
   args: {
     text: 'Success',
     variant: 'success',
   },
 };
 
-export const Warning: Story = {
+export const Warning = {
   args: {
     text: 'Warning',
     variant: 'warning',
   },
 };
 
-export const Danger: Story = {
+export const Danger = {
   args: {
     text: 'Danger',
     variant: 'danger',
@@ -190,7 +178,7 @@ export const Danger: Story = {
 };
 
 // Size stories
-export const Small: Story = {
+export const Small = {
   args: {
     text: 'Small',
     size: 'small',
@@ -198,7 +186,7 @@ export const Small: Story = {
   },
 };
 
-export const Medium: Story = {
+export const Medium = {
   args: {
     text: 'Medium',
     size: 'medium',
@@ -206,7 +194,7 @@ export const Medium: Story = {
   },
 };
 
-export const Large: Story = {
+export const Large = {
   args: {
     text: 'Large',
     size: 'large',
@@ -215,21 +203,21 @@ export const Large: Story = {
 };
 
 // Content type stories
-export const ShortText: Story = {
+export const ShortText = {
   args: {
     text: 'New',
     variant: 'success',
   },
 };
 
-export const LongText: Story = {
+export const LongText = {
   args: {
     text: 'Very Long Badge Text',
     variant: 'warning',
   },
 };
 
-export const NumberBadge: Story = {
+export const NumberBadge = {
   args: {
     text: '42',
     variant: 'danger',
@@ -237,14 +225,14 @@ export const NumberBadge: Story = {
   },
 };
 
-export const StatusBadge: Story = {
+export const StatusBadge = {
   args: {
     text: 'Active',
     variant: 'success',
   },
 };
 
-export const NotificationBadge: Story = {
+export const NotificationBadge = {
   args: {
     text: '99+',
     variant: 'danger',
@@ -253,7 +241,7 @@ export const NotificationBadge: Story = {
 };
 
 // Combined variant and size examples
-export const SmallVariants: Story = {
+export const SmallVariants = {
   render: () => (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
       <Badge text="Default" variant="default" size="small" />
@@ -273,7 +261,7 @@ export const SmallVariants: Story = {
   },
 };
 
-export const MediumVariants: Story = {
+export const MediumVariants = {
   render: () => (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
       <Badge text="Default" variant="default" size="medium" />
@@ -293,7 +281,7 @@ export const MediumVariants: Story = {
   },
 };
 
-export const LargeVariants: Story = {
+export const LargeVariants = {
   render: () => (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
       <Badge text="Default" variant="default" size="large" />
@@ -314,7 +302,7 @@ export const LargeVariants: Story = {
 };
 
 // Real-world usage examples
-export const TodoStatus: Story = {
+export const TodoStatus = {
   render: () => (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
       <Badge text="Todo" variant="default" />
@@ -332,7 +320,7 @@ export const TodoStatus: Story = {
   },
 };
 
-export const UserRoles: Story = {
+export const UserRoles = {
   render: () => (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
       <Badge text="Admin" variant="danger" size="small" />
@@ -350,7 +338,7 @@ export const UserRoles: Story = {
   },
 };
 
-export const NotificationCounts: Story = {
+export const NotificationCounts = {
   render: () => (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
       <Badge text="1" variant="danger" size="small" />
