@@ -4,9 +4,10 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import React, { ReactNode } from 'react';
 import { ListItem as UIKittenListItem } from '@ui-kitten/components';
-import { View, ViewStyle, TouchableOpacity } from 'react-native';
+import React, { type ReactNode } from 'react';
+import { View, type ViewStyle, TouchableOpacity } from 'react-native';
+
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { Text } from '../Text/Text';
 

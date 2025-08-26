@@ -3,8 +3,8 @@
  * Validates theme configuration and provides error handling
  */
 
-import type { Theme, ThemeName } from './types';
-import type { ColorTokens } from '../tokens/colors';
+import { type Theme, type ThemeName } from './types';
+import { type ColorTokens } from '../tokens/colors';
 
 export class ThemeValidationError extends Error {
   public readonly type: string;

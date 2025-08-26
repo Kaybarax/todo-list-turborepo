@@ -2,12 +2,12 @@
  * Theme Type Definitions
  */
 
-import type { ColorTokens } from '../tokens/colors';
-import type { TypographyTokens } from '../tokens/typography';
-import type { SpacingTokens } from '../tokens/spacing';
-import type { ShadowTokens } from '../tokens/shadows';
-import type { BorderTokens } from '../tokens/borders';
-import type { BreakpointTokens } from '../tokens/breakpoints';
+import { type BorderTokens } from '../tokens/borders';
+import { type BreakpointTokens } from '../tokens/breakpoints';
+import { type ColorTokens } from '../tokens/colors';
+import { type ShadowTokens } from '../tokens/shadows';
+import { type SpacingTokens } from '../tokens/spacing';
+import { type TypographyTokens } from '../tokens/typography';
 
 export interface Theme {
   name: string;

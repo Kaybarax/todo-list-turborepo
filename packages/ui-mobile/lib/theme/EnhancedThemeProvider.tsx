@@ -3,18 +3,18 @@
  * Integrates existing theme system with Eva Design theming
  */
 
-import React, { createContext, useState, useCallback, ReactNode, useEffect, useMemo } from 'react';
-import { Appearance, ColorSchemeName } from 'react-native';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as eva from '@eva-design/eva';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import React, { createContext, useState, useCallback, type ReactNode, useEffect, useMemo } from 'react';
+import { Appearance, type ColorSchemeName } from 'react-native';
 
-import { lightTheme, darkTheme } from './themes';
-import { lightTheme as evaLightTheme, darkTheme as evaDarkTheme } from './eva-theme';
 import { customMapping } from './eva-mapping';
+import { lightTheme as evaLightTheme, darkTheme as evaDarkTheme } from './eva-theme';
+import { lightTheme, darkTheme } from './themes';
+import { type Theme, type ThemeName } from './types';
 import { validateTheme, ThemeValidationError } from './validation';
-import type { Theme, ThemeName } from './types';
 
 export type EnhancedThemeMode = 'light' | 'dark';
 

@@ -4,10 +4,11 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
+import { Modal as UIKittenModal, Card } from '@ui-kitten/components';
 import React, { useEffect, useRef } from 'react';
 import {
   View,
-  ViewStyle,
+  type ViewStyle,
   TouchableOpacity,
   Dimensions,
   KeyboardAvoidingView,
@@ -15,13 +16,13 @@ import {
   ScrollView,
   Modal as RNModal,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSpring, runOnJS } from 'react-native-reanimated';
-import { Modal as UIKittenModal, Card } from '@ui-kitten/components';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
-import { Text } from '../Text/Text';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
+import { Text } from '../Text/Text';
 
 export type ModalSize = 'sm' | 'md' | 'lg' | 'fullscreen';
 export type ModalType = 'default' | 'alert' | 'confirmation';

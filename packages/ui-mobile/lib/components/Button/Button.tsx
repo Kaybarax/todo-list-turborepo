@@ -4,9 +4,10 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import React, { ReactNode } from 'react';
-import { ViewStyle, ActivityIndicator, View, StyleSheet } from 'react-native';
 import { Button as UIKittenButton, ButtonProps as UIKittenButtonProps, Spinner } from '@ui-kitten/components';
+import React, { type ReactNode } from 'react';
+import { type ViewStyle, ActivityIndicator, View, StyleSheet } from 'react-native';
+
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link';

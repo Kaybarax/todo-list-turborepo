@@ -5,8 +5,9 @@
 
 import { useEffect, useState } from 'react';
 import { AccessibilityInfo } from 'react-native';
+
 import {
-  AccessibilityProps,
+  type AccessibilityProps,
   generateAccessibilityLabel,
   generateAccessibilityHint,
   createAccessibilityProps,

@@ -4,7 +4,8 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Platform, PlatformOSType } from 'react-native';
+import { Platform, type PlatformOSType } from 'react-native';
+
 import { getPlatformValue } from '../utils/responsive';
 
 export interface UsePlatformOptions {

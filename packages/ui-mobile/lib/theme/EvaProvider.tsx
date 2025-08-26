@@ -3,12 +3,13 @@
  * Wraps the app with Eva Design theming system
  */
 
-import React from 'react';
+import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import * as eva from '@eva-design/eva';
-import { lightTheme, darkTheme } from './eva-theme';
+import React from 'react';
+
 import { customMapping } from './eva-mapping';
+import { lightTheme, darkTheme } from './eva-theme';
 
 export interface EvaProviderProps {
   children: React.ReactNode;

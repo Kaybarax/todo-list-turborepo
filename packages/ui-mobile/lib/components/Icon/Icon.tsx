@@ -4,9 +4,10 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import React from 'react';
-import { ViewStyle } from 'react-native';
 import { Icon as UIKittenIcon, IconProps as UIKittenIconProps } from '@ui-kitten/components';
+import React from 'react';
+import { type ViewStyle } from 'react-native';
+
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';

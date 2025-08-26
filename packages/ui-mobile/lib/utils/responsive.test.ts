@@ -1,3 +1,5 @@
+import { Dimensions } from 'react-native';
+
 import {
   getScreenInfo,
   matchesBreakpoint,
@@ -12,7 +14,6 @@ import {
   clampByScreenSize,
   getResponsiveSpacing,
 } from './responsive';
-import { Dimensions } from 'react-native';
 
 // Mock Dimensions
 jest.mock('react-native', () => ({

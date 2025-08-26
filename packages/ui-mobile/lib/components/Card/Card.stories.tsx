@@ -1,4 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import { type Meta, type StoryObj } from '@storybook/react';
+
 import { Card } from './Card';
 import { Button } from '../Button';
 import { Text } from '../Text';

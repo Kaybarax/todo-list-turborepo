@@ -5,9 +5,10 @@
 
 import { useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
+
 import {
-  BreakpointTokens,
-  ScreenInfo,
+  type BreakpointTokens,
+  type ScreenInfo,
   getScreenInfo,
   getResponsiveValue,
   matchesBreakpoint,

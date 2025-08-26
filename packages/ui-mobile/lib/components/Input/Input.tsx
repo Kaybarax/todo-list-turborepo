@@ -4,9 +4,10 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import React, { ReactNode } from 'react';
-import { ViewStyle, StyleSheet } from 'react-native';
 import { Input as UIKittenInput, InputProps as UIKittenInputProps } from '@ui-kitten/components';
+import React, { type ReactNode } from 'react';
+import { type ViewStyle, StyleSheet } from 'react-native';
+
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
 export type InputVariant = 'outline' | 'filled' | 'underline';

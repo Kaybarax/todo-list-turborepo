@@ -1,6 +1,7 @@
-import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react-native';
+import React from 'react';
 import { AccessibilityInfo } from 'react-native';
+
 import { Button } from './Button';
 import { ThemeProvider } from '../../theme';
 import { validateTouchTargetSize, validateContrastRatio } from '../../utils/accessibility';
@@ -202,7 +203,7 @@ describe('Button Accessibility Tests', () => {
     it('updates accessibility label when content changes', () => {
       const { rerender } = renderWithTheme(<Button testID="button">Original Text</Button>);
 
-      let button = screen.getByTestId('button');
+      const button = screen.getByTestId('button');
       expect(screen.getByText('Original Text')).toBeTruthy();
 
       rerender(

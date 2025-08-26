@@ -1,6 +1,7 @@
-import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react-native';
+import React from 'react';
 import { AccessibilityInfo } from 'react-native';
+
 import { Modal } from './Modal';
 import { ThemeProvider } from '../../theme';
 

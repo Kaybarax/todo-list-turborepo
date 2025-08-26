@@ -5,9 +5,9 @@
 export { lightTheme } from './light';
 export { darkTheme } from './dark';
 
-import { lightTheme } from './light';
 import { darkTheme } from './dark';
-import type { Theme, ThemeName } from '../types';
+import { lightTheme } from './light';
+import { type Theme, type ThemeName } from '../types';
 
 export const themes: Record<ThemeName, Theme> = {
   light: lightTheme,

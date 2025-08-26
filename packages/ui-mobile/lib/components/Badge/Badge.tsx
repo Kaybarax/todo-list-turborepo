@@ -1,6 +1,7 @@
 import { Text } from '@ui-kitten/components';
 import React from 'react';
 import { View, StyleSheet, type ViewStyle, type TextStyle, type StyleProp } from 'react-native';
+
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
 export type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';

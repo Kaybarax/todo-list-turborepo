@@ -1,5 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import { AccessibilityInfo } from 'react-native';
+
 import { useAccessibility } from './useAccessibility';
 
 // Mock React Native AccessibilityInfo

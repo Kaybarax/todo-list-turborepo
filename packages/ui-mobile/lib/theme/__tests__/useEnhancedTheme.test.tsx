@@ -1,8 +1,9 @@
-import React from 'react';
-import { renderHook, act } from '@testing-library/react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ApplicationProvider } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { renderHook, act } from '@testing-library/react-native';
+import { ApplicationProvider } from '@ui-kitten/components';
+import React from 'react';
+
 import { EvaProvider, useEnhancedTheme } from '../index';
 
 // Mock AsyncStorage

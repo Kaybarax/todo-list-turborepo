@@ -1,6 +1,6 @@
+import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
-import { fireEvent } from '@testing-library/react-native';
-import { render } from '@testing-library/react-native';
+
 import { TestWrapper } from '../../../../src/test/eva-setup';
 import { Button } from '../Button';
 

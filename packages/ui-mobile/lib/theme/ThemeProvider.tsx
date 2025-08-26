@@ -3,10 +3,11 @@
  * Provides theme context and manages theme switching
  */
 
-import React, { createContext, useState, useCallback, ReactNode, useEffect } from 'react';
-import { Appearance, ColorSchemeName } from 'react-native';
+import React, { createContext, useState, useCallback, type ReactNode, useEffect } from 'react';
+import { Appearance, type ColorSchemeName } from 'react-native';
+
 import { lightTheme, darkTheme } from './themes';
-import type { Theme, ThemeName, ThemeContextValue } from './types';
+import { type Theme, type ThemeName, type ThemeContextValue } from './types';
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 

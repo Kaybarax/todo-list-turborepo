@@ -8,6 +8,7 @@ import {
   type StyleProp,
   type ImageSourcePropType,
 } from 'react-native';
+
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
 export type AvatarSize = 'tiny' | 'small' | 'medium' | 'large' | 'giant';

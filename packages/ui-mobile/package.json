@@ -1,6 +1,7 @@
 {
   "name": "@todo/ui-mobile",
   "version": "0.1.0",
+  "type": "module",
   "description": "React Native component library for the Todo app",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -23,7 +24,7 @@
     "build:tokens:watch": "style-dictionary build --watch",
     "dev": "npm run build:tokens && vite build --watch",
     "typecheck": "tsc --project tsconfig.dev.json --noEmit",
-    "lint": "eslint \"lib/**/*.{ts,tsx}\" --ignore-pattern \"**/*.d.ts\" --ignore-pattern \"**/*.map\" --fix",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --fix",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",

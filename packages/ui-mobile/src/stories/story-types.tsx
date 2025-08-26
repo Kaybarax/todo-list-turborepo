@@ -2,9 +2,8 @@
  * Common TypeScript types and interfaces for Storybook stories in ui-mobile package
  */
 
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import type { ComponentType, ReactNode, CSSProperties } from 'react';
+import { type Meta, type StoryObj } from '@storybook/react';
+import React, { type ComponentType, type ReactNode, type CSSProperties } from 'react';
 
 /**
  * Base story configuration interface for mobile components

@@ -1,5 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import { Dimensions } from 'react-native';
+
 import { useResponsive } from './useResponsive';
 
 // Mock React Native Dimensions

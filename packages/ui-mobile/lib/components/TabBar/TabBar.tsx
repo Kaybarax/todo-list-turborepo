@@ -4,15 +4,16 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import React from 'react';
-import { View, ViewStyle, TouchableOpacity, Platform } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { BottomNavigation, BottomNavigationTab } from '@ui-kitten/components';
+import React from 'react';
+import { View, type ViewStyle, TouchableOpacity, Platform } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
-import { Text } from '../Text/Text';
-import { Icon } from '../Icon/Icon';
 import { Badge } from '../Badge/Badge';
+import { Icon } from '../Icon/Icon';
+import { Text } from '../Text/Text';
 
 export interface TabItem {
   key: string;

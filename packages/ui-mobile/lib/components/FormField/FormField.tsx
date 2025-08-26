@@ -4,8 +4,9 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import React, { ReactNode } from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import React, { type ReactNode } from 'react';
+import { View, StyleSheet, type ViewStyle } from 'react-native';
+
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { Text } from '../Text/Text';
 

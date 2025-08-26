@@ -1,10 +1,10 @@
 import { getNetworkColor, getSupportedWalletNetworks } from '@todo/services';
+import { Text } from '@ui-kitten/components';
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Text } from '@ui-kitten/components';
 
-import { Badge } from '../Badge';
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
+import { Badge } from '../Badge';
 
 export type NetworkType = 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base';
 

@@ -3,8 +3,9 @@
  * Provides theme switching and persistence utilities
  */
 
-import { useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect, useCallback } from 'react';
+
 import { lightTheme, darkTheme } from './eva-theme';
 
 export type ThemeMode = 'light' | 'dark';

@@ -4,7 +4,8 @@
  */
 
 import { useContext } from 'react';
-import { EnhancedThemeContext, EnhancedThemeContextValue } from './EnhancedThemeProvider';
+
+import { EnhancedThemeContext, type EnhancedThemeContextValue } from './EnhancedThemeProvider';
 
 export const useEnhancedTheme = (): EnhancedThemeContextValue => {
   const context = useContext(EnhancedThemeContext);

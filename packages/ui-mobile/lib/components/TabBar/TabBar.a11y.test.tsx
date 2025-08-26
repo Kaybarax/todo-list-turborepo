@@ -1,6 +1,7 @@
-import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react-native';
+import React from 'react';
 import { AccessibilityInfo } from 'react-native';
+
 import { TabBar } from './TabBar';
 import { ThemeProvider } from '../../theme';
 import { validateTouchTargetSize } from '../../utils/accessibility';

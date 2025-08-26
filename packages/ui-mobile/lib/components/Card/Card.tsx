@@ -4,9 +4,10 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import React from 'react';
-import { ViewStyle, TextStyle, View } from 'react-native';
 import { Card as UIKittenCard, CardProps as UIKittenCardProps } from '@ui-kitten/components';
+import React from 'react';
+import { type ViewStyle, type TextStyle, View } from 'react-native';
+
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { Text } from '../Text/Text';
 

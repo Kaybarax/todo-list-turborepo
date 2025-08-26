@@ -3,7 +3,7 @@
  * Helper functions for accessibility labels, hints, contrast validation, and roles
  */
 
-import { AccessibilityRole } from 'react-native';
+import { type AccessibilityRole } from 'react-native';
 
 export interface AccessibilityProps {
   accessibilityLabel?: string;

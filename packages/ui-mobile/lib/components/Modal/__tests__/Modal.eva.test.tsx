@@ -1,5 +1,6 @@
-import React from 'react';
 import { fireEvent } from '@testing-library/react-native';
+import React from 'react';
+
 import { render, testAccessibility } from '../../../src/test/utils/eva-test-utils';
 import { Modal } from '../Modal';
 

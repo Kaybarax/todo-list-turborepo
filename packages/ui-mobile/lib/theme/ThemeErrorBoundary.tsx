@@ -3,10 +3,11 @@
  * Handles theme-related errors and provides fallback UI
  */
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, type ErrorInfo, type ReactNode } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { ThemeValidationError } from './validation';
+
 import { EvaThemeValidationError } from './enhanced-validation';
+import { ThemeValidationError } from './validation';
 
 interface ThemeErrorBoundaryProps {
   children: ReactNode;

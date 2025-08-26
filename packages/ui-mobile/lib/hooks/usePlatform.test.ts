@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { Platform } from 'react-native';
+
 import { usePlatform } from './usePlatform';
 
 // Mock React Native Platform
