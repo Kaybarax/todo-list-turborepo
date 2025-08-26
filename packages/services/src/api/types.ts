@@ -154,19 +154,19 @@ export interface ApiClientConfig {
 /**
  * Request interceptor function type
  */
-// eslint-disable-next-line no-unused-vars
+
 export type RequestInterceptor = (config: any) => any | Promise<any>;
 
 /**
  * Response interceptor function type
  */
-// eslint-disable-next-line no-unused-vars
+
 export type ResponseInterceptor = (response: any) => any | Promise<any>;
 
 /**
  * Error interceptor function type
  */
-// eslint-disable-next-line no-unused-vars
+
 export type ErrorInterceptor = (error: any) => any | Promise<any>;
 
 /**
@@ -176,6 +176,6 @@ export interface RetryConfig {
   attempts: number;
   delay: number;
   backoff?: 'linear' | 'exponential';
-  // eslint-disable-next-line no-unused-vars
+
   retryCondition?: (error: any) => boolean;
 }

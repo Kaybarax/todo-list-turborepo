@@ -71,7 +71,7 @@ export class PolygonBlockchainService extends BaseBlockchainService {
    * Connect to a wallet using WalletConnect or other provider
    * @param provider - Ethereum provider (e.g., from WalletConnect)
    */
-  // eslint-disable-next-line no-unused-vars -- _provider parameter will be used for wallet connection in full implementation
+
   async connectWallet(_provider: any): Promise<WalletInfo> {
     try {
       // In a real implementation, we would:
@@ -219,7 +219,7 @@ export class PolygonBlockchainService extends BaseBlockchainService {
    * Create a new todo on the blockchain
    * @param todo - Todo data to create
    */
-  // eslint-disable-next-line no-unused-vars -- _todo parameter will be used for smart contract interaction in full implementation
+
   async createTodo(_todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
 
@@ -245,7 +245,7 @@ export class PolygonBlockchainService extends BaseBlockchainService {
    * @param id - Todo ID
    * @param todo - Updated todo data
    */
-  // eslint-disable-next-line no-unused-vars -- _todo parameter will be used for smart contract interaction in full implementation
+
   async updateTodo(id: string, _todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
 

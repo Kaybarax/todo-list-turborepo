@@ -136,7 +136,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    * Get a specific todo by ID from Polkadot pallet
    * @param id - Todo ID in the pallet storage
    */
-  // eslint-disable-next-line no-unused-vars -- _id parameter will be used for pallet storage query in full implementation
+
   async getTodoById(_id: string): Promise<BlockchainTodo | null> {
     this.ensureWalletConnected();
 
@@ -155,7 +155,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    * Create a new todo on Polkadot
    * @param todo - Todo data to create
    */
-  // eslint-disable-next-line no-unused-vars -- _todo parameter will be used for pallet extrinsic in full implementation
+
   async createTodo(_todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
 
@@ -186,7 +186,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    * @param id - Todo ID in pallet storage
    * @param todo - Updated todo data
    */
-  // eslint-disable-next-line no-unused-vars -- _id and _todo parameters will be used for pallet extrinsic in full implementation
+
   async updateTodo(_id: string, _todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
 
@@ -215,7 +215,7 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    * Delete a todo from Polkadot
    * @param id - Todo ID in pallet storage
    */
-  // eslint-disable-next-line no-unused-vars -- _id parameter will be used for pallet extrinsic in full implementation
+
   async deleteTodo(_id: string): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
 

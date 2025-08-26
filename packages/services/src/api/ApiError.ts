@@ -3,7 +3,7 @@ import { type ApiErrorResponse } from './types';
 /**
  * API error types
  */
-/* eslint-disable no-unused-vars -- Public API enum for API error types */
+
 export enum ApiErrorType {
   NETWORK_ERROR = 'network_error',
   TIMEOUT_ERROR = 'timeout_error',

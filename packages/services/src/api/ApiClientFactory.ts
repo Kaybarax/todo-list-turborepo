@@ -114,7 +114,7 @@ export class ApiClientFactory {
    * Add request interceptor to all clients
    * @param interceptor - Request interceptor function
    */
-  // eslint-disable-next-line no-unused-vars
+
   addGlobalRequestInterceptor(interceptor: (config: any) => any | Promise<any>): void {
     this.clients.forEach(client => {
       client.addRequestInterceptor(interceptor);
@@ -125,7 +125,7 @@ export class ApiClientFactory {
    * Add response interceptor to all clients
    * @param interceptor - Response interceptor function
    */
-  // eslint-disable-next-line no-unused-vars
+
   addGlobalResponseInterceptor(interceptor: (response: any) => any | Promise<any>): void {
     this.clients.forEach(client => {
       client.addResponseInterceptor(interceptor);
@@ -136,7 +136,7 @@ export class ApiClientFactory {
    * Add error interceptor to all clients
    * @param interceptor - Error interceptor function
    */
-  // eslint-disable-next-line no-unused-vars
+
   addGlobalErrorInterceptor(interceptor: (error: any) => any | Promise<any>): void {
     this.clients.forEach(client => {
       client.addErrorInterceptor(interceptor);

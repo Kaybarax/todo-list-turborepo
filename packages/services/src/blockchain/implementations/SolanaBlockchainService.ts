@@ -129,7 +129,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    * Get a specific todo by ID from Solana program
    * @param id - Todo account public key
    */
-  // eslint-disable-next-line no-unused-vars -- _id parameter will be used for Solana program account lookup in full implementation
+
   async getTodoById(_id: string): Promise<BlockchainTodo | null> {
     this.ensureWalletConnected();
 
@@ -148,7 +148,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    * Create a new todo on Solana
    * @param todo - Todo data to create
    */
-  // eslint-disable-next-line no-unused-vars -- _todo parameter will be used for Solana program instruction in full implementation
+
   async createTodo(_todo: CreateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
 
@@ -179,7 +179,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    * @param id - Todo account public key
    * @param todo - Updated todo data
    */
-  // eslint-disable-next-line no-unused-vars -- _id and _todo parameters will be used for Solana program instruction in full implementation
+
   async updateTodo(_id: string, _todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
 
@@ -208,7 +208,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    * Delete a todo from Solana
    * @param id - Todo account public key
    */
-  // eslint-disable-next-line no-unused-vars -- _id parameter will be used for Solana program instruction in full implementation
+
   async deleteTodo(_id: string): Promise<TransactionReceipt> {
     this.ensureWalletConnected();
 

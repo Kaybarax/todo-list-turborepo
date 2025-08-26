@@ -10,7 +10,7 @@ export interface TransactionMonitorOptions {
   /** Interval between status checks in milliseconds */
   pollingInterval?: number;
   /** Callback for status updates */
-  // eslint-disable-next-line no-unused-vars -- Callback signature must include parameters for consumer implementations
+
   onStatusChange?: (status: TransactionStatus, receipt?: TransactionReceipt) => void;
   /** Timeout in milliseconds */
   timeout?: number;
@@ -62,7 +62,7 @@ export class TransactionMonitor {
   async monitorTransaction(
     txHash: string,
     network: BlockchainNetwork,
-    // eslint-disable-next-line no-unused-vars -- hash parameter required for callback function signature
+
     getStatusFn: (hash: string) => Promise<TransactionReceipt | null>,
     options?: TransactionMonitorOptions,
   ): Promise<TransactionReceipt> {

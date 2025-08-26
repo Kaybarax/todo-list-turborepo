@@ -45,7 +45,7 @@ export abstract class BaseBlockchainService implements BlockchainService {
    * Connect to a wallet - must be implemented by subclasses
    * @param options - Connection options specific to the blockchain
    */
-  // eslint-disable-next-line no-unused-vars -- Abstract method signature must match interface, options used by implementations
+
   abstract connectWallet(options?: unknown): Promise<WalletInfo>;
 
   /**
@@ -71,7 +71,7 @@ export abstract class BaseBlockchainService implements BlockchainService {
    * Get the balance of the connected wallet - must be implemented by subclasses
    * @param tokenAddress - Optional token address for non-native tokens
    */
-  // eslint-disable-next-line no-unused-vars -- Abstract method signature must match interface, tokenAddress used by implementations
+
   abstract getWalletBalance(tokenAddress?: string): Promise<string>;
 
   /**
@@ -83,14 +83,14 @@ export abstract class BaseBlockchainService implements BlockchainService {
    * Get a specific todo by ID - must be implemented by subclasses
    * @param id - Todo ID or identifier on the blockchain
    */
-  // eslint-disable-next-line no-unused-vars -- Abstract method signature must match interface, id used by implementations
+
   abstract getTodoById(id: string): Promise<BlockchainTodo | null>;
 
   /**
    * Create a new todo on the blockchain - must be implemented by subclasses
    * @param todo - Todo data to create
    */
-  // eslint-disable-next-line no-unused-vars -- Abstract method signature must match interface, todo used by implementations
+
   abstract createTodo(todo: CreateBlockchainTodoInput): Promise<TransactionReceipt>;
 
   /**
@@ -98,28 +98,28 @@ export abstract class BaseBlockchainService implements BlockchainService {
    * @param id - Todo ID or identifier
    * @param todo - Updated todo data
    */
-  // eslint-disable-next-line no-unused-vars -- Abstract method signature must match interface, parameters used by implementations
+
   abstract updateTodo(id: string, todo: UpdateBlockchainTodoInput): Promise<TransactionReceipt>;
 
   /**
    * Delete a todo from the blockchain - must be implemented by subclasses
    * @param id - Todo ID or identifier
    */
-  // eslint-disable-next-line no-unused-vars -- Abstract method signature must match interface, id used by implementations
+
   abstract deleteTodo(id: string): Promise<TransactionReceipt>;
 
   /**
    * Get the status of a transaction - must be implemented by subclasses
    * @param txHash - Transaction hash or identifier
    */
-  // eslint-disable-next-line no-unused-vars -- Abstract method signature must match interface, txHash used by implementations
+
   abstract getTransactionStatus(txHash: string): Promise<TransactionStatus>;
 
   /**
    * Get the receipt for a transaction - must be implemented by subclasses
    * @param txHash - Transaction hash or identifier
    */
-  // eslint-disable-next-line no-unused-vars -- Abstract method signature must match interface, txHash used by implementations
+
   abstract getTransactionReceipt(txHash: string): Promise<TransactionReceipt | null>;
 
   /**

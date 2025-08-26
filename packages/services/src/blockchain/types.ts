@@ -8,7 +8,7 @@ export { TransactionStatus, type TransactionReceipt };
 /**
  * Supported blockchain networks
  */
-/* eslint-disable no-unused-vars -- Public API enum for blockchain networks */
+
 export enum BlockchainNetwork {
   POLYGON = 'polygon',
   POLYGON_MUMBAI = 'polygon_mumbai',
@@ -27,7 +27,7 @@ export enum BlockchainNetwork {
 /**
  * Todo status on blockchain
  */
-/* eslint-disable no-unused-vars -- Public API enum for blockchain todo status */
+
 export enum BlockchainTodoStatus {
   TODO = 'todo',
   IN_PROGRESS = 'in_progress',
@@ -121,7 +121,7 @@ export type UpdateBlockchainTodoInput = z.infer<typeof updateBlockchainTodoSchem
 /**
  * Error types for blockchain operations
  */
-/* eslint-disable no-unused-vars -- Public API enum for blockchain error types */
+
 export enum BlockchainErrorType {
   WALLET_CONNECTION_FAILED = 'wallet_connection_failed',
   WALLET_NOT_CONNECTED = 'wallet_not_connected',
