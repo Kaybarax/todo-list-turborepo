@@ -1,5 +1,5 @@
-const tokens = require('./dist/tokens/tailwind-tokens.cjs');
-const daisyuiThemes = require('./dist/tokens/daisyui-themes.cjs');
+const tokens = require('./dist/tokens/tailwind-tokens.js');
+const daisyuiThemes = require('./dist/tokens/daisyui-themes.js');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
