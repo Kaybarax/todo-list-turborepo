@@ -1,14 +1,6 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
-import {
-  createLogger,
-  createIngestionLogger,
-  createApiLogger,
-  createWebLogger,
-  logger,
-  LOG_LEVELS,
-  LoggerOptions,
-} from '../winston';
+import { createLogger, createIngestionLogger, createApiLogger, createWebLogger, logger, LOG_LEVELS } from '../winston';
 
 describe('Winston Logger Utilities', () => {
   describe('createLogger', () => {

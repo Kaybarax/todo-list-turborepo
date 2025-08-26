@@ -3,7 +3,6 @@ import { BlockchainError, BlockchainErrorType, type BlockchainNetwork } from './
 /**
  * Transaction status
  */
-/* eslint-disable no-unused-vars -- Public API enum for transaction status */
 export enum TransactionStatus {
   PENDING = 'pending',
   CONFIRMED = 'confirmed',

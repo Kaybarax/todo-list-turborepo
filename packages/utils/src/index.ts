@@ -222,6 +222,7 @@ export type {
  * Interface describing the structure of utility categories
  * This is primarily for documentation and type safety
  */
+/* eslint-disable @typescript-eslint/consistent-type-imports */
 export interface UtilityCategories {
   common: typeof import('./common');
   blockchain: typeof import('./blockchain');
@@ -230,6 +231,7 @@ export interface UtilityCategories {
   api: typeof import('./api');
   logging: typeof import('./logging');
 }
+/* eslint-enable @typescript-eslint/consistent-type-imports */
 
 // =============================================================================
 // MIGRATION MAPPING

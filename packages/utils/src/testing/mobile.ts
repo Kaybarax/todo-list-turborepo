@@ -32,7 +32,7 @@ try {
   reactNativeRender = testingLibrary.render;
   // Re-export everything from @testing-library/react-native if available
   Object.assign(exports, testingLibrary);
-} catch (error) {
+} catch (_error) {
   // Fallback to mock render if React Native testing library is not available
   reactNativeRender = mockRender;
 }
@@ -92,7 +92,7 @@ const AllTheProvidersDark = createMockProvider('dark');
 export const customRender = (ui: React.ReactElement, options?: Omit<RenderOptions, 'wrapper'>): RenderResult => {
   try {
     return render(ui, { wrapper: AllTheProviders, ...options });
-  } catch (error) {
+  } catch (_error) {
     // Fallback for environments without React Native
     return render(ui, options);
   }
@@ -107,7 +107,7 @@ export const customRender = (ui: React.ReactElement, options?: Omit<RenderOption
 export const customRenderDark = (ui: React.ReactElement, options?: Omit<RenderOptions, 'wrapper'>): RenderResult => {
   try {
     return render(ui, { wrapper: AllTheProvidersDark, ...options });
-  } catch (error) {
+  } catch (_error) {
     // Fallback for environments without React Native
     return render(ui, options);
   }
@@ -139,7 +139,7 @@ export const createMockTheme = (overrides: Partial<EvaTheme> = {}): EvaTheme => 
  * @param component - React component to test
  * @returns Accessibility testing helpers
  */
-export const testAccessibility = async (component: React.ReactElement): Promise<AccessibilityHelpers> => {
+export const testAccessibility = (component: React.ReactElement): AccessibilityHelpers => {
   const { getByRole, getByLabelText, getByA11yLabel } = customRender(component);
 
   return {

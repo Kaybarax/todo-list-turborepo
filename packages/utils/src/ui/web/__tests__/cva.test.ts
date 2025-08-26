@@ -7,7 +7,7 @@ describe('cva utilities', () => {
     });
 
     it('should handle conditional classes', () => {
-      expect(cn('base', true && 'conditional', false && 'hidden')).toBe('base conditional');
+      expect(cn('base', 'conditional', undefined)).toBe('base conditional');
     });
 
     it('should merge Tailwind classes', () => {
