@@ -1,254 +1,165 @@
 import { type Meta, type StoryObj } from '@storybook/react';
-import React from 'react';
 
-import { Button } from './Button';
+import { Button } from '../../lib/components/Button/Button';
 
 const meta: Meta<typeof Button> = {
-  title: 'Mobile/Button',
+  title: 'Components/Button',
   component: Button,
   parameters: {
+    layout: 'centered',
     docs: {
       description: {
-        component: 'A versatile button component built on UI Kitten with multiple variants and states.',
+        component:
+          'A customizable button component with multiple variants, sizes, and states. Supports accessibility features and theme integration.',
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'outline', 'danger', 'success', 'ghost'],
+      options: ['primary', 'secondary', 'outline', 'ghost', 'destructive'],
+      description: 'Visual style variant of the button',
     },
     size: {
       control: { type: 'select' },
-      options: ['small', 'medium', 'large'],
+      options: ['sm', 'md', 'lg'],
+      description: 'Size of the button',
     },
     disabled: {
       control: { type: 'boolean' },
+      description: 'Whether the button is disabled',
     },
     loading: {
       control: { type: 'boolean' },
+      description: 'Whether the button is in loading state',
     },
     fullWidth: {
       control: { type: 'boolean' },
+      description: 'Whether the button takes full width of container',
     },
-    rounded: {
-      control: { type: 'boolean' },
-    },
+    onPress: { action: 'pressed' },
   },
-  args: { onPress: () => console.info('Button pressed') },
-} satisfies Meta<typeof Button>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Basic variants
 export const Primary: Story = {
   args: {
-    title: 'Primary Button',
+    children: 'Primary Button',
     variant: 'primary',
+    size: 'md',
   },
 };
 
 export const Secondary: Story = {
   args: {
-    title: 'Secondary Button',
+    children: 'Secondary Button',
     variant: 'secondary',
+    size: 'md',
   },
 };
 
 export const Outline: Story = {
   args: {
-    title: 'Outline Button',
+    children: 'Outline Button',
     variant: 'outline',
-  },
-};
-
-export const Danger: Story = {
-  args: {
-    title: 'Danger Button',
-    variant: 'danger',
-  },
-};
-
-export const Success: Story = {
-  args: {
-    title: 'Success Button',
-    variant: 'success',
+    size: 'md',
   },
 };
 
 export const Ghost: Story = {
   args: {
-    title: 'Ghost Button',
+    children: 'Ghost Button',
     variant: 'ghost',
+    size: 'md',
   },
 };
 
-// Size variants
+export const Destructive: Story = {
+  args: {
+    children: 'Destructive Button',
+    variant: 'destructive',
+    size: 'md',
+  },
+};
+
 export const Small: Story = {
   args: {
-    title: 'Small Button',
-    size: 'small',
-  },
-};
-
-export const Medium: Story = {
-  args: {
-    title: 'Medium Button',
-    size: 'medium',
+    children: 'Small Button',
+    variant: 'primary',
+    size: 'sm',
   },
 };
 
 export const Large: Story = {
   args: {
-    title: 'Large Button',
-    size: 'large',
+    children: 'Large Button',
+    variant: 'primary',
+    size: 'lg',
   },
 };
 
-// State variants
 export const Disabled: Story = {
   args: {
-    title: 'Disabled Button',
+    children: 'Disabled Button',
+    variant: 'primary',
+    size: 'md',
     disabled: true,
   },
 };
 
 export const Loading: Story = {
   args: {
-    title: 'Loading Button',
+    children: 'Loading Button',
+    variant: 'primary',
+    size: 'md',
     loading: true,
   },
 };
 
-// Style variants
 export const FullWidth: Story = {
   args: {
-    title: 'Full Width Button',
+    children: 'Full Width Button',
+    variant: 'primary',
+    size: 'md',
     fullWidth: true,
   },
-};
-
-export const Rounded: Story = {
-  args: {
-    title: 'Rounded Button',
-    rounded: true,
+  parameters: {
+    layout: 'padded',
   },
 };
 
-// With icons
-export const WithLeftIcon: Story = {
-  args: {
-    title: 'With Left Icon',
-    leftIcon: 'star',
-  },
-};
-
-export const WithRightIcon: Story = {
-  args: {
-    title: 'With Right Icon',
-    rightIcon: 'arrow-forward',
-  },
-};
-
-export const WithBothIcons: Story = {
-  args: {
-    title: 'Both Icons',
-    leftIcon: 'star',
-    rightIcon: 'arrow-forward',
-  },
-};
-
-// Visual regression test: All variants
 export const AllVariants: Story = {
-  args: {
-    title: 'Button',
-  },
   render: () => (
-    <div style={{ padding: 16, gap: 8 }}>
-      <Button title="Primary" variant="primary" onPress={() => {}} />
-      <Button title="Secondary" variant="secondary" onPress={() => {}} />
-      <Button title="Outline" variant="outline" onPress={() => {}} />
-      <Button title="Danger" variant="danger" onPress={() => {}} />
-      <Button title="Success" variant="success" onPress={() => {}} />
-      <Button title="Ghost" variant="ghost" onPress={() => {}} />
-
-      <Button title="Small" size="small" onPress={() => {}} />
-      <Button title="Medium" size="medium" onPress={() => {}} />
-      <Button title="Large" size="large" onPress={() => {}} />
-
-      <Button title="Disabled" disabled onPress={() => {}} />
-      <Button title="Loading" loading onPress={() => {}} />
-      <Button title="Full Width" fullWidth onPress={() => {}} />
-      <Button title="Rounded" rounded onPress={() => {}} />
-
-      <Button title="With Icon" leftIcon="star" onPress={() => {}} />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '200px' }}>
+      <Button variant="primary">Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="destructive">Destructive</Button>
     </div>
   ),
   parameters: {
-    docs: {
-      description: {
-        story: 'Visual regression test showing all button variants and states.',
-      },
-    },
+    controls: { disable: true },
   },
 };
 
-// Complex button combinations
-export const ComplexButtons: Story = {
-  args: {
-    title: 'Button',
-  },
+export const AllSizes: Story = {
   render: () => (
-    <div style={{ padding: 16, gap: 12 }}>
-      <Button title="Complex Primary" variant="primary" size="large" leftIcon="check" rounded onPress={() => {}} />
-      <Button
-        title="Complex Secondary"
-        variant="secondary"
-        size="medium"
-        rightIcon="arrow-forward"
-        fullWidth
-        onPress={() => {}}
-      />
-      <Button
-        title="Complex Outline"
-        variant="outline"
-        size="small"
-        leftIcon="star"
-        rightIcon="heart"
-        onPress={() => {}}
-      />
-    </div>
-  ),
-};
-
-// Dark theme test
-export const DarkTheme: Story = {
-  args: {
-    title: 'Button',
-  },
-  render: () => (
-    <div style={{ padding: 16, backgroundColor: '#1a1a1a' }}>
-      <Button title="Dark Theme Button" variant="primary" onPress={() => {}} />
-      <Button title="Dark Secondary" variant="secondary" onPress={() => {}} />
-      <Button title="Dark Outline" variant="outline" onPress={() => {}} />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-start' }}>
+      <Button variant="primary" size="sm">
+        Small
+      </Button>
+      <Button variant="primary" size="md">
+        Medium
+      </Button>
+      <Button variant="primary" size="lg">
+        Large
+      </Button>
     </div>
   ),
   parameters: {
-    backgrounds: { default: 'dark' },
+    controls: { disable: true },
   },
-};
-
-// Button group
-export const ButtonGroup: Story = {
-  args: {
-    title: 'Button',
-  },
-  render: () => (
-    <div style={{ padding: 16, flexDirection: 'row', gap: 8 }}>
-      <Button title="Cancel" variant="outline" onPress={() => {}} />
-      <Button title="Save" variant="primary" onPress={() => {}} />
-    </div>
-  ),
 };
