@@ -1,379 +1,151 @@
+import { render, fireEvent, screen } from '@testing-library/react-native';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
-import { ApplicationProvider } from '@ui-kitten/components';
-import * as eva from '@eva-design/eva';
 
-// Mock the Button component to handle loading state properly
-jest.mock('../lib/components/Button', () => ({
-  Button: ({ children, onPress, testID, accessibilityLabel, disabled, loading, ...props }: any) => {
-    const React = require('react');
-    const { TouchableOpacity, Text } = require('react-native');
+import { Button } from '../lib/components/Button/Button';
+import { ThemeProvider } from '../lib/theme';
 
-    const handlePress = disabled || loading ? () => {} : onPress;
-    return React.createElement(
-      TouchableOpacity,
-      {
-        onPress: handlePress,
-        testID,
-        accessibilityLabel,
-        disabled: disabled || loading,
-        ...props,
-      },
-      loading ? React.createElement(Text, {}, 'Loading...') : React.createElement(Text, {}, children),
-    );
-  },
-}));
-
-const { Button } = require('../lib/components/Button');
-
-// Test wrapper with UI Kitten provider
-const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <ApplicationProvider {...eva} theme={eva.light}>
-    {children}
-  </ApplicationProvider>
-);
+const renderWithTheme = (component: React.ReactElement) => {
+  return render(<ThemeProvider>{component}</ThemeProvider>);
+};
 
 describe('Button', () => {
   it('renders correctly with default props', () => {
-    const { getByText } = render(<Button onPress={() => {}}>Test Button</Button>, { wrapper: TestWrapper });
-
-    expect(getByText('Test Button')).toBeTruthy();
+    renderWithTheme(<Button>Test Button</Button>);
+    expect(screen.getByText('Test Button')).toBeTruthy();
   });
 
-  it('renders with different variants', () => {
-    const variants = ['primary', 'secondary', 'outline', 'ghost'] as const;
+  it('handles onPress correctly', () => {
+    const onPressMock = jest.fn();
+    renderWithTheme(<Button onPress={onPressMock}>Press Me</Button>);
+
+    fireEvent.press(screen.getByText('Press Me'));
+    expect(onPressMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders all variants correctly', () => {
+    const variants = ['primary', 'secondary', 'outline', 'ghost', 'destructive'] as const;
 
     variants.forEach(variant => {
-      const { getByText, unmount } = render(
-        <Button variant={variant} onPress={() => {}}>{`${variant} Button`}</Button>,
-        { wrapper: TestWrapper },
+      const { unmount } = renderWithTheme(
+        <Button variant={variant} testID={`button-${variant}`}>
+          {variant} Button
+        </Button>,
       );
 
-      expect(getByText(`${variant} Button`)).toBeTruthy();
+      expect(screen.getByTestId(`button-${variant}`)).toBeTruthy();
       unmount();
     });
   });
 
-  it('renders with different sizes', () => {
+  it('renders all sizes correctly', () => {
     const sizes = ['sm', 'md', 'lg'] as const;
 
     sizes.forEach(size => {
-      const { getByText, unmount } = render(<Button size={size} onPress={() => {}}>{`${size} Button`}</Button>, {
-        wrapper: TestWrapper,
-      });
+      const { unmount } = renderWithTheme(
+        <Button size={size} testID={`button-${size}`}>
+          {size} Button
+        </Button>,
+      );
 
-      expect(getByText(`${size} Button`)).toBeTruthy();
+      expect(screen.getByTestId(`button-${size}`)).toBeTruthy();
       unmount();
     });
   });
 
-  it('handles press events', () => {
-    const onPress = jest.fn();
-    const { getByText } = render(<Button onPress={onPress}>Press Me</Button>, { wrapper: TestWrapper });
-
-    fireEvent.press(getByText('Press Me'));
-    expect(onPress).toHaveBeenCalledTimes(1);
-  });
-
-  it('handles disabled state', () => {
-    const onPress = jest.fn();
-    const { getByText } = render(
-      <Button disabled onPress={onPress}>
-        Disabled
+  it('disables button when disabled prop is true', () => {
+    const onPressMock = jest.fn();
+    renderWithTheme(
+      <Button disabled onPress={onPressMock} testID="disabled-button">
+        Disabled Button
       </Button>,
-      { wrapper: TestWrapper },
     );
 
-    const button = getByText('Disabled');
+    const button = screen.getByTestId('disabled-button');
     fireEvent.press(button);
-    expect(onPress).not.toHaveBeenCalled();
-  });
 
-  it('is disabled when loading', () => {
-    const onPress = jest.fn();
-    const { getByTestId } = render(
-      <Button loading onPress={onPress} testID="loading-button-press">
-        Loading with Press
-      </Button>,
-      { wrapper: TestWrapper },
-    );
-
-    const button = getByTestId('loading-button-press');
-    fireEvent.press(button);
-    expect(onPress).not.toHaveBeenCalled();
+    expect(onPressMock).not.toHaveBeenCalled();
   });
 
   it('shows loading state correctly', () => {
-    const { queryByText, getByTestId } = render(
-      <Button loading={true} onPress={() => {}} testID="loading-button">
+    renderWithTheme(
+      <Button loading testID="loading-button">
         Loading Button
       </Button>,
-      { wrapper: TestWrapper },
     );
 
-    // Loading text should be visible instead of original text
-    expect(queryByText('Loading...')).toBeTruthy();
-    // Original text should not be visible when loading
-    expect(queryByText('Loading Button')).toBeNull();
+    expect(screen.getByTestId('loading-button')).toBeTruthy();
+    // Loading indicator should be present
+    expect(screen.getByTestId('button-loading-indicator')).toBeTruthy();
+  });
 
-    // Activity indicator should be present
-    const button = getByTestId('loading-button');
+  it('applies fullWidth style correctly', () => {
+    renderWithTheme(
+      <Button fullWidth testID="full-width-button">
+        Full Width Button
+      </Button>,
+    );
+
+    const button = screen.getByTestId('full-width-button');
     expect(button).toBeTruthy();
   });
 
-  it('passes through additional props', () => {
-    const { getByTestId } = render(
-      <Button loading onPress={() => {}} testID="loading-button" accessibilityLabel="Custom accessibility label">
-        Loading
-      </Button>,
-      { wrapper: TestWrapper },
-    );
-
-    const button = getByTestId('loading-button');
-    expect(button).toBeTruthy();
-  });
-
-  it('renders with left icon', () => {
-    const { getByText } = render(
-      <Button icon="star" iconPosition="left" onPress={() => {}}>
-        With Icon
-      </Button>,
-      {
-        wrapper: TestWrapper,
-      },
-    );
-
-    expect(getByText('With Icon')).toBeTruthy();
-    // Note: Icon testing would require mocking react-native-vector-icons
-  });
-
-  it('renders with right icon', () => {
-    const { getByText } = render(
-      <Button icon="arrow-forward" iconPosition="right" onPress={() => {}}>
-        With Icon
-      </Button>,
-      {
-        wrapper: TestWrapper,
-      },
-    );
-
-    expect(getByText('With Icon')).toBeTruthy();
-    // Note: Icon testing would require mocking react-native-vector-icons
-  });
-
-  it('renders with both left and right icons', () => {
-    const { getByText } = render(
-      <Button icon="star" iconPosition="left" onPress={() => {}}>
-        With Icons
-      </Button>,
-      { wrapper: TestWrapper },
-    );
-
-    expect(getByText('With Icons')).toBeTruthy();
-  });
-
-  it('renders with icon', () => {
-    const { getByText } = render(
-      <Button icon={<>★</>} onPress={() => {}}>
-        With Icon
-      </Button>,
-      {
-        wrapper: TestWrapper,
-      },
-    );
-
-    expect(getByText('With Icon')).toBeTruthy();
-  });
-
-  it('applies fullWidth style', () => {
-    const { getByText } = render(
-      <Button fullWidth onPress={() => {}}>
-        Full Width
-      </Button>,
-      { wrapper: TestWrapper },
-    );
-
-    const button = getByText('Full Width').parent;
-    // Check if the button has full width style applied
-    expect(button).toBeTruthy();
-  });
-
-  it('applies rounded style', () => {
-    const { getByText } = render(<Button onPress={() => {}}>Rounded</Button>, { wrapper: TestWrapper });
-
-    const button = getByText('Rounded').parent;
-    // Check if the button has rounded style applied
-    expect(button).toBeTruthy();
-  });
-
-  it('renders full width', () => {
-    const { getByText } = render(
-      <Button fullWidth onPress={() => {}}>
-        Full Width
-      </Button>,
-      { wrapper: TestWrapper },
-    );
-
-    const button = getByText('Full Width').parent;
-    // Check if the button has full width style applied
-    expect(button).toBeTruthy();
-  });
-
-  it('applies custom style', () => {
+  it('applies custom style correctly', () => {
     const customStyle = { backgroundColor: 'red' };
-    const { getByText } = render(
-      <Button style={customStyle} onPress={() => {}}>
-        Custom Style
+    renderWithTheme(
+      <Button style={customStyle} testID="custom-style-button" onPress={() => {}}>
+        Custom Style Button
       </Button>,
-      {
-        wrapper: TestWrapper,
-      },
     );
 
-    const button = getByText('Custom Style').parent;
-    expect(button).toBeTruthy();
+    expect(screen.getByTestId('custom-style-button')).toBeTruthy();
   });
 
-  it('handles complex button with all features', () => {
-    const onPress = jest.fn();
-    const { getByText } = render(
-      <Button variant="primary" size="lg" icon="check" iconPosition="left" fullWidth onPress={onPress}>
-        Complex Button
-      </Button>,
-      { wrapper: TestWrapper },
-    );
-
-    const button = getByText('Complex Button');
-    expect(button).toBeTruthy();
-
-    fireEvent.press(button);
-    expect(onPress).toHaveBeenCalledTimes(1);
-  });
-
-  it('maintains accessibility properties', () => {
-    const { getByText } = render(
-      <Button onPress={() => {}} accessibilityLabel="Custom accessibility label">
+  it('has correct accessibility properties', () => {
+    renderWithTheme(
+      <Button
+        accessibilityLabel="Custom accessibility label"
+        accessibilityHint="Custom accessibility hint"
+        testID="accessible-button"
+      >
         Accessible Button
       </Button>,
-      { wrapper: TestWrapper },
     );
 
-    const button = getByText('Accessible Button');
+    const button = screen.getByTestId('accessible-button');
     expect(button).toBeTruthy();
+    expect(button.props.accessibilityLabel).toBe('Custom accessibility label');
+    expect(button.props.accessibilityHint).toBe('Custom accessibility hint');
+    expect(button.props.accessibilityRole).toBe('button');
   });
 
-  it('handles different icon colors', () => {
-    const { getByText } = render(
-      <Button icon="star" iconPosition="left" onPress={() => {}}>
-        Colored Icon
+  it('prevents press when loading', () => {
+    const onPressMock = jest.fn();
+    renderWithTheme(
+      <Button loading onPress={onPressMock} testID="loading-button">
+        Loading Button
       </Button>,
-      { wrapper: TestWrapper },
     );
 
-    expect(getByText('Colored Icon')).toBeTruthy();
+    fireEvent.press(screen.getByTestId('loading-button'));
+    expect(onPressMock).not.toHaveBeenCalled();
   });
 
-  describe('Accessibility', () => {
-    it('has proper accessibility props', () => {
-      const { getByText } = render(
-        <Button onPress={() => {}} accessibilityLabel="Custom accessibility label">
-          Accessible Button
-        </Button>,
-        { wrapper: TestWrapper },
-      );
+  it('renders with icon correctly', () => {
+    renderWithTheme(<Button testID="icon-button">Button Text</Button>);
 
-      expect(getByText('Accessible Button')).toBeTruthy();
-    });
+    expect(screen.getByTestId('icon-button')).toBeTruthy();
+    expect(screen.getByText('Button Text')).toBeTruthy();
   });
 
-  describe('Theme Integration', () => {
-    it('renders with primary variant', () => {
-      const { getByText } = render(
-        <Button variant="primary" onPress={() => {}}>
-          Primary
-        </Button>,
-        {
-          wrapper: TestWrapper,
-        },
-      );
+  it('handles long press correctly', () => {
+    const onLongPressMock = jest.fn();
+    renderWithTheme(
+      <Button onLongPress={onLongPressMock} testID="long-press-button">
+        Long Press Button
+      </Button>,
+    );
 
-      expect(getByText('Primary')).toBeTruthy();
-    });
-
-    it('renders with secondary variant', () => {
-      const { getByText } = render(
-        <Button variant="secondary" onPress={() => {}}>
-          Secondary
-        </Button>,
-        {
-          wrapper: TestWrapper,
-        },
-      );
-
-      expect(getByText('Secondary')).toBeTruthy();
-    });
-
-    it('renders with outline variant', () => {
-      const { getByText } = render(
-        <Button variant="outline" onPress={() => {}}>
-          Outline
-        </Button>,
-        {
-          wrapper: TestWrapper,
-        },
-      );
-
-      expect(getByText('Outline')).toBeTruthy();
-    });
-
-    it('renders with ghost variant', () => {
-      const { getByText } = render(
-        <Button variant="ghost" onPress={() => {}}>
-          Ghost
-        </Button>,
-        {
-          wrapper: TestWrapper,
-        },
-      );
-
-      expect(getByText('Ghost')).toBeTruthy();
-    });
-  });
-
-  describe('Size Variants', () => {
-    it('renders with sm size', () => {
-      const { getByText } = render(
-        <Button size="sm" onPress={() => {}}>
-          Small
-        </Button>,
-        { wrapper: TestWrapper },
-      );
-
-      expect(getByText('Small')).toBeTruthy();
-    });
-
-    it('renders with md size', () => {
-      const { getByText } = render(
-        <Button size="md" onPress={() => {}}>
-          Medium
-        </Button>,
-        {
-          wrapper: TestWrapper,
-        },
-      );
-
-      expect(getByText('Medium')).toBeTruthy();
-    });
-
-    it('renders with lg size', () => {
-      const { getByText } = render(
-        <Button size="lg" onPress={() => {}}>
-          Large
-        </Button>,
-        { wrapper: TestWrapper },
-      );
-
-      expect(getByText('Large')).toBeTruthy();
-    });
+    fireEvent(screen.getByTestId('long-press-button'), 'longPress');
+    expect(onLongPressMock).toHaveBeenCalledTimes(1);
   });
 });

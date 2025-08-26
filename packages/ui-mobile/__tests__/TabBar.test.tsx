@@ -1,8 +1,8 @@
 import { render, fireEvent, screen } from '@testing-library/react-native';
 import React from 'react';
 
-import { TabBar } from './TabBar';
-import { ThemeProvider } from '../../theme';
+import { TabBar } from '../lib/components/TabBar/TabBar';
+import { ThemeProvider } from '../lib/theme';
 
 const renderWithTheme = (component: React.ReactElement) => {
   return render(<ThemeProvider>{component}</ThemeProvider>);

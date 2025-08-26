@@ -4,7 +4,7 @@ import { renderHook, act } from '@testing-library/react-native';
 import { ApplicationProvider } from '@ui-kitten/components';
 import React from 'react';
 
-import { EvaProvider, useEnhancedTheme } from '../index';
+import { EvaProvider, useEnhancedTheme } from '../lib/theme';
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage');

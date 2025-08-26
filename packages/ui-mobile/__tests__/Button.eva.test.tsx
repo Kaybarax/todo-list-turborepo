@@ -1,8 +1,8 @@
 import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
 
-import { TestWrapper } from '../../../../src/test/eva-setup';
-import { Button } from '../Button';
+import { TestWrapper } from '../src/test/eva-setup';
+import { Button } from '../lib/components/Button/Button';
 
 describe('Button - Eva Design Integration', () => {
   it('renders with Eva Design theming', () => {

@@ -2,9 +2,9 @@ import { render, fireEvent, screen } from '@testing-library/react-native';
 import React from 'react';
 import { AccessibilityInfo } from 'react-native';
 
-import { TabBar } from './TabBar';
-import { ThemeProvider } from '../../theme';
-import { validateTouchTargetSize } from '../../utils/accessibility';
+import { TabBar } from '../lib/components/TabBar/TabBar';
+import { ThemeProvider } from '../lib/theme';
+import { validateTouchTargetSize } from '../lib/utils/accessibility';
 
 // Mock React Native AccessibilityInfo
 jest.mock('react-native', () => ({

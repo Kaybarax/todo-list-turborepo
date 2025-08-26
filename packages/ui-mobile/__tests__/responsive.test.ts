@@ -13,7 +13,7 @@ import {
   createResponsiveStyle,
   clampByScreenSize,
   getResponsiveSpacing,
-} from './responsive';
+} from '../lib/utils/responsive';
 
 // Mock Dimensions
 jest.mock('react-native', () => ({

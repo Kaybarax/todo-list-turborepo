@@ -2,7 +2,7 @@ import { fireEvent } from '@testing-library/react-native';
 import React from 'react';
 
 import { render, testAccessibility } from '../../../src/test/utils/eva-test-utils';
-import { Modal } from '../Modal';
+import { Modal } from '../lib/components/Modal/Modal';
 
 describe('Modal - Eva Design Integration', () => {
   it('renders with Eva Design theming when visible', () => {

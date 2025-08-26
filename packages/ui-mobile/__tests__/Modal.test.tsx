@@ -1,8 +1,8 @@
 import { render, fireEvent, screen, waitFor } from '@testing-library/react-native';
 import React from 'react';
 
-import { Modal } from './Modal';
-import { ThemeProvider } from '../../theme';
+import { Modal } from '../lib/components/Modal/Modal';
+import { ThemeProvider } from '../lib/theme';
 
 const renderWithTheme = (component: React.ReactElement) => {
   return render(<ThemeProvider>{component}</ThemeProvider>);

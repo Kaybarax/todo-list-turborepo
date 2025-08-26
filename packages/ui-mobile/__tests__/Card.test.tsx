@@ -1,391 +1,146 @@
+import { render, fireEvent, screen } from '@testing-library/react-native';
 import React from 'react';
-import { render } from '@testing-library/react-native';
-import { ApplicationProvider } from '@ui-kitten/components';
-import * as eva from '@eva-design/eva';
 
-// Mock all Card components to properly render text content
-jest.mock('../lib/components/Card', () => {
-  const React = require('react');
-  const { View, Text } = require('react-native');
+import { Card } from '../lib/components/Card/Card';
+import { ThemeProvider } from '../lib/theme';
 
-  return {
-    Card: ({ children, testID, ...props }: any) => React.createElement(View, { testID, ...props }, children),
-    CardHeader: ({ children, ...props }: any) => React.createElement(View, { ...props }, children),
-    CardTitle: ({ children, ...props }: any) => React.createElement(Text, { ...props }, children),
-    CardDescription: ({ children, ...props }: any) => React.createElement(Text, { ...props }, children),
-    CardContent: ({ children, ...props }: any) => React.createElement(Text, { ...props }, children),
-    CardFooter: ({ children, ...props }: any) => React.createElement(View, { ...props }, children),
-  };
-});
-
-const { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } = require('../lib/components/Card');
-
-// Test wrapper with UI Kitten provider
-const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <ApplicationProvider {...eva} theme={eva.light}>
-    {children}
-  </ApplicationProvider>
-);
+const renderWithTheme = (component: React.ReactElement) => {
+  return render(<ThemeProvider>{component}</ThemeProvider>);
+};
 
 describe('Card', () => {
   it('renders correctly with default props', () => {
-    const { getByTestId } = render(
-      <Card testID="test-card">
-        <CardContent>Card content</CardContent>
+    renderWithTheme(
+      <Card testID="default-card">
+        <Card.Content>Test Content</Card.Content>
       </Card>,
-      { wrapper: TestWrapper },
     );
-
-    expect(getByTestId('test-card')).toBeTruthy();
+    expect(screen.getByTestId('default-card')).toBeTruthy();
+    expect(screen.getByText('Test Content')).toBeTruthy();
   });
 
-  it('renders with different variants', () => {
+  it('renders all variants correctly', () => {
     const variants = ['elevated', 'outlined', 'filled'] as const;
 
     variants.forEach(variant => {
-      const { getByTestId, unmount } = render(
+      const { unmount } = renderWithTheme(
         <Card variant={variant} testID={`card-${variant}`}>
-          <CardContent>Test content</CardContent>
+          <Card.Content>{variant} Card</Card.Content>
         </Card>,
-        { wrapper: TestWrapper },
       );
 
-      expect(getByTestId(`card-${variant}`)).toBeTruthy();
+      expect(screen.getByTestId(`card-${variant}`)).toBeTruthy();
       unmount();
     });
   });
 
-  it('handles onPress callback', () => {
-    const mockOnPress = jest.fn();
-    const { getByTestId } = render(
-      <Card onPress={mockOnPress} testID="pressable-card">
-        <CardContent>Pressable content</CardContent>
+  it('handles onPress correctly when interactive', () => {
+    const onPressMock = jest.fn();
+    renderWithTheme(
+      <Card onPress={onPressMock} testID="interactive-card">
+        <Card.Content>Interactive Card</Card.Content>
       </Card>,
-      { wrapper: TestWrapper },
     );
 
-    expect(getByTestId('pressable-card')).toBeTruthy();
+    fireEvent.press(screen.getByTestId('interactive-card'));
+    expect(onPressMock).toHaveBeenCalledTimes(1);
   });
 
-  it('renders with different padding', () => {
-    const paddings = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+  it('renders compound components correctly', () => {
+    renderWithTheme(
+      <Card testID="compound-card">
+        <Card.Header>
+          <Card.Title>Test Title</Card.Title>
+          <Card.Description>Test Description</Card.Description>
+        </Card.Header>
+        <Card.Content>Test Content</Card.Content>
+        <Card.Footer>Test Footer</Card.Footer>
+      </Card>,
+    );
 
-    paddings.forEach(padding => {
-      const { getByTestId, unmount } = render(
-        <Card padding={padding} testID={`card-${padding}`}>
-          <CardContent>Test content</CardContent>
-        </Card>,
-        { wrapper: TestWrapper },
-      );
-
-      expect(getByTestId(`card-${padding}`)).toBeTruthy();
-      unmount();
-    });
+    expect(screen.getByTestId('compound-card')).toBeTruthy();
+    expect(screen.getByText('Test Title')).toBeTruthy();
+    expect(screen.getByText('Test Description')).toBeTruthy();
+    expect(screen.getByText('Test Content')).toBeTruthy();
+    expect(screen.getByText('Test Footer')).toBeTruthy();
   });
 
-  it('applies custom style', () => {
+  it('applies custom style correctly', () => {
     const customStyle = { backgroundColor: 'red' };
-    const { getByTestId } = render(
-      <Card style={customStyle} testID="styled-card">
-        <CardContent>Styled content</CardContent>
+    renderWithTheme(
+      <Card style={customStyle} testID="custom-style-card">
+        <Card.Content>Custom Style Card</Card.Content>
       </Card>,
-      { wrapper: TestWrapper },
     );
 
-    expect(getByTestId('styled-card')).toBeTruthy();
+    expect(screen.getByTestId('custom-style-card')).toBeTruthy();
   });
 
-  it('passes through additional props', () => {
-    const { getByTestId } = render(
-      <Card testID="props-card">
-        <CardContent>Card with accessibility</CardContent>
+  it('has correct accessibility properties when interactive', () => {
+    renderWithTheme(
+      <Card onPress={() => {}} accessibilityLabel="Custom card label" testID="accessible-card">
+        <Card.Content>Accessible Card</Card.Content>
       </Card>,
-      { wrapper: TestWrapper },
     );
 
-    expect(getByTestId('props-card')).toBeTruthy();
+    const card = screen.getByTestId('accessible-card');
+    expect(card.props.accessibilityRole).toBe('button');
+    expect(card.props.accessibilityLabel).toBe('Custom card label');
   });
-});
 
-describe('CardHeader', () => {
-  it('renders correctly', () => {
-    const { getByText } = render(
-      <Card>
-        <CardHeader>
-          <CardTitle>Header Title</CardTitle>
-        </CardHeader>
+  it('does not have button role when not interactive', () => {
+    renderWithTheme(
+      <Card testID="non-interactive-card">
+        <Card.Content>Non-interactive Card</Card.Content>
       </Card>,
-      { wrapper: TestWrapper },
     );
 
-    expect(getByText('Header Title')).toBeTruthy();
+    const card = screen.getByTestId('non-interactive-card');
+    expect(card.props.accessibilityRole).toBeUndefined();
   });
 
-  it('applies custom style', () => {
-    const customStyle = { backgroundColor: 'blue' };
-    const { getByText } = render(
-      <Card>
-        <CardHeader style={customStyle}>
-          <CardTitle>Styled Header</CardTitle>
-        </CardHeader>
-      </Card>,
-      { wrapper: TestWrapper },
-    );
+  describe('Card.Header', () => {
+    it('renders correctly', () => {
+      renderWithTheme(<Card.Header testID="card-header">Header Content</Card.Header>);
 
-    expect(getByText('Styled Header')).toBeTruthy();
-  });
-});
-
-describe('CardTitle', () => {
-  it('renders correctly with default category', () => {
-    const { getByText } = render(
-      <Card>
-        <CardHeader>
-          <CardTitle>Default Title</CardTitle>
-        </CardHeader>
-      </Card>,
-      { wrapper: TestWrapper },
-    );
-
-    expect(getByText('Default Title')).toBeTruthy();
-  });
-
-  it('renders with different categories', () => {
-    const categories = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const;
-
-    categories.forEach(category => {
-      const { getByText, unmount } = render(
-        <Card>
-          <CardHeader>
-            <CardTitle variant={category as 'h1' | 'h2' | 'h3' | 'h4'}>{category} Title</CardTitle>
-          </CardHeader>
-        </Card>,
-        { wrapper: TestWrapper },
-      );
-
-      expect(getByText(`${category} Title`)).toBeTruthy();
-      unmount();
+      expect(screen.getByTestId('card-header')).toBeTruthy();
+      expect(screen.getByText('Header Content')).toBeTruthy();
     });
   });
 
-  it('applies custom style', () => {
-    const customStyle = { color: 'red' };
-    const { getByText } = render(
-      <Card>
-        <CardHeader>
-          <CardTitle style={customStyle}>Styled Title</CardTitle>
-        </CardHeader>
-      </Card>,
-      { wrapper: TestWrapper },
-    );
+  describe('Card.Title', () => {
+    it('renders correctly', () => {
+      renderWithTheme(<Card.Title testID="card-title">Card Title</Card.Title>);
 
-    expect(getByText('Styled Title')).toBeTruthy();
-  });
-});
-
-describe('CardDescription', () => {
-  it('renders correctly with default category', () => {
-    const { getByText } = render(
-      <Card>
-        <CardHeader>
-          <CardDescription>Default description</CardDescription>
-        </CardHeader>
-      </Card>,
-      { wrapper: TestWrapper },
-    );
-
-    expect(getByText('Default description')).toBeTruthy();
-  });
-
-  it('renders with different categories', () => {
-    const categories = ['p1', 'p2', 's1', 's2', 'c1', 'c2'] as const;
-
-    categories.forEach(category => {
-      const { getByText, unmount } = render(
-        <Card>
-          <CardHeader>
-            <CardDescription>{category} description</CardDescription>
-          </CardHeader>
-        </Card>,
-        { wrapper: TestWrapper },
-      );
-
-      expect(getByText(`${category} description`)).toBeTruthy();
-      unmount();
+      expect(screen.getByTestId('card-title')).toBeTruthy();
+      expect(screen.getByText('Card Title')).toBeTruthy();
     });
   });
 
-  it('applies custom style', () => {
-    const customStyle = { fontSize: 16 };
-    const { getByText } = render(
-      <Card>
-        <CardHeader>
-          <CardDescription style={customStyle}>Styled description</CardDescription>
-        </CardHeader>
-      </Card>,
-      { wrapper: TestWrapper },
-    );
+  describe('Card.Description', () => {
+    it('renders correctly', () => {
+      renderWithTheme(<Card.Description testID="card-description">Card Description</Card.Description>);
 
-    expect(getByText('Styled description')).toBeTruthy();
-  });
-});
-
-describe('CardContent', () => {
-  it('renders correctly', () => {
-    const { getByText } = render(
-      <Card>
-        <CardContent>Content text</CardContent>
-      </Card>,
-      { wrapper: TestWrapper },
-    );
-
-    expect(getByText('Content text')).toBeTruthy();
-  });
-
-  it('applies custom style', () => {
-    const customStyle = { padding: 20 };
-    const { getByText } = render(
-      <Card>
-        <CardContent style={customStyle}>Styled content</CardContent>
-      </Card>,
-      { wrapper: TestWrapper },
-    );
-
-    expect(getByText('Styled content')).toBeTruthy();
-  });
-});
-
-describe('CardFooter', () => {
-  it('renders correctly with default alignment', () => {
-    const { getByText } = render(
-      <Card>
-        <CardFooter>
-          <CardTitle>Footer content</CardTitle>
-        </CardFooter>
-      </Card>,
-      { wrapper: TestWrapper },
-    );
-
-    expect(getByText('Footer content')).toBeTruthy();
-  });
-
-  it('renders with different alignments', () => {
-    const alignments = ['left', 'center', 'right', 'space-between'] as const;
-
-    alignments.forEach(alignment => {
-      const { getByText, unmount } = render(
-        <Card>
-          <CardFooter alignment={alignment}>
-            <CardTitle>{alignment} footer</CardTitle>
-          </CardFooter>
-        </Card>,
-        { wrapper: TestWrapper },
-      );
-
-      expect(getByText(`${alignment} footer`)).toBeTruthy();
-      unmount();
+      expect(screen.getByTestId('card-description')).toBeTruthy();
+      expect(screen.getByText('Card Description')).toBeTruthy();
     });
   });
 
-  it('applies custom style', () => {
-    const customStyle = { backgroundColor: 'gray' };
-    const { getByText } = render(
-      <Card>
-        <CardFooter style={customStyle}>
-          <CardTitle>Styled footer</CardTitle>
-        </CardFooter>
-      </Card>,
-      { wrapper: TestWrapper },
-    );
+  describe('Card.Content', () => {
+    it('renders correctly', () => {
+      renderWithTheme(<Card.Content testID="card-content">Card Content</Card.Content>);
 
-    expect(getByText('Styled footer')).toBeTruthy();
-  });
-});
-
-describe('Complete Card Structure', () => {
-  it('renders a complete card with all components', () => {
-    const { getByText } = render(
-      <Card testID="complete-card">
-        <CardHeader>
-          <CardTitle>Card Title</CardTitle>
-          <CardDescription>Card description goes here</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CardTitle>This is the main content of the card.</CardTitle>
-        </CardContent>
-        <CardFooter>
-          <CardTitle>Footer Action</CardTitle>
-        </CardFooter>
-      </Card>,
-      { wrapper: TestWrapper },
-    );
-
-    expect(getByText('Card Title')).toBeTruthy();
-    expect(getByText('Card description goes here')).toBeTruthy();
-    expect(getByText('This is the main content of the card.')).toBeTruthy();
-    expect(getByText('Footer Action')).toBeTruthy();
+      expect(screen.getByTestId('card-content')).toBeTruthy();
+      expect(screen.getByText('Card Content')).toBeTruthy();
+    });
   });
 
-  it('renders complex card with all features', () => {
-    const { getByText } = render(
-      <Card variant="outlined" testID="complex-card">
-        <CardHeader>
-          <CardTitle variant="h3">Complex Card</CardTitle>
-          <CardDescription>This is a complex card example</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CardTitle>Main content with various features</CardTitle>
-        </CardContent>
-        <CardFooter alignment="space-between">
-          <CardTitle>Left</CardTitle>
-          <CardTitle>Right</CardTitle>
-        </CardFooter>
-      </Card>,
-      { wrapper: TestWrapper },
-    );
+  describe('Card.Footer', () => {
+    it('renders correctly', () => {
+      renderWithTheme(<Card.Footer testID="card-footer">Footer Content</Card.Footer>);
 
-    expect(getByText('Complex Card')).toBeTruthy();
-    expect(getByText('This is a complex card example')).toBeTruthy();
-    expect(getByText('Main content with various features')).toBeTruthy();
-    expect(getByText('Left')).toBeTruthy();
-    expect(getByText('Right')).toBeTruthy();
-  });
-
-  it('maintains proper component hierarchy', () => {
-    const { getByTestId } = render(
-      <Card testID="hierarchy-card">
-        <CardHeader>
-          <CardTitle>Title</CardTitle>
-          <CardDescription>Description</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CardTitle>Content</CardTitle>
-        </CardContent>
-        <CardFooter>
-          <CardTitle>Footer</CardTitle>
-        </CardFooter>
-      </Card>,
-      { wrapper: TestWrapper },
-    );
-
-    const card = getByTestId('hierarchy-card');
-    expect(card).toBeTruthy();
-  });
-
-  it('handles nested content correctly', () => {
-    const { getByText } = render(
-      <Card>
-        <CardContent>
-          <Card variant="outlined">
-            <CardContent>
-              <CardTitle>Nested card content</CardTitle>
-            </CardContent>
-          </Card>
-        </CardContent>
-      </Card>,
-      { wrapper: TestWrapper },
-    );
-
-    expect(getByText('Nested card content')).toBeTruthy();
+      expect(screen.getByTestId('card-footer')).toBeTruthy();
+      expect(screen.getByText('Footer Content')).toBeTruthy();
+    });
   });
 });

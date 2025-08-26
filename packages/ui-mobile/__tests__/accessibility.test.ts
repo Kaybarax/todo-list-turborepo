@@ -9,7 +9,7 @@ import {
   createAccessibilityValue,
   formatNumberForScreenReader,
   createAccessibilityProps,
-} from './accessibility';
+} from '../lib/utils/accessibility';
 
 describe('Accessibility Utils', () => {
   describe('generateAccessibilityLabel', () => {

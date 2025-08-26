@@ -3,7 +3,7 @@ import {
   validateTouchTargetSize,
   createAccessibilityProps,
   formatNumberForScreenReader,
-} from './accessibility';
+} from '../lib/utils/accessibility';
 
 describe('Accessibility Utils WCAG Compliance Tests', () => {
   describe('WCAG Color Contrast Validation', () => {

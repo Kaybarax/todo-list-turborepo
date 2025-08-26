@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react-native';
 import React from 'react';
 
-import { Header } from './Header';
-import { ThemeProvider } from '../../theme';
-import { Button } from '../Button';
+import { Header } from '../lib/components/Header/Header';
+import { ThemeProvider } from '../lib/theme';
+import { Button } from '../lib/components/Button';
 
 const renderWithTheme = (component: React.ReactElement) => {
   return render(<ThemeProvider>{component}</ThemeProvider>);

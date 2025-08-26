@@ -2,8 +2,8 @@ import { render, fireEvent, screen, waitFor } from '@testing-library/react-nativ
 import React from 'react';
 import { AccessibilityInfo } from 'react-native';
 
-import { Modal } from './Modal';
-import { ThemeProvider } from '../../theme';
+import { Modal } from '../lib/components/Modal/Modal';
+import { ThemeProvider } from '../lib/theme';
 
 // Mock React Native AccessibilityInfo
 jest.mock('react-native', () => ({

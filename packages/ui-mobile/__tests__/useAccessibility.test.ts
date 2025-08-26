@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import { AccessibilityInfo } from 'react-native';
 
-import { useAccessibility } from './useAccessibility';
+import { useAccessibility } from '../lib/hooks/useAccessibility';
 
 // Mock React Native AccessibilityInfo
 jest.mock('react-native', () => ({

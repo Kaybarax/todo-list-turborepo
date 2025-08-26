@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { Platform } from 'react-native';
 
-import { usePlatform } from './usePlatform';
+import { usePlatform } from '../lib/hooks/usePlatform';
 
 // Mock React Native Platform
 jest.mock('react-native', () => ({
