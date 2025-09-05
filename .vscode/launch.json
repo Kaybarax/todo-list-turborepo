@@ -262,6 +262,20 @@
       "cwd": "${workspaceFolder}"
     },
     {
+      "name": "pnpm: tokens:build:mobile",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run tokens:build:mobile",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "pnpm: tokens:watch:mobile",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run tokens:watch:mobile",
+      "cwd": "${workspaceFolder}"
+    },
+    {
       "name": "pnpm: design-system:build",
       "type": "node-terminal",
       "request": "launch",

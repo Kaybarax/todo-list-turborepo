@@ -1,15 +1,6 @@
 {
   "color": {
     "primary": {
-      "100": { "value": "{color.primary.50}", "type": "color" },
-      "200": { "value": "{color.primary.100}", "type": "color" },
-      "300": { "value": "{color.primary.200}", "type": "color" },
-      "400": { "value": "{color.primary.300}", "type": "color" },
-      "500": { "value": "{color.primary.400}", "type": "color" },
-      "600": { "value": "{color.primary.500}", "type": "color" },
-      "700": { "value": "{color.primary.600}", "type": "color" },
-      "800": { "value": "{color.primary.700}", "type": "color" },
-      "900": { "value": "{color.primary.800}", "type": "color" },
       "transparent": {
         "100": { "value": "rgba(14, 165, 233, 0.08)", "type": "color" },
         "200": { "value": "rgba(14, 165, 233, 0.16)", "type": "color" },
@@ -20,15 +11,6 @@
       }
     },
     "success": {
-      "100": { "value": "{color.success.50}", "type": "color" },
-      "200": { "value": "{color.success.100}", "type": "color" },
-      "300": { "value": "{color.success.200}", "type": "color" },
-      "400": { "value": "{color.success.300}", "type": "color" },
-      "500": { "value": "{color.success.400}", "type": "color" },
-      "600": { "value": "{color.success.500}", "type": "color" },
-      "700": { "value": "{color.success.600}", "type": "color" },
-      "800": { "value": "{color.success.700}", "type": "color" },
-      "900": { "value": "{color.success.800}", "type": "color" },
       "transparent": {
         "100": { "value": "rgba(34, 197, 94, 0.08)", "type": "color" },
         "200": { "value": "rgba(34, 197, 94, 0.16)", "type": "color" },
@@ -39,15 +21,6 @@
       }
     },
     "warning": {
-      "100": { "value": "{color.warning.50}", "type": "color" },
-      "200": { "value": "{color.warning.100}", "type": "color" },
-      "300": { "value": "{color.warning.200}", "type": "color" },
-      "400": { "value": "{color.warning.300}", "type": "color" },
-      "500": { "value": "{color.warning.400}", "type": "color" },
-      "600": { "value": "{color.warning.500}", "type": "color" },
-      "700": { "value": "{color.warning.600}", "type": "color" },
-      "800": { "value": "{color.warning.700}", "type": "color" },
-      "900": { "value": "{color.warning.800}", "type": "color" },
       "transparent": {
         "100": { "value": "rgba(245, 158, 11, 0.08)", "type": "color" },
         "200": { "value": "rgba(245, 158, 11, 0.16)", "type": "color" },
@@ -58,15 +31,6 @@
       }
     },
     "danger": {
-      "100": { "value": "{color.danger.50}", "type": "color" },
-      "200": { "value": "{color.danger.100}", "type": "color" },
-      "300": { "value": "{color.danger.200}", "type": "color" },
-      "400": { "value": "{color.danger.300}", "type": "color" },
-      "500": { "value": "{color.danger.400}", "type": "color" },
-      "600": { "value": "{color.danger.500}", "type": "color" },
-      "700": { "value": "{color.danger.600}", "type": "color" },
-      "800": { "value": "{color.danger.700}", "type": "color" },
-      "900": { "value": "{color.danger.800}", "type": "color" },
       "transparent": {
         "100": { "value": "rgba(239, 68, 68, 0.08)", "type": "color" },
         "200": { "value": "rgba(239, 68, 68, 0.16)", "type": "color" },
@@ -77,15 +41,6 @@
       }
     },
     "info": {
-      "100": { "value": "{color.info.50}", "type": "color" },
-      "200": { "value": "{color.info.100}", "type": "color" },
-      "300": { "value": "{color.info.200}", "type": "color" },
-      "400": { "value": "{color.info.300}", "type": "color" },
-      "500": { "value": "{color.info.400}", "type": "color" },
-      "600": { "value": "{color.info.500}", "type": "color" },
-      "700": { "value": "{color.info.600}", "type": "color" },
-      "800": { "value": "{color.info.700}", "type": "color" },
-      "900": { "value": "{color.info.800}", "type": "color" },
       "transparent": {
         "100": { "value": "rgba(59, 130, 246, 0.08)", "type": "color" },
         "200": { "value": "rgba(59, 130, 246, 0.16)", "type": "color" },

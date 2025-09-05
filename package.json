@@ -31,6 +31,8 @@
     "tokens:build": "pnpm --filter @todo/ui-web tokens:build",
     "tokens:watch": "pnpm --filter @todo/ui-web tokens:watch",
     "tokens:validate": "pnpm --filter @todo/ui-web tokens:validate",
+    "tokens:build:mobile": "pnpm --filter @todo/ui-mobile build:tokens",
+    "tokens:watch:mobile": "pnpm --filter @todo/ui-mobile build:tokens:watch",
     "design-system:build": "pnpm tokens:build && pnpm storybook:build:web",
     "design-system:test": "pnpm --filter @todo/ui-web test:visual",
     "lint": "turbo run lint",

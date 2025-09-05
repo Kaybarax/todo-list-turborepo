@@ -19,9 +19,9 @@
   "scripts": {
     "build": "npm run build:tokens && vite build",
     "build:lib": "npm run build:tokens && vite build",
-    "build:tokens": "style-dictionary build",
+    "build:tokens": "node scripts/build-tokens.cjs",
     "analyze:bundle": "node scripts/bundle-analysis.js",
-    "build:tokens:watch": "style-dictionary build --watch",
+    "build:tokens:watch": "node scripts/build-tokens.cjs --watch",
     "dev": "npm run build:tokens && vite build --watch",
     "typecheck": "tsc --project tsconfig.dev.json --noEmit",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --fix",
