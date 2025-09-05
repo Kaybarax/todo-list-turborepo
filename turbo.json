@@ -32,7 +32,6 @@
         "tsconfig.json",
         "tsconfig.*.json"
       ],
-      "outputs": [".eslintcache"],
       "dependsOn": ["^build"]
     },
     "lint:fix": {
