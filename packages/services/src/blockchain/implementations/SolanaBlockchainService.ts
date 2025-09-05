@@ -16,10 +16,10 @@ import {
  */
 export class SolanaBlockchainService extends BaseBlockchainService {
   // @ts-ignore - Used in real implementation
-  private connection: any; // Solana Connection
-  private wallet: any; // Solana Wallet
+  private connection: Record<string, unknown> | null = null; // Solana Connection
+  private wallet: Record<string, unknown> | null = null; // Solana Wallet
   // @ts-ignore - Used in real implementation
-  private program: any; // Anchor Program
+  private program: Record<string, unknown> | null = null; // Anchor Program
 
   constructor() {
     super(BlockchainNetwork.SOLANA, 'https://explorer.solana.com', {
@@ -33,7 +33,7 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    * Connect to a Solana wallet
    * @param options - Solana connection options
    */
-  async connectWallet(options?: { rpcUrl?: string; walletAdapter?: any }): Promise<WalletInfo> {
+  async connectWallet(options?: { rpcUrl?: string; walletAdapter?: Record<string, unknown> }): Promise<WalletInfo> {
     try {
       // Initialize Solana connection
       const _rpcUrl = options?.rpcUrl ?? 'https://api.mainnet-beta.solana.com';
@@ -46,14 +46,18 @@ export class SolanaBlockchainService extends BaseBlockchainService {
       }
 
       // Connect to wallet
-      await options.walletAdapter.connect();
+      const walletAdapter = options.walletAdapter as {
+        connect: () => Promise<void>;
+        publicKey: { toString: () => string } | null;
+      };
+      await walletAdapter.connect();
 
-      if (!options.walletAdapter.publicKey) {
+      if (!walletAdapter.publicKey) {
         throw BlockchainError.connectionFailed('Failed to get public key from Solana wallet', this.network);
       }
 
       this.walletInfo = {
-        address: options.walletAdapter.publicKey.toString(),
+        address: walletAdapter.publicKey.toString(),
         network: this.network,
         isConnected: true,
         chainId: 'mainnet-beta',
@@ -72,8 +76,8 @@ export class SolanaBlockchainService extends BaseBlockchainService {
    */
   async disconnectWallet(): Promise<void> {
     try {
-      if (this.wallet) {
-        await this.wallet.disconnect();
+      if (this.wallet && typeof (this.wallet as { disconnect?: () => Promise<void> }).disconnect === 'function') {
+        await (this.wallet as { disconnect: () => Promise<void> }).disconnect();
       }
       this.walletInfo = null;
       this.wallet = null;

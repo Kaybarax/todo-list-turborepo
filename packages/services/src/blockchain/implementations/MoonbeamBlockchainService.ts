@@ -39,12 +39,12 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
   private rpcUrl: string;
   private chainId: number;
   // @ts-ignore - Used in real implementation
-  private provider: any; // ethers.providers.Provider
+  private provider: Record<string, unknown>; // ethers.providers.Provider
   // @ts-ignore - Used in real implementation
-  private signer: any | null = null; // ethers.Signer
+  private signer: Record<string, unknown> | null = null; // ethers.Signer
   // @ts-ignore - Used in real implementation
-  private todoListFactory: any | null = null; // Contract
-  private todoLists: Map<string, any> = new Map(); // Map of todoList address to Contract
+  private todoListFactory: Record<string, unknown> | null = null; // Contract
+  private todoLists: Map<string, Record<string, unknown>> = new Map(); // Map of todoList address to Contract
 
   /**
    * Create a new MoonbeamBlockchainService
@@ -73,7 +73,7 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
    * @param provider - Ethereum provider (e.g., from WalletConnect)
    */
 
-  async connectWallet(_provider: any): Promise<WalletInfo> {
+  async connectWallet(_provider: Record<string, unknown>): Promise<WalletInfo> {
     try {
       // In a real implementation, we would:
       // 1. Connect to the provider
@@ -447,12 +447,12 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
    * Check if an error is Moonbeam-specific
    * @param error - Error to check
    */
-  private isMoonbeamSpecificError(error: any): boolean {
+  private isMoonbeamSpecificError(error: unknown): boolean {
     // In a real implementation, we would check for specific error patterns
     // that are unique to Moonbeam's EVM implementation or Substrate integration
-    const errorMessage = error?.message?.toLowerCase() ?? '';
+    const errorObj = error as { message?: string };
+    const errorMessage = errorObj?.message?.toLowerCase() ?? '';
 
-    /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
     return (
       errorMessage.includes('moonbeam') ||
       errorMessage.includes('substrate') ||
@@ -461,6 +461,5 @@ export class MoonbeamBlockchainService extends BaseBlockchainService {
       errorMessage.includes('glmr') ||
       errorMessage.includes('dev token')
     );
-    /* eslint-enable @typescript-eslint/prefer-nullish-coalescing */
   }
 }

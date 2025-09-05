@@ -1,4 +1,4 @@
-import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from 'axios';
+import axios, { type AxiosInstance, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 
 import { ApiError } from './ApiError';
 import {
@@ -101,7 +101,7 @@ export class BaseApiClient {
    * @param url - Request URL
    * @param config - Request configuration
    */
-  async get<T>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+  async get<T>(url: string, config?: Partial<InternalAxiosRequestConfig>): Promise<ApiResponse<T>> {
     return this.request<T>('GET', url, undefined, config);
   }
 
@@ -111,7 +111,7 @@ export class BaseApiClient {
    * @param data - Request data
    * @param config - Request configuration
    */
-  async post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+  async post<T>(url: string, data?: unknown, config?: Partial<InternalAxiosRequestConfig>): Promise<ApiResponse<T>> {
     return this.request<T>('POST', url, data, config);
   }
 
@@ -121,7 +121,7 @@ export class BaseApiClient {
    * @param data - Request data
    * @param config - Request configuration
    */
-  async put<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+  async put<T>(url: string, data?: unknown, config?: Partial<InternalAxiosRequestConfig>): Promise<ApiResponse<T>> {
     return this.request<T>('PUT', url, data, config);
   }
 
@@ -131,7 +131,7 @@ export class BaseApiClient {
    * @param data - Request data
    * @param config - Request configuration
    */
-  async patch<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+  async patch<T>(url: string, data?: unknown, config?: Partial<InternalAxiosRequestConfig>): Promise<ApiResponse<T>> {
     return this.request<T>('PATCH', url, data, config);
   }
 
@@ -140,7 +140,7 @@ export class BaseApiClient {
    * @param url - Request URL
    * @param config - Request configuration
    */
-  async delete<T>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+  async delete<T>(url: string, config?: Partial<InternalAxiosRequestConfig>): Promise<ApiResponse<T>> {
     return this.request<T>('DELETE', url, undefined, config);
   }
 
@@ -155,8 +155,8 @@ export class BaseApiClient {
   protected async request<T>(
     method: string,
     url: string,
-    data?: any,
-    config?: AxiosRequestConfig,
+    data?: unknown,
+    config?: Partial<InternalAxiosRequestConfig>,
     retryConfig?: RetryConfig,
   ): Promise<ApiResponse<T>> {
     const retry = {
@@ -167,7 +167,7 @@ export class BaseApiClient {
       ...retryConfig,
     };
 
-    let lastError: any;
+    let lastError: Error | null = null;
 
     for (let attempt = 0; attempt <= retry.attempts; attempt++) {
       try {
@@ -180,7 +180,7 @@ export class BaseApiClient {
 
         return this.handleResponse<T>(response);
       } catch (error) {
-        lastError = error;
+        lastError = error instanceof Error ? error : new Error(String(error));
 
         // Don't retry on the last attempt
         if (attempt === retry.attempts) {
@@ -200,7 +200,7 @@ export class BaseApiClient {
       }
     }
 
-    throw this.handleError(lastError);
+    throw this.handleError(lastError ?? new Error('Request failed'));
   }
 
   /**
@@ -287,16 +287,18 @@ export class BaseApiClient {
    * Handle error response
    * @param error - Error object
    */
-  private handleError(error: any): ApiError {
-    if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+  private handleError(error: unknown): ApiError {
+    const axiosError = error as { code?: string; message?: string; response?: { status: number; data: unknown } };
+
+    if (axiosError.code === 'ECONNABORTED' || axiosError.message?.includes('timeout')) {
       return ApiError.timeoutError('Request timeout', error);
     }
 
-    if (!error.response) {
+    if (!axiosError.response) {
       return ApiError.networkError('Network error', error);
     }
 
-    const { status, data } = error.response;
+    const { status, data } = axiosError.response;
     return ApiError.fromResponse(status, data, error);
   }
 
@@ -304,14 +306,17 @@ export class BaseApiClient {
    * Determine if a request should be retried
    * @param error - Error object
    */
-  private shouldRetry(error: any): boolean {
+  private shouldRetry(error: unknown): boolean {
+    const axiosError = error as { response?: { status: number } };
+
     // Don't retry client errors (4xx)
-    if (error.response?.status >= 400 && error.response?.status < 500) {
+    const status = axiosError.response?.status;
+    if (status && status >= 400 && status < 500) {
       return false;
     }
 
     // Retry network errors and server errors (5xx)
-    return !error.response || error.response.status >= 500;
+    return !axiosError.response || (status !== undefined && status >= 500);
   }
 
   /**

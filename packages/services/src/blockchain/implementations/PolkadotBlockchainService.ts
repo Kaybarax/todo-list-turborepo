@@ -15,11 +15,11 @@ import { BaseBlockchainService } from './BaseBlockchainService';
  * Polkadot blockchain service implementation
  */
 export class PolkadotBlockchainService extends BaseBlockchainService {
-  private api: any; // Polkadot API
+  private api: Record<string, unknown> | null = null; // Polkadot API
   // @ts-ignore - Used in real implementation
-  private keyring: any; // Polkadot Keyring
+  private keyring: Record<string, unknown> | null = null; // Polkadot Keyring
   // @ts-ignore - Used in real implementation
-  private signer: any; // Polkadot Signer
+  private signer: Record<string, unknown> | null = null; // Polkadot Signer
 
   constructor() {
     super(BlockchainNetwork.POLKADOT, 'https://polkadot.subscan.io', {
@@ -33,7 +33,11 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    * Connect to a Polkadot wallet
    * @param options - Polkadot connection options
    */
-  async connectWallet(options?: { wsEndpoint?: string; walletExtension?: any; account?: any }): Promise<WalletInfo> {
+  async connectWallet(options?: {
+    wsEndpoint?: string;
+    walletExtension?: Record<string, unknown>;
+    account?: Record<string, unknown>;
+  }): Promise<WalletInfo> {
     try {
       // Initialize Polkadot API connection
       const _wsEndpoint = options?.wsEndpoint ?? 'wss://rpc.polkadot.io';
@@ -53,9 +57,9 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
       // const api = await ApiPromise.create({ provider: new WsProvider(wsEndpoint) });
 
       // Get account from wallet extension
-      const account = options.account;
+      const account = options?.account as { address?: string } | undefined;
 
-      if (!account.address) {
+      if (!account?.address) {
         throw BlockchainError.connectionFailed('Failed to get address from Polkadot wallet', this.network);
       }
 
@@ -79,8 +83,8 @@ export class PolkadotBlockchainService extends BaseBlockchainService {
    */
   async disconnectWallet(): Promise<void> {
     try {
-      if (this.api) {
-        await this.api.disconnect();
+      if (this.api && typeof (this.api as { disconnect?: () => Promise<void> }).disconnect === 'function') {
+        await (this.api as { disconnect: () => Promise<void> }).disconnect();
       }
       this.walletInfo = null;
       this.api = null;

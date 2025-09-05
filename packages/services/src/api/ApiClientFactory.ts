@@ -1,3 +1,5 @@
+import { type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
+
 import { AuthApiClient } from './AuthApiClient';
 import { BaseApiClient } from './BaseApiClient';
 import { TodoApiClient } from './TodoApiClient';
@@ -115,7 +117,11 @@ export class ApiClientFactory {
    * @param interceptor - Request interceptor function
    */
 
-  addGlobalRequestInterceptor(interceptor: (config: any) => any | Promise<any>): void {
+  addGlobalRequestInterceptor(
+    interceptor: (
+      config: InternalAxiosRequestConfig,
+    ) => InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig>,
+  ): void {
     this.clients.forEach(client => {
       client.addRequestInterceptor(interceptor);
     });
@@ -126,7 +132,7 @@ export class ApiClientFactory {
    * @param interceptor - Response interceptor function
    */
 
-  addGlobalResponseInterceptor(interceptor: (response: any) => any | Promise<any>): void {
+  addGlobalResponseInterceptor(interceptor: (response: AxiosResponse) => AxiosResponse | Promise<AxiosResponse>): void {
     this.clients.forEach(client => {
       client.addResponseInterceptor(interceptor);
     });
@@ -137,7 +143,7 @@ export class ApiClientFactory {
    * @param interceptor - Error interceptor function
    */
 
-  addGlobalErrorInterceptor(interceptor: (error: any) => any | Promise<any>): void {
+  addGlobalErrorInterceptor(interceptor: (error: Error) => Error | Promise<Error>): void {
     this.clients.forEach(client => {
       client.addErrorInterceptor(interceptor);
     });

@@ -129,7 +129,7 @@ export class ApiError extends Error {
    * @param data - Response data
    * @param originalError - Original error object
    */
-  static fromResponse(status: number, data: any, originalError?: unknown): ApiError {
+  static fromResponse(status: number, data: unknown, originalError?: unknown): ApiError {
     const response = data as ApiErrorResponse;
     const message = response?.error ?? response?.message ?? 'An error occurred';
 

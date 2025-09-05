@@ -1,3 +1,4 @@
+import { type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 import { z } from 'zod';
 
 /**
@@ -155,19 +156,21 @@ export interface ApiClientConfig {
  * Request interceptor function type
  */
 
-export type RequestInterceptor = (config: any) => any | Promise<any>;
+export type RequestInterceptor = (
+  config: InternalAxiosRequestConfig,
+) => InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig>;
 
 /**
  * Response interceptor function type
  */
 
-export type ResponseInterceptor = (response: any) => any | Promise<any>;
+export type ResponseInterceptor = (response: AxiosResponse) => AxiosResponse | Promise<AxiosResponse>;
 
 /**
  * Error interceptor function type
  */
 
-export type ErrorInterceptor = (error: any) => any | Promise<any>;
+export type ErrorInterceptor = (error: Error) => Error | Promise<Error>;
 
 /**
  * Retry configuration
@@ -177,5 +180,5 @@ export interface RetryConfig {
   delay: number;
   backoff?: 'linear' | 'exponential';
 
-  retryCondition?: (error: any) => boolean;
+  retryCondition?: (error: unknown) => boolean;
 }

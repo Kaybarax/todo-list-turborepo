@@ -302,6 +302,6 @@ export class AuthApiClient extends BaseApiClient {
   private getRefreshToken(): string | null {
     // This would typically be stored securely
     // For now, we'll assume it's stored in the base client
-    return (this as any).refreshToken ?? null;
+    return ((this as Record<string, unknown>).refreshToken as string | null) ?? null;
   }
 }

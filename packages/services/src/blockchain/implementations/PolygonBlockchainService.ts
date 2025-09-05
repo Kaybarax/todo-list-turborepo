@@ -38,12 +38,12 @@ export class PolygonBlockchainService extends BaseBlockchainService {
   private _rpcUrl: string;
   private _chainId: number;
   // @ts-ignore - Used in real implementation
-  private _provider: any; // ethers.providers.Provider
+  private _provider: Record<string, unknown>; // ethers.providers.Provider
   // @ts-ignore - Used in real implementation
-  private _signer: any | null = null; // ethers.Signer
+  private _signer: Record<string, unknown> | null = null; // ethers.Signer
   // @ts-ignore - Used in real implementation
-  private _todoListFactory: any | null = null; // Contract
-  private todoLists: Map<string, any> = new Map(); // Map of todoList address to Contract
+  private _todoListFactory: Record<string, unknown> | null = null; // Contract
+  private todoLists: Map<string, Record<string, unknown>> = new Map(); // Map of todoList address to Contract
 
   /**
    * Create a new PolygonBlockchainService
@@ -72,7 +72,7 @@ export class PolygonBlockchainService extends BaseBlockchainService {
    * @param provider - Ethereum provider (e.g., from WalletConnect)
    */
 
-  async connectWallet(_provider: any): Promise<WalletInfo> {
+  async connectWallet(_provider: Record<string, unknown>): Promise<WalletInfo> {
     try {
       // In a real implementation, we would:
       // 1. Connect to the provider
