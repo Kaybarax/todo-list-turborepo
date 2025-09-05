@@ -26,6 +26,7 @@ const config: StorybookConfig = {
       'react-native$': 'react-native-web',
       'react-native/Libraries/Text/Text': 'react-native-web/dist/exports/Text',
       'react-native/Libraries/Components/View/View': 'react-native-web/dist/exports/View',
+      '@': require('path').resolve(__dirname, '../lib'),
     };
 
     // Configure optimizeDeps to exclude problematic packages

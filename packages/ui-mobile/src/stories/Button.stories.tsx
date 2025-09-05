@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/react';
+import { View, StyleSheet } from 'react-native';
 
 import { Button } from '../../lib/components/Button/Button';
 
@@ -17,7 +18,7 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'outline', 'ghost', 'destructive'],
+      options: ['primary', 'secondary', 'outline', 'ghost', 'link'],
       description: 'Visual style variant of the button',
     },
     size: {
@@ -132,13 +133,23 @@ export const FullWidth: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '200px' }}>
-      <Button variant="primary">Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="destructive">Destructive</Button>
-    </div>
+    <View style={styles.container}>
+      <Button variant="primary" onPress={() => {}}>
+        Primary
+      </Button>
+      <Button variant="secondary" onPress={() => {}}>
+        Secondary
+      </Button>
+      <Button variant="outline" onPress={() => {}}>
+        Outline
+      </Button>
+      <Button variant="ghost" onPress={() => {}}>
+        Ghost
+      </Button>
+      <Button variant="link" onPress={() => {}}>
+        Link
+      </Button>
+    </View>
   ),
   parameters: {
     controls: { disable: true },
@@ -147,19 +158,28 @@ export const AllVariants: Story = {
 
 export const AllSizes: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-start' }}>
-      <Button variant="primary" size="sm">
+    <View style={styles.container}>
+      <Button variant="primary" size="sm" onPress={() => {}}>
         Small
       </Button>
-      <Button variant="primary" size="md">
+      <Button variant="primary" size="md" onPress={() => {}}>
         Medium
       </Button>
-      <Button variant="primary" size="lg">
+      <Button variant="primary" size="lg" onPress={() => {}}>
         Large
       </Button>
-    </div>
+    </View>
   ),
   parameters: {
     controls: { disable: true },
   },
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    gap: 16,
+    width: 200,
+    alignItems: 'flex-start',
+  },
+});

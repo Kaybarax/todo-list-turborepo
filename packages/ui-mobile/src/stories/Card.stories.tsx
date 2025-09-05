@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/react';
+import { View, StyleSheet } from 'react-native';
 
 import { Card } from '../../lib/components/Card/Card';
 import { Button } from '../../lib/components/Button';
@@ -93,11 +94,11 @@ export const WithFooter: Story = {
           <Text>Main content of the card goes here.</Text>
         </Card.Content>
         <Card.Footer>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onPress={() => {}}>
             Cancel
           </Button>
-          <Button variant="primary" size="sm">
-            Confirm
+          <Button variant="primary" size="sm" onPress={() => {}}>
+            Save
           </Button>
         </Card.Footer>
       </>
@@ -136,7 +137,7 @@ export const MinimalContent: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '300px' }}>
+    <View style={styles.container}>
       <Card variant="elevated">
         <Card.Header>
           <Card.Title>Elevated Card</Card.Title>
@@ -166,10 +167,18 @@ export const AllVariants: Story = {
           <Text>Filled variant content</Text>
         </Card.Content>
       </Card>
-    </div>
+    </View>
   ),
   parameters: {
     controls: { disable: true },
     layout: 'padded',
   },
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    gap: 24,
+    width: 300,
+  },
+});
