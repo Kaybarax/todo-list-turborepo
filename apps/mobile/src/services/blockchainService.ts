@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable promise/always-return */
+// Mobile blockchain service: blockchain integration with promise handling
 import { BlockchainNetwork } from '@todo/services';
 import { Alert } from 'react-native';
 

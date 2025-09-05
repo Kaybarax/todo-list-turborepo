@@ -3,9 +3,11 @@
  * This is a placeholder implementation for OpenTelemetry tracing
  */
 export function Trace(operationName: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return function (target: any, propertyName: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     descriptor.value = async function (...args: any[]) {
       // In a real implementation, this would create OpenTelemetry spans
       console.log(`[TRACE] Starting operation: ${operationName}`);

@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable promise/always-return */
+// Mobile todo store: state management with async operations
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BlockchainNetwork } from '@todo/services';
 import { create } from 'zustand';

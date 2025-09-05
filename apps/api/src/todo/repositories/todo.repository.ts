@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, FilterQuery } from 'mongoose';
+import { Model, FilterQuery, PipelineStage } from 'mongoose';
 
 import { Todo, TodoDocument } from '../schemas/todo.schema';
 
@@ -62,7 +62,8 @@ export class TodoRepository {
     return !!result;
   }
 
-  async aggregate(pipeline: any[]): Promise<any[]> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async aggregate(pipeline: PipelineStage[]): Promise<any[]> {
     return this.todoModel.aggregate(pipeline).exec();
   }
 

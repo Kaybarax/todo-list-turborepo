@@ -1,10 +1,10 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
-import { WalletProvider } from '../src/providers/WalletProvider';
-import { ThemeProvider } from '../src/providers/ThemeProvider';
 import { EvaProvider } from '@todo/ui-mobile';
+
+import { ThemeProvider } from '../src/providers/ThemeProvider';
+import { WalletProvider } from '../src/providers/WalletProvider';
 
 const RootLayout = () => {
   return (

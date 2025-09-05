@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// Test file: allowing 'any' type for service mocking and test assertions
 import { NotFoundException } from '@nestjs/common';
 import { Test, type TestingModule } from '@nestjs/testing';
 
@@ -288,6 +290,7 @@ describe('TodoService', () => {
       };
 
       // Mock findOne method
+
       jest.spyOn(service, 'findOne').mockResolvedValue(mockTodoDocument as any);
       cacheService.generateTodoKey.mockReturnValue('todo-cache-key');
       cacheService.set.mockResolvedValue(undefined);

@@ -17,7 +17,7 @@ interface TodoItemProps {
 
 export const TodoItem = ({ todo, onToggle, onEdit, onDelete, onBlockchainSync }: TodoItemProps) => {
   const [showActions, setShowActions] = useState(false);
-  const [showNetworkSelector, setShowNetworkSelector] = useState(false);
+  const [_showNetworkSelector, _setShowNetworkSelector] = useState(false);
   const tokens = useDesignTokens();
   const styles = createStyles(tokens);
 

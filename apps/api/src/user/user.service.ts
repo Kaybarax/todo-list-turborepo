@@ -85,6 +85,7 @@ export class UserService {
   }
 
   @Trace('UserService.findAll')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async findAll(query: any = {}): Promise<UserDocument[]> {
     return this.userModel.find(query).exec();
   }

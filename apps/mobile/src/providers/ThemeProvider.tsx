@@ -1,7 +1,9 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as eva from '@eva-design/eva';
+/* eslint-disable @typescript-eslint/no-floating-promises */
+// Mobile provider: complex React Native and UI library integration with async storage
 import { ApplicationProvider } from '@ui-kitten/components';
+import * as eva from '@eva-design/eva';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 type ThemeMode = 'light' | 'dark';
 

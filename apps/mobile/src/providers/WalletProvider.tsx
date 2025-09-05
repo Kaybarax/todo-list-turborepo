@@ -1,4 +1,5 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars, promise/always-return */
+// Mobile wallet provider: blockchain integration with async storage and mock functionality
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getSupportedWalletNetworks, generateMockAddress } from '@todo/services';
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';

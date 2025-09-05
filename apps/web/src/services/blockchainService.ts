@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import type { TodoData as Todo } from '@/components/todo/TodoItem';
 import { BlockchainNetwork } from '@todo/services';
 

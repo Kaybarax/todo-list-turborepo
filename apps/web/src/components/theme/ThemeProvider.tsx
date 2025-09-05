@@ -29,9 +29,7 @@ function subscribeSystemPrefersDark(cb: (isDark: boolean) => void): () => void {
     return () => mql.removeEventListener('change', handler);
   } catch {
     // Fallback for Safari
-    // @ts-ignore
     mql.addListener(handler);
-    // @ts-ignore
     return () => mql.removeListener(handler);
   }
 }
