@@ -4,7 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { WalletProvider } from '../src/providers/WalletProvider';
 import { ThemeProvider } from '../src/providers/ThemeProvider';
-import { EvaProvider } from '@todo/ui-mobile/lib/theme';
+import { EvaProvider } from '@todo/ui-mobile';
 
 const RootLayout = () => {
   return (

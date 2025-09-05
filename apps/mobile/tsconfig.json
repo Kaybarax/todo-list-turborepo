@@ -4,11 +4,14 @@
     "baseUrl": ".",
     "noUnusedParameters": false,
     "noUnusedLocals": false,
+    "moduleResolution": "bundler",
     "paths": {
       "@/*": ["./src/*"],
-      "@todo/*": ["../../packages/*/src"]
+      "react-native": ["../../node_modules/react-native"],
+      "react-native-safe-area-context": ["../../node_modules/react-native-safe-area-context"]
     },
-    "types": ["jest", "@testing-library/jest-dom", "node"]
+    "typeRoots": ["../../node_modules/@types"],
+    "types": ["react", "jest", "node"]
   },
   "include": ["**/*.ts", "**/*.tsx", "app/**/*.ts", "app/**/*.tsx"],
   "exclude": ["node_modules"]

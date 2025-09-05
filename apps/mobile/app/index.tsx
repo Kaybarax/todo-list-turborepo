@@ -81,7 +81,7 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
     },
     title: {
       fontSize: tokens.typography.fontSize.xxxl,
-      fontWeight: tokens.typography.fontWeight.bold,
+      fontWeight: 'bold',
       textAlign: 'center',
       marginBottom: tokens.spacing.lg,
     },
@@ -106,7 +106,7 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
     },
     featureTitle: {
       fontSize: tokens.typography.fontSize.lg,
-      fontWeight: tokens.typography.fontWeight.semibold,
+      fontWeight: '600',
       marginBottom: tokens.spacing.sm,
     },
     featureDescription: {

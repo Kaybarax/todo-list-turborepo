@@ -160,7 +160,7 @@ export abstract class BaseBlockchainService implements BlockchainService {
     return this.transactionMonitor.monitorTransaction(
       txHash,
       this.network,
-      hash => this.getTransactionReceipt(hash),
+      (hash: string) => this.getTransactionReceipt(hash),
       options,
     );
   }

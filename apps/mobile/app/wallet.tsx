@@ -50,21 +50,13 @@ const WalletScreen = () => {
             <CardContent>
               <Text style={styles.actionsTitle}>Wallet Actions</Text>
 
-              <Button
-                variant="outline"
-                size="large"
-                title="Sign Message"
-                style={styles.actionButton}
-                onPress={handleSignMessage}
-              />
+              <Button variant="outline" size="lg" style={styles.actionButton} onPress={handleSignMessage}>
+                Sign Message
+              </Button>
 
-              <Button
-                variant="primary"
-                size="large"
-                title="Send Test Transaction"
-                style={styles.actionButton}
-                onPress={handleSendTransaction}
-              />
+              <Button variant="primary" size="lg" style={styles.actionButton} onPress={handleSendTransaction}>
+                Send Test Transaction
+              </Button>
 
               <View style={styles.featuresContainer}>
                 <Text style={styles.featuresTitle}>Blockchain Features</Text>

@@ -69,7 +69,7 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
   };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
+    setTags(tags.filter((tag: string) => tag !== tagToRemove));
   };
 
   return (
@@ -131,7 +131,7 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
 
           {tags.length > 0 && (
             <View style={styles.tagsContainer}>
-              {tags.map(tag => (
+              {tags.map((tag: string) => (
                 <TouchableOpacity key={tag} style={styles.tag} onPress={() => removeTag(tag)}>
                   <Text style={styles.tagText}>{tag}</Text>
                   <Text style={styles.tagRemove}>×</Text>
@@ -156,52 +156,90 @@ export const TodoForm = ({ onSubmit, onCancel, initialData }: TodoFormProps) => 
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  form: {
-    padding: 20,
-  },
-  inputGroup: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#374151',
-    marginBottom: 8,
-  },
+const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 16,
+    },
+    form: {
+      gap: 16,
+    },
+    inputGroup: {
+      marginBottom: 12,
+    },
+    label: {
+      fontSize: 14,
+      fontWeight: '600' as const,
+      marginBottom: 8,
+      color: '#374151',
+    },
+    row: {
+      flexDirection: 'row',
+      gap: 12,
+    },
+    halfWidth: {
+      flex: 1,
+    },
+    priorityContainer: {
+      flexDirection: 'row',
+      gap: 8,
+    },
+    priorityButton: {
+      marginRight: 8,
+    },
+    tagInputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+    },
+    tagInput: {
+      flex: 1,
+    },
+    addTagButton: {
+      marginLeft: 8,
+    },
+    tagsContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+      marginTop: 8,
+    },
+    tag: {
+      backgroundColor: '#f3f4f6',
+      borderRadius: 12,
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+    },
+    tagText: {
+      fontSize: 12,
+      color: '#374151',
+    },
+    tagRemove: {
+      marginLeft: 6,
+      fontSize: 12,
+      color: '#6b7280',
+    },
+    actions: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 16,
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: 16,
+      gap: 12,
+    },
+    cancelButton: {
+      flex: 1,
+      marginRight: 8,
+    },
+    submitButton: {
+      flex: 1,
+      marginLeft: 8,
+    },
+  });
 
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  halfWidth: {
-    width: '48%',
-  },
-  priorityContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  priorityButton: {
-    flex: 1,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderWidth: 1,
-    borderRadius: 6,
-    marginHorizontal: 2,
-    alignItems: 'center',
-  },
-  tagInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  tagInput: {
-    flex: 1,
-    marginRight: 8,
-  },
-  addTagButton: {
-    marginLeft: 8,
-  },
-});
+// (Deprecated) Old static styles removed in favor of createStyles(tokens)

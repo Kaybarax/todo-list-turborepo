@@ -22,6 +22,7 @@ export interface InputProps {
   placeholder?: string;
   value?: string;
   onChangeText?: (text: string) => void;
+  onSubmitEditing?: () => void;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
   onRightIconPress?: () => void;
@@ -40,6 +41,7 @@ export const Input: React.FC<InputProps> = ({
   placeholder,
   value,
   onChangeText,
+  onSubmitEditing,
   leftIcon,
   rightIcon,
   onRightIconPress,
@@ -99,10 +101,12 @@ export const Input: React.FC<InputProps> = ({
       placeholder={placeholder}
       value={value}
       onChangeText={onChangeText}
+      onSubmitEditing={onSubmitEditing}
       multiline={multiline}
       secureTextEntry={secureTextEntry}
       style={customStyles}
       testID={testID}
+      {...(props as unknown as Partial<UIKittenInputProps>)}
     />
   );
 };

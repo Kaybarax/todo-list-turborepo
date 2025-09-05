@@ -57,7 +57,9 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   return (
     <ThemeContext.Provider value={{ themeMode, toggleTheme, setTheme }}>
-      <ApplicationProvider {...currentTheme} theme={currentTheme} children={children} />
+      <ApplicationProvider {...currentTheme} theme={currentTheme}>
+        {children}
+      </ApplicationProvider>
     </ThemeContext.Provider>
   );
 };

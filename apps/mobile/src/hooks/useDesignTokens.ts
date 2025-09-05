@@ -3,7 +3,7 @@
  * Provides easy access to design system tokens with theme support
  */
 
-import { useTheme, lightTheme } from '@todo/ui-mobile/lib/theme';
+import { useTheme, lightTheme } from '@todo/ui-mobile';
 
 export const useDesignTokens = () => {
   // Try to use theme context, fallback to light theme if not available

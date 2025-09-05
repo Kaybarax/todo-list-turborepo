@@ -63,6 +63,12 @@ export type { CheckboxProps, CheckboxStatus } from './components/Checkbox';
 // Theme System
 export { ThemeProvider, useTheme } from './theme';
 export type { Theme } from './theme';
+export { EvaProvider } from './theme';
+export { useEvaTheme } from './theme';
+export { EnhancedThemeProvider } from './theme';
+export { useEnhancedTheme } from './theme';
+export { evaLightTheme, evaDarkTheme } from './theme';
+export { lightTheme, darkTheme, themes, getTheme } from './theme';
 
 // Utilities
 export {

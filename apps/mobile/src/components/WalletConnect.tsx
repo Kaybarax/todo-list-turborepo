@@ -172,13 +172,14 @@ export const WalletConnect = () => {
 
           <Button
             variant="primary"
-            size="large"
-            title={isConnecting ? 'Connecting...' : `Connect to ${selectedNetwork}`}
+            size="lg"
             onPress={handleConnect}
             disabled={isConnecting}
             loading={isConnecting}
             style={styles.connectButton}
-          />
+          >
+            {isConnecting ? 'Connecting...' : `Connect to ${selectedNetwork}`}
+          </Button>
 
           <View style={styles.infoContainer}>
             <Text style={styles.infoText}>• This is a demo implementation</Text>

@@ -7,6 +7,7 @@ import { View, Text, StyleSheet, FlatList, Modal, Alert, TouchableOpacity, Scrol
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { TodoForm } from '../src/components/TodoForm';
+import { BlockchainStats } from '../src/components/BlockchainStats';
 import { TodoItem } from '../src/components/TodoItem';
 import { useDesignTokens } from '../src/hooks/useDesignTokens';
 import { TodoList } from '../src/components/TodoList';

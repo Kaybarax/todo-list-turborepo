@@ -36,4 +36,18 @@ export type { SwitchProps } from '../lib/components/Switch';
 
 // Theme
 export { default as theme } from '../lib/theme';
+export {
+  ThemeProvider,
+  useTheme,
+  EvaProvider,
+  useEvaTheme,
+  EnhancedThemeProvider,
+  useEnhancedTheme,
+  evaLightTheme,
+  evaDarkTheme,
+  lightTheme,
+  darkTheme,
+  themes,
+  getTheme,
+} from '../lib/theme';
 export { colors, spacing, fontSizes, fontWeights, borderRadius, shadows } from '../lib/theme';
