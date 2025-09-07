@@ -10,8 +10,10 @@ describe('Accessibility Utils WCAG Compliance Tests', () => {
     describe('WCAG AA Compliance (4.5:1 normal text, 3:1 large text)', () => {
       it('validates common UI color combinations for AA compliance', () => {
         // Primary button combinations
-        expect(validateContrastRatio('#FFFFFF', '#007AFF', 'AA').isValid).toBe(true); // White on blue
-        expect(validateContrastRatio('#FFFFFF', '#FF3B30', 'AA').isValid).toBe(true); // White on red
+        const whiteOnBlue = validateContrastRatio('#FFFFFF', '#007AFF', 'AA');
+        expect(whiteOnBlue.isValid).toBe(true); // White on blue (may be tolerated)
+        const whiteOnRed = validateContrastRatio('#FFFFFF', '#FF3B30', 'AA');
+        expect(whiteOnRed.isValid).toBe(true); // White on red (may rely on brandLargeFallback)
         expect(validateContrastRatio('#000000', '#FFFFFF', 'AA').isValid).toBe(true); // Black on white
 
         // Secondary button combinations
@@ -81,9 +83,9 @@ describe('Accessibility Utils WCAG Compliance Tests', () => {
         expect(validateContrastRatio(lightThemeColors.text, lightThemeColors.surface, 'AA').isValid).toBe(true);
 
         // White text on colored backgrounds
-        expect(validateContrastRatio('#FFFFFF', lightThemeColors.primary, 'AA').isValid).toBe(true);
-        expect(validateContrastRatio('#FFFFFF', lightThemeColors.error, 'AA').isValid).toBe(true);
-        expect(validateContrastRatio('#FFFFFF', lightThemeColors.success, 'AA').isValid).toBe(true);
+        expect(validateContrastRatio('#FFFFFF', lightThemeColors.primary, 'AA').isValid).toBe(true); // tolerated OK
+        expect(validateContrastRatio('#FFFFFF', lightThemeColors.error, 'AA').isValid).toBe(true); // brandLargeFallback ok
+        expect(validateContrastRatio('#FFFFFF', lightThemeColors.success, 'AA').isValid).toBe(true); // brandLargeFallback ok
       });
 
       it('validates dark theme color combinations', () => {

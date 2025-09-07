@@ -30,63 +30,7 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
   clear: jest.fn(() => Promise.resolve()),
 }));
 
-// Mock enhanced theme hook
-jest.mock('../../lib/theme/useEnhancedTheme', () => ({
-  useEnhancedTheme: () => ({
-    theme: {
-      'color-primary-default': '#3366FF',
-      'background-basic-color-1': '#FFFFFF',
-      'text-basic-color': '#222B45',
-      spacing: {
-        xs: 4,
-        sm: 8,
-        md: 16,
-        lg: 24,
-        xl: 32,
-      },
-      colors: {
-        primary: '#3366FF',
-        text: {
-          primary: '#222B45',
-          secondary: '#8F9BB3',
-          disabled: '#C5CEE0',
-          inverse: '#FFFFFF',
-        },
-        success: '#00E096',
-        danger: '#FF3D71',
-        warning: '#FFAA00',
-        info: '#0095FF',
-        border: {
-          default: '#E4E9F2',
-        },
-      },
-      borders: {
-        width: {
-          thin: 1,
-          medium: 2,
-          thick: 3,
-        },
-      },
-      typography: {
-        fontWeights: {
-          light: '300',
-          normal: '400',
-          medium: '500',
-          semibold: '600',
-          bold: '700',
-        },
-      },
-    },
-    evaTheme: {
-      'color-primary-default': '#3366FF',
-      'background-basic-color-1': '#FFFFFF',
-      'text-basic-color': '#222B45',
-      'spacing-medium': 16,
-    },
-    isDark: false,
-    toggleTheme: jest.fn(),
-  }),
-}));
+// (Removed mock of ../../lib/theme/useEnhancedTheme to allow real hook logic in tests that import it)
 
 // Global test utilities
 (globalThis as any).renderWithEvaTheme = (component: React.ReactElement) => {

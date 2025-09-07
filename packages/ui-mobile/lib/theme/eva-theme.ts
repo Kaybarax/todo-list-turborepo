@@ -14,6 +14,8 @@ export const lightTheme = {
   'color-primary-700': '#0284c7',
   'color-primary-800': '#0369a1',
   'color-primary-900': '#075985',
+  // Alias defaults (commonly used shortcut tokens expected by components/tests)
+  'color-primary-default': '#0ea5e9', // maps to primary-600
   'color-primary-transparent-100': 'rgba(14, 165, 233, 0.08)',
   'color-primary-transparent-200': 'rgba(14, 165, 233, 0.16)',
   'color-primary-transparent-300': 'rgba(14, 165, 233, 0.24)',
@@ -31,6 +33,7 @@ export const lightTheme = {
   'color-success-700': '#16a34a',
   'color-success-800': '#15803d',
   'color-success-900': '#166534',
+  'color-success-default': '#22c55e', // success-600
   'color-success-transparent-100': 'rgba(34, 197, 94, 0.08)',
   'color-success-transparent-200': 'rgba(34, 197, 94, 0.16)',
   'color-success-transparent-300': 'rgba(34, 197, 94, 0.24)',
@@ -82,6 +85,7 @@ export const lightTheme = {
   'color-danger-700': '#dc2626',
   'color-danger-800': '#b91c1c',
   'color-danger-900': '#991b1b',
+  'color-danger-default': '#ef4444', // danger-600
   'color-danger-transparent-100': 'rgba(239, 68, 68, 0.08)',
   'color-danger-transparent-200': 'rgba(239, 68, 68, 0.16)',
   'color-danger-transparent-300': 'rgba(239, 68, 68, 0.24)',
