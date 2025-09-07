@@ -107,21 +107,21 @@ describe('Button Accessibility Tests', () => {
       const backgroundColor = '#007AFF'; // Primary blue
       const textColor = '#FFFFFF'; // White text
 
-      expect(validateContrastRatio(textColor, backgroundColor, 'AA')).toBe(true);
+      expect(validateContrastRatio(textColor, backgroundColor, 'AA').isValid).toBe(true);
     });
 
     it('meets WCAG AA contrast requirements for secondary variant', () => {
       const backgroundColor = '#F2F2F7'; // Light gray
       const textColor = '#000000'; // Black text
 
-      expect(validateContrastRatio(textColor, backgroundColor, 'AA')).toBe(true);
+      expect(validateContrastRatio(textColor, backgroundColor, 'AA').isValid).toBe(true);
     });
 
     it('validates destructive button contrast', () => {
       const backgroundColor = '#FF3B30'; // Red
       const textColor = '#FFFFFF'; // White text
 
-      expect(validateContrastRatio(textColor, backgroundColor, 'AA')).toBe(true);
+      expect(validateContrastRatio(textColor, backgroundColor, 'AA').isValid).toBe(true);
     });
   });
 

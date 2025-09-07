@@ -23,6 +23,12 @@ export interface TextProps {
   children: React.ReactNode;
   testID?: string;
   style?: any;
+  // Allow forwarding accessibility props from components that reuse Text as wrapper
+  accessibilityRole?: any; // using any to accommodate test environment string roles
+  accessibilityState?: any;
+  accessibilityLabel?: string;
+  accessibilityHint?: string;
+  accessible?: boolean;
 }
 
 export const Text: React.FC<TextProps> = ({

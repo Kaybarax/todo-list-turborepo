@@ -7,6 +7,8 @@ export const useEnhancedTheme = () => ({
       secondary: { 500: '#8F9BB3' },
       success: { 500: '#00E096' },
       warning: { 500: '#FFAA00' },
+      // Provide full error scale shape used by components (maps to design system 'error')
+      error: { 500: '#FF3D71' },
       danger: { 500: '#FF3D71' },
       info: { 500: '#0095FF' },
       text: {
@@ -17,7 +19,7 @@ export const useEnhancedTheme = () => ({
       },
       background: '#FFFFFF',
       surface: '#FFFFFF',
-      border: { default: '#E4E9F2' },
+      border: { default: '#E4E9F2', focus: '#3366FF', error: '#FF3D71' },
     },
     spacing: {
       xs: 4,

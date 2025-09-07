@@ -3,6 +3,7 @@ import React from 'react';
 
 import { Modal } from '../lib/components/Modal/Modal';
 import { ThemeProvider } from '../lib/theme';
+import { Text } from '../lib/components/Text/Text';
 
 const renderWithTheme = (component: React.ReactElement) => {
   return render(<ThemeProvider>{component}</ThemeProvider>);
@@ -12,7 +13,7 @@ describe('Modal', () => {
   it('renders correctly when visible', () => {
     renderWithTheme(
       <Modal visible={true} onClose={() => {}} testID="test-modal">
-        <text>Modal Content</text>
+        <Text>Modal Content</Text>
       </Modal>,
     );
 
@@ -23,7 +24,7 @@ describe('Modal', () => {
   it('does not render when not visible', () => {
     renderWithTheme(
       <Modal visible={false} onClose={() => {}} testID="hidden-modal">
-        <text>Modal Content</text>
+        <Text>Modal Content</Text>
       </Modal>,
     );
 
@@ -34,7 +35,7 @@ describe('Modal', () => {
     const onCloseMock = jest.fn();
     renderWithTheme(
       <Modal visible={true} onClose={onCloseMock} dismissible={true} testID="dismissible-modal">
-        <text>Modal Content</text>
+        <Text>Modal Content</Text>
       </Modal>,
     );
 
@@ -47,7 +48,7 @@ describe('Modal', () => {
     const onCloseMock = jest.fn();
     renderWithTheme(
       <Modal visible={true} onClose={onCloseMock} dismissible={false} testID="non-dismissible-modal">
-        <text>Modal Content</text>
+        <Text>Modal Content</Text>
       </Modal>,
     );
 
@@ -62,7 +63,7 @@ describe('Modal', () => {
     sizes.forEach(size => {
       const { unmount } = renderWithTheme(
         <Modal visible={true} onClose={() => {}} size={size} testID={`modal-${size}`}>
-          <text>{size} Modal</text>
+          <Text>{size} Modal</Text>
         </Modal>,
       );
 
@@ -77,7 +78,7 @@ describe('Modal', () => {
     types.forEach(type => {
       const { unmount } = renderWithTheme(
         <Modal visible={true} onClose={() => {}} type={type} testID={`modal-${type}`}>
-          <text>{type} Modal</text>
+          <Text>{type} Modal</Text>
         </Modal>,
       );
 
@@ -92,7 +93,7 @@ describe('Modal', () => {
     animations.forEach(animation => {
       const { unmount } = renderWithTheme(
         <Modal visible={true} onClose={() => {}} animation={animation} testID={`modal-${animation}`}>
-          <text>{animation} Modal</text>
+          <Text>{animation} Modal</Text>
         </Modal>,
       );
 
@@ -104,7 +105,7 @@ describe('Modal', () => {
   it('has correct accessibility properties', () => {
     renderWithTheme(
       <Modal visible={true} onClose={() => {}} testID="accessible-modal">
-        <text>Accessible Modal</text>
+        <Text>Accessible Modal</Text>
       </Modal>,
     );
 
@@ -117,7 +118,7 @@ describe('Modal', () => {
     const customStyle = { backgroundColor: 'red' };
     renderWithTheme(
       <Modal visible={true} onClose={() => {}} style={customStyle} testID="custom-style-modal">
-        <text>Custom Style Modal</text>
+        <Text>Custom Style Modal</Text>
       </Modal>,
     );
 
@@ -127,7 +128,7 @@ describe('Modal', () => {
   it('handles keyboard avoidance correctly', () => {
     renderWithTheme(
       <Modal visible={true} onClose={() => {}} testID="keyboard-avoiding-modal">
-        <text>Keyboard Avoiding Modal</text>
+        <Text>Keyboard Avoiding Modal</Text>
       </Modal>,
     );
 
@@ -137,7 +138,7 @@ describe('Modal', () => {
   it('manages focus correctly when opened', async () => {
     renderWithTheme(
       <Modal visible={true} onClose={() => {}} testID="focus-modal">
-        <text>Focus Modal</text>
+        <Text>Focus Modal</Text>
       </Modal>,
     );
 

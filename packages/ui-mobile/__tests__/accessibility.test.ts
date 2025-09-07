@@ -78,8 +78,8 @@ describe('Accessibility Utils', () => {
     });
 
     it('validates large text requirements', () => {
-      expect(validateContrastRatio('#ffffff', '#777777', 'AA', true)).toBe(true);
-      expect(validateContrastRatio('#ffffff', '#999999', 'AA', true)).toBe(false);
+      expect(validateContrastRatio('#ffffff', '#777777', 'AA', true).isValid).toBe(true);
+      expect(validateContrastRatio('#ffffff', '#999999', 'AA', true).isValid).toBe(false);
     });
   });
 
