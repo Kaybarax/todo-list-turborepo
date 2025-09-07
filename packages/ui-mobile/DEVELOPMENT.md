@@ -32,7 +32,6 @@ packages/ui-mobile/
 │   ├── ci/                   # CI-specific tests
 │   └── __mocks__/           # Test mocks
 ├── .storybook/              # Storybook configuration
-├── showcase/                # Expo showcase application
 └── dist/                   # Built output
 ```
 
