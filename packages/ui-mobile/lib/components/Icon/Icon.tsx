@@ -4,7 +4,7 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import { Icon as UIKittenIcon, IconProps as UIKittenIconProps } from '@ui-kitten/components';
+import { Icon as UIKittenIcon } from '@ui-kitten/components';
 import React from 'react';
 import { type ViewStyle } from 'react-native';
 
@@ -17,20 +17,10 @@ export interface IconProps {
   size?: IconSize;
   color?: string;
   children?: React.ReactNode;
-  testID?: string;
-  accessibilityLabel?: string;
   style?: ViewStyle;
 }
 
-export const Icon: React.FC<IconProps> = ({
-  name,
-  size = 'md',
-  color,
-  children,
-  testID,
-  accessibilityLabel,
-  style,
-}) => {
+export const Icon: React.FC<IconProps> = ({ name, size = 'md', color, children, style }) => {
   const { theme, evaTheme } = useEnhancedTheme();
 
   // Get icon size in pixels for Eva Design

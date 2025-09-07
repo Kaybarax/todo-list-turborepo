@@ -4,7 +4,6 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import { Modal as UIKittenModal, Card } from '@ui-kitten/components';
 import React, { useEffect, useRef } from 'react';
 import {
   View,
@@ -37,7 +36,13 @@ export interface ModalProps {
   testID?: string;
   closeOnBackdropPress?: boolean;
   showCloseButton?: boolean;
-  animationType?: 'slide' | 'fade' | 'scale';
+  animationType?: 'slide' | 'fade' | 'scale' | 'none';
+  // Backward/alternate prop names used in stories/tests
+  animation?: 'slide' | 'fade' | 'scale' | 'none';
+  dismissible?: boolean;
+  style?: ViewStyle;
+  backdropStyle?: ViewStyle;
+  accessibilityLabel?: string;
   keyboardAvoidingBehavior?: 'height' | 'position' | 'padding';
 }
 
@@ -54,6 +59,11 @@ export const Modal: React.FC<ModalProps> = ({
   closeOnBackdropPress = true,
   showCloseButton = true,
   animationType = 'slide',
+  animation,
+  dismissible,
+  style,
+  backdropStyle,
+  accessibilityLabel,
   keyboardAvoidingBehavior = 'padding',
 }) => {
   const { theme, evaTheme } = useEnhancedTheme();
@@ -69,14 +79,17 @@ export const Modal: React.FC<ModalProps> = ({
   const modalRef = useRef<View>(null);
   const firstFocusableRef = useRef<View>(null);
 
+  const effectiveAnimation = animation ?? animationType;
+  const canDismiss = dismissible ?? closeOnBackdropPress;
+
   useEffect(() => {
     if (visible) {
       // Show modal with animation
       backdropOpacity.value = withTiming(1, { duration: 200 });
 
-      if (animationType === 'scale') {
+      if (effectiveAnimation === 'scale') {
         modalScale.value = withSpring(1, { damping: 20, stiffness: 300 });
-      } else if (animationType === 'slide') {
+      } else if (effectiveAnimation === 'slide') {
         modalTranslateY.value = withSpring(0, { damping: 20, stiffness: 300 });
       } else {
         modalScale.value = withTiming(1, { duration: 200 });
@@ -93,7 +106,7 @@ export const Modal: React.FC<ModalProps> = ({
       modalScale.value = withTiming(0.8, { duration: 200 });
       modalTranslateY.value = withTiming(50, { duration: 200 });
     }
-  }, [visible, animationType, backdropOpacity, modalScale, modalTranslateY]);
+  }, [visible, effectiveAnimation, backdropOpacity, modalScale, modalTranslateY]);
 
   const getModalSize = (): ViewStyle => {
     const baseStyles: ViewStyle = {
@@ -148,7 +161,7 @@ export const Modal: React.FC<ModalProps> = ({
   }));
 
   const handleBackdropPress = () => {
-    if (closeOnBackdropPress) {
+    if (canDismiss) {
       onClose();
     }
   };
@@ -205,7 +218,7 @@ export const Modal: React.FC<ModalProps> = ({
       onRequestClose={onClose}
       testID={testID}
       accessibilityViewIsModal
-      accessibilityLabel={title ? `${title} modal` : 'Modal dialog'}
+      accessibilityLabel={accessibilityLabel ?? (title ? `${title} modal` : 'Modal dialog')}
     >
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -215,7 +228,7 @@ export const Modal: React.FC<ModalProps> = ({
         <View style={containerStyles}>
           {/* Backdrop */}
           <AnimatedTouchableOpacity
-            style={[backdropStyles, backdropAnimatedStyle]}
+            style={[backdropStyles, backdropAnimatedStyle, backdropStyle]}
             onPress={handleBackdropPress}
             activeOpacity={1}
             accessibilityLabel="Close modal"
@@ -223,7 +236,7 @@ export const Modal: React.FC<ModalProps> = ({
           />
 
           {/* Modal Content */}
-          <Animated.View ref={modalRef} style={[getModalSize(), modalAnimatedStyle]} accessibilityRole="none">
+          <Animated.View ref={modalRef} style={[getModalSize(), modalAnimatedStyle, style]} accessibilityRole="none">
             {/* Header */}
             {(title || showCloseButton) && (
               <View style={headerStyles}>

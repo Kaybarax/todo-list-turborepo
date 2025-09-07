@@ -4,7 +4,6 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import { ListItem as UIKittenListItem } from '@ui-kitten/components';
 import React, { type ReactNode } from 'react';
 import { View, type ViewStyle, TouchableOpacity } from 'react-native';
 
@@ -41,20 +40,6 @@ export const ListItem: React.FC<ListItemProps> = ({
   style,
 }) => {
   const { theme, evaTheme } = useEnhancedTheme();
-
-  // Map our sizes to UI Kitten sizes
-  const getUIKittenSize = (): string => {
-    switch (size) {
-      case 'sm':
-        return 'small';
-      case 'md':
-        return 'medium';
-      case 'lg':
-        return 'large';
-      default:
-        return 'medium';
-    }
-  };
 
   // Get text variants based on size
   const getTextVariants = () => {

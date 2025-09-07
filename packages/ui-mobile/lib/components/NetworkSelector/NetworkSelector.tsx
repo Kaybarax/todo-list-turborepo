@@ -1,6 +1,5 @@
 import { getNetworkColor, getSupportedWalletNetworks } from '@todo/services';
 import { Text } from '@ui-kitten/components';
-import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';

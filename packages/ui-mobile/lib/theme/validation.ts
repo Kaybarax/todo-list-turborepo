@@ -3,7 +3,7 @@
  * Validates theme configuration and provides error handling
  */
 
-import { type Theme, type ThemeName } from './types';
+import { type Theme } from './types';
 import { type ColorTokens } from '../tokens/colors';
 
 export class ThemeValidationError extends Error {

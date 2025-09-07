@@ -17,7 +17,7 @@ export interface BadgeProps {
 }
 
 const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'medium', style, textStyle, testID }) => {
-  const { theme, evaTheme } = useEnhancedTheme();
+  const { evaTheme } = useEnhancedTheme();
 
   // Get badge background color based on variant using Eva Design tokens
   const getBadgeBackgroundColor = () => {

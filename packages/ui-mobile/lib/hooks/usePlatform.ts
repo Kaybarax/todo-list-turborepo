@@ -21,14 +21,14 @@ export interface UsePlatformReturn {
   isPad: boolean;
   isTV: boolean;
   isTesting: boolean;
-  getPlatformValue: <T>(values: { ios?: T; android?: T; web?: T; default: T }) => T;
+  getPlatformValue: <T>(values: T | { ios?: T; android?: T; web?: T; default?: T }) => T;
   select: <T>(specifics: { ios?: T; android?: T; web?: T; default?: T }) => T | undefined;
 }
 
 /**
  * Custom hook for platform-specific behavior
  */
-export const usePlatform = (options: UsePlatformOptions = {}): UsePlatformReturn => {
+export const usePlatform = (_options: UsePlatformOptions = {}): UsePlatformReturn => {
   const [platformInfo, setPlatformInfo] = useState(() => ({
     OS: Platform.OS,
     Version: Platform.Version,
@@ -53,8 +53,8 @@ export const usePlatform = (options: UsePlatformOptions = {}): UsePlatformReturn
   const isAndroid = platformInfo.OS === 'android';
   const isWeb = platformInfo.OS === 'web';
 
-  const getPlatformValueWrapper = <T>(values: { ios?: T; android?: T; web?: T; default: T }): T => {
-    return getPlatformValue(values);
+  const getPlatformValueWrapper = <T>(values: T | { ios?: T; android?: T; web?: T; default?: T }): T => {
+    return getPlatformValue(values) as T;
   };
 
   const select = <T>(specifics: { ios?: T; android?: T; web?: T; default?: T }): T | undefined => {

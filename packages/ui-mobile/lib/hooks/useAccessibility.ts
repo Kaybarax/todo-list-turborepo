@@ -6,12 +6,7 @@
 import { useEffect, useState } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
-import {
-  type AccessibilityProps,
-  generateAccessibilityLabel,
-  generateAccessibilityHint,
-  createAccessibilityProps,
-} from '../utils/accessibility';
+import { type AccessibilityProps, createAccessibilityProps } from '../utils/accessibility';
 
 export interface UseAccessibilityOptions {
   label: string;
@@ -26,13 +21,22 @@ export interface UseAccessibilityReturn {
   isScreenReaderEnabled: boolean;
   isReduceMotionEnabled: boolean;
   announceForAccessibility: (message: string) => void;
+  // Backward-compatible API expected by tests
+  getAccessibilityProps: (args: {
+    label: string;
+    hint?: string;
+    role?: AccessibilityProps['accessibilityRole'];
+    state?: AccessibilityProps['accessibilityState'];
+    value?: AccessibilityProps['accessibilityValue'];
+  }) => AccessibilityProps;
+  announce: (message: string) => void;
   setFocus: () => void;
 }
 
 /**
  * Custom hook for accessibility features
  */
-export const useAccessibility = (options: UseAccessibilityOptions): UseAccessibilityReturn => {
+export const useAccessibility = (options?: UseAccessibilityOptions): UseAccessibilityReturn => {
   const [isScreenReaderEnabled, setIsScreenReaderEnabled] = useState(false);
   const [isReduceMotionEnabled, setIsReduceMotionEnabled] = useState(false);
 
@@ -61,15 +65,24 @@ export const useAccessibility = (options: UseAccessibilityOptions): UseAccessibi
     };
   }, []);
 
+  const baseOptions = options ?? { label: '' };
   const accessibilityProps = createAccessibilityProps({
-    label: options.label,
-    hint: options.hint,
-    role: options.role,
-    state: options.state,
-    value: options.value,
+    label: baseOptions.label,
+    hint: baseOptions.hint,
+    role: baseOptions.role,
+    state: baseOptions.state,
+    value: baseOptions.value,
   });
 
   const announceForAccessibility = (message: string) => {
+    AccessibilityInfo.announceForAccessibility(message);
+  };
+
+  const getAccessibilityProps: UseAccessibilityReturn['getAccessibilityProps'] = args => {
+    return createAccessibilityProps(args as any);
+  };
+
+  const announce: UseAccessibilityReturn['announce'] = message => {
     AccessibilityInfo.announceForAccessibility(message);
   };
 
@@ -84,6 +97,8 @@ export const useAccessibility = (options: UseAccessibilityOptions): UseAccessibi
     isScreenReaderEnabled,
     isReduceMotionEnabled,
     announceForAccessibility,
+    getAccessibilityProps,
+    announce,
     setFocus,
   };
 };

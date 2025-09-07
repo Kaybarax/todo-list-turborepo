@@ -36,7 +36,6 @@ const REQUIRED_EVA_TOKENS = [
 
 // Color contrast validation (WCAG AA compliance)
 const MIN_CONTRAST_RATIO = 4.5;
-const MIN_LARGE_TEXT_CONTRAST_RATIO = 3.0;
 
 /**
  * Calculate relative luminance of a color

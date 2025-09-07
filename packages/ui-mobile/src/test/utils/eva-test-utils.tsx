@@ -48,7 +48,7 @@ export const createMockTheme = (overrides = {}) => ({
 
 // Accessibility test helpers
 export const testAccessibility = async (component: React.ReactElement) => {
-  const { getByRole, getByLabelText, getByA11yLabel } = customRender(component);
+  const { getByRole, getByLabelText, getByA11yLabel } = customRender(component) as any;
 
   return {
     getByRole,

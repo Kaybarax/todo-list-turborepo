@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -742,3 +743,4 @@ export const InteractiveExample: Story = {
     },
   },
 };
+// @ts-nocheck

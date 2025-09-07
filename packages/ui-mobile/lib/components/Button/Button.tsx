@@ -4,13 +4,14 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import { Button as UIKittenButton, ButtonProps as UIKittenButtonProps, Spinner } from '@ui-kitten/components';
+import { Button as UIKittenButton, Spinner } from '@ui-kitten/components';
+import type { ButtonProps as UIKittenButtonProps } from '@ui-kitten/components';
 import React, { type ReactNode } from 'react';
-import { type ViewStyle, ActivityIndicator, View, StyleSheet } from 'react-native';
+import { type ViewStyle, View, StyleSheet } from 'react-native';
 
-import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
+// No theme usage required here
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link';
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 export interface ButtonProps {
@@ -21,10 +22,14 @@ export interface ButtonProps {
   icon?: ReactNode;
   iconPosition?: 'left' | 'right';
   fullWidth?: boolean;
-  onPress: () => void;
+  onPress?: () => void;
+  onLongPress?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
   children: ReactNode;
   testID?: string;
   accessibilityLabel?: string;
+  accessibilityHint?: string;
   style?: ViewStyle;
 }
 
@@ -37,13 +42,17 @@ export const Button: React.FC<ButtonProps> = ({
   iconPosition = 'left',
   fullWidth = false,
   onPress,
+  onLongPress,
+  onFocus,
+  onBlur,
   children,
   testID,
   accessibilityLabel,
+  accessibilityHint,
   style,
   ...props
 }) => {
-  const { theme, evaTheme } = useEnhancedTheme();
+  // no-op
 
   // Map our variants to UI Kitten appearances
   const getUIKittenAppearance = (): string => {
@@ -82,6 +91,8 @@ export const Button: React.FC<ButtonProps> = ({
     switch (variant) {
       case 'secondary':
         return 'basic';
+      case 'destructive':
+        return 'danger';
       default:
         return undefined;
     }
@@ -107,10 +118,16 @@ export const Button: React.FC<ButtonProps> = ({
       status={getUIKittenStatus()}
       disabled={disabled || loading}
       onPress={onPress}
+      onLongPress={onLongPress}
+      onFocus={onFocus}
+      onBlur={onBlur}
       accessoryLeft={loading ? LoadingIndicator : iconPosition === 'left' && icon ? renderIcon : undefined}
       accessoryRight={iconPosition === 'right' && icon && !loading ? renderIcon : undefined}
       style={customStyles}
       testID={testID}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint={accessibilityHint}
+      {...(props as Partial<UIKittenButtonProps>)}
     >
       {children}
     </UIKittenButton>

@@ -1,7 +1,14 @@
-import React from 'react';
-
 // Web-compatible Badge component for Storybook
-const Badge = ({ text, variant = 'default', size = 'medium', testID }) => {
+type WebBadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
+type WebBadgeSize = 'small' | 'medium' | 'large';
+interface WebBadgeProps {
+  text: string;
+  variant?: WebBadgeVariant;
+  size?: WebBadgeSize;
+  testID?: string;
+}
+
+const Badge = ({ text, variant = 'default', size = 'medium', testID }: WebBadgeProps) => {
   // Theme colors matching the React Native theme
   const colors = {
     primary: '#007AFF',

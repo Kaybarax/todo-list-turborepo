@@ -4,7 +4,7 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import { Card as UIKittenCard, CardProps as UIKittenCardProps } from '@ui-kitten/components';
+import { Card as UIKittenCard } from '@ui-kitten/components';
 import React from 'react';
 import { type ViewStyle, type TextStyle, View } from 'react-native';
 
@@ -20,33 +20,39 @@ export interface CardProps {
   onPress?: () => void;
   testID?: string;
   style?: ViewStyle;
+  accessibilityLabel?: string;
 }
 
 export interface CardHeaderProps {
   style?: ViewStyle;
   children?: React.ReactNode;
+  testID?: string;
 }
 
 export interface CardTitleProps {
   style?: TextStyle;
   children?: React.ReactNode;
   variant?: 'h1' | 'h2' | 'h3' | 'h4';
+  testID?: string;
 }
 
 export interface CardDescriptionProps {
   style?: TextStyle;
   children?: React.ReactNode;
+  testID?: string;
 }
 
 export interface CardContentProps {
   style?: ViewStyle;
   children?: React.ReactNode;
+  testID?: string;
 }
 
 export interface CardFooterProps {
   style?: ViewStyle;
   children?: React.ReactNode;
   alignment?: 'left' | 'center' | 'right' | 'space-between';
+  testID?: string;
 }
 
 // Define compound component type
@@ -67,7 +73,7 @@ const CardBase: React.FC<CardProps> = ({
   style,
   ...props
 }) => {
-  const { theme, evaTheme } = useEnhancedTheme();
+  const { theme } = useEnhancedTheme();
 
   // Map our variants to UI Kitten appearances
   const getUIKittenAppearance = (): string => {
@@ -99,13 +105,19 @@ const CardBase: React.FC<CardProps> = ({
   ] as any;
 
   return (
-    <UIKittenCard appearance={getUIKittenAppearance()} onPress={onPress} style={customStyles} testID={testID}>
+    <UIKittenCard
+      appearance={getUIKittenAppearance()}
+      onPress={onPress}
+      style={customStyles}
+      testID={testID}
+      {...props}
+    >
       {children}
     </UIKittenCard>
   );
 };
 
-const CardHeader: React.FC<CardHeaderProps> = ({ style, children }) => {
+const CardHeader: React.FC<CardHeaderProps> = ({ style, children, testID }) => {
   const { theme, evaTheme } = useEnhancedTheme();
 
   const headerStyles = [
@@ -118,10 +130,14 @@ const CardHeader: React.FC<CardHeaderProps> = ({ style, children }) => {
     style,
   ];
 
-  return <View style={headerStyles}>{children}</View>;
+  return (
+    <View style={headerStyles} testID={testID}>
+      {children}
+    </View>
+  );
 };
 
-const CardTitle: React.FC<CardTitleProps> = ({ style, children, variant = 'h4' }) => {
+const CardTitle: React.FC<CardTitleProps> = ({ style, children, variant = 'h4', testID }) => {
   const titleStyles = [
     {
       marginBottom: 4,
@@ -130,13 +146,13 @@ const CardTitle: React.FC<CardTitleProps> = ({ style, children, variant = 'h4' }
   ];
 
   return (
-    <Text variant={variant} color="primary" weight="semibold" style={titleStyles}>
+    <Text variant={variant} color="primary" weight="semibold" style={titleStyles} testID={testID}>
       {children}
     </Text>
   );
 };
 
-const CardDescription: React.FC<CardDescriptionProps> = ({ style, children }) => {
+const CardDescription: React.FC<CardDescriptionProps> = ({ style, children, testID }) => {
   const descriptionStyles = [
     {
       marginBottom: 8,
@@ -145,14 +161,14 @@ const CardDescription: React.FC<CardDescriptionProps> = ({ style, children }) =>
   ];
 
   return (
-    <Text variant="body2" color="secondary" style={descriptionStyles}>
+    <Text variant="body2" color="secondary" style={descriptionStyles} testID={testID}>
       {children}
     </Text>
   );
 };
 
-const CardContent: React.FC<CardContentProps> = ({ style, children }) => {
-  const { theme, evaTheme } = useEnhancedTheme();
+const CardContent: React.FC<CardContentProps> = ({ style, children, testID }) => {
+  const { theme } = useEnhancedTheme();
 
   const contentStyles = [
     {
@@ -161,10 +177,14 @@ const CardContent: React.FC<CardContentProps> = ({ style, children }) => {
     style,
   ];
 
-  return <View style={contentStyles}>{children}</View>;
+  return (
+    <View style={contentStyles} testID={testID}>
+      {children}
+    </View>
+  );
 };
 
-const CardFooter: React.FC<CardFooterProps> = ({ style, children, alignment = 'right' }) => {
+const CardFooter: React.FC<CardFooterProps> = ({ style, children, alignment = 'right', testID }) => {
   const { theme, evaTheme } = useEnhancedTheme();
 
   const getJustifyContent = () => {
@@ -194,7 +214,11 @@ const CardFooter: React.FC<CardFooterProps> = ({ style, children, alignment = 'r
     style,
   ];
 
-  return <View style={footerStyles}>{children}</View>;
+  return (
+    <View style={footerStyles} testID={testID}>
+      {children}
+    </View>
+  );
 };
 
 // Create the compound component

@@ -4,11 +4,12 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import { Input as UIKittenInput, InputProps as UIKittenInputProps } from '@ui-kitten/components';
+import { Input as UIKittenInput } from '@ui-kitten/components';
+import type { InputProps as UIKittenInputProps } from '@ui-kitten/components';
 import React, { type ReactNode } from 'react';
 import { type ViewStyle, StyleSheet } from 'react-native';
 
-import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
+// No theme usage here
 
 export type InputVariant = 'outline' | 'filled' | 'underline';
 export type InputSize = 'sm' | 'md' | 'lg';
@@ -52,8 +53,6 @@ export const Input: React.FC<InputProps> = ({
   style,
   ...props
 }) => {
-  const { theme, evaTheme } = useEnhancedTheme();
-
   // Map our sizes to UI Kitten sizes
   const getUIKittenSize = (): string => {
     switch (size) {
@@ -80,11 +79,9 @@ export const Input: React.FC<InputProps> = ({
     }
   };
 
-  // Render left icon accessory
-  const renderLeftIcon = (props: any) => leftIcon;
-
-  // Render right icon accessory
-  const renderRightIcon = (props: any) => rightIcon;
+  // Render left/right icon accessories
+  const renderLeftIcon = leftIcon ? () => leftIcon as any : undefined;
+  const renderRightIcon = rightIcon ? () => rightIcon as any : undefined;
 
   // Custom styles for variant handling
   const customStyles = [
@@ -104,6 +101,8 @@ export const Input: React.FC<InputProps> = ({
       onSubmitEditing={onSubmitEditing}
       multiline={multiline}
       secureTextEntry={secureTextEntry}
+      accessoryLeft={renderLeftIcon}
+      accessoryRight={renderRightIcon}
       style={customStyles}
       testID={testID}
       {...(props as unknown as Partial<UIKittenInputProps>)}

@@ -4,7 +4,6 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import { TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import React from 'react';
 import { View, type ViewStyle, Platform, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

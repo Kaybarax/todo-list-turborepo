@@ -24,6 +24,7 @@ export interface EnhancedThemeContextValue {
   themeName: ThemeName;
   setTheme: (newThemeName: ThemeName) => void;
   toggleTheme: () => void;
+  isDark: boolean;
 
   // Eva Design integration
   evaTheme: Record<string, any>;
@@ -39,6 +40,7 @@ export interface EnhancedThemeContextValue {
 }
 
 const ENHANCED_THEME_STORAGE_KEY = '@enhanced_theme_mode';
+const LEGACY_THEME_STORAGE_KEY = 'theme-mode';
 
 const EnhancedThemeContext = createContext<EnhancedThemeContextValue | undefined>(undefined);
 
@@ -76,17 +78,27 @@ export const EnhancedThemeProvider: React.FC<EnhancedThemeProviderProps> = ({
   useEffect(() => {
     const loadTheme = async () => {
       try {
-        const storedTheme = await AsyncStorage.getItem(ENHANCED_THEME_STORAGE_KEY);
+        const storedTheme =
+          (await AsyncStorage.getItem(ENHANCED_THEME_STORAGE_KEY)) ??
+          (await AsyncStorage.getItem(LEGACY_THEME_STORAGE_KEY));
         if (storedTheme) {
-          const parsedTheme = JSON.parse(storedTheme);
-          if (parsedTheme.themeName) {
-            setThemeName(parsedTheme.themeName);
-          }
-          if (parsedTheme.evaThemeMode) {
-            setEvaThemeModeState(parsedTheme.evaThemeMode);
-          }
-          if (parsedTheme.customTheme) {
-            setCustomThemeState(parsedTheme.customTheme);
+          try {
+            // Try JSON first (new format)
+            const parsedTheme = JSON.parse(storedTheme);
+            if (parsedTheme.themeName) {
+              setThemeName(parsedTheme.themeName);
+            }
+            if (parsedTheme.evaThemeMode) {
+              setEvaThemeModeState(parsedTheme.evaThemeMode);
+            }
+            if (parsedTheme.customTheme) {
+              setCustomThemeState(parsedTheme.customTheme);
+            }
+          } catch {
+            // Fallback: legacy string value ('light' | 'dark')
+            const legacyValue = storedTheme as ThemeName;
+            setThemeName(legacyValue);
+            setEvaThemeModeState(legacyValue);
           }
         }
       } catch (error) {
@@ -107,6 +119,8 @@ export const EnhancedThemeProvider: React.FC<EnhancedThemeProviderProps> = ({
           customTheme: customThemeState,
         };
         await AsyncStorage.setItem(ENHANCED_THEME_STORAGE_KEY, JSON.stringify(themeData));
+        // Also write legacy key for backward compatibility
+        await AsyncStorage.setItem(LEGACY_THEME_STORAGE_KEY, themeName);
       } catch (error) {
         console.warn('Failed to save theme to storage:', error);
       }
@@ -188,6 +202,7 @@ export const EnhancedThemeProvider: React.FC<EnhancedThemeProviderProps> = ({
     themeName,
     setTheme,
     toggleTheme,
+    isDark: themeName === 'dark',
 
     // Eva Design integration
     evaTheme,

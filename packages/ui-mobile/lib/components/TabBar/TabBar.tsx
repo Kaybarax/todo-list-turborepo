@@ -4,7 +4,6 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import { BottomNavigation, BottomNavigationTab } from '@ui-kitten/components';
 import React from 'react';
 import { View, type ViewStyle, TouchableOpacity, Platform } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
@@ -16,17 +15,18 @@ import { Icon } from '../Icon/Icon';
 import { Text } from '../Text/Text';
 
 export interface TabItem {
-  key: string;
-  label: string;
+  key?: string;
+  label?: string;
   icon?: React.ReactNode;
-  badge?: number | string;
+  badge?: number | string | { count: number; dot?: boolean } | { dot: boolean; count?: number };
   accessibilityLabel?: string;
   testID?: string;
 }
 
 export interface TabBarProps {
   tabs: TabItem[];
-  activeTab: string;
+  activeTab?: string;
+  activeIndex?: number;
   onTabPress: (tabKey: string) => void;
   showLabels?: boolean;
   showIndicator?: boolean;
@@ -38,11 +38,12 @@ export interface TabBarProps {
   style?: ViewStyle;
 }
 
-const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+// Not needed currently
 
 export const TabBar: React.FC<TabBarProps> = ({
   tabs,
   activeTab,
+  activeIndex: activeIndexProp,
   onTabPress,
   showLabels = true,
   showIndicator = true,
@@ -61,7 +62,8 @@ export const TabBar: React.FC<TabBarProps> = ({
   const indicatorWidth = useSharedValue(0);
 
   // Find active tab index
-  const activeIndex = tabs.findIndex(tab => tab.key === activeTab);
+  const activeIndex =
+    activeIndexProp ?? tabs.findIndex(tab => (tab.key ?? tab.label) === (activeTab ?? tabs[0]?.key ?? tabs[0]?.label));
 
   // Update indicator position when active tab changes
   React.useEffect(() => {
@@ -96,7 +98,7 @@ export const TabBar: React.FC<TabBarProps> = ({
     position: 'relative',
   };
 
-  const getTabStyles = (isActive: boolean): ViewStyle => ({
+  const getTabStyles = (): ViewStyle => ({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -105,7 +107,7 @@ export const TabBar: React.FC<TabBarProps> = ({
     minHeight: 48, // Minimum touch target
   });
 
-  const getIconContainerStyles = (isActive: boolean): ViewStyle => ({
+  const getIconContainerStyles = (): ViewStyle => ({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: showLabels ? theme.spacing.xs / 2 : 0,
@@ -134,7 +136,7 @@ export const TabBar: React.FC<TabBarProps> = ({
     if (!tab.icon) return null;
 
     return (
-      <View style={getIconContainerStyles(isActive)}>
+      <View style={getIconContainerStyles()}>
         {React.isValidElement(tab.icon) ? (
           tab.icon
         ) : (
@@ -181,7 +183,7 @@ export const TabBar: React.FC<TabBarProps> = ({
   };
 
   const handleTabPress = (tab: TabItem) => {
-    onTabPress(tab.key);
+    onTabPress(tab.key ?? tab.label ?? '');
   };
 
   return (
@@ -191,21 +193,22 @@ export const TabBar: React.FC<TabBarProps> = ({
 
       {/* Tab Container */}
       <View style={tabContainerStyles}>
-        {tabs.map(tab => {
-          const isActive = tab.key === activeTab;
+        {tabs.map((tab, idx) => {
+          const tabKey = tab.key ?? tab.label ?? String(idx);
+          const isActive = tabKey === (activeTab ?? tabs[0]?.key ?? tabs[0]?.label);
 
           return (
             <TouchableOpacity
-              key={tab.key}
-              style={getTabStyles(isActive)}
-              onPress={() => handleTabPress(tab)}
+              key={tabKey}
+              style={getTabStyles()}
+              onPress={() => handleTabPress({ ...tab, key: tabKey })}
               accessibilityRole="tab"
               accessibilityState={{ selected: isActive }}
               accessibilityLabel={tab.accessibilityLabel || tab.label}
               testID={tab.testID}
             >
               {renderTabIcon(tab, isActive)}
-              {renderTabLabel(tab, isActive)}
+              {tab.label ? renderTabLabel(tab, isActive) : null}
             </TouchableOpacity>
           );
         })}

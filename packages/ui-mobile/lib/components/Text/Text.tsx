@@ -4,11 +4,10 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import { Text as UIKittenText, TextProps as UIKittenTextProps } from '@ui-kitten/components';
+import { Text as UIKittenText } from '@ui-kitten/components';
 import React from 'react';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
-import { type TypographyVariant } from '../../tokens/typography';
 
 export type TextVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'body1' | 'body2' | 'caption' | 'overline';
 export type TextColor = 'primary' | 'secondary' | 'disabled' | 'inverse' | string;
@@ -83,7 +82,13 @@ export const Text: React.FC<TextProps> = ({
   ];
 
   return (
-    <UIKittenText category={getUIKittenCategory()} style={customStyles} numberOfLines={numberOfLines} testID={testID}>
+    <UIKittenText
+      category={getUIKittenCategory()}
+      style={customStyles}
+      numberOfLines={numberOfLines}
+      testID={testID}
+      {...props}
+    >
       {children}
     </UIKittenText>
   );

@@ -37,7 +37,7 @@ const Avatar: React.FC<AvatarProps> = ({
   style,
   ...props
 }) => {
-  const { theme, evaTheme } = useEnhancedTheme();
+  const { evaTheme } = useEnhancedTheme();
   // Map our sizes to UI Kitten sizes
   const getKittenSize = (): KittenAvatarProps['size'] => {
     switch (size) {

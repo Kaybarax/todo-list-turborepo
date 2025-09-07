@@ -225,7 +225,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     selectedNetwork: 'solana',
-    onNetworkSelect: network => console.log('Selected network:', network),
+    onNetworkSelect: (network: any) => console.log('Selected network:', network),
   },
 };
 
@@ -234,7 +234,7 @@ export const GridVariant: Story = {
   args: {
     selectedNetwork: 'polkadot',
     variant: 'grid',
-    onNetworkSelect: network => console.log('Selected network:', network),
+    onNetworkSelect: (network: any) => console.log('Selected network:', network),
   },
 };
 
@@ -243,7 +243,7 @@ export const ListVariant: Story = {
   args: {
     selectedNetwork: 'polygon',
     variant: 'list',
-    onNetworkSelect: network => console.log('Selected network:', network),
+    onNetworkSelect: (network: any) => console.log('Selected network:', network),
   },
 };
 
@@ -252,7 +252,7 @@ export const Disabled: Story = {
   args: {
     selectedNetwork: 'moonbeam',
     disabled: true,
-    onNetworkSelect: network => console.log('Selected network:', network),
+    onNetworkSelect: (network: any) => console.log('Selected network:', network),
   },
 };
 
@@ -260,35 +260,35 @@ export const Disabled: Story = {
 export const SolanaSelected: Story = {
   args: {
     selectedNetwork: 'solana',
-    onNetworkSelect: network => console.log('Selected network:', network),
+    onNetworkSelect: (network: any) => console.log('Selected network:', network),
   },
 };
 
 export const PolkadotSelected: Story = {
   args: {
     selectedNetwork: 'polkadot',
-    onNetworkSelect: network => console.log('Selected network:', network),
+    onNetworkSelect: (network: any) => console.log('Selected network:', network),
   },
 };
 
 export const PolygonSelected: Story = {
   args: {
     selectedNetwork: 'polygon',
-    onNetworkSelect: network => console.log('Selected network:', network),
+    onNetworkSelect: (network: any) => console.log('Selected network:', network),
   },
 };
 
 export const MoonbeamSelected: Story = {
   args: {
     selectedNetwork: 'moonbeam',
-    onNetworkSelect: network => console.log('Selected network:', network),
+    onNetworkSelect: (network: any) => console.log('Selected network:', network),
   },
 };
 
 export const BaseSelected: Story = {
   args: {
     selectedNetwork: 'base',
-    onNetworkSelect: network => console.log('Selected network:', network),
+    onNetworkSelect: (network: any) => console.log('Selected network:', network),
   },
 };
 

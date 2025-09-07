@@ -29,29 +29,16 @@ export interface AccessibilityProps {
  */
 export const generateAccessibilityLabel = (label: string, context?: string, state?: string): string => {
   let accessibilityLabel = label;
-
-  if (context) {
-    accessibilityLabel += `, ${context}`;
-  }
-
-  if (state) {
-    accessibilityLabel += `, ${state}`;
-  }
-
-  return accessibilityLabel;
+  if (context) accessibilityLabel += ` ${context}`;
+  if (state) accessibilityLabel += ` ${state}`;
+  return accessibilityLabel.trim();
 };
 
 /**
  * Generate accessibility hint for interactive elements
  */
 export const generateAccessibilityHint = (action: string, result?: string): string => {
-  let hint = `${action}`;
-
-  if (result) {
-    hint += ` to ${result}`;
-  }
-
-  return hint;
+  return `Double tap to ${action}${result ? ` ${result}` : ''}`;
 };
 
 /**
@@ -89,39 +76,18 @@ export const validateContrastRatio = (
   foreground: string,
   background: string,
   level: 'AA' | 'AAA' = 'AA',
-  size: 'normal' | 'large' = 'normal',
-): { isValid: boolean; ratio: number; required: number } => {
+  largeText?: boolean,
+): boolean => {
   const ratio = calculateContrastRatio(foreground, background);
-
-  let required: number;
-
-  if (level === 'AAA') {
-    required = size === 'large' ? 4.5 : 7;
-  } else {
-    required = size === 'large' ? 3 : 4.5;
-  }
-
-  return {
-    isValid: ratio >= required,
-    ratio,
-    required,
-  };
+  const required = level === 'AAA' ? (largeText ? 4.5 : 7) : largeText ? 3 : 4.5;
+  return ratio >= required;
 };
 
 /**
  * Validate touch target size meets accessibility guidelines
  */
-export const validateTouchTargetSize = (
-  width: number,
-  height: number,
-  minSize: number = 44,
-): { isValid: boolean; width: number; height: number; minSize: number } => {
-  return {
-    isValid: width >= minSize && height >= minSize,
-    width,
-    height,
-    minSize,
-  };
+export const validateTouchTargetSize = (width: number, height: number, minSize: number = 44): boolean => {
+  return width >= minSize && height >= minSize;
 };
 
 /**
@@ -129,11 +95,12 @@ export const validateTouchTargetSize = (
  */
 export const getAccessibilityRole = (
   componentType: 'button' | 'link' | 'text' | 'image' | 'header' | 'list' | 'listitem' | 'tab' | 'tablist',
+  interactive?: boolean,
 ): AccessibilityRole => {
   const roleMap: Record<string, AccessibilityRole> = {
     button: 'button',
     link: 'link',
-    text: 'text',
+    text: interactive ? 'button' : 'text',
     image: 'image',
     header: 'header',
     list: 'list',
@@ -169,16 +136,35 @@ export const createAccessibilityState = (options: {
 /**
  * Create accessibility value object for range inputs
  */
-export const createAccessibilityValue = (options: { min?: number; max?: number; now?: number; text?: string }) => {
+export function createAccessibilityValue(options: {
+  min?: number;
+  max?: number;
+  now?: number | string;
+  text?: string;
+}): AccessibilityProps['accessibilityValue'] | undefined;
+export function createAccessibilityValue(
+  now: number | string,
+  min?: number,
+  max?: number,
+  text?: string,
+): AccessibilityProps['accessibilityValue'] | undefined;
+export function createAccessibilityValue(
+  optionsOrNow: any,
+  min?: number,
+  max?: number,
+  text?: string,
+): AccessibilityProps['accessibilityValue'] | undefined {
+  const options =
+    typeof optionsOrNow === 'object' && optionsOrNow !== null
+      ? (optionsOrNow as { min?: number; max?: number; now?: number | string; text?: string })
+      : { now: optionsOrNow as number | string, min, max, text };
   const value: AccessibilityProps['accessibilityValue'] = {};
-
   if (options.min !== undefined) value.min = options.min;
   if (options.max !== undefined) value.max = options.max;
-  if (options.now !== undefined) value.now = options.now;
+  if (options.now !== undefined) value.now = options.now as any;
   if (options.text !== undefined) value.text = options.text;
-
   return Object.keys(value).length > 0 ? value : undefined;
-};
+}
 
 /**
  * Format number for screen readers
@@ -215,7 +201,9 @@ export const formatNumberForScreenReader = (
     return `${num}${suffix}`;
   }
 
-  return num.toLocaleString();
+  if (num >= 1_000_000) return `${(num / 1_000_000).toString().replace(/\.0$/, '')} million`;
+  if (num >= 1_000) return `${(num / 1_000).toString().replace(/\.0$/, '')} thousand`;
+  return String(num);
 };
 
 /**

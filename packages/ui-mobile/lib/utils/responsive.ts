@@ -80,26 +80,42 @@ export const matchesBreakpoint = (
 /**
  * Get responsive value based on current breakpoint
  */
-export const getResponsiveValue = <T>(
+export function getResponsiveValue<T>(values: T): T;
+export function getResponsiveValue<T>(
   values: Partial<Record<keyof BreakpointTokens, T>>,
-  fallback: T,
+  fallback?: T,
+  breakpoints?: BreakpointTokens,
+): T;
+export function getResponsiveValue<T>(
+  values: T | Partial<Record<keyof BreakpointTokens, T>>,
+  fallback?: T,
   breakpoints: BreakpointTokens = defaultBreakpoints,
-): T => {
-  const { breakpoint } = getScreenInfo(breakpoints);
+): T {
+  // If a single value is provided, return it directly
+  if (typeof values !== 'object' || values === null) {
+    return values as T;
+  }
 
-  // Check from current breakpoint down to find a value
+  const { breakpoint } = getScreenInfo(breakpoints);
   const orderedBreakpoints: (keyof BreakpointTokens)[] = ['xl', 'lg', 'md', 'sm', 'xs'];
   const currentIndex = orderedBreakpoints.indexOf(breakpoint);
+  const map = values as Partial<Record<keyof BreakpointTokens, T>>;
 
   for (let i = currentIndex; i < orderedBreakpoints.length; i++) {
     const bp = orderedBreakpoints[i];
-    if (values[bp] !== undefined) {
-      return values[bp]!;
+    if (map[bp] !== undefined) {
+      return map[bp]!;
     }
   }
 
-  return fallback;
-};
+  // If no value found, try any provided fallback or the smallest defined
+  if (fallback !== undefined) return fallback;
+  for (let i = orderedBreakpoints.length - 1; i >= 0; i--) {
+    const bp = orderedBreakpoints[i];
+    if (map[bp] !== undefined) return map[bp]!;
+  }
+  throw new Error('No responsive value provided');
+}
 
 /**
  * Scale value based on screen density
@@ -120,18 +136,20 @@ export const scaleFontSize = (size: number, maxScale: number = 1.3): number => {
 /**
  * Get platform-specific value
  */
-export const getPlatformValue = <T>(values: { ios?: T; android?: T; web?: T; default: T }): T => {
-  if (Platform.OS === 'ios' && values.ios !== undefined) {
-    return values.ios;
+export function getPlatformValue<T>(values: T): T;
+export function getPlatformValue<T>(values: { ios?: T; android?: T; web?: T; default?: T }): T;
+export function getPlatformValue<T>(values: T | { ios?: T; android?: T; web?: T; default?: T }): T {
+  if (typeof values !== 'object' || values === null || Array.isArray(values)) {
+    return values as T;
   }
-  if (Platform.OS === 'android' && values.android !== undefined) {
-    return values.android;
-  }
-  if (Platform.OS === 'web' && values.web !== undefined) {
-    return values.web;
-  }
-  return values.default;
-};
+  const map = values as { ios?: T; android?: T; web?: T; default?: T };
+  if (Platform.OS === 'ios' && map.ios !== undefined) return map.ios;
+  if (Platform.OS === 'android' && map.android !== undefined) return map.android;
+  if (Platform.OS === 'web' && map.web !== undefined) return map.web;
+  if (map.default !== undefined) return map.default;
+  // Fallback to first defined value
+  return (map.ios ?? map.android ?? map.web) as T;
+}
 
 /**
  * Check if device is in landscape orientation
@@ -154,8 +172,6 @@ export const isTablet = (breakpoints: BreakpointTokens = defaultBreakpoints): bo
  * Get safe margins for different screen sizes
  */
 export const getSafeMargins = (breakpoints: BreakpointTokens = defaultBreakpoints) => {
-  const screenInfo = getScreenInfo(breakpoints);
-
   return getResponsiveValue(
     {
       xs: { horizontal: 16, vertical: 8 },
@@ -172,30 +188,41 @@ export const getSafeMargins = (breakpoints: BreakpointTokens = defaultBreakpoint
 /**
  * Get responsive grid columns
  */
-export const getGridColumns = (breakpoints: BreakpointTokens = defaultBreakpoints): number => {
-  return getResponsiveValue(
-    {
-      xs: 1,
-      sm: 2,
-      md: 3,
-      lg: 4,
-      xl: 5,
-    },
-    1,
-    breakpoints,
-  );
-};
+export function getGridColumns(columns?: Partial<Record<keyof BreakpointTokens, number>>): number;
+export function getGridColumns(
+  columnsOrBreakpoints: Partial<Record<keyof BreakpointTokens, number>> | BreakpointTokens = {
+    xs: 1,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 5,
+  },
+  breakpoints: BreakpointTokens = defaultBreakpoints,
+): number {
+  const defaultColumns = { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 } as const;
+  const columns = (
+    'xs' in columnsOrBreakpoints && typeof (columnsOrBreakpoints as any).xs === 'number'
+      ? (columnsOrBreakpoints as Partial<Record<keyof BreakpointTokens, number>>)
+      : defaultColumns
+  ) as Partial<Record<keyof BreakpointTokens, number>>;
+  return getResponsiveValue(columns as any, 1, breakpoints);
+}
 
 /**
  * Create responsive style object
  */
-export const createResponsiveStyle = <T>(
-  styles: Partial<Record<keyof BreakpointTokens, T>>,
-  fallback: T,
+export function createResponsiveStyle<T extends Record<string, any>>(
+  baseStyle: T,
+  responsiveProps: Partial<Record<keyof T, Partial<Record<keyof BreakpointTokens, any>>>>,
   breakpoints: BreakpointTokens = defaultBreakpoints,
-): T => {
-  return getResponsiveValue(styles, fallback, breakpoints);
-};
+): T {
+  const result: T = { ...baseStyle } as T;
+  for (const key in responsiveProps) {
+    const map = responsiveProps[key]!;
+    (result as any)[key] = getResponsiveValue(map as any, (baseStyle as any)[key], breakpoints);
+  }
+  return result;
+}
 
 /**
  * Clamp value between min and max based on screen size
@@ -226,19 +253,36 @@ export const clampByScreenSize = (
 /**
  * Get responsive padding/margin values
  */
-export const getResponsiveSpacing = (
-  baseSpacing: number,
+export function getResponsiveSpacing(size: keyof BreakpointTokens): number;
+export function getResponsiveSpacing(baseSpacing: number): number;
+export function getResponsiveSpacing(
+  sizeOrBase: keyof BreakpointTokens | number,
   breakpoints: BreakpointTokens = defaultBreakpoints,
-): number => {
+): number {
+  if (typeof sizeOrBase === 'number') {
+    const baseSpacing = sizeOrBase;
+    return getResponsiveValue(
+      {
+        xs: baseSpacing * 0.75,
+        sm: baseSpacing * 0.875,
+        md: baseSpacing,
+        lg: baseSpacing * 1.125,
+        xl: baseSpacing * 1.25,
+      },
+      baseSpacing,
+      breakpoints,
+    );
+  }
+  const base = 16;
   return getResponsiveValue(
     {
-      xs: baseSpacing * 0.75,
-      sm: baseSpacing * 0.875,
-      md: baseSpacing,
-      lg: baseSpacing * 1.125,
-      xl: baseSpacing * 1.25,
+      xs: base * 0.75,
+      sm: base * 0.875,
+      md: base,
+      lg: base * 1.125,
+      xl: base * 1.25,
     },
-    baseSpacing,
+    base,
     breakpoints,
   );
-};
+}
