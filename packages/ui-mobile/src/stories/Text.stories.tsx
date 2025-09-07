@@ -79,6 +79,7 @@ const meta: Meta<typeof WebText> = {
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: { type: 'select' },

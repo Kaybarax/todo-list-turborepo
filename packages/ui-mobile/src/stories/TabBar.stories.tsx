@@ -96,6 +96,7 @@ const meta: Meta<typeof WebTabBar> = {
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     activeIndex: {
       control: { type: 'number', min: 0, max: 4 },

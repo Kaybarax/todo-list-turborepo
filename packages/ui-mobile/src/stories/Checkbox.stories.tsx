@@ -49,7 +49,7 @@ const WebCheckbox: React.FC<WebCheckboxProps> = ({
   );
 };
 
-const meta = {
+const meta: Meta<typeof WebCheckbox> = {
   title: 'Components/Checkbox',
   component: WebCheckbox,
   parameters: {
@@ -61,6 +61,7 @@ const meta = {
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     checked: {
       control: { type: 'boolean' },

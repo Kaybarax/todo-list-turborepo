@@ -95,6 +95,7 @@ const meta: Meta<typeof WebCard> = {
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: { type: 'select' },

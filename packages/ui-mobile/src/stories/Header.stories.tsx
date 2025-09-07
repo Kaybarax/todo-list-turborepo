@@ -48,6 +48,7 @@ const meta: Meta<typeof WebHeader> = {
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     title: {
       control: { type: 'text' },

@@ -63,6 +63,7 @@ const meta: Meta<typeof WebModal> = {
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     visible: {
       control: { type: 'boolean' },

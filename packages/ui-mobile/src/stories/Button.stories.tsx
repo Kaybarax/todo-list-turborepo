@@ -92,6 +92,7 @@ const meta: Meta<typeof WebButton> = {
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: { type: 'select' },
