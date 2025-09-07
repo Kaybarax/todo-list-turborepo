@@ -11,7 +11,6 @@
     "build:contracts": "./scripts/build-contracts.sh",
     "build:packages": "turbo run build --filter=\"./packages/*\"",
     "test:packages": "./scripts/test-package-installation.sh",
-    "build:apps": "turbo run build --filter=\"./apps/*\"",
     "dev": "./scripts/startDev.sh",
     "dev:all": "./scripts/startDev.sh --services all",
     "dev:frontend": "./scripts/dev-frontend.sh",

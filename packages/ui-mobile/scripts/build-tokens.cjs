@@ -85,10 +85,7 @@ async function buildOnce() {
 
 async function watch() {
   console.log('[ui-mobile][tokens] Watching tokens for changes...');
-  const watchDirs = [
-    path.resolve(rootDir, 'tokens'),
-    configPath,
-  ];
+  const watchDirs = [path.resolve(rootDir, 'tokens'), configPath];
 
   let pending = false;
   const trigger = async () => {
