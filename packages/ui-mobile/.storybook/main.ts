@@ -1,6 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
+  // Load all stories
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
     '@storybook/addon-essentials',
@@ -21,9 +22,10 @@ const config: StorybookConfig = {
   viteFinal: async config => {
     // Add React Native Web alias for better compatibility
     config.resolve = config.resolve || {};
+    // Prefer simple alias mapping to ensure all 'react-native' imports resolve to web
     config.resolve.alias = {
       ...config.resolve.alias,
-      'react-native$': 'react-native-web',
+      'react-native': 'react-native-web',
       'react-native/Libraries/Text/Text': 'react-native-web/dist/exports/Text',
       'react-native/Libraries/Components/View/View': 'react-native-web/dist/exports/View',
       '@': require('path').resolve(__dirname, '../lib'),

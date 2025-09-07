@@ -1,13 +1,59 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import React from 'react';
 
-import { Modal } from '../../lib/components/Modal/Modal';
-import { Button } from '../../lib/components/Button';
-import { Text } from '../../lib/components/Text';
+type ModalSize = 'sm' | 'md' | 'lg' | 'fullscreen';
+type ModalType = 'default' | 'alert' | 'confirmation';
 
-const meta: Meta<typeof Modal> = {
+interface WebModalProps {
+  visible: boolean;
+  size?: ModalSize;
+  type?: ModalType;
+  animation?: 'slide' | 'fade' | 'scale';
+  dismissible?: boolean;
+  onClose?: () => void;
+  children?: React.ReactNode;
+}
+
+const WebModal: React.FC<WebModalProps> = ({ visible, size = 'md', dismissible = true, onClose, children }) => {
+  if (!visible) return null;
+  const widths: Record<ModalSize, number | string> = { sm: 360, md: 480, lg: 680, fullscreen: '90vw' };
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(0,0,0,0.45)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+      }}
+      onClick={dismissible ? onClose : undefined}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        style={{
+          width: widths[size],
+          maxWidth: '90vw',
+          background: '#FFFFFF',
+          borderRadius: 12,
+          padding: 16,
+          boxShadow: '0 12px 32px rgba(0,0,0,0.2)',
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
+const meta: Meta<typeof WebModal> = {
   title: 'Components/Modal',
-  component: Modal,
+  component: WebModal,
   parameters: {
     layout: 'centered',
     docs: {
@@ -53,10 +99,10 @@ const ModalWrapper = ({ children, ...args }: any) => {
 
   return (
     <div>
-      <Button onPress={() => setVisible(true)}>Open Modal</Button>
-      <Modal {...args} visible={visible} onClose={() => setVisible(false)}>
+      <button onClick={() => setVisible(true)}>Open Modal</button>
+      <WebModal {...args} visible={visible} onClose={() => setVisible(false)}>
         {children}
-      </Modal>
+      </WebModal>
     </div>
   );
 };
@@ -64,15 +110,11 @@ const ModalWrapper = ({ children, ...args }: any) => {
 export const Default: Story = {
   render: args => (
     <ModalWrapper {...args}>
-      <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 16 }}>Default Modal</Text>
-      <Text style={{ marginBottom: 24 }}>This is a default modal with standard content and actions.</Text>
+      <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Default Modal</div>
+      <div style={{ marginBottom: 24 }}>This is a default modal with standard content and actions.</div>
       <div style={{ flexDirection: 'row', justifyContent: 'flex-end', gap: 12 }}>
-        <Button variant="outline" size="sm">
-          Cancel
-        </Button>
-        <Button variant="primary" size="sm">
-          Confirm
-        </Button>
+        <button>Cancel</button>
+        <button>Confirm</button>
       </div>
     </ModalWrapper>
   ),
@@ -86,12 +128,10 @@ export const Default: Story = {
 export const Alert: Story = {
   render: args => (
     <ModalWrapper {...args}>
-      <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 16 }}>Alert Modal</Text>
-      <Text style={{ marginBottom: 24 }}>This is an important alert that requires your attention.</Text>
+      <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Alert Modal</div>
+      <div style={{ marginBottom: 24 }}>This is an important alert that requires your attention.</div>
       <div style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-        <Button variant="primary" size="sm">
-          OK
-        </Button>
+        <button>OK</button>
       </div>
     </ModalWrapper>
   ),
@@ -106,15 +146,11 @@ export const Alert: Story = {
 export const Confirmation: Story = {
   render: args => (
     <ModalWrapper {...args}>
-      <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 16 }}>Confirm Action</Text>
-      <Text style={{ marginBottom: 24 }}>Are you sure you want to delete this item? This action cannot be undone.</Text>
+      <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Confirm Action</div>
+      <div style={{ marginBottom: 24 }}>Are you sure you want to delete this item? This action cannot be undone.</div>
       <div style={{ flexDirection: 'row', justifyContent: 'flex-end', gap: 12 }}>
-        <Button variant="outline" size="sm">
-          Cancel
-        </Button>
-        <Button variant="destructive" size="sm">
-          Delete
-        </Button>
+        <button>Cancel</button>
+        <button>Delete</button>
       </div>
     </ModalWrapper>
   ),
@@ -128,10 +164,10 @@ export const Confirmation: Story = {
 export const LargeModal: Story = {
   render: args => (
     <ModalWrapper {...args}>
-      <Text style={{ fontSize: 20, fontWeight: '600', marginBottom: 16 }}>Large Modal</Text>
-      <Text style={{ marginBottom: 16 }}>This is a large modal with more content space.</Text>
+      <div style={{ fontSize: 20, fontWeight: 600, marginBottom: 16 }}>Large Modal</div>
+      <div style={{ marginBottom: 16 }}>This is a large modal with more content space.</div>
       <div style={{ marginBottom: 24 }}>
-        <Text style={{ fontWeight: '600', marginBottom: 8 }}>Form Content:</Text>
+        <div style={{ fontWeight: 600 as any, marginBottom: 8 }}>Form Content:</div>
         <div style={{ gap: 12 }}>
           <input placeholder="Name" style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }} />
           <input placeholder="Email" style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }} />
@@ -139,12 +175,8 @@ export const LargeModal: Story = {
         </div>
       </div>
       <div style={{ flexDirection: 'row', justifyContent: 'flex-end', gap: 12 }}>
-        <Button variant="outline" size="sm">
-          Cancel
-        </Button>
-        <Button variant="primary" size="sm">
-          Submit
-        </Button>
+        <button>Cancel</button>
+        <button>Submit</button>
       </div>
     </ModalWrapper>
   ),
@@ -157,19 +189,19 @@ export const LargeModal: Story = {
 export const FullscreenModal: Story = {
   render: args => (
     <ModalWrapper {...args}>
-      <Text style={{ fontSize: 24, fontWeight: '600', marginBottom: 24 }}>Fullscreen Modal</Text>
-      <Text style={{ marginBottom: 24 }}>
+      <div style={{ fontSize: 24, fontWeight: 600, marginBottom: 24 }}>Fullscreen Modal</div>
+      <div style={{ marginBottom: 24 }}>
         This modal takes up the entire screen, useful for complex forms or detailed content.
-      </Text>
+      </div>
       <div style={{ flex: 1, marginBottom: 24 }}>
-        <Text style={{ fontWeight: '600', marginBottom: 16 }}>Content Area:</Text>
+        <div style={{ fontWeight: 600 as any, marginBottom: 16 }}>Content Area:</div>
         <div style={{ height: 200, backgroundColor: '#f5f5f5', borderRadius: 8, padding: 16 }}>
-          <Text>Large content area for complex interfaces</Text>
+          <div>Large content area for complex interfaces</div>
         </div>
       </div>
       <div style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Button variant="outline">Close</Button>
-        <Button variant="primary">Save Changes</Button>
+        <button>Close</button>
+        <button>Save Changes</button>
       </div>
     </ModalWrapper>
   ),

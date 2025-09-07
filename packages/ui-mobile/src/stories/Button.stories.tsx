@@ -1,11 +1,88 @@
 import { type Meta, type StoryObj } from '@storybook/react';
-import { View, StyleSheet } from 'react-native';
+import React from 'react';
 
-import { Button } from '../../lib/components/Button/Button';
+// Web-compatible Button component for Storybook (does not rely on React Native or UI Kitten)
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive';
+type ButtonSize = 'sm' | 'md' | 'lg';
 
-const meta: Meta<typeof Button> = {
+interface WebButtonProps {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  disabled?: boolean;
+  loading?: boolean;
+  fullWidth?: boolean;
+  onPress?: () => void;
+  children: React.ReactNode;
+}
+
+const WebButton: React.FC<WebButtonProps> = ({
+  variant = 'primary',
+  size = 'md',
+  disabled = false,
+  loading = false,
+  fullWidth = false,
+  onPress,
+  children,
+}) => {
+  const colors = {
+    primary: '#007AFF',
+    secondary: '#5856D6',
+    destructive: '#FF3B30',
+    border: '#CECED2',
+    text: '#1C1C1E',
+    white: '#FFFFFF',
+    transparent: 'transparent',
+  };
+
+  const paddings: Record<ButtonSize, { py: number; px: number; fontSize: number }> = {
+    sm: { py: 6, px: 10, fontSize: 14 },
+    md: { py: 8, px: 14, fontSize: 16 },
+    lg: { py: 10, px: 18, fontSize: 18 },
+  };
+
+  const baseStyle: React.CSSProperties = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    cursor: disabled ? 'not-allowed' : 'pointer',
+    opacity: disabled ? 0.6 : 1,
+    userSelect: 'none',
+    width: fullWidth ? '100%' : undefined,
+    fontFamily: 'system-ui, -apple-system, sans-serif',
+    transition: 'background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease',
+  };
+
+  const { py, px, fontSize } = paddings[size];
+
+  const stylesByVariant: Record<ButtonVariant, React.CSSProperties> = {
+    primary: { backgroundColor: colors.primary, color: colors.white, borderColor: colors.primary },
+    secondary: { backgroundColor: colors.white, color: colors.text, borderColor: colors.border },
+    outline: { backgroundColor: colors.white, color: colors.text, borderColor: colors.border },
+    ghost: { backgroundColor: colors.transparent, color: colors.text, borderColor: colors.transparent },
+    link: { backgroundColor: colors.transparent, color: colors.primary, borderColor: colors.transparent },
+    destructive: { backgroundColor: colors.destructive, color: colors.white, borderColor: colors.destructive },
+  };
+
+  const style: React.CSSProperties = {
+    ...baseStyle,
+    ...stylesByVariant[variant],
+    padding: `${py}px ${px}px`,
+    fontSize,
+  };
+
+  return (
+    <button style={style} onClick={onPress} disabled={disabled}>
+      {loading ? 'Loading…' : children}
+    </button>
+  );
+};
+
+const meta: Meta<typeof WebButton> = {
   title: 'Components/Button',
-  component: Button,
+  component: WebButton,
   parameters: {
     layout: 'centered',
     docs: {
@@ -133,23 +210,23 @@ export const FullWidth: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <View style={styles.container}>
-      <Button variant="primary" onPress={() => {}}>
+    <div style={containerStyle}>
+      <WebButton variant="primary" onPress={() => {}}>
         Primary
-      </Button>
-      <Button variant="secondary" onPress={() => {}}>
+      </WebButton>
+      <WebButton variant="secondary" onPress={() => {}}>
         Secondary
-      </Button>
-      <Button variant="outline" onPress={() => {}}>
+      </WebButton>
+      <WebButton variant="outline" onPress={() => {}}>
         Outline
-      </Button>
-      <Button variant="ghost" onPress={() => {}}>
+      </WebButton>
+      <WebButton variant="ghost" onPress={() => {}}>
         Ghost
-      </Button>
-      <Button variant="link" onPress={() => {}}>
+      </WebButton>
+      <WebButton variant="link" onPress={() => {}}>
         Link
-      </Button>
-    </View>
+      </WebButton>
+    </div>
   ),
   parameters: {
     controls: { disable: true },
@@ -158,28 +235,27 @@ export const AllVariants: Story = {
 
 export const AllSizes: Story = {
   render: () => (
-    <View style={styles.container}>
-      <Button variant="primary" size="sm" onPress={() => {}}>
+    <div style={containerStyle}>
+      <WebButton variant="primary" size="sm" onPress={() => {}}>
         Small
-      </Button>
-      <Button variant="primary" size="md" onPress={() => {}}>
+      </WebButton>
+      <WebButton variant="primary" size="md" onPress={() => {}}>
         Medium
-      </Button>
-      <Button variant="primary" size="lg" onPress={() => {}}>
+      </WebButton>
+      <WebButton variant="primary" size="lg" onPress={() => {}}>
         Large
-      </Button>
-    </View>
+      </WebButton>
+    </div>
   ),
   parameters: {
     controls: { disable: true },
   },
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    gap: 16,
-    width: 200,
-    alignItems: 'flex-start',
-  },
-});
+const containerStyle: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 16,
+  width: 200,
+  alignItems: 'flex-start',
+};

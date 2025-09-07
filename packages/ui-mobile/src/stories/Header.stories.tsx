@@ -1,12 +1,44 @@
+import React from 'react';
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import { Header } from '../../lib/components/Header/Header';
-import { Button } from '../../lib/components/Button';
-import { Icon } from '../../lib/components/Icon';
+interface WebHeaderProps {
+  title?: string;
+  showBorder?: boolean;
+  statusBarStyle?: 'light-content' | 'dark-content' | 'default';
+  backgroundColor?: string;
+  leftAction?: React.ReactNode;
+  rightAction?: React.ReactNode;
+}
 
-const meta: Meta<typeof Header> = {
+const WebHeader: React.FC<WebHeaderProps> = ({
+  title,
+  showBorder,
+  statusBarStyle,
+  backgroundColor = '#FFFFFF',
+  leftAction,
+  rightAction,
+}) => (
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '12px 16px',
+      borderBottom: showBorder ? '1px solid #E5E7EB' : 'none',
+      backgroundColor,
+      color: statusBarStyle === 'light-content' ? '#FFFFFF' : '#111827',
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+    }}
+  >
+    <div>{leftAction}</div>
+    <div style={{ fontWeight: 600 }}>{title}</div>
+    <div>{rightAction}</div>
+  </div>
+);
+
+const meta: Meta<typeof WebHeader> = {
   title: 'Components/Header',
-  component: Header,
+  component: WebHeader,
   parameters: {
     layout: 'fullscreen',
     docs: {
@@ -56,38 +88,22 @@ export const WithBorder: Story = {
 export const WithLeftAction: Story = {
   args: {
     title: 'Back Navigation',
-    leftAction: (
-      <Button variant="ghost" size="sm" onPress={() => console.log('Back pressed')}>
-        <Icon name="arrow-back" size={20} />
-      </Button>
-    ),
+    leftAction: <button onClick={() => console.log('Back pressed')}>←</button>,
   },
 };
 
 export const WithRightAction: Story = {
   args: {
     title: 'Settings',
-    rightAction: (
-      <Button variant="ghost" size="sm" onPress={() => console.log('Menu pressed')}>
-        <Icon name="menu" size={20} />
-      </Button>
-    ),
+    rightAction: <button onClick={() => console.log('Menu pressed')}>☰</button>,
   },
 };
 
 export const WithBothActions: Story = {
   args: {
     title: 'Profile',
-    leftAction: (
-      <Button variant="ghost" size="sm" onPress={() => console.log('Back pressed')}>
-        <Icon name="arrow-back" size={20} />
-      </Button>
-    ),
-    rightAction: (
-      <Button variant="ghost" size="sm" onPress={() => console.log('Edit pressed')}>
-        <Icon name="edit" size={20} />
-      </Button>
-    ),
+    leftAction: <button onClick={() => console.log('Back pressed')}>←</button>,
+    rightAction: <button onClick={() => console.log('Edit pressed')}>✎</button>,
     showBorder: true,
   },
 };
@@ -97,31 +113,15 @@ export const CustomBackground: Story = {
     title: 'Custom Header',
     backgroundColor: '#6366f1',
     statusBarStyle: 'light-content',
-    leftAction: (
-      <Button variant="ghost" size="sm" onPress={() => console.log('Back pressed')}>
-        <Icon name="arrow-back" size={20} color="#ffffff" />
-      </Button>
-    ),
-    rightAction: (
-      <Button variant="ghost" size="sm" onPress={() => console.log('Share pressed')}>
-        <Icon name="share" size={20} color="#ffffff" />
-      </Button>
-    ),
+    leftAction: <button style={{ color: '#fff' }}>←</button>,
+    rightAction: <button style={{ color: '#fff' }}>⇪</button>,
   },
 };
 
 export const LongTitle: Story = {
   args: {
     title: 'This is a very long header title that might wrap or truncate',
-    leftAction: (
-      <Button variant="ghost" size="sm">
-        <Icon name="arrow-back" size={20} />
-      </Button>
-    ),
-    rightAction: (
-      <Button variant="ghost" size="sm">
-        <Icon name="more-vertical" size={20} />
-      </Button>
-    ),
+    leftAction: <button>←</button>,
+    rightAction: <button>⋮</button>,
   },
 };

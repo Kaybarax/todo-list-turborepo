@@ -1,11 +1,93 @@
 import { type Meta, type StoryObj } from '@storybook/react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-import { TabBar } from '../../lib/components/TabBar/TabBar';
+type WebTab = {
+  label?: string;
+  icon?: string;
+  badge?: { count?: number; dot?: boolean };
+};
 
-const meta: Meta<typeof TabBar> = {
+interface WebTabBarProps {
+  tabs: WebTab[];
+  activeIndex: number;
+  onTabPress?: (index: number) => void;
+}
+
+const WebTabBar: React.FC<WebTabBarProps> = ({ tabs, activeIndex, onTabPress }) => {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 64,
+        background: '#FFFFFF',
+        borderTop: '1px solid #E5E7EB',
+        display: 'flex',
+      }}
+    >
+      {tabs.map((t, i) => {
+        const active = i === activeIndex;
+        return (
+          <button
+            key={i}
+            onClick={() => onTabPress?.(i)}
+            style={{
+              flex: 1,
+              border: 'none',
+              background: 'transparent',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: active ? '#007AFF' : '#6B7280',
+              position: 'relative',
+              fontFamily: 'system-ui, -apple-system, sans-serif',
+              cursor: 'pointer',
+            }}
+          >
+            <div style={{ fontSize: 18 }}>{t.icon || '•'}</div>
+            {t.label && <div style={{ fontSize: 12, marginTop: 4 }}>{t.label}</div>}
+            {t.badge && (t.badge.dot || t.badge.count) && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 8,
+                  right: '20%',
+                  background: '#EF4444',
+                  color: 'white',
+                  borderRadius: 9999,
+                  padding: t.badge.dot ? 4 : '2px 6px',
+                  fontSize: 10,
+                  lineHeight: 1,
+                }}
+              >
+                {t.badge.dot ? '' : t.badge.count}
+              </div>
+            )}
+            {active && (
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  height: 3,
+                  width: 32,
+                  background: '#007AFF',
+                  borderRadius: 2,
+                }}
+              />
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
+const meta: Meta<typeof WebTabBar> = {
   title: 'Components/TabBar',
-  component: TabBar,
+  component: WebTabBar,
   parameters: {
     layout: 'fullscreen',
     docs: {
@@ -46,7 +128,7 @@ const TabBarWrapper = ({ tabs, ...args }: any) => {
           <p>This is the content for the {tabs[activeIndex]?.label} tab.</p>
         </div>
       </div>
-      <TabBar
+      <WebTabBar
         {...args}
         tabs={tabs}
         activeIndex={activeIndex}

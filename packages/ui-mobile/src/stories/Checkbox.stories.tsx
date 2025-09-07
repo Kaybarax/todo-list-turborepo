@@ -1,12 +1,57 @@
-import { type Meta, type StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { type Meta, type StoryObj } from '@storybook/react';
 
-import { Checkbox } from '../../lib/components/Checkbox/Checkbox';
+type Status = 'basic' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
+
+interface WebCheckboxProps {
+  checked?: boolean;
+  disabled?: boolean;
+  indeterminate?: boolean;
+  label?: string;
+  status?: Status;
+  onValueChange?: (checked: boolean) => void;
+}
+
+const colorByStatus: Record<Status, string> = {
+  basic: '#CECED2',
+  primary: '#007AFF',
+  success: '#34C759',
+  info: '#5856D6',
+  warning: '#FF9500',
+  danger: '#FF3B30',
+};
+
+const WebCheckbox: React.FC<WebCheckboxProps> = ({
+  checked = false,
+  disabled = false,
+  indeterminate = false,
+  label,
+  status = 'primary',
+  onValueChange,
+}) => {
+  const borderColor = colorByStatus[status] || '#CECED2';
+  return (
+    <label
+      style={{ display: 'inline-flex', alignItems: 'center', gap: 8, cursor: disabled ? 'not-allowed' : 'pointer' }}
+    >
+      <input
+        type="checkbox"
+        checked={checked}
+        disabled={disabled}
+        onChange={e => onValueChange?.(e.target.checked)}
+        ref={el => {
+          if (el) el.indeterminate = indeterminate;
+        }}
+        style={{ width: 18, height: 18, accentColor: borderColor }}
+      />
+      {label && <span style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>{label}</span>}
+    </label>
+  );
+};
 
 const meta = {
   title: 'Components/Checkbox',
-  component: Checkbox,
+  component: WebCheckbox,
   parameters: {
     layout: 'centered',
     docs: {
@@ -40,7 +85,7 @@ const meta = {
     },
     onValueChange: { action: 'changed' },
   },
-} satisfies Meta<typeof Checkbox>;
+} satisfies Meta<typeof WebCheckbox>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -101,14 +146,14 @@ export const AllStatuses: Story = {
     onValueChange: () => {},
   },
   render: () => (
-    <View style={styles.container}>
-      <Checkbox checked={false} label="Basic" status="basic" onValueChange={() => {}} />
-      <Checkbox checked={true} label="Primary" status="primary" onValueChange={() => {}} />
-      <Checkbox checked={true} label="Success" status="success" onValueChange={() => {}} />
-      <Checkbox checked={true} label="Info" status="info" onValueChange={() => {}} />
-      <Checkbox checked={true} label="Warning" status="warning" onValueChange={() => {}} />
-      <Checkbox checked={true} label="Danger" status="danger" onValueChange={() => {}} />
-    </View>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'flex-start' }}>
+      <WebCheckbox checked={false} label="Basic" status="basic" onValueChange={() => {}} />
+      <WebCheckbox checked={true} label="Primary" status="primary" onValueChange={() => {}} />
+      <WebCheckbox checked={true} label="Success" status="success" onValueChange={() => {}} />
+      <WebCheckbox checked={true} label="Info" status="info" onValueChange={() => {}} />
+      <WebCheckbox checked={true} label="Warning" status="warning" onValueChange={() => {}} />
+      <WebCheckbox checked={true} label="Danger" status="danger" onValueChange={() => {}} />
+    </div>
   ),
   parameters: {
     controls: { disable: true },
@@ -121,8 +166,8 @@ const InteractiveCheckboxDemo = () => {
   const [disabled, setDisabled] = useState(false);
 
   return (
-    <View style={styles.interactiveContainer}>
-      <Checkbox
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24, minWidth: 200 }}>
+      <WebCheckbox
         checked={checked}
         indeterminate={indeterminate}
         disabled={disabled}
@@ -130,11 +175,11 @@ const InteractiveCheckboxDemo = () => {
         onValueChange={setChecked}
       />
 
-      <View style={styles.controls}>
-        <Checkbox checked={indeterminate} label="Indeterminate" onValueChange={setIndeterminate} />
-        <Checkbox checked={disabled} label="Disabled" onValueChange={setDisabled} />
-      </View>
-    </View>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <WebCheckbox checked={indeterminate} label="Indeterminate" onValueChange={setIndeterminate} />
+        <WebCheckbox checked={disabled} label="Disabled" onValueChange={setDisabled} />
+      </div>
+    </div>
   );
 };
 
@@ -149,19 +194,4 @@ export const Interactive: Story = {
   },
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    gap: 16,
-    alignItems: 'flex-start',
-  },
-  interactiveContainer: {
-    flexDirection: 'column',
-    gap: 24,
-    minWidth: 200,
-  },
-  controls: {
-    flexDirection: 'column',
-    gap: 12,
-  },
-});
+// Inline styles used for simplicity; no React Native dependency

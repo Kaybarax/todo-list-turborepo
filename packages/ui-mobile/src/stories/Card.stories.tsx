@@ -1,13 +1,91 @@
+import React from 'react';
 import { type Meta, type StoryObj } from '@storybook/react';
-import { View, StyleSheet } from 'react-native';
 
-import { Card } from '../../lib/components/Card/Card';
-import { Button } from '../../lib/components/Button';
-import { Text } from '../../lib/components/Text';
+type CardVariant = 'elevated' | 'outlined' | 'filled';
 
-const meta: Meta<typeof Card> = {
+interface WebCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: CardVariant;
+  onPress?: () => void;
+}
+
+const baseCardStyle: React.CSSProperties = {
+  borderRadius: 12,
+  padding: 16,
+  width: 320,
+  background: '#FFFFFF',
+  color: '#1C1C1E',
+  border: '1px solid transparent',
+  boxSizing: 'border-box',
+  fontFamily: 'system-ui, -apple-system, sans-serif',
+};
+
+const cardVariantStyle: Record<CardVariant, React.CSSProperties> = {
+  elevated: { boxShadow: '0 4px 12px rgba(0,0,0,0.08)', borderColor: '#00000000' },
+  outlined: { borderColor: '#CECED2' },
+  filled: { background: '#F8F9FB' },
+};
+
+const sectionTitleStyle: React.CSSProperties = { fontWeight: 600, fontSize: 18, margin: 0 };
+const sectionDescStyle: React.CSSProperties = { color: '#6B7280', margin: '4px 0 0 0' };
+const footerStyle: React.CSSProperties = { display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 12 };
+
+const WebCard: React.FC<WebCardProps> & {
+  Header: React.FC<React.PropsWithChildren<{}>>;
+  Title: React.FC<React.PropsWithChildren<{}>>;
+  Description: React.FC<React.PropsWithChildren<{}>>;
+  Content: React.FC<React.PropsWithChildren<{}>>;
+  Footer: React.FC<React.PropsWithChildren<{}>>;
+} = ({ variant = 'elevated', onPress, style, children, ...rest }) => {
+  const styleMerged: React.CSSProperties = {
+    ...baseCardStyle,
+    ...cardVariantStyle[variant],
+    ...(style as React.CSSProperties),
+    cursor: onPress ? 'pointer' : undefined,
+  };
+  return (
+    <div style={styleMerged} onClick={onPress} {...rest}>
+      {children}
+    </div>
+  );
+};
+
+WebCard.Header = ({ children }) => <div style={{ marginBottom: 12 }}>{children}</div>;
+WebCard.Title = ({ children }) => <h3 style={sectionTitleStyle}>{children}</h3>;
+WebCard.Description = ({ children }) => <p style={sectionDescStyle}>{children}</p>;
+WebCard.Content = ({ children }) => <div>{children}</div>;
+WebCard.Footer = ({ children }) => <div style={footerStyle}>{children}</div>;
+
+const WebButton: React.FC<React.PropsWithChildren<{ variant?: 'primary' | 'outline'; onPress?: () => void }>> = ({
+  children,
+  variant = 'primary',
+  onPress,
+}) => {
+  const style: React.CSSProperties =
+    variant === 'outline'
+      ? {
+          border: '1px solid #CECED2',
+          background: '#FFFFFF',
+          color: '#1C1C1E',
+          padding: '8px 12px',
+          borderRadius: 8,
+        }
+      : {
+          border: '1px solid #007AFF',
+          background: '#007AFF',
+          color: '#FFFFFF',
+          padding: '8px 12px',
+          borderRadius: 8,
+        };
+  return (
+    <button style={style} onClick={onPress}>
+      {children}
+    </button>
+  );
+};
+
+const meta: Meta<typeof WebCard> = {
   title: 'Components/Card',
-  component: Card,
+  component: WebCard,
   parameters: {
     layout: 'centered',
     docs: {
@@ -35,13 +113,11 @@ export const Elevated: Story = {
     variant: 'elevated',
     children: (
       <>
-        <Card.Header>
-          <Card.Title>Elevated Card</Card.Title>
-          <Card.Description>This is an elevated card with shadow</Card.Description>
-        </Card.Header>
-        <Card.Content>
-          <Text>Card content goes here. This variant has a subtle shadow for depth.</Text>
-        </Card.Content>
+        <WebCard.Header>
+          <WebCard.Title>Elevated Card</WebCard.Title>
+          <WebCard.Description>This is an elevated card with shadow</WebCard.Description>
+        </WebCard.Header>
+        <WebCard.Content>Card content goes here. This variant has a subtle shadow for depth.</WebCard.Content>
       </>
     ),
   },
@@ -52,13 +128,11 @@ export const Outlined: Story = {
     variant: 'outlined',
     children: (
       <>
-        <Card.Header>
-          <Card.Title>Outlined Card</Card.Title>
-          <Card.Description>This is an outlined card with border</Card.Description>
-        </Card.Header>
-        <Card.Content>
-          <Text>Card content goes here. This variant has a border instead of shadow.</Text>
-        </Card.Content>
+        <WebCard.Header>
+          <WebCard.Title>Outlined Card</WebCard.Title>
+          <WebCard.Description>This is an outlined card with border</WebCard.Description>
+        </WebCard.Header>
+        <WebCard.Content>Card content goes here. This variant has a border instead of shadow.</WebCard.Content>
       </>
     ),
   },
@@ -69,13 +143,11 @@ export const Filled: Story = {
     variant: 'filled',
     children: (
       <>
-        <Card.Header>
-          <Card.Title>Filled Card</Card.Title>
-          <Card.Description>This is a filled card with background</Card.Description>
-        </Card.Header>
-        <Card.Content>
-          <Text>Card content goes here. This variant has a filled background.</Text>
-        </Card.Content>
+        <WebCard.Header>
+          <WebCard.Title>Filled Card</WebCard.Title>
+          <WebCard.Description>This is a filled card with background</WebCard.Description>
+        </WebCard.Header>
+        <WebCard.Content>Card content goes here. This variant has a filled background.</WebCard.Content>
       </>
     ),
   },
@@ -86,21 +158,17 @@ export const WithFooter: Story = {
     variant: 'elevated',
     children: (
       <>
-        <Card.Header>
-          <Card.Title>Card with Footer</Card.Title>
-          <Card.Description>This card includes footer actions</Card.Description>
-        </Card.Header>
-        <Card.Content>
-          <Text>Main content of the card goes here.</Text>
-        </Card.Content>
-        <Card.Footer>
-          <Button variant="outline" size="sm" onPress={() => {}}>
+        <WebCard.Header>
+          <WebCard.Title>Card with Footer</WebCard.Title>
+          <WebCard.Description>This card includes footer actions</WebCard.Description>
+        </WebCard.Header>
+        <WebCard.Content>Main content of the card goes here.</WebCard.Content>
+        <WebCard.Footer>
+          <WebButton variant="outline" onPress={() => {}}>
             Cancel
-          </Button>
-          <Button variant="primary" size="sm" onPress={() => {}}>
-            Save
-          </Button>
-        </Card.Footer>
+          </WebButton>
+          <WebButton onPress={() => {}}>Save</WebButton>
+        </WebCard.Footer>
       </>
     ),
   },
@@ -112,13 +180,11 @@ export const Interactive: Story = {
     onPress: () => console.log('Card pressed'),
     children: (
       <>
-        <Card.Header>
-          <Card.Title>Interactive Card</Card.Title>
-          <Card.Description>This card is pressable</Card.Description>
-        </Card.Header>
-        <Card.Content>
-          <Text>Click anywhere on this card to trigger the onPress action.</Text>
-        </Card.Content>
+        <WebCard.Header>
+          <WebCard.Title>Interactive Card</WebCard.Title>
+          <WebCard.Description>This card is pressable</WebCard.Description>
+        </WebCard.Header>
+        <WebCard.Content>Click anywhere on this card to trigger the onPress action.</WebCard.Content>
       </>
     ),
   },
@@ -127,58 +193,40 @@ export const Interactive: Story = {
 export const MinimalContent: Story = {
   args: {
     variant: 'elevated',
-    children: (
-      <Card.Content>
-        <Text>Simple card with just content</Text>
-      </Card.Content>
-    ),
+    children: <WebCard.Content>Simple card with just content</WebCard.Content>,
   },
 };
 
 export const AllVariants: Story = {
   render: () => (
-    <View style={styles.container}>
-      <Card variant="elevated">
-        <Card.Header>
-          <Card.Title>Elevated Card</Card.Title>
-          <Card.Description>With shadow effect</Card.Description>
-        </Card.Header>
-        <Card.Content>
-          <Text>Elevated variant content</Text>
-        </Card.Content>
-      </Card>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24, width: 320 }}>
+      <WebCard variant="elevated">
+        <WebCard.Header>
+          <WebCard.Title>Elevated Card</WebCard.Title>
+          <WebCard.Description>With shadow effect</WebCard.Description>
+        </WebCard.Header>
+        <WebCard.Content>Elevated variant content</WebCard.Content>
+      </WebCard>
 
-      <Card variant="outlined">
-        <Card.Header>
-          <Card.Title>Outlined Card</Card.Title>
-          <Card.Description>With border styling</Card.Description>
-        </Card.Header>
-        <Card.Content>
-          <Text>Outlined variant content</Text>
-        </Card.Content>
-      </Card>
+      <WebCard variant="outlined">
+        <WebCard.Header>
+          <WebCard.Title>Outlined Card</WebCard.Title>
+          <WebCard.Description>With border styling</WebCard.Description>
+        </WebCard.Header>
+        <WebCard.Content>Outlined variant content</WebCard.Content>
+      </WebCard>
 
-      <Card variant="filled">
-        <Card.Header>
-          <Card.Title>Filled Card</Card.Title>
-          <Card.Description>With background fill</Card.Description>
-        </Card.Header>
-        <Card.Content>
-          <Text>Filled variant content</Text>
-        </Card.Content>
-      </Card>
-    </View>
+      <WebCard variant="filled">
+        <WebCard.Header>
+          <WebCard.Title>Filled Card</WebCard.Title>
+          <WebCard.Description>With background fill</WebCard.Description>
+        </WebCard.Header>
+        <WebCard.Content>Filled variant content</WebCard.Content>
+      </WebCard>
+    </div>
   ),
   parameters: {
     controls: { disable: true },
     layout: 'padded',
   },
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    gap: 24,
-    width: 300,
-  },
-});
