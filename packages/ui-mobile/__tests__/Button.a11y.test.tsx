@@ -1,21 +1,11 @@
 import { render, fireEvent, screen } from '@testing-library/react-native';
 import React from 'react';
-import { AccessibilityInfo } from 'react-native';
 
 import { Button } from '../lib/components/Button/Button';
 import { ThemeProvider } from '../lib/theme';
 import { validateTouchTargetSize, validateContrastRatio } from '../lib/utils/accessibility';
 
-// Mock React Native AccessibilityInfo
-jest.mock('react-native', () => ({
-  ...jest.requireActual('react-native'),
-  AccessibilityInfo: {
-    announceForAccessibility: jest.fn(),
-    isScreenReaderEnabled: jest.fn(() => Promise.resolve(false)),
-  },
-}));
-
-const mockAccessibilityInfo = AccessibilityInfo as jest.Mocked<typeof AccessibilityInfo>;
+// Using global react-native mock from setup; no per-test re-mock to avoid ESM parse issues
 
 const renderWithTheme = (component: React.ReactElement) => {
   return render(<ThemeProvider>{component}</ThemeProvider>);
@@ -88,7 +78,7 @@ describe('Button Accessibility Tests', () => {
       );
 
       // Small buttons should still meet 44x44 minimum
-      expect(validateTouchTargetSize(44, 44)).toBe(true);
+      expect(validateTouchTargetSize(44, 44).isValid).toBe(true);
     });
 
     it('provides adequate touch area for all sizes', () => {
@@ -105,7 +95,7 @@ describe('Button Accessibility Tests', () => {
         expect(button).toBeTruthy();
 
         // All button sizes should be accessible
-        expect(validateTouchTargetSize(44, 44)).toBe(true);
+        expect(validateTouchTargetSize(44, 44).isValid).toBe(true);
         unmount();
       });
     });

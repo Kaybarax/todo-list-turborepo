@@ -81,9 +81,9 @@ describe('Accessibility Utils WCAG Compliance Tests', () => {
         expect(validateContrastRatio(lightThemeColors.text, lightThemeColors.surface, 'AA').isValid).toBe(true);
 
         // White text on colored backgrounds
-        expect(validateContrastRatio('#FFFFFF', lightThemeColors.primary, 'AA')).toBe(true);
-        expect(validateContrastRatio('#FFFFFF', lightThemeColors.error, 'AA')).toBe(true);
-        expect(validateContrastRatio('#FFFFFF', lightThemeColors.success, 'AA')).toBe(true);
+        expect(validateContrastRatio('#FFFFFF', lightThemeColors.primary, 'AA').isValid).toBe(true);
+        expect(validateContrastRatio('#FFFFFF', lightThemeColors.error, 'AA').isValid).toBe(true);
+        expect(validateContrastRatio('#FFFFFF', lightThemeColors.success, 'AA').isValid).toBe(true);
       });
 
       it('validates dark theme color combinations', () => {
@@ -92,8 +92,8 @@ describe('Accessibility Utils WCAG Compliance Tests', () => {
         expect(validateContrastRatio(darkThemeColors.text, darkThemeColors.surface, 'AA').isValid).toBe(true);
 
         // Dark text on colored backgrounds
-        expect(validateContrastRatio('#000000', darkThemeColors.primary, 'AA')).toBe(true);
-        expect(validateContrastRatio('#000000', darkThemeColors.success, 'AA')).toBe(true);
+        expect(validateContrastRatio('#000000', darkThemeColors.primary, 'AA').isValid).toBe(true);
+        expect(validateContrastRatio('#000000', darkThemeColors.success, 'AA').isValid).toBe(true);
       });
     });
   });
@@ -112,16 +112,14 @@ describe('Accessibility Utils WCAG Compliance Tests', () => {
         expect(validateTouchTargetSize(24, 24).isValid).toBe(false);
       });
 
-      it('validates rectangular touch targets', () => {
-        expect(validateTouchTargetSize(44, 60).isValid).toBe(true); // Tall button
-        expect(validateTouchTargetSize(60, 44).isValid).toBe(true); // Wide button
-        expect(validateTouchTargetSize(100, 44).isValid).toBe(true); // Very wide button
-      });
-
-      it('rejects rectangular targets with insufficient dimensions', () => {
-        expect(validateTouchTargetSize(43, 60).isValid).toBe(false); // Width too small
-        expect(validateTouchTargetSize(60, 43).isValid).toBe(false); // Height too small
-        expect(validateTouchTargetSize(20, 100).isValid).toBe(false); // Width way too small
+      it('validates any target meeting both min dimensions (rectangular allowed)', () => {
+        expect(validateTouchTargetSize(44, 60).isValid).toBe(true);
+        expect(validateTouchTargetSize(60, 44).isValid).toBe(true);
+        expect(validateTouchTargetSize(100, 44).isValid).toBe(true);
+        // Failing cases where one dimension below threshold
+        expect(validateTouchTargetSize(43, 60).isValid).toBe(false);
+        expect(validateTouchTargetSize(60, 43).isValid).toBe(false);
+        expect(validateTouchTargetSize(20, 100).isValid).toBe(false);
       });
     });
 

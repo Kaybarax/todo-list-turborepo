@@ -11,6 +11,15 @@ import {
   createAccessibilityProps,
 } from '../lib/utils/accessibility';
 
+// Ensure PixelRatio exists for any utilities indirectly invoking it
+jest.mock('react-native', () => ({
+  PixelRatio: {
+    get: jest.fn(() => 2),
+    getFontScale: jest.fn(() => 1),
+    roundToNearestPixel: jest.fn(v => v),
+  },
+}));
+
 describe('Accessibility Utils', () => {
   describe('generateAccessibilityLabel', () => {
     it('generates label from text content', () => {
@@ -81,9 +90,9 @@ describe('Accessibility Utils', () => {
       expect(validateTouchTargetSize(30, 30).isValid).toBe(false);
     });
 
-    it('handles rectangular targets', () => {
-      expect(validateTouchTargetSize(60, 40).isValid).toBe(true);
-      expect(validateTouchTargetSize(40, 60).isValid).toBe(true);
+    it('handles rectangular targets (requires both dimensions to meet minimum)', () => {
+      expect(validateTouchTargetSize(60, 40).isValid).toBe(false);
+      expect(validateTouchTargetSize(40, 60).isValid).toBe(false);
       expect(validateTouchTargetSize(20, 60).isValid).toBe(false);
     });
   });

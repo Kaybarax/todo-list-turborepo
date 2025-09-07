@@ -9,18 +9,34 @@ const TextInput = 'TextInput';
 
 export const ApplicationProvider = ({ children }) => children;
 export const IconRegistry = () => null;
-export const Button = ({ children, onPress, testID, accessibilityLabel, disabled, loading, ...props }) => {
+export const Button = ({
+  children,
+  onPress,
+  testID,
+  accessibilityLabel,
+  disabled,
+  loading,
+  accessibilityRole,
+  ...props
+}) => {
   const handlePress = disabled || loading ? () => {} : onPress;
   return React.createElement(
     TouchableOpacity,
-    { onPress: handlePress, testID, accessibilityLabel, disabled: disabled || loading, ...props },
-    loading ? React.createElement(RNText, null, 'Loading...') : React.createElement(RNText, null, children),
+    { onPress: handlePress, testID, accessibilityLabel, disabled: disabled || loading, accessibilityRole, ...props },
+    loading
+      ? React.createElement(
+          View,
+          { testID: 'button-loading-indicator' },
+          React.createElement(RNText, null, 'Loading...'),
+        )
+      : React.createElement(RNText, null, children),
   );
 };
-export const Text = ({ children, ...props }) => React.createElement(RNText, props, children);
+export const Text = ({ children, ...props }) => React.createElement(RNText, { ...props }, children);
 export const Input = props => React.createElement(TextInput, props);
 export const Layout = ({ children, ...props }) => React.createElement(View, props, children);
-export const Card = ({ children, ...props }) => React.createElement(View, props, children);
+export const Card = ({ children, accessibilityRole, ...props }) =>
+  React.createElement(View, { accessibilityRole, ...props }, children);
 export const List = ({ children, ...props }) => React.createElement(View, props, children);
 export const ListItem = ({ children, ...props }) => React.createElement(View, props, children);
 export const Modal = ({ children, ...props }) => React.createElement(View, props, children);

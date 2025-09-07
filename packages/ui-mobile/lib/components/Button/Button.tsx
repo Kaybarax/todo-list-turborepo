@@ -100,7 +100,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   // Render loading indicator
   const LoadingIndicator = (props: any) => (
-    <View style={[props.style, styles.loadingContainer]}>
+    <View style={[props.style, styles.loadingContainer]} testID="button-loading-indicator">
       <Spinner size="small" />
     </View>
   );
@@ -110,6 +110,8 @@ export const Button: React.FC<ButtonProps> = ({
 
   // Custom styles for fullWidth and link variant
   const customStyles = [fullWidth && styles.fullWidth, variant === 'link' && styles.linkButton, style] as any;
+
+  const accessibilityState = { disabled: disabled || loading, busy: !!loading } as const;
 
   return (
     <UIKittenButton
@@ -127,8 +129,16 @@ export const Button: React.FC<ButtonProps> = ({
       testID={testID}
       accessibilityLabel={accessibilityLabel}
       accessibilityHint={accessibilityHint}
+      accessibilityRole="button"
+      accessible
+      accessibilityState={accessibilityState}
       {...(props as Partial<UIKittenButtonProps>)}
     >
+      {loading && !icon && (
+        <View style={styles.loadingContainer} testID="button-loading-indicator">
+          <Spinner size="small" />
+        </View>
+      )}
       {children}
     </UIKittenButton>
   );

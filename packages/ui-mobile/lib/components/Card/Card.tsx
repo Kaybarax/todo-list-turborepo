@@ -110,11 +110,19 @@ const CardBase: React.FC<CardProps> = ({
       onPress={onPress}
       style={customStyles}
       testID={testID}
+      accessibilityRole={onPress ? 'button' : undefined}
       {...props}
     >
       {children}
     </UIKittenCard>
   );
+};
+
+const wrapIfString = (children: React.ReactNode) => {
+  if (typeof children === 'string' || typeof children === 'number') {
+    return <Text variant="body2">{children}</Text>;
+  }
+  return children;
 };
 
 const CardHeader: React.FC<CardHeaderProps> = ({ style, children, testID }) => {
@@ -132,7 +140,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({ style, children, testID }) => {
 
   return (
     <View style={headerStyles} testID={testID}>
-      {children}
+      {wrapIfString(children)}
     </View>
   );
 };
@@ -179,7 +187,7 @@ const CardContent: React.FC<CardContentProps> = ({ style, children, testID }) =>
 
   return (
     <View style={contentStyles} testID={testID}>
-      {children}
+      {wrapIfString(children)}
     </View>
   );
 };
@@ -216,7 +224,7 @@ const CardFooter: React.FC<CardFooterProps> = ({ style, children, alignment = 'r
 
   return (
     <View style={footerStyles} testID={testID}>
-      {children}
+      {wrapIfString(children)}
     </View>
   );
 };

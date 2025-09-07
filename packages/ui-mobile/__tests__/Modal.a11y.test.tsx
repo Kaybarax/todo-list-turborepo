@@ -1,20 +1,10 @@
 import { render, fireEvent, screen, waitFor } from '@testing-library/react-native';
 import React from 'react';
-import { AccessibilityInfo } from 'react-native';
 
 import { Modal } from '../lib/components/Modal/Modal';
 import { ThemeProvider } from '../lib/theme';
 
-// Mock React Native AccessibilityInfo
-jest.mock('react-native', () => ({
-  ...jest.requireActual('react-native'),
-  AccessibilityInfo: {
-    announceForAccessibility: jest.fn(),
-    isScreenReaderEnabled: jest.fn(() => Promise.resolve(false)),
-  },
-}));
-
-const mockAccessibilityInfo = AccessibilityInfo as jest.Mocked<typeof AccessibilityInfo>;
+// Use global react-native mock; remove spread actual to prevent ESM parsing issues
 
 const renderWithTheme = (component: React.ReactElement) => {
   return render(<ThemeProvider>{component}</ThemeProvider>);

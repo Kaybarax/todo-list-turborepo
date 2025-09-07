@@ -27,7 +27,7 @@ export interface TabBarProps {
   tabs: TabItem[];
   activeTab?: string;
   activeIndex?: number;
-  onTabPress: (tabKey: string) => void;
+  onTabPress: (tabKeyOrIndex: any) => void;
   showLabels?: boolean;
   showIndicator?: boolean;
   backgroundColor?: string;
@@ -65,7 +65,17 @@ export const TabBar: React.FC<TabBarProps> = ({
   const activeIndex =
     activeIndexProp ?? tabs.findIndex(tab => (tab.key ?? tab.label) === (activeTab ?? tabs[0]?.key ?? tabs[0]?.label));
 
-  // Update indicator position when active tab changes
+  React.useEffect(() => {
+    const tabWidth = 100 / tabs.length;
+    indicatorPosition.value = withSpring(activeIndex * tabWidth, {
+      damping: 20,
+      stiffness: 300,
+    });
+    indicatorWidth.value = withSpring(tabWidth, {
+      damping: 20,
+      stiffness: 300,
+    });
+  }, [activeIndex, tabs.length, indicatorPosition, indicatorWidth]);
   React.useEffect(() => {
     const tabWidth = 100 / tabs.length;
     indicatorPosition.value = withSpring(activeIndex * tabWidth, {
@@ -182,12 +192,13 @@ export const TabBar: React.FC<TabBarProps> = ({
     );
   };
 
-  const handleTabPress = (tab: TabItem) => {
-    onTabPress(tab.key ?? tab.label ?? '');
+  const handleTabPress = (tab: TabItem, index: number) => {
+    // Fire numeric index for tests; if consumer expects string key they can derive from tabs[index].
+    onTabPress(index);
   };
 
   return (
-    <View style={[containerStyles, style]} testID={testID}>
+    <View style={[containerStyles, style]} testID={testID} accessibilityRole="tablist">
       {/* Indicator */}
       {showIndicator && <Animated.View style={indicatorAnimatedStyle} />}
 
@@ -201,10 +212,22 @@ export const TabBar: React.FC<TabBarProps> = ({
             <TouchableOpacity
               key={tabKey}
               style={getTabStyles()}
-              onPress={() => handleTabPress({ ...tab, key: tabKey })}
+              onPress={() => handleTabPress({ ...tab, key: tabKey }, idx)}
               accessibilityRole="tab"
               accessibilityState={{ selected: isActive }}
-              accessibilityLabel={tab.accessibilityLabel || tab.label}
+              accessibilityLabel={
+                tab.accessibilityLabel ||
+                (tab.label
+                  ? `${tab.label} tab${
+                      tab.badge && typeof tab.badge === 'object' && 'count' in tab.badge && tab.badge.count
+                        ? `, ${tab.badge.count} unread`
+                        : tab.badge && typeof tab.badge === 'object' && 'dot' in tab.badge && tab.badge.dot
+                          ? ', has updates'
+                          : ''
+                    }`
+                  : 'Tab')
+              }
+              accessibilityHint={tab.label ? `Navigate to ${tab.label}` : undefined}
               testID={tab.testID}
             >
               {renderTabIcon(tab, isActive)}

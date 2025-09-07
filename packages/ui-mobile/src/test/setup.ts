@@ -33,6 +33,12 @@ jest.mock('react-native', () => ({
     }),
   },
 
+  // Mock Appearance
+  Appearance: {
+    getColorScheme: jest.fn(() => 'light'),
+    addChangeListener: jest.fn(() => ({ remove: jest.fn() })),
+  },
+
   // Mock Dimensions
   Dimensions: {
     get: jest.fn().mockReturnValue({ width: 375, height: 812 }),
@@ -75,13 +81,20 @@ jest.mock('react-native', () => ({
   },
 }));
 
+// Mock AsyncStorage
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  getItem: jest.fn(async () => null),
+  setItem: jest.fn(async () => undefined),
+  removeItem: jest.fn(async () => undefined),
+  clear: jest.fn(async () => undefined),
+}));
+
 // Mock react-native-vector-icons
 jest.mock('react-native-vector-icons/MaterialIcons', () => 'MaterialIcons');
 jest.mock('react-native-vector-icons/FontAwesome', () => 'FontAwesome');
 jest.mock('react-native-vector-icons/Ionicons', () => 'Ionicons');
 
-// Mock reanimated for Jest
-jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
+// react-native-reanimated is mapped via moduleNameMapper to a lightweight mock
 
 // Mock safe area context
 jest.mock('react-native-safe-area-context', () => ({

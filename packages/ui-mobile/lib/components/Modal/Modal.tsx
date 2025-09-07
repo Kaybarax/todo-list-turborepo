@@ -68,7 +68,10 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   const { theme, evaTheme } = useEnhancedTheme();
   const insets = useSafeAreaInsets();
-  const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+  // Safely obtain screen dimensions; test environment mocks may return undefined
+  const _windowDims: any = (Dimensions as any)?.get?.('window');
+  const screenWidth: number = _windowDims?.width ?? 375; // fallback typical phone width
+  const screenHeight: number = _windowDims?.height ?? 667; // fallback typical phone height
 
   // Animation values
   const backdropOpacity = useSharedValue(0);

@@ -11,6 +11,10 @@ jest.mock('react-native', () => ({
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
   },
+  PixelRatio: {
+    get: jest.fn(() => 2),
+    getFontScale: jest.fn(() => 1),
+  },
 }));
 
 const mockDimensions = Dimensions as jest.Mocked<typeof Dimensions>;

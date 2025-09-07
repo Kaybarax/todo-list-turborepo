@@ -38,7 +38,8 @@ describe('useEnhancedTheme Hook', () => {
   });
 
   it('handles theme persistence', async () => {
-    (AsyncStorage.getItem as jest.Mock).mockResolvedValue('dark');
+    // First call (enhanced key) returns null, second (legacy key) returns dark
+    (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(null).mockResolvedValueOnce('dark');
 
     const { result } = renderHook(() => useEnhancedTheme(), { wrapper });
 
@@ -55,6 +56,7 @@ describe('useEnhancedTheme Hook', () => {
 
     await act(async () => {
       result.current.toggleTheme();
+      await new Promise(r => setTimeout(r, 0));
     });
 
     expect(AsyncStorage.setItem).toHaveBeenCalledWith('theme-mode', 'dark');

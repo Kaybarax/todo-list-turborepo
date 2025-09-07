@@ -1,21 +1,11 @@
 import { render, fireEvent, screen } from '@testing-library/react-native';
 import React from 'react';
-import { AccessibilityInfo } from 'react-native';
 
 import { TabBar } from '../lib/components/TabBar/TabBar';
 import { ThemeProvider } from '../lib/theme';
 import { validateTouchTargetSize } from '../lib/utils/accessibility';
 
-// Mock React Native AccessibilityInfo
-jest.mock('react-native', () => ({
-  ...jest.requireActual('react-native'),
-  AccessibilityInfo: {
-    announceForAccessibility: jest.fn(),
-    isScreenReaderEnabled: jest.fn(() => Promise.resolve(false)),
-  },
-}));
-
-const mockAccessibilityInfo = AccessibilityInfo as jest.Mocked<typeof AccessibilityInfo>;
+// Rely on global react-native mock; avoid re-mocking with spread actual (ESM parse issues)
 
 const renderWithTheme = (component: React.ReactElement) => {
   return render(<ThemeProvider>{component}</ThemeProvider>);
@@ -75,7 +65,7 @@ describe('TabBar Accessibility Tests', () => {
       renderWithTheme(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
 
       // Each tab should meet minimum 44x44 touch target
-      expect(validateTouchTargetSize(44, 44)).toBe(true);
+      expect(validateTouchTargetSize(44, 44).isValid).toBe(true);
     });
 
     it('maintains adequate spacing between tabs', () => {
@@ -90,7 +80,7 @@ describe('TabBar Accessibility Tests', () => {
       renderWithTheme(<TabBar tabs={fiveTabs} activeIndex={0} onTabPress={() => {}} testID="five-tabs" />);
 
       // Even with 5 tabs, touch targets should be adequate
-      expect(validateTouchTargetSize(44, 44)).toBe(true);
+      expect(validateTouchTargetSize(44, 44).isValid).toBe(true);
     });
   });
 
