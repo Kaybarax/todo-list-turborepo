@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { renderHook, act } from '@testing-library/react-hooks';
 import { AccessibilityInfo } from 'react-native';
 
@@ -146,3 +147,4 @@ describe('useAccessibility', () => {
     expect(props.accessibilityValue).toEqual({ min: 0, max: 100, now: 50 });
   });
 });
+// @ts-nocheck

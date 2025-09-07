@@ -22,7 +22,8 @@ export interface UsePlatformReturn {
   isTV: boolean;
   isTesting: boolean;
   getPlatformValue: <T>(values: T | { ios?: T; android?: T; web?: T; default?: T }) => T;
-  select: <T>(specifics: { ios?: T; android?: T; web?: T; default?: T }) => T | undefined;
+  select: <T>(specifics: T | { ios?: T; android?: T; web?: T; default?: T }) => T | undefined;
+  constants: any;
 }
 
 /**
@@ -57,8 +58,11 @@ export const usePlatform = (_options: UsePlatformOptions = {}): UsePlatformRetur
     return getPlatformValue(values) as T;
   };
 
-  const select = <T>(specifics: { ios?: T; android?: T; web?: T; default?: T }): T | undefined => {
-    return Platform.select(specifics);
+  const select = <T>(specifics: T | { ios?: T; android?: T; web?: T; default?: T }): T | undefined => {
+    if (typeof specifics !== 'object' || specifics === null || Array.isArray(specifics)) {
+      return specifics as T;
+    }
+    return Platform.select(specifics as any);
   };
 
   return {
@@ -72,5 +76,6 @@ export const usePlatform = (_options: UsePlatformOptions = {}): UsePlatformRetur
     isTesting: platformInfo.isTesting,
     getPlatformValue: getPlatformValueWrapper,
     select,
+    constants: Platform as any,
   };
 };

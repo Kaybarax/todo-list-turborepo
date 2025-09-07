@@ -77,8 +77,8 @@ describe('Accessibility Utils WCAG Compliance Tests', () => {
 
       it('validates light theme color combinations', () => {
         // Primary text on backgrounds
-        expect(validateContrastRatio(lightThemeColors.text, lightThemeColors.background, 'AA')).toBe(true);
-        expect(validateContrastRatio(lightThemeColors.text, lightThemeColors.surface, 'AA')).toBe(true);
+        expect(validateContrastRatio(lightThemeColors.text, lightThemeColors.background, 'AA').isValid).toBe(true);
+        expect(validateContrastRatio(lightThemeColors.text, lightThemeColors.surface, 'AA').isValid).toBe(true);
 
         // White text on colored backgrounds
         expect(validateContrastRatio('#FFFFFF', lightThemeColors.primary, 'AA')).toBe(true);
@@ -88,8 +88,8 @@ describe('Accessibility Utils WCAG Compliance Tests', () => {
 
       it('validates dark theme color combinations', () => {
         // Primary text on backgrounds
-        expect(validateContrastRatio(darkThemeColors.text, darkThemeColors.background, 'AA')).toBe(true);
-        expect(validateContrastRatio(darkThemeColors.text, darkThemeColors.surface, 'AA')).toBe(true);
+        expect(validateContrastRatio(darkThemeColors.text, darkThemeColors.background, 'AA').isValid).toBe(true);
+        expect(validateContrastRatio(darkThemeColors.text, darkThemeColors.surface, 'AA').isValid).toBe(true);
 
         // Dark text on colored backgrounds
         expect(validateContrastRatio('#000000', darkThemeColors.primary, 'AA')).toBe(true);

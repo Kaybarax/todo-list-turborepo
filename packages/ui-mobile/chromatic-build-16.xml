@@ -1,0 +1,959 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Chromatic build 16" time="53" timestamp="2025-09-07T22:06:39.228Z" tests="158" failures="158" errors="0" skipped="0">
+    <properties>
+      <property name="buildNumber" value="16"/>
+      <property name="buildStatus" value="PENDING"/>
+      <property name="buildUrl" value="https://www.chromatic.com/build?appId=68a509e2239206f05e7bab14&amp;number=16"/>
+      <property name="storybookUrl" value="https://68a509e2239206f05e7bab14-emewruhqvh.chromatic.com/"/>
+    </properties>
+    <testcase classname="Components.Avatar" name="Default ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="With Initials ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="With Image ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Extra Small ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Small ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Medium ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Large ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Extra Large ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Custom Colors ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Primary Color ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Secondary Color ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Success Color ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Danger Color ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Warning Color ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Light Background ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Dark Background ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Image Small ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Avatar" name="Image Large ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Default ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Primary ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Secondary ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Success ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Warning ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Danger ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Small ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Medium ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Large ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Short Text ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Long Text ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Number Badge ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Status Badge ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Notification Badge ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Small Variants ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Medium Variants ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Large Variants ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Todo Status ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="User Roles ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Badge" name="Notification Counts ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Button" name="Primary ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Button" name="Secondary ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Button" name="Outline ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Button" name="Ghost ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Button" name="Destructive ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Button" name="Small ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Button" name="Large ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Button" name="Disabled ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Button" name="Loading ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Button" name="Full Width ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Button" name="All Variants ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Button" name="All Sizes ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Card" name="Elevated ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Card" name="Outlined ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Card" name="Filled ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Card" name="With Footer ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Card" name="Interactive ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Card" name="Minimal Content ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Card" name="All Variants ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Checkbox" name="Default ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Checkbox" name="Checked ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Checkbox" name="Indeterminate ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Checkbox" name="Disabled ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Checkbox" name="Disabled Checked ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Checkbox" name="Without Label ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Checkbox" name="All Statuses ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Checkbox" name="Interactive ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Header" name="Basic ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Header" name="With Border ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Header" name="With Left Action ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Header" name="With Right Action ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Header" name="With Both Actions ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Header" name="Custom Background ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Header" name="Long Title ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Default ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="With Label ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Email Input ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Password Input ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Phone Input ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Numeric Input ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="URL Input ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Error State ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Success State ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Disabled State ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Multiline Input ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Multiline With Icon ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="With Max Length ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Twitter Style Input ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Search Input ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Search With Clear ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Form Inputs ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Login Form ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Contact Form ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Todo Form ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Validation States ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Mobile Keyboard Types ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Input" name="Interactive Example ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Modal" name="Default ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Modal" name="Alert ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Modal" name="Confirmation ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Modal" name="Large Modal ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Modal" name="Fullscreen Modal ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.NetworkSelector" name="Default ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.NetworkSelector" name="Grid Variant ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.NetworkSelector" name="List Variant ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.NetworkSelector" name="Disabled ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.NetworkSelector" name="Solana Selected ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.NetworkSelector" name="Polkadot Selected ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.NetworkSelector" name="Polygon Selected ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.NetworkSelector" name="Moonbeam Selected ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.NetworkSelector" name="Base Selected ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.NetworkSelector" name="Interactive ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.NetworkSelector" name="Variant Comparison ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Default ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="On ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Off ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Disabled ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Disabled On ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Disabled Off ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Without Label ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Custom Colors ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Danger Color ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Warning Color ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Secondary Color ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="All States ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Color Variants ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Settings Panel ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Privacy Settings ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Accessibility Example ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Touch Interaction Example ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Switch" name="Interactive Example ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TabBar" name="Basic ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TabBar" name="With Badges ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TabBar" name="Five Tabs ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TabBar" name="With Dot Badges ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TabBar" name="Icons Only ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TabBar" name="Labels Only ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Text" name="Headings ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Text" name="Body Text ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Text" name="Colors ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Text" name="Weights ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Text" name="Alignment ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.Text" name="Interactive ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Default ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Incomplete ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Complete ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Without Description ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Long Title ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Low Priority ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Medium Priority ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="High Priority ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Completed High Priority ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Interactive Toggle ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Editing State ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Mobile Gesture Example ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="All Priorities ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Completion States ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Todo List ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Components.TodoItem" name="Accessibility Example ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+    <testcase classname="Design System.Tokens" name="Tokens ">
+      <properties>
+        <property name="result" value="PENDING"/>
+      </properties>
+      <failure message="Snapshot contains visual changes and must be reviewed" type="PENDING"/>
+    </testcase>
+  </testsuite>
+</testsuites>

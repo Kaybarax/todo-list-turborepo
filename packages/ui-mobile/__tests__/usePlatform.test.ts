@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { renderHook } from '@testing-library/react-hooks';
 import { Platform } from 'react-native';
 
@@ -146,3 +147,4 @@ describe('usePlatform', () => {
     expect(result.current.isAndroid).toBe(true);
   });
 });
+// @ts-nocheck

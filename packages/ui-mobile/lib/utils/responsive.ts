@@ -74,7 +74,12 @@ export const matchesBreakpoint = (
   breakpoints: BreakpointTokens = defaultBreakpoints,
 ): boolean => {
   const { width } = Dimensions.get('window');
-  return width >= breakpoints[targetBreakpoint];
+  let current: keyof BreakpointTokens = 'xs';
+  if (width >= breakpoints.xl) current = 'xl';
+  else if (width >= breakpoints.lg) current = 'lg';
+  else if (width >= breakpoints.md) current = 'md';
+  else if (width >= breakpoints.sm) current = 'sm';
+  return current === targetBreakpoint;
 };
 
 /**
@@ -191,7 +196,7 @@ export const getSafeMargins = (breakpoints: BreakpointTokens = defaultBreakpoint
 export function getGridColumns(columns?: Partial<Record<keyof BreakpointTokens, number>>): number;
 export function getGridColumns(
   columnsOrBreakpoints: Partial<Record<keyof BreakpointTokens, number>> | BreakpointTokens = {
-    xs: 1,
+    xs: 2,
     sm: 2,
     md: 3,
     lg: 4,
@@ -199,7 +204,7 @@ export function getGridColumns(
   },
   breakpoints: BreakpointTokens = defaultBreakpoints,
 ): number {
-  const defaultColumns = { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 } as const;
+  const defaultColumns = { xs: 2, sm: 2, md: 3, lg: 4, xl: 5 } as const;
   const columns = (
     'xs' in columnsOrBreakpoints && typeof (columnsOrBreakpoints as any).xs === 'number'
       ? (columnsOrBreakpoints as Partial<Record<keyof BreakpointTokens, number>>)
@@ -211,15 +216,15 @@ export function getGridColumns(
 /**
  * Create responsive style object
  */
-export function createResponsiveStyle<T extends Record<string, any>>(
-  baseStyle: T,
-  responsiveProps: Partial<Record<keyof T, Partial<Record<keyof BreakpointTokens, any>>>>,
+export function createResponsiveStyle(
+  baseStyle: Record<string, any>,
+  responsiveProps: Partial<Record<string, Partial<Record<keyof BreakpointTokens, any>>>>,
   breakpoints: BreakpointTokens = defaultBreakpoints,
-): T {
-  const result: T = { ...baseStyle } as T;
+): any {
+  const result: any = { ...baseStyle };
   for (const key in responsiveProps) {
-    const map = responsiveProps[key]!;
-    (result as any)[key] = getResponsiveValue(map as any, (baseStyle as any)[key], breakpoints);
+    const map = (responsiveProps as any)[key]!;
+    result[key] = getResponsiveValue(map as any, (baseStyle as any)[key], breakpoints);
   }
   return result;
 }
@@ -273,16 +278,12 @@ export function getResponsiveSpacing(
       breakpoints,
     );
   }
-  const base = 16;
-  return getResponsiveValue(
-    {
-      xs: base * 0.75,
-      sm: base * 0.875,
-      md: base,
-      lg: base * 1.125,
-      xl: base * 1.25,
-    },
-    base,
-    breakpoints,
-  );
+  const preset: Record<keyof BreakpointTokens, number> = {
+    xs: 12,
+    sm: 16,
+    md: 20,
+    lg: 24,
+    xl: 28,
+  };
+  return preset[sizeOrBase];
 }

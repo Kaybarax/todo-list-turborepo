@@ -22,12 +22,13 @@ export interface UseResponsiveOptions {
 export interface UseResponsiveReturn {
   screenInfo: ScreenInfo;
   breakpoint: keyof BreakpointTokens;
+  currentBreakpoint: keyof BreakpointTokens;
   isPhone: boolean;
   isTablet: boolean;
   isLandscape: boolean;
   width: number;
   height: number;
-  getResponsiveValue: <T>(values: Partial<Record<keyof BreakpointTokens, T>>, fallback: T) => T;
+  getResponsiveValue: <T>(values: T | Partial<Record<keyof BreakpointTokens, T>>) => T;
   matchesBreakpoint: (targetBreakpoint: keyof BreakpointTokens) => boolean;
 }
 
@@ -46,8 +47,8 @@ export const useResponsive = (options: UseResponsiveOptions = {}): UseResponsive
     return () => subscription?.remove();
   }, [breakpoints]);
 
-  const getResponsiveValueWrapper = <T>(values: Partial<Record<keyof BreakpointTokens, T>>, fallback: T): T => {
-    return getResponsiveValue(values, fallback, breakpoints);
+  const getResponsiveValueWrapper = <T>(values: T | Partial<Record<keyof BreakpointTokens, T>>): T => {
+    return getResponsiveValue(values as any, undefined as any, breakpoints) as T;
   };
 
   const matchesBreakpointWrapper = (targetBreakpoint: keyof BreakpointTokens): boolean => {
@@ -57,6 +58,7 @@ export const useResponsive = (options: UseResponsiveOptions = {}): UseResponsive
   return {
     screenInfo,
     breakpoint: screenInfo.breakpoint,
+    currentBreakpoint: screenInfo.breakpoint,
     isPhone: screenInfo.isPhone,
     isTablet: screenInfo.isTablet,
     isLandscape: screenInfo.isLandscape,

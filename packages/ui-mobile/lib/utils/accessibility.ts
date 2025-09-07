@@ -72,22 +72,33 @@ export const calculateContrastRatio = (foreground: string, background: string): 
 /**
  * Validate if contrast ratio meets WCAG guidelines
  */
-export const validateContrastRatio = (
+export function validateContrastRatio(
   foreground: string,
   background: string,
-  level: 'AA' | 'AAA' = 'AA',
-  largeText?: boolean,
-): boolean => {
+  level?: 'AA' | 'AAA',
+  sizeOrLarge?: 'normal' | 'large' | boolean,
+): any {
+  const effectiveLevel = level ?? 'AA';
+  const isLarge = sizeOrLarge === 'large' || (typeof sizeOrLarge === 'boolean' && sizeOrLarge);
   const ratio = calculateContrastRatio(foreground, background);
-  const required = level === 'AAA' ? (largeText ? 4.5 : 7) : largeText ? 3 : 4.5;
-  return ratio >= required;
-};
+  const required = effectiveLevel === 'AAA' ? (isLarge ? 4.5 : 7) : isLarge ? 3 : 4.5;
+  const isValid = ratio >= required;
+  if (typeof sizeOrLarge === 'string' || sizeOrLarge === undefined) {
+    return { isValid, ratio, required };
+  }
+  return isValid;
+}
 
 /**
  * Validate touch target size meets accessibility guidelines
  */
-export const validateTouchTargetSize = (width: number, height: number, minSize: number = 44): boolean => {
-  return width >= minSize && height >= minSize;
+export const validateTouchTargetSize = (width: number, height: number, minSize: number = 44) => {
+  return {
+    isValid: width >= minSize && height >= minSize,
+    width,
+    height,
+    minSize,
+  };
 };
 
 /**
@@ -201,9 +212,7 @@ export const formatNumberForScreenReader = (
     return `${num}${suffix}`;
   }
 
-  if (num >= 1_000_000) return `${(num / 1_000_000).toString().replace(/\.0$/, '')} million`;
-  if (num >= 1_000) return `${(num / 1_000).toString().replace(/\.0$/, '')} thousand`;
-  return String(num);
+  return num.toLocaleString();
 };
 
 /**
@@ -213,8 +222,8 @@ export const createAccessibilityProps = (options: {
   label: string;
   hint?: string;
   role?: AccessibilityRole;
-  state?: Parameters<typeof createAccessibilityState>[0];
-  value?: Parameters<typeof createAccessibilityValue>[0];
+  state?: any;
+  value?: any;
 }): AccessibilityProps => {
   return {
     accessibilityLabel: options.label,

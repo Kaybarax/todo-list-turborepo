@@ -40,6 +40,12 @@ jest.mock('react-native', () => ({
     removeEventListener: jest.fn(),
   },
 
+  PixelRatio: {
+    get: jest.fn(() => 2),
+    getFontScale: jest.fn(() => 1),
+    roundToNearestPixel: jest.fn(n => n),
+  },
+
   // Mock Platform
   Platform: {
     OS: 'ios',
@@ -73,3 +79,13 @@ jest.mock('react-native', () => ({
 jest.mock('react-native-vector-icons/MaterialIcons', () => 'MaterialIcons');
 jest.mock('react-native-vector-icons/FontAwesome', () => 'FontAwesome');
 jest.mock('react-native-vector-icons/Ionicons', () => 'Ionicons');
+
+// Mock reanimated for Jest
+jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
+
+// Mock safe area context
+jest.mock('react-native-safe-area-context', () => ({
+  useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
+  SafeAreaProvider: ({ children }: any) => children,
+  SafeAreaView: 'SafeAreaView',
+}));

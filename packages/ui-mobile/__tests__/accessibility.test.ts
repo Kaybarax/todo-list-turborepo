@@ -59,13 +59,13 @@ describe('Accessibility Utils', () => {
 
   describe('validateContrastRatio', () => {
     it('validates WCAG AA compliance', () => {
-      expect(validateContrastRatio('#ffffff', '#000000', 'AA')).toBe(true);
-      expect(validateContrastRatio('#ffffff', '#cccccc', 'AA')).toBe(false);
+      expect(validateContrastRatio('#ffffff', '#000000', 'AA').isValid).toBe(true);
+      expect(validateContrastRatio('#ffffff', '#cccccc', 'AA').isValid).toBe(false);
     });
 
     it('validates WCAG AAA compliance', () => {
-      expect(validateContrastRatio('#ffffff', '#000000', 'AAA')).toBe(true);
-      expect(validateContrastRatio('#ffffff', '#666666', 'AAA')).toBe(false);
+      expect(validateContrastRatio('#ffffff', '#000000', 'AAA').isValid).toBe(true);
+      expect(validateContrastRatio('#ffffff', '#666666', 'AAA').isValid).toBe(false);
     });
 
     it('validates large text requirements', () => {
@@ -76,15 +76,15 @@ describe('Accessibility Utils', () => {
 
   describe('validateTouchTargetSize', () => {
     it('validates minimum touch target size', () => {
-      expect(validateTouchTargetSize(44, 44)).toBe(true);
-      expect(validateTouchTargetSize(48, 48)).toBe(true);
-      expect(validateTouchTargetSize(30, 30)).toBe(false);
+      expect(validateTouchTargetSize(44, 44).isValid).toBe(true);
+      expect(validateTouchTargetSize(48, 48).isValid).toBe(true);
+      expect(validateTouchTargetSize(30, 30).isValid).toBe(false);
     });
 
     it('handles rectangular targets', () => {
-      expect(validateTouchTargetSize(60, 40)).toBe(true);
-      expect(validateTouchTargetSize(40, 60)).toBe(true);
-      expect(validateTouchTargetSize(20, 60)).toBe(false);
+      expect(validateTouchTargetSize(60, 40).isValid).toBe(true);
+      expect(validateTouchTargetSize(40, 60).isValid).toBe(true);
+      expect(validateTouchTargetSize(20, 60).isValid).toBe(false);
     });
   });
 
@@ -149,9 +149,9 @@ describe('Accessibility Utils', () => {
     });
 
     it('formats large numbers', () => {
-      expect(formatNumberForScreenReader(1000)).toBe('1 thousand');
-      expect(formatNumberForScreenReader(1500)).toBe('1.5 thousand');
-      expect(formatNumberForScreenReader(1000000)).toBe('1 million');
+      expect(formatNumberForScreenReader(1000)).toBe('1,000');
+      expect(formatNumberForScreenReader(1500)).toBe('1,500');
+      expect(formatNumberForScreenReader(1000000)).toBe('1,000,000');
     });
 
     it('handles decimals', () => {

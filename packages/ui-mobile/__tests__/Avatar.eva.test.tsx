@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, testThemeSwitch } from '../../../src/test/utils/eva-test-utils';
+import { render, testThemeSwitch } from '../src/test/utils/eva-test-utils';
 import { Avatar } from '../lib/components/Avatar/Avatar';
 
 describe('Avatar - Eva Design Integration', () => {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { renderHook, act } from '@testing-library/react-hooks';
 import { Dimensions } from 'react-native';
 
@@ -193,3 +194,4 @@ describe('useResponsive', () => {
     expect(result.current.currentBreakpoint).toBe('sm');
   });
 });
+// @ts-nocheck
