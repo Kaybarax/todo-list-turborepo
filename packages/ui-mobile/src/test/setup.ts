@@ -103,3 +103,14 @@ jest.mock('react-native-safe-area-context', () => ({
   SafeAreaProvider: ({ children }: any) => children,
   SafeAreaView: 'SafeAreaView',
 }));
+
+// Suppress noisy deprecation warning from transitively used react-test-renderer while we
+// retain @testing-library/react-native (pending upstream migration). Keep other errors.
+const originalError = console.error;
+console.error = (...args: any[]) => {
+  const first = args[0];
+  if (typeof first === 'string' && first.includes('react-test-renderer is deprecated')) {
+    return; // swallow just this known warning
+  }
+  originalError(...args);
+};

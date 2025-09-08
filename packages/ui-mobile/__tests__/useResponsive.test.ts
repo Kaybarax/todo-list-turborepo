@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, act } from '../src/test/renderHook';
 import { Dimensions } from 'react-native';
 
 import { useResponsive } from '../lib/hooks/useResponsive';

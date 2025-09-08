@@ -41,7 +41,6 @@ module.exports = {
     '^@ui-kitten/components$': '<rootDir>/__tests__/__mocks__/@ui-kitten/components.js',
     '^@eva-design/eva$': '<rootDir>/__tests__/__mocks__/@eva-design/eva.js',
     '../../theme/useEnhancedTheme$': '<rootDir>/__tests__/__mocks__/useEnhancedTheme.js',
-    '^@testing-library/react-hooks$': '<rootDir>/__tests__/__mocks__/react-hooks.js',
     '^react-native-reanimated$': '<rootDir>/__tests__/__mocks__/react-native-reanimated.js',
     '^react-native-safe-area-context$': '<rootDir>/__tests__/__mocks__/react-native-safe-area-context.js',
   },

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '../src/test/renderHook';
 import { Platform } from 'react-native';
 
 import { usePlatform } from '../lib/hooks/usePlatform';
