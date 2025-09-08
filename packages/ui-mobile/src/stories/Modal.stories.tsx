@@ -1,7 +1,9 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+import './shared/story-styles.css';
 
 import { withUIKitten } from './decorators/UIKittenProvider';
+import { buildMobileMeta } from './helpers/storyMeta';
 
 type ModalSize = 'sm' | 'md' | 'lg' | 'fullscreen';
 type ModalType = 'default' | 'alert' | 'confirmation';
@@ -18,59 +20,32 @@ interface WebModalProps {
 
 const WebModal: React.FC<WebModalProps> = ({ visible, size = 'md', dismissible = true, onClose, children }) => {
   if (!visible) return null;
-  const widths: Record<ModalSize, number | string> = { sm: 360, md: 480, lg: 680, fullscreen: '90vw' };
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0,0,0,0.45)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-      }}
-      onClick={dismissible ? onClose : undefined}
-    >
-      <div
-        role="dialog"
-        aria-modal="true"
-        style={{
-          width: widths[size],
-          maxWidth: '90vw',
-          background: '#FFFFFF',
-          borderRadius: 12,
-          padding: 16,
-          boxShadow: '0 12px 32px rgba(0,0,0,0.2)',
-          fontFamily: 'system-ui, -apple-system, sans-serif',
-        }}
-        onClick={e => e.stopPropagation()}
-      >
+    <div className="sbOverlay" onClick={dismissible ? onClose : undefined}>
+      <div role="dialog" aria-modal="true" className={`sbDialog sbDialog--${size}`} onClick={e => e.stopPropagation()}>
         {children}
       </div>
     </div>
   );
 };
 
-const meta: Meta<typeof WebModal> = {
+// Heading class helpers (generic naming)
+const headingClass = (variant: 'default' | 'large' | 'fullscreen') => `sbHeading sbHeading--${variant}`;
+
+const meta: Meta<typeof WebModal> = buildMobileMeta({
   title: 'Components/Modal',
   component: WebModal,
   parameters: {
-    layout: 'centered',
     docs: {
       description: {
         component:
-          'A flexible modal component with backdrop, animations, focus management, and accessibility features.',
+          'A flexible modal component (web preview) demonstrating sizing, dismissal, and accessibility patterns.',
       },
     },
   },
   decorators: [withUIKitten],
-  tags: ['autodocs'],
   argTypes: {
-    visible: {
-      control: { type: 'boolean' },
-      description: 'Whether the modal is visible',
-    },
+    visible: { control: { type: 'boolean' }, description: 'Whether the modal is visible' },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg', 'fullscreen'],
@@ -92,7 +67,7 @@ const meta: Meta<typeof WebModal> = {
     },
     onClose: { action: 'modal closed' },
   },
-};
+});
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -113,9 +88,9 @@ const ModalWrapper = ({ children, ...args }: any) => {
 export const Default: Story = {
   render: args => (
     <ModalWrapper {...args}>
-      <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Default Modal</div>
-      <div style={{ marginBottom: 24 }}>This is a default modal with standard content and actions.</div>
-      <div style={{ flexDirection: 'row', justifyContent: 'flex-end', gap: 12 }}>
+      <div className={headingClass('default')}>Default Modal</div>
+      <div className="sbSection">This is a default modal with standard content and actions.</div>
+      <div className="sbActions">
         <button>Cancel</button>
         <button>Confirm</button>
       </div>
@@ -131,9 +106,9 @@ export const Default: Story = {
 export const Alert: Story = {
   render: args => (
     <ModalWrapper {...args}>
-      <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Alert Modal</div>
-      <div style={{ marginBottom: 24 }}>This is an important alert that requires your attention.</div>
-      <div style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+      <div className={headingClass('default')}>Alert Modal</div>
+      <div className="sbSection">This is an important alert that requires your attention.</div>
+      <div className="sbActions sbActions--tight">
         <button>OK</button>
       </div>
     </ModalWrapper>
@@ -149,9 +124,9 @@ export const Alert: Story = {
 export const Confirmation: Story = {
   render: args => (
     <ModalWrapper {...args}>
-      <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Confirm Action</div>
-      <div style={{ marginBottom: 24 }}>Are you sure you want to delete this item? This action cannot be undone.</div>
-      <div style={{ flexDirection: 'row', justifyContent: 'flex-end', gap: 12 }}>
+      <div className={headingClass('default')}>Confirm Action</div>
+      <div className="sbSection">Are you sure you want to delete this item? This action cannot be undone.</div>
+      <div className="sbActions">
         <button>Cancel</button>
         <button>Delete</button>
       </div>
@@ -167,17 +142,17 @@ export const Confirmation: Story = {
 export const LargeModal: Story = {
   render: args => (
     <ModalWrapper {...args}>
-      <div style={{ fontSize: 20, fontWeight: 600, marginBottom: 16 }}>Large Modal</div>
-      <div style={{ marginBottom: 16 }}>This is a large modal with more content space.</div>
-      <div style={{ marginBottom: 24 }}>
-        <div style={{ fontWeight: 600 as any, marginBottom: 8 }}>Form Content:</div>
-        <div style={{ gap: 12 }}>
-          <input placeholder="Name" style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }} />
-          <input placeholder="Email" style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }} />
-          <textarea placeholder="Message" rows={4} style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }} />
+      <div className={headingClass('large')}>Large Modal</div>
+      <div className="sbIntro">This is a large modal with more content space.</div>
+      <div className="sbSection">
+        <div className="sbLabel">Form Content:</div>
+        <div className="sbForm">
+          <input placeholder="Name" className="sbInput" />
+          <input placeholder="Email" className="sbInput" />
+          <textarea placeholder="Message" rows={4} className="sbInput" />
         </div>
       </div>
-      <div style={{ flexDirection: 'row', justifyContent: 'flex-end', gap: 12 }}>
+      <div className="sbActions">
         <button>Cancel</button>
         <button>Submit</button>
       </div>
@@ -192,17 +167,17 @@ export const LargeModal: Story = {
 export const FullscreenModal: Story = {
   render: args => (
     <ModalWrapper {...args}>
-      <div style={{ fontSize: 24, fontWeight: 600, marginBottom: 24 }}>Fullscreen Modal</div>
-      <div style={{ marginBottom: 24 }}>
+      <div className={headingClass('fullscreen')}>Fullscreen Modal</div>
+      <div className="sbSection">
         This modal takes up the entire screen, useful for complex forms or detailed content.
       </div>
-      <div style={{ flex: 1, marginBottom: 24 }}>
-        <div style={{ fontWeight: 600 as any, marginBottom: 16 }}>Content Area:</div>
-        <div style={{ height: 200, backgroundColor: '#f5f5f5', borderRadius: 8, padding: 16 }}>
+      <div className="sbSection sbSection--flexFill">
+        <div className="sbLabel sbLabel--spaced">Content Area:</div>
+        <div className="sbContentArea">
           <div>Large content area for complex interfaces</div>
         </div>
       </div>
-      <div style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+      <div className="sbFooterSplit">
         <button>Close</button>
         <button>Save Changes</button>
       </div>

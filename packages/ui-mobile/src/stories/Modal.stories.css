@@ -1,0 +1,105 @@
+/* Extracted styles for Modal.stories (web preview only) */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+.modalDialog {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  max-width: 90vw;
+}
+.modalDialog--sm {
+  width: 360px;
+}
+.modalDialog--md {
+  width: 480px;
+}
+.modalDialog--lg {
+  width: 680px;
+}
+.modalDialog--fullscreen {
+  width: 90vw;
+}
+
+.modalHeading {
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.modalHeading--large {
+  font-size: 20px;
+}
+.modalHeading--default {
+  font-size: 18px;
+}
+.modalHeading--fullscreen {
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+.modalBody {
+  margin-bottom: 24px;
+}
+.modalBody--flexFill {
+  flex: 1;
+}
+
+.modalActions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 12px;
+}
+.modalActions--tight {
+  gap: 0;
+}
+
+.modalIntroLarge {
+  margin-bottom: 16px;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.modalInput {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font: inherit;
+}
+
+.modalSectionLabel {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.modalSectionLabel--spaced {
+  margin-bottom: 16px;
+}
+
+.modalContentArea {
+  height: 200px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.modalFooterSplit {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

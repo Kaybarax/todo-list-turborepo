@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react-native';
 import React from 'react';
+import * as reducedMotionModule from '../lib/hooks/useReducedMotion';
 
 import { Modal } from '../lib/components/Modal/Modal';
 import { renderWithProvider } from '../src/test/utils/renderWithProvider';
@@ -145,20 +146,64 @@ describe('Modal', () => {
     });
   });
 
-  it('renders instantly without animations when reduced motion is preferred', () => {
-    jest.doMock('../lib/hooks/useReducedMotion', () => ({
-      useReducedMotion: () => ({
-        prefersReducedMotion: true,
-        systemPrefersReducedMotion: true,
-        maybe: (a: any, b: any) => b,
-      }),
-    }));
-    const { Modal: PatchedModal } = require('../lib/components/Modal/Modal');
+  it('applies immediate animation values when reduced motion is preferred (open)', () => {
+    const animationSnapshots: any[] = [];
+    const original = (reducedMotionModule as any).useReducedMotion;
+    (reducedMotionModule as any).useReducedMotion = () => ({
+      prefersReducedMotion: true,
+      systemPrefersReducedMotion: true,
+      maybe: (_a: any, b: any) => b,
+    });
+    const { Modal: RMModal } = require('../lib/components/Modal/Modal');
     renderWithTheme(
-      <PatchedModal visible={true} onClose={() => {}} testID="reduced-motion-modal">
-        <Text>Reduced Motion</Text>
-      </PatchedModal>,
+      <RMModal
+        visible={true}
+        onClose={() => {}}
+        onAnimationValues={(v: any) => animationSnapshots.push(v)}
+        testID="rm-modal"
+      >
+        <Text>Reduced Motion Modal</Text>
+      </RMModal>,
     );
-    expect(screen.getByTestId('reduced-motion-modal')).toBeTruthy();
+    (reducedMotionModule as any).useReducedMotion = original;
+    const last = animationSnapshots[animationSnapshots.length - 1];
+    expect(last).toMatchObject({ scale: 1, translateY: 0, backdropOpacity: 1 });
+  });
+
+  it('applies immediate animation values when reduced motion is preferred (close)', () => {
+    const animationSnapshots: any[] = [];
+    const original = (reducedMotionModule as any).useReducedMotion;
+    (reducedMotionModule as any).useReducedMotion = () => ({
+      prefersReducedMotion: true,
+      systemPrefersReducedMotion: true,
+      maybe: (_a: any, b: any) => b,
+    });
+    const { Modal: RMModal } = require('../lib/components/Modal/Modal');
+    const { rerender } = renderWithTheme(
+      <RMModal
+        visible={true}
+        onClose={() => {}}
+        onAnimationValues={(v: any) => animationSnapshots.push(v)}
+        testID="rm-modal-transition"
+      >
+        <Text>Reduced Motion Modal</Text>
+      </RMModal>,
+    );
+    rerender(
+      <RMModal
+        visible={false}
+        onClose={() => {}}
+        onAnimationValues={(v: any) => animationSnapshots.push(v)}
+        testID="rm-modal-transition"
+      >
+        <Text>Reduced Motion Modal</Text>
+      </RMModal>,
+    );
+    (reducedMotionModule as any).useReducedMotion = original;
+    const last = animationSnapshots[animationSnapshots.length - 1];
+    expect(last.backdropOpacity).toBe(0);
+    expect(last.scale).toBeLessThan(0.81);
+    expect(last.scale).toBeGreaterThan(0.79);
+    expect(last.translateY).toBe(50);
   });
 });

@@ -17,7 +17,6 @@ export default [
       'showcase/dist/**',
       '__tests__/**',
       'lib/**',
-      'src/stories/**',
       'showcase/**',
       '**/*.timestamp-*.mjs',
       '**/*.config.js',
@@ -94,6 +93,11 @@ export default [
     rules: {
       'react-hooks/rules-of-hooks': 'off',
       'jsx-a11y/anchor-is-valid': 'off',
+      // Allow inline style objects in stories for rapid prototyping & visual documentation.
+      // No dedicated rule exists in this config currently, but if one is introduced upstream
+      // (e.g. a custom "no-inline-styles" rule or enabling react-native plugin), keep it disabled here.
+      'react-native/no-inline-styles': 'off',
+      'react-native/no-unused-styles': 'off',
     },
   },
   // Theme files: allow some unused vars during experimental validation utilities

@@ -1,0 +1,204 @@
+/* Generic shared Storybook styles for ui-mobile web previews.
+   These classes are intentionally minimal and not part of production builds. */
+
+/* Overlay + dialog shell */
+.sbOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+.sbDialog {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  max-width: 90vw;
+}
+.sbDialog--sm {
+  width: 360px;
+}
+.sbDialog--md {
+  width: 480px;
+}
+.sbDialog--lg {
+  width: 680px;
+}
+.sbDialog--fullscreen {
+  width: 90vw;
+}
+
+/* Headings */
+.sbHeading {
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.sbHeading--default {
+  font-size: 18px;
+}
+.sbHeading--large {
+  font-size: 20px;
+}
+.sbHeading--fullscreen {
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+/* Sections & layout blocks */
+.sbSection {
+  margin-bottom: 24px;
+}
+.sbSection--flexFill {
+  flex: 1;
+}
+.sbIntro {
+  margin-bottom: 16px;
+}
+
+/* Forms */
+.sbForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sbInput {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font: inherit;
+}
+
+/* Labels */
+.sbLabel {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.sbLabel--spaced {
+  margin-bottom: 16px;
+}
+
+/* Content area demo */
+.sbContentArea {
+  height: 200px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Actions */
+.sbActions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 12px;
+}
+.sbActions--tight {
+  gap: 0;
+}
+.sbFooterSplit {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* Avatar (variable-driven) */
+.sbAvatar {
+  width: var(--sb-avatar-size, 40px);
+  height: var(--sb-avatar-size, 40px);
+  border-radius: 9999px;
+  background: var(--sb-avatar-bg, #007aff);
+  color: var(--sb-avatar-color, #ffffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  overflow: hidden;
+}
+
+/* Size modifiers still allow fixed fallback sizing */
+.sbAvatar--xs {
+  --sb-avatar-size: 24px;
+}
+.sbAvatar--sm {
+  --sb-avatar-size: 32px;
+}
+.sbAvatar--md {
+  --sb-avatar-size: 40px;
+}
+.sbAvatar--lg {
+  --sb-avatar-size: 56px;
+}
+.sbAvatar--xl {
+  --sb-avatar-size: 72px;
+}
+
+/* Avatar variants */
+.sbAvatar--variant-primary {
+  background: #007aff;
+  color: #ffffff;
+}
+.sbAvatar--variant-secondary {
+  background: #5856d6;
+  color: #ffffff;
+}
+.sbAvatar--variant-success {
+  background: #34c759;
+  color: #ffffff;
+}
+.sbAvatar--variant-danger {
+  background: #ff3b30;
+  color: #ffffff;
+}
+.sbAvatar--variant-warning {
+  background: #ff9500;
+  color: #ffffff;
+}
+.sbAvatar--variant-light {
+  background: #f2f2f7;
+  color: #1c1c1e;
+}
+.sbAvatar--variant-dark {
+  background: #1c1c1e;
+  color: #ffffff;
+}
+
+/* Font sizing by size modifier */
+.sbAvatar--xs .sbAvatarText {
+  font-size: 12px;
+}
+.sbAvatar--sm .sbAvatarText {
+  font-size: 14px;
+}
+.sbAvatar--md .sbAvatarText {
+  font-size: 16px;
+}
+.sbAvatar--lg .sbAvatarText {
+  font-size: 18px;
+}
+.sbAvatar--xl .sbAvatarText {
+  font-size: 20px;
+}
+
+.sbAvatarText {
+  font-size: var(--sb-avatar-font-size, 16px);
+  line-height: 1;
+}
+.sbAvatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

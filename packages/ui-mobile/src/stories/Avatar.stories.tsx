@@ -1,28 +1,24 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
+import './shared/story-styles.css';
 
 import { withUIKitten } from './decorators/UIKittenProvider';
+import { buildMobileMeta } from './helpers/storyMeta';
 
 // Web-compatible Avatar component for Storybook
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
+type AvatarVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'light' | 'dark';
 
 interface AvatarProps {
   source?: string;
   initials?: string;
   size?: AvatarSize;
-  backgroundColor?: string;
-  textColor?: string;
+  variant?: AvatarVariant;
   testID?: string;
 }
 
-const Avatar: React.FC<AvatarProps> = ({
-  source,
-  initials,
-  size = 'md',
-  backgroundColor = '#007AFF',
-  textColor = '#FFFFFF',
-  testID,
-}) => {
+const Avatar: React.FC<AvatarProps> = ({ source, initials, size = 'md', variant = 'primary', testID }) => {
   const sizeValue = {
     xs: 24,
     sm: 32,
@@ -39,39 +35,17 @@ const Avatar: React.FC<AvatarProps> = ({
     xl: 20,
   }[size];
 
-  const containerStyle: React.CSSProperties = {
-    width: sizeValue,
-    height: sizeValue,
-    borderRadius: sizeValue / 2,
-    backgroundColor,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    fontFamily: 'system-ui, -apple-system, sans-serif',
-    fontWeight: '500',
-  };
-
-  const imageStyle: React.CSSProperties = {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  };
-
-  const textStyle: React.CSSProperties = {
-    fontSize,
-    color: textColor,
-    fontWeight: '500',
-    margin: 0,
-    padding: 0,
-  };
-
   return (
-    <div style={containerStyle} data-testid={testID}>
+    <div
+      className={`sbAvatar sbAvatar--${size} sbAvatar--variant-${variant}`}
+      data-testid={testID}
+      data-size={sizeValue}
+      data-font={fontSize}
+    >
       {source ? (
-        <img src={source} alt="Avatar" style={imageStyle} data-testid={`${testID}-image`} />
+        <img src={source} alt="Avatar" className="sbAvatarImg" data-testid={`${testID}-image`} />
       ) : (
-        <span style={textStyle} data-testid={`${testID}-text`}>
+        <span className="sbAvatarText" data-testid={`${testID}-text`}>
           {initials ?? ''}
         </span>
       )}
@@ -79,43 +53,28 @@ const Avatar: React.FC<AvatarProps> = ({
   );
 };
 
-const meta: Meta<typeof Avatar> = {
+const meta: Meta<typeof Avatar> = buildMobileMeta({
   title: 'Components/Avatar',
   component: Avatar,
   parameters: {
-    layout: 'centered',
     docs: {
       description: {
-        component: 'A customizable avatar component for displaying user profile images or initials (web preview)',
+        component: 'A customizable avatar component (web preview) for images or initials.',
       },
     },
   },
   decorators: [withUIKitten],
-  tags: ['autodocs'],
   argTypes: {
-    size: {
+    size: { control: { type: 'select' }, options: ['xs', 'sm', 'md', 'lg', 'xl'], description: 'Size of the avatar' },
+    variant: {
       control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
-      description: 'Size of the avatar',
+      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'light', 'dark'],
+      description: 'Predefined color variant',
     },
-    backgroundColor: {
-      control: { type: 'color' },
-      description: 'Background color when displaying initials',
-    },
-    textColor: {
-      control: { type: 'color' },
-      description: 'Text color for initials',
-    },
-    initials: {
-      control: { type: 'text' },
-      description: 'Initials to display when no image is provided',
-    },
-    source: {
-      control: { type: 'text' },
-      description: 'Image URL to display',
-    },
+    initials: { control: { type: 'text' }, description: 'Initials to display when no image is provided' },
+    source: { control: { type: 'text' }, description: 'Image URL to display' },
   },
-};
+});
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -129,8 +88,7 @@ export const Default: Story = {
 export const WithInitials: Story = {
   args: {
     initials: 'AB',
-    backgroundColor: '#007AFF',
-    textColor: '#FFFFFF',
+    variant: 'primary',
   },
 };
 
@@ -178,64 +136,56 @@ export const ExtraLarge: Story = {
 export const CustomColors: Story = {
   args: {
     initials: 'CC',
-    backgroundColor: '#34C759',
-    textColor: '#FFFFFF',
+    variant: 'success',
   },
 };
 
 export const PrimaryColor: Story = {
   args: {
     initials: 'PR',
-    backgroundColor: '#007AFF',
-    textColor: '#FFFFFF',
+    variant: 'primary',
   },
 };
 
 export const SecondaryColor: Story = {
   args: {
     initials: 'SC',
-    backgroundColor: '#5856D6',
-    textColor: '#FFFFFF',
+    variant: 'secondary',
   },
 };
 
 export const SuccessColor: Story = {
   args: {
     initials: 'SU',
-    backgroundColor: '#34C759',
-    textColor: '#FFFFFF',
+    variant: 'success',
   },
 };
 
 export const DangerColor: Story = {
   args: {
     initials: 'DN',
-    backgroundColor: '#FF3B30',
-    textColor: '#FFFFFF',
+    variant: 'danger',
   },
 };
 
 export const WarningColor: Story = {
   args: {
     initials: 'WR',
-    backgroundColor: '#FF9500',
-    textColor: '#FFFFFF',
+    variant: 'warning',
   },
 };
 
 export const LightBackground: Story = {
   args: {
     initials: 'LB',
-    backgroundColor: '#F2F2F7',
-    textColor: '#1C1C1E',
+    variant: 'light',
   },
 };
 
 export const DarkBackground: Story = {
   args: {
     initials: 'DB',
-    backgroundColor: '#1C1C1E',
-    textColor: '#FFFFFF',
+    variant: 'dark',
   },
 };
 

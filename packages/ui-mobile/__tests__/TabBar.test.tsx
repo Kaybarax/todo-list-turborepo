@@ -140,5 +140,18 @@ describe('TabBar', () => {
     const { TabBar: PatchedTabBar } = require('../lib/components/TabBar/TabBar');
     renderWithTheme(<PatchedTabBar tabs={mockTabs} activeIndex={2} onTabPress={() => {}} testID="rm-tabbar" />);
     expect(screen.getByTestId('rm-tabbar')).toBeTruthy();
+    // Deep assertion: indicator style should reflect final left/width instantly (no intermediate spring values)
+    const tree: any = screen.getByTestId('rm-tabbar');
+    const styles: any[] = [];
+    const walk = (node: any) => {
+      if (!node) return;
+      if (node.props?.style) styles.push(node.props.style);
+      if (node.children) node.children.forEach((c: any) => walk(c));
+    };
+    walk(tree);
+    const serialized = JSON.stringify(styles);
+    // Should contain left expressed in percentage for activeIndex=2 (3 tabs => ~66.6) but not spring config artifacts
+    expect(serialized).toMatch(/66/);
+    expect(serialized).not.toMatch(/stiffness/);
   });
 });

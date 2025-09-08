@@ -55,7 +55,7 @@ Every component story MUST include:
 
 ## File Organization
 
-```
+```text
 packages/
 ├── ui-web/
 │   ├── src/stories/
@@ -307,6 +307,66 @@ export const InteractionTest: Story = {
 - Consider different screen densities for mobile
 
 ## Common Patterns
+
+### Linting & Inline Styles (Temporary Allowance)
+
+To keep iteration speed high for Storybook-driven development, inline style objects are currently allowed **only inside** `packages/ui-web/src/stories/**` and `packages/ui-mobile/src/stories/**` via ESLint overrides. Rationale:
+
+1. Stories act as living documentation & quick visual sandboxes; prohibiting inline objects caused excessive churn during exploratory UI work.
+2. Production components (in `lib/components/`) still enforce typed style props and discourage ad‑hoc inline styles, preserving performance (stable refs) and theme consistency.
+3. A later hardening pass (Phase 5 in remediation plan) will migrate repeated inline declarations in stories to shared constants or Tailwind utility compositions where it improves clarity.
+
+Guideline while the override is active:
+
+- Prefer small, local inline objects for layout/examples (e.g. `marginTop`, `display: 'flex'`).
+- Extract any repeated or semantically meaningful style groups (e.g. card chrome, modal container) to top-level `const` variables within the story file.
+- Do **not** introduce design tokens directly as literals if a tokenized helper exists—import the helper instead.
+
+If you see lint rejections for inline styles in a story, verify the file path matches the override glob. If not, move the example into `src/stories/` or extract the style to an allowed layer.
+
+### Shared Story Styles & Variant Utilities
+
+To reduce duplication and eliminate noisy inline `style={{}}` usage, common preview-only presentation patterns live in a shared stylesheet:
+
+```text
+packages/ui-mobile/src/stories/shared/story-styles.css
+```
+
+Key conventions (mobile preview examples shown, web may mirror):
+
+- Component shells: `sbOverlay`, `sbDialog`, and size modifiers `sbDialog--sm|md|lg|fullscreen`.
+- Headings: `sbHeading sbHeading--default|large|fullscreen` for consistent typography spacing.
+- Sections & layout: `sbSection`, `sbSection--flexFill`, `sbActions`, `sbActions--tight`, `sbFooterSplit`.
+- Forms: `sbForm`, `sbInput` to quickly scaffold interactive examples.
+- Avatar example: size classes `sbAvatar--xs|sm|md|lg|xl` + color variants `sbAvatar--variant-primary|secondary|success|danger|warning|light|dark`.
+
+#### Avatar Story Pattern (Excerpt)
+
+```tsx
+<div className={`sbAvatar sbAvatar--md sbAvatar--variant-primary`}>
+  <span className="sbAvatarText">JD</span>
+</div>
+```
+
+#### When to Introduce a New Utility Class
+
+- The same visual block appears in ≥2 stories.
+- Style carries semantic meaning (e.g. “actions row”, “content area”).
+- You would otherwise repeat ≥3 CSS declarations.
+
+#### When NOT to Add a Class
+
+- One-off spacing tweak inside a single story.
+- Experimental layout likely to be removed.
+
+#### Migration From Inline Styles
+
+1. Identify repeated inline objects (search for `style={{` across story files).
+2. Extract shared declarations into `story-styles.css` under a concise `.sb*` class.
+3. Replace inline usage with the new class; keep dynamic values as args (or switched to variant enums if finite set).
+4. If a value is truly dynamic (user-controlled color), prefer adding a variant enum over arbitrary color props for stories.
+
+This keeps stories lean, reviewable, and avoids re-linting churn while preserving clarity for designers reading the Storybook DOM snapshots.
 
 ### Form Components
 

@@ -136,10 +136,12 @@ These may be executed in parallel per component once Phases 0–2 are complete; 
 
 ## Phase 4 – Immediate Test & Story Updates (Ensure coverage & docs after refactors)
 
-- [ ] P4-1 (TEST) Update / create missing component tests: Avatar, Badge, Icon, ListItem (if kept), Text, FormField, NetworkSelector (selection states), Modal reduced motion branch, TabBar reduced motion branch.
-  - Progress: ListItem core tests added; NetworkSelector selection state tests added (grid & list). Remaining: potential deeper reduced motion animation assertions (Modal/TabBar) if needed.
-- [ ] P4-2 (DOC) Add/verify Storybook stories created/updated: ensure each story uses decorator + meta helper; add deprecation banner for ListItem if deprecated.
-- [ ] P4-3 (TEST) Add reduced motion specific cases in `Modal.test.tsx` & `TabBar.test.tsx` (mock hook to true).
+- [x] P4-1 (TEST) Update / create missing component tests: Avatar, Badge, Icon, ListItem (if kept), Text, FormField, NetworkSelector (selection states), Modal reduced motion branch, TabBar reduced motion branch.
+  - Progress: Added ListItem tests (pressable/disabled/size/a11y), NetworkSelector dynamic selection tests (grid & list), deep reduced motion assertions for TabBar and Modal (via diagnostic `onAnimationValues`).
+- [x] P4-2 (DOC) Add/verify Storybook stories created/updated: ensure each story uses decorator + meta helper; add deprecation banner for ListItem if deprecated.
+- [x] P4-3 (TEST) Add reduced motion specific cases in `Modal.test.tsx` & `TabBar.test.tsx` (mock hook to true).
+  - Completed: Added Modal open/close immediate animation snapshot assertions via `onAnimationValues`; TabBar instant indicator position test under reduced motion.
+- [x] P4-4 (DOC/Lint) Decide interim strategy for Storybook inline-style lint noise (override rules in story globs; document rationale in `STORYBOOK_GUIDELINES.md`).
 
 ## Phase 5 – Performance & Styling Enhancements (P2)
 

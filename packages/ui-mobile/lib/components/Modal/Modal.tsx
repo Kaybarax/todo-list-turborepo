@@ -46,6 +46,8 @@ export interface ModalProps {
   backdropStyle?: ViewStyle;
   accessibilityLabel?: string;
   keyboardAvoidingBehavior?: 'height' | 'position' | 'padding';
+  /** Test-only / diagnostic hook: exposes current animation shared values after each effect run */
+  onAnimationValues?: (vals: { scale: number; translateY: number; backdropOpacity: number }) => void;
 }
 
 // Animation configuration constants (avoid magic numbers) - MOD-3
@@ -106,6 +108,7 @@ export const Modal: React.FC<ModalProps> = ({
   backdropStyle,
   accessibilityLabel,
   keyboardAvoidingBehavior = 'padding',
+  onAnimationValues,
 }) => {
   const { theme, evaTheme } = useEnhancedTheme();
   const { prefersReducedMotion } = useReducedMotion();
@@ -164,6 +167,12 @@ export const Modal: React.FC<ModalProps> = ({
         modalTranslateY.value = withTiming(TRANSLATE_START, { duration: ANIMATION_HIDE_DURATION });
       }
     }
+    // Invoke diagnostic callback synchronously with current shared value states (testing aid, no prod impact if undefined)
+    onAnimationValues?.({
+      scale: modalScale.value,
+      translateY: modalTranslateY.value,
+      backdropOpacity: backdropOpacity.value,
+    });
   }, [
     visible,
     effectiveAnimation,
@@ -172,6 +181,7 @@ export const Modal: React.FC<ModalProps> = ({
     modalScale,
     modalTranslateY,
     focusFirstElement,
+    onAnimationValues,
   ]);
 
   const getModalSize = (): ViewStyle => {
