@@ -9,8 +9,9 @@ import React from 'react';
 // NOTE: Using loose typing for style/accessibility pending RN type resolution alignment
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
+import { mapTextCategory, type TextVariant as MappingTextVariant } from '../../utils/componentMappings';
 
-export type TextVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'body1' | 'body2' | 'caption' | 'overline';
+export type TextVariant = MappingTextVariant;
 export type TextColor = 'primary' | 'secondary' | 'disabled' | 'inverse' | string;
 export type TextAlign = 'left' | 'center' | 'right' | 'justify';
 export type FontWeight = 'regular' | 'medium' | 'semibold' | 'bold';
@@ -46,29 +47,7 @@ export const Text: React.FC<TextProps> = ({
 }) => {
   const { theme, evaTheme } = useEnhancedTheme();
 
-  // Map our variants to UI Kitten categories
-  const getUIKittenCategory = (): string => {
-    switch (variant) {
-      case 'h1':
-        return 'h1';
-      case 'h2':
-        return 'h2';
-      case 'h3':
-        return 'h3';
-      case 'h4':
-        return 'h4';
-      case 'body1':
-        return 'p1';
-      case 'body2':
-        return 'p2';
-      case 'caption':
-        return 'c1';
-      case 'overline':
-        return 'c2';
-      default:
-        return 'p1';
-    }
-  };
+  const category = mapTextCategory(variant);
 
   // Get text color from Eva theme or fallback to legacy theme
   const getTextColor = (colorName: TextColor): string => {
@@ -88,7 +67,7 @@ export const Text: React.FC<TextProps> = ({
 
   return (
     <UIKittenText
-      category={getUIKittenCategory()}
+      category={category}
       style={[baseStyle, style]}
       numberOfLines={numberOfLines}
       testID={testID}

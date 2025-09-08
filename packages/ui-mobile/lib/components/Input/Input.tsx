@@ -8,12 +8,19 @@ import { Input as UIKittenInput } from '@ui-kitten/components';
 import type { InputProps as UIKittenInputProps } from '@ui-kitten/components';
 import React, { type ReactNode } from 'react';
 import { type ViewStyle, StyleSheet } from 'react-native';
+import {
+  mapInputSize,
+  mapInputStatus,
+  type InputSize as MappingInputSize,
+  type InputStatus as MappingInputStatus,
+  type InputVariant as MappingInputVariant,
+} from '../../utils/componentMappings';
 
 // No theme usage here
 
-export type InputVariant = 'outline' | 'filled' | 'underline';
-export type InputSize = 'sm' | 'md' | 'lg';
-export type InputStatus = 'default' | 'error' | 'success';
+export type InputVariant = MappingInputVariant;
+export type InputSize = MappingInputSize;
+export type InputStatus = MappingInputStatus;
 
 export interface InputProps {
   variant?: InputVariant;
@@ -53,31 +60,9 @@ export const Input: React.FC<InputProps> = ({
   style,
   ...props
 }) => {
-  // Map our sizes to UI Kitten sizes
-  const getUIKittenSize = (): string => {
-    switch (size) {
-      case 'sm':
-        return 'small';
-      case 'md':
-        return 'medium';
-      case 'lg':
-        return 'large';
-      default:
-        return 'medium';
-    }
-  };
-
-  // Map our status to UI Kitten status
-  const getUIKittenStatus = (): string | undefined => {
-    switch (status) {
-      case 'error':
-        return 'danger';
-      case 'success':
-        return 'success';
-      default:
-        return 'basic';
-    }
-  };
+  // Shared mapping
+  const normalizedSize = mapInputSize(size);
+  const normalizedStatus = mapInputStatus(status);
 
   // Render left/right icon accessories
   const renderLeftIcon = leftIcon ? () => leftIcon as any : undefined;
@@ -92,8 +77,8 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <UIKittenInput
-      size={getUIKittenSize()}
-      status={getUIKittenStatus()}
+      size={normalizedSize}
+      status={normalizedStatus}
       disabled={disabled}
       placeholder={placeholder}
       value={value}

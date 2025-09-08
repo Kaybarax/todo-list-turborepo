@@ -29,7 +29,7 @@ Rationale: Establish lint, test, and utility foundation so subsequent PRs are sm
 
 Rationale: Refactors depend on these shared resources (avoid rework).
 
-- [ ] P1-1 (A/T) Introduce component mapping util.
+- [x] P1-1 (A/T) Introduce component mapping util.
   - Files: create `lib/utils/componentMappings.ts` (variant/status/size maps); modify `Button/Button.tsx`, `Input/Input.tsx`, `Text/Text.tsx`, `Card/Card.tsx` (if variant logic), `TabBar/TabBar.tsx` to consume util; add `__tests__/componentMappings.test.ts`.
   - Remove local switch statements.
 - [ ] P1-2 (A11Y/P) Add reduced motion hook.

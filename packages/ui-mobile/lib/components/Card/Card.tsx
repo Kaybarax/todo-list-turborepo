@@ -9,9 +9,10 @@ import React from 'react';
 import { type ViewStyle, type TextStyle, View } from 'react-native';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
+import { mapCardAppearance, type CardVariant as MappingCardVariant } from '../../utils/componentMappings';
 import { Text } from '../Text/Text';
 
-export type CardVariant = 'elevated' | 'outlined' | 'filled';
+export type CardVariant = MappingCardVariant;
 
 export interface CardProps {
   variant?: CardVariant;
@@ -75,19 +76,7 @@ const CardBase: React.FC<CardProps> = ({
 }) => {
   const { theme } = useEnhancedTheme();
 
-  // Map our variants to UI Kitten appearances
-  const getUIKittenAppearance = (): string => {
-    switch (variant) {
-      case 'elevated':
-        return 'filled';
-      case 'outlined':
-        return 'outline';
-      case 'filled':
-        return 'filled';
-      default:
-        return 'filled';
-    }
-  };
+  const appearance = mapCardAppearance(variant);
 
   // Custom styles for padding and variant-specific styling
   const customStyles = [
@@ -106,7 +95,7 @@ const CardBase: React.FC<CardProps> = ({
 
   return (
     <UIKittenCard
-      appearance={getUIKittenAppearance()}
+      appearance={appearance}
       onPress={onPress}
       style={customStyles}
       testID={testID}

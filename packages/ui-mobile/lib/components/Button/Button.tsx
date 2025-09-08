@@ -8,11 +8,18 @@ import { Button as UIKittenButton, Spinner } from '@ui-kitten/components';
 import type { ButtonProps as UIKittenButtonProps } from '@ui-kitten/components';
 import React, { type ReactNode } from 'react';
 import { type ViewStyle, View, StyleSheet } from 'react-native';
+import {
+  mapButtonAppearance,
+  mapButtonSize,
+  mapButtonStatus,
+  type ButtonVariant as MappingButtonVariant,
+  type ButtonSize as MappingButtonSize,
+} from '../../utils/componentMappings';
 
 // No theme usage required here
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive';
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonVariant = MappingButtonVariant;
+export type ButtonSize = MappingButtonSize;
 
 export interface ButtonProps {
   variant?: ButtonVariant;
@@ -54,49 +61,10 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   // no-op
 
-  // Map our variants to UI Kitten appearances
-  const getUIKittenAppearance = (): string => {
-    switch (variant) {
-      case 'primary':
-        return 'filled';
-      case 'secondary':
-        return 'filled';
-      case 'outline':
-        return 'outline';
-      case 'ghost':
-        return 'ghost';
-      case 'link':
-        return 'ghost';
-      default:
-        return 'filled';
-    }
-  };
-
-  // Map our sizes to UI Kitten sizes
-  const getUIKittenSize = (): string => {
-    switch (size) {
-      case 'sm':
-        return 'small';
-      case 'md':
-        return 'medium';
-      case 'lg':
-        return 'large';
-      default:
-        return 'medium';
-    }
-  };
-
-  // Get status for secondary variant
-  const getUIKittenStatus = (): string | undefined => {
-    switch (variant) {
-      case 'secondary':
-        return 'basic';
-      case 'destructive':
-        return 'danger';
-      default:
-        return undefined;
-    }
-  };
+  // Mapping via shared util
+  const appearance = mapButtonAppearance(variant);
+  const normalizedSize = mapButtonSize(size);
+  const status = mapButtonStatus(variant);
 
   // Render loading indicator
   const LoadingIndicator = (props: any) => (
@@ -115,9 +83,9 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <UIKittenButton
-      appearance={getUIKittenAppearance()}
-      size={getUIKittenSize()}
-      status={getUIKittenStatus()}
+      appearance={appearance}
+      size={normalizedSize}
+      status={status}
       disabled={disabled || loading}
       onPress={onPress}
       onLongPress={onLongPress}
