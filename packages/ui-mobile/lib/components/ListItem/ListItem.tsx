@@ -148,7 +148,14 @@ export const ListItem: React.FC<ListItemProps> = ({
 
   // Non-pressable uses role=listitem for semantic grouping inside potential lists
   return (
-    <View style={containerStyles as any} testID={testID} accessibilityLabel={finalA11yLabel}>
+    <View
+      style={containerStyles as any}
+      testID={testID}
+      accessibilityLabel={finalA11yLabel}
+      accessibilityState={disabled ? { disabled: true } : undefined}
+      // Defensive: ignore any accidental onPress injection when disabled
+      onStartShouldSetResponder={() => false}
+    >
       {content}
     </View>
   );
