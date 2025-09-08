@@ -1,6 +1,9 @@
 import * as eva from '@eva-design/eva';
 import { type Decorator } from '@storybook/react';
-import { ApplicationProvider } from '@ui-kitten/components';
+// Some bundlers / ESM interop for @ui-kitten/components do not expose named exports consistently.
+// Import the module namespace and access ApplicationProvider off it for resilience.
+// Using a local shim to avoid CJS/ESM interop crash ("exports is not defined") from @ui-kitten/components under Vite.
+import * as UIKitten from '../shims/ui-kitten';
 import React from 'react';
 
 // Best-effort dynamic import of EnhancedThemeProvider; non-fatal if missing.
@@ -22,10 +25,21 @@ export const withUIKitten: Decorator = Story => {
   ) : (
     story
   );
+  const Provider = (UIKitten as any).ApplicationProvider ?? (UIKitten as any).default?.ApplicationProvider;
+  if (!Provider) {
+    // Fallback: render story with a warning banner if provider missing
+    return (
+      <div style={{ border: '2px solid #f39c12', padding: 12 }}>
+        <strong>UI Kitten provider unavailable:</strong> Unable to locate ApplicationProvider export. Rendering story
+        without theme context.
+        <div style={{ marginTop: 12 }}>{themed}</div>
+      </div>
+    );
+  }
   return (
-    <ApplicationProvider {...eva} theme={eva.light}>
+    <Provider {...eva} theme={eva.light}>
       {themed}
-    </ApplicationProvider>
+    </Provider>
   );
 };
 

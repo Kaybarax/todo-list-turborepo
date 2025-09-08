@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { buildMobileMeta } from './helpers/storyMeta';
+// Direct meta object to satisfy CSF indexer (avoid helper abstraction).
 
 interface ListItemProps {
   title: string;
@@ -50,10 +50,13 @@ const ListItem: React.FC<ListItemProps> = ({ title, subtitle, disabled, onPress 
   </div>
 );
 
-const meta: Meta<typeof ListItem> = buildMobileMeta({
+const meta: Meta<typeof ListItem> = {
   title: 'Deprecated/ListItem',
   component: ListItem,
+  tags: ['autodocs'],
   parameters: {
+    layout: 'centered',
+    controls: { expanded: true },
     docs: {
       description: {
         component: 'Deprecated custom ListItem shim. Prefer native UI Kitten ListItem directly.',
@@ -66,7 +69,7 @@ const meta: Meta<typeof ListItem> = buildMobileMeta({
     disabled: { control: 'boolean' },
     onPress: { action: 'pressed' },
   },
-});
+};
 
 export default meta;
 

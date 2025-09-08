@@ -2,7 +2,7 @@ import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { withUIKitten } from './decorators/UIKittenProvider';
-import { buildMobileMeta } from './helpers/storyMeta';
+// Removed buildMobileMeta helper to provide a direct object literal meta export (required for CSF indexing).
 import './shared/story-styles.css';
 
 // Web-compatible Avatar component for Storybook
@@ -53,17 +53,20 @@ const Avatar: React.FC<AvatarProps> = ({ source, initials, size = 'md', variant 
   );
 };
 
-const meta: Meta<typeof Avatar> = buildMobileMeta({
+const meta: Meta<typeof Avatar> = {
   title: 'Components/Avatar',
   component: Avatar,
+  decorators: [withUIKitten],
+  tags: ['autodocs'],
   parameters: {
+    layout: 'centered',
+    controls: { expanded: true },
     docs: {
       description: {
         component: 'A customizable avatar component (web preview) for images or initials.',
       },
     },
   },
-  decorators: [withUIKitten],
   argTypes: {
     size: { control: { type: 'select' }, options: ['xs', 'sm', 'md', 'lg', 'xl'], description: 'Size of the avatar' },
     variant: {
@@ -74,7 +77,7 @@ const meta: Meta<typeof Avatar> = buildMobileMeta({
     initials: { control: { type: 'text' }, description: 'Initials to display when no image is provided' },
     source: { control: { type: 'text' }, description: 'Image URL to display' },
   },
-});
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

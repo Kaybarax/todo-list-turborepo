@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { buildMobileMeta } from './helpers/storyMeta';
+// Direct meta object (avoid helper indirection to satisfy CSF static analysis expectations).
 
 interface FormFieldProps {
   label: string;
@@ -64,10 +64,13 @@ const FormField: React.FC<FormFieldProps> = ({
   );
 };
 
-const meta: Meta<typeof FormField> = buildMobileMeta({
+const meta: Meta<typeof FormField> = {
   title: 'Forms/FormField',
   component: FormField,
+  tags: ['autodocs'],
   parameters: {
+    layout: 'centered',
+    controls: { expanded: true },
     docs: {
       description: {
         component: 'Composable label + input wrapper exposing hint and error messaging with accessible relationships.',
@@ -83,7 +86,7 @@ const meta: Meta<typeof FormField> = buildMobileMeta({
     value: { control: 'text' },
     onChangeText: { action: 'change' },
   },
-});
+};
 
 export default meta;
 

@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { buildMobileMeta } from './helpers/storyMeta';
+// Using direct meta object to satisfy CSF requirement (default export must be a plain object).
 
 // Web-compatible Button component for Storybook (does not rely on React Native or UI Kitten)
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive';
@@ -82,10 +82,13 @@ const WebButton: React.FC<WebButtonProps> = ({
   );
 };
 
-const meta: Meta<typeof WebButton> = buildMobileMeta({
+const meta: Meta<typeof WebButton> = {
   title: 'Components/Button',
   component: WebButton,
+  tags: ['autodocs'],
   parameters: {
+    layout: 'centered',
+    controls: { expanded: true },
     docs: {
       description: {
         component:
@@ -114,7 +117,7 @@ const meta: Meta<typeof WebButton> = buildMobileMeta({
     },
     onPress: { action: 'pressed' },
   },
-});
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

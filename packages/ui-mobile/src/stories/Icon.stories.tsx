@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { buildMobileMeta } from './helpers/storyMeta';
+// Direct meta object to satisfy CSF indexer.
 
 interface IconProps {
   name: string;
@@ -34,10 +34,13 @@ const Icon: React.FC<IconProps> = ({ name, size = 24, color = '#1C1C1E', decorat
   );
 };
 
-const meta: Meta<typeof Icon> = buildMobileMeta({
+const meta: Meta<typeof Icon> = {
   title: 'Components/Icon',
   component: Icon,
+  tags: ['autodocs'],
   parameters: {
+    layout: 'centered',
+    controls: { expanded: true },
     docs: { description: { component: 'Simple emoji-backed icon primitive for Storybook demonstration.' } },
   },
   argTypes: {
@@ -47,7 +50,7 @@ const meta: Meta<typeof Icon> = buildMobileMeta({
     decorative: { control: 'boolean', description: 'If false, an accessible label is required' },
     label: { control: 'text' },
   },
-});
+};
 
 export default meta;
 

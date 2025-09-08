@@ -2,7 +2,7 @@ import { type Meta, type StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
 import { withUIKitten } from './decorators/UIKittenProvider';
-import { buildMobileMeta } from './helpers/storyMeta';
+// Direct meta object to satisfy CSF indexer.
 import './shared/story-styles.css';
 
 type ModalSize = 'sm' | 'md' | 'lg' | 'fullscreen';
@@ -32,10 +32,14 @@ const WebModal: React.FC<WebModalProps> = ({ visible, size = 'md', dismissible =
 // Heading class helpers (generic naming)
 const headingClass = (variant: 'default' | 'large' | 'fullscreen') => `sbHeading sbHeading--${variant}`;
 
-const meta: Meta<typeof WebModal> = buildMobileMeta({
+const meta: Meta<typeof WebModal> = {
   title: 'Components/Modal',
   component: WebModal,
+  decorators: [withUIKitten],
+  tags: ['autodocs'],
   parameters: {
+    layout: 'centered',
+    controls: { expanded: true },
     docs: {
       description: {
         component:
@@ -43,7 +47,6 @@ const meta: Meta<typeof WebModal> = buildMobileMeta({
       },
     },
   },
-  decorators: [withUIKitten],
   argTypes: {
     visible: { control: { type: 'boolean' }, description: 'Whether the modal is visible' },
     size: {
@@ -67,7 +70,7 @@ const meta: Meta<typeof WebModal> = buildMobileMeta({
     },
     onClose: { action: 'modal closed' },
   },
-});
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
