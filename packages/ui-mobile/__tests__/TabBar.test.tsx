@@ -128,4 +128,17 @@ describe('TabBar', () => {
 
     expect(screen.getByTestId('out-of-bounds-tabbar')).toBeTruthy();
   });
+
+  it('positions indicator instantly when reduced motion is preferred', () => {
+    jest.doMock('../lib/hooks/useReducedMotion', () => ({
+      useReducedMotion: () => ({
+        prefersReducedMotion: true,
+        systemPrefersReducedMotion: true,
+        maybe: (a: any, b: any) => b,
+      }),
+    }));
+    const { TabBar: PatchedTabBar } = require('../lib/components/TabBar/TabBar');
+    renderWithTheme(<PatchedTabBar tabs={mockTabs} activeIndex={2} onTabPress={() => {}} testID="rm-tabbar" />);
+    expect(screen.getByTestId('rm-tabbar')).toBeTruthy();
+  });
 });

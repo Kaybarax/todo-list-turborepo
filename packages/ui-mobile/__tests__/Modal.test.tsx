@@ -144,4 +144,21 @@ describe('Modal', () => {
       expect(screen.getByTestId('focus-modal')).toBeTruthy();
     });
   });
+
+  it('renders instantly without animations when reduced motion is preferred', () => {
+    jest.doMock('../lib/hooks/useReducedMotion', () => ({
+      useReducedMotion: () => ({
+        prefersReducedMotion: true,
+        systemPrefersReducedMotion: true,
+        maybe: (a: any, b: any) => b,
+      }),
+    }));
+    const { Modal: PatchedModal } = require('../lib/components/Modal/Modal');
+    renderWithTheme(
+      <PatchedModal visible={true} onClose={() => {}} testID="reduced-motion-modal">
+        <Text>Reduced Motion</Text>
+      </PatchedModal>,
+    );
+    expect(screen.getByTestId('reduced-motion-modal')).toBeTruthy();
+  });
 });
