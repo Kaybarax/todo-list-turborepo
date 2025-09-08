@@ -184,6 +184,25 @@ These may be executed in parallel per component once Phases 0–2 are complete; 
 - [x] P6-2 (A11Y) Modal described-by hidden summary (optional, platform support caveat).
   - Introduced `accessibilityDescription` prop in `Modal` rendering visually hidden caption text for assistive tech only.
 - [ ] P6-3 (A) Explore refactor of Header to wrap `TopNavigation` (spike doc / issue link).
+  - Spike Goals:
+    - API Parity: Confirm `HeaderProps` can map 1:1 (title -> `title`, leftAction/rightAction -> `accessoryLeft`/`accessoryRight`).
+    - Theming: Ensure Eva + custom theme tokens (spacing, colors) still applied without duplicating style merges.
+    - Accessibility: Guarantee `accessibilityRole="header"` + label, even if `TopNavigation` omits it (wrap adds role/label override).
+    - Layout Fidelity: Match current height, padding (safe area + spacing tokens), and action hit slop (>=44x44) within +/-1px on iOS/Android web emulation.
+    - Performance: Measure render cost diff (React Profiler) across 100 mounts; acceptable if overhead <0.2ms median vs custom.
+  - Risks / Unknowns:
+    - `TopNavigation` internal padding may conflict with custom safe-area handling (double top inset risk).
+    - Potential loss of precise shadow/elevation control if `TopNavigation` enforces its own container style.
+  - Evaluation Steps:
+    1. Create `HeaderTopNavSpike.tsx` side-by-side wrapper implementing current API via `TopNavigation`.
+    2. Write `__tests__/HeaderTopNavSpike.test.tsx` comparing snapshot structure + a11y role to existing `Header`.
+    3. Add temporary Storybook story `Header/SpikeComparison` for manual visual diff.
+    4. Profile mount/render using existing micro-profiler pattern (simple Date.now diff loop) for both variants.
+    5. Document findings in `docs/HeaderTopNavigationSpike.md` with recommend: adopt / defer.
+  - Acceptance to Proceed (replace implementation):
+    - All goals satisfied AND no regression in accessibility AND performance delta within threshold.
+  - If Deferred:
+    - Record blockers & upstream issues (file against UI Kitten if needed) and close task with rationale.
 - [ ] P6-4 (P) Final pass: ensure memoization applied only where net benefit (remove unnecessary React.memo wrappers if prop churn high).
 
 ## File Creation / Modification Summary (Quick Reference)
