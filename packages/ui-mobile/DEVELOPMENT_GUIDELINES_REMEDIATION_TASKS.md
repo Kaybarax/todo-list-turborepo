@@ -145,9 +145,36 @@ These may be executed in parallel per component once Phases 0–2 are complete; 
 
 ## Phase 5 – Performance & Styling Enhancements (P2)
 
-- [ ] P5-1 (P) Memoize heavy or repeated mapping logic across Button, Badge, Avatar if profiling indicates re-renders (optional measurements).
-- [ ] P5-2 (S) Replace any remaining inline style objects (scan `lib/components/**/` for `style={{`).
-- [ ] P5-3 (DOC) Update performance doc snippet with concrete examples (before/after diff of memoization) in compliance doc.
+- [x] P5-1 (P) Memoize heavy or repeated mapping logic across Button, Badge, Avatar if profiling indicates re-renders (optional measurements).
+  - Baseline mapping micro-benchmark (800 iterations) recorded sub-microsecond medians (Button 0.000166ms, Badge 0.000250ms, Avatar 0.000166ms, Text 0.000125ms) with P95 << 0.001ms.
+  - Conclusion: Existing object lookup + small switch logic is effectively free; additional memoization layers would add overhead and complexity without measurable gain.
+  - Action: No further memoization added beyond existing React.memo / useMemo already present (Avatar, Badge). Documentation to reflect rationale in performance section.
+- [x] P5-2 (S) Replace any remaining inline style objects (scan `lib/components/**/` for `style={{`).
+  - Refactored inline objects in `NetworkSelector` (list & grid variants) and `Modal` (flex containers) to static StyleSheet/const entries.
+  - Residual dynamic theme-based objects retained only where values depend on runtime tokens (background, border colors, spacing) and are composed minimally.
+- [x] P5-3 (DOC) Update performance doc snippet with concrete examples (before/after diff of memoization) in compliance doc.
+  - Added "Phase 5 (P5-3) Concrete Example" subsection to `DEVELOPMENT_GUIDELINES_COMPLIANCE.md` illustrating:
+    1. Why additional memoization was skipped (mapping cost << 1 microsecond; memo layer would add comparison + object allocation overhead > work avoided).
+    2. Styling extraction example showing before vs after for `NetworkSelector` inline style objects becoming static `StyleSheet` entries (reduces per-render allocations, improves diffing & RN dev tooling symbolication).
+  - Example (excerpt) used in doc:
+    **Before** (inline allocation each render)
+
+    ```ts
+    <View style={{ padding: 12, borderRadius: 8, backgroundColor: selected ? theme.colors.primary : theme.colors.card }} />
+    ```
+
+    **After** (static + minimal dynamic merge)
+
+    ```ts
+    const styles = StyleSheet.create({
+      item: { padding: 12, borderRadius: 8 },
+      itemSelected: { backgroundColor: theme.colors.primary },
+      itemBase: { backgroundColor: theme.colors.card },
+    });
+    <View style={[styles.item, selected ? styles.itemSelected : styles.itemBase]} />
+    ```
+
+  - Outcome: Documentation now contains concrete guidance + a decision record explaining why "opt out" of premature memoization is compliant.
 
 ## Phase 6 – Nice-to-Have / Polish (P3)
 

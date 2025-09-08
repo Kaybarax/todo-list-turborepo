@@ -1,5 +1,6 @@
-import React from 'react';
 import { type Meta, type StoryObj } from '@storybook/react';
+import React from 'react';
+
 import { buildMobileMeta } from './helpers/storyMeta';
 
 interface IconProps {
@@ -25,7 +26,7 @@ const Icon: React.FC<IconProps> = ({ name, size = 24, color = '#1C1C1E', decorat
     <span
       role={decorative ? 'img' : 'img'}
       aria-hidden={decorative || undefined}
-      aria-label={!decorative ? label || name : undefined}
+      aria-label={!decorative ? (label ?? name) : undefined}
       style={{ fontSize: size, lineHeight: 1, color }}
     >
       {glyph}

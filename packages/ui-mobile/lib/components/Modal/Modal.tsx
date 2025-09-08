@@ -91,6 +91,10 @@ const styles = {
 
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
+// Extracted simple flex styles (avoid recreating inline objects each render)
+const stylesFullFlex: ViewStyle = { flex: 1 };
+const stylesFlex1: ViewStyle = { flex: 1 };
+
 export const Modal: React.FC<ModalProps> = ({
   visible,
   onClose,
@@ -266,7 +270,7 @@ export const Modal: React.FC<ModalProps> = ({
     >
       {visible && (
         <KeyboardAvoidingView
-          style={{ flex: 1 }}
+          style={stylesFullFlex}
           behavior={keyboardAvoidingBehavior}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 25}
         >
@@ -287,7 +291,7 @@ export const Modal: React.FC<ModalProps> = ({
               {/* Header */}
               {(title || showCloseButton) && (
                 <View style={styles.headerRow(paddingLg, borderColor)}>
-                  <View style={{ flex: 1 }}>
+                  <View style={stylesFlex1}>
                     {title && (
                       <Text variant="h3" color="primary" weight="semibold">
                         {title}

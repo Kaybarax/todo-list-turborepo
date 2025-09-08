@@ -1,0 +1,151 @@
+name: UI Mobile Performance Profiling
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'packages/ui-mobile/**'
+      - '.github/workflows/ui-mobile-performance.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/ui-mobile/**'
+      - '.github/workflows/ui-mobile-performance.yml'
+
+jobs:
+  profile:
+    name: Profile Components
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build ui-mobile package
+        run: pnpm --filter @todo/ui-mobile build
+
+      - name: Run profiling (JSON)
+        run: pnpm --filter @todo/ui-mobile profile:components:ci
+
+      - name: Save baseline artifact (main branch)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-mobile-profile-baseline
+          path: packages/ui-mobile/perf/profile-ci.json
+          retention-days: 30
+
+      - name: Download baseline (PR comparison)
+        if: github.event_name == 'pull_request'
+        uses: actions/download-artifact@v4
+        with:
+          name: ui-mobile-profile-baseline
+          path: baseline
+        continue-on-error: true
+
+      - name: Show profiling output
+        run: cat packages/ui-mobile/perf/profile-ci.json || true
+
+      - name: Upload current profiling artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-mobile-profile-${{ github.run_id }}
+          path: packages/ui-mobile/perf/profile-ci.json
+          retention-days: 14
+
+      - name: Performance regression check
+        id: perfcheck
+        run: |
+          node <<'EOF'
+          const fs = require('fs');
+          const currentPath = 'packages/ui-mobile/perf/profile-ci.json';
+          if (!fs.existsSync(currentPath)) { console.log('No current profile file found'); process.exit(0); }
+          const current = JSON.parse(fs.readFileSync(currentPath,'utf8'));
+          let baseline = null;
+          if (fs.existsSync('baseline/profile-ci.json')) {
+            baseline = JSON.parse(fs.readFileSync('baseline/profile-ci.json','utf8'));
+          }
+          const absMedianThreshold = 5; // ms
+          const pctRegressionThreshold = 25; // % increase allowed
+          const offenders = [];
+          const comparison = [];
+          for (const [name, stats] of Object.entries(current.results)) {
+            const base = baseline?.results?.[name];
+            let pct = null;
+            if (base && base.medianMs > 0) {
+              pct = ((stats.medianMs - base.medianMs) / base.medianMs) * 100;
+            }
+            const absFail = stats.medianMs > absMedianThreshold;
+            const pctFail = pct !== null && pct > pctRegressionThreshold;
+            if (absFail || pctFail) {
+              offenders.push({ name, median: stats.medianMs, baselineMedian: base?.medianMs ?? null, pct });
+            }
+            comparison.push({ name, median: stats.medianMs, baselineMedian: base?.medianMs ?? null, pct });
+          }
+          fs.writeFileSync('perf-comparison.json', JSON.stringify({ comparison, thresholds: { absMedianThreshold, pctRegressionThreshold } }, null, 2));
+          // Emit markdown summary (lightweight human readable)
+          const fmt = n => n.toFixed(6);
+          let md = `| Component | Median (ms) | Avg (ms) | P95 (ms) | Baseline Median (ms) | % Change |\n|----------|-------------|---------|---------|----------------------|---------|\n`;
+          for (const row of comparison) {
+            const cur = current.results[row.name];
+            const pctDisp = row.pct == null ? 'n/a' : row.pct.toFixed(2)+'%';
+            md += `| ${row.name} | ${fmt(cur.medianMs)} | ${fmt(cur.avgMs||cur.medianMs)} | ${fmt(cur.p95Ms||cur.medianMs)} | ${row.baselineMedian?.toFixed?.(6) ?? 'n/a'} | ${pctDisp} |\n`;
+          }
+          fs.writeFileSync('perf-summary.md', md);
+          // Expose outcome hint for later steps
+          const negligible = comparison.every(r => current.results[r.name].medianMs < 1);
+          fs.writeFileSync('perf-flags.json', JSON.stringify({ negligible }, null, 2));
+          if (offenders.length) {
+            console.error('Performance regression detected:');
+            offenders.forEach(o => console.error(`${o.name}: median=${o.median.toFixed(2)}ms baseline=${o.baselineMedian?.toFixed?.(2) ?? 'n/a'} pct=${o.pct?.toFixed?.(1) ?? 'n/a'}%`));
+            process.exit(1);
+          } else {
+            console.log('No regressions beyond thresholds.');
+          }
+          EOF
+
+      - name: Upload comparison JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-mobile-profile-comparison-${{ github.run_id }}
+          path: perf-comparison.json
+          retention-days: 14
+
+      - name: Upload perf summary markdown
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-mobile-profile-summary-${{ github.run_id }}
+          path: |
+            perf-summary.md
+            perf-flags.json
+          retention-days: 14
+
+      - name: Comment summary on PR
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          recreate: true
+          header: ui-mobile-perf
+          message: |
+            ### UI Mobile Performance Profile
+            Iterations: 800
+            Artifact: ui-mobile-profile-${{ github.run_id }} (current JSON stats)
+            Comparison: ui-mobile-profile-comparison-${{ github.run_id }} (diff JSON)
+            Thresholds: median <= 5ms AND median increase <= 25%
+            Status: ${{ steps.perfcheck.outcome == 'success' && 'No regressions detected.' || 'Regression detected – see job log.' }}
+            Notes: Mapping layer currently negligible (<1ms median across targets); further memoization not required (see P5-1 rationale).

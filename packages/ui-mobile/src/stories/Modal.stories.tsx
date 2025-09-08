@@ -1,9 +1,9 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import './shared/story-styles.css';
 
 import { withUIKitten } from './decorators/UIKittenProvider';
 import { buildMobileMeta } from './helpers/storyMeta';
+import './shared/story-styles.css';
 
 type ModalSize = 'sm' | 'md' | 'lg' | 'fullscreen';
 type ModalType = 'default' | 'alert' | 'confirmation';

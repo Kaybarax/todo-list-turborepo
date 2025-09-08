@@ -378,6 +378,29 @@ For conditional rendering differences (e.g. skipping Lottie / complex animated c
 
 ```ts
 const { maybe } = useReducedMotion();
+
+### 4. Phase 5 (P5-1) Mapping Cost Assessment
+
+Date: 2025-09-09
+
+Benchmark Harness: `scripts/profile-components.mjs` (simplified mapping micro-benchmark; 800 iterations).
+
+| Target            | Median (ms) | Avg (ms) | P95 (ms) | Renders |
+| ----------------- | ----------: | -------: | -------: | ------: |
+| Button(primary)   | 0.000166    | 0.000243 | 0.000292 |     800 |
+| Badge(status)     | 0.000250    | 0.000639 | 0.000292 |     800 |
+| Avatar(initials)  | 0.000166    | 0.000215 | 0.000167 |     800 |
+| Text(variant)     | 0.000125    | 0.000183 | 0.000208 |     800 |
+
+Guidance Thresholds: Investigate if median > 1ms OR P95 > 3ms.
+
+Result: All mapping operations are sub‑microsecond. Additional memo layers (e.g. caching map lookups) would introduce overhead > baseline cost. Existing selective `React.memo` and `useMemo` usage (Avatar, Badge) is sufficient. No further optimization taken.
+
+Action Items Closed:
+* P5-1 marked complete – rationale documented here and in remediation task list.
+* CI profiling job retains thresholds (5ms absolute median, 25% regression) mainly as a safeguard for future, potentially heavier logic additions.
+
+Future Consideration: If future feature work adds dynamic token resolution or expensive runtime theming to mappings, re-run harness before adding caching to avoid premature complexity.
 return maybe(<AnimatedSpinner /> , <StaticIcon />);
 ```
 

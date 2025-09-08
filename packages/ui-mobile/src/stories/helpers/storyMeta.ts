@@ -1,4 +1,5 @@
 import { type Decorator, type Parameters } from '@storybook/react';
+
 import { withUIKitten } from '../decorators/UIKittenProvider';
 
 // Shared docs/parameters baseline.
@@ -28,8 +29,8 @@ export const buildMobileMeta = <T extends object>(overrides: {
   return {
     title,
     component,
-    parameters: { ...baseParameters, ...(parameters || {}) },
-    argTypes: { ...(argTypes || {}) },
+    parameters: { ...baseParameters, ...(parameters ?? {}) },
+    argTypes: { ...(argTypes ?? {}) },
     decorators: decorators ?? mobileDecorators,
     tags: tags ?? ['autodocs'],
   } as const;

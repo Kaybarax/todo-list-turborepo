@@ -46,6 +46,9 @@ const NETWORK_INFO = {
   },
 };
 
+// Helper to return selected state style (kept outside component to avoid recreation)
+const stylesSelected = (color: string) => ({ backgroundColor: color + '20', borderColor: color });
+
 export const NetworkSelector = ({
   selectedNetwork,
   onNetworkSelect,
@@ -69,6 +72,13 @@ export const NetworkSelector = ({
     return Number.isFinite(parsed) ? parsed : 0.5;
   };
 
+  // Precompute frequently reused theme-derived primitives to avoid reallocation
+  const borderRadiusFallback = (() => {
+    const raw = evaTheme['border-radius'];
+    const parsed = parseInt(raw ?? '');
+    return Number.isFinite(parsed) ? parsed : 8;
+  })();
+
   if (variant === 'list') {
     return (
       <View style={[styles.listContainer, style]} testID={testID}>
@@ -86,30 +96,25 @@ export const NetworkSelector = ({
               accessibilityState={{ selected: isSelected, disabled }}
               accessibilityLabel={`${networkInfo.name}. ${networkInfo.description}`}
               style={[
+                styles.listItemBase,
                 {
                   backgroundColor: getBackgroundColor(),
                   borderColor: getBorderColor(),
-                  // Safely derive border radius from theme token, fallback to 8
-                  borderRadius: (() => {
-                    const raw = evaTheme['border-radius'];
-                    const parsed = parseInt(raw ?? '');
-                    return Number.isFinite(parsed) ? parsed : 8;
-                  })(),
-                  borderWidth: 1,
+                  borderRadius: borderRadiusFallback,
                   marginBottom: theme.spacing.sm,
                   padding: theme.spacing.md,
                 },
-                isSelected && { backgroundColor: networkColor + '20', borderColor: networkColor },
+                isSelected && stylesSelected(networkColor),
                 disabled && { opacity: getDisabledOpacity() },
               ]}
             >
               <View style={styles.listItemContent}>
-                <Text style={[styles.networkIcon, { fontSize: 24, marginBottom: 0 }]}>{networkInfo.icon}</Text>
-                <View style={[styles.networkInfo, { flex: 1, marginLeft: theme.spacing.md }]}>
+                <Text style={[styles.networkIcon, styles.networkIconLarge]}>{networkInfo.icon}</Text>
+                <View style={[styles.networkInfo, { marginLeft: theme.spacing.md }]}>
                   <Text category="s1" style={[{ color: getTextPrimaryColor() }, isSelected && { color: networkColor }]}>
                     {networkInfo.name}
                   </Text>
-                  <Text category="c1" style={{ color: getTextSecondaryColor() }}>
+                  <Text category="c1" style={[styles.secondaryText, { color: getTextSecondaryColor() }]}>
                     {networkInfo.description}
                   </Text>
                 </View>
@@ -118,7 +123,7 @@ export const NetworkSelector = ({
                     variant="primary"
                     size="small"
                     text="✓"
-                    style={[{ height: 20, minWidth: 20 }, { backgroundColor: networkColor }]}
+                    style={[styles.checkBadge, { backgroundColor: networkColor }]}
                   />
                 )}
               </View>
@@ -154,28 +159,19 @@ export const NetworkSelector = ({
               accessibilityState={{ selected: isSelected, disabled }}
               accessibilityLabel={`${networkInfo.name}. ${networkInfo.description}`}
               style={[
+                styles.gridItemBase,
                 {
-                  alignItems: 'center',
                   backgroundColor: getBackgroundColor(),
                   borderColor: getBorderColor(),
-                  borderRadius: (() => {
-                    const raw = evaTheme['border-radius'];
-                    const parsed = parseInt(raw ?? '');
-                    return Number.isFinite(parsed) ? parsed : 12;
-                  })(),
-                  borderWidth: 2,
-                  flex: 1,
-                  maxWidth: '48%',
-                  minWidth: '45%',
+                  borderRadius: borderRadiusFallback + 4, // grid variant slightly larger
                   padding: theme.spacing.lg,
-                  position: 'relative',
                 },
-                isSelected && { backgroundColor: networkColor + '20', borderColor: networkColor },
+                isSelected && stylesSelected(networkColor),
                 disabled && { opacity: getDisabledOpacity() },
               ]}
             >
               <View style={styles.networkContent}>
-                <Text style={[styles.networkIcon, { fontSize: 24, marginBottom: theme.spacing.sm }]}>
+                <Text style={[styles.networkIcon, styles.networkIconLarge, { marginBottom: theme.spacing.sm }]}>
                   {networkInfo.icon}
                 </Text>
                 <Text
@@ -191,34 +187,17 @@ export const NetworkSelector = ({
                 >
                   {networkInfo.name}
                 </Text>
-                <Text
-                  category="c1"
-                  style={{
-                    color: getTextSecondaryColor(),
-                    textAlign: 'center',
-                    lineHeight: 14,
-                  }}
-                >
+                <Text category="c1" style={[styles.secondaryText, { color: getTextSecondaryColor() }]}>
                   {networkInfo.description}
                 </Text>
               </View>
-
               {isSelected && (
-                <View
-                  style={[
-                    styles.selectedIndicator,
-                    {
-                      position: 'absolute',
-                      right: -4,
-                      top: -4,
-                    },
-                  ]}
-                >
+                <View style={[styles.selectedIndicator, styles.selectedIndicatorPosition]}>
                   <Badge
                     variant="primary"
                     size="small"
                     text="✓"
-                    style={[{ height: 20, minWidth: 20 }, { backgroundColor: networkColor }]}
+                    style={[styles.checkBadge, { backgroundColor: networkColor }]}
                   />
                 </View>
               )}
@@ -226,14 +205,9 @@ export const NetworkSelector = ({
           );
         })}
       </View>
-
       <Text
         category="c1"
-        style={{
-          color: getTextSecondaryColor(),
-          marginTop: theme.spacing.sm,
-          textAlign: 'center',
-        }}
+        style={[styles.secondaryText, { color: getTextSecondaryColor(), marginTop: theme.spacing.sm }]}
       >
         Select a blockchain network to connect your wallet
       </Text>
@@ -252,12 +226,21 @@ const styles = StyleSheet.create({
   networkContent: {
     alignItems: 'center',
   },
-  networkIcon: {
-    // Icon styles handled dynamically
+  networkIcon: {},
+  networkIconLarge: { fontSize: 24 },
+  selectedIndicator: {},
+  selectedIndicatorPosition: { position: 'absolute', right: -4, top: -4 },
+  listItemBase: { borderWidth: 1 },
+  gridItemBase: {
+    alignItems: 'center',
+    borderWidth: 2,
+    flex: 1,
+    maxWidth: '48%',
+    minWidth: '45%',
+    position: 'relative',
   },
-  selectedIndicator: {
-    // Position handled dynamically
-  },
+  checkBadge: { height: 20, minWidth: 20 },
+  secondaryText: { textAlign: 'center', lineHeight: 14 },
   // List variant styles
   listContainer: {
     // List container styles handled dynamically

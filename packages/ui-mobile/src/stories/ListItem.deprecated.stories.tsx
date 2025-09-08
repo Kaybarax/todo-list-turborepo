@@ -1,5 +1,6 @@
-import React from 'react';
 import { type Meta, type StoryObj } from '@storybook/react';
+import React from 'react';
+
 import { buildMobileMeta } from './helpers/storyMeta';
 
 interface ListItemProps {
@@ -41,7 +42,7 @@ const ListItem: React.FC<ListItemProps> = ({ title, subtitle, disabled, onPress 
       maxWidth: 360,
     }}
     role="listitem"
-    aria-disabled={disabled || undefined}
+    aria-disabled={disabled ? true : undefined}
     onClick={() => !disabled && onPress?.()}
   >
     <span style={{ fontWeight: 600 }}>{title}</span>
@@ -75,7 +76,7 @@ export const Deprecated: Story = {
   render: args => (
     <div>
       <Banner />
-      <ListItem {...args} />
+      <ListItem title={args.title ?? 'Legacy Item'} {...args} />
     </div>
   ),
   args: {

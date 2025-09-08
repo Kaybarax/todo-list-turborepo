@@ -40,7 +40,10 @@
     "test:storybook": "test-storybook",
     "test:storybook:ci": "test-storybook --ci",
     "clean": "rm -rf dist",
-    "prepublishOnly": "npm run clean && npm run build"
+    "prepublishOnly": "npm run clean && npm run build",
+    "profile:components": "node scripts/profile-components.mjs",
+    "profile:components:json": "node scripts/profile-components.mjs --json --out perf/profile-latest.json",
+    "profile:components:ci": "node scripts/profile-components.mjs 800 --json --out perf/profile-ci.json --quiet-table"
   },
   "dependencies": {
     "@eva-design/eva": "^2.2.0",
@@ -116,6 +119,7 @@
     "storybook": "^8.6.14",
     "style-dictionary": "^5.0.2",
     "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
     "typescript": "~5.8.3",
     "vite": "^7.1.2",
     "vite-plugin-dts": "^4.5.4",

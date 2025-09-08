@@ -1,9 +1,9 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
-import './shared/story-styles.css';
 
 import { withUIKitten } from './decorators/UIKittenProvider';
 import { buildMobileMeta } from './helpers/storyMeta';
+import './shared/story-styles.css';
 
 // Web-compatible Avatar component for Storybook
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
