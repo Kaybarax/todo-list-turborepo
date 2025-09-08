@@ -37,6 +37,77 @@ packages/ui-mobile/
 
 ## 🧩 Component Development
 
+## 🧾 Custom Implementations Rationale (Phase 0 Artifact)
+
+This section explains why certain components are implemented (or kept) as custom wrappers instead of directly exporting UI Kitten primitives. Every custom implementation must pay for itself in one or more of: Accessibility, Theming Consistency, Cross‑Platform Behavior, Performance, or API Simplification.
+
+### Evaluation Criteria (Decision Matrix)
+
+| Criterion                                                 | Keep Custom | Prefer Wrapper / Deprecate |
+| --------------------------------------------------------- | ----------- | -------------------------- |
+| Adds cross‑platform logic (layout / animation / focus)    | ✅          | ❌                         |
+| Normalizes a11y gaps in base component                    | ✅          | ❌                         |
+| Centralizes design tokens (variants / sizes)              | ✅          | ❌                         |
+| Removes complexity vs. base API                           | ✅          | ❌                         |
+| Only re-exports with minor style tweaks                   | ❌          | ✅                         |
+| Duplicates logic that will move to mapping util (Phase 1) | ❌          | ✅                         |
+
+### Modal
+
+Reasoning: We require (a) unified entrance / exit animations with an upcoming reduced‑motion branch (P1-2), (b) future focus trap / return-on-close semantics, (c) token-driven elevation + backdrop styling, and (d) deterministic testability (eliminating arbitrary timeouts – see MOD-3). A thin wrapper around UI Kitten `Modal` would not expose sufficient control hooks. Therefore the custom implementation stays.
+
+Planned Enhancements:
+
+- Integrate `useReducedMotion` (Phase 1) to branch animations.
+- Replace magic timeout with animation completion callback (MOD-3).
+- Add rationale cross-link in remediation tasks (MOD-1 satisfied by this section).
+
+### TabBar
+
+Reasoning: Needs coordinated indicator + label transition, adaptive layout, upcoming reduced motion path, and accessible roles / state across items (e.g., `accessibilityRole="tab"`, `accessibilityState.selected`). These behaviors exceed a direct pass-through of UI Kitten `BottomNavigation` and allow tighter integration with navigation state. Custom retained.
+
+Planned Enhancements:
+
+- Consume mapping util once introduced (P1-1) for variant/size.
+- Add reduced motion branch (TBR-2) and shadows util (P1-3 / TBR-3).
+
+### Header
+
+Reasoning: Provides simplified surface vs. `TopNavigation` (fewer nested wrappers) while enforcing consistent spacing, shadow/elevation (will migrate to shadows util), and an explicit `accessibilityRole="header"` (HDR-1). Custom retained; refactor may later wrap `TopNavigation` internally if convergence reduces code (see P6-3 spike).
+
+Planned Enhancements:
+
+- Apply shadows util (HDR-2) after P1-3.
+- Document optional action slot patterns in Storybook (Phase 2).
+
+### ListItem (Candidate for Deprecation)
+
+Current Value: Minimal – largely forwards props with light spacing adjustments.
+Assessment: Fails decision matrix (no unique logic; style tweaks only). We will mark as deprecated unless a compelling enhancement (composite layout / accessory alignment / a11y batching) is scheduled before Phase 3.
+
+Deprecation Plan:
+
+1. Mark component with JSDoc `@deprecated` tag now.
+2. Add Storybook story banner (`ListItem.deprecated.stories.tsx`) in Phase 2.
+3. Remove in first minor release occurring after ≥1 cycle (CHANGELOG entry required).
+
+Suggested JSDoc Banner:
+
+```ts
+/**
+ * @deprecated Will be removed in a future minor version. Use the base UI Kitten ListItem directly unless
+ * forthcoming composite layout enhancements are implemented.
+ */
+```
+
+### General Policy
+
+- New custom components MUST document rationale in this section (or a linked ADR) before merging.
+- If rationale becomes invalid (e.g., UI Kitten adds missing a11y behavior), schedule deprecation.
+- Refactors should prefer moving variant/size/status branching into the shared mapping util (P1-1) to reduce per-component duplication.
+
+Status: This section fulfills remediation task P0-4.
+
 ### Creating a New Component
 
 Follow these steps to create a new component:

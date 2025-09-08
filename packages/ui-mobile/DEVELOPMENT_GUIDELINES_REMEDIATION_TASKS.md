@@ -22,7 +22,7 @@ Rationale: Establish lint, test, and utility foundation so subsequent PRs are sm
   - Success: Running lint flags existing occurrences (expected failures before fixes).
 - [x] P0-3 (TEST/Meta) Validate coverage thresholds in `jest.config.cjs` (already 80%) & add short "Coverage" paragraph to `DEVELOPMENT_GUIDELINES_COMPLIANCE.md`.
   - Files: edit `packages/ui-mobile/DEVELOPMENT_GUIDELINES_COMPLIANCE.md` (section Coverage).
-- [ ] P0-4 (DOC) Insert "Custom Implementations Rationale" section in `DEVELOPMENT.md` (Modal, TabBar, Header, (maybe) ListItem) + note potential deprecation for ListItem.
+- [x] P0-4 (DOC) Insert "Custom Implementations Rationale" section in `DEVELOPMENT.md` (Modal, TabBar, Header, (maybe) ListItem) + note potential deprecation for ListItem.
   - Files: edit root or package `DEVELOPMENT.md` (choose existing central doc).
 
 ## Phase 1 – Core Shared Utilities & Hooks
