@@ -32,7 +32,7 @@ Rationale: Refactors depend on these shared resources (avoid rework).
 - [x] P1-1 (A/T) Introduce component mapping util.
   - Files: create `lib/utils/componentMappings.ts` (variant/status/size maps); modify `Button/Button.tsx`, `Input/Input.tsx`, `Text/Text.tsx`, `Card/Card.tsx` (if variant logic), `TabBar/TabBar.tsx` to consume util; add `__tests__/componentMappings.test.ts`.
   - Remove local switch statements.
-- [ ] P1-2 (A11Y/P) Add reduced motion hook.
+- [x] P1-2 (A11Y/P) Add reduced motion hook.
   - Files: create `lib/hooks/useReducedMotion.ts`; modify `Modal/Modal.tsx`, `TabBar/TabBar.tsx` to branch on hook; add `__tests__/useReducedMotion.test.ts`.
 - [ ] P1-3 (S) Create shared shadows util.
   - Files: create `lib/theme/shadows.ts`; modify `Card/Card.tsx`, `Header/Header.tsx`, `TabBar/TabBar.tsx`, `Modal/Modal.tsx` (if inline shadow); add `__tests__/shadows.test.ts`.

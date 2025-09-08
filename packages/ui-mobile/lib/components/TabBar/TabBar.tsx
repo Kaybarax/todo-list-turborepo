@@ -10,6 +10,7 @@ import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-na
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Badge } from '../Badge/Badge';
 import { Icon } from '../Icon/Icon';
 import { Text } from '../Text/Text';
@@ -55,6 +56,7 @@ export const TabBar: React.FC<TabBarProps> = ({
   style,
 }) => {
   const { theme, evaTheme } = useEnhancedTheme();
+  const { prefersReducedMotion } = useReducedMotion();
   const insets = useSafeAreaInsets();
 
   // Animation values
@@ -67,26 +69,14 @@ export const TabBar: React.FC<TabBarProps> = ({
 
   React.useEffect(() => {
     const tabWidth = 100 / tabs.length;
-    indicatorPosition.value = withSpring(activeIndex * tabWidth, {
-      damping: 20,
-      stiffness: 300,
-    });
-    indicatorWidth.value = withSpring(tabWidth, {
-      damping: 20,
-      stiffness: 300,
-    });
-  }, [activeIndex, tabs.length, indicatorPosition, indicatorWidth]);
-  React.useEffect(() => {
-    const tabWidth = 100 / tabs.length;
-    indicatorPosition.value = withSpring(activeIndex * tabWidth, {
-      damping: 20,
-      stiffness: 300,
-    });
-    indicatorWidth.value = withSpring(tabWidth, {
-      damping: 20,
-      stiffness: 300,
-    });
-  }, [activeIndex, tabs.length, indicatorPosition, indicatorWidth]);
+    if (prefersReducedMotion) {
+      indicatorPosition.value = activeIndex * tabWidth;
+      indicatorWidth.value = tabWidth;
+    } else {
+      indicatorPosition.value = withSpring(activeIndex * tabWidth, { damping: 20, stiffness: 300 });
+      indicatorWidth.value = withSpring(tabWidth, { damping: 20, stiffness: 300 });
+    }
+  }, [activeIndex, tabs.length, indicatorPosition, indicatorWidth, prefersReducedMotion]);
 
   const containerStyles: ViewStyle = {
     backgroundColor: backgroundColor || evaTheme['background-basic-color-1'] || theme.colors.surface,

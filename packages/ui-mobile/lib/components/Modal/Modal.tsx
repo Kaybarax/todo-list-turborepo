@@ -19,6 +19,7 @@ import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSpring, run
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
 import { Text } from '../Text/Text';
@@ -67,6 +68,7 @@ export const Modal: React.FC<ModalProps> = ({
   keyboardAvoidingBehavior = 'padding',
 }) => {
   const { theme, evaTheme } = useEnhancedTheme();
+  const { prefersReducedMotion } = useReducedMotion();
   const insets = useSafeAreaInsets();
   // Safely obtain screen dimensions; test environment mocks may return undefined
   const _windowDims: any = (Dimensions as any)?.get?.('window');
@@ -87,29 +89,38 @@ export const Modal: React.FC<ModalProps> = ({
 
   useEffect(() => {
     if (visible) {
-      // Show modal with animation
-      backdropOpacity.value = withTiming(1, { duration: 200 });
-
-      if (effectiveAnimation === 'scale') {
-        modalScale.value = withSpring(1, { damping: 20, stiffness: 300 });
-      } else if (effectiveAnimation === 'slide') {
-        modalTranslateY.value = withSpring(0, { damping: 20, stiffness: 300 });
+      if (prefersReducedMotion || effectiveAnimation === 'none') {
+        backdropOpacity.value = 1;
+        modalScale.value = 1;
+        modalTranslateY.value = 0;
       } else {
-        modalScale.value = withTiming(1, { duration: 200 });
-        modalTranslateY.value = withTiming(0, { duration: 200 });
+        // Show modal with animation
+        backdropOpacity.value = withTiming(1, { duration: 160 });
+        if (effectiveAnimation === 'scale') {
+          modalScale.value = withSpring(1, { damping: 20, stiffness: 300 });
+        } else if (effectiveAnimation === 'slide') {
+          modalTranslateY.value = withSpring(0, { damping: 20, stiffness: 300 });
+        } else {
+          modalScale.value = withTiming(1, { duration: 160 });
+          modalTranslateY.value = withTiming(0, { duration: 160 });
+        }
       }
-
-      // Focus management
-      setTimeout(() => {
-        firstFocusableRef.current?.focus();
-      }, 300);
+      // Focus management (no delay needed when reduced motion)
+      const focusDelay = prefersReducedMotion ? 0 : 240;
+      setTimeout(() => firstFocusableRef.current?.focus(), focusDelay);
     } else {
-      // Hide modal with animation
-      backdropOpacity.value = withTiming(0, { duration: 200 });
-      modalScale.value = withTiming(0.8, { duration: 200 });
-      modalTranslateY.value = withTiming(50, { duration: 200 });
+      if (prefersReducedMotion || effectiveAnimation === 'none') {
+        backdropOpacity.value = 0;
+        modalScale.value = 0.8;
+        modalTranslateY.value = 50;
+      } else {
+        // Hide modal with animation
+        backdropOpacity.value = withTiming(0, { duration: 140 });
+        modalScale.value = withTiming(0.8, { duration: 140 });
+        modalTranslateY.value = withTiming(50, { duration: 140 });
+      }
     }
-  }, [visible, effectiveAnimation, backdropOpacity, modalScale, modalTranslateY]);
+  }, [visible, effectiveAnimation, prefersReducedMotion, backdropOpacity, modalScale, modalTranslateY]);
 
   const getModalSize = (): ViewStyle => {
     const baseStyles: ViewStyle = {
