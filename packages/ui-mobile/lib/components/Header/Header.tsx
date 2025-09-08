@@ -9,6 +9,7 @@ import { View, type ViewStyle, Platform, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
+import { getShadow } from '../../utils/shadows';
 import { Text } from '../Text/Text';
 
 export interface HeaderProps {
@@ -42,11 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
     paddingBottom: theme.spacing.sm,
     borderBottomWidth: showBorder ? 1 : 0,
     borderBottomColor: evaTheme['border-basic-color-3'] || theme.colors.border.default,
-    elevation: 4,
-    shadowColor: evaTheme['color-basic-800'] || '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    ...getShadow('md', evaTheme['color-basic-800'] || '#000'),
   };
 
   const contentStyles: ViewStyle = {

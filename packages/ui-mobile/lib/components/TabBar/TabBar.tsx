@@ -10,6 +10,7 @@ import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-na
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
+import { getShadow } from '../../utils/shadows';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Badge } from '../Badge/Badge';
 import { Icon } from '../Icon/Icon';
@@ -84,11 +85,7 @@ export const TabBar: React.FC<TabBarProps> = ({
     borderTopColor: evaTheme['border-basic-color-3'] || theme.colors.border.default,
     paddingBottom: Platform.OS === 'ios' ? insets.bottom : theme.spacing.sm,
     paddingTop: theme.spacing.sm,
-    elevation: 4,
-    shadowColor: evaTheme['color-basic-800'] || '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    ...getShadow('md', evaTheme['color-basic-800'] || '#000'),
   };
 
   const tabContainerStyles: ViewStyle = {

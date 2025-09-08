@@ -10,6 +10,7 @@ import { type ViewStyle, type TextStyle, View } from 'react-native';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { mapCardAppearance, type CardVariant as MappingCardVariant } from '../../utils/componentMappings';
+import { getShadow } from '../../utils/shadows';
 import { Text } from '../Text/Text';
 
 export type CardVariant = MappingCardVariant;
@@ -83,13 +84,7 @@ const CardBase: React.FC<CardProps> = ({
     {
       padding: theme.spacing[padding],
     },
-    variant === 'elevated' && {
-      elevation: 4,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-    },
+    variant === 'elevated' && getShadow('md'),
     style,
   ] as any;
 

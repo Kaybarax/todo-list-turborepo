@@ -34,7 +34,7 @@ Rationale: Refactors depend on these shared resources (avoid rework).
   - Remove local switch statements.
 - [x] P1-2 (A11Y/P) Add reduced motion hook.
   - Files: create `lib/hooks/useReducedMotion.ts`; modify `Modal/Modal.tsx`, `TabBar/TabBar.tsx` to branch on hook; add `__tests__/useReducedMotion.test.ts`.
-- [ ] P1-3 (S) Create shared shadows util.
+- [x] P1-3 (S) Create shared shadows util.
   - Files: create `lib/theme/shadows.ts`; modify `Card/Card.tsx`, `Header/Header.tsx`, `TabBar/TabBar.tsx`, `Modal/Modal.tsx` (if inline shadow); add `__tests__/shadows.test.ts`.
 - [ ] P1-4 (DOC) Performance memoization snippet.
   - Files: edit `DEVELOPMENT_GUIDELINES_COMPLIANCE.md` add "Performance Patterns" referencing memo and reduced motion.

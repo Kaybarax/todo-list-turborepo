@@ -19,6 +19,7 @@ import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSpring, run
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
+import { getShadow } from '../../utils/shadows';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
@@ -126,11 +127,7 @@ export const Modal: React.FC<ModalProps> = ({
     const baseStyles: ViewStyle = {
       backgroundColor: evaTheme['background-basic-color-1'] || theme.colors.surface,
       borderRadius: parseInt(evaTheme['border-radius']) || theme.borders.radius.lg,
-      elevation: 8,
-      shadowColor: evaTheme['color-basic-800'] || '#000',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.15,
-      shadowRadius: 8,
+      ...getShadow('lg', evaTheme['color-basic-800'] || '#000'),
     };
 
     switch (size) {
