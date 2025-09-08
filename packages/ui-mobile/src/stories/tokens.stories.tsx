@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { withUIKitten } from './decorators/UIKittenProvider';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { lightColors, darkColors } from '../../lib/tokens/colors';
 import { spacing } from '../../lib/tokens/spacing';
@@ -16,6 +17,7 @@ const meta = {
       },
     },
   },
+  decorators: [withUIKitten],
 } satisfies Meta<typeof View>;
 
 export default meta;

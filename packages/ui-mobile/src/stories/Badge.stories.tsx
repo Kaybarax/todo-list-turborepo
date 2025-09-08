@@ -108,6 +108,8 @@ const Badge = ({ text, variant = 'default', size = 'medium', testID }: WebBadgeP
   );
 };
 
+import { withUIKitten } from './decorators/UIKittenProvider';
+
 const meta = {
   title: 'Components/Badge',
   component: Badge,
@@ -120,6 +122,7 @@ const meta = {
       },
     },
   },
+  decorators: [withUIKitten],
   tags: ['autodocs'],
   argTypes: {
     text: {

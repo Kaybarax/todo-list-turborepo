@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { type Meta, type StoryObj } from '@storybook/react';
+import { withUIKitten } from './decorators/UIKittenProvider';
 import React from 'react';
 
 // Web-compatible Switch component for Storybook
@@ -151,6 +152,7 @@ const meta: Meta<typeof Switch> = {
       },
     },
   },
+  decorators: [withUIKitten],
   tags: ['autodocs'],
   argTypes: {
     value: {

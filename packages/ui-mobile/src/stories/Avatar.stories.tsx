@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/react';
+import { withUIKitten } from './decorators/UIKittenProvider';
 import React from 'react';
 
 // Web-compatible Avatar component for Storybook
@@ -88,6 +89,7 @@ const meta: Meta<typeof Avatar> = {
       },
     },
   },
+  decorators: [withUIKitten],
   tags: ['autodocs'],
   argTypes: {
     size: {

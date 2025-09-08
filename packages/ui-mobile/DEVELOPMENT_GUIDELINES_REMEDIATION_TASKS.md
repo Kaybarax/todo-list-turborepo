@@ -41,7 +41,7 @@ Rationale: Refactors depend on these shared resources (avoid rework).
 
 ## Phase 2 – Storybook Infrastructure
 
-- [ ] P2-1 (DOC) Add decorator: `src/stories/decorators/UIKittenProvider.tsx`; refactor all stories to remove inline providers.
+- [x] P2-1 (DOC) Add decorator: `src/stories/decorators/UIKittenProvider.tsx`; refactor all stories to remove inline providers.
 - [ ] P2-2 (DOC) Add shared story meta helper `src/stories/helpers/storyMeta.ts` exporting common `argTypes`, `decorators`.
 - [ ] P2-3 (DOC) Story audit: verify or create stories for: Avatar, Badge, Button, Card, Checkbox, FormField, Header, Icon, Input, ListItem (or Deprecation), Modal, NetworkSelector, Switch, TabBar, Text.
   - For deprecated ListItem, create `ListItem.deprecated.stories.tsx` with banner.

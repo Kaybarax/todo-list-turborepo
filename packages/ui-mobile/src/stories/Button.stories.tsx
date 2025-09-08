@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/react';
+import { withUIKitten } from './decorators/UIKittenProvider';
 import React from 'react';
 
 // Web-compatible Button component for Storybook (does not rely on React Native or UI Kitten)
@@ -92,6 +93,7 @@ const meta: Meta<typeof WebButton> = {
       },
     },
   },
+  decorators: [withUIKitten],
   tags: ['autodocs'],
   argTypes: {
     variant: {

@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/react';
+import { withUIKitten } from './decorators/UIKittenProvider';
 import { useState } from 'react';
 import React from 'react';
 
@@ -63,6 +64,7 @@ const meta: Meta<typeof WebModal> = {
       },
     },
   },
+  decorators: [withUIKitten],
   tags: ['autodocs'],
   argTypes: {
     visible: {

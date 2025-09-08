@@ -1,5 +1,6 @@
 import React from 'react';
 import { type Meta, type StoryObj } from '@storybook/react';
+import { withUIKitten } from './decorators/UIKittenProvider';
 
 type TextVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'body1' | 'body2' | 'caption' | 'overline';
 type TextColor = 'primary' | 'secondary' | 'tertiary' | 'inverse' | 'success' | 'warning' | 'error';
@@ -79,6 +80,7 @@ const meta: Meta<typeof WebText> = {
       },
     },
   },
+  decorators: [withUIKitten],
   tags: ['autodocs'],
   argTypes: {
     variant: {

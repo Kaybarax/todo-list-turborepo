@@ -1,5 +1,6 @@
 import React from 'react';
 import { type Meta, type StoryObj } from '@storybook/react';
+import { withUIKitten } from './decorators/UIKittenProvider';
 
 type CardVariant = 'elevated' | 'outlined' | 'filled';
 
@@ -95,6 +96,7 @@ const meta: Meta<typeof WebCard> = {
       },
     },
   },
+  decorators: [withUIKitten],
   tags: ['autodocs'],
   argTypes: {
     variant: {

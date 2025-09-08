@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/react';
+import { withUIKitten } from './decorators/UIKittenProvider';
 import React from 'react';
 
 // Web-compatible TodoItem component for Storybook
@@ -206,6 +207,7 @@ const meta: Meta<typeof TodoItem> = {
       },
     },
   },
+  decorators: [withUIKitten],
   tags: ['autodocs'],
   argTypes: {
     id: {

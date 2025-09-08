@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/react';
+import { withUIKitten } from './decorators/UIKittenProvider';
 import React, { useState } from 'react';
 
 type WebTab = {
@@ -96,6 +97,7 @@ const meta: Meta<typeof WebTabBar> = {
       },
     },
   },
+  decorators: [withUIKitten],
   tags: ['autodocs'],
   argTypes: {
     activeIndex: {

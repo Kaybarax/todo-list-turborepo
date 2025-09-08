@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { type Meta, type StoryObj } from '@storybook/react';
+import { withUIKitten } from './decorators/UIKittenProvider';
 
 type Status = 'basic' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
 
@@ -61,6 +62,7 @@ const meta: Meta<typeof WebCheckbox> = {
       },
     },
   },
+  decorators: [withUIKitten],
   tags: ['autodocs'],
   argTypes: {
     checked: {

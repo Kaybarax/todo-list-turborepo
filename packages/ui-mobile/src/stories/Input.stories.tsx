@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/react';
+import { withUIKitten } from './decorators/UIKittenProvider';
 import React from 'react';
 
 // Web-compatible Input component for Storybook
@@ -272,6 +273,7 @@ const meta: Meta<typeof Input> = {
       },
     },
   },
+  decorators: [withUIKitten],
   tags: ['autodocs'],
   argTypes: {
     label: {

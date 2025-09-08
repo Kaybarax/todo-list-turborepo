@@ -1,5 +1,6 @@
 import React from 'react';
 import { type Meta, type StoryObj } from '@storybook/react';
+import { withUIKitten } from './decorators/UIKittenProvider';
 
 interface WebHeaderProps {
   title?: string;
@@ -48,6 +49,7 @@ const meta: Meta<typeof WebHeader> = {
       },
     },
   },
+  decorators: [withUIKitten],
   tags: ['autodocs'],
   argTypes: {
     title: {

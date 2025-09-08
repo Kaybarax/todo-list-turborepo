@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/react';
+import { withUIKitten } from './decorators/UIKittenProvider';
 import React from 'react';
 
 // Mock NetworkSelector for Storybook (web-compatible)
@@ -157,6 +158,7 @@ const meta: Meta<typeof MockNetworkSelector> = {
   title: 'Components/NetworkSelector',
   component: MockNetworkSelector,
   decorators: [
+    withUIKitten,
     Story => (
       <TestWrapper>
         <Story />
