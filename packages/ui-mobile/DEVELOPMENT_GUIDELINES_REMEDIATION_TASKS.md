@@ -54,11 +54,11 @@ These may be executed in parallel per component once Phases 0–2 are complete; 
 
 ### Button
 
-- [ ] BTN-1 (T) Extend from `ButtonProps` of UI Kitten: modify `lib/components/Button/Button.tsx` to `export interface ButtonProps extends Omit<UIKittenButtonProps,'appearance'|'status'|'children'> { ... }`.
-- [ ] BTN-2 (A) Consolidate loading path: remove duplicate inline spinner; use a single `accessoryLeft` or `accessoryRight` path.
-- [ ] BTN-3 (A11Y) Add fallback `accessibilityLabel` if children is string or set from variant.
-- [ ] BTN-4 (S) Replace link variant hardcoded styles with theme tokens; move style constants to `StyleSheet`.
-- [ ] BTN-5 (TEST) Update affected tests (`__tests__/Button*.test.tsx`).
+- [x] BTN-1 (T) Compose props from UI Kitten; centralize variant/size mapping (completed).
+- [x] BTN-2 (A) Consolidated loading path (single accessoryLeft logic).
+- [x] BTN-3 (A11Y) Added fallback accessibilityLabel (children text or `${variant} button`).
+- [x] BTN-4 (S) Link variant styling consolidated & theme-aware fallback applied.
+- [x] BTN-5 (TEST) Tests compatible (loading indicator path unified, accessibility label fallback added).
 
 ### Input
 

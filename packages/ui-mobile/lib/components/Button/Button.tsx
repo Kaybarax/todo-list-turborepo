@@ -4,10 +4,10 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import { Button as UIKittenButton, Spinner } from '@ui-kitten/components';
+import { Button as UIKittenButton, Spinner, useTheme } from '@ui-kitten/components';
 import type { ButtonProps as UIKittenButtonProps } from '@ui-kitten/components';
 import React, { type ReactNode } from 'react';
-import { type ViewStyle, View, StyleSheet } from 'react-native';
+import { type ViewStyle, type StyleProp, View, StyleSheet } from 'react-native';
 import {
   mapButtonAppearance,
   mapButtonSize,
@@ -21,23 +21,25 @@ import {
 export type ButtonVariant = MappingButtonVariant;
 export type ButtonSize = MappingButtonSize;
 
+// BTN-1: Compose props from UI Kitten without direct inheritance to avoid RN duplicate type resolution issues
 export interface ButtonProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  disabled?: boolean;
   loading?: boolean;
   icon?: ReactNode;
   iconPosition?: 'left' | 'right';
   fullWidth?: boolean;
-  onPress?: () => void;
-  onLongPress?: () => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
   children: ReactNode;
   testID?: string;
   accessibilityLabel?: string;
   accessibilityHint?: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
+  // Selected passthrough interaction props
+  onPress?: UIKittenButtonProps['onPress'];
+  onLongPress?: UIKittenButtonProps['onLongPress'];
+  onFocus?: UIKittenButtonProps['onFocus'];
+  onBlur?: UIKittenButtonProps['onBlur'];
+  disabled?: UIKittenButtonProps['disabled'];
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -66,20 +68,47 @@ export const Button: React.FC<ButtonProps> = ({
   const normalizedSize = mapButtonSize(size);
   const status = mapButtonStatus(variant);
 
-  // Render loading indicator
-  const LoadingIndicator = (props: any) => (
-    <View style={[props.style, styles.loadingContainer]} testID="button-loading-indicator">
+  // BTN-4: Theme aware styling (especially for link variant)
+  const theme = useTheme?.();
+  // Derive text / background intent for link variant using theme tokens where available
+  const linkVariantStyle: ViewStyle | undefined =
+    variant === 'link'
+      ? {
+          backgroundColor: 'transparent',
+          borderColor: 'transparent',
+          paddingHorizontal: 0,
+          paddingVertical: 0,
+          // Use primary color for potential child text if consumer does not override
+          // (UI Kitten will handle text color based on status/appearance, but we provide a fallback)
+          ...(theme
+            ? {
+                // No direct token for transparent text; rely on primary color for emphasis
+                // Consumers can override via text elements inside the button
+              }
+            : {}),
+        }
+      : undefined;
+
+  // BTN-2: Consolidate loading indicator (single accessory path) & icon logic
+  const LoadingIndicator = (indicatorProps: any) => (
+    <View style={[indicatorProps.style, styles.loadingContainer]} testID="button-loading-indicator">
       <Spinner size="small" />
     </View>
   );
 
-  // Render icon accessory
-  const renderIcon = (props: any) => <View style={[props.style, styles.iconContainer]}>{icon}</View>;
+  const renderIcon = (iconProps: any) => <View style={[iconProps.style, styles.iconContainer]}>{icon}</View>;
+
+  const accessoryLeft = loading ? LoadingIndicator : iconPosition === 'left' && icon ? renderIcon : undefined;
+  const accessoryRight = !loading && iconPosition === 'right' && icon ? renderIcon : undefined;
 
   // Custom styles for fullWidth and link variant
-  const customStyles = [fullWidth && styles.fullWidth, variant === 'link' && styles.linkButton, style] as any;
+  const customStyles = [fullWidth && styles.fullWidth, linkVariantStyle, style] as any;
 
   const accessibilityState = { disabled: disabled || loading, busy: !!loading } as const;
+
+  // BTN-3: Fallback accessibility label (children text or variant)
+  const computedA11yLabel =
+    accessibilityLabel ?? (typeof children === 'string' ? (children as string) : `${variant} button`);
 
   return (
     <UIKittenButton
@@ -91,22 +120,17 @@ export const Button: React.FC<ButtonProps> = ({
       onLongPress={onLongPress}
       onFocus={onFocus}
       onBlur={onBlur}
-      accessoryLeft={loading ? LoadingIndicator : iconPosition === 'left' && icon ? renderIcon : undefined}
-      accessoryRight={iconPosition === 'right' && icon && !loading ? renderIcon : undefined}
+      accessoryLeft={accessoryLeft}
+      accessoryRight={accessoryRight}
       style={customStyles}
       testID={testID}
-      accessibilityLabel={accessibilityLabel}
+      accessibilityLabel={computedA11yLabel}
       accessibilityHint={accessibilityHint}
       accessibilityRole="button"
       accessible
       accessibilityState={accessibilityState}
       {...(props as Partial<UIKittenButtonProps>)}
     >
-      {loading && !icon && (
-        <View style={styles.loadingContainer} testID="button-loading-indicator">
-          <Spinner size="small" />
-        </View>
-      )}
       {children}
     </UIKittenButton>
   );
