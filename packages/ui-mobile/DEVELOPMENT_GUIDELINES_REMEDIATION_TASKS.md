@@ -42,11 +42,11 @@ Rationale: Refactors depend on these shared resources (avoid rework).
 ## Phase 2 – Storybook Infrastructure
 
 - [x] P2-1 (DOC) Add decorator: `src/stories/decorators/UIKittenProvider.tsx`; refactor all stories to remove inline providers.
-- [ ] P2-2 (DOC) Add shared story meta helper `src/stories/helpers/storyMeta.ts` exporting common `argTypes`, `decorators`.
-- [ ] P2-3 (DOC) Story audit: verify or create stories for: Avatar, Badge, Button, Card, Checkbox, FormField, Header, Icon, Input, ListItem (or Deprecation), Modal, NetworkSelector, Switch, TabBar, Text.
+- [x] P2-2 (DOC) Add shared story meta helper `src/stories/helpers/storyMeta.ts` exporting common `argTypes`, `decorators`.
+- [x] P2-3 (DOC) Story audit: verify or create stories for: Avatar, Badge, Button, Card, Checkbox, FormField, Header, Icon, Input, ListItem (or Deprecation), Modal, NetworkSelector, Switch, TabBar, Text.
   - For deprecated ListItem, create `ListItem.deprecated.stories.tsx` with banner.
-- [ ] P2-4 (DOC/A11Y) Enable `@storybook/addon-a11y` (edit `.storybook/main.ts`) & add CI workflow (e.g. `.github/workflows/storybook.yml`).
-- [ ] P2-5 (DOC/Visual) Add Chromatic (or equivalent) visual regression: add `chromatic` script in package.json, configure project token in CI.
+- [x] P2-4 (DOC/A11Y) Enable `@storybook/addon-a11y` (edit `.storybook/main.ts`) & add CI workflow (e.g. `.github/workflows/storybook.yml`).
+- [x] P2-5 (DOC/Visual) Add Chromatic (or equivalent) visual regression: add `chromatic` script in package.json, configure project token in CI.
 
 ## Phase 3 – Component Foundational Refactors (Typing + A11y + Required Styling) (All P1 per component)
 

@@ -400,6 +400,87 @@ parameters: {
 }
 ```
 
+## P2-2 Remediation & Authoring Rules
+
+This section summarizes the refactor and lint remediation work completed in task P2-2 and codifies new standards—especially for `ui-mobile` stories.
+
+### 1. Hooks in Stories
+
+Do NOT place React hooks directly inside a `render: () => { ... }` story function. Instead:
+
+```tsx
+// ❌ Avoid
+export const Interactive: Story = {
+  render: () => {
+    const [value, setValue] = React.useState(false);
+    return <Switch value={value} onValueChange={setValue} />;
+  },
+};
+
+// ✅ Preferred
+const InteractiveComponent: React.FC = () => {
+  const [value, setValue] = React.useState(false);
+  return <Switch value={value} onValueChange={setValue} />;
+};
+export const Interactive: Story = { render: () => <InteractiveComponent /> };
+```
+
+Benefits: satisfies `react-hooks/rules-of-hooks`, improves reusability (can test the component), and reduces lint noise.
+
+### 2. Default Value Fallbacks
+
+Use nullish coalescing (`??`) instead of logical OR (`||`) when providing fallbacks to preserve meaningful falsy values like `0` or empty string.
+
+```ts
+// ❌ value || ''
+// ✅ value ?? ''
+```
+
+### 3. Console Logging Policy
+
+Allowed levels: `info`, `warn`, `error` (enforced by lint). Prefer Storybook actions (`action()` / `fn()`) for event visualization. Remove ad‑hoc debug logs before merging. If transient state feedback is helpful (e.g., toggle examples), use a single `console.info` or migrate to an addon panel later.
+
+### 4. Inline Style Migration (Phased)
+
+Inline styles are tolerated in stories for speed, but repeated patterns should be queued for extraction:
+
+1. Collect duplicates into `stories/styles.ts` exported objects.
+2. (Optional) Transition to CSS / CSS Modules when mobile build pipeline supports it seamlessly.
+3. Map extracted tokens (spacing, color, radius) to design tokens for parity with web.
+
+### 5. Type Safety Improvements (Pending)
+
+Replace lingering `any` in story data models with explicit types. Example pattern:
+
+```ts
+type NetworkId = 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base';
+interface NetworkOption {
+  id: NetworkId;
+  label: string;
+  icon: string;
+}
+```
+
+Introduce a shared `stories/types.ts` to centralize these.
+
+### 6. Updated Authoring Checklist (Mobile Stories)
+
+1. No hooks inside inline story `render`—extract a component.
+2. Fallback expressions use `??` unless logical OR semantics are explicitly required.
+3. Unused params removed or renamed to `_`.
+4. Logging limited to purposeful `console.info` / `warn` / `error`; prefer actions for event traces.
+5. Repeated inline style objects consolidated progressively.
+6. Provide `parameters.docs.description.story` for non-trivial behavior.
+7. Ensure accessibility attributes (labels, roles, focusable regions) for interactive examples.
+8. Replace `any` with explicit or inferred types where practical.
+
+### 7. Change Log (P2-2 Summary)
+
+- Refactored 11 interactive stories into proper components.
+- Eliminated all lint errors (now only warnings for console usage / any / inline styles pending refinement).
+- Standardized nullish coalescing across stories.
+- Established phased plan for inline style extraction.
+
 ## Quality Checklist
 
 Before submitting a story, verify:

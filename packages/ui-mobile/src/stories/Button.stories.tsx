@@ -1,7 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
-
-import { withUIKitten } from './decorators/UIKittenProvider';
+import { buildMobileMeta } from './helpers/storyMeta';
 
 // Web-compatible Button component for Storybook (does not rely on React Native or UI Kitten)
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive';
@@ -82,11 +81,10 @@ const WebButton: React.FC<WebButtonProps> = ({
   );
 };
 
-const meta: Meta<typeof WebButton> = {
+const meta: Meta<typeof WebButton> = buildMobileMeta({
   title: 'Components/Button',
   component: WebButton,
   parameters: {
-    layout: 'centered',
     docs: {
       description: {
         component:
@@ -94,22 +92,16 @@ const meta: Meta<typeof WebButton> = {
       },
     },
   },
-  decorators: [withUIKitten],
-  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'outline', 'ghost', 'link'],
+      options: ['primary', 'secondary', 'outline', 'ghost', 'link', 'destructive'],
       description: 'Visual style variant of the button',
     },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
       description: 'Size of the button',
-    },
-    disabled: {
-      control: { type: 'boolean' },
-      description: 'Whether the button is disabled',
     },
     loading: {
       control: { type: 'boolean' },
@@ -121,7 +113,7 @@ const meta: Meta<typeof WebButton> = {
     },
     onPress: { action: 'pressed' },
   },
-};
+});
 
 export default meta;
 type Story = StoryObj<typeof meta>;

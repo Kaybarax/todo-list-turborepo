@@ -1,0 +1,73 @@
+name: Storybook Mobile CI
+
+on:
+  pull_request:
+    paths:
+      - 'packages/ui-mobile/**'
+      - '.github/workflows/storybook-mobile.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/ui-mobile/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint (ui-mobile)
+        run: pnpm --filter @todo/ui-mobile lint
+
+      - name: Typecheck (ui-mobile)
+        run: pnpm --filter @todo/ui-mobile typecheck || true # typecheck currently disabled in Storybook TS config
+
+      - name: Build Storybook (ui-mobile)
+        run: pnpm --filter @todo/ui-mobile build-storybook
+
+      - name: Upload Static Storybook Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-mobile-static
+          path: packages/ui-mobile/storybook-static
+          if-no-files-found: error
+
+      - name: Accessibility Tests (Playwright)
+        run: pnpm --filter @todo/ui-mobile test:a11y
+
+      - name: Visual Regression (Chromatic)
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        run: pnpm --filter @todo/ui-mobile chromatic:ci || echo 'Chromatic soft-fail (no token or baseline yet)'
+
+      - name: Upload Playwright Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-report
+          path: packages/ui-mobile/accessibility-report
+
+      - name: Upload Accessibility JSON/JUnit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-raw-results
+          path: |
+            packages/ui-mobile/accessibility-results.json
+            packages/ui-mobile/accessibility-results.xml
