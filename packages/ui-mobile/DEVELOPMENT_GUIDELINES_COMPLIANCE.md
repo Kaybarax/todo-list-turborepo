@@ -322,3 +322,122 @@ lib/components/Text/Text.stories.tsx
 ---
 
 Addendum generated automatically; integrate remediation tasks into backlog.
+
+## Performance Patterns (Phase 1 Additions)
+
+This section codifies the performance guidance introduced in Phase 1 utilities (mapping util, reduced motion hook, shadows util) and provides canonical patterns for future refactors.
+
+### 1. Memoization Heuristics
+
+Use `React.memo` for:
+
+- Pure presentational components whose visual output depends only on shallowly comparable props (Badge, Avatar, Icon, Text)
+- Wrapper components that forward a stable subset of props (unless they are already very small or frequently re-render with changing function/inline object props)
+
+Avoid (or remove) `React.memo` when:
+
+- Props include large objects recreated each render (e.g. anonymous style objects) that you cannot or will not stabilize
+- The component is already heavy with internal state / effects (memo can hide needed updates)
+- It sits very low in the tree and receives rapidly changing primitive props (the comparison cost may outweigh re-render cost)
+
+### 2. Stabilizing Derived Values
+
+Use `useMemo` (or precomputed constant maps) for:
+
+- Mapping variants/sizes/status to style fragments or Eva token lookups
+- Combining style arrays that include conditional pieces
+- Computing expensive derived values (e.g. flattened tokens, accessibility prop objects) that otherwise allocate per render
+
+Prefer object maps over `switch` inside render:
+
+```ts
+const SIZE_STYLE = {
+  sm: styles.sizeSm,
+  md: styles.sizeMd,
+  lg: styles.sizeLg,
+} as const;
+
+const sizeStyle = SIZE_STYLE[size]; // O(1), no allocation
+```
+
+### 3. Animation & Reduced Motion
+
+Branch early using `useReducedMotion` so animation configuration objects are not constructed when unused:
+
+```ts
+const { prefersReducedMotion } = useReducedMotion();
+const animConfig = useMemo(
+  () => (prefersReducedMotion ? { duration: 0 } : { duration: 250, easing: Easing.out(Easing.cubic) }),
+  [prefersReducedMotion],
+);
+
+// Pass animConfig to animation library only when applying animations
+```
+
+For conditional rendering differences (e.g. skipping Lottie / complex animated components) use the `maybe` helper from the hook:
+
+```ts
+const { maybe } = useReducedMotion();
+return maybe(<AnimatedSpinner /> , <StaticIcon />);
+```
+
+### 4. Style Object Allocation
+
+Extract all static style fragments via `StyleSheet.create`. For dynamic combinations:
+
+```ts
+const containerStyle = useMemo(() => [styles.base, sizeStyle, disabled && styles.disabled], [sizeStyle, disabled]);
+```
+
+Avoid inline arrays directly in JSX when they contain conditionals or are rebuilt each render for memoized children.
+
+### 5. Shadows & Elevation
+
+Use the shared `getShadow(level)` / central shadows util (Phase 1) rather than re-specifying raw shadow props. This ensures:
+
+- Consistent cross-platform parity (iOS shadow props + Android elevation)
+- Single place to adjust token-driven shadow values / future design updates
+
+Example:
+
+```ts
+import { getShadow } from '../theme/shadows';
+
+const cardStyle = useMemo(() => [styles.cardBase, getShadow(2)], []);
+```
+
+### 6. Event Handlers
+
+Stabilize callbacks that are passed deep or used as dependencies:
+
+```ts
+const handlePress = useCallback(() => {
+  onSelect?.(id);
+}, [onSelect, id]);
+```
+
+Avoid wrapping every trivial inline lambda—focus on handlers causing memoized children to re-render.
+
+### 7. Testing Performance-sensitive Branches
+
+When adding a performance optimization that changes code paths (e.g. reduced motion branch), add at least one test mocking the hook so both branches are covered:
+
+```ts
+jest.mock('../hooks/useReducedMotion', () => ({
+  useReducedMotion: () => ({ prefersReducedMotion: true, maybe: (_a: any, b: any) => b }),
+}));
+```
+
+### 8. Anti-patterns to Remove During Refactors
+
+- Recomputing variant switch logic inline for each render
+- Creating new object/array literals passed to memoized components without stabilization
+- Spreading large prop objects (`{...rest}`) into deeply nested children unnecessarily
+
+### 9. Prioritized Targets
+
+Immediate memoization + style extraction wins (low risk, measurable): Badge, Avatar, Icon, Text. Defer complex containers (Modal, TabBar) until after structural refactors.
+
+---
+
+Adhering to these patterns ensures predictable performance improvements without premature optimization or obscuring readability.
