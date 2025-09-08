@@ -14,5 +14,5 @@
   },
   // Typecheck library, stories, and tests in dev
   "include": ["lib/**/*", "src/**/*", "__tests__/**/*"],
-  "exclude": ["node_modules", "dist", "showcase"]
+  "exclude": ["node_modules", "dist"]
 }

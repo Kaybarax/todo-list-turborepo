@@ -9,7 +9,7 @@ Thank you for your interest in contributing to the `@todo/ui-mobile` component l
 - **Node.js**: Version 20 or higher
 - **pnpm**: Version 9.12.0 or higher (required for monorepo management)
 - **React Native CLI**: For React Native development
-- **Expo CLI**: For Expo development and testing
+- **Expo CLI**: (Used only via the consumer app in `apps/mobile`)
 - **iOS Development**: Xcode (for iOS development)
 - **Android Development**: Android Studio and SDK (for Android development)
 - **Git**: For version control
@@ -35,19 +35,20 @@ Thank you for your interest in contributing to the `@todo/ui-mobile` component l
    pnpm build:packages
    ```
 
-4. **Start mobile development**:
+4. **Start development**:
 
-   ```bash
-   # Start the mobile UI package in development mode
-   cd packages/ui-mobile
-   pnpm dev
+```bash
+# Library watch build
+cd packages/ui-mobile
+pnpm dev
 
-   # In another terminal, start Storybook
-   pnpm storybook
+# Storybook (component docs / visual test harness)
+pnpm storybook
 
-   # In another terminal, start the showcase app
-   pnpm showcase:start
-   ```
+# Run consumer Expo app for integration testing
+cd ../../apps/mobile
+pnpm start
+```
 
 ### Mobile Development Environment
 
@@ -81,27 +82,28 @@ Thank you for your interest in contributing to the `@todo/ui-mobile` component l
 
 3. **Test your changes**:
 
-   ```bash
-   pnpm test
-   pnpm test:ci
-   pnpm lint
+```bash
+pnpm test
+pnpm test:ci
+pnpm lint
 
-   # Test on devices/simulators
-   pnpm showcase:ios
-   pnpm showcase:android
-   ```
+# Run platform targets from the consumer app (former showcase removed)
+cd apps/mobile && pnpm expo run:ios
+cd apps/mobile && pnpm expo run:android
+```
 
-4. **Commit your changes**:
+1. **Commit your changes**:
 
    ```bash
    git add .
    git commit -m "feat(mobile): add new component"
    ```
 
-5. **Push and create a pull request**:
-   ```bash
-   git push origin feature/mobile-component-name
-   ```
+2. **Push and create a pull request**:
+
+```bash
+git push origin feature/mobile-component-name
+```
 
 ## 🧩 Types of Contributions
 
@@ -485,41 +487,33 @@ const styles = StyleSheet.create({
 
 ### iOS Testing
 
+Run from the consumer app (`apps/mobile`):
+
 ```bash
-# Start iOS simulator
-pnpm showcase:ios
-
-# Run on specific iOS device
-npx expo run:ios --device
-
-# Debug on iOS device
-npx expo run:ios --configuration Debug
+cd apps/mobile
+pnpm expo run:ios --device
+pnpm expo run:ios --configuration Debug
 ```
 
 ### Android Testing
 
+Run from the consumer app (`apps/mobile`):
+
 ```bash
-# Start Android emulator
-pnpm showcase:android
-
-# Run on connected Android device
-npx expo run:android --device
-
-# Debug on Android device
-npx expo run:android --variant debug
+cd apps/mobile
+pnpm expo run:android --device
+pnpm expo run:android --variant debug
 ```
 
 ### Cross-Platform Testing
 
 ```bash
-# Test on web (for debugging)
-pnpm showcase:web
-
-# Run comprehensive tests
+# Library tests
 pnpm test:ci
 
-# Test accessibility
+# Accessibility & visual (Storybook / Chromatic)
 pnpm test:a11y
+pnpm chromatic
 ```
 
 ## 📱 Platform-Specific Considerations

@@ -1,521 +1,312 @@
 # Deployment Guide - @todo/ui-mobile
 
-This guide covers the build and deployment process for the `@todo/ui-mobile` React Native component library.
+This package is now a pure React Native component library published to npm and consumed by the Expo app in `apps/mobile`. It no longer ships or deploys its own standalone Expo "showcase" application (previously under `packages/ui-mobile/showcase`). All runtime validation happens via the consuming app and any Storybook/visual regression tooling that still exists in the monorepo.
+
+If you are looking for how to integrate the components into the mobile app, see [Consumer Integration](#consumer-integration).
 
 ## 📋 Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [Build Process](#build-process)
 - [Package Publishing](#package-publishing)
-- [Showcase Deployment](#showcase-deployment)
+- [Local Development Workflow](#local-development-workflow)
+- [Consumer Integration](#consumer-integration)
 - [Validation](#validation)
+- [CI/CD](#cicd)
 - [Troubleshooting](#troubleshooting)
+- [Environment Variables](#environment-variables)
+- [Package Distribution](#package-distribution)
 
 ## Prerequisites
 
-Before deploying the package, ensure you have:
+You need:
 
-- Node.js 18+ installed
-- pnpm 9+ installed
-- npm account with publishing permissions
-- React Native development environment set up
-- Expo CLI installed (for showcase)
+- Node.js 18+
+- pnpm 9+
+- npm account with publish rights (and `NPM_TOKEN` for CI)
+- React Native / Expo development environment (only required if you will run `apps/mobile` locally)
 - Access to the monorepo
+
+> Expo CLI & EAS are no longer required for this package itself; use them only from `apps/mobile`.
 
 ## Build Process
 
-### 1. Clean Build
+### 1. Clean & Install
 
 ```bash
-# Clean previous builds
 pnpm run clean
-
-# Install dependencies
 pnpm install
 ```
 
-### 2. TypeScript Validation
+### 2. TypeScript & Lint
 
 ```bash
-# Validate TypeScript configuration
 pnpm run typecheck
+pnpm run lint
 ```
 
-### 3. Build Package
+### 3. Build Library
 
 ```bash
-# Build the library
-pnpm run build
-
-# Or build just the library without TypeScript compilation
-pnpm run build:lib
+pnpm run build        # Full build (types + bundles)
+# or
+pnpm run build:lib    # JS bundles only if that script exists
 ```
 
 ### Build Outputs
 
-The build process generates the following files in the `dist/` directory:
-
 ```
 dist/
-├── index.js          # ES module build
-├── index.cjs         # CommonJS build
-├── index.d.ts        # TypeScript declarations
-└── *.map            # Source maps
+├── index.js      # ES module
+├── index.cjs     # CommonJS
+├── index.d.ts    # Type declarations
+└── *.map         # Source maps
 ```
 
-### Build Configuration
+### Configuration Sources
 
-The build is configured through:
-
-- `vite.config.ts` - Vite build configuration
-- `tsconfig.json` - TypeScript compilation for build
-- `tsconfig.dev.json` - TypeScript configuration for development
-- `package.json` - Entry points and exports
+- `vite.config.ts` – library bundling
+- `tsconfig.json` – build TS settings
+- `tsconfig.dev.json` – dev/editor settings
+- `package.json` – exports / entry points / peer deps
 
 ## Package Publishing
 
-### 1. Automated Validation
+### 1. Validation (Monorepo Wide)
 
 ```bash
-# Run comprehensive validation
 pnpm run validate-packages
 ```
 
-This validates:
+This typically checks:
 
-- TypeScript configurations
-- Build outputs
-- Package imports
-- Showcase applications
-- Test coverage
+- TypeScript builds
+- Inter-package imports
+- Linting & tests
+- (Optional) visual regression / Storybook build
 
-### 2. Version Management
+### 2. Versioning (Changesets)
 
 ```bash
-# Create a changeset
-pnpm changeset
-
-# Version packages
-pnpm version-packages
+pnpm changeset           # author a changeset
+pnpm version-packages    # applies versions across affected packages
 ```
 
-### 3. Publishing
+### 3. Publish
 
 ```bash
-# Dry run (recommended first)
 pnpm run publish-packages:dry-run
-
-# Actual publishing
 pnpm run publish-packages
 ```
 
-### Manual Publishing
-
-If you need to publish manually:
+### Manual (Single Package)
 
 ```bash
 cd packages/ui-mobile
-
-# Ensure you're logged in
-npm whoami
-
-# Build the package
 pnpm run build
-
-# Publish
-npm publish
+npm publish               # ensure you are authenticated first
 ```
 
-## Showcase Deployment
+## Local Development Workflow
 
-### Development
+The recommended way to iterate on components is side‑by‑side with the consuming Expo app:
+
+1. Start a type/watch build (if script exists):
 
 ```bash
-# Start Expo development server
-pnpm run showcase:start
-
-# Platform-specific development
-pnpm run showcase:android  # Android
-pnpm run showcase:ios      # iOS
-pnpm run showcase:web      # Web
+cd packages/ui-mobile
+pnpm run dev   # or pnpm run build --watch
 ```
 
-### Production Build
+1. Run the Expo app:
 
 ```bash
-# Build for production
-pnpm run showcase:build
+cd apps/mobile
+pnpm start
 ```
 
-### Deployment Options
+1. Edit component code; the app reloads via Metro / Expo fast refresh.
 
-#### Expo Application Services (EAS)
+Because this is a monorepo using pnpm workspaces, no manual linking (`npm link`) is required; local sources are symlinked automatically.
 
-1. Install EAS CLI:
+### Testing Changes Before Publish
 
-   ```bash
-   npm install -g @expo/eas-cli
-   ```
-
-2. Configure EAS:
-
-   ```bash
-   cd packages/ui-mobile/showcase
-   eas build:configure
-   ```
-
-3. Build for platforms:
-
-   ```bash
-   # Build for iOS
-   eas build --platform ios
-
-   # Build for Android
-   eas build --platform android
-
-   # Build for both
-   eas build --platform all
-   ```
-
-4. Submit to app stores:
-   ```bash
-   eas submit --platform ios
-   eas submit --platform android
-   ```
-
-#### Web Deployment
-
-The showcase can also run as a web application:
+Optionally create a throwaway Expo project to simulate external consumption:
 
 ```bash
-# Build for web
-cd packages/ui-mobile/showcase
-expo build:web
-
-# Deploy to static hosting
-# The web-build directory contains the built web app
+npx create-expo-app tmp-consumer
+cd tmp-consumer
+pnpm add @todo/ui-mobile
 ```
 
-#### Expo Snack
+To test unpublished changes externally you can use Verdaccio or `npm pack`:
 
-Share the showcase as an Expo Snack:
+```bash
+cd packages/ui-mobile
+npm pack
+cd ../../tmp-consumer
+pnpm add ../packages/ui-mobile/@todo-ui-mobile-*.tgz
+```
 
-1. Create a new Snack at https://snack.expo.dev
-2. Copy the showcase code
-3. Add the package as a dependency
-4. Share the Snack URL
+## Consumer Integration
+
+In `apps/mobile` (Expo / React Native), install (already provided by workspace):
+
+```bash
+pnpm add @todo/ui-mobile
+```
+
+Peer dependencies you must also have (exact list may vary — check `package.json`):
+
+```bash
+pnpm add react react-native @ui-kitten/components @eva-design/eva react-native-vector-icons
+```
+
+Basic usage:
+
+```tsx
+import { Button } from '@todo/ui-mobile';
+
+export function Demo() {
+  return <Button appearance="filled">Tap me</Button>;
+}
+```
+
+Ensure your root app sets up theming (example only):
+
+```tsx
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider } from '@ui-kitten/components';
+
+export function App() {
+  return (
+    <ApplicationProvider {...eva} theme={eva.light}>
+      {/* rest of app */}
+    </ApplicationProvider>
+  );
+}
+```
 
 ## Validation
 
-### Pre-deployment Validation
-
-Always run validation before deploying:
+### Pre-Publish
 
 ```bash
-# Full validation suite
-./scripts/validate-packages.sh
-
-# Test package installation
-./scripts/test-package-installation.sh
+pnpm run typecheck
+pnpm run build
+pnpm run test         # if tests exist
+pnpm run lint
+./scripts/test-package-installation.sh   # monorepo utility
 ```
 
-### Post-deployment Validation
-
-After publishing, verify the package works:
+### Post-Publish Smoke Test
 
 ```bash
-# Create a test React Native project
-npx react-native init TestApp --template react-native-template-typescript
-cd TestApp
-
-# Install your published package
-npm install @todo/ui-mobile
-
-# Install peer dependencies
-npm install @ui-kitten/components @eva-design/eva react-native-vector-icons
-
-# Test import
+mkdir tmp-smoke && cd tmp-smoke
+npx react-native init SmokeApp --template react-native-template-typescript
+cd SmokeApp
+npm install @todo/ui-mobile @ui-kitten/components @eva-design/eva react-native-vector-icons
 node -e "console.log(Object.keys(require('@todo/ui-mobile')))"
 ```
 
-### Platform Testing
+### Visual / Storybook (Optional)
 
-Test on multiple platforms:
+If the monorepo keeps Storybook or Chromatic:
 
 ```bash
-# iOS Simulator
-pnpm run showcase:ios
-
-# Android Emulator
-pnpm run showcase:android
-
-# Web browser
-pnpm run showcase:web
+pnpm run visual-test
+pnpm run visual-test:ci
 ```
 
-### Visual Regression Testing
+## CI/CD
 
-```bash
-# Run visual tests
-pnpm run visual-test
+Minimal GitHub Actions workflow (no showcase build):
 
-# Run visual tests in CI
-pnpm run visual-test:ci
+```yaml
+name: Publish ui-mobile
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/ui-mobile/**'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          registry-url: 'https://registry.npmjs.org'
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Validate
+        run: pnpm run validate-packages
+      - name: Build
+        run: pnpm run build:packages
+      - name: Publish (Changesets)
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm run publish-packages
 ```
 
 ## Troubleshooting
 
-### Common Issues
-
-#### Build Failures
-
-**TypeScript Errors:**
+### Build Failures
 
 ```bash
-# Check TypeScript configuration
 pnpm run typecheck
-
-# Fix common issues:
-# - Ensure React Native types are installed
-# - Check tsconfig.json for React Native settings
-# - Verify lib directory structure
+pnpm run build
 ```
 
-**Vite Build Errors:**
+Common causes:
+
+- Missing peer dependency definitions
+- Incorrect `exports` map in `package.json`
+- TypeScript path mapping not reflected in built output
+
+### Metro / Consumable Issues
+
+In the consumer app:
 
 ```bash
-# Check Vite configuration
-cat vite.config.ts
-
-# Common fixes:
-# - Verify React Native externals are listed
-# - Check entry point exists
-# - Ensure React Native plugin configuration
-```
-
-#### Publishing Issues
-
-**React Native Compatibility:**
-
-```bash
-# Verify peer dependencies
-npm ls --depth=0
-
-# Check React Native version compatibility
-# Ensure your package supports the target RN version
-```
-
-**Metro Bundler Issues:**
-
-```bash
-# Clear Metro cache
 npx react-native start --reset-cache
-
-# Check metro.config.js in consuming projects
 ```
 
-#### Import Issues
+Ensure the package only ships platform-safe code (no Node-only APIs).
 
-**Module Resolution in React Native:**
+### Module Resolution
+
+Check entry points:
 
 ```bash
-# Verify package.json main field
-cat package.json | jq '.main'
-
-# Check if package works with Metro bundler
-# Metro has different resolution rules than Node.js
+cat packages/ui-mobile/package.json | jq '.main,.module,.types,.exports'
 ```
 
-**UI Kitten Integration:**
+### UI Kitten / Vector Icons Setup
 
-```bash
-# Verify UI Kitten is properly configured
-# Check ApplicationProvider setup in consuming app
-# Ensure Eva theme is imported
-```
+Follow each library's installation instructions (fonts linked for iOS/Android, theme provider in root component).
 
-**Vector Icons Issues:**
+### iOS / Android Platform Issues
 
-```bash
-# Verify react-native-vector-icons is linked
-# Check if fonts are properly installed
-# iOS: Check Info.plist for font entries
-# Android: Check fonts are in android/app/src/main/assets/fonts/
-```
-
-### Platform-Specific Issues
-
-#### iOS Issues
-
-```bash
-# Clean iOS build
-cd ios && rm -rf build && cd ..
-npx react-native run-ios --reset-cache
-
-# Check CocoaPods
-cd ios && pod install && cd ..
-```
-
-#### Android Issues
-
-```bash
-# Clean Android build
-cd android && ./gradlew clean && cd ..
-npx react-native run-android --reset-cache
-
-# Check Android dependencies
-cd android && ./gradlew dependencies && cd ..
-```
-
-### Debug Mode
-
-Enable debug mode for detailed information:
-
-```bash
-# React Native debug mode
-npx react-native run-ios --verbose
-npx react-native run-android --verbose
-
-# Expo debug mode
-EXPO_DEBUG=true expo start
-
-# Vite debug mode
-DEBUG=vite:* pnpm run build
-```
-
-### Getting Help
-
-If you encounter issues:
-
-1. Check the [troubleshooting section](#troubleshooting)
-2. Review React Native and Expo documentation
-3. Validate your environment meets [prerequisites](#prerequisites)
-4. Run the validation scripts to identify issues
-5. Check platform-specific setup requirements
-6. Review the monorepo documentation for additional guidance
+Run a clean build in consumer app if components rely on native modules referenced indirectly.
 
 ## Environment Variables
 
-The following environment variables can be used:
-
 ```bash
-# Chromatic project token for visual testing
-CHROMATIC_PROJECT_TOKEN=your_token_here
-
-# Custom npm registry
-NPM_REGISTRY=https://your-registry.com
-
-# Expo debug mode
-EXPO_DEBUG=true
-
-# React Native debug mode
-RN_DEBUG=true
-
-# Debug mode
-DEBUG=vite:*
-```
-
-## CI/CD Integration
-
-### GitHub Actions Example
-
-```yaml
-name: Deploy UI Mobile Package
-
-on:
-  push:
-    branches: [main]
-    paths: ['packages/ui-mobile/**']
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 9
-
-      - name: Setup Expo
-        uses: expo/expo-github-action@v8
-        with:
-          expo-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Validate packages
-        run: pnpm run validate-packages
-
-      - name: Build packages
-        run: pnpm run build:packages
-
-      - name: Test package installation
-        run: pnpm run test:packages
-
-      - name: Build showcase
-        run: |
-          cd packages/ui-mobile
-          pnpm run showcase:build
-
-      - name: Publish packages
-        run: pnpm run publish-packages
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-```
-
-### EAS Build Integration
-
-```yaml
-name: EAS Build
-
-on:
-  push:
-    branches: [main]
-    paths: ['packages/ui-mobile/showcase/**']
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Setup Expo and EAS
-        uses: expo/expo-github-action@v8
-        with:
-          expo-version: latest
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Install dependencies
-        run: |
-          cd packages/ui-mobile/showcase
-          npm install
-
-      - name: Build on EAS
-        run: |
-          cd packages/ui-mobile/showcase
-          eas build --platform all --non-interactive
+CHROMATIC_PROJECT_TOKEN=...   # visual regression (if used)
+NPM_REGISTRY=https://registry.npmjs.org  # override if using a private registry
+DEBUG=vite:*                  # verbose build logs
 ```
 
 ## Package Distribution
 
-### npm Registry
-
-The package is published to npm and can be installed with:
+Install from npm:
 
 ```bash
 npm install @todo/ui-mobile
@@ -525,18 +316,14 @@ yarn add @todo/ui-mobile
 pnpm add @todo/ui-mobile
 ```
 
-### Private Registry
-
-For private distribution, configure your registry:
+Private registry example:
 
 ```bash
-# Set registry
 npm config set registry https://your-private-registry.com
-
-# Or use .npmrc file
-echo "registry=https://your-private-registry.com" > .npmrc
 ```
 
 ---
 
-_This deployment guide should be updated as the build and deployment processes evolve._
+Historical note: The former Expo showcase (EAS/web/Snack instructions) was removed when the library became consumption-only. Refer to `apps/mobile` for runtime and platform-specific deployment concerns.
+
+_Update this guide whenever build tooling, peer dependencies, or validation steps change._

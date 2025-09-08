@@ -577,18 +577,18 @@ const styles = StyleSheet.create({
 1. **Start Development**: `pnpm dev` (builds in watch mode)
 2. **Run Storybook**: `pnpm storybook` (component development)
 3. **Run Tests**: `pnpm test:watch` (test-driven development)
-4. **Run Showcase**: `pnpm showcase:start` (integration testing)
+4. **Integration Test in App**: Launch the consumer Expo app in `apps/mobile` (e.g. `cd apps/mobile && pnpm start`). The library is symlinked via the workspace so edits reflect immediately.
 
-### Expo Development
+### Running the Consumer App (Expo)
+
+All runtime / UX validation now happens inside `apps/mobile`.
 
 ```bash
-# Start Expo development server
-pnpm showcase:start
-
-# Run on specific platforms
-pnpm showcase:ios      # iOS simulator
-pnpm showcase:android  # Android emulator
-pnpm showcase:web      # Web browser
+# From repo root or any path
+cd apps/mobile
+pnpm start              # Starts Expo (choose platform)
+pnpm expo run:ios       # (Optional) build & run iOS
+pnpm expo run:android   # (Optional) build & run Android
 ```
 
 ### Build Process
@@ -600,8 +600,7 @@ pnpm build
 # Build Storybook
 pnpm build-storybook
 
-# Build showcase for production
-pnpm showcase:build
+# (Former showcase build step removed)
 ```
 
 ### Code Quality
@@ -832,7 +831,7 @@ Before submitting a new component, ensure:
 - [ ] Tests component interactions and state changes
 - [ ] Achieves required coverage thresholds
 
-### Documentation
+### Documentation Checklist
 
 - [ ] Has complete Storybook stories
 - [ ] Includes usage examples for React Native
@@ -885,7 +884,7 @@ Before submitting a new component, ensure:
 - [Flipper](https://fbflipper.com/)
 - [React Native Testing Library](https://callstack.github.io/react-native-testing-library/)
 
-### Testing
+### Testing Checklist
 
 - [Jest Documentation](https://jestjs.io/docs/getting-started)
 - [React Native Testing Library](https://callstack.github.io/react-native-testing-library/docs/getting-started)

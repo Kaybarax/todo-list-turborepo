@@ -3607,12 +3607,7 @@
       "test:visual": "playwright test --config=.storybook/playwright-visual.config.ts",
       "test:performance": "playwright test --config=.storybook/playwright-performance.config.ts",
       "test:storybook": "test-storybook",
-      "test:storybook:ci": "test-storybook --ci",
-      "showcase:start": "cd showcase && npm start",
-      "showcase:build": "cd showcase && npm run build",
-      "showcase:android": "cd showcase && npm run android",
-      "showcase:ios": "cd showcase && npm run ios",
-      "showcase:web": "cd showcase && npm run web",
+  "test:storybook:ci": "test-storybook --ci",
       "clean": "rm -rf dist",
       "prepublishOnly": "npm run clean && npm run build"
     },
