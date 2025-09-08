@@ -1,12 +1,10 @@
-import { render, fireEvent, screen } from '@testing-library/react-native';
+import { fireEvent, screen } from '@testing-library/react-native';
 import React from 'react';
 
 import { TabBar } from '../lib/components/TabBar/TabBar';
-import { ThemeProvider } from '../lib/theme';
+import { renderWithProvider } from '../src/test/utils/renderWithProvider';
 
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
-};
+const renderWithTheme = renderWithProvider;
 
 const mockTabs = [
   { label: 'Home', icon: 'home' },

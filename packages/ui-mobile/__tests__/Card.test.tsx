@@ -1,16 +1,12 @@
-import { render, fireEvent, screen } from '@testing-library/react-native';
+import { fireEvent, screen } from '@testing-library/react-native';
 import React from 'react';
 
 import { Card } from '../lib/components/Card/Card';
-import { ThemeProvider } from '../lib/theme';
-
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
-};
+import { renderWithProvider } from '../src/test/utils/renderWithProvider';
 
 describe('Card', () => {
   it('renders correctly with default props', () => {
-    renderWithTheme(
+    renderWithProvider(
       <Card testID="default-card">
         <Card.Content>Test Content</Card.Content>
       </Card>,
@@ -23,7 +19,7 @@ describe('Card', () => {
     const variants = ['elevated', 'outlined', 'filled'] as const;
 
     variants.forEach(variant => {
-      const { unmount } = renderWithTheme(
+      const { unmount } = renderWithProvider(
         <Card variant={variant} testID={`card-${variant}`}>
           <Card.Content>{variant} Card</Card.Content>
         </Card>,
@@ -36,7 +32,7 @@ describe('Card', () => {
 
   it('handles onPress correctly when interactive', () => {
     const onPressMock = jest.fn();
-    renderWithTheme(
+    renderWithProvider(
       <Card onPress={onPressMock} testID="interactive-card">
         <Card.Content>Interactive Card</Card.Content>
       </Card>,
@@ -47,7 +43,7 @@ describe('Card', () => {
   });
 
   it('renders compound components correctly', () => {
-    renderWithTheme(
+    renderWithProvider(
       <Card testID="compound-card">
         <Card.Header>
           <Card.Title>Test Title</Card.Title>
@@ -67,7 +63,7 @@ describe('Card', () => {
 
   it('applies custom style correctly', () => {
     const customStyle = { backgroundColor: 'red' };
-    renderWithTheme(
+    renderWithProvider(
       <Card style={customStyle} testID="custom-style-card">
         <Card.Content>Custom Style Card</Card.Content>
       </Card>,
@@ -77,7 +73,7 @@ describe('Card', () => {
   });
 
   it('has correct accessibility properties when interactive', () => {
-    renderWithTheme(
+    renderWithProvider(
       <Card onPress={() => {}} accessibilityLabel="Custom card label" testID="accessible-card">
         <Card.Content>Accessible Card</Card.Content>
       </Card>,
@@ -89,7 +85,7 @@ describe('Card', () => {
   });
 
   it('does not have button role when not interactive', () => {
-    renderWithTheme(
+    renderWithProvider(
       <Card testID="non-interactive-card">
         <Card.Content>Non-interactive Card</Card.Content>
       </Card>,
@@ -101,7 +97,7 @@ describe('Card', () => {
 
   describe('Card.Header', () => {
     it('renders correctly', () => {
-      renderWithTheme(<Card.Header testID="card-header">Header Content</Card.Header>);
+      renderWithProvider(<Card.Header testID="card-header">Header Content</Card.Header>);
 
       expect(screen.getByTestId('card-header')).toBeTruthy();
       expect(screen.getByText('Header Content')).toBeTruthy();
@@ -110,7 +106,7 @@ describe('Card', () => {
 
   describe('Card.Title', () => {
     it('renders correctly', () => {
-      renderWithTheme(<Card.Title testID="card-title">Card Title</Card.Title>);
+      renderWithProvider(<Card.Title testID="card-title">Card Title</Card.Title>);
 
       expect(screen.getByTestId('card-title')).toBeTruthy();
       expect(screen.getByText('Card Title')).toBeTruthy();
@@ -119,7 +115,7 @@ describe('Card', () => {
 
   describe('Card.Description', () => {
     it('renders correctly', () => {
-      renderWithTheme(<Card.Description testID="card-description">Card Description</Card.Description>);
+      renderWithProvider(<Card.Description testID="card-description">Card Description</Card.Description>);
 
       expect(screen.getByTestId('card-description')).toBeTruthy();
       expect(screen.getByText('Card Description')).toBeTruthy();
@@ -128,7 +124,7 @@ describe('Card', () => {
 
   describe('Card.Content', () => {
     it('renders correctly', () => {
-      renderWithTheme(<Card.Content testID="card-content">Card Content</Card.Content>);
+      renderWithProvider(<Card.Content testID="card-content">Card Content</Card.Content>);
 
       expect(screen.getByTestId('card-content')).toBeTruthy();
       expect(screen.getByText('Card Content')).toBeTruthy();
@@ -137,7 +133,7 @@ describe('Card', () => {
 
   describe('Card.Footer', () => {
     it('renders correctly', () => {
-      renderWithTheme(<Card.Footer testID="card-footer">Footer Content</Card.Footer>);
+      renderWithProvider(<Card.Footer testID="card-footer">Footer Content</Card.Footer>);
 
       expect(screen.getByTestId('card-footer')).toBeTruthy();
       expect(screen.getByText('Footer Content')).toBeTruthy();

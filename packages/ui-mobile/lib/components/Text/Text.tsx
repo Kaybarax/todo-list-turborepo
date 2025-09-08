@@ -6,6 +6,7 @@
 
 import { Text as UIKittenText } from '@ui-kitten/components';
 import React from 'react';
+// NOTE: Using loose typing for style/accessibility pending RN type resolution alignment
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
@@ -22,9 +23,10 @@ export interface TextProps {
   numberOfLines?: number;
   children: React.ReactNode;
   testID?: string;
+  // TODO: Replace any with StyleProp<TextStyle> once react-native duplicate type resolution fixed
   style?: any;
   // Allow forwarding accessibility props from components that reuse Text as wrapper
-  accessibilityRole?: any; // using any to accommodate test environment string roles
+  accessibilityRole?: any;
   accessibilityState?: any;
   accessibilityLabel?: string;
   accessibilityHint?: string;
@@ -70,27 +72,24 @@ export const Text: React.FC<TextProps> = ({
 
   // Get text color from Eva theme or fallback to legacy theme
   const getTextColor = (colorName: TextColor): string => {
-    if (colorName === 'primary') return evaTheme['text-basic-color'] || theme.colors.text.primary;
-    if (colorName === 'secondary') return evaTheme['text-hint-color'] || theme.colors.text.secondary;
-    if (colorName === 'disabled') return evaTheme['text-disabled-color'] || theme.colors.text.disabled;
-    if (colorName === 'inverse') return evaTheme['text-control-color'] || theme.colors.text.inverse;
+    if (colorName === 'primary') return evaTheme['text-basic-color'] ?? theme.colors.text.primary;
+    if (colorName === 'secondary') return evaTheme['text-hint-color'] ?? theme.colors.text.secondary;
+    if (colorName === 'disabled') return evaTheme['text-disabled-color'] ?? theme.colors.text.disabled;
+    if (colorName === 'inverse') return evaTheme['text-control-color'] ?? theme.colors.text.inverse;
     return colorName; // Custom color string
   };
 
   // Create custom styles combining Eva Design tokens with legacy theme fallbacks
-  const customStyles = [
-    {
-      color: getTextColor(color),
-      textAlign: align,
-      ...(weight && { fontWeight: theme.typography.fontWeights[weight] }),
-    },
-    style,
-  ];
+  const baseStyle = {
+    color: getTextColor(color),
+    textAlign: align,
+    ...(weight && { fontWeight: theme.typography.fontWeights[weight] }),
+  };
 
   return (
     <UIKittenText
       category={getUIKittenCategory()}
-      style={customStyles}
+      style={[baseStyle, style]}
       numberOfLines={numberOfLines}
       testID={testID}
       {...props}

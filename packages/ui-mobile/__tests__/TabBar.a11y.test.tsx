@@ -1,15 +1,9 @@
-import { render, fireEvent, screen } from '@testing-library/react-native';
+import { fireEvent, screen } from '@testing-library/react-native';
 import React from 'react';
 
 import { TabBar } from '../lib/components/TabBar/TabBar';
-import { ThemeProvider } from '../lib/theme';
 import { validateTouchTargetSize } from '../lib/utils/accessibility';
-
-// Rely on global react-native mock; avoid re-mocking with spread actual (ESM parse issues)
-
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
-};
+import { renderWithProvider } from '../src/test/utils/renderWithProvider';
 
 const mockTabs = [
   { label: 'Home', icon: 'home' },
@@ -24,14 +18,14 @@ describe('TabBar Accessibility Tests', () => {
 
   describe('Screen Reader Support', () => {
     it('has proper tablist role', () => {
-      renderWithTheme(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
+      renderWithProvider(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
 
       const tabbar = screen.getByTestId('tabbar');
       expect(tabbar.props.accessibilityRole).toBe('tablist');
     });
 
     it('individual tabs have proper tab role', () => {
-      renderWithTheme(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
+      renderWithProvider(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
 
       // Each tab should have proper accessibility role
       const homeTab = screen.getByText('Home');
@@ -39,21 +33,21 @@ describe('TabBar Accessibility Tests', () => {
     });
 
     it('announces selected state for active tab', () => {
-      renderWithTheme(<TabBar tabs={mockTabs} activeIndex={1} onTabPress={() => {}} testID="tabbar" />);
+      renderWithProvider(<TabBar tabs={mockTabs} activeIndex={1} onTabPress={() => {}} testID="tabbar" />);
 
       const searchTab = screen.getByText('Search');
       expect(searchTab.parent?.props.accessibilityState).toEqual(expect.objectContaining({ selected: true }));
     });
 
     it('provides accessibility labels for tabs', () => {
-      renderWithTheme(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
+      renderWithProvider(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
 
       const homeTab = screen.getByText('Home');
       expect(homeTab.parent?.props.accessibilityLabel).toBe('Home tab');
     });
 
     it('provides accessibility hints for tab navigation', () => {
-      renderWithTheme(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
+      renderWithProvider(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
 
       const searchTab = screen.getByText('Search');
       expect(searchTab.parent?.props.accessibilityHint).toBe('Navigate to Search');
@@ -62,7 +56,7 @@ describe('TabBar Accessibility Tests', () => {
 
   describe('Touch Target Validation', () => {
     it('meets minimum touch target size for all tabs', () => {
-      renderWithTheme(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
+      renderWithProvider(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
 
       // Each tab should meet minimum 44x44 touch target
       expect(validateTouchTargetSize(44, 44).isValid).toBe(true);
@@ -77,7 +71,7 @@ describe('TabBar Accessibility Tests', () => {
         { label: 'Profile', icon: 'person' },
       ];
 
-      renderWithTheme(<TabBar tabs={fiveTabs} activeIndex={0} onTabPress={() => {}} testID="five-tabs" />);
+      renderWithProvider(<TabBar tabs={fiveTabs} activeIndex={0} onTabPress={() => {}} testID="five-tabs" />);
 
       // Even with 5 tabs, touch targets should be adequate
       expect(validateTouchTargetSize(44, 44).isValid).toBe(true);
@@ -88,7 +82,7 @@ describe('TabBar Accessibility Tests', () => {
     it('supports keyboard navigation between tabs', () => {
       const onTabPressMock = jest.fn();
 
-      renderWithTheme(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={onTabPressMock} testID="tabbar" />);
+      renderWithProvider(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={onTabPressMock} testID="tabbar" />);
 
       const searchTab = screen.getByText('Search');
       fireEvent.press(searchTab);
@@ -97,7 +91,7 @@ describe('TabBar Accessibility Tests', () => {
     });
 
     it('maintains focus indicators for keyboard users', () => {
-      renderWithTheme(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
+      renderWithProvider(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
 
       const homeTab = screen.getByText('Home');
       expect(homeTab.parent?.props.accessible).toBe(true);
@@ -112,7 +106,7 @@ describe('TabBar Accessibility Tests', () => {
         { label: 'Profile', icon: 'person' },
       ];
 
-      renderWithTheme(
+      renderWithProvider(
         <TabBar tabs={tabsWithBadges} activeIndex={0} onTabPress={() => {}} testID="tabbar-with-badges" />,
       );
 
@@ -127,7 +121,7 @@ describe('TabBar Accessibility Tests', () => {
         { label: 'Profile', icon: 'person' },
       ];
 
-      renderWithTheme(
+      renderWithProvider(
         <TabBar tabs={tabsWithDotBadges} activeIndex={0} onTabPress={() => {}} testID="tabbar-with-dot-badges" />,
       );
 
@@ -140,7 +134,9 @@ describe('TabBar Accessibility Tests', () => {
     it('provides meaningful labels for icon-only tabs', () => {
       const iconOnlyTabs = [{ icon: 'home' }, { icon: 'search' }, { icon: 'person' }];
 
-      renderWithTheme(<TabBar tabs={iconOnlyTabs} activeIndex={0} onTabPress={() => {}} testID="icon-only-tabbar" />);
+      renderWithProvider(
+        <TabBar tabs={iconOnlyTabs} activeIndex={0} onTabPress={() => {}} testID="icon-only-tabbar" />,
+      );
 
       const tabbar = screen.getByTestId('icon-only-tabbar');
       expect(tabbar).toBeTruthy();
@@ -154,7 +150,7 @@ describe('TabBar Accessibility Tests', () => {
     it('announces tab selection changes', () => {
       const onTabPressMock = jest.fn();
 
-      renderWithTheme(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={onTabPressMock} testID="tabbar" />);
+      renderWithProvider(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={onTabPressMock} testID="tabbar" />);
 
       const profileTab = screen.getByText('Profile');
       fireEvent.press(profileTab);
@@ -163,18 +159,14 @@ describe('TabBar Accessibility Tests', () => {
     });
 
     it('maintains proper selected state after tab change', () => {
-      const { rerender } = renderWithTheme(
+      const { rerender } = renderWithProvider(
         <TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />,
       );
 
       let homeTab = screen.getByText('Home');
       expect(homeTab.parent?.props.accessibilityState?.selected).toBe(true);
 
-      rerender(
-        <ThemeProvider>
-          <TabBar tabs={mockTabs} activeIndex={1} onTabPress={() => {}} testID="tabbar" />
-        </ThemeProvider>,
-      );
+      rerender(<TabBar tabs={mockTabs} activeIndex={1} onTabPress={() => {}} testID="tabbar" />);
 
       const searchTab = screen.getByText('Search');
       expect(searchTab.parent?.props.accessibilityState?.selected).toBe(true);
@@ -186,7 +178,7 @@ describe('TabBar Accessibility Tests', () => {
 
   describe('Reduced Motion Support', () => {
     it('respects reduced motion preferences for tab indicator', () => {
-      renderWithTheme(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
+      renderWithProvider(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
 
       const tabbar = screen.getByTestId('tabbar');
       expect(tabbar).toBeTruthy();
@@ -198,7 +190,7 @@ describe('TabBar Accessibility Tests', () => {
 
   describe('High Contrast Support', () => {
     it('maintains visibility in high contrast mode', () => {
-      renderWithTheme(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
+      renderWithProvider(<TabBar tabs={mockTabs} activeIndex={0} onTabPress={() => {}} testID="tabbar" />);
 
       const tabbar = screen.getByTestId('tabbar');
       expect(tabbar).toBeTruthy();

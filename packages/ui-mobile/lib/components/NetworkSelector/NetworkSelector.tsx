@@ -1,6 +1,6 @@
 import { getNetworkColor, getSupportedWalletNetworks } from '@todo/services';
 import { Text } from '@ui-kitten/components';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { Badge } from '../Badge';
@@ -14,7 +14,7 @@ export interface NetworkSelectorProps {
   disabled?: boolean;
   variant?: 'grid' | 'list';
   showTestnets?: boolean;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
   testID?: string;
 }
 
@@ -58,11 +58,15 @@ export const NetworkSelector = ({
   const supportedNetworks = getSupportedWalletNetworks();
 
   // Get Eva Design colors
-  const getBackgroundColor = () => evaTheme['background-basic-color-1'] || '#ffffff';
-  const getBorderColor = () => evaTheme['border-basic-color-3'] || '#e5e7eb';
-  const getTextPrimaryColor = () => evaTheme['text-basic-color'] || '#1f2937';
-  const getTextSecondaryColor = () => evaTheme['text-hint-color'] || '#6b7280';
-  const getDisabledOpacity = () => parseFloat(evaTheme['opacity-disabled'] || '0.5');
+  const getBackgroundColor = () => evaTheme['background-basic-color-1'] ?? '#ffffff';
+  const getBorderColor = () => evaTheme['border-basic-color-3'] ?? '#e5e7eb';
+  const getTextPrimaryColor = () => evaTheme['text-basic-color'] ?? '#1f2937';
+  const getTextSecondaryColor = () => evaTheme['text-hint-color'] ?? '#6b7280';
+  const getDisabledOpacity = () => {
+    const raw = evaTheme['opacity-disabled'];
+    const parsed = parseFloat(raw ?? '0.5');
+    return Number.isFinite(parsed) ? parsed : 0.5;
+  };
 
   if (variant === 'list') {
     return (
@@ -81,7 +85,12 @@ export const NetworkSelector = ({
                 {
                   backgroundColor: getBackgroundColor(),
                   borderColor: getBorderColor(),
-                  borderRadius: parseInt(evaTheme['border-radius']) || 8,
+                  // Safely derive border radius from theme token, fallback to 8
+                  borderRadius: (() => {
+                    const raw = evaTheme['border-radius'];
+                    const parsed = parseInt(raw ?? '');
+                    return Number.isFinite(parsed) ? parsed : 8;
+                  })(),
                   borderWidth: 1,
                   marginBottom: theme.spacing.sm,
                   padding: theme.spacing.md,
@@ -142,7 +151,11 @@ export const NetworkSelector = ({
                   alignItems: 'center',
                   backgroundColor: getBackgroundColor(),
                   borderColor: getBorderColor(),
-                  borderRadius: parseInt(evaTheme['border-radius']) || 12,
+                  borderRadius: (() => {
+                    const raw = evaTheme['border-radius'];
+                    const parsed = parseInt(raw ?? '');
+                    return Number.isFinite(parsed) ? parsed : 12;
+                  })(),
                   borderWidth: 2,
                   flex: 1,
                   maxWidth: '48%',

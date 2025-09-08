@@ -1,226 +1,206 @@
-# @todo/ui-mobile Component Remediation Task Plan
+# @todo/ui-mobile Remediation Execution Plan (Actionable To‑Do)
 
-Date: 2025-09-08
+Date: 2025-09-08 (Reordered for dependency-first execution)
 
-Purpose: Actionable tasks to bring all `lib/components` into compliance with `DEVELOPMENT_GUIDELINES.md` and `DEVELOPMENT.md` (architecture, typing, accessibility, performance, testing, stories, styling, rationale).
+Purpose: Provide a strictly ordered, dependency-aware checklist to bring every component in `packages/ui-mobile/lib/components` into compliance with `DEVELOPMENT_GUIDELINES.md` and `DEVELOPMENT.md`.
 
-## Legend
+Legend (suffix tags): [T]=Typing [A]=Architecture [S]=Styling [A11Y]=Accessibility [P]=Performance [TEST]=Testing [DOC]=Docs/Storybook.
 
-- P1 = High priority (foundational correctness / DX / a11y)
-- P2 = Medium (performance, maintainability)
-- P3 = Nice-to-have / polish
-- (A) = Architecture
-- (T) = Typing
-- (S) = Styling
-- (A11Y) = Accessibility
-- (P) = Performance
-- (TEST) = Testing
-- (DOC) = Documentation / Storybook / Rationale
+Status Marking: Convert `- [ ]` to `- [x]` as tasks complete. Keep sections; do not renumber IDs after creation.
 
 ---
 
-## Global / Cross-Cutting Tasks
+## Phase 0 – Tooling / Safety Nets (no code refactors should start before these)
 
-| ID   | Priority | Task                                                                                                                 | Acceptance Criteria                                                             |
-| ---- | -------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| G-1  | P1       | Introduce shared helper for mapping size/variant/status across Button/Input/etc.                                     | Reused util, unit tests added, removes duplicate switches                       |
-| G-2  | P1       | Add `Custom Implementations Rationale` section to `DEVELOPMENT.md`                                                   | Section lists Modal, TabBar, Header, ListItem justification or deprecation note |
-| G-3  | P1       | Establish `useReducedMotion()` (stub) and honor in animated components (Modal, TabBar)                               | Hook implemented; animation branches covered by tests                           |
-| G-4  | P2       | Create `storybook/decorators/UIKittenProvider.tsx` to DRY provider setup                                             | All new stories import and use decorator                                        |
-| G-5  | P2       | Create ESLint rule override to flag `style?: any` in components                                                      | Lint fails on `style?: any` until fixed                                         |
-| G-6  | P2       | Centralize platform shadow style in `theme/shadows.ts`                                                               | Components import & remove inline duplication                                   |
-| G-7  | P3       | Add performance doc snippet for memoization patterns                                                                 | Doc section present & referenced                                                |
-| G-8  | P1       | Add unified test utilities (`test/utils/renderWithProvider.tsx`) for consistent theming/a11y queries                 | All new/updated tests import helper; duplicated provider code removed           |
-| G-9  | P1       | Establish coverage thresholds in Jest config (eg: 80/80/80/80)                                                       | CI fails if thresholds not met; documentation updated                           |
-| G-10 | P1       | Storybook audit: create stories for components lacking one (Avatar, Badge, Checkbox, FormField, Icon, Modal, Switch) | Stories present & appear in navigation                                          |
-| G-11 | P2       | Add Storybook docs/controls standard (args: size, status, disabled, variant) via common meta helper                  | New stories consume helper; argTypes centralized                                |
-| G-12 | P2       | Integrate a11y addon & automated accessibility check step in CI for all stories                                      | CI job reports violations; baseline documented                                  |
-| G-13 | P2       | Visual regression (Chromatic or equivalent) extended to new stories                                                  | New stories have baseline snapshots                                             |
-| G-14 | P2       | Add test cases for reduced motion branches (Modal, TabBar) using mocked hook                                         | Tests assert animation skipped when reduced motion true                         |
-| G-15 | P3       | Add playwright (or RN specific e2e) smoke for a representative interactive story (Button, Modal)                     | E2E passes; flakes <5% over 5 runs                                              |
+Rationale: Establish lint, test, and utility foundation so subsequent PRs are smaller and consistent.
 
----
+- [x] P0-1 (TEST) Create unified render helper: add `src/test/utils/renderWithProvider.tsx`; update existing tests replacing inline `ThemeProvider` wrappers.
+  - Files: create `src/test/utils/renderWithProvider.tsx`; modify all files in `packages/ui-mobile/__tests__/*.test.(ts|tsx)` (search for `renderWithTheme`).
+  - Success: All tests import from `src/test/utils/renderWithProvider`.
+- [x] P0-2 (T/Lint) Add ESLint rule for banning `style?: any` (edit `packages/ui-mobile/eslint.config.js`).
+  - Files: modify eslint config; add override using `@typescript-eslint/no-explicit-any` for component files (lib/components).
+  - Success: Running lint flags existing occurrences (expected failures before fixes).
+- [ ] P0-3 (TEST/Meta) Validate coverage thresholds in `jest.config.cjs` (already 80%) & add short "Coverage" paragraph to `DEVELOPMENT_GUIDELINES_COMPLIANCE.md`.
+  - Files: edit `packages/ui-mobile/DEVELOPMENT_GUIDELINES_COMPLIANCE.md` (section Coverage).
+- [ ] P0-4 (DOC) Insert "Custom Implementations Rationale" section in `DEVELOPMENT.md` (Modal, TabBar, Header, (maybe) ListItem) + note potential deprecation for ListItem.
+  - Files: edit root or package `DEVELOPMENT.md` (choose existing central doc).
 
-## Avatar
+## Phase 1 – Core Shared Utilities & Hooks
 
-| Task                                            | Priority | Category | Details / Steps                                                     | Acceptance Criteria                                    |
-| ----------------------------------------------- | -------- | -------- | ------------------------------------------------------------------- | ------------------------------------------------------ |
-| Wrap in `React.memo`                            | P2       | P        | `export const Avatar = React.memo(function Avatar(..){})`           | No behavior change; renders unchanged; snapshot stable |
-| Memoize computed style                          | P2       | P        | Use `useMemo` for size/shape + custom styles                        | Profiling shows fewer style object identities          |
-| Add optional `accessibilityLabel`               | P3       | A11Y     | Pass through & default to initials or "avatar"                      | VoiceOver reads label                                  |
-| Add Storybook story (sizes / initials fallback) | P2       | DOC      | `Avatar.stories.tsx` with size control & no-image fallback          | Story renders with controls                            |
-| Add test file (`Avatar.test.tsx`)               | P2       | TEST     | Test initials generation, custom image, accessibilityLabel fallback | Tests pass & cover branches                            |
+Rationale: Refactors depend on these shared resources (avoid rework).
 
-## Badge
+- [ ] P1-1 (A/T) Introduce component mapping util.
+  - Files: create `lib/utils/componentMappings.ts` (variant/status/size maps); modify `Button/Button.tsx`, `Input/Input.tsx`, `Text/Text.tsx`, `Card/Card.tsx` (if variant logic), `TabBar/TabBar.tsx` to consume util; add `__tests__/componentMappings.test.ts`.
+  - Remove local switch statements.
+- [ ] P1-2 (A11Y/P) Add reduced motion hook.
+  - Files: create `lib/hooks/useReducedMotion.ts`; modify `Modal/Modal.tsx`, `TabBar/TabBar.tsx` to branch on hook; add `__tests__/useReducedMotion.test.ts`.
+- [ ] P1-3 (S) Create shared shadows util.
+  - Files: create `lib/theme/shadows.ts`; modify `Card/Card.tsx`, `Header/Header.tsx`, `TabBar/TabBar.tsx`, `Modal/Modal.tsx` (if inline shadow); add `__tests__/shadows.test.ts`.
+- [ ] P1-4 (DOC) Performance memoization snippet.
+  - Files: edit `DEVELOPMENT_GUIDELINES_COMPLIANCE.md` add "Performance Patterns" referencing memo and reduced motion.
 
-| Task                                                           | Priority | Category | Details / Steps                                    | Acceptance Criteria                                                                |
-| -------------------------------------------------------------- | -------- | -------- | -------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Add `accessibilityRole="text"` & optional `accessibilityLabel` | P1       | A11Y     | Label defaults to badge text                       | Screen reader announces badge text once                                            |
-| Wrap in `React.memo`                                           | P2       | P        | Pure component                                     | Memoization test confirms no extra renders on parent re-render without prop change |
-| Provide `variant -> color` mapping util                        | P2       | A/T      | Move switch into shared map object                 | Unit test asserts mapping integrity                                                |
-| Add Storybook story (variants / statuses)                      | P2       | DOC      | Show color variants & count badge                  | Story visible & snapshot added                                                     |
-| Add test file (`Badge.test.tsx`)                               | P2       | TEST     | Verify variant color mapping + a11y label fallback | Tests pass                                                                         |
+## Phase 2 – Storybook Infrastructure
 
-## Button
+- [ ] P2-1 (DOC) Add decorator: `src/stories/decorators/UIKittenProvider.tsx`; refactor all stories to remove inline providers.
+- [ ] P2-2 (DOC) Add shared story meta helper `src/stories/helpers/storyMeta.ts` exporting common `argTypes`, `decorators`.
+- [ ] P2-3 (DOC) Story audit: verify or create stories for: Avatar, Badge, Button, Card, Checkbox, FormField, Header, Icon, Input, ListItem (or Deprecation), Modal, NetworkSelector, Switch, TabBar, Text.
+  - For deprecated ListItem, create `ListItem.deprecated.stories.tsx` with banner.
+- [ ] P2-4 (DOC/A11Y) Enable `@storybook/addon-a11y` (edit `.storybook/main.ts`) & add CI workflow (e.g. `.github/workflows/storybook.yml`).
+- [ ] P2-5 (DOC/Visual) Add Chromatic (or equivalent) visual regression: add `chromatic` script in package.json, configure project token in CI.
 
-| Task                                                         | Priority | Category | Details / Steps                                                            | Acceptance Criteria                                 |
-| ------------------------------------------------------------ | -------- | -------- | -------------------------------------------------------------------------- | --------------------------------------------------- |
-| Extend UIKitten props properly                               | P1       | A/T      | Extend base props (omit appearance/status/children) then add custom fields | Type inference provides UI Kitten props in editors  |
-| Consolidate loading logic (single spinner path)              | P1       | A        | Use one accessory + maintain children fallback                             | Only one spinner found in DOM; tests updated        |
-| Add default `accessibilityLabel` fallback to string children | P1       | A11Y     | If no label -> derive from text                                            | A11y test passes                                    |
-| Replace hardcoded link styles with theme tokens              | P1       | S        | Use Eva `text-basic-color` + transparent background                        | Visual regression passes                            |
-| Extract variant mapping to util                              | P2       | A        | Reusable map; add unit tests                                               | Mapping fully covered                               |
-| Memoize icon renderers with `useCallback`                    | P3       | P        | Avoid recreating closures                                                  | Render count reduced in test profiler               |
-| Add/ensure Storybook story (variants/sizes/loading)          | P2       | DOC      | `Button.stories.tsx` with controls                                         | Storybook shows controls; Chromatic snapshots added |
-| Update existing tests for consolidated spinner logic         | P1       | TEST     | Adjust tests to check single spinner path & label fallback                 | Updated tests pass                                  |
+## Phase 3 – Component Foundational Refactors (Typing + A11y + Required Styling) (All P1 per component)
 
-## Card (+Subcomponents)
+These may be executed in parallel per component once Phases 0–2 are complete; each bullet is self-contained.
 
-| Task                                                                        | Priority | Category  | Details / Steps                                        | Acceptance Criteria                                       |
-| --------------------------------------------------------------------------- | -------- | --------- | ------------------------------------------------------ | --------------------------------------------------------- |
-| Extend `UIKittenCardProps`                                                  | P1       | T         | `CardProps extends Omit<UIKittenCardProps,'children'>` | Type support present                                      |
-| Extract static styles to `StyleSheet`                                       | P1       | S         | header/footer/body styles constant                     | Snapshot unchanged                                        |
-| Platform shadow via shared `shadows.ts`                                     | P1       | S         | Use imported style object                              | Android elevation only on Android; iOS shadow only on iOS |
-| Add Storybook stories (compound usage)                                      | P2       | DOC       | Show Card with Header/Content/Footer variants          | Stories render & pass Chromatic                           |
-| Add test for pressable mode + accessibility                                 | P2       | TEST/A11Y | Simulate onPress; ensure role button + hint            | Test passes                                               |
-| Add Storybook story focusing subcomponents (Header/Body/Footer composition) | P2       | DOC       | Additional composition examples                        | Story snapshot passes                                     |
+### Button
 
-## Checkbox
+- [ ] BTN-1 (T) Extend from `ButtonProps` of UI Kitten: modify `lib/components/Button/Button.tsx` to `export interface ButtonProps extends Omit<UIKittenButtonProps,'appearance'|'status'|'children'> { ... }`.
+- [ ] BTN-2 (A) Consolidate loading path: remove duplicate inline spinner; use a single `accessoryLeft` or `accessoryRight` path.
+- [ ] BTN-3 (A11Y) Add fallback `accessibilityLabel` if children is string or set from variant.
+- [ ] BTN-4 (S) Replace link variant hardcoded styles with theme tokens; move style constants to `StyleSheet`.
+- [ ] BTN-5 (TEST) Update affected tests (`__tests__/Button*.test.tsx`).
 
-| Task                                                         | Priority | Category | Details / Steps                       | Acceptance Criteria |
-| ------------------------------------------------------------ | -------- | -------- | ------------------------------------- | ------------------- |
-| Optional: explicit pass-through `accessibilityLabel`         | P3       | A11Y     | Document that UI Kitten handles label | No regression       |
-| Add Storybook story (checked/unchecked/disabled)             | P2       | DOC      | Basic state variants                  | Story present       |
-| Audit / update existing tests (if any) to use new test utils | P2       | TEST     | Uses shared render helper             | Tests updated       |
+### Input
 
-## FormField
+- [ ] INP-1 (T) Extend `Input` from UI Kitten props: modify `lib/components/Input/Input.tsx`.
+- [ ] INP-2 (A11Y) Fallback label: placeholder -> value -> 'input field'.
+- [ ] INP-3 (S) Replace RGBA background with theme token (`evaTheme*`).
+- [ ] INP-4 (TEST) Update `__tests__/Input.test.tsx` for fallback label logic.
 
-| Task                                              | Priority | Category | Details / Steps                                                                                        | Acceptance Criteria                   |
-| ------------------------------------------------- | -------- | -------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------- |
-| Add tests (`FormField.test.tsx`)                  | P1       | TEST     | Cover label, error, hint precedence                                                                    | 100% branch on message rendering      |
-| Associate error/hint via IDs (`nativeID`)         | P1       | A11Y     | Link child input (if single) using `accessibilityDescribedBy` (platform-limited) or documented pattern | Screen reader reads error after field |
-| Accept `accessibilityHint` passthrough            | P2       | A11Y     | Prop optional                                                                                          | Tests verify prop present             |
-| Memoize trivial component? (Skip)                 | P3       | P        | Decide not needed; document rationale                                                                  | Comment added                         |
-| Add Storybook story (label + error + hint states) | P2       | DOC      | Controls to toggle error/hint                                                                          | Story renders                         |
+### Text
 
-## Header
+- [ ] TXT-1 (T) Extend `UIKittenTextProps` & retain variant mapping.
+- [ ] TXT-2 (T) Replace `style?: any` with `StyleProp<TextStyle>`.
+- [ ] TXT-3 (TEST) Add/Update `__tests__/Text.test.tsx` verifying mapping.
 
-| Task                                                     | Priority | Category | Details / Steps                                         | Acceptance Criteria                  |
-| -------------------------------------------------------- | -------- | -------- | ------------------------------------------------------- | ------------------------------------ |
-| Add `accessibilityRole="header"`                         | P1       | A11Y     | Apply to outer container                                | A11y test passes                     |
-| Platform shadow handling refactor                        | P1       | S        | Import shared `shadows.ts`                              | Shadow conditional behavior verified |
-| Document rationale vs `TopNavigation`                    | P1       | DOC      | Add to rationale section                                | Docs updated                         |
-| Provide Storybook examples (basic with actions)          | P2       | DOC      | Story file with left/right actions                      | Chromatic snapshot stable            |
-| Consider refactor to wrap `TopNavigation` (stretch goal) | P3       | A        | Spike & open follow-up issue                            | Issue filed                          |
-| Add test file (`Header.test.tsx`)                        | P2       | TEST     | Verify title render, actions, shadow variant, a11y role | Tests pass                           |
+### Card
 
-## Icon
+- [ ] CRD-1 (T) Extend `UIKittenCardProps` in `Card/Card.tsx`.
+- [ ] CRD-2 (S) Extract static styles to `StyleSheet.create`.
+- [ ] CRD-3 (S) Apply shared shadows util.
 
-| Task                                             | Priority | Category | Details / Steps                                                   | Acceptance Criteria       |
-| ------------------------------------------------ | -------- | -------- | ----------------------------------------------------------------- | ------------------------- |
-| Extend `IconProps` from UI Kitten                | P1       | T        | `interface IconProps extends Omit<UIKittenIconProps,'name'>` etc. | Type completion works     |
-| Add test file (`Icon.test.tsx`)                  | P1       | TEST     | Render name + custom child; size & color mapping                  | Coverage for branch paths |
-| Wrap in `React.memo`                             | P2       | P        | Pure                                                              | Reduced renders in test   |
-| Avoid cloning style override risk (merge styles) | P2       | S        | Use `StyleSheet.create` for base style                            | Visual parity             |
-| Add Storybook story (sizes / color overrides)    | P2       | DOC      | Controls: name, size, color                                       | Story renders             |
+### Header
 
-## Input
+- [ ] HDR-1 (A11Y) Add `accessibilityRole="header"`.
+- [ ] HDR-2 (S) Replace inline shadows with util.
+- [ ] HDR-3 (DOC) Add rationale entry (why custom vs `TopNavigation`).
 
-| Task                                                          | Priority | Category | Details / Steps                                     | Acceptance Criteria     |
-| ------------------------------------------------------------- | -------- | -------- | --------------------------------------------------- | ----------------------- |
-| Extend `UIKittenInputProps` properly                          | P1       | T        | Replace standalone props with extension             | Types correct in editor |
-| Add default `accessibilityLabel` fallback (placeholder/value) | P1       | A11Y     | If missing label, use placeholder or 'input field'  | A11y test passes        |
-| Replace hardcoded rgba with theme token                       | P1       | S        | Use `evaTheme['background-basic-color-2']` fallback | Visual diff acceptable  |
-| Extract variant style map                                     | P2       | S        | No ad-hoc style array conditions                    | Unit test for map keys  |
-| Add Storybook stories (variants/status/sizes)                 | P2       | DOC      | Stories with controls                               | Chromatic added         |
-| Direct (unmocked) component test                              | P2       | TEST     | Remove full mock; test integration with provider    | Test passes             |
-| Update existing tests for new prop extension & label fallback | P1       | TEST     | Ensure placeholder/value fallback path tested       | Updated tests pass      |
+### ListItem
 
-## ListItem
+- [ ] LIT-1 (A/DOC) Decide: deprecate or extend. If deprecating, add deprecation note + story; else extend UI Kitten props.
+- [ ] LIT-2 (T) (If kept) Extend underlying props.
+- [ ] LIT-3 (A11Y) Add role/labels for pressable vs non-pressable.
 
-| Task                                                               | Priority | Category | Details / Steps                            | Acceptance Criteria               |
-| ------------------------------------------------------------------ | -------- | -------- | ------------------------------------------ | --------------------------------- |
-| Decide compose vs keep custom (rationale)                          | P1       | A/DOC    | If no added value: mark deprecated in docs | Deprecation notice                |
-| Extend `UIKittenListItemProps` if kept                             | P1       | T        | Provide base prop extension                | Types available                   |
-| Add test file (`ListItem.test.tsx`)                                | P1       | TEST     | Cover press, disabled, description lines   | Coverage includes disabled branch |
-| Add Storybook story (leading/trailing variants)                    | P2       | DOC      | Show with icons, switches, badges          | Story present                     |
-| Extract static styles to StyleSheet                                | P2       | S        | Container & text spacing constants         | Inline style objects reduced      |
-| Add pressed feedback (opacity or scale)                            | P2       | UX       | Use `Pressable` style function             | Visual feedback observed          |
-| Accessibility roles & labels for non-pressable                     | P2       | A11Y     | role="text" + descriptive labeling         | A11y test passes                  |
-| Update or create Storybook story (deprecation badge if deprecated) | P2       | DOC      | Displays deprecation if applicable         | Story visible                     |
+### Modal
 
-## Modal
+- [ ] MOD-1 (DOC) Add rationale (animation/focus management) in `DEVELOPMENT.md`.
+- [ ] MOD-2 (TEST) Ensure existing tests adapt to reduced motion hook (phase 1 addition) & remove magic `setTimeout(300)` by using callback or config constant.
+- [ ] MOD-3 (A) Replace timeout with animation completion.
 
-| Task                                                                                  | Priority | Category | Details / Steps                                            | Acceptance Criteria                         |
-| ------------------------------------------------------------------------------------- | -------- | -------- | ---------------------------------------------------------- | ------------------------------------------- |
-| Document rationale (advanced animation, focus mgmt)                                   | P1       | DOC      | Rationale section updated                                  | Docs updated                                |
-| Extract StyleSheet for static blocks (header/footer/backdrop)                         | P2       | S        | Style arrays slimmed                                       | Snapshot parity                             |
-| Replace `setTimeout(300)` with animation completion callback or configurable constant | P2       | A        | Use prop or reanimated callback                            | Test asserts no arbitrary timeout constant  |
-| Add reduced motion branch (no scale/translate)                                        | P2       | A11Y/P   | Condition via `useReducedMotion`                           | Test covers branch                          |
-| Accessibility described-by pattern for content summary                                | P3       | A11Y     | Hidden summary text referenced                             | Screen reader test passes (where supported) |
-| Add test file (`Modal.test.tsx`)                                                      | P1       | TEST     | Open/close animation, reduced motion branch, focus restore | Tests pass                                  |
-| Add Storybook story (basic / with header / scrollable content)                        | P2       | DOC      | Args: visible, withHeader                                  | Story + snapshots added                     |
+### TabBar
 
-## NetworkSelector
+- [ ] TBR-1 (A) Remove duplicate effect.
+- [ ] TBR-2 (A11Y/P) Integrate reduced motion branch.
+- [ ] TBR-3 (S) Apply shadows util & extract static styles.
 
-| Task                                                 | Priority | Category | Details / Steps                             | Acceptance Criteria          |
-| ---------------------------------------------------- | -------- | -------- | ------------------------------------------- | ---------------------------- |
-| Correct `style?: any` to `StyleProp<ViewStyle>`      | P1       | T        | Update interface                            | Type passes lint             |
-| Add a11y labels: `${name}. ${description}`           | P1       | A11Y     | Each tile has role=button + label           | Test validates label content |
-| Extract static styles to StyleSheet                  | P2       | S        | Container + tile base styles constant       | Inline style count reduced   |
-| Add tests: selection, disabled opacity, list vs grid | P2       | TEST     | Cover grid/list variants & disabled branch  | Coverage for variant toggle  |
-| Add Storybook story (grid/list, selected state)      | P2       | DOC      | Controls for variant & selected network     | Story renders                |
-| Memoize mapped network list (`useMemo`)              | P3       | P        | Derived from supported networks             | No behavior change           |
-| Update tests after style prop typing change          | P1       | TEST     | Adjust render helper; ensure no type errors | Tests green                  |
+### NetworkSelector
 
-## Switch
+- [ ] NET-1 (T) Replace `style?: any` with `StyleProp<ViewStyle>`.
+- [ ] NET-2 (A11Y) Composite label `${name}. ${description}`.
 
-| Task                                                                  | Priority | Category | Details / Steps                 | Acceptance Criteria |
-| --------------------------------------------------------------------- | -------- | -------- | ------------------------------- | ------------------- |
-| Optional default `accessibilityLabel` from `label`                    | P3       | A11Y     | Fallback if label prop present  | A11y test passes    |
-| Add Storybook story (on/off/disabled)                                 | P2       | DOC      | Controls: value, disabled       | Story renders       |
-| Add/update test file (`Switch.test.tsx`) ensuring a11y label fallback | P2       | TEST     | Asserts label fallback behavior | Test passes         |
+### Badge
 
-## TabBar
+- [ ] BDG-1 (A11Y) Add role + fallback label.
+- [ ] BDG-2 (A/T) Move variant->color logic to mapping util if applicable; or new file `lib/utils/badgeMapping.ts`.
 
-| Task                                                  | Priority | Category | Details / Steps                                         | Acceptance Criteria                   |
-| ----------------------------------------------------- | -------- | -------- | ------------------------------------------------------- | ------------------------------------- |
-| Remove duplicate `useEffect`                          | P1       | A        | Single effect controlling indicator values              | Only one effect in file               |
-| Add reduced-motion branch disabling spring animations | P1       | A11Y/P   | Use `useReducedMotion`                                  | Test verifies style applied instantly |
-| Extract static styles (container/tab/indicator)       | P2       | S        | `StyleSheet.create` used                                | Inline style objects minimized        |
-| Document rationale vs UI Kitten `BottomNavigation`    | P2       | DOC      | Rationale section updated                               | Docs updated                          |
-| Extend (or mimic) base props of UI Kitten component   | P2       | T        | Provide partial compatibility layer                     | Consumers can pass similar props      |
-| Add Storybook story (activeIndex, badges)             | P2       | DOC      | Controls for active tab & badges                        | Chromatic snapshots added             |
-| Add test file (`TabBar.test.tsx`)                     | P1       | TEST     | Indicator movement, reduced motion branch, badge render | Tests pass                            |
+### Avatar
 
-## Text
+- [ ] AVT-1 (P) Wrap in `React.memo`.
+- [ ] AVT-2 (P) Memoize derived style objects.
+- [ ] AVT-3 (A11Y) Add fallback `accessibilityLabel` (initials or “avatar”).
 
-| Task                                                 | Priority | Category | Details / Steps                                          | Acceptance Criteria               |
-| ---------------------------------------------------- | -------- | -------- | -------------------------------------------------------- | --------------------------------- |
-| Extend `UIKittenTextProps`                           | P1       | T        | Provide base extension & maintain custom variant mapping | Type inference works              |
-| Replace `style?: any` with `StyleProp<TextStyle>`    | P1       | T        | Update interface                                         | Lint passes                       |
-| Add test file (`Text.test.tsx`)                      | P1       | TEST     | Validate variant -> category map; color resolution       | Test passes                       |
-| Wrap in `React.memo`                                 | P2       | P        | Pure render                                              | Fewer re-renders in profiler test |
-| Add Storybook (variants/colors/weights)              | P2       | DOC      | Story with controls                                      | Chromatic snapshot added          |
-| Update tests if variant mapping util extracted (G-1) | P1       | TEST     | Replace duplicated mapping; ensure coverage unchanged    | Tests pass                        |
+### Icon
 
----
+- [ ] ICN-1 (T) Extend UI Kitten icon props.
+- [ ] ICN-2 (P) Wrap in `React.memo`.
+- [ ] ICN-3 (S) Extract base style constants & safe style merging.
 
-## Execution Sequence (Suggested Sprint Breakdown)
+### Switch
 
-1. Sprint 1: Button, Input, Text (shared prop extension & a11y), Global tasks G-1, G-5.
-2. Sprint 2: Card, ListItem, Header (styling + platform shadows + rationale), add stories.
-3. Sprint 3: TabBar & Modal (animation + reduced motion + rationale), NetworkSelector a11y/tests.
-4. Sprint 4: Remaining performance/memo (Avatar, Badge, Icon), leftover docs & deprecation decisions.
+- [ ] SWT-1 (A11Y) Add label fallback (if `label` prop exists externally).
+
+### FormField
+
+- [ ] FFD-1 (TEST) Add `FormField.test.tsx` covering label / hint / error precedence.
+- [ ] FFD-2 (A11Y) Link error/hint via IDs or doc note; add `accessibilityHint` passthrough.
+
+## Phase 4 – Immediate Test & Story Updates (Ensure coverage & docs after refactors)
+
+- [ ] P4-1 (TEST) Update / create missing component tests: Avatar, Badge, Icon, ListItem (if kept), Text, FormField, NetworkSelector (selection states), Modal reduced motion branch, TabBar reduced motion branch.
+- [ ] P4-2 (DOC) Add/verify Storybook stories created/updated: ensure each story uses decorator + meta helper; add deprecation banner for ListItem if deprecated.
+- [ ] P4-3 (TEST) Add reduced motion specific cases in `Modal.test.tsx` & `TabBar.test.tsx` (mock hook to true).
+
+## Phase 5 – Performance & Styling Enhancements (P2)
+
+- [ ] P5-1 (P) Memoize heavy or repeated mapping logic across Button, Badge, Avatar if profiling indicates re-renders (optional measurements).
+- [ ] P5-2 (S) Replace any remaining inline style objects (scan `lib/components/**/` for `style={{`).
+- [ ] P5-3 (DOC) Update performance doc snippet with concrete examples (before/after diff of memoization) in compliance doc.
+
+## Phase 6 – Nice-to-Have / Polish (P3)
+
+- [ ] P6-1 (DOC) Add Playwright e2e harness: `e2e/playwright.config.ts`, `e2e/button.spec.ts`, `e2e/modal.spec.ts` + npm script `test:e2e`.
+- [ ] P6-2 (A11Y) Modal described-by hidden summary (optional, platform support caveat).
+- [ ] P6-3 (A) Explore refactor of Header to wrap `TopNavigation` (spike doc / issue link).
+- [ ] P6-4 (P) Final pass: ensure memoization applied only where net benefit (remove unnecessary React.memo wrappers if prop churn high).
+
+## File Creation / Modification Summary (Quick Reference)
+
+| Action          | Path Examples                                                                                                                                                                                                                  |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Create          | `lib/utils/componentMappings.ts`, `lib/hooks/useReducedMotion.ts`, `lib/theme/shadows.ts`, `src/test/utils/renderWithProvider.tsx`, `src/stories/decorators/UIKittenProvider.tsx`, `src/stories/helpers/storyMeta.ts`, `e2e/*` |
+| Modify          | Component files under `lib/components/**`, `eslint.config.js`, `jest.config.cjs`, all story files `src/stories/*.stories.tsx`, tests in `__tests__/*.test.tsx`, `DEVELOPMENT.md`, compliance doc                               |
+| Optional Create | `lib/utils/badgeMapping.ts` (if Badge mapping not folded into main util)                                                                                                                                                       |
+| Possible Delete | Deprecate (don’t delete yet) `ListItem` if replaced by UI Kitten base; schedule removal after one minor version with CHANGELOG note                                                                                            |
 
 ## Acceptance / Done Definition
 
-- All P1 tasks merged & passing CI (lint, type-check, tests, Chromatic) before moving P2.
-- No component exposes `style?: any`.
-- Each component has at least one Storybook story (unless explicitly deprecated).
-- Accessibility tests cover label fallbacks & interactive roles.
-- Reduced motion honored in animated components.
+- All Phase 0 & 1 tasks completed before merging majority of Phase 3 PRs (enforced via PR checklist).
+- No remaining `any` styles (`git grep "style?: any"` returns empty) before closing Phase 3.
+- Coverage thresholds hold ≥80% post Phase 4; no net drop in branches for touched files.
+- Every component has an up-to-date Storybook story (or explicit deprecation).
+- Reduced motion branch validated (tests pass with mocked `useReducedMotion` true/false).
+- Visual regression snapshots updated & stable (Chromatic / chosen tool).
+
+## Suggested PR Batching Strategy
+
+1. PR 1: Phase 0 (lint rule, test util, rationale doc, coverage doc update).
+2. PR 2: Phase 1 utilities (mappings, hook, shadows) + tests.
+3. PR 3: Storybook infra (decorator + meta helper + story audit baseline snapshots).
+4. PR 4+: Component refactors grouped (Button/Input/Text) then Card/Header/ListItem, then Modal/TabBar, then remaining (Avatar/Badge/Icon/NetworkSelector/FormField/Switch).
+5. PR N: Performance + polish (remove unused code, optional deprecation follow-up).
+
+## Tracking Table (Optional – Fill During Execution)
+
+| ID    | Task           | Owner | PR  | Status |
+| ----- | -------------- | ----- | --- | ------ |
+| P0-1  | Render helper  |       |     |        |
+| P0-2  | ESLint rule    |       |     |        |
+| P1-1  | Mapping util   |       |     |        |
+| P1-2  | Reduced motion |       |     |        |
+| P1-3  | Shadows util   |       |     |        |
+| BTN-1 | Button typing  |       |     |        |
+| INP-1 | Input typing   |       |     |        |
+| TXT-1 | Text typing    |       |     |        |
+| ...   | ...            |       |     |        |
 
 ---
 
-Generated automatically. Update status columns (add ✅) as tasks are completed.
+## Appendix A – Original Detailed Tables
+
+The original per-component and global task tables have been removed for brevity; all content has been incorporated into the phased actionable checklist above.
+
+If you need the legacy table view, retrieve it from version control history (previous commit of `DEVELOPMENT_GUIDELINES_REMEDIATION_TASKS.md`).
+
+---
+
+Generated automatically (actionable edition). Update checkboxes as work progresses.

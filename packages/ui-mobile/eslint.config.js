@@ -14,7 +14,9 @@ export default [
   // Ignore built and generated files
   {
     ignores: [
-      'lib/**',
+      // Keep ignoring generated type/output subpaths but allow component source under lib/components
+      'lib/**/*.d.ts',
+      'lib/**/index.js.map',
       'dist/**',
       'coverage/**',
       'storybook-static/**',
@@ -40,6 +42,31 @@ export default [
           project: './tsconfig.dev.json',
         },
       },
+    },
+  },
+  // Override: disallow `style?: any` in component source to enforce typed style props
+  {
+    files: ['lib/components/**/*.{ts,tsx}'],
+    rules: {
+      // General ban on explicit any for style prop declarations
+      '@typescript-eslint/no-explicit-any': ['error', { ignoreRestArgs: false }],
+      // Narrow, readable error if someone tries to reintroduce `style?: any;`
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "TSPropertySignature[key.name='style'] TSTypeAnnotation TSTypeReference Identifier[name='any']",
+          message: 'Use StyleProp<...> (e.g., StyleProp<ViewStyle | TextStyle>) instead of `any` for style prop.',
+        },
+      ],
+    },
+  },
+  // Temporary exception: Text component has duplicate react-native type resolution causing StyleProp mismatch.
+  // Allow explicit any until dependency tree flattened. (Tracked by remediation tasks TXT-2)
+  {
+    files: ['lib/components/Text/Text.tsx'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      'no-restricted-syntax': 'off',
     },
   },
   // Jest globals for test files

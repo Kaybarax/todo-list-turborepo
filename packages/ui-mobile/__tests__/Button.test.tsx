@@ -1,22 +1,17 @@
-import { render, fireEvent, screen } from '@testing-library/react-native';
 import React from 'react';
-
+import { fireEvent, screen } from '@testing-library/react-native';
 import { Button } from '../lib/components/Button/Button';
-import { ThemeProvider } from '../lib/theme';
-
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
-};
+import { renderWithProvider } from '../src/test/utils/renderWithProvider';
 
 describe('Button', () => {
   it('renders correctly with default props', () => {
-    renderWithTheme(<Button>Test Button</Button>);
+    renderWithProvider(<Button>Test Button</Button>);
     expect(screen.getByText('Test Button')).toBeTruthy();
   });
 
   it('handles onPress correctly', () => {
     const onPressMock = jest.fn();
-    renderWithTheme(<Button onPress={onPressMock}>Press Me</Button>);
+    renderWithProvider(<Button onPress={onPressMock}>Press Me</Button>);
 
     fireEvent.press(screen.getByText('Press Me'));
     expect(onPressMock).toHaveBeenCalledTimes(1);
@@ -26,7 +21,7 @@ describe('Button', () => {
     const variants = ['primary', 'secondary', 'outline', 'ghost', 'destructive'] as const;
 
     variants.forEach(variant => {
-      const { unmount } = renderWithTheme(
+      const { unmount } = renderWithProvider(
         <Button variant={variant} testID={`button-${variant}`}>
           {variant} Button
         </Button>,
@@ -41,7 +36,7 @@ describe('Button', () => {
     const sizes = ['sm', 'md', 'lg'] as const;
 
     sizes.forEach(size => {
-      const { unmount } = renderWithTheme(
+      const { unmount } = renderWithProvider(
         <Button size={size} testID={`button-${size}`}>
           {size} Button
         </Button>,
@@ -54,7 +49,7 @@ describe('Button', () => {
 
   it('disables button when disabled prop is true', () => {
     const onPressMock = jest.fn();
-    renderWithTheme(
+    renderWithProvider(
       <Button disabled onPress={onPressMock} testID="disabled-button">
         Disabled Button
       </Button>,
@@ -67,7 +62,7 @@ describe('Button', () => {
   });
 
   it('shows loading state correctly', () => {
-    renderWithTheme(
+    renderWithProvider(
       <Button loading testID="loading-button">
         Loading Button
       </Button>,
@@ -79,7 +74,7 @@ describe('Button', () => {
   });
 
   it('applies fullWidth style correctly', () => {
-    renderWithTheme(
+    renderWithProvider(
       <Button fullWidth testID="full-width-button">
         Full Width Button
       </Button>,
@@ -91,7 +86,7 @@ describe('Button', () => {
 
   it('applies custom style correctly', () => {
     const customStyle = { backgroundColor: 'red' };
-    renderWithTheme(
+    renderWithProvider(
       <Button style={customStyle} testID="custom-style-button" onPress={() => {}}>
         Custom Style Button
       </Button>,
@@ -101,7 +96,7 @@ describe('Button', () => {
   });
 
   it('has correct accessibility properties', () => {
-    renderWithTheme(
+    renderWithProvider(
       <Button
         accessibilityLabel="Custom accessibility label"
         accessibilityHint="Custom accessibility hint"
@@ -120,7 +115,7 @@ describe('Button', () => {
 
   it('prevents press when loading', () => {
     const onPressMock = jest.fn();
-    renderWithTheme(
+    renderWithProvider(
       <Button loading onPress={onPressMock} testID="loading-button">
         Loading Button
       </Button>,
@@ -131,7 +126,7 @@ describe('Button', () => {
   });
 
   it('renders with icon correctly', () => {
-    renderWithTheme(<Button testID="icon-button">Button Text</Button>);
+    renderWithProvider(<Button testID="icon-button">Button Text</Button>);
 
     expect(screen.getByTestId('icon-button')).toBeTruthy();
     expect(screen.getByText('Button Text')).toBeTruthy();
@@ -139,7 +134,7 @@ describe('Button', () => {
 
   it('handles long press correctly', () => {
     const onLongPressMock = jest.fn();
-    renderWithTheme(
+    renderWithProvider(
       <Button onLongPress={onLongPressMock} testID="long-press-button">
         Long Press Button
       </Button>,

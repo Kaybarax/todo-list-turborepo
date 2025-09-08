@@ -1,14 +1,12 @@
-import { render, fireEvent, screen, waitFor } from '@testing-library/react-native';
+import { fireEvent, screen, waitFor } from '@testing-library/react-native';
 import React from 'react';
 
 import { Modal } from '../lib/components/Modal/Modal';
-import { ThemeProvider } from '../lib/theme';
+import { renderWithProvider } from '../src/test/utils/renderWithProvider';
 
 // Use global react-native mock; remove spread actual to prevent ESM parsing issues
 
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
-};
+const renderWithTheme = renderWithProvider;
 
 describe('Modal Accessibility Tests', () => {
   beforeEach(() => {
@@ -84,11 +82,9 @@ describe('Modal Accessibility Tests', () => {
       expect(screen.getByTestId('modal')).toBeTruthy();
 
       rerender(
-        <ThemeProvider>
-          <Modal visible={false} onClose={() => {}} testID="modal">
-            <text>Modal Content</text>
-          </Modal>
-        </ThemeProvider>,
+        <Modal visible={false} onClose={() => {}} testID="modal">
+          <text>Modal Content</text>
+        </Modal>,
       );
 
       await waitFor(() => {

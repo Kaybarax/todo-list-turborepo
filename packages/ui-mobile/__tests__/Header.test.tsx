@@ -1,13 +1,11 @@
-import { render, screen } from '@testing-library/react-native';
+import { screen } from '@testing-library/react-native';
 import React from 'react';
 
 import { Header } from '../lib/components/Header/Header';
-import { ThemeProvider } from '../lib/theme';
+import { renderWithProvider } from '../src/test/utils/renderWithProvider';
 import { Button } from '../lib/components/Button';
 
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
-};
+const renderWithTheme = renderWithProvider;
 
 describe('Header', () => {
   it('renders correctly with title', () => {

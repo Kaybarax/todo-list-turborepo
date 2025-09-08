@@ -1,15 +1,13 @@
-import { render, fireEvent, screen } from '@testing-library/react-native';
+import { fireEvent, screen } from '@testing-library/react-native';
 import React from 'react';
 
 import { Button } from '../lib/components/Button/Button';
-import { ThemeProvider } from '../lib/theme';
+import { renderWithProvider } from '../src/test/utils/renderWithProvider';
 import { validateTouchTargetSize, validateContrastRatio } from '../lib/utils/accessibility';
 
 // Using global react-native mock from setup; no per-test re-mock to avoid ESM parse issues
 
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
-};
+const renderWithTheme = renderWithProvider;
 
 describe('Button Accessibility Tests', () => {
   beforeEach(() => {
@@ -196,11 +194,7 @@ describe('Button Accessibility Tests', () => {
       const button = screen.getByTestId('button');
       expect(screen.getByText('Original Text')).toBeTruthy();
 
-      rerender(
-        <ThemeProvider>
-          <Button testID="button">Updated Text</Button>
-        </ThemeProvider>,
-      );
+      rerender(<Button testID="button">Updated Text</Button>);
 
       expect(screen.getByText('Updated Text')).toBeTruthy();
     });
@@ -216,11 +210,9 @@ describe('Button Accessibility Tests', () => {
       expect(button.props.accessibilityState?.busy).toBeFalsy();
 
       rerender(
-        <ThemeProvider>
-          <Button loading={true} testID="button">
-            Loading State
-          </Button>
-        </ThemeProvider>,
+        <Button loading={true} testID="button">
+          Loading State
+        </Button>,
       );
 
       button = screen.getByTestId('button');
