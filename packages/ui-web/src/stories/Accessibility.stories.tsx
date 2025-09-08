@@ -5,7 +5,6 @@ import { Button } from '../../lib/components/Button/Button';
 import { Input } from '../../lib/components/Input/Input';
 import { Dropdown } from '../../lib/components/Dropdown/Dropdown';
 import { Tabs } from '../../lib/components/Tabs/Tabs';
-import { Dialog } from '../../lib/components/Dialog/Dialog';
 
 const meta: Meta = {
   title: 'Foundation/Accessibility',
@@ -62,9 +61,9 @@ export const KeyboardNavigation: Story = {
             </p>
             <Dropdown
               items={[
-                { label: 'Profile', value: 'profile' },
-                { label: 'Settings', value: 'settings' },
-                { label: 'Logout', value: 'logout' },
+                { id: 'profile', label: 'Profile' },
+                { id: 'settings', label: 'Settings' },
+                { id: 'logout', label: 'Logout' },
               ]}
               label="Account Menu"
             />
@@ -76,16 +75,13 @@ export const KeyboardNavigation: Story = {
               • <kbd>←</kbd> <kbd>→</kbd> - Navigate between tabs • <kbd>Home</kbd> / <kbd>End</kbd> - First/last tab •{' '}
               <kbd>Enter</kbd> or <kbd>Space</kbd> - Activate tab
             </p>
-            <Tabs defaultValue="tab1">
-              <Tabs.List>
-                <Tabs.Trigger value="tab1">Accessibility</Tabs.Trigger>
-                <Tabs.Trigger value="tab2">Keyboard</Tabs.Trigger>
-                <Tabs.Trigger value="tab3">Screen Reader</Tabs.Trigger>
-              </Tabs.List>
-              <Tabs.Content value="tab1">Focus management and ARIA attributes</Tabs.Content>
-              <Tabs.Content value="tab2">Keyboard navigation patterns</Tabs.Content>
-              <Tabs.Content value="tab3">Screen reader compatibility</Tabs.Content>
-            </Tabs>
+            <Tabs
+              items={[
+                { id: 'accessibility', label: 'Accessibility', content: 'Focus management and ARIA attributes' },
+                { id: 'keyboard', label: 'Keyboard', content: 'Keyboard navigation patterns' },
+                { id: 'screenreader', label: 'Screen Reader', content: 'Screen reader compatibility' },
+              ]}
+            />
           </div>
         </div>
       </section>

@@ -44,6 +44,8 @@ describe('AuthService', () => {
       findByEmail: jest.fn(),
       create: jest.fn(),
       findByWalletAddress: jest.fn(),
+      findById: jest.fn(),
+      updateLastLogin: jest.fn(),
     };
 
     const mockJwtService = {

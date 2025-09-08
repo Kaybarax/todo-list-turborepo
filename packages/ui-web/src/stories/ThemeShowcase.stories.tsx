@@ -139,7 +139,7 @@ function ComponentShowcase() {
           <Badge variant="success">Success</Badge>
           <Badge variant="warning">Warning</Badge>
           <Badge variant="error">Error</Badge>
-          <Badge variant="ghost">Ghost</Badge>
+          <Badge variant="accent">Ghost</Badge>
           <Badge variant="outline">Outline</Badge>
         </div>
       </Card>
@@ -239,8 +239,11 @@ export const InteractiveThemeShowcase: Story = {
         <div className="sticky top-0 z-50 bg-base-100 border-b border-base-300 p-4">
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-wrap items-center gap-4">
-              <label className="font-semibold">Theme:</label>
+              <label className="font-semibold" htmlFor="theme-select">
+                Theme:
+              </label>
               <select
+                id="theme-select"
                 className="select select-bordered select-sm"
                 value={selectedTheme}
                 onChange={e => setSelectedTheme(e.target.value)}
@@ -288,10 +291,10 @@ export const ThemeComparison: Story = {
                 <div className="space-y-4">
                   {/* Color swatches */}
                   <div className="flex gap-2">
-                    <div className="w-8 h-8 rounded bg-primary"></div>
-                    <div className="w-8 h-8 rounded bg-secondary"></div>
-                    <div className="w-8 h-8 rounded bg-accent"></div>
-                    <div className="w-8 h-8 rounded bg-neutral"></div>
+                    <div className="w-8 h-8 rounded bg-primary" />
+                    <div className="w-8 h-8 rounded bg-secondary" />
+                    <div className="w-8 h-8 rounded bg-accent" />
+                    <div className="w-8 h-8 rounded bg-neutral" />
                   </div>
 
                   {/* Sample components */}

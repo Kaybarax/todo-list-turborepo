@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { BlockchainStats } from '../../../../lib/components/blockchain/BlockchainStats/BlockchainStats';
-import type { BlockchainStatsData } from '../../../../lib/components/blockchain/BlockchainStats/BlockchainStats';
+import {
+  BlockchainStats,
+  type BlockchainStatsData,
+} from '../../../../lib/components/blockchain/BlockchainStats/BlockchainStats';
 
 // Mock network color function for stories
 const mockGetNetworkColor = (network: string): string => {

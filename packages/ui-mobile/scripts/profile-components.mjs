@@ -32,14 +32,19 @@ import {
 } from '../lib/utils/componentMappings.ts';
 
 // Local light replicas for Avatar & Badge mapping logic (avoid RN / theme deps)
-const avatarSizeToCategory = (size) => {
+const avatarSizeToCategory = size => {
   switch (size) {
-    case 'tiny': return 'c2';
-    case 'small': return 'c1';
-    case 'large': return 'h6';
-    case 'giant': return 'h5';
+    case 'tiny':
+      return 'c2';
+    case 'small':
+      return 'c1';
+    case 'large':
+      return 'h6';
+    case 'giant':
+      return 'h5';
     case 'medium':
-    default: return 'p2';
+    default:
+      return 'p2';
   }
 };
 
@@ -65,7 +70,7 @@ function simulateButton(i) {
 }
 
 function simulateBadge(i) {
-  const variants = ['default','primary','secondary','success','warning','danger'];
+  const variants = ['default', 'primary', 'secondary', 'success', 'warning', 'danger'];
   const variant = variants[i % variants.length];
   const mapping = badgeVariantColors[variant] || badgeVariantColors.default;
   // pretend text measurement cost
@@ -74,7 +79,7 @@ function simulateBadge(i) {
 }
 
 function simulateAvatar(i) {
-  const sizes = ['tiny','small','medium','large','giant'];
+  const sizes = ['tiny', 'small', 'medium', 'large', 'giant'];
   const size = sizes[i % sizes.length];
   const category = avatarSizeToCategory(size);
   const initials = `U${i % 10}`;
@@ -122,14 +127,18 @@ for (let i = 0; i < argList.length; i++) {
   }
   switch (a) {
     case '--json':
-      emitJson = true; break;
+      emitJson = true;
+      break;
     case '--out':
       outPath = argList[++i];
-      emitJson = true; break;
+      emitJson = true;
+      break;
     case '--quiet-table':
-      quietTable = true; break;
+      quietTable = true;
+      break;
     case '--samples':
-      includeSamples = true; break;
+      includeSamples = true;
+      break;
     default:
       if (a.startsWith('--')) {
         console.warn(`Unknown flag: ${a}`);
@@ -171,7 +180,7 @@ for (let i = 0; i < argList.length; i++) {
   }
 
   const guidance = 'Median >1ms or P95 >3ms suggests investigating memoization or style object churn.';
-  const fmt = (n) => n.toFixed(3);
+  const fmt = n => n.toFixed(3);
 
   if (!quietTable) {
     console.log(`\nMapping Profiling (iterations=${iterations})`);
@@ -180,7 +189,7 @@ for (let i = 0; i < argList.length; i++) {
     console.log('--------------------------------------------------------------------------');
     for (const [name, stats] of Object.entries(derived)) {
       console.log(
-        `${name.padEnd(24)} ${fmt(stats.medianMs).padStart(9)} ${fmt(stats.avgMs).padStart(8)} ${fmt(stats.p95Ms).padStart(8)} ${fmt(stats.totalMs).padStart(10)} ${String(stats.renders).padStart(8)}`
+        `${name.padEnd(24)} ${fmt(stats.medianMs).padStart(9)} ${fmt(stats.avgMs).padStart(8)} ${fmt(stats.p95Ms).padStart(8)} ${fmt(stats.totalMs).padStart(10)} ${String(stats.renders).padStart(8)}`,
       );
     }
     console.log('--------------------------------------------------------------------------');

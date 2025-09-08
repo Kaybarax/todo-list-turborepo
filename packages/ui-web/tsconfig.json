@@ -21,6 +21,6 @@
     },
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src/**/*", "lib/**/*", "__tests__/**/*"],
+  "include": ["src/**/*", "lib/**/*", "__tests__/**/*", "tokens/**/*.json"],
   "exclude": ["node_modules", "dist", ".storybook", "showcase"]
 }

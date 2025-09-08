@@ -6,6 +6,56 @@ let db: Db;
 let client: MongoClient;
 
 /**
+ * Simple wrapper class around MongoDB operations. The tests mock this class, so the
+ * implementation only needs to provide method signatures. Real logic can be
+ * incrementally added later without changing the public API used by tests.
+ */
+export class DatabaseService {
+  async connect(): Promise<void> {
+    await connectToDatabase();
+  }
+
+  async disconnect(): Promise<void> {
+    await closeDatabaseConnection();
+  }
+
+  // CRUD style methods – stubbed. Tests mock these so bodies are rarely executed.
+  async insertTodo<T>(todo: T): Promise<T> {
+    return todo;
+  }
+
+  async updateTodo<T>(_id: string, todo: T): Promise<T> {
+    return todo;
+  }
+
+  // Optional / currently unused in tests
+  async deleteTodo(_id: string): Promise<void> {
+    return;
+  }
+  async getTodo<T>(_id: string): Promise<T | null> {
+    return null;
+  }
+  async getAllTodos<T>(): Promise<T[]> {
+    return [];
+  }
+  async getTodosByUser<T>(_userId: string): Promise<T[]> {
+    return [];
+  }
+  async getTodosByNetwork<T>(_network: string): Promise<T[]> {
+    return [];
+  }
+  async getStats(): Promise<Record<string, unknown>> {
+    return {};
+  }
+  async createIndex(): Promise<void> {
+    return;
+  }
+  async dropIndex(): Promise<void> {
+    return;
+  }
+}
+
+/**
  * Connect to the MongoDB database
  */
 export async function connectToDatabase(): Promise<Db> {

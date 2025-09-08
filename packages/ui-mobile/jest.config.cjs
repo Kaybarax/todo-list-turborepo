@@ -29,9 +29,9 @@ module.exports = {
         // Raise manually as coverage improves; keeping a little headroom avoids flaky failures.
         global: {
           branches: 52, // floor(52.09)
-            functions: 34, // floor(34.78)
-            lines: 62, // floor(62.02)
-            statements: 59, // floor(59.72)
+          functions: 34, // floor(34.78)
+          lines: 62, // floor(62.02)
+          statements: 59, // floor(59.72)
         },
       },
   moduleNameMapper: {

@@ -28,10 +28,17 @@ type Story = StoryObj;
 function ColorSwatch({ name, value }: { name: string; value: string }) {
   const [copied, setCopied] = React.useState(false);
 
-  const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(value);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copyToClipboard = () => {
+    // Wrap async clipboard operation without returning the promise to onClick
+    void (async () => {
+      try {
+        await navigator.clipboard.writeText(value);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch {
+        // no-op
+      }
+    })();
   };
 
   return (

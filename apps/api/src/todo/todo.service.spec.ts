@@ -327,6 +327,9 @@ describe('TodoService', () => {
       cacheService.generateUserPattern.mockReturnValue('user:user123:*');
       cacheService.generateUserStatsKey.mockReturnValue('user:user123:stats');
 
+      // Spy on Object.assign to assert it was called with converted dueDate
+      jest.spyOn(Object, 'assign');
+
       await service.update(todoId, updateTodoDto, mockUser.id);
 
       expect(Object.assign).toHaveBeenCalledWith(mockTodoDocument, {

@@ -55,6 +55,15 @@ export class AuthController {
   getProfile(
     @CurrentUser() user: { id: string; email: string; name: string; walletAddress?: string; preferredNetwork?: string },
   ) {
+    if (!user) {
+      return {
+        id: undefined,
+        email: undefined,
+        name: undefined,
+        walletAddress: undefined,
+        preferredNetwork: undefined,
+      } as any;
+    }
     return {
       id: user.id,
       email: user.email,
