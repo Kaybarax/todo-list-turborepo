@@ -1,0 +1,94 @@
+name: UI Mobile E2E
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'packages/ui-mobile/**'
+      - '.github/workflows/ui-mobile-e2e.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/ui-mobile/**'
+      - '.github/workflows/ui-mobile-e2e.yml'
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
+jobs:
+  e2e:
+    name: Playwright Storybook Smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build ui-mobile (library)
+        run: pnpm --filter @todo/ui-mobile build
+
+      - name: Build Storybook (static)
+        working-directory: packages/ui-mobile
+        run: pnpm build-storybook
+
+      - name: Serve Storybook
+        run: npx http-server packages/ui-mobile/storybook-static -p 6006 &
+
+      - name: Wait for Storybook
+        run: |
+          for i in {1..30}; do
+            if curl -sSf http://localhost:6006/iframe.html >/dev/null; then
+              echo "Storybook is up"; exit 0; fi
+            sleep 2;
+          done
+          echo "Storybook failed to start" >&2; exit 1
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright E2E
+        working-directory: packages/ui-mobile
+        env:
+          STORYBOOK_BASE_URL: http://localhost:6006
+          CI: true
+        run: pnpm test:e2e || echo "E2E tests failed" > e2e_failed.flag
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-mobile-playwright-report-${{ github.run_id }}
+          path: packages/ui-mobile/playwright-report
+          retention-days: 14
+
+      - name: Upload traces
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-mobile-playwright-traces-${{ github.run_id }}
+          path: packages/ui-mobile/test-results
+          retention-days: 14
+
+      - name: Fail if tests failed
+        if: always()
+        run: |
+          if [ -f e2e_failed.flag ]; then
+            echo "Playwright E2E failures detected" >&2
+            exit 1
+          fi

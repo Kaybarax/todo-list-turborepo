@@ -180,6 +180,7 @@ These may be executed in parallel per component once Phases 0–2 are complete; 
 
 - [x] P6-1 (DOC) Add Playwright e2e harness: `e2e/playwright.config.ts`, `e2e/button.spec.ts`, `e2e/modal.spec.ts` + npm script `test:e2e`.
   - Added base config + two smoke specs (button primary story label; modal open action). Specs skip gracefully if Storybook not running.
+  - CI: Dedicated workflow `.github/workflows/ui-mobile-e2e.yml` builds Storybook statically and runs Playwright smoke tests against served static build; uploads report & traces artifacts.
 - [x] P6-2 (A11Y) Modal described-by hidden summary (optional, platform support caveat).
   - Introduced `accessibilityDescription` prop in `Modal` rendering visually hidden caption text for assistive tech only.
 - [ ] P6-3 (A) Explore refactor of Header to wrap `TopNavigation` (spike doc / issue link).
