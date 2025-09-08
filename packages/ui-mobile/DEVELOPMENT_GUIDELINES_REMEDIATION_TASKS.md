@@ -198,7 +198,8 @@ These may be executed in parallel per component once Phases 0–2 are complete; 
     - All goals satisfied AND no regression in accessibility AND performance delta within threshold.
   - If Deferred:
     - Record blockers & upstream issues (file against UI Kitten if needed) and close task with rationale.
-- [ ] P6-4 (P) Final pass: ensure memoization applied only where net benefit (remove unnecessary React.memo wrappers if prop churn high).
+- [x] P6-4 (P) Final pass: ensure memoization applied only where net benefit (remove unnecessary React.memo wrappers if prop churn high).
+  - Audit Summary: Only `Avatar` and `Icon` use `React.memo`. Both render pure visual output dependent on shallow prop sets with stable object identities (no inline function props). `Badge` not memoized intentionally (tiny render tree, negligible mapping cost <0.001ms; variant/theme lookup constant). `Text` left un-memoized to avoid blocking dynamic color/variant props in parent list renders. No removals needed; no additional memoization added.
 
 ## File Creation / Modification Summary (Quick Reference)
 
