@@ -5,8 +5,9 @@
  */
 
 import { Text as UIKittenText } from '@ui-kitten/components';
+import type { TextProps as UIKittenTextProps } from '@ui-kitten/components';
 import React from 'react';
-// NOTE: Using loose typing for style/accessibility pending RN type resolution alignment
+import { type StyleProp, type TextStyle } from 'react-native';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { mapTextCategory, type TextVariant as MappingTextVariant } from '../../utils/componentMappings';
@@ -16,22 +17,12 @@ export type TextColor = 'primary' | 'secondary' | 'disabled' | 'inverse' | strin
 export type TextAlign = 'left' | 'center' | 'right' | 'justify';
 export type FontWeight = 'regular' | 'medium' | 'semibold' | 'bold';
 
-export interface TextProps {
+export interface TextProps extends Omit<UIKittenTextProps, 'category' | 'style'> {
   variant?: TextVariant;
   color?: TextColor;
   align?: TextAlign;
   weight?: FontWeight;
-  numberOfLines?: number;
-  children: React.ReactNode;
-  testID?: string;
-  // TODO: Replace any with StyleProp<TextStyle> once react-native duplicate type resolution fixed
-  style?: any;
-  // Allow forwarding accessibility props from components that reuse Text as wrapper
-  accessibilityRole?: any;
-  accessibilityState?: any;
-  accessibilityLabel?: string;
-  accessibilityHint?: string;
-  accessible?: boolean;
+  style?: StyleProp<TextStyle>;
 }
 
 export const Text: React.FC<TextProps> = ({
@@ -68,10 +59,10 @@ export const Text: React.FC<TextProps> = ({
   return (
     <UIKittenText
       category={category}
-      style={[baseStyle, style]}
+      style={[baseStyle, style] as any}
       numberOfLines={numberOfLines}
       testID={testID}
-      {...props}
+      {...(props as Partial<UIKittenTextProps>)}
     >
       {children}
     </UIKittenText>

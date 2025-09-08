@@ -67,10 +67,12 @@ const Switch: React.FC<SwitchProps> = ({
     labelStyle,
   ];
 
+  const accessibilityLabel = label || 'switch';
+
   return (
     <View style={containerStyles}>
       {label && (
-        <Text category="p1" style={labelStyles as any}>
+        <Text category="p1" style={labelStyles as any} accessibilityRole="text">
           {label}
         </Text>
       )}
@@ -80,6 +82,9 @@ const Switch: React.FC<SwitchProps> = ({
         status={getKittenStatus()}
         disabled={disabled}
         style={switchStyles}
+        accessibilityLabel={accessibilityLabel}
+        accessibilityRole="switch"
+        accessibilityState={{ checked: value, disabled: !!disabled }}
         {...props}
       />
     </View>

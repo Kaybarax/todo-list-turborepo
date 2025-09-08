@@ -55,7 +55,8 @@ export const NetworkSelector = ({
   testID,
 }: NetworkSelectorProps) => {
   const { theme, evaTheme } = useEnhancedTheme();
-  const supportedNetworks = getSupportedWalletNetworks();
+  // Ensure we always have an array even if the service returns null/undefined (defensive for tests/env)
+  const supportedNetworks = getSupportedWalletNetworks() ?? [];
 
   // Get Eva Design colors
   const getBackgroundColor = () => evaTheme['background-basic-color-1'] ?? '#ffffff';
@@ -81,6 +82,9 @@ export const NetworkSelector = ({
               key={network}
               onPress={() => onNetworkSelect(network)}
               disabled={disabled}
+              accessibilityRole="button"
+              accessibilityState={{ selected: isSelected, disabled }}
+              accessibilityLabel={`${networkInfo.name}. ${networkInfo.description}`}
               style={[
                 {
                   backgroundColor: getBackgroundColor(),
@@ -146,6 +150,9 @@ export const NetworkSelector = ({
               key={network}
               onPress={() => onNetworkSelect(network)}
               disabled={disabled}
+              accessibilityRole="button"
+              accessibilityState={{ selected: isSelected, disabled }}
+              accessibilityLabel={`${networkInfo.name}. ${networkInfo.description}`}
               style={[
                 {
                   alignItems: 'center',

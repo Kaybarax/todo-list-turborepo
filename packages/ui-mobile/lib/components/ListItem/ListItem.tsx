@@ -5,14 +5,16 @@
  */
 
 import React, { type ReactNode } from 'react';
-import { View, type ViewStyle, TouchableOpacity } from 'react-native';
+import { View, type ViewStyle, TouchableOpacity, StyleSheet, type StyleProp } from 'react-native';
+import type { ListItemProps as UIKittenListItemProps } from '@ui-kitten/components';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { Text } from '../Text/Text';
 
 export type ListItemSize = 'sm' | 'md' | 'lg';
 
-export interface ListItemProps {
+// LIT-2: Extend UI Kitten props; omit styling & accessory fields we manage
+export interface ListItemProps extends Omit<UIKittenListItemProps, 'children' | 'style'> {
   title: string;
   subtitle?: string;
   description?: string;
@@ -23,7 +25,7 @@ export interface ListItemProps {
   disabled?: boolean;
   testID?: string;
   accessibilityLabel?: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const ListItem: React.FC<ListItemProps> = ({
@@ -73,26 +75,28 @@ export const ListItem: React.FC<ListItemProps> = ({
   };
 
   // Custom styles for size-based styling
-  const containerStyles = [
+  const baseSpacingH = theme.spacing[size === 'sm' ? 'md' : size === 'lg' ? 'xl' : 'lg'];
+  const baseSpacingV = theme.spacing[size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'];
+
+  const containerStyles: StyleProp<ViewStyle>[] = [
+    styles.row,
     {
       minHeight: size === 'sm' ? 40 : size === 'lg' ? 72 : 56,
-      paddingHorizontal: theme.spacing[size === 'sm' ? 'md' : size === 'lg' ? 'xl' : 'lg'],
-      paddingVertical: theme.spacing[size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'],
-      flexDirection: 'row' as const,
-      alignItems: 'center' as const,
+      paddingHorizontal: baseSpacingH,
+      paddingVertical: baseSpacingV,
       backgroundColor: evaTheme['background-basic-color-1'] || theme.colors.surface,
       borderBottomWidth: 1,
       borderBottomColor: evaTheme['border-basic-color-3'] || theme.colors.border.default,
     },
-    disabled && { opacity: 0.5 },
+    disabled ? styles.disabled : undefined,
     style,
   ];
 
   const content = (
     <>
-      {leading && <View style={{ marginRight: 12, alignItems: 'center', justifyContent: 'center' }}>{leading}</View>}
+      {leading && <View style={styles.leading}>{leading}</View>}
 
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View style={styles.textColumn}>
         <Text variant={textVariants.title} color={getTextColor('primary')} weight="medium" numberOfLines={1}>
           {title}
         </Text>
@@ -102,7 +106,7 @@ export const ListItem: React.FC<ListItemProps> = ({
             variant={textVariants.subtitle}
             color={getTextColor('secondary')}
             numberOfLines={1}
-            style={{ marginTop: 2 }}
+            style={styles.subtitle}
           >
             {subtitle}
           </Text>
@@ -113,24 +117,27 @@ export const ListItem: React.FC<ListItemProps> = ({
             variant={textVariants.description}
             color={getTextColor('secondary')}
             numberOfLines={2}
-            style={{ marginTop: 4 }}
+            style={styles.description}
           >
             {description}
           </Text>
         )}
       </View>
 
-      {trailing && <View style={{ marginLeft: 12, alignItems: 'center', justifyContent: 'center' }}>{trailing}</View>}
+      {trailing && <View style={styles.trailing}>{trailing}</View>}
     </>
   );
+
+  // LIT-3: Accessibility fallback label logic
+  const finalA11yLabel = accessibilityLabel || title || subtitle || description || 'list item';
 
   if (onPress && !disabled) {
     return (
       <TouchableOpacity
-        style={containerStyles}
+        style={containerStyles as any}
         onPress={onPress}
         testID={testID}
-        accessibilityLabel={accessibilityLabel}
+        accessibilityLabel={finalA11yLabel}
         accessibilityRole="button"
         accessibilityState={{ disabled }}
       >
@@ -139,8 +146,9 @@ export const ListItem: React.FC<ListItemProps> = ({
     );
   }
 
+  // Non-pressable uses role=listitem for semantic grouping inside potential lists
   return (
-    <View style={containerStyles} testID={testID} accessibilityLabel={accessibilityLabel}>
+    <View style={containerStyles as any} testID={testID} accessibilityLabel={finalA11yLabel}>
       {content}
     </View>
   );
@@ -149,3 +157,34 @@ export const ListItem: React.FC<ListItemProps> = ({
 ListItem.displayName = 'ListItem';
 
 export default ListItem;
+
+// Static styles (spacing & layout) extracted for reuse / perf
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  disabled: {
+    opacity: 0.5,
+  },
+  leading: {
+    marginRight: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  trailing: {
+    marginLeft: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textColumn: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  subtitle: {
+    marginTop: 2,
+  },
+  description: {
+    marginTop: 4,
+  },
+});

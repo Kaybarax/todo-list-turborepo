@@ -5,8 +5,9 @@
  */
 
 import { Card as UIKittenCard } from '@ui-kitten/components';
+import type { CardProps as UIKittenCardProps } from '@ui-kitten/components';
 import React from 'react';
-import { type ViewStyle, type TextStyle, View } from 'react-native';
+import { type ViewStyle, type TextStyle, View, StyleSheet, type StyleProp } from 'react-native';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { mapCardAppearance, type CardVariant as MappingCardVariant } from '../../utils/componentMappings';
@@ -15,43 +16,43 @@ import { Text } from '../Text/Text';
 
 export type CardVariant = MappingCardVariant;
 
-export interface CardProps {
+// CRD-1: Extend underlying UI Kitten Card props (omit appearance & style to control locally)
+export interface CardProps extends Omit<UIKittenCardProps, 'appearance' | 'style' | 'children'> {
   variant?: CardVariant;
   padding?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   children: React.ReactNode;
-  onPress?: () => void;
   testID?: string;
-  style?: ViewStyle;
-  accessibilityLabel?: string;
+  style?: StyleProp<ViewStyle>;
+  accessibilityLabel?: string; // explicit for clarity
 }
 
 export interface CardHeaderProps {
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   children?: React.ReactNode;
   testID?: string;
 }
 
 export interface CardTitleProps {
-  style?: TextStyle;
+  style?: StyleProp<TextStyle>;
   children?: React.ReactNode;
   variant?: 'h1' | 'h2' | 'h3' | 'h4';
   testID?: string;
 }
 
 export interface CardDescriptionProps {
-  style?: TextStyle;
+  style?: StyleProp<TextStyle>;
   children?: React.ReactNode;
   testID?: string;
 }
 
 export interface CardContentProps {
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   children?: React.ReactNode;
   testID?: string;
 }
 
 export interface CardFooterProps {
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   children?: React.ReactNode;
   alignment?: 'left' | 'center' | 'right' | 'space-between';
   testID?: string;
@@ -80,22 +81,22 @@ const CardBase: React.FC<CardProps> = ({
   const appearance = mapCardAppearance(variant);
 
   // Custom styles for padding and variant-specific styling
-  const customStyles = [
-    {
-      padding: theme.spacing[padding],
-    },
-    variant === 'elevated' && getShadow('md'),
+  // CRD-2 / CRD-3: dynamic padding + shared shadow util (already in place) + consumer style
+  const customStyles: StyleProp<ViewStyle>[] = [
+    { padding: theme.spacing[padding] },
+    variant === 'elevated' ? getShadow('md') : undefined,
     style,
-  ] as any;
+  ];
 
   return (
     <UIKittenCard
       appearance={appearance}
       onPress={onPress}
-      style={customStyles}
+      // Casting due to React Native duplicate style type variance across versions (safe: only ViewStyle-compatible props)
+      style={customStyles as any}
       testID={testID}
       accessibilityRole={onPress ? 'button' : undefined}
-      {...props}
+      {...(props as Partial<UIKittenCardProps>)}
     >
       {children}
     </UIKittenCard>
@@ -130,30 +131,16 @@ const CardHeader: React.FC<CardHeaderProps> = ({ style, children, testID }) => {
 };
 
 const CardTitle: React.FC<CardTitleProps> = ({ style, children, variant = 'h4', testID }) => {
-  const titleStyles = [
-    {
-      marginBottom: 4,
-    },
-    style,
-  ];
-
   return (
-    <Text variant={variant} color="primary" weight="semibold" style={titleStyles} testID={testID}>
+    <Text variant={variant} color="primary" weight="semibold" style={[cardStaticStyles.title, style]} testID={testID}>
       {children}
     </Text>
   );
 };
 
 const CardDescription: React.FC<CardDescriptionProps> = ({ style, children, testID }) => {
-  const descriptionStyles = [
-    {
-      marginBottom: 8,
-    },
-    style,
-  ];
-
   return (
-    <Text variant="body2" color="secondary" style={descriptionStyles} testID={testID}>
+    <Text variant="body2" color="secondary" style={[cardStaticStyles.description, style]} testID={testID}>
       {children}
     </Text>
   );
@@ -193,10 +180,9 @@ const CardFooter: React.FC<CardFooterProps> = ({ style, children, alignment = 'r
     }
   };
 
-  const footerStyles = [
+  const footerStyles: StyleProp<ViewStyle>[] = [
+    cardStaticStyles.footerBase,
     {
-      flexDirection: 'row' as const,
-      alignItems: 'center' as const,
       justifyContent: getJustifyContent() as any,
       paddingTop: theme.spacing.sm,
       marginTop: theme.spacing.sm,
@@ -233,3 +219,17 @@ CardFooter.displayName = 'CardFooter';
 
 export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter };
 export default Card;
+
+// CRD-2: Static style extraction
+const cardStaticStyles = StyleSheet.create({
+  title: {
+    marginBottom: 4,
+  },
+  description: {
+    marginBottom: 8,
+  },
+  footerBase: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});

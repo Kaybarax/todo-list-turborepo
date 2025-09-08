@@ -69,70 +69,70 @@ These may be executed in parallel per component once Phases 0–2 are complete; 
 
 ### Text
 
-- [ ] TXT-1 (T) Extend `UIKittenTextProps` & retain variant mapping.
-- [ ] TXT-2 (T) Replace `style?: any` with `StyleProp<TextStyle>`.
-- [ ] TXT-3 (TEST) Add/Update `__tests__/Text.test.tsx` verifying mapping.
+- [x] TXT-1 (T) Extend `UIKittenTextProps` & retain variant mapping.
+- [x] TXT-2 (T) Replace `style?: any` with `StyleProp<TextStyle>`.
+- [x] TXT-3 (TEST) Add/Update `__tests__/Text.test.tsx` verifying mapping.
 
 ### Card
 
-- [ ] CRD-1 (T) Extend `UIKittenCardProps` in `Card/Card.tsx`.
-- [ ] CRD-2 (S) Extract static styles to `StyleSheet.create`.
-- [ ] CRD-3 (S) Apply shared shadows util.
+- [x] CRD-1 (T) Extend `UIKittenCardProps` in `Card/Card.tsx`.
+- [x] CRD-2 (S) Extract static styles to `StyleSheet.create`.
+- [x] CRD-3 (S) Apply shared shadows util.
 
 ### Header
 
-- [ ] HDR-1 (A11Y) Add `accessibilityRole="header"`.
-- [ ] HDR-2 (S) Replace inline shadows with util.
-- [ ] HDR-3 (DOC) Add rationale entry (why custom vs `TopNavigation`).
+- [x] HDR-1 (A11Y) Add `accessibilityRole="header"`.
+- [x] HDR-2 (S) Replace inline shadows with util.
+- [x] HDR-3 (DOC) Add rationale entry (why custom vs `TopNavigation`).
 
-### ListItem
+### ListItem (Decision: Extend UI Kitten)
 
-- [ ] LIT-1 (A/DOC) Decide: deprecate or extend. If deprecating, add deprecation note + story; else extend UI Kitten props.
-- [ ] LIT-2 (T) (If kept) Extend underlying props.
-- [ ] LIT-3 (A11Y) Add role/labels for pressable vs non-pressable.
+- [x] LIT-1 (A/DOC) Decision recorded: extend component rather than deprecate.
+- [x] LIT-2 (T) Extend underlying UI Kitten `ListItemProps` + typing cleanup.
+- [x] LIT-3 (A11Y) Fallback accessibilityLabel (title -> subtitle -> description -> "list item"); ensure role differences.
 
 ### Modal
 
-- [ ] MOD-1 (DOC) Add rationale (animation/focus management) in `DEVELOPMENT.md`.
-- [ ] MOD-2 (TEST) Ensure existing tests adapt to reduced motion hook (phase 1 addition) & remove magic `setTimeout(300)` by using callback or config constant.
-- [ ] MOD-3 (A) Replace timeout with animation completion.
+- [x] MOD-1 (DOC) Add rationale (animation/focus management) in `DEVELOPMENT.md`.
+- [x] MOD-2 (TEST) Ensure existing tests adapt to reduced motion hook (phase 1 addition) & remove magic `setTimeout(300)` by using callback or config constant.
+- [x] MOD-3 (A) Replace timeout with animation completion.
 
 ### TabBar
 
-- [ ] TBR-1 (A) Remove duplicate effect.
-- [ ] TBR-2 (A11Y/P) Integrate reduced motion branch.
-- [ ] TBR-3 (S) Apply shadows util & extract static styles.
+- [x] TBR-1 (A) Remove duplicate effect.
+- [x] TBR-2 (A11Y/P) Integrate reduced motion branch.
+- [x] TBR-3 (S) Apply shadows util & extract static styles.
 
 ### NetworkSelector
 
-- [ ] NET-1 (T) Replace `style?: any` with `StyleProp<ViewStyle>`.
-- [ ] NET-2 (A11Y) Composite label `${name}. ${description}`.
+- [x] NET-1 (T) Replace `style?: any` with `StyleProp<ViewStyle>`.
+- [x] NET-2 (A11Y) Composite label `${name}. ${description}`.
 
 ### Badge
 
-- [ ] BDG-1 (A11Y) Add role + fallback label.
-- [ ] BDG-2 (A/T) Move variant->color logic to mapping util if applicable; or new file `lib/utils/badgeMapping.ts`.
+- [x] BDG-1 (A11Y) Add role + fallback label.
+- [x] BDG-2 (A/T) Move variant->color logic to mapping util if applicable; or new file `lib/utils/badgeMapping.ts`.
 
 ### Avatar
 
-- [ ] AVT-1 (P) Wrap in `React.memo`.
-- [ ] AVT-2 (P) Memoize derived style objects.
-- [ ] AVT-3 (A11Y) Add fallback `accessibilityLabel` (initials or “avatar”).
+- [x] AVT-1 (P) Wrap in `React.memo`.
+- [x] AVT-2 (P) Memoize derived style objects.
+- [x] AVT-3 (A11Y) Add fallback `accessibilityLabel` (initials or “avatar”).
 
 ### Icon
 
-- [ ] ICN-1 (T) Extend UI Kitten icon props.
-- [ ] ICN-2 (P) Wrap in `React.memo`.
-- [ ] ICN-3 (S) Extract base style constants & safe style merging.
+- [x] ICN-1 (T) Extend UI Kitten icon props.
+- [x] ICN-2 (P) Wrap in `React.memo`.
+- [x] ICN-3 (S) Extract base style constants & safe style merging.
 
 ### Switch
 
-- [ ] SWT-1 (A11Y) Add label fallback (if `label` prop exists externally).
+- [x] SWT-1 (A11Y) Add label fallback (if `label` prop exists externally).
 
 ### FormField
 
-- [ ] FFD-1 (TEST) Add `FormField.test.tsx` covering label / hint / error precedence.
-- [ ] FFD-2 (A11Y) Link error/hint via IDs or doc note; add `accessibilityHint` passthrough.
+- [x] FFD-1 (TEST) Add `FormField.test.tsx` covering label / hint / error precedence.
+- [x] FFD-2 (A11Y) Link error/hint via IDs or doc note; add `accessibilityHint` passthrough.
 
 ## Phase 4 – Immediate Test & Story Updates (Ensure coverage & docs after refactors)
 

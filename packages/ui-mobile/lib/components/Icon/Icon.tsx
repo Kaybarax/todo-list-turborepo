@@ -4,61 +4,55 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import { Icon as UIKittenIcon } from '@ui-kitten/components';
-import React from 'react';
+import { Icon as UIKittenIcon, type IconProps as KittenIconProps } from '@ui-kitten/components';
+import React, { useMemo } from 'react';
 import { type ViewStyle } from 'react-native';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
-export interface IconProps {
-  name?: string;
+export interface IconProps extends Omit<KittenIconProps, 'name'> {
+  name?: string; // optional to keep parity
   size?: IconSize;
   color?: string;
   children?: React.ReactNode;
   style?: ViewStyle;
 }
 
-export const Icon: React.FC<IconProps> = ({ name, size = 'md', color, children, style }) => {
+const SIZE_MAP: Record<IconSize, number> = {
+  xs: 12,
+  sm: 16,
+  md: 20,
+  lg: 24,
+  xl: 32,
+};
+
+const IconBase: React.FC<IconProps> = ({ name, size = 'md', color, children, style, ...rest }) => {
   const { theme, evaTheme } = useEnhancedTheme();
 
-  // Get icon size in pixels for Eva Design
-  const getIconSize = () => {
-    const sizeMap = {
-      xs: 12,
-      sm: 16,
-      md: 20,
-      lg: 24,
-      xl: 32,
-    };
-    return sizeMap[size];
-  };
+  const iconSize = useMemo(() => SIZE_MAP[size] || SIZE_MAP.md, [size]);
+  const iconColor = useMemo(
+    () => color || evaTheme['text-basic-color'] || theme.colors.text.primary,
+    [color, evaTheme, theme.colors.text.primary],
+  );
 
-  // Get icon color from Eva theme or fallback to legacy theme
-  const getIconColor = () => {
-    if (color) return color;
-    return evaTheme['text-basic-color'] || theme.colors.text.primary;
-  };
+  const customStyles = useMemo(
+    () => [
+      {
+        width: iconSize,
+        height: iconSize,
+        tintColor: iconColor,
+      },
+      style,
+    ],
+    [iconSize, iconColor, style],
+  );
 
-  const iconSize = getIconSize();
-  const iconColor = getIconColor();
-
-  const customStyles = [
-    {
-      width: iconSize,
-      height: iconSize,
-      tintColor: iconColor,
-    },
-    style,
-  ];
-
-  // If name is provided, use UI Kitten Icon with Eva Design icon pack
   if (name) {
-    return <UIKittenIcon name={name} style={customStyles} fill={iconColor} />;
+    return <UIKittenIcon name={name} style={customStyles} fill={iconColor} {...rest} />;
   }
 
-  // Fallback to children for custom icons
   if (children) {
     return React.isValidElement(children)
       ? React.cloneElement(children, {
@@ -66,12 +60,15 @@ export const Icon: React.FC<IconProps> = ({ name, size = 'md', color, children, 
           height: iconSize,
           color: iconColor,
           style: customStyles,
+          ...rest,
         } as any)
       : children;
   }
 
   return null;
 };
+
+export const Icon = React.memo(IconBase);
 
 Icon.displayName = 'Icon';
 

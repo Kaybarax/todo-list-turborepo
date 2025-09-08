@@ -4,7 +4,7 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import {
   View,
   type ViewStyle,
@@ -48,6 +48,45 @@ export interface ModalProps {
   keyboardAvoidingBehavior?: 'height' | 'position' | 'padding';
 }
 
+// Animation configuration constants (avoid magic numbers) - MOD-3
+const ANIMATION_FAST_DURATION = 160;
+const ANIMATION_HIDE_DURATION = 140;
+const SPRING_CONFIG = { damping: 20, stiffness: 300 } as const;
+const SCALE_HIDDEN = 0.8;
+const TRANSLATE_START = 50;
+
+// Static styles extracted - MOD-2
+const styles = {
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center' } as ViewStyle,
+  backdropBase: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  } as ViewStyle,
+  headerRow: (padding: number, borderColor: string): ViewStyle => ({
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding,
+    borderBottomWidth: 1,
+    borderBottomColor: borderColor,
+  }),
+  content: (padding: number): ViewStyle => ({ flex: 1, padding }),
+  footerRow: (padding: number, borderColor: string, gap: number): ViewStyle => ({
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    padding,
+    borderTopWidth: 1,
+    borderTopColor: borderColor,
+    gap,
+  }),
+  closeButton: (padding: number, radius: number): ViewStyle => ({ padding, borderRadius: radius }),
+};
+
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
 export const Modal: React.FC<ModalProps> = ({
@@ -88,40 +127,52 @@ export const Modal: React.FC<ModalProps> = ({
   const effectiveAnimation = animation ?? animationType;
   const canDismiss = dismissible ?? closeOnBackdropPress;
 
+  // Focus callback triggered post animation (if any)
+  const focusFirstElement = useCallback(() => {
+    firstFocusableRef.current?.focus?.();
+  }, []);
+
   useEffect(() => {
     if (visible) {
       if (prefersReducedMotion || effectiveAnimation === 'none') {
         backdropOpacity.value = 1;
         modalScale.value = 1;
         modalTranslateY.value = 0;
+        // Immediate focus
+        focusFirstElement();
       } else {
-        // Show modal with animation
-        backdropOpacity.value = withTiming(1, { duration: 160 });
+        // Removed Easing.out(Easing.quad) usage for compatibility with current Reanimated test environment
+        backdropOpacity.value = withTiming(1, { duration: ANIMATION_FAST_DURATION });
         if (effectiveAnimation === 'scale') {
-          modalScale.value = withSpring(1, { damping: 20, stiffness: 300 });
+          modalScale.value = withSpring(1, SPRING_CONFIG, () => runOnJS(focusFirstElement)());
         } else if (effectiveAnimation === 'slide') {
-          modalTranslateY.value = withSpring(0, { damping: 20, stiffness: 300 });
+          modalTranslateY.value = withSpring(0, SPRING_CONFIG, () => runOnJS(focusFirstElement)());
         } else {
-          modalScale.value = withTiming(1, { duration: 160 });
-          modalTranslateY.value = withTiming(0, { duration: 160 });
+          // fade
+          modalScale.value = withTiming(1, { duration: ANIMATION_FAST_DURATION }, () => runOnJS(focusFirstElement)());
+          modalTranslateY.value = withTiming(0, { duration: ANIMATION_FAST_DURATION });
         }
       }
-      // Focus management (no delay needed when reduced motion)
-      const focusDelay = prefersReducedMotion ? 0 : 240;
-      setTimeout(() => firstFocusableRef.current?.focus(), focusDelay);
     } else {
       if (prefersReducedMotion || effectiveAnimation === 'none') {
         backdropOpacity.value = 0;
-        modalScale.value = 0.8;
-        modalTranslateY.value = 50;
+        modalScale.value = SCALE_HIDDEN;
+        modalTranslateY.value = TRANSLATE_START;
       } else {
-        // Hide modal with animation
-        backdropOpacity.value = withTiming(0, { duration: 140 });
-        modalScale.value = withTiming(0.8, { duration: 140 });
-        modalTranslateY.value = withTiming(50, { duration: 140 });
+        backdropOpacity.value = withTiming(0, { duration: ANIMATION_HIDE_DURATION });
+        modalScale.value = withTiming(SCALE_HIDDEN, { duration: ANIMATION_HIDE_DURATION });
+        modalTranslateY.value = withTiming(TRANSLATE_START, { duration: ANIMATION_HIDE_DURATION });
       }
     }
-  }, [visible, effectiveAnimation, prefersReducedMotion, backdropOpacity, modalScale, modalTranslateY]);
+  }, [
+    visible,
+    effectiveAnimation,
+    prefersReducedMotion,
+    backdropOpacity,
+    modalScale,
+    modalTranslateY,
+    focusFirstElement,
+  ]);
 
   const getModalSize = (): ViewStyle => {
     const baseStyles: ViewStyle = {
@@ -181,45 +232,9 @@ export const Modal: React.FC<ModalProps> = ({
     runOnJS(onClose)();
   };
 
-  const containerStyles: ViewStyle = {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: theme.spacing.md,
-  };
-
-  const backdropStyles: ViewStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  };
-
-  const headerStyles: ViewStyle = {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: theme.spacing.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: evaTheme['border-basic-color-3'] || theme.colors.border.default,
-  };
-
-  const contentStyles: ViewStyle = {
-    flex: 1,
-    padding: theme.spacing.lg,
-  };
-
-  const footerStyles: ViewStyle = {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    padding: theme.spacing.lg,
-    borderTopWidth: 1,
-    borderTopColor: evaTheme['border-basic-color-3'] || theme.colors.border.default,
-    gap: theme.spacing.sm,
-  };
+  const paddingLg = theme.spacing.lg;
+  const borderColor = evaTheme['border-basic-color-3'] || theme.colors.border.default;
+  const gapSm = theme.spacing.sm;
 
   return (
     <RNModal
@@ -245,10 +260,10 @@ export const Modal: React.FC<ModalProps> = ({
           behavior={keyboardAvoidingBehavior}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 25}
         >
-          <View style={containerStyles}>
+          <View style={[styles.container, { padding: theme.spacing.md }]}>
             {/* Backdrop */}
             <AnimatedTouchableOpacity
-              style={[backdropStyles, backdropAnimatedStyle, backdropStyle]}
+              style={[styles.backdropBase, backdropAnimatedStyle, backdropStyle]}
               onPress={handleBackdropPress}
               activeOpacity={1}
               accessibilityLabel="Close modal"
@@ -261,7 +276,7 @@ export const Modal: React.FC<ModalProps> = ({
             <Animated.View ref={modalRef} style={[getModalSize(), modalAnimatedStyle, style]} accessibilityRole="none">
               {/* Header */}
               {(title || showCloseButton) && (
-                <View style={headerStyles}>
+                <View style={styles.headerRow(paddingLg, borderColor)}>
                   <View style={{ flex: 1 }}>
                     {title && (
                       <Text variant="h3" color="primary" weight="semibold">
@@ -274,10 +289,7 @@ export const Modal: React.FC<ModalProps> = ({
                     <TouchableOpacity
                       ref={firstFocusableRef}
                       onPress={handleClose}
-                      style={{
-                        padding: theme.spacing.xs,
-                        borderRadius: theme.borders.radius.sm,
-                      }}
+                      style={styles.closeButton(theme.spacing.xs, theme.borders.radius.sm)}
                       accessibilityLabel="Close modal button"
                       accessibilityRole="button"
                       accessibilityHint="Closes the modal dialog"
@@ -294,7 +306,7 @@ export const Modal: React.FC<ModalProps> = ({
 
               {/* Content */}
               <ScrollView
-                style={contentStyles}
+                style={styles.content(paddingLg)}
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="handled"
               >
@@ -303,7 +315,7 @@ export const Modal: React.FC<ModalProps> = ({
 
               {/* Footer for confirmation/alert types */}
               {type !== 'default' && (
-                <View style={footerStyles}>
+                <View style={styles.footerRow(paddingLg, borderColor, gapSm)}>
                   {type === 'confirmation' && (
                     <>
                       <Button variant="outline" size="md" onPress={onClose} accessibilityLabel="Cancel">

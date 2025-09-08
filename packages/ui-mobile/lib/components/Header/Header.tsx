@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { View, type ViewStyle, Platform, StatusBar } from 'react-native';
+import { View, type ViewStyle, Platform, StatusBar, StyleSheet, type StyleProp } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
@@ -18,9 +18,10 @@ export interface HeaderProps {
   rightAction?: React.ReactNode;
   backgroundColor?: string;
   testID?: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   showBorder?: boolean;
   statusBarStyle?: 'light-content' | 'dark-content' | 'default';
+  accessibilityLabel?: string; // allow explicit override of header label
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -32,60 +33,49 @@ export const Header: React.FC<HeaderProps> = ({
   style,
   showBorder = true,
   statusBarStyle = 'dark-content',
+  accessibilityLabel,
 }) => {
   const { theme, evaTheme } = useEnhancedTheme();
   const insets = useSafeAreaInsets();
 
-  const headerStyles: ViewStyle = {
+  // Dynamic section (spacing, colors) layered atop static base + shadow token (HDR-2)
+  const headerDynamic: ViewStyle = {
     backgroundColor: backgroundColor || evaTheme['background-basic-color-1'] || theme.colors.surface,
     paddingTop: insets.top,
     paddingHorizontal: theme.spacing.md,
     paddingBottom: theme.spacing.sm,
     borderBottomWidth: showBorder ? 1 : 0,
     borderBottomColor: evaTheme['border-basic-color-3'] || theme.colors.border.default,
-    ...getShadow('md', evaTheme['color-basic-800'] || '#000'),
   };
 
-  const contentStyles: ViewStyle = {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    minHeight: 44, // Minimum touch target size
-  };
+  // Apply shared shadow util (HDR-2 / replaces inline spread)
+  const elevationShadow = getShadow('md', evaTheme['color-basic-800'] || '#000');
 
-  const titleContainerStyles: ViewStyle = {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: theme.spacing.sm,
-  };
+  const finalHeaderStyles: StyleProp<ViewStyle> = [styles.headerBase, elevationShadow, headerDynamic, style];
 
-  const actionContainerStyles: ViewStyle = {
-    minWidth: 44,
-    minHeight: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
+  const actionHitSlop = styles.actionBase; // static min size
 
-  const leftActionContainerStyles: ViewStyle = {
-    ...actionContainerStyles,
-    alignItems: 'flex-start',
-  };
-
-  const rightActionContainerStyles: ViewStyle = {
-    ...actionContainerStyles,
-    alignItems: 'flex-end',
-  };
+  const leftActionContainerStyles: StyleProp<ViewStyle> = [actionHitSlop, styles.actionLeft];
+  const rightActionContainerStyles: StyleProp<ViewStyle> = [actionHitSlop, styles.actionRight];
 
   return (
     <>
       {Platform.OS === 'ios' && <StatusBar barStyle={statusBarStyle} backgroundColor="transparent" />}
-      <View style={[headerStyles, style]} testID={testID}>
-        <View style={contentStyles}>
+      <View
+        style={finalHeaderStyles}
+        testID={testID}
+        // HDR-1: explicit landmark semantics
+        accessibilityRole="header"
+        accessibilityLabel={accessibilityLabel || title}
+      >
+        <View style={styles.contentRow}>
           {/* Left Action */}
           <View style={leftActionContainerStyles}>{leftAction}</View>
 
           {/* Title */}
-          <View style={titleContainerStyles}>
+          <View style={[styles.titleContainer, { paddingHorizontal: theme.spacing.sm }]}>
+            {' '}
+            {/* dynamic spacing */}
             <Text variant="h4" color="primary" weight="semibold" align="center" numberOfLines={1}>
               {title}
             </Text>
@@ -102,3 +92,32 @@ export const Header: React.FC<HeaderProps> = ({
 Header.displayName = 'Header';
 
 export default Header;
+
+// HDR-2: Extract static styles for structural layout & min target sizing
+const styles = StyleSheet.create({
+  headerBase: {
+    // color & spacing applied dynamically
+  },
+  contentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    minHeight: 44,
+  },
+  titleContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  actionBase: {
+    minWidth: 44,
+    minHeight: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  actionLeft: {
+    alignItems: 'flex-start',
+  },
+  actionRight: {
+    alignItems: 'flex-end',
+  },
+});

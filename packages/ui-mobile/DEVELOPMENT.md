@@ -73,12 +73,23 @@ Planned Enhancements:
 
 ### Header
 
-Reasoning: Provides simplified surface vs. `TopNavigation` (fewer nested wrappers) while enforcing consistent spacing, shadow/elevation (will migrate to shadows util), and an explicit `accessibilityRole="header"` (HDR-1). Custom retained; refactor may later wrap `TopNavigation` internally if convergence reduces code (see P6-3 spike).
+Reasoning (HDR-3): We intentionally keep a thin custom header instead of directly exporting UI Kitten `TopNavigation` because:
+
+1. Reduced Wrapper Depth: Eliminates intermediate `TopNavigation` container + action wrappers, lowering render tree complexity and cost on navigation transitions.
+2. Design Token Control: Direct application of spacing + elevation tokens (shared `getShadow` util) without mapping through Eva abstractions enables tighter convergence with web design system.
+3. Accessibility Explicitness: Guarantees `accessibilityRole="header"` and deterministic landmark semantics; `TopNavigation` does not provide role by default in our version.
+4. Layout Flexibility: Symmetric left/right slot min touch target sizing (44px) and central truncation logic are simpler to evolve (e.g., animated collapse, dynamic search injection) without upstream constraints.
+5. Future Migration Path: If UI Kitten's `TopNavigation` gains needed a11y + layout primitives, we can wrap it internally behind the same API (see P6-3 spike) with no breaking change.
+
+Current State:
+
+- Shadows util integrated (HDR-2) replacing inline shadow object.
+- Explicit landmark role + overridable `accessibilityLabel` applied (HDR-1).
 
 Planned Enhancements:
 
-- Apply shadows util (HDR-2) after P1-3.
-- Document optional action slot patterns in Storybook (Phase 2).
+- Storybook documentation of slot patterns (Phase 2) incl. icon buttons, composite breadcrumbs.
+- Spike (P6-3) evaluating wrapping `TopNavigation` once parity confirmed.
 
 ### ListItem (Candidate for Deprecation)
 
@@ -337,7 +348,7 @@ interface SelectProps<T> extends ViewProps {
 
 Each component should have comprehensive tests:
 
-```
+```text
 __tests__/components/ComponentName.test.tsx
 ```
 

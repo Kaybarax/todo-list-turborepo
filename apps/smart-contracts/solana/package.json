@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "./build-final.sh",
-    "test": "anchor test",
+  "test": "bash ./test.sh",
     "deploy:localnet": "anchor deploy --provider.cluster localnet && ts-node scripts/deploy-localnet.ts",
     "deploy:devnet": "anchor deploy --provider.cluster devnet && ts-node scripts/deploy-devnet.ts",
     "deploy:mainnet": "anchor deploy --provider.cluster mainnet && ts-node scripts/deploy-mainnet.ts",

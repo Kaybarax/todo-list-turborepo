@@ -18,6 +18,7 @@ export interface FormFieldProps {
   children: ReactNode;
   testID?: string;
   style?: ViewStyle;
+  accessibilityHint?: string;
 }
 
 export const FormField: React.FC<FormFieldProps> = ({
@@ -28,6 +29,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   children,
   testID,
   style,
+  accessibilityHint,
 }) => {
   const { theme, evaTheme } = useEnhancedTheme();
 
@@ -37,12 +39,23 @@ export const FormField: React.FC<FormFieldProps> = ({
   const getLabelColor = () => evaTheme['text-basic-color'] || theme.colors.text.primary;
 
   // Render label with required indicator
+  const labelId = testID ? `${testID}-label` : undefined;
+  const errorId = error && testID ? `${testID}-error` : undefined;
+  const hintId = hint && !error && testID ? `${testID}-hint` : undefined;
+
   const renderLabel = () => {
     if (!label) return null;
 
     return (
       <View style={styles.labelContainer}>
-        <Text variant="body2" color={getLabelColor()} weight="medium" style={styles.label}>
+        <Text
+          variant="body2"
+          color={getLabelColor()}
+          weight="medium"
+          style={styles.label}
+          nativeID={labelId}
+          accessibilityLabel={label}
+        >
           {label}
           {required && (
             <Text variant="body2" color={getErrorColor()} style={styles.required}>
@@ -64,6 +77,8 @@ export const FormField: React.FC<FormFieldProps> = ({
         color={getErrorColor()}
         style={[styles.message, styles.errorMessage]}
         testID={`${testID}-error`}
+        nativeID={errorId}
+        accessibilityLabel={error}
       >
         {error}
       </Text>
@@ -80,6 +95,8 @@ export const FormField: React.FC<FormFieldProps> = ({
         color={getHintColor()}
         style={[styles.message, styles.hintMessage]}
         testID={`${testID}-hint`}
+        nativeID={hintId}
+        accessibilityLabel={hint}
       >
         {hint}
       </Text>
@@ -88,8 +105,13 @@ export const FormField: React.FC<FormFieldProps> = ({
 
   const containerStyles = [styles.container, { marginBottom: theme.spacing.lg }, style];
 
+  const accessibilityProps: any = {};
+  if (labelId) accessibilityProps.accessibilityLabel = label;
+  if (errorId || hintId) accessibilityProps.accessibilityDescribedBy = [errorId, hintId].filter(Boolean).join(' ');
+  if (accessibilityHint) accessibilityProps.accessibilityHint = accessibilityHint;
+
   return (
-    <View style={containerStyles} testID={testID}>
+    <View style={containerStyles} testID={testID} {...accessibilityProps}>
       {renderLabel()}
       <View style={styles.fieldContainer}>{children}</View>
       {renderError()}

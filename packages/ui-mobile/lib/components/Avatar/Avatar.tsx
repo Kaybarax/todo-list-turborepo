@@ -1,5 +1,5 @@
 import { Avatar as KittenAvatar, type AvatarProps as KittenAvatarProps, Text } from '@ui-kitten/components';
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   StyleSheet,
@@ -25,7 +25,7 @@ export interface AvatarProps extends Omit<KittenAvatarProps, 'size' | 'source'> 
   textStyle?: StyleProp<TextStyle>;
 }
 
-const Avatar: React.FC<AvatarProps> = ({
+const AvatarComponent: React.FC<AvatarProps> = ({
   source,
   initials,
   size = 'medium',
@@ -38,38 +38,31 @@ const Avatar: React.FC<AvatarProps> = ({
   ...props
 }) => {
   const { evaTheme } = useEnhancedTheme();
-  // Map our sizes to UI Kitten sizes
-  const getKittenSize = (): KittenAvatarProps['size'] => {
+  const kittenSize: KittenAvatarProps['size'] = useMemo(() => {
     switch (size) {
       case 'tiny':
-        return 'tiny';
       case 'small':
-        return 'small';
-      case 'large':
-        return 'large';
-      case 'giant':
-        return 'giant';
       case 'medium':
+      case 'large':
+      case 'giant':
+        return size as KittenAvatarProps['size'];
       default:
         return 'medium';
     }
-  };
+  }, [size]);
 
-  // Map our shapes to UI Kitten shapes
-  const getKittenShape = (): KittenAvatarProps['shape'] => {
+  const kittenShape: KittenAvatarProps['shape'] = useMemo(() => {
     switch (shape) {
       case 'rounded':
-        return 'rounded';
       case 'square':
-        return 'square';
       case 'round':
+        return shape as KittenAvatarProps['shape'];
       default:
         return 'round';
     }
-  };
+  }, [shape]);
 
-  // Get text category based on size
-  const getTextCategory = () => {
+  const textCategory = useMemo(() => {
     switch (size) {
       case 'tiny':
         return 'c2';
@@ -83,47 +76,48 @@ const Avatar: React.FC<AvatarProps> = ({
       default:
         return 'p2';
     }
-  };
+  }, [size]);
 
-  // Get custom styles for background and text color using Eva Design tokens
-  const getCustomStyles = () => {
-    const customStyles: ViewStyle = {};
-    if (backgroundColor) {
-      customStyles.backgroundColor = backgroundColor;
-    } else {
-      // Use Eva Design primary color as default
-      customStyles.backgroundColor = evaTheme['color-primary-default'] || '#3366FF';
-    }
-    return customStyles;
-  };
+  const customStyles = useMemo<ViewStyle>(() => {
+    return {
+      backgroundColor: backgroundColor || evaTheme['color-primary-default'] || '#3366FF',
+    };
+  }, [backgroundColor, evaTheme]);
+
+  const computedTextColor = textColor ?? evaTheme['text-control-color'] ?? '#FFFFFF';
+
+  const accessibilityLabel = useMemo(() => {
+    if (initials && !source) return `Avatar ${initials}`;
+    if (source) return 'User avatar image';
+    return 'Avatar';
+  }, [initials, source]);
 
   // Render initials fallback
   const renderInitials = () => {
     if (!initials || source) return null;
-
     return (
-      <Text
-        category={getTextCategory()}
-        style={
-          [styles.initialsText, { color: textColor ?? evaTheme['text-control-color'] ?? '#FFFFFF' }, textStyle] as any
-        }
-      >
+      <Text category={textCategory} style={[styles.initialsText, { color: computedTextColor }, textStyle] as any}>
         {initials}
       </Text>
     );
   };
 
   // Combine styles
-  const avatarStyles = {
-    ...getCustomStyles(),
-    ...(style as any),
-  };
+  const avatarStyles = useMemo(
+    () => ({
+      ...customStyles,
+      ...(style as any),
+    }),
+    [customStyles, style],
+  );
 
   // If we have initials but no source, render custom avatar
   if (initials && !source) {
     return (
       <View
-        style={[styles.customAvatar, styles[`${size}Avatar`], styles[`${shape}Shape`], getCustomStyles(), style] as any}
+        style={[styles.customAvatar, styles[`${size}Avatar`], styles[`${shape}Shape`], customStyles, style] as any}
+        accessibilityRole="image"
+        accessibilityLabel={accessibilityLabel}
         {...(props as any)}
       >
         {renderInitials()}
@@ -133,8 +127,8 @@ const Avatar: React.FC<AvatarProps> = ({
 
   // Use UI Kitten Avatar for images or default avatar
   return (
-    <View style={containerStyle}>
-      <KittenAvatar size={getKittenSize()} shape={getKittenShape()} source={source} style={avatarStyles} {...props} />
+    <View style={containerStyle} accessibilityRole="image" accessibilityLabel={accessibilityLabel}>
+      <KittenAvatar size={kittenSize} shape={kittenShape} source={source} style={avatarStyles} {...props} />
     </View>
   );
 };
@@ -183,7 +177,7 @@ const styles = StyleSheet.create({
   },
 });
 
-Avatar.displayName = 'Avatar';
+AvatarComponent.displayName = 'Avatar';
 
-export { Avatar };
+export const Avatar = React.memo(AvatarComponent);
 export default Avatar;

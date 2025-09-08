@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { View, type ViewStyle, TouchableOpacity, Platform } from 'react-native';
+import { View, type ViewStyle, TouchableOpacity, Platform, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -42,6 +42,29 @@ export interface TabBarProps {
 
 // Not needed currently
 
+// Spring config constant (avoid reallocating object each render) – TBR-1/2
+const SPRING_CONFIG = { damping: 20, stiffness: 300 } as const;
+
+// Static styles (theme / dynamic pieces applied via merging) – TBR-3
+const staticStyles = StyleSheet.create({
+  tabContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    position: 'relative',
+  },
+  badgeWrapper: {
+    position: 'absolute',
+    top: -4,
+    right: -8,
+  },
+  dotBadge: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+});
+
 export const TabBar: React.FC<TabBarProps> = ({
   tabs,
   activeTab,
@@ -68,14 +91,15 @@ export const TabBar: React.FC<TabBarProps> = ({
   const activeIndex =
     activeIndexProp ?? tabs.findIndex(tab => (tab.key ?? tab.label) === (activeTab ?? tabs[0]?.key ?? tabs[0]?.label));
 
+  // Single effect for indicator animation (previous duplicate effect removed) – TBR-1
   React.useEffect(() => {
     const tabWidth = 100 / tabs.length;
     if (prefersReducedMotion) {
       indicatorPosition.value = activeIndex * tabWidth;
       indicatorWidth.value = tabWidth;
     } else {
-      indicatorPosition.value = withSpring(activeIndex * tabWidth, { damping: 20, stiffness: 300 });
-      indicatorWidth.value = withSpring(tabWidth, { damping: 20, stiffness: 300 });
+      indicatorPosition.value = withSpring(activeIndex * tabWidth, SPRING_CONFIG);
+      indicatorWidth.value = withSpring(tabWidth, SPRING_CONFIG);
     }
   }, [activeIndex, tabs.length, indicatorPosition, indicatorWidth, prefersReducedMotion]);
 
@@ -88,12 +112,8 @@ export const TabBar: React.FC<TabBarProps> = ({
     ...getShadow('md', evaTheme['color-basic-800'] || '#000'),
   };
 
-  const tabContainerStyles: ViewStyle = {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    position: 'relative',
-  };
+  // Static container row replaced by StyleSheet entry – TBR-3
+  const tabContainerStyles = staticStyles.tabContainer;
 
   const getTabStyles = (): ViewStyle => ({
     flex: 1,
@@ -151,13 +171,7 @@ export const TabBar: React.FC<TabBarProps> = ({
 
         {/* Badge */}
         {tab.badge && (
-          <View
-            style={{
-              position: 'absolute',
-              top: -4,
-              right: -8,
-            }}
-          >
+          <View style={staticStyles.badgeWrapper}>
             {typeof tab.badge === 'number' || typeof tab.badge === 'string' ? (
               <Badge
                 text={typeof tab.badge === 'number' && tab.badge > 99 ? '99+' : String(tab.badge)}
@@ -169,13 +183,10 @@ export const TabBar: React.FC<TabBarProps> = ({
             ) : (
               // Dot badge
               <View
-                style={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: 5,
-                  // Guard against undefined error scale in shallow mocks
-                  backgroundColor: evaTheme['color-danger-default'] || theme.colors?.error?.[500] || '#FF3D71',
-                }}
+                style={[
+                  staticStyles.dotBadge,
+                  { backgroundColor: evaTheme['color-danger-default'] || theme.colors?.error?.[500] || '#FF3D71' },
+                ]}
               />
             )}
           </View>
