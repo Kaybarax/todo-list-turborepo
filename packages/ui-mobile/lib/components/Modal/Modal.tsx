@@ -45,6 +45,7 @@ export interface ModalProps {
   style?: ViewStyle;
   backdropStyle?: ViewStyle;
   accessibilityLabel?: string;
+  accessibilityDescription?: string; // P6-2 hidden summary
   keyboardAvoidingBehavior?: 'height' | 'position' | 'padding';
   /** Test-only / diagnostic hook: exposes current animation shared values after each effect run */
   onAnimationValues?: (vals: { scale: number; translateY: number; backdropOpacity: number }) => void;
@@ -111,6 +112,7 @@ export const Modal: React.FC<ModalProps> = ({
   style,
   backdropStyle,
   accessibilityLabel,
+  accessibilityDescription,
   keyboardAvoidingBehavior = 'padding',
   onAnimationValues,
 }) => {

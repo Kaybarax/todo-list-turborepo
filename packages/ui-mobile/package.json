@@ -43,7 +43,8 @@
     "prepublishOnly": "npm run clean && npm run build",
     "profile:components": "node scripts/profile-components.mjs",
     "profile:components:json": "node scripts/profile-components.mjs --json --out perf/profile-latest.json",
-    "profile:components:ci": "node scripts/profile-components.mjs 800 --json --out perf/profile-ci.json --quiet-table"
+  "profile:components:ci": "node scripts/profile-components.mjs 800 --json --out perf/profile-ci.json --quiet-table",
+  "test:e2e": "playwright test --config=e2e/playwright.config.ts"
   },
   "dependencies": {
     "@eva-design/eva": "^2.2.0",
