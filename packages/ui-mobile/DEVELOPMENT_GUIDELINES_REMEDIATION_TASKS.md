@@ -62,10 +62,10 @@ These may be executed in parallel per component once Phases 0–2 are complete; 
 
 ### Input
 
-- [ ] INP-1 (T) Extend `Input` from UI Kitten props: modify `lib/components/Input/Input.tsx`.
-- [ ] INP-2 (A11Y) Fallback label: placeholder -> value -> 'input field'.
-- [ ] INP-3 (S) Replace RGBA background with theme token (`evaTheme*`).
-- [ ] INP-4 (TEST) Update `__tests__/Input.test.tsx` for fallback label logic.
+- [x] INP-1 (T) Extend `Input` from UI Kitten props: modify `lib/components/Input/Input.tsx`.
+- [x] INP-2 (A11Y) Fallback label: placeholder -> value -> 'input field'.
+- [x] INP-3 (S) Replace RGBA background with theme token (`evaTheme*`).
+- [x] INP-4 (TEST) Update `__tests__/Input.test.tsx` for fallback label logic.
 
 ### Text
 

@@ -5,7 +5,8 @@ import * as eva from '@eva-design/eva';
 
 // Mock Input component
 jest.mock('../lib/components/Input', () => ({
-  Input: ({ value, onChangeText, placeholder, testID, disabled, ...props }: any) => {
+  // Preserve existing lightweight mock for legacy tests; new fallback tests will use real implementation
+  Input: ({ value, onChangeText, placeholder, testID, disabled, accessibilityLabel, ...props }: any) => {
     const React = require('react');
     const { TextInput } = require('react-native');
     return React.createElement(TextInput, {
@@ -13,6 +14,8 @@ jest.mock('../lib/components/Input', () => ({
       value,
       onChangeText: disabled ? undefined : onChangeText,
       placeholder,
+      accessible: true,
+      accessibilityLabel: accessibilityLabel || placeholder || (value?.length ? value : 'input field'),
       editable: !disabled,
       ...props,
     });
@@ -20,6 +23,8 @@ jest.mock('../lib/components/Input', () => ({
 }));
 
 const { Input } = require('../lib/components/Input');
+// Access real implementation for accessibility fallback verification
+const { Input: RealInput } = jest.requireActual('../lib/components/Input');
 
 // Test wrapper with UI Kitten provider
 const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -417,6 +422,33 @@ describe('Input', () => {
       const input = getByDisplayValue('Blur Test');
       fireEvent(input, 'blur');
       // Blur event handled
+    });
+  });
+
+  describe('Accessibility fallback', () => {
+    it('uses placeholder when accessibilityLabel missing', () => {
+      const { getByTestId } = render(
+        <RealInput testID="acc-input" placeholder="Email" value="" onChangeText={() => {}} />,
+        { wrapper: TestWrapper },
+      );
+      const node = getByTestId('acc-input');
+      expect(node.props.accessibilityLabel).toBe('Email');
+    });
+
+    it('uses value when placeholder missing', () => {
+      const { getByTestId } = render(<RealInput testID="acc-input" value="Username" onChangeText={() => {}} />, {
+        wrapper: TestWrapper,
+      });
+      const node = getByTestId('acc-input');
+      expect(node.props.accessibilityLabel).toBe('Username');
+    });
+
+    it('falls back to generic label when both missing', () => {
+      const { getByTestId } = render(<RealInput testID="acc-input" value="" onChangeText={() => {}} />, {
+        wrapper: TestWrapper,
+      });
+      const node = getByTestId('acc-input');
+      expect(node.props.accessibilityLabel).toBe('input field');
     });
   });
 });

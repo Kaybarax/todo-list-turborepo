@@ -90,15 +90,9 @@ export const Button: React.FC<ButtonProps> = ({
       : undefined;
 
   // BTN-2: Consolidate loading indicator (single accessory path) & icon logic
-  const LoadingIndicator = (indicatorProps: any) => (
-    <View style={[indicatorProps.style, styles.loadingContainer]} testID="button-loading-indicator">
-      <Spinner size="small" />
-    </View>
-  );
-
   const renderIcon = (iconProps: any) => <View style={[iconProps.style, styles.iconContainer]}>{icon}</View>;
 
-  const accessoryLeft = loading ? LoadingIndicator : iconPosition === 'left' && icon ? renderIcon : undefined;
+  const accessoryLeft = !loading && iconPosition === 'left' && icon ? renderIcon : undefined;
   const accessoryRight = !loading && iconPosition === 'right' && icon ? renderIcon : undefined;
 
   // Custom styles for fullWidth and link variant
@@ -131,7 +125,14 @@ export const Button: React.FC<ButtonProps> = ({
       accessibilityState={accessibilityState}
       {...(props as Partial<UIKittenButtonProps>)}
     >
-      {children}
+      <View style={styles.contentRow}>
+        {children}
+        {loading && (
+          <View style={styles.loadingOverlay} testID="button-loading-indicator" accessibilityRole="progressbar">
+            <Spinner size="small" />
+          </View>
+        )}
+      </View>
     </UIKittenButton>
   );
 };
@@ -153,6 +154,17 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
     paddingHorizontal: 0,
     paddingVertical: 0,
+  },
+  loadingOverlay: {
+    marginLeft: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  contentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
