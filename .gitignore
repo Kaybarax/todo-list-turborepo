@@ -1,3 +1,5 @@
+# Prevent accidental reintroduction of deprecated TS profiling harness (use scripts/profile-components.mjs instead)
+packages/ui-mobile/scripts/profile-components.ts
 # Dependencies
 node_modules
 .pnp
