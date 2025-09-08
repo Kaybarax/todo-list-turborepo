@@ -195,6 +195,45 @@ Most core components adhere to thematic token usage, but several foundational gu
 
 Generated automatically based on current repository state.
 
+## Coverage
+
+Current Jest global thresholds are set to 80% (statements / branches / lines / functions). A fresh run (2025-09-08) produced:
+
+| Metric     | Current | Threshold | Delta  |
+| ---------- | ------- | --------- | ------ |
+| Statements | 59.72%  | 80%       | -20.28 |
+| Branches   | 52.09%  | 80%       | -27.91 |
+| Lines      | 62.02%  | 80%       | -17.98 |
+| Functions  | 34.78%  | 80%       | -45.22 |
+
+Largest gaps come from components (and supporting modules) with 0% or near‑0% coverage due to missing direct tests or indirect usage only:
+
+- Components fully untested or only exercised via higher-level tests: `Input`, `ListItem`, `FormField`, `Checkbox`, `Switch`, `NetworkSelector` (implementation file paths show 0%).
+- Barrel / index files (pure re‑exports) counted but never directly executed (`index.ts` files across components, tokens, hooks, utils) depress percentages.
+- Theming / validation utilities (`enhanced-validation.ts`, `useEnhancedTheme.ts`, `useEvaTheme.ts`, `ThemeErrorBoundary.ts`) have complex branches under-tested.
+
+Planned remediation to reach ≥80% by Phase 4:
+
+1. Add targeted unit tests per missing component (focus: prop/variant logic, accessibility fallbacks) – Phase 3 tasks will introduce/refactor logic first to avoid churn.
+2. Write focused tests for theme validation / error boundary to cover core success & failure paths (add 2–3 small suites).
+3. Exclude pure barrel files from coverage via either:
+   - Adding a `coveragePathIgnorePatterns` entry for `/index.ts$`, or
+   - Narrowing `collectCoverageFrom` to `lib/components/**/*.ts?(x)` & specific util/hook directories.
+4. Add reduced motion hook & shadows util (Phase 1) with dedicated tests to lift branch/function coverage.
+5. After new tests in Phases 3 & 4, re‑evaluate and only then (if still short) consider interim threshold step-down (not planned presently).
+
+Exit Criteria for Coverage (Phase 4 sign‑off):
+
+- No component implementation file remains at 0% statements.
+- Global functions & branches ≥80% AND per-key component (Button, Input, Modal, TabBar, Text) ≥85% statements (stretch target, tracked internally).
+
+Action Item Tracking:
+
+- P4-1 will add missing component tests enumerated above.
+- TXT-3 / INP-4 / BTN-5 tasks will contribute additional lines & branches.
+
+Until remediation completes, CI will intentionally fail coverage threshold checks; this is acceptable for Phase 0 while foundation tasks proceed. Threshold values remain unchanged to enforce improvement pressure.
+
 ## Addendum: DEVELOPMENT.md Guideline Compliance (Architecture, Testing, Stories)
 
 This addendum evaluates components against the broader requirements in `DEVELOPMENT.md` (architecture, testing, storybook, accessibility, performance, typing, styling).

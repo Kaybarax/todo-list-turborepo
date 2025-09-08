@@ -20,7 +20,7 @@ Rationale: Establish lint, test, and utility foundation so subsequent PRs are sm
 - [x] P0-2 (T/Lint) Add ESLint rule for banning `style?: any` (edit `packages/ui-mobile/eslint.config.js`).
   - Files: modify eslint config; add override using `@typescript-eslint/no-explicit-any` for component files (lib/components).
   - Success: Running lint flags existing occurrences (expected failures before fixes).
-- [ ] P0-3 (TEST/Meta) Validate coverage thresholds in `jest.config.cjs` (already 80%) & add short "Coverage" paragraph to `DEVELOPMENT_GUIDELINES_COMPLIANCE.md`.
+- [x] P0-3 (TEST/Meta) Validate coverage thresholds in `jest.config.cjs` (already 80%) & add short "Coverage" paragraph to `DEVELOPMENT_GUIDELINES_COMPLIANCE.md`.
   - Files: edit `packages/ui-mobile/DEVELOPMENT_GUIDELINES_COMPLIANCE.md` (section Coverage).
 - [ ] P0-4 (DOC) Insert "Custom Implementations Rationale" section in `DEVELOPMENT.md` (Modal, TabBar, Header, (maybe) ListItem) + note potential deprecation for ListItem.
   - Files: edit root or package `DEVELOPMENT.md` (choose existing central doc).
