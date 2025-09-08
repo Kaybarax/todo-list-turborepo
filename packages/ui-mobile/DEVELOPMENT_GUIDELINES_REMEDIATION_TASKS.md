@@ -183,13 +183,8 @@ These may be executed in parallel per component once Phases 0–2 are complete; 
   - CI: Dedicated workflow `.github/workflows/ui-mobile-e2e.yml` builds Storybook statically and runs Playwright smoke tests against served static build; uploads report & traces artifacts.
 - [x] P6-2 (A11Y) Modal described-by hidden summary (optional, platform support caveat).
   - Introduced `accessibilityDescription` prop in `Modal` rendering visually hidden caption text for assistive tech only.
-- [ ] P6-3 (A) Explore refactor of Header to wrap `TopNavigation` (spike doc / issue link).
-  - Spike Goals:
-    - API Parity: Confirm `HeaderProps` can map 1:1 (title -> `title`, leftAction/rightAction -> `accessoryLeft`/`accessoryRight`).
-    - Theming: Ensure Eva + custom theme tokens (spacing, colors) still applied without duplicating style merges.
-    - Accessibility: Guarantee `accessibilityRole="header"` + label, even if `TopNavigation` omits it (wrap adds role/label override).
-    - Layout Fidelity: Match current height, padding (safe area + spacing tokens), and action hit slop (>=44x44) within +/-1px on iOS/Android web emulation.
-    - Performance: Measure render cost diff (React Profiler) across 100 mounts; acceptable if overhead <0.2ms median vs custom.
+- [x] P6-3 (A) Explore refactor of Header to wrap `TopNavigation` (spike doc / issue link).
+  - Completed: Added `HeaderTopNavSpike.tsx`, tests `HeaderTopNavSpike.test.tsx`, Storybook `Header/SpikeComparison`, and doc `docs/HeaderTopNavigationSpike.md` with initial recommendation (provisionally adopt pending perf numbers <0.2ms delta). Perf measurement placeholder retained.
   - Risks / Unknowns:
     - `TopNavigation` internal padding may conflict with custom safe-area handling (double top inset risk).
     - Potential loss of precise shadow/elevation control if `TopNavigation` enforces its own container style.
