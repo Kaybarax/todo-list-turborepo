@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
 import { type Meta, type StoryObj } from '@storybook/react';
+import React, { useState } from 'react';
+
 import { withUIKitten } from './decorators/UIKittenProvider';
 
 type Status = 'basic' | 'primary' | 'success' | 'info' | 'warning' | 'danger';

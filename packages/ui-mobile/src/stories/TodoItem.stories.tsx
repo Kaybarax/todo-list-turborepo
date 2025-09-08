@@ -1,6 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
-import { withUIKitten } from './decorators/UIKittenProvider';
 import React from 'react';
+
+import { withUIKitten } from './decorators/UIKittenProvider';
 
 // Web-compatible TodoItem component for Storybook
 export type TodoItemPriority = 'low' | 'medium' | 'high';
@@ -344,26 +345,23 @@ export const CompletedHighPriority: Story = {
 };
 
 // Interactive examples
+const InteractiveToggleComponent: React.FC = () => {
+  const [completed, setCompleted] = React.useState(false);
+  const handleToggle = () => setCompleted(prev => !prev);
+  return (
+    <TodoItem
+      id="interactive-1"
+      title="Interactive Todo Item"
+      description="Click the checkbox to toggle completion state"
+      completed={completed}
+      priority="medium"
+      onToggle={handleToggle}
+      onPress={id => console.info('Pressed todo:', id)}
+    />
+  );
+};
 export const InteractiveToggle: Story = {
-  render: () => {
-    const [completed, setCompleted] = React.useState(false);
-
-    const handleToggle = () => {
-      setCompleted(!completed);
-    };
-
-    return (
-      <TodoItem
-        id="interactive-1"
-        title="Interactive Todo Item"
-        description="Click the checkbox to toggle completion state"
-        completed={completed}
-        priority="medium"
-        onToggle={handleToggle}
-        onPress={id => console.log('Pressed todo:', id)}
-      />
-    );
-  },
+  render: () => <InteractiveToggleComponent />,
   parameters: {
     docs: {
       description: {
@@ -373,100 +371,88 @@ export const InteractiveToggle: Story = {
   },
 };
 
-export const EditingState: Story = {
-  render: () => {
-    const [isEditing, setIsEditing] = React.useState(false);
-    const [title, setTitle] = React.useState('Click to edit this todo');
-    const [tempTitle, setTempTitle] = React.useState(title);
-
-    const handlePress = () => {
-      if (!isEditing) {
-        setIsEditing(true);
-        setTempTitle(title);
-      }
-    };
-
-    const handleSave = () => {
-      setTitle(tempTitle);
-      setIsEditing(false);
-    };
-
-    const handleCancel = () => {
+const EditingStateComponent: React.FC = () => {
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [title, setTitle] = React.useState('Click to edit this todo');
+  const [tempTitle, setTempTitle] = React.useState(title);
+  const handlePress = () => {
+    if (!isEditing) {
+      setIsEditing(true);
       setTempTitle(title);
-      setIsEditing(false);
-    };
-
-    if (isEditing) {
-      return (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-            maxWidth: '400px',
-            width: '100%',
-          }}
-        >
-          <input
-            type="text"
-            value={tempTitle}
-            onChange={e => setTempTitle(e.target.value)}
-            style={{
-              padding: '12px',
-              border: '2px solid #007AFF',
-              borderRadius: '8px',
-              fontSize: '16px',
-              fontFamily: 'system-ui, -apple-system, sans-serif',
-              outline: 'none',
-            }}
-            autoFocus
-          />
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <button
-              onClick={handleSave}
-              style={{
-                padding: '8px 16px',
-                backgroundColor: '#34C759',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-              }}
-            >
-              Save
-            </button>
-            <button
-              onClick={handleCancel}
-              style={{
-                padding: '8px 16px',
-                backgroundColor: '#8E8E93',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      );
     }
-
+  };
+  const handleSave = () => {
+    setTitle(tempTitle);
+    setIsEditing(false);
+  };
+  const handleCancel = () => {
+    setTempTitle(title);
+    setIsEditing(false);
+  };
+  if (isEditing) {
     return (
-      <TodoItem
-        id="editing-1"
-        title={title}
-        description="Click on this todo to edit it"
-        completed={false}
-        priority="low"
-        onToggle={id => console.log('Toggled todo:', id)}
-        onPress={handlePress}
-      />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '400px', width: '100%' }}>
+        <input
+          type="text"
+          value={tempTitle}
+          onChange={e => setTempTitle(e.target.value)}
+          style={{
+            padding: '12px',
+            border: '2px solid #007AFF',
+            borderRadius: '8px',
+            fontSize: '16px',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+            outline: 'none',
+          }}
+          autoFocus
+        />
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            onClick={handleSave}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#34C759',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontFamily: 'system-ui, -apple-system, sans-serif',
+            }}
+          >
+            Save
+          </button>
+          <button
+            onClick={handleCancel}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#8E8E93',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontFamily: 'system-ui, -apple-system, sans-serif',
+            }}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
     );
-  },
+  }
+  return (
+    <TodoItem
+      id="editing-1"
+      title={title}
+      description="Click on this todo to edit it"
+      completed={false}
+      priority="low"
+      onToggle={id => console.info('Toggled todo:', id)}
+      onPress={handlePress}
+    />
+  );
+};
+export const EditingState: Story = {
+  render: () => <EditingStateComponent />,
   parameters: {
     docs: {
       description: {
@@ -477,168 +463,161 @@ export const EditingState: Story = {
 };
 
 // Mobile-specific interaction examples
-export const MobileGestureExample: Story = {
-  render: () => {
-    const [todos, setTodos] = React.useState([
-      {
-        id: '1',
-        title: 'Swipe gestures demo',
-        description: 'This simulates mobile swipe interactions',
-        completed: false,
-        priority: 'medium' as TodoItemPriority,
-      },
-      {
-        id: '2',
-        title: 'Long press actions',
-        description: 'Hold to see context menu (simulated)',
-        completed: true,
-        priority: 'low' as TodoItemPriority,
-      },
-      {
-        id: '3',
-        title: 'Touch feedback',
-        description: 'Visual feedback on touch interactions',
-        completed: false,
-        priority: 'high' as TodoItemPriority,
-      },
-    ]);
-
-    const [longPressTimer, setLongPressTimer] = React.useState<NodeJS.Timeout | null>(null);
-    const [showContextMenu, setShowContextMenu] = React.useState<string | null>(null);
-
-    const handleToggle = (id: string) => {
-      setTodos(prev => prev.map(todo => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
-    };
-
-    const handleMouseDown = (id: string) => {
-      const timer = setTimeout(() => {
-        setShowContextMenu(id);
-      }, 500); // Simulate long press
-      setLongPressTimer(timer);
-    };
-
-    const handleMouseUp = () => {
-      if (longPressTimer) {
-        clearTimeout(longPressTimer);
-        setLongPressTimer(null);
-      }
-    };
-
-    const handleContextAction = (action: string, id: string) => {
-      console.log(`${action} todo:`, id);
-      setShowContextMenu(null);
-    };
-
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '400px', width: '100%' }}>
-        <div
-          style={{
-            fontSize: '14px',
-            color: '#8E8E93',
-            marginBottom: '8px',
-            fontFamily: 'system-ui, -apple-system, sans-serif',
-          }}
-        >
-          Mobile Interactions Demo:
-          <br />• Tap checkbox to toggle
-          <br />• Tap item to select
-          <br />• Hold item for context menu
-        </div>
-
-        {todos.map(todo => (
-          <div key={todo.id} style={{ position: 'relative' }}>
+const MobileGestureExampleComponent: React.FC = () => {
+  const [todos, setTodos] = React.useState([
+    {
+      id: '1',
+      title: 'Swipe gestures demo',
+      description: 'This simulates mobile swipe interactions',
+      completed: false,
+      priority: 'medium' as TodoItemPriority,
+    },
+    {
+      id: '2',
+      title: 'Long press actions',
+      description: 'Hold to see context menu (simulated)',
+      completed: true,
+      priority: 'low' as TodoItemPriority,
+    },
+    {
+      id: '3',
+      title: 'Touch feedback',
+      description: 'Visual feedback on touch interactions',
+      completed: false,
+      priority: 'high' as TodoItemPriority,
+    },
+  ]);
+  const [longPressTimer, setLongPressTimer] = React.useState<ReturnType<typeof setTimeout> | null>(null);
+  const [showContextMenu, setShowContextMenu] = React.useState<string | null>(null);
+  const handleToggle = (id: string) => {
+    setTodos(prev => prev.map(todo => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
+  };
+  const handleMouseDown = (id: string) => {
+    const timer = setTimeout(() => {
+      setShowContextMenu(id);
+    }, 500);
+    setLongPressTimer(timer);
+  };
+  const handleMouseUp = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      setLongPressTimer(null);
+    }
+  };
+  const handleContextAction = (action: string, id: string) => {
+    console.info(`${action} todo:`, id);
+    setShowContextMenu(null);
+  };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '400px', width: '100%' }}>
+      <div
+        style={{
+          fontSize: '14px',
+          color: '#8E8E93',
+          marginBottom: '8px',
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+        }}
+      >
+        Mobile Interactions Demo:
+        <br />• Tap checkbox to toggle
+        <br />• Tap item to select
+        <br />• Hold item for context menu
+      </div>
+      {todos.map(todo => (
+        <div key={todo.id} style={{ position: 'relative' }}>
+          <div
+            onMouseDown={() => handleMouseDown(todo.id)}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            style={{
+              transform: showContextMenu === todo.id ? 'scale(0.98)' : 'scale(1)',
+              transition: 'transform 0.1s ease-in-out',
+            }}
+          >
+            <TodoItem
+              id={todo.id}
+              title={todo.title}
+              description={todo.description}
+              completed={todo.completed}
+              priority={todo.priority}
+              onToggle={handleToggle}
+              onPress={id => console.info('Selected todo:', id)}
+            />
+          </div>
+          {showContextMenu === todo.id && (
             <div
-              onMouseDown={() => handleMouseDown(todo.id)}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
               style={{
-                transform: showContextMenu === todo.id ? 'scale(0.98)' : 'scale(1)',
-                transition: 'transform 0.1s ease-in-out',
+                position: 'absolute',
+                top: '100%',
+                left: '0',
+                right: '0',
+                backgroundColor: 'white',
+                border: '1px solid #CECED2',
+                borderRadius: '8px',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                zIndex: 10,
+                padding: '8px',
+                display: 'flex',
+                gap: '8px',
+                marginTop: '4px',
               }}
             >
-              <TodoItem
-                id={todo.id}
-                title={todo.title}
-                description={todo.description}
-                completed={todo.completed}
-                priority={todo.priority}
-                onToggle={handleToggle}
-                onPress={id => console.log('Selected todo:', id)}
-              />
-            </div>
-
-            {showContextMenu === todo.id && (
-              <div
+              <button
+                onClick={() => handleContextAction('Edit', todo.id)}
                 style={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: '0',
-                  right: '0',
-                  backgroundColor: 'white',
-                  border: '1px solid #CECED2',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                  zIndex: 10,
+                  flex: 1,
                   padding: '8px',
-                  display: 'flex',
-                  gap: '8px',
-                  marginTop: '4px',
+                  backgroundColor: '#007AFF',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
                 }}
               >
-                <button
-                  onClick={() => handleContextAction('Edit', todo.id)}
-                  style={{
-                    flex: 1,
-                    padding: '8px',
-                    backgroundColor: '#007AFF',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontFamily: 'system-ui, -apple-system, sans-serif',
-                  }}
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleContextAction('Delete', todo.id)}
-                  style={{
-                    flex: 1,
-                    padding: '8px',
-                    backgroundColor: '#FF3B30',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontFamily: 'system-ui, -apple-system, sans-serif',
-                  }}
-                >
-                  Delete
-                </button>
-                <button
-                  onClick={() => setShowContextMenu(null)}
-                  style={{
-                    padding: '8px',
-                    backgroundColor: '#8E8E93',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontFamily: 'system-ui, -apple-system, sans-serif',
-                  }}
-                >
-                  ✕
-                </button>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    );
-  },
+                Edit
+              </button>
+              <button
+                onClick={() => handleContextAction('Delete', todo.id)}
+                style={{
+                  flex: 1,
+                  padding: '8px',
+                  backgroundColor: '#FF3B30',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                }}
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => setShowContextMenu(null)}
+                style={{
+                  padding: '8px',
+                  backgroundColor: '#8E8E93',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                }}
+              >
+                ✕
+              </button>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+export const MobileGestureExample: Story = {
+  render: () => <MobileGestureExampleComponent />,
   parameters: {
     docs: {
       description: {
@@ -732,87 +711,84 @@ export const CompletionStates: Story = {
 };
 
 // Real-world todo list example
-export const TodoList: Story = {
-  render: () => {
-    const [todos, setTodos] = React.useState([
-      {
-        id: '1',
-        title: 'Review code changes',
-        description: 'Check the new authentication module',
-        completed: false,
-        priority: 'high' as TodoItemPriority,
-      },
-      {
-        id: '2',
-        title: 'Update documentation',
-        description: 'Add examples for the new API endpoints',
-        completed: false,
-        priority: 'medium' as TodoItemPriority,
-      },
-      {
-        id: '3',
-        title: 'Fix responsive layout',
-        description: 'Mobile view needs adjustment',
-        completed: true,
-        priority: 'low' as TodoItemPriority,
-      },
-      {
-        id: '4',
-        title: 'Team standup meeting',
-        description: 'Daily sync at 9:00 AM',
-        completed: true,
-        priority: 'medium' as TodoItemPriority,
-      },
-      {
-        id: '5',
-        title: 'Grocery shopping',
-        description: 'Buy ingredients for dinner',
-        completed: false,
-        priority: 'low' as TodoItemPriority,
-      },
-    ]);
-
-    const handleToggle = (id: string) => {
-      setTodos(prev => prev.map(todo => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
-    };
-
-    const completedCount = todos.filter(todo => todo.completed).length;
-    const totalCount = todos.length;
-
-    return (
-      <div style={{ maxWidth: '400px', width: '100%' }}>
-        <div
-          style={{
-            marginBottom: '16px',
-            padding: '12px',
-            backgroundColor: '#F2F2F7',
-            borderRadius: '8px',
-            fontFamily: 'system-ui, -apple-system, sans-serif',
-          }}
-        >
-          <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', color: '#000000' }}>My Todo List</h3>
-          <p style={{ margin: 0, fontSize: '14px', color: '#8E8E93' }}>
-            {completedCount} of {totalCount} tasks completed
-          </p>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {todos.map(todo => (
-            <TodoItem
-              key={todo.id}
-              id={todo.id}
-              title={todo.title}
-              description={todo.description}
-              completed={todo.completed}
-              priority={todo.priority}
-              onToggle={handleToggle}
-              onPress={id => console.log('Selected todo:', id)}
-            />
-          ))}
-        </div>
+const TodoListComponent: React.FC = () => {
+  const [todos, setTodos] = React.useState([
+    {
+      id: '1',
+      title: 'Review code changes',
+      description: 'Check the new authentication module',
+      completed: false,
+      priority: 'high' as TodoItemPriority,
+    },
+    {
+      id: '2',
+      title: 'Update documentation',
+      description: 'Add examples for the new API endpoints',
+      completed: false,
+      priority: 'medium' as TodoItemPriority,
+    },
+    {
+      id: '3',
+      title: 'Fix responsive layout',
+      description: 'Mobile view needs adjustment',
+      completed: true,
+      priority: 'low' as TodoItemPriority,
+    },
+    {
+      id: '4',
+      title: 'Team standup meeting',
+      description: 'Daily sync at 9:00 AM',
+      completed: true,
+      priority: 'medium' as TodoItemPriority,
+    },
+    {
+      id: '5',
+      title: 'Grocery shopping',
+      description: 'Buy ingredients for dinner',
+      completed: false,
+      priority: 'low' as TodoItemPriority,
+    },
+  ]);
+  const handleToggle = (id: string) => {
+    setTodos(prev => prev.map(todo => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
+  };
+  const completedCount = todos.filter(todo => todo.completed).length;
+  const totalCount = todos.length;
+  return (
+    <div style={{ maxWidth: '400px', width: '100%' }}>
+      <div
+        style={{
+          marginBottom: '16px',
+          padding: '12px',
+          backgroundColor: '#F2F2F7',
+          borderRadius: '8px',
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+        }}
+      >
+        <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', color: '#000000' }}>My Todo List</h3>
+        <p style={{ margin: 0, fontSize: '14px', color: '#8E8E93' }}>
+          {completedCount} of {totalCount} tasks completed
+        </p>
       </div>
-    );
-  },
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {todos.map(todo => (
+          <TodoItem
+            key={todo.id}
+            id={todo.id}
+            title={todo.title}
+            description={todo.description}
+            completed={todo.completed}
+            priority={todo.priority}
+            onToggle={handleToggle}
+            onPress={id => console.info('Selected todo:', id)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+export const TodoList: Story = {
+  render: () => <TodoListComponent />,
   parameters: {
     docs: {
       description: {

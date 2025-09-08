@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
+import React, { useState } from 'react';
+
 import { withUIKitten } from './decorators/UIKittenProvider';
-import { useState } from 'react';
-import React from 'react';
 
 type ModalSize = 'sm' | 'md' | 'lg' | 'fullscreen';
 type ModalType = 'default' | 'alert' | 'confirmation';

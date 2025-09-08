@@ -1,6 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
-import { withUIKitten } from './decorators/UIKittenProvider';
 import React from 'react';
+
+import { withUIKitten } from './decorators/UIKittenProvider';
 
 // Web-compatible Input component for Storybook
 interface InputProps {
@@ -41,7 +42,6 @@ const Input: React.FC<InputProps> = ({
   numberOfLines = 1,
   secureTextEntry = false,
   keyboardType = 'default',
-  autoCapitalize = 'sentences',
   autoComplete = 'off',
   maxLength,
   leftIcon,
@@ -50,7 +50,6 @@ const Input: React.FC<InputProps> = ({
   onFocus,
   onBlur,
   onSubmitEditing,
-  returnKeyType = 'done',
   accessibilityLabel,
   testID,
 }) => {
@@ -89,7 +88,7 @@ const Input: React.FC<InputProps> = ({
   };
 
   const [focused, setFocused] = React.useState(false);
-  const [internalValue, setInternalValue] = React.useState(defaultValue || '');
+  const [internalValue, setInternalValue] = React.useState(defaultValue ?? '');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newValue = event.target.value;
@@ -142,7 +141,7 @@ const Input: React.FC<InputProps> = ({
           userSelect: 'none',
         }}
       >
-        {iconMap[iconName] || iconName}
+        {iconMap[iconName] ?? iconName}
       </span>
     );
   };
@@ -216,14 +215,14 @@ const Input: React.FC<InputProps> = ({
 
   const inputProps = {
     placeholder,
-    value: value !== undefined ? value : internalValue,
+    value: value ?? internalValue,
     disabled,
     maxLength,
     onFocus: handleFocus,
     onBlur: handleBlur,
     onChange: handleChange,
     onKeyPress: handleKeyPress,
-    'aria-label': accessibilityLabel || label,
+    'aria-label': accessibilityLabel ?? label,
     'data-testid': testID,
     autoComplete,
     style: inputStyle,
@@ -364,7 +363,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     placeholder: 'Enter text...',
-    onChangeText: (text: string) => console.log('Text changed:', text),
+    onChangeText: (text: string) => console.info('Text changed:', text),
   },
 };
 
@@ -373,7 +372,7 @@ export const WithLabel: Story = {
   args: {
     label: 'Full Name',
     placeholder: 'Enter your full name',
-    onChangeText: (text: string) => console.log('Name changed:', text),
+    onChangeText: (text: string) => console.info('Name changed:', text),
   },
 };
 
@@ -385,7 +384,7 @@ export const EmailInput: Story = {
     autoComplete: 'email',
     autoCapitalize: 'none',
     leftIcon: 'email',
-    onChangeText: (text: string) => console.log('Email changed:', text),
+    onChangeText: (text: string) => console.info('Email changed:', text),
   },
 };
 
@@ -398,7 +397,7 @@ export const PasswordInput: Story = {
     autoCapitalize: 'none',
     leftIcon: 'lock',
     rightIcon: 'eye',
-    onChangeText: (text: string) => console.log('Password changed:', text),
+    onChangeText: (text: string) => console.info('Password changed:', text),
   },
 };
 
@@ -409,7 +408,7 @@ export const PhoneInput: Story = {
     keyboardType: 'phone-pad',
     autoComplete: 'tel',
     leftIcon: 'phone',
-    onChangeText: (text: string) => console.log('Phone changed:', text),
+    onChangeText: (text: string) => console.info('Phone changed:', text),
   },
 };
 
@@ -419,7 +418,7 @@ export const NumericInput: Story = {
     placeholder: 'Enter your age',
     keyboardType: 'numeric',
     maxLength: 3,
-    onChangeText: (text: string) => console.log('Age changed:', text),
+    onChangeText: (text: string) => console.info('Age changed:', text),
   },
 };
 
@@ -430,7 +429,7 @@ export const URLInput: Story = {
     keyboardType: 'url',
     autoComplete: 'url',
     autoCapitalize: 'none',
-    onChangeText: (text: string) => console.log('URL changed:', text),
+    onChangeText: (text: string) => console.info('URL changed:', text),
   },
 };
 
@@ -444,7 +443,7 @@ export const ErrorState: Story = {
     errorMessage: 'Please enter a valid email address',
     keyboardType: 'email-address',
     leftIcon: 'email',
-    onChangeText: (text: string) => console.log('Email changed:', text),
+    onChangeText: (text: string) => console.info('Email changed:', text),
   },
 };
 
@@ -456,7 +455,7 @@ export const SuccessState: Story = {
     keyboardType: 'email-address',
     leftIcon: 'email',
     rightIcon: 'check',
-    onChangeText: (text: string) => console.log('Email changed:', text),
+    onChangeText: (text: string) => console.info('Email changed:', text),
   },
 };
 
@@ -466,7 +465,8 @@ export const DisabledState: Story = {
     value: 'john_doe',
     disabled: true,
     leftIcon: 'user',
-    onChangeText: (text: string) => console.log('This should not be called'),
+    // Disabled input does not need to log changes; remove unused param
+    onChangeText: () => console.info('This should not be called'),
   },
 };
 
@@ -477,7 +477,7 @@ export const MultilineInput: Story = {
     placeholder: 'Enter a detailed description...',
     multiline: true,
     numberOfLines: 4,
-    onChangeText: (text: string) => console.log('Description changed:', text),
+    onChangeText: (text: string) => console.info('Description changed:', text),
   },
 };
 
@@ -489,7 +489,7 @@ export const MultilineWithIcon: Story = {
     numberOfLines: 3,
     leftIcon: 'edit',
     rightIcon: 'send',
-    onChangeText: (text: string) => console.log('Message changed:', text),
+    onChangeText: (text: string) => console.info('Message changed:', text),
   },
 };
 
@@ -501,7 +501,7 @@ export const WithMaxLength: Story = {
     maxLength: 100,
     multiline: true,
     numberOfLines: 3,
-    onChangeText: (text: string) => console.log(`Bio changed (${text.length}/100):`, text),
+    onChangeText: (text: string) => console.info(`Bio changed (${text.length}/100):`, text),
   },
 };
 
@@ -512,7 +512,7 @@ export const TwitterStyleInput: Story = {
     maxLength: 280,
     multiline: true,
     numberOfLines: 3,
-    onChangeText: (text: string) => console.log(`Tweet (${text.length}/280):`, text),
+    onChangeText: (text: string) => console.info(`Tweet (${text.length}/280):`, text),
   },
 };
 
@@ -523,8 +523,8 @@ export const SearchInput: Story = {
     leftIcon: 'search',
     returnKeyType: 'search',
     autoCapitalize: 'none',
-    onChangeText: (text: string) => console.log('Search query:', text),
-    onSubmitEditing: () => console.log('Search submitted'),
+    onChangeText: (text: string) => console.info('Search query:', text),
+    onSubmitEditing: () => console.info('Search submitted'),
   },
 };
 
@@ -535,8 +535,8 @@ export const SearchWithClear: Story = {
     rightIcon: 'close',
     returnKeyType: 'search',
     autoCapitalize: 'none',
-    onChangeText: (text: string) => console.log('Search query:', text),
-    onSubmitEditing: () => console.log('Search submitted'),
+    onChangeText: (text: string) => console.info('Search query:', text),
+    onSubmitEditing: () => console.info('Search submitted'),
   },
 };
 
@@ -548,13 +548,13 @@ export const FormInputs: Story = {
         label="First Name"
         placeholder="Enter first name"
         returnKeyType="next"
-        onChangeText={text => console.log('First name:', text)}
+        onChangeText={text => console.info('First name:', text)}
       />
       <Input
         label="Last Name"
         placeholder="Enter last name"
         returnKeyType="next"
-        onChangeText={text => console.log('Last name:', text)}
+        onChangeText={text => console.info('Last name:', text)}
       />
       <Input
         label="Email"
@@ -564,7 +564,7 @@ export const FormInputs: Story = {
         autoCapitalize="none"
         returnKeyType="done"
         leftIcon="email"
-        onChangeText={text => console.log('Email:', text)}
+        onChangeText={text => console.info('Email:', text)}
       />
     </div>
   ),
@@ -799,123 +799,124 @@ export const MobileKeyboardTypes: Story = {
 };
 
 // Interactive example
-export const InteractiveExample: Story = {
-  render: () => {
-    const [formData, setFormData] = React.useState({
-      name: '',
-      email: '',
-      message: '',
-    });
-    const [errors, setErrors] = React.useState<Record<string, string>>({});
+const InteractiveExampleComponent: React.FC = () => {
+  const [formData, setFormData] = React.useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+  const [errors, setErrors] = React.useState<Record<string, string>>({});
 
-    const validateEmail = (email: string) => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(email);
-    };
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
-    const handleNameChange = (text: string) => {
-      setFormData(prev => ({ ...prev, name: text }));
-      if (errors.name && text.trim()) {
-        setErrors(prev => ({ ...prev, name: '' }));
-      }
-    };
+  const handleNameChange = (text: string) => {
+    setFormData(prev => ({ ...prev, name: text }));
+    if (errors.name && text.trim()) {
+      setErrors(prev => ({ ...prev, name: '' }));
+    }
+  };
 
-    const handleEmailChange = (text: string) => {
-      setFormData(prev => ({ ...prev, email: text }));
-      if (errors.email && validateEmail(text)) {
-        setErrors(prev => ({ ...prev, email: '' }));
-      }
-    };
+  const handleEmailChange = (text: string) => {
+    setFormData(prev => ({ ...prev, email: text }));
+    if (errors.email && validateEmail(text)) {
+      setErrors(prev => ({ ...prev, email: '' }));
+    }
+  };
 
-    const handleMessageChange = (text: string) => {
-      setFormData(prev => ({ ...prev, message: text }));
-      if (errors.message && text.trim()) {
-        setErrors(prev => ({ ...prev, message: '' }));
-      }
-    };
+  const handleMessageChange = (text: string) => {
+    setFormData(prev => ({ ...prev, message: text }));
+    if (errors.message && text.trim()) {
+      setErrors(prev => ({ ...prev, message: '' }));
+    }
+  };
 
-    const handleSubmit = () => {
-      const newErrors: Record<string, string> = {};
+  const handleSubmit = () => {
+    const newErrors: Record<string, string> = {};
 
-      if (!formData.name.trim()) {
-        newErrors.name = 'Name is required';
-      }
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
 
-      if (!formData.email.trim()) {
-        newErrors.email = 'Email is required';
-      } else if (!validateEmail(formData.email)) {
-        newErrors.email = 'Please enter a valid email';
-      }
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
+    }
 
-      if (!formData.message.trim()) {
-        newErrors.message = 'Message is required';
-      }
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required';
+    }
 
-      setErrors(newErrors);
+    setErrors(newErrors);
 
-      if (Object.keys(newErrors).length === 0) {
-        console.log('Form submitted:', formData);
-        alert('Form submitted successfully!');
-      }
-    };
+    if (Object.keys(newErrors).length === 0) {
+      console.info('Form submitted:', formData);
+    }
+  };
 
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '300px' }}>
-        <Input
-          label="Name"
-          placeholder="Enter your name"
-          value={formData.name}
-          error={!!errors.name}
-          errorMessage={errors.name}
-          leftIcon="user"
-          onChangeText={handleNameChange}
-        />
-        <Input
-          label="Email"
-          placeholder="Enter your email"
-          value={formData.email}
-          error={!!errors.email}
-          errorMessage={errors.email}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          leftIcon="email"
-          rightIcon={formData.email && validateEmail(formData.email) ? 'check' : undefined}
-          onChangeText={handleEmailChange}
-        />
-        <Input
-          label="Message"
-          placeholder="Enter your message"
-          value={formData.message}
-          error={!!errors.message}
-          errorMessage={errors.message}
-          multiline={true}
-          numberOfLines={4}
-          leftIcon="edit"
-          onChangeText={handleMessageChange}
-        />
-        <button
-          onClick={handleSubmit}
-          style={{
-            padding: '12px 16px',
-            backgroundColor: '#007AFF',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '16px',
-            fontWeight: '500',
-            cursor: 'pointer',
-            marginTop: '8px',
-          }}
-        >
-          Submit Form
-        </button>
-        <div style={{ fontSize: '14px', color: '#8E8E93' }}>
-          <strong>Form Data:</strong>
-          <pre style={{ fontSize: '12px', marginTop: '4px' }}>{JSON.stringify(formData, null, 2)}</pre>
-        </div>
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '300px' }}>
+      <Input
+        label="Name"
+        placeholder="Enter your name"
+        value={formData.name}
+        error={!!errors.name}
+        errorMessage={errors.name}
+        leftIcon="user"
+        onChangeText={handleNameChange}
+      />
+      <Input
+        label="Email"
+        placeholder="Enter your email"
+        value={formData.email}
+        error={!!errors.email}
+        errorMessage={errors.email}
+        keyboardType="email-address"
+        autoCapitalize="none"
+        leftIcon="email"
+        rightIcon={formData.email && validateEmail(formData.email) ? 'check' : undefined}
+        onChangeText={handleEmailChange}
+      />
+      <Input
+        label="Message"
+        placeholder="Enter your message"
+        value={formData.message}
+        error={!!errors.message}
+        errorMessage={errors.message}
+        multiline={true}
+        numberOfLines={4}
+        leftIcon="edit"
+        onChangeText={handleMessageChange}
+      />
+      <button
+        onClick={handleSubmit}
+        style={{
+          padding: '12px 16px',
+          backgroundColor: '#007AFF',
+          color: 'white',
+          border: 'none',
+          borderRadius: '8px',
+          fontSize: '16px',
+          fontWeight: '500',
+          cursor: 'pointer',
+          marginTop: '8px',
+        }}
+      >
+        Submit Form
+      </button>
+      <div style={{ fontSize: '14px', color: '#8E8E93' }}>
+        <strong>Form Data:</strong>
+        <pre style={{ fontSize: '12px', marginTop: '4px' }}>{JSON.stringify(formData, null, 2)}</pre>
       </div>
-    );
-  },
+    </div>
+  );
+};
+
+export const InteractiveExample: Story = {
+  render: () => <InteractiveExampleComponent />,
   parameters: {
     layout: 'padded',
     docs: {

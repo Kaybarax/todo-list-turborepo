@@ -1,12 +1,11 @@
-import React from 'react';
-import { ApplicationProvider } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
-import type { Decorator } from '@storybook/react';
+import { type Decorator } from '@storybook/react';
+import { ApplicationProvider } from '@ui-kitten/components';
+import React from 'react';
 
 // Best-effort dynamic import of EnhancedThemeProvider; non-fatal if missing.
 let EnhancedThemeProvider: React.ComponentType<any> | null = null;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   EnhancedThemeProvider = require('../../lib/theme').EnhancedThemeProvider;
 } catch {
   EnhancedThemeProvider = null;

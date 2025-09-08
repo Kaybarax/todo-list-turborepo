@@ -1,6 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
-import { withUIKitten } from './decorators/UIKittenProvider';
 import React from 'react';
+
+import { withUIKitten } from './decorators/UIKittenProvider';
 
 // Web-compatible Avatar component for Storybook
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -71,7 +72,7 @@ const Avatar: React.FC<AvatarProps> = ({
         <img src={source} alt="Avatar" style={imageStyle} data-testid={`${testID}-image`} />
       ) : (
         <span style={textStyle} data-testid={`${testID}-text`}>
-          {initials || ''}
+          {initials ?? ''}
         </span>
       )}
     </div>

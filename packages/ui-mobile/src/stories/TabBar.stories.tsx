@@ -1,6 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
-import { withUIKitten } from './decorators/UIKittenProvider';
 import React, { useState } from 'react';
+
+import { withUIKitten } from './decorators/UIKittenProvider';
 
 type WebTab = {
   label?: string;
@@ -48,9 +49,9 @@ const WebTabBar: React.FC<WebTabBarProps> = ({ tabs, activeIndex, onTabPress }) 
               cursor: 'pointer',
             }}
           >
-            <div style={{ fontSize: 18 }}>{t.icon || '•'}</div>
+            <div style={{ fontSize: 18 }}>{t.icon ?? '•'}</div>
             {t.label && <div style={{ fontSize: 12, marginTop: 4 }}>{t.label}</div>}
-            {t.badge && (t.badge.dot || t.badge.count) && (
+            {t.badge && (t.badge.dot ?? t.badge.count) && (
               <div
                 style={{
                   position: 'absolute',

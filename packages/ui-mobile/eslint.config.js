@@ -21,11 +21,34 @@ export default [
       'coverage/**',
       'storybook-static/**',
       '.turbo/**',
-      'src/stories/**',
+      // (Removed blanket ignore of story files; now handled via scoped override below.)
       'src/test/**',
       '**/*.d.ts',
       '**/*.map',
     ],
+  },
+  // Scoped override for Storybook stories: allow inline styles & loosen a11y/filename specifics for rapid prototyping.
+  // Keeps stories in lint pipeline for syntax / import / unused checks while avoiding noise.
+  {
+    files: ['src/stories/**/*.{ts,tsx}'],
+    rules: {
+      // If later re-enabled upstream, ensure we keep them off only here.
+      'react-native/no-inline-styles': 'off',
+      'react-native/no-unused-styles': 'off',
+      // Allow headings, temporary inline elements for docs-like text blocks.
+      'react/jsx-no-useless-fragment': 'off',
+      // Story playground pragmatics: allow console logging for interaction demos.
+      'no-console': 'off',
+      // Relax hook placement warnings inside Storybook `render` patterns.
+      'react-hooks/rules-of-hooks': 'off',
+      // Permit rapid iteration without nullish refactors.
+      '@typescript-eslint/prefer-nullish-coalescing': 'off',
+      // Non-critical in stories; avoid breaking builds for experimentation.
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      'no-unused-vars': 'off',
+      'no-undef': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
   },
   ...reactNativeConfig,
   {

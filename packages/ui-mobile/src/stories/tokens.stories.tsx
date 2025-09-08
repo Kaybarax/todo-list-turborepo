@@ -1,7 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { withUIKitten } from './decorators/UIKittenProvider';
+import { type Meta, type StoryObj } from '@storybook/react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { lightColors, darkColors } from '../../lib/tokens/colors';
+
+import { withUIKitten } from './decorators/UIKittenProvider';
+import { lightColors } from '../../lib/tokens/colors';
 import { spacing } from '../../lib/tokens/spacing';
 import { fontSizes, fontWeights, lineHeights } from '../../lib/tokens/typography';
 
@@ -41,7 +42,7 @@ const SpacingSwatch = ({ name, value }: { name: string; value: number }) => (
 
 const TypographyExample = ({ size, weight, lineHeight }: { size: number; weight: string; lineHeight: number }) => (
   <View style={styles.typographyExample}>
-    <Text style={[styles.typographyText, { fontSize: size, fontWeight: weight as any, lineHeight: lineHeight }]}>
+    <Text style={[styles.typographyText, { fontSize: size, fontWeight: weight as any, lineHeight }]}>
       The quick brown fox jumps over the lazy dog
     </Text>
     <Text style={styles.typographyMeta}>

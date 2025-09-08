@@ -1,6 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
-import { withUIKitten } from './decorators/UIKittenProvider';
 import React from 'react';
+
+import { withUIKitten } from './decorators/UIKittenProvider';
 
 // Mock NetworkSelector for Storybook (web-compatible)
 interface NetworkSelectorProps {
@@ -295,52 +296,19 @@ export const BaseSelected: Story = {
 };
 
 // Interactive demo
-export const Interactive: Story = {
-  render: () => {
-    const [selectedNetwork, setSelectedNetwork] = React.useState<
-      'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base'
-    >('solana');
-    const [variant, setVariant] = React.useState<'grid' | 'list'>('grid');
+const InteractiveNetworkSelectorComponent: React.FC = () => {
+  const [selectedNetwork, setSelectedNetwork] = React.useState<'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base'>(
+    'solana',
+  );
+  // Variant is static in current demo; remove unused state setter
+  const [variant] = React.useState<'grid' | 'list'>('grid');
+  return (
+    <MockNetworkSelector selectedNetwork={selectedNetwork} variant={variant} onNetworkSelect={setSelectedNetwork} />
+  );
+};
 
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <div style={{ display: 'flex', flexDirection: 'row', gap: '8px', marginBottom: '16px' }}>
-          <button
-            style={{
-              padding: '8px 16px',
-              backgroundColor: variant === 'grid' ? '#007AFF' : '#F2F2F7',
-              color: variant === 'grid' ? 'white' : 'black',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-            }}
-            onClick={() => setVariant('grid')}
-          >
-            Grid
-          </button>
-          <button
-            style={{
-              padding: '8px 16px',
-              backgroundColor: variant === 'list' ? '#007AFF' : '#F2F2F7',
-              color: variant === 'list' ? 'white' : 'black',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-            }}
-            onClick={() => setVariant('list')}
-          >
-            List
-          </button>
-        </div>
-        <MockNetworkSelector selectedNetwork={selectedNetwork} variant={variant} onNetworkSelect={setSelectedNetwork} />
-        <div style={{ marginTop: '16px', padding: '12px', backgroundColor: '#F7F9FC', borderRadius: '8px' }}>
-          <div style={{ fontSize: '14px', fontWeight: '600' }}>
-            Selected: {selectedNetwork} | Variant: {variant}
-          </div>
-        </div>
-      </div>
-    );
-  },
+export const Interactive: Story = {
+  render: () => <InteractiveNetworkSelectorComponent />,
   parameters: {
     docs: {
       description: {

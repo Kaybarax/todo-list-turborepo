@@ -545,7 +545,7 @@ export function createMobileStoryMeta<T>(config: {
     title: config.title,
     component: config.component,
     parameters: {
-      layout: config.layout || 'centered',
+      layout: config.layout ?? 'centered',
       docs: {
         description: {
           component: config.description,
@@ -554,8 +554,8 @@ export function createMobileStoryMeta<T>(config: {
       ...mobileCommonParameters.mobileViewport,
     },
     tags: ['autodocs'],
-    argTypes: config.argTypes || {},
-    args: config.args || {},
+    argTypes: config.argTypes ?? {},
+    args: config.args ?? {},
   };
 }
 
@@ -576,7 +576,7 @@ export function createMobileA11yStory<T>(
       docs: {
         description: {
           story:
-            description || 'Demonstrates proper mobile accessibility attributes for screen readers and voice control.',
+            description ?? 'Demonstrates proper mobile accessibility attributes for screen readers and voice control.',
         },
       },
     },
@@ -595,7 +595,7 @@ export function createMobileInteractiveStory<T>(
     parameters: {
       docs: {
         description: {
-          story: description || 'Interactive example demonstrating mobile component behavior and touch interactions.',
+          story: description ?? 'Interactive example demonstrating mobile component behavior and touch interactions.',
         },
       },
       ...mobileCommonParameters.mobileViewport,
@@ -615,7 +615,7 @@ export function createMobileLayoutStory<T>(
     parameters: {
       docs: {
         description: {
-          story: description || 'Demonstrates component layout in mobile-sized containers.',
+          story: description ?? 'Demonstrates component layout in mobile-sized containers.',
         },
       },
       ...mobileCommonParameters.mobileViewport,
@@ -635,7 +635,7 @@ export function renderMobileIcon(iconName: string, size: number = 16): ReactNode
         display: 'inline-block',
       }}
     >
-      {mobileIconMap[iconName] || iconName}
+      {mobileIconMap[iconName] ?? iconName}
     </span>
   );
 }

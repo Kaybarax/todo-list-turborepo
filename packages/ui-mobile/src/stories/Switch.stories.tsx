@@ -1,7 +1,8 @@
 // @ts-nocheck
 import { type Meta, type StoryObj } from '@storybook/react';
-import { withUIKitten } from './decorators/UIKittenProvider';
 import React from 'react';
+
+import { withUIKitten } from './decorators/UIKittenProvider';
 
 // Web-compatible Switch component for Storybook
 interface SwitchProps {
@@ -130,7 +131,7 @@ const Switch: React.FC<SwitchProps> = ({
           disabled={disabled}
           style={hiddenInputStyle}
           data-testid={`${testID}-input`}
-          aria-label={accessibilityLabel || label}
+          aria-label={accessibilityLabel ?? label}
           aria-checked={value}
           role="switch"
         />
@@ -187,37 +188,40 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Basic states
-export const Default: Story = {
-  args: {
-    value: false,
-    label: 'Switch',
-    onValueChange: value => console.log('Switch changed:', value),
-  },
+const ControlledSwitchComponent: React.FC<{ label?: string } & Partial<SwitchProps>> = ({
+  label = 'Controlled Switch',
+  ...rest
+}) => {
+  const [controlledValue, setControlledValue] = React.useState(false);
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '320px' }}>
+      <Switch
+        {...rest}
+        label={label}
+        value={controlledValue}
+        onValueChange={v => {
+          setControlledValue(v);
+        }}
+      />
+      <div style={{ fontSize: 14, color: '#8E8E93' }}>Current value: {controlledValue ? 'On' : 'Off'}</div>
+    </div>
+  );
 };
 
-export const On: Story = {
-  args: {
-    value: true,
-    label: 'Switch On',
-    onValueChange: value => console.log('Switch changed:', value),
+export const Controlled: Story = {
+  render: args => <ControlledSwitchComponent {...args} />,
+  args: { label: 'Controlled Switch' },
+  parameters: {
+    docs: { description: { story: 'A controlled switch component with state managed by the parent.' } },
   },
 };
-
-export const Off: Story = {
-  args: {
-    value: false,
-    label: 'Switch Off',
-    onValueChange: value => console.log('Switch changed:', value),
-  },
-};
-
-// Disabled states
+// Disabled variants
 export const Disabled: Story = {
   args: {
     value: false,
     disabled: true,
     label: 'Disabled Switch',
-    onValueChange: value => console.log('This should not be called'),
+    onValueChange: () => {},
   },
 };
 
@@ -226,7 +230,7 @@ export const DisabledOn: Story = {
     value: true,
     disabled: true,
     label: 'Disabled Switch (On)',
-    onValueChange: value => console.log('This should not be called'),
+    onValueChange: () => {},
   },
 };
 
@@ -235,7 +239,7 @@ export const DisabledOff: Story = {
     value: false,
     disabled: true,
     label: 'Disabled Switch (Off)',
-    onValueChange: value => console.log('This should not be called'),
+    onValueChange: () => {},
   },
 };
 
@@ -244,7 +248,7 @@ export const WithoutLabel: Story = {
   args: {
     value: false,
     accessibilityLabel: 'Toggle setting',
-    onValueChange: value => console.log('Switch changed:', value),
+    onValueChange: () => {},
   },
   parameters: {
     docs: {
@@ -379,55 +383,49 @@ export const ColorVariants: Story = {
 };
 
 // Real-world usage examples
+const SettingsPanelComponent: React.FC = () => {
+  const [settings, setSettings] = React.useState({
+    notifications: true,
+    darkMode: false,
+    autoSync: true,
+    locationServices: false,
+    analytics: false,
+  });
+  const updateSetting = (key: keyof typeof settings) => (value: boolean) => {
+    setSettings(prev => ({ ...prev, [key]: value }));
+  };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: '300px' }}>
+      <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600' }}>App Settings</h3>
+      <Switch
+        value={settings.notifications}
+        label="Push Notifications"
+        onValueChange={updateSetting('notifications')}
+      />
+      <Switch value={settings.darkMode} label="Dark Mode" onValueChange={updateSetting('darkMode')} />
+      <Switch
+        value={settings.autoSync}
+        label="Auto Sync"
+        trackColor={{ false: '#F2F2F7', true: '#34C759' }}
+        onValueChange={updateSetting('autoSync')}
+      />
+      <Switch
+        value={settings.locationServices}
+        label="Location Services"
+        trackColor={{ false: '#F2F2F7', true: '#FF9500' }}
+        onValueChange={updateSetting('locationServices')}
+      />
+      <Switch
+        value={settings.analytics}
+        label="Analytics & Crash Reports"
+        trackColor={{ false: '#F2F2F7', true: '#FF3B30' }}
+        onValueChange={updateSetting('analytics')}
+      />
+    </div>
+  );
+};
 export const SettingsPanel: Story = {
-  render: () => {
-    const [settings, setSettings] = React.useState({
-      notifications: true,
-      darkMode: false,
-      autoSync: true,
-      locationServices: false,
-      analytics: false,
-    });
-
-    const updateSetting = (key: keyof typeof settings) => (value: boolean) => {
-      setSettings(prev => ({ ...prev, [key]: value }));
-    };
-
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: '300px' }}>
-        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600' }}>App Settings</h3>
-
-        <Switch
-          value={settings.notifications}
-          label="Push Notifications"
-          onValueChange={updateSetting('notifications')}
-        />
-
-        <Switch value={settings.darkMode} label="Dark Mode" onValueChange={updateSetting('darkMode')} />
-
-        <Switch
-          value={settings.autoSync}
-          label="Auto Sync"
-          trackColor={{ false: '#F2F2F7', true: '#34C759' }}
-          onValueChange={updateSetting('autoSync')}
-        />
-
-        <Switch
-          value={settings.locationServices}
-          label="Location Services"
-          trackColor={{ false: '#F2F2F7', true: '#FF9500' }}
-          onValueChange={updateSetting('locationServices')}
-        />
-
-        <Switch
-          value={settings.analytics}
-          label="Analytics & Crash Reports"
-          trackColor={{ false: '#F2F2F7', true: '#FF3B30' }}
-          onValueChange={updateSetting('analytics')}
-        />
-      </div>
-    );
-  },
+  render: () => <SettingsPanelComponent />,
   parameters: {
     layout: 'padded',
     docs: {
@@ -438,76 +436,69 @@ export const SettingsPanel: Story = {
   },
 };
 
-export const PrivacySettings: Story = {
-  render: () => {
-    const [privacy, setPrivacy] = React.useState({
-      profileVisible: true,
-      shareLocation: false,
-      allowMessages: true,
-      showOnlineStatus: false,
-      dataCollection: false,
-    });
-
-    const updatePrivacy = (key: keyof typeof privacy) => (value: boolean) => {
-      setPrivacy(prev => ({ ...prev, [key]: value }));
-    };
-
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', minWidth: '350px' }}>
-        <div>
-          <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: '600' }}>Privacy Settings</h3>
-          <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>Control how your information is shared and used</p>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <Switch
-            value={privacy.profileVisible}
-            label="Make profile visible to others"
-            onValueChange={updatePrivacy('profileVisible')}
-          />
-
-          <Switch
-            value={privacy.shareLocation}
-            label="Share location with friends"
-            trackColor={{ false: '#F2F2F7', true: '#FF9500' }}
-            onValueChange={updatePrivacy('shareLocation')}
-          />
-
-          <Switch
-            value={privacy.allowMessages}
-            label="Allow messages from anyone"
-            trackColor={{ false: '#F2F2F7', true: '#34C759' }}
-            onValueChange={updatePrivacy('allowMessages')}
-          />
-
-          <Switch
-            value={privacy.showOnlineStatus}
-            label="Show when I'm online"
-            onValueChange={updatePrivacy('showOnlineStatus')}
-          />
-
-          <Switch
-            value={privacy.dataCollection}
-            label="Allow data collection for analytics"
-            trackColor={{ false: '#F2F2F7', true: '#FF3B30' }}
-            onValueChange={updatePrivacy('dataCollection')}
-          />
-        </div>
-
-        <div
-          style={{
-            padding: '12px',
-            backgroundColor: '#F2F2F7',
-            borderRadius: '8px',
-            fontSize: '12px',
-            color: '#666',
-          }}
-        >
-          <strong>Note:</strong> Changes to privacy settings take effect immediately and may affect your app experience.
-        </div>
+const PrivacySettingsComponent: React.FC = () => {
+  const [privacy, setPrivacy] = React.useState({
+    profileVisible: true,
+    shareLocation: false,
+    allowMessages: true,
+    showOnlineStatus: false,
+    dataCollection: false,
+  });
+  const updatePrivacy = (key: keyof typeof privacy) => (value: boolean) => {
+    setPrivacy(prev => ({ ...prev, [key]: value }));
+  };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', minWidth: '350px' }}>
+      <div>
+        <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: '600' }}>Privacy Settings</h3>
+        <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>Control how your information is shared and used</p>
       </div>
-    );
-  },
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <Switch
+          value={privacy.profileVisible}
+          label="Make profile visible to others"
+          onValueChange={updatePrivacy('profileVisible')}
+        />
+        <Switch
+          value={privacy.shareLocation}
+          label="Share location with friends"
+          trackColor={{ false: '#F2F2F7', true: '#FF9500' }}
+          onValueChange={updatePrivacy('shareLocation')}
+        />
+        <Switch
+          value={privacy.allowMessages}
+          label="Allow messages from anyone"
+          trackColor={{ false: '#F2F2F7', true: '#34C759' }}
+          onValueChange={updatePrivacy('allowMessages')}
+        />
+        <Switch
+          value={privacy.showOnlineStatus}
+          label="Show when I'm online"
+          onValueChange={updatePrivacy('showOnlineStatus')}
+        />
+        <Switch
+          value={privacy.dataCollection}
+          label="Allow data collection for analytics"
+          trackColor={{ false: '#F2F2F7', true: '#FF3B30' }}
+          onValueChange={updatePrivacy('dataCollection')}
+        />
+      </div>
+      <div
+        style={{
+          padding: '12px',
+          backgroundColor: '#F2F2F7',
+          borderRadius: '8px',
+          fontSize: '12px',
+          color: '#666',
+        }}
+      >
+        <strong>Note:</strong> Changes to privacy settings take effect immediately and may affect your app experience.
+      </div>
+    </div>
+  );
+};
+export const PrivacySettings: Story = {
+  render: () => <PrivacySettingsComponent />,
   parameters: {
     layout: 'padded',
     docs: {
@@ -580,106 +571,87 @@ export const AccessibilityExample: Story = {
 };
 
 // Mobile touch interaction examples
-export const TouchInteractionExample: Story = {
-  render: () => {
-    const [touchFeedback, setTouchFeedback] = React.useState('');
-    const [lastChanged, setLastChanged] = React.useState<string | null>(null);
-
-    const handleTouch = (switchName: string) => (value: boolean) => {
-      setTouchFeedback(`${switchName} switched ${value ? 'ON' : 'OFF'}`);
-      setLastChanged(switchName);
-      setTimeout(() => {
-        setTouchFeedback('');
-        setLastChanged(null);
-      }, 2000);
-    };
-
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', minWidth: '300px' }}>
-        <div>
-          <h4 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: '600' }}>Mobile Touch Interactions</h4>
-          <p style={{ margin: '0 0 16px 0', fontSize: '14px', color: '#666' }}>
-            Tap any switch to see touch feedback. Switches provide visual and haptic feedback on mobile devices.
-          </p>
-        </div>
-
-        {touchFeedback && (
-          <div
-            style={{
-              padding: '8px 12px',
-              backgroundColor: '#007AFF',
-              color: 'white',
-              borderRadius: '6px',
-              fontSize: '14px',
-              textAlign: 'center',
-              animation: 'fadeIn 0.3s ease-in-out',
-            }}
-          >
-            {touchFeedback}
-          </div>
-        )}
-
-        <Switch
-          value={false}
-          label="Airplane Mode"
-          onValueChange={handleTouch('Airplane Mode')}
-          trackColor={{
-            false: '#F2F2F7',
-            true: lastChanged === 'Airplane Mode' ? '#34C759' : '#007AFF',
-          }}
-        />
-
-        <Switch
-          value={true}
-          label="Wi-Fi"
-          onValueChange={handleTouch('Wi-Fi')}
-          trackColor={{
-            false: '#F2F2F7',
-            true: lastChanged === 'Wi-Fi' ? '#34C759' : '#007AFF',
-          }}
-        />
-
-        <Switch
-          value={false}
-          label="Bluetooth"
-          onValueChange={handleTouch('Bluetooth')}
-          trackColor={{
-            false: '#F2F2F7',
-            true: lastChanged === 'Bluetooth' ? '#34C759' : '#007AFF',
-          }}
-        />
-
-        <Switch
-          value={true}
-          label="Cellular Data"
-          onValueChange={handleTouch('Cellular Data')}
-          trackColor={{
-            false: '#F2F2F7',
-            true: lastChanged === 'Cellular Data' ? '#34C759' : '#007AFF',
-          }}
-        />
-
+const TouchInteractionExampleComponent: React.FC = () => {
+  const [touchFeedback, setTouchFeedback] = React.useState('');
+  const [lastChanged, setLastChanged] = React.useState<string | null>(null);
+  const handleTouch = (switchName: string) => (value: boolean) => {
+    setTouchFeedback(`${switchName} switched ${value ? 'ON' : 'OFF'}`);
+    setLastChanged(switchName);
+    setTimeout(() => {
+      setTouchFeedback('');
+      setLastChanged(null);
+    }, 2000);
+  };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', minWidth: '300px' }}>
+      <div>
+        <h4 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: '600' }}>Mobile Touch Interactions</h4>
+        <p style={{ margin: '0 0 16px 0', fontSize: '14px', color: '#666' }}>
+          Tap any switch to see touch feedback. Switches provide visual and haptic feedback on mobile devices.
+        </p>
+      </div>
+      {touchFeedback && (
         <div
           style={{
-            padding: '12px',
-            backgroundColor: '#F2F2F7',
-            borderRadius: '8px',
-            fontSize: '12px',
-            color: '#666',
-            marginTop: '8px',
+            padding: '8px 12px',
+            backgroundColor: '#007AFF',
+            color: 'white',
+            borderRadius: '6px',
+            fontSize: '14px',
+            textAlign: 'center',
+            animation: 'fadeIn 0.3s ease-in-out',
           }}
         >
-          <strong>Mobile Considerations:</strong>
-          <ul style={{ margin: '4px 0 0 0', paddingLeft: '16px' }}>
-            <li>Minimum touch target size of 44x44 points</li>
-            <li>Visual feedback on touch (color changes, animations)</li>
-            <li>Haptic feedback on supported devices</li>
-            <li>Smooth animations for state transitions</li>
-          </ul>
+          {touchFeedback}
         </div>
+      )}
+      <Switch
+        value={false}
+        label="Airplane Mode"
+        onValueChange={handleTouch('Airplane Mode')}
+        trackColor={{ false: '#F2F2F7', true: lastChanged === 'Airplane Mode' ? '#34C759' : '#007AFF' }}
+      />
+      <Switch
+        value={true}
+        label="Wi-Fi"
+        onValueChange={handleTouch('Wi-Fi')}
+        trackColor={{ false: '#F2F2F7', true: lastChanged === 'Wi-Fi' ? '#34C759' : '#007AFF' }}
+      />
+      <Switch
+        value={false}
+        label="Bluetooth"
+        onValueChange={handleTouch('Bluetooth')}
+        trackColor={{ false: '#F2F2F7', true: lastChanged === 'Bluetooth' ? '#34C759' : '#007AFF' }}
+      />
+      <Switch
+        value={true}
+        label="Cellular Data"
+        onValueChange={handleTouch('Cellular Data')}
+        trackColor={{ false: '#F2F2F7', true: lastChanged === 'Cellular Data' ? '#34C759' : '#007AFF' }}
+      />
+      <div
+        style={{
+          padding: '12px',
+          backgroundColor: '#F2F2F7',
+          borderRadius: '8px',
+          fontSize: '12px',
+          color: '#666',
+          marginTop: '8px',
+        }}
+      >
+        <strong>Mobile Considerations:</strong>
+        <ul style={{ margin: '4px 0 0 0', paddingLeft: '16px' }}>
+          <li>Minimum touch target size of 44x44 points</li>
+          <li>Visual feedback on touch (color changes, animations)</li>
+          <li>Haptic feedback on supported devices</li>
+          <li>Smooth animations for state transitions</li>
+        </ul>
       </div>
-    );
-  },
+    </div>
+  );
+};
+export const TouchInteractionExample: Story = {
+  render: () => <TouchInteractionExampleComponent />,
   parameters: {
     layout: 'padded',
     docs: {
@@ -691,51 +663,42 @@ export const TouchInteractionExample: Story = {
 };
 
 // Interactive example
-export const InteractiveExample: Story = {
-  render: () => {
-    const [state, setState] = React.useState({
-      value: false,
-      disabled: false,
-      customColors: false,
-    });
-
-    const toggleState = (key: keyof typeof state) => {
-      setState(prev => ({ ...prev, [key]: !prev[key] }));
-    };
-
-    const trackColor = state.customColors
-      ? { false: '#F2F2F7', true: '#34C759' }
-      : { false: '#F2F2F7', true: '#007AFF' };
-
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', minWidth: '300px' }}>
-        <div>
-          <h4 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: '600' }}>Interactive Switch Demo</h4>
+const InteractiveExampleComponent: React.FC = () => {
+  const [state, setState] = React.useState({ value: false, disabled: false, customColors: false });
+  const toggleState = (key: keyof typeof state) => {
+    setState(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+  const trackColor = state.customColors ? { false: '#F2F2F7', true: '#34C759' } : { false: '#F2F2F7', true: '#007AFF' };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', minWidth: '300px' }}>
+      <div>
+        <h4 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: '600' }}>Interactive Switch Demo</h4>
+        <Switch
+          value={state.value}
+          disabled={state.disabled}
+          label="Demo Switch"
+          trackColor={trackColor}
+          onValueChange={value => setState(prev => ({ ...prev, value }))}
+        />
+      </div>
+      <div>
+        <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '600' }}>Controls:</h5>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <Switch value={state.value} label="Switch Value" onValueChange={() => toggleState('value')} />
+          <Switch value={state.disabled} label="Disabled State" onValueChange={() => toggleState('disabled')} />
           <Switch
-            value={state.value}
-            disabled={state.disabled}
-            label="Demo Switch"
-            trackColor={trackColor}
-            onValueChange={value => setState(prev => ({ ...prev, value }))}
+            value={state.customColors}
+            label="Custom Colors (Green)"
+            trackColor={{ false: '#F2F2F7', true: '#34C759' }}
+            onValueChange={() => toggleState('customColors')}
           />
         </div>
-
-        <div>
-          <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: '600' }}>Controls:</h5>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <Switch value={state.value} label="Switch Value" onValueChange={() => toggleState('value')} />
-            <Switch value={state.disabled} label="Disabled State" onValueChange={() => toggleState('disabled')} />
-            <Switch
-              value={state.customColors}
-              label="Custom Colors (Green)"
-              trackColor={{ false: '#F2F2F7', true: '#34C759' }}
-              onValueChange={() => toggleState('customColors')}
-            />
-          </div>
-        </div>
       </div>
-    );
-  },
+    </div>
+  );
+};
+export const InteractiveExample: Story = {
+  render: () => <InteractiveExampleComponent />,
   parameters: {
     layout: 'padded',
     docs: {
