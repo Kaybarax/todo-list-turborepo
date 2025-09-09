@@ -1,3 +1,5 @@
+import { withUIKitten } from '../src/stories/decorators/UIKittenProvider';
+
 const preview = {
   parameters: {
     controls: {
@@ -20,6 +22,7 @@ const preview = {
       ],
     },
   },
+  decorators: [withUIKitten],
   globalTypes: {
     theme: {
       description: 'Eva Design Theme',
