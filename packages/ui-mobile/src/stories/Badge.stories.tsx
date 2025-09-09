@@ -1,114 +1,8 @@
-// Web-compatible Badge component for Storybook
-type WebBadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
-type WebBadgeSize = 'small' | 'medium' | 'large';
-interface WebBadgeProps {
-  text: string;
-  variant?: WebBadgeVariant;
-  size?: WebBadgeSize;
-  testID?: string;
-}
-
-const Badge = ({ text, variant = 'default', size = 'medium', testID }: WebBadgeProps) => {
-  // Theme colors matching the React Native theme
-  const colors = {
-    primary: '#007AFF',
-    secondary: '#5856D6',
-    success: '#34C759',
-    warning: '#FF9500',
-    danger: '#FF3B30',
-    light: '#F2F2F7',
-    medium: '#8E8E93',
-    white: '#FFFFFF',
-  };
-
-  const spacing = {
-    xs: 4,
-    sm: 8,
-  };
-
-  const fontSizes = {
-    xs: 12,
-    sm: 14,
-    md: 16,
-  };
-
-  // Variant styles
-  const variantStyles = {
-    default: {
-      backgroundColor: colors.light,
-      color: colors.medium,
-    },
-    primary: {
-      backgroundColor: colors.primary,
-      color: colors.white,
-    },
-    secondary: {
-      backgroundColor: colors.secondary,
-      color: colors.white,
-    },
-    success: {
-      backgroundColor: colors.success,
-      color: colors.white,
-    },
-    warning: {
-      backgroundColor: colors.warning,
-      color: colors.white,
-    },
-    danger: {
-      backgroundColor: colors.danger,
-      color: colors.white,
-    },
-  };
-
-  // Size styles
-  const sizeStyles = {
-    small: {
-      paddingVertical: spacing.xs / 2,
-      fontSize: fontSizes.xs,
-    },
-    medium: {
-      paddingVertical: spacing.xs,
-      fontSize: fontSizes.sm,
-    },
-    large: {
-      paddingVertical: spacing.sm,
-      fontSize: fontSizes.md,
-    },
-  };
-
-  const containerStyle = {
-    borderRadius: 9999, // round
-    paddingLeft: spacing.sm,
-    paddingRight: spacing.sm,
-    paddingTop: sizeStyles[size].paddingVertical,
-    paddingBottom: sizeStyles[size].paddingVertical,
-    alignSelf: 'flex-start',
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: variantStyles[variant].backgroundColor,
-    fontFamily: 'system-ui, -apple-system, sans-serif',
-  };
-
-  const textStyle = {
-    fontSize: sizeStyles[size].fontSize,
-    fontWeight: '500',
-    color: variantStyles[variant].color,
-    margin: 0,
-    padding: 0,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  };
-
-  return (
-    <div style={containerStyle} data-testid={testID}>
-      <span style={textStyle}>{text}</span>
-    </div>
-  );
-};
+import React from 'react';
+import { Badge } from '../../lib/components/Badge/Badge';
 
 import { withUIKitten } from './decorators/UIKittenProvider';
+import './shared/layout.css';
 
 const meta = {
   title: 'Components/Badge',
@@ -118,7 +12,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A versatile badge component for displaying status, labels, or notifications with multiple variants and sizes (web preview)',
+          'Native Badge component (react-native-web). Supports variant + size using Eva theme tokens via EnhancedThemeProvider.',
       },
     },
   },
@@ -253,7 +147,7 @@ export const NotificationBadge = {
 // Combined variant and size examples
 export const SmallVariants = {
   render: () => (
-    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+    <div className="badgeRow">
       <Badge text="Default" variant="default" size="small" />
       <Badge text="Primary" variant="primary" size="small" />
       <Badge text="Secondary" variant="secondary" size="small" />
@@ -273,7 +167,7 @@ export const SmallVariants = {
 
 export const MediumVariants = {
   render: () => (
-    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+    <div className="badgeRow">
       <Badge text="Default" variant="default" size="medium" />
       <Badge text="Primary" variant="primary" size="medium" />
       <Badge text="Secondary" variant="secondary" size="medium" />
@@ -293,7 +187,7 @@ export const MediumVariants = {
 
 export const LargeVariants = {
   render: () => (
-    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+    <div className="badgeRow">
       <Badge text="Default" variant="default" size="large" />
       <Badge text="Primary" variant="primary" size="large" />
       <Badge text="Secondary" variant="secondary" size="large" />
@@ -314,7 +208,7 @@ export const LargeVariants = {
 // Real-world usage examples
 export const TodoStatus = {
   render: () => (
-    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+    <div className="badgeRow">
       <Badge text="Todo" variant="default" />
       <Badge text="In Progress" variant="warning" />
       <Badge text="Completed" variant="success" />
@@ -332,7 +226,7 @@ export const TodoStatus = {
 
 export const UserRoles = {
   render: () => (
-    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+    <div className="badgeRow">
       <Badge text="Admin" variant="danger" size="small" />
       <Badge text="Moderator" variant="warning" size="small" />
       <Badge text="User" variant="primary" size="small" />
@@ -350,7 +244,7 @@ export const UserRoles = {
 
 export const NotificationCounts = {
   render: () => (
-    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+    <div className="badgeRow">
       <Badge text="1" variant="danger" size="small" />
       <Badge text="5" variant="danger" size="small" />
       <Badge text="12" variant="danger" size="small" />

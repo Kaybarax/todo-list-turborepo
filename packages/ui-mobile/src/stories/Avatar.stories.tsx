@@ -1,56 +1,16 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
-
+import { Avatar } from '../../lib/components/Avatar/Avatar';
 import { withUIKitten } from './decorators/UIKittenProvider';
-// Removed buildMobileMeta helper to provide a direct object literal meta export (required for CSF indexing).
 import './shared/story-styles.css';
 
-// Web-compatible Avatar component for Storybook
-export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-
-type AvatarVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'light' | 'dark';
-
-interface AvatarProps {
-  source?: string;
-  initials?: string;
-  size?: AvatarSize;
-  variant?: AvatarVariant;
-  testID?: string;
-}
-
-const Avatar: React.FC<AvatarProps> = ({ source, initials, size = 'md', variant = 'primary', testID }) => {
-  const sizeValue = {
-    xs: 24,
-    sm: 32,
-    md: 40,
-    lg: 56,
-    xl: 72,
-  }[size];
-
-  const fontSize = {
-    xs: 12,
-    sm: 14,
-    md: 16,
-    lg: 18,
-    xl: 20,
-  }[size];
-
-  return (
-    <div
-      className={`sbAvatar sbAvatar--${size} sbAvatar--variant-${variant}`}
-      data-testid={testID}
-      data-size={sizeValue}
-      data-font={fontSize}
-    >
-      {source ? (
-        <img src={source} alt="Avatar" className="sbAvatarImg" data-testid={`${testID}-image`} />
-      ) : (
-        <span className="sbAvatarText" data-testid={`${testID}-text`}>
-          {initials ?? ''}
-        </span>
-      )}
-    </div>
-  );
+// Mapping from legacy story sizes to real Avatar sizes
+const legacyToRealSize: Record<string, any> = {
+  xs: 'tiny',
+  sm: 'small',
+  md: 'medium',
+  lg: 'large',
+  xl: 'giant',
 };
 
 const meta: Meta<typeof Avatar> = {
@@ -63,19 +23,26 @@ const meta: Meta<typeof Avatar> = {
     controls: { expanded: true },
     docs: {
       description: {
-        component: 'A customizable avatar component (web preview) for images or initials.',
+        component:
+          'React Native Avatar component using UI Kitten + enhanced theme. Supports image source, initials fallback, sizes, shapes, and custom colors.',
       },
     },
   },
   argTypes: {
-    size: { control: { type: 'select' }, options: ['xs', 'sm', 'md', 'lg', 'xl'], description: 'Size of the avatar' },
-    variant: {
+    size: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'light', 'dark'],
-      description: 'Predefined color variant',
+      options: ['tiny', 'small', 'medium', 'large', 'giant'],
+      description: 'Avatar size',
+    },
+    shape: {
+      control: { type: 'select' },
+      options: ['round', 'rounded', 'square'],
+      description: 'Avatar shape',
     },
     initials: { control: { type: 'text' }, description: 'Initials to display when no image is provided' },
     source: { control: { type: 'text' }, description: 'Image URL to display' },
+    backgroundColor: { control: 'color', description: 'Custom background color (when showing initials)' },
+    textColor: { control: 'color', description: 'Custom initials text color' },
   },
 };
 
@@ -85,123 +52,135 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     initials: 'JD',
+    size: 'medium',
   },
 };
 
 export const WithInitials: Story = {
   args: {
     initials: 'AB',
-    variant: 'primary',
+    size: 'medium',
   },
 };
 
 export const WithImage: Story = {
   args: {
     source: 'https://via.placeholder.com/150/007AFF/FFFFFF?text=Avatar',
+    size: 'medium',
   },
 };
 
 export const ExtraSmall: Story = {
   args: {
     initials: 'XS',
-    size: 'xs',
+    size: legacyToRealSize['xs'],
   },
 };
 
 export const Small: Story = {
   args: {
     initials: 'SM',
-    size: 'sm',
+    size: legacyToRealSize['sm'],
   },
 };
 
 export const Medium: Story = {
   args: {
     initials: 'MD',
-    size: 'md',
+    size: legacyToRealSize['md'],
   },
 };
 
 export const Large: Story = {
   args: {
     initials: 'LG',
-    size: 'lg',
+    size: legacyToRealSize['lg'],
   },
 };
 
 export const ExtraLarge: Story = {
   args: {
     initials: 'XL',
-    size: 'xl',
+    size: legacyToRealSize['xl'],
   },
 };
 
 export const CustomColors: Story = {
   args: {
     initials: 'CC',
-    variant: 'success',
+    size: 'medium',
+    backgroundColor: '#34C759',
   },
 };
 
 export const PrimaryColor: Story = {
   args: {
     initials: 'PR',
-    variant: 'primary',
+    size: 'medium',
+    backgroundColor: '#3366FF',
   },
 };
 
 export const SecondaryColor: Story = {
   args: {
     initials: 'SC',
-    variant: 'secondary',
+    size: 'medium',
+    backgroundColor: '#5856D6',
   },
 };
 
 export const SuccessColor: Story = {
   args: {
     initials: 'SU',
-    variant: 'success',
+    size: 'medium',
+    backgroundColor: '#34C759',
   },
 };
 
 export const DangerColor: Story = {
   args: {
     initials: 'DN',
-    variant: 'danger',
+    size: 'medium',
+    backgroundColor: '#FF3D71',
   },
 };
 
 export const WarningColor: Story = {
   args: {
     initials: 'WR',
-    variant: 'warning',
+    size: 'medium',
+    backgroundColor: '#FFAA00',
   },
 };
 
 export const LightBackground: Story = {
   args: {
     initials: 'LB',
-    variant: 'light',
+    size: 'medium',
+    backgroundColor: '#F2F2F7',
+    textColor: '#222B45',
   },
 };
 
 export const DarkBackground: Story = {
   args: {
     initials: 'DB',
-    variant: 'dark',
+    size: 'medium',
+    backgroundColor: '#222B45',
+    textColor: '#FFFFFF',
   },
 };
 
 export const ImageSmall: Story = {
   args: {
     source: 'https://via.placeholder.com/150/5856D6/FFFFFF?text=SM',
-    size: 'sm',
+    size: legacyToRealSize['sm'],
   },
 };
 
 export const ImageLarge: Story = {
   args: {
     source: 'https://via.placeholder.com/150/34C759/FFFFFF?text=LG',
-    size: 'lg',
+    size: legacyToRealSize['lg'],
   },
 };
