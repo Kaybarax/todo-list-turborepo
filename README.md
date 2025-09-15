@@ -301,7 +301,6 @@ pnpm dev:web          # Next.js web app
 pnpm dev:api          # NestJS API
 pnpm dev:mobile       # React Native/Expo
 pnpm dev:ingestion    # Ingestion service
-pnpm dev:contracts    # Hardhat node for contracts
 ```
 
 #### Testing
@@ -325,22 +324,12 @@ pnpm test:contracts   # Blockchain contract tests
 # Check blockchain development environment
 pnpm blockchain:deps:check
 
-# Check with detailed output
-pnpm blockchain:deps:check:verbose
-
-# Check specific networks
-pnpm blockchain:deps:check:polygon
-pnpm blockchain:deps:check:solana
-pnpm blockchain:deps:check:polkadot
-
 # Automatically install missing dependencies
 pnpm blockchain:deps:fix
 
-# Interactive dependency installation
-pnpm blockchain:deps:fix:interactive
-
-# Comprehensive environment diagnosis
-pnpm blockchain:deps:diagnose
+# For more options, pass flags to the script, e.g.:
+pnpm blockchain:deps:check -- --verbose
+pnpm blockchain:deps:check -- --network=polygon
 ```
 
 **Tool Installation**:
@@ -349,14 +338,8 @@ pnpm blockchain:deps:diagnose
 # Install all blockchain tools
 pnpm blockchain:tools:install
 
-# Install specific tools
-pnpm blockchain:tools:install:rust
-pnpm blockchain:tools:install:solana
-pnpm blockchain:tools:install:anchor
-pnpm blockchain:tools:install:substrate
-
-# Interactive installation guidance
-pnpm blockchain:tools:install:interactive
+# For more options, pass flags to the script, e.g.:
+pnpm blockchain:tools:install -- --tool=rust
 ```
 
 **Contract Compilation** (with automatic dependency checking):
@@ -608,11 +591,9 @@ pnpm blockchain:deps:check
 # Automatically fix missing dependencies
 pnpm blockchain:deps:fix
 
-# Interactive troubleshooting with guided setup
-pnpm blockchain:deps:fix:interactive
-
-# Comprehensive environment diagnosis
-pnpm blockchain:deps:diagnose
+# For more options, pass flags to the script, e.g.:
+pnpm blockchain:deps:check -- --diagnose
+pnpm blockchain:deps:fix -- --interactive
 ```
 
 ### Common Issues and Solutions
@@ -623,7 +604,7 @@ pnpm blockchain:deps:diagnose
 
 ```bash
 # Solution: Check and install missing blockchain tools
-pnpm blockchain:deps:check --verbose
+pnpm blockchain:deps:check -- --verbose
 pnpm blockchain:deps:fix
 ```
 
@@ -631,7 +612,7 @@ pnpm blockchain:deps:fix
 
 ```bash
 # Solution: Install/update Anchor CLI
-pnpm blockchain:tools:install:anchor
+pnpm blockchain:tools:install -- --tool=anchor
 # Or manually:
 cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
 avm install 0.29.0 && avm use 0.29.0
@@ -689,7 +670,7 @@ cd apps/smart-contracts/polygon && pnpm install
 
 ```bash
 # Check Rust and Solana CLI versions
-pnpm blockchain:deps:check:solana
+pnpm blockchain:deps:check -- --network=solana
 # Update Solana CLI
 solana-install update
 ```
@@ -698,14 +679,14 @@ solana-install update
 
 ```bash
 # Install missing Substrate tools
-pnpm blockchain:tools:install:substrate
+pnpm blockchain:tools:install -- --tool=substrate
 # Add WebAssembly target
 rustup target add wasm32-unknown-unknown
 ```
 
 ### Getting Help
 
-1. **Automated Diagnostics**: Run `pnpm blockchain:deps:diagnose` for detailed environment analysis
+1. **Automated Diagnostics**: Run `pnpm blockchain:deps:check -- --diagnose` for detailed environment analysis
 2. **Interactive Help**: Use `pnpm blockchain:help:interactive` for guided troubleshooting
 3. **Documentation**: Check [BLOCKCHAIN_SETUP.md](docs/BLOCKCHAIN_SETUP.md) for detailed setup instructions
 4. **Platform-Specific Guides**: Review guides in `scripts/troubleshooting/` directory

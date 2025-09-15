@@ -8,13 +8,13 @@ Before diving into specific issues, run our automated diagnostic tools:
 
 ```bash
 # Check blockchain development environment
-pnpm blockchain:deps:check --verbose
+pnpm blockchain:deps:check -- --verbose
 
 # Run comprehensive environment diagnosis
-pnpm blockchain:deps:diagnose
+pnpm blockchain:deps:check -- --diagnose
 
 # Interactive troubleshooting
-pnpm blockchain:deps:fix:interactive
+pnpm blockchain:deps:fix -- --interactive
 ```
 
 ## 🔧 Blockchain Development Issues
@@ -29,7 +29,7 @@ pnpm blockchain:deps:fix:interactive
 
 ```bash
 # Option 1: Automated installation
-pnpm blockchain:tools:install:anchor
+pnpm blockchain:tools:install -- --tool=anchor
 
 # Option 2: Manual installation
 cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
@@ -49,7 +49,7 @@ source ~/.bashrc  # or ~/.zshrc
 
 ```bash
 # Option 1: Automated installation
-pnpm blockchain:tools:install:solana
+pnpm blockchain:tools:install -- --tool=solana
 
 # Option 2: Manual installation
 sh -c "$(curl -sSfL https://release.solana.com/v1.18.0/install)"
@@ -67,7 +67,7 @@ solana-install update
 
 ```bash
 # Option 1: Automated installation
-pnpm blockchain:tools:install:rust
+pnpm blockchain:tools:install -- --tool=rust
 
 # Option 2: Manual installation
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -85,7 +85,7 @@ rustup update stable
 
 ```bash
 # Option 1: Automated installation
-pnpm blockchain:tools:install:substrate
+pnpm blockchain:tools:install -- --tool=substrate
 
 # Option 2: Manual installation
 rustup target add wasm32-unknown-unknown
@@ -107,7 +107,7 @@ sudo apt-get install protobuf-compiler
 **Check versions**:
 
 ```bash
-pnpm blockchain:deps:check --verbose
+pnpm blockchain:deps:check -- --verbose
 ```
 
 **Update tools**:
@@ -494,13 +494,10 @@ wsl --update
 
 ```bash
 # Interactive troubleshooting
-pnpm blockchain:deps:fix:interactive
+pnpm blockchain:help:interactive
 
 # Comprehensive diagnosis
-pnpm blockchain:deps:diagnose
-
-# Interactive help system
-pnpm blockchain:help:interactive
+pnpm blockchain:deps:check -- --diagnose
 ```
 
 ### Manual Diagnostics
@@ -554,7 +551,7 @@ When reporting issues, include:
 1. **Environment Information**:
 
    ```bash
-   pnpm blockchain:deps:check --verbose > environment.txt
+   pnpm blockchain:deps:check -- --verbose > environment.txt
    ```
 
 2. **Error Messages**: Full error output with stack traces
