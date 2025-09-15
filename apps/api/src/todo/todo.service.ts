@@ -142,10 +142,10 @@ export class TodoService {
     // Fetch existing todo (tests mock this path and expect save to be called)
     const existing = await this.findOne(id, userId);
 
-    const { dueDate, ...rest } = updateTodoDto as any;
+    const { dueDate, ...rest } = updateTodoDto;
     const updateData: Partial<Todo> = { ...rest };
     if (dueDate) {
-      (updateData as any).dueDate = new Date(dueDate);
+      updateData.dueDate = new Date(dueDate);
     }
 
     // Mutate the in-memory document so tests can assert on Object.assign
@@ -155,11 +155,11 @@ export class TodoService {
     // Prefer calling save() if the underlying object is a Mongoose document with that method.
     // Fallback to repository.updateById for plain objects.
     let persisted: Todo;
-    if (typeof (existing as any).save === 'function') {
-      persisted = await (existing as any).save();
+    if (typeof (existing as TodoDocument).save === 'function') {
+      persisted = await (existing as TodoDocument).save();
     } else {
       const repoUpdated = await this.todoRepository.updateById(id, updateData);
-      persisted = (repoUpdated as Todo) || existing; // safety fallback
+      persisted = repoUpdated || existing; // safety fallback
     }
 
     // Update cache and invalidate user cache
@@ -261,11 +261,11 @@ export class TodoService {
     todo.completed = !todo.completed;
 
     let persisted: Todo;
-    if (typeof (todo as any).save === 'function') {
-      persisted = await (todo as any).save();
+    if (typeof (todo as TodoDocument).save === 'function') {
+      persisted = await (todo as TodoDocument).save();
     } else {
       const repoUpdated = await this.todoRepository.updateById(id, { completed: todo.completed });
-      persisted = (repoUpdated as Todo) || todo;
+      persisted = repoUpdated || todo;
     }
 
     await Promise.all([
@@ -291,8 +291,7 @@ export class TodoService {
   }
 
   // Extracted for test spying (can spy on service['applyUpdates'])
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected applyUpdates(target: any, source: any): void {
+  protected applyUpdates(target: object, source: object): void {
     Object.assign(target, source);
   }
 }

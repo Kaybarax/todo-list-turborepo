@@ -1,5 +1,6 @@
 import { type Decorator } from '@storybook/react';
 import React from 'react';
+
 import { EnhancedThemeProvider } from '../../../lib';
 
 /**

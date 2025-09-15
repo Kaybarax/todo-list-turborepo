@@ -1,5 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { type JSX } from 'react';
 
 import { withUIKitten } from './decorators/UIKittenProvider';
 
@@ -44,7 +44,7 @@ const WebText: React.FC<WebTextProps> = ({
   const style: React.CSSProperties = {
     color: colorMap[color],
     textAlign: align,
-    fontWeight: weight ? (weightMap[weight] as any) : undefined,
+    fontWeight: weight ? weightMap[weight] : undefined,
     fontFamily: 'system-ui, -apple-system, sans-serif',
     letterSpacing: variant === 'overline' ? 1 : undefined,
     textTransform: variant === 'overline' ? 'uppercase' : undefined,
@@ -66,7 +66,7 @@ const WebText: React.FC<WebTextProps> = ({
                     : 14,
     margin: 0,
   };
-  const Tag: any = variant.startsWith('h') ? variant : 'p';
+  const Tag: keyof JSX.IntrinsicElements = variant.startsWith('h') ? variant : 'p';
   return <Tag style={style}>{children}</Tag>;
 };
 

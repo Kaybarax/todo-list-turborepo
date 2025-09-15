@@ -1,5 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
+
 import { Switch, type SwitchProps } from '../../lib/components/Switch/Switch';
 
 const meta: Meta<typeof Switch> = {
@@ -47,11 +48,7 @@ type Story = StoryObj<SwitchProps>;
 // Basic states
 const ControlledSwitchComponent: React.FC<Partial<SwitchProps>> = ({ label = 'Controlled Switch', ...rest }) => {
   const [value, setValue] = React.useState(false);
-  return (
-    <React.Fragment>
-      <Switch {...rest} label={label} value={value} onValueChange={setValue} />
-    </React.Fragment>
-  );
+  return <Switch {...rest} label={label} value={value} onValueChange={setValue} />;
 };
 
 export const Controlled: Story = {

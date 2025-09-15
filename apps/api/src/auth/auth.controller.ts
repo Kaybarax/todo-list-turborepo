@@ -9,6 +9,14 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
+interface UserProfile {
+  id: string | undefined;
+  email: string | undefined;
+  name: string | undefined;
+  walletAddress: string | undefined;
+  preferredNetwork: string | undefined;
+}
+
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
@@ -54,7 +62,7 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Authentication required' })
   getProfile(
     @CurrentUser() user: { id: string; email: string; name: string; walletAddress?: string; preferredNetwork?: string },
-  ) {
+  ): UserProfile {
     if (!user) {
       return {
         id: undefined,
@@ -62,7 +70,7 @@ export class AuthController {
         name: undefined,
         walletAddress: undefined,
         preferredNetwork: undefined,
-      } as any;
+      };
     }
     return {
       id: user.id,

@@ -1,5 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
+
 import { Input, type InputProps } from '../../lib/components/Input/Input';
 
 // Native Input stories (concise subset replacing verbose web-only preview)
@@ -43,8 +44,8 @@ export const StatusError: Story = { args: { value: 'Invalid value', status: 'err
 
 // Controlled example
 export const Controlled: Story = {
-  render: args => {
+  render: function Render(args) {
     const [text, setText] = React.useState('');
-    return <Input {...args} value={text} onChangeText={setText} placeholder={args.placeholder || 'Type...'} />;
+    return <Input {...args} value={text} onChangeText={setText} placeholder={args.placeholder ?? 'Type...'} />;
   },
 };

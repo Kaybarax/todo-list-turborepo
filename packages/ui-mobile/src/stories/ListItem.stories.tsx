@@ -1,8 +1,9 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 import { View } from 'react-native';
-import ListItem, { type ListItemProps } from '../../lib/components/ListItem/ListItem';
+
 import { withUIKitten } from './decorators/UIKittenProvider';
+import ListItem, { type ListItemProps } from '../../lib/components/ListItem/ListItem';
 
 const meta: Meta<typeof ListItem> = {
   title: 'Components/ListItem',

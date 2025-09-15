@@ -42,7 +42,7 @@ const SpacingSwatch = ({ name, value }: { name: string; value: number }) => (
 
 const TypographyExample = ({ size, weight, lineHeight }: { size: number; weight: string; lineHeight: number }) => (
   <View style={styles.typographyExample}>
-    <Text style={[styles.typographyText, { fontSize: size, fontWeight: weight as any, lineHeight }]}>
+    <Text style={[styles.typographyText, { fontSize: size, fontWeight: weight, lineHeight }]}>
       The quick brown fox jumps over the lazy dog
     </Text>
     <Text style={styles.typographyMeta}>
@@ -188,4 +188,3 @@ const styles = StyleSheet.create({
 export const Tokens: Story = {
   render: () => <TokensStory />,
 };
-// @ts-nocheck

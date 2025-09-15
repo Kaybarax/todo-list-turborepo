@@ -1,8 +1,9 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
+
+import { Badge } from '../../lib/components/Badge/Badge';
 import { ListItem } from '../../lib/components/ListItem/ListItem';
 import { Switch } from '../../lib/components/Switch/Switch';
-import { Badge } from '../../lib/components/Badge/Badge';
 
 // Native-composed TodoItem using existing primitives
 
@@ -14,7 +15,7 @@ interface TodoItemProps {
   description?: string;
   completed: boolean;
   priority?: Priority;
-  // eslint-disable-next-line no-unused-vars
+
   onToggle: (id: string) => void;
 }
 

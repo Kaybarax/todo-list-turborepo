@@ -11,6 +11,14 @@ module.exports = [
     },
   },
   {
-    ignores: ['dist/', 'node_modules/', 'eslint.config.js', '**/*.test.ts', '**/*.spec.ts'],
+    ignores: [
+      'dist/',
+      'node_modules/',
+      'eslint.config.js',
+      '**/*.test.ts',
+      '**/*.spec.ts',
+      'coverage/',
+      'jest.config.js',
+    ],
   },
 ];

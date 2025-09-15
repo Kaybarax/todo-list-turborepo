@@ -10,7 +10,7 @@ interface NetworkSelectorProps {
   disabled?: boolean;
   variant?: 'grid' | 'list';
   showTestnets?: boolean;
-  style?: any;
+  style?: React.CSSProperties;
   testID?: string;
 }
 
@@ -228,7 +228,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     selectedNetwork: 'solana',
-    onNetworkSelect: (network: any) => console.log('Selected network:', network),
+    onNetworkSelect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') =>
+      console.info('Selected network:', network),
   },
 };
 
@@ -237,7 +238,8 @@ export const GridVariant: Story = {
   args: {
     selectedNetwork: 'polkadot',
     variant: 'grid',
-    onNetworkSelect: (network: any) => console.log('Selected network:', network),
+    onNetworkSelect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') =>
+      console.info('Selected network:', network),
   },
 };
 
@@ -246,7 +248,8 @@ export const ListVariant: Story = {
   args: {
     selectedNetwork: 'polygon',
     variant: 'list',
-    onNetworkSelect: (network: any) => console.log('Selected network:', network),
+    onNetworkSelect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') =>
+      console.info('Selected network:', network),
   },
 };
 
@@ -255,7 +258,8 @@ export const Disabled: Story = {
   args: {
     selectedNetwork: 'moonbeam',
     disabled: true,
-    onNetworkSelect: (network: any) => console.log('Selected network:', network),
+    onNetworkSelect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') =>
+      console.info('Selected network:', network),
   },
 };
 
@@ -263,35 +267,40 @@ export const Disabled: Story = {
 export const SolanaSelected: Story = {
   args: {
     selectedNetwork: 'solana',
-    onNetworkSelect: (network: any) => console.log('Selected network:', network),
+    onNetworkSelect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') =>
+      console.info('Selected network:', network),
   },
 };
 
 export const PolkadotSelected: Story = {
   args: {
     selectedNetwork: 'polkadot',
-    onNetworkSelect: (network: any) => console.log('Selected network:', network),
+    onNetworkSelect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') =>
+      console.info('Selected network:', network),
   },
 };
 
 export const PolygonSelected: Story = {
   args: {
     selectedNetwork: 'polygon',
-    onNetworkSelect: (network: any) => console.log('Selected network:', network),
+    onNetworkSelect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') =>
+      console.info('Selected network:', network),
   },
 };
 
 export const MoonbeamSelected: Story = {
   args: {
     selectedNetwork: 'moonbeam',
-    onNetworkSelect: (network: any) => console.log('Selected network:', network),
+    onNetworkSelect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') =>
+      console.info('Selected network:', network),
   },
 };
 
 export const BaseSelected: Story = {
   args: {
     selectedNetwork: 'base',
-    onNetworkSelect: (network: any) => console.log('Selected network:', network),
+    onNetworkSelect: (network: 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base') =>
+      console.info('Selected network:', network),
   },
 };
 
@@ -327,7 +336,7 @@ export const VariantComparison: Story = {
         <MockNetworkSelector
           selectedNetwork="solana"
           variant="grid"
-          onNetworkSelect={network => console.log('Grid selected:', network)}
+          onNetworkSelect={network => console.info('Grid selected:', network)}
         />
       </div>
       <div>
@@ -335,7 +344,7 @@ export const VariantComparison: Story = {
         <MockNetworkSelector
           selectedNetwork="polkadot"
           variant="list"
-          onNetworkSelect={network => console.log('List selected:', network)}
+          onNetworkSelect={network => console.info('List selected:', network)}
         />
       </div>
     </div>

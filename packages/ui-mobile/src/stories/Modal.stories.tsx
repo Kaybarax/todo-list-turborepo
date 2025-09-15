@@ -75,7 +75,7 @@ const meta: Meta<typeof WebModal> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const ModalWrapper = ({ children, ...args }: any) => {
+const ModalWrapper = ({ children, ...args }: { children: React.ReactNode } & Partial<WebModalProps>) => {
   const [visible, setVisible] = useState(false);
 
   return (

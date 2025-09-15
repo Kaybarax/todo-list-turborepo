@@ -112,7 +112,7 @@ export class IngestionService {
       logger.info('Ingested todo:', todo.id);
       return result;
     } catch (error: any) {
-      if (error && (error.code === 11000 || error.message?.includes('Duplicate key'))) {
+      if (error?.code === 11000 || error?.message?.includes('Duplicate key')) {
         logger.warn('Todo already exists, updating:', todo.id);
         try {
           const updated = await this.dbService.updateTodo(todo.id, todo);
@@ -188,7 +188,7 @@ export class IngestionService {
   // Helpers
   // -------------------------------------------------------------------------
   private validateTodo(todo: any): void {
-    if (!todo || !todo.id || !todo.title || !todo.userId) {
+    if (!todo?.id || !todo.title || !todo.userId) {
       throw new Error('Invalid todo data');
     }
     if (typeof todo.completed !== 'boolean' && todo.completed !== undefined) {
@@ -217,7 +217,7 @@ export class IngestionService {
         if (attempt >= this.config.retryAttempts) throw e;
         logger.warn('Retrying ingestion for todo:', todo.id, `Attempt ${attempt + 1}`);
         attempt += 1;
-        await new Promise(r => setTimeout(r, this.config.retryDelay));
+        await new Promise(resolve => setTimeout(resolve, this.config.retryDelay));
       }
     }
   }
@@ -250,7 +250,7 @@ export class IngestionService {
       this.operationTimestamps = this.operationTimestamps.filter(ts => now - ts < rl.windowMs);
       if (this.operationTimestamps.length >= rl.maxOperations) {
         const wait = rl.windowMs - (now - this.operationTimestamps[0]);
-        await new Promise(r => setTimeout(r, wait));
+        await new Promise(resolve => setTimeout(resolve, wait));
       }
       this.operationTimestamps.push(Date.now());
     });

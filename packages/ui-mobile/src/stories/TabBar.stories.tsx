@@ -112,7 +112,7 @@ const meta: Meta<typeof WebTabBar> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const TabBarWrapper = ({ tabs, ...args }: any) => {
+const TabBarWrapper = ({ tabs, ...args }: { tabs: WebTab[] } & Partial<Omit<WebTabBarProps, 'tabs'>>) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (

@@ -92,22 +92,22 @@ export const WithBorder: Story = {
 export const WithLeftAction: Story = {
   args: {
     title: 'Back Navigation',
-    leftAction: <button onClick={() => console.log('Back pressed')}>←</button>,
+    leftAction: <button onClick={() => console.info('Back pressed')}>←</button>,
   },
 };
 
 export const WithRightAction: Story = {
   args: {
     title: 'Settings',
-    rightAction: <button onClick={() => console.log('Menu pressed')}>☰</button>,
+    rightAction: <button onClick={() => console.info('Menu pressed')}>☰</button>,
   },
 };
 
 export const WithBothActions: Story = {
   args: {
     title: 'Profile',
-    leftAction: <button onClick={() => console.log('Back pressed')}>←</button>,
-    rightAction: <button onClick={() => console.log('Edit pressed')}>✎</button>,
+    leftAction: <button onClick={() => console.info('Back pressed')}>←</button>,
+    rightAction: <button onClick={() => console.info('Edit pressed')}>✎</button>,
     showBorder: true,
   },
 };

@@ -181,7 +181,7 @@ export const WithFooter: Story = {
 export const Interactive: Story = {
   args: {
     variant: 'outlined',
-    onPress: () => console.log('Card pressed'),
+    onPress: () => console.info('Card pressed'),
     children: (
       <>
         <WebCard.Header>

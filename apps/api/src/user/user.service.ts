@@ -6,6 +6,20 @@ import { User, UserDocument } from './schemas/user.schema';
 import { RegisterDto } from '../auth/dto/register.dto';
 import { Trace } from '../telemetry/decorators/trace.decorator';
 
+interface FindAllQuery {
+  page?: string;
+  limit?: string;
+  search?: string;
+}
+
+interface FindAllReturn {
+  users: UserDocument[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
 @Injectable()
 export class UserService {
   constructor(
@@ -23,14 +37,14 @@ export class UserService {
 
     // Spec mocks model.create – use it instead of "new Model() / save()"
     try {
-      const created = await (this.userModel as any).create(registerDto);
-      return created as UserDocument;
+      const created = await this.userModel.create(registerDto);
+      return created;
     } catch (error) {
       // Normalize non-Error validation objects so Jest's toThrow matcher passes
       if (error instanceof Error) {
         throw error;
       }
-      const message = (error as any)?.message || (error as any)?.errors?.email?.message || 'Validation failed';
+      const message = error?.message || error?.errors?.email?.message || 'Validation failed';
       throw new Error(message);
     }
   }
@@ -41,17 +55,17 @@ export class UserService {
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    return user as any;
+    return user;
   }
 
   @Trace('UserService.findByEmail')
   async findByEmail(email: string): Promise<UserDocument | null> {
-    return (await this.userModel.findOne({ email })) as any;
+    return this.userModel.findOne({ email });
   }
 
   @Trace('UserService.findByWalletAddress')
   async findByWalletAddress(walletAddress: string): Promise<UserDocument | null> {
-    return (await this.userModel.findOne({ walletAddress })) as any;
+    return this.userModel.findOne({ walletAddress });
   }
 
   @Trace('UserService.updateById')
@@ -61,8 +75,8 @@ export class UserService {
       if (!updated) {
         throw new NotFoundException(`User with ID ${id} not found`);
       }
-      return updated as any;
-    } catch (error: any) {
+      return updated;
+    } catch (error) {
       if (error && error.code === 11000 && error.keyPattern) {
         if (error.keyPattern.email) {
           throw new ConflictException('User with this email already exists');
@@ -98,15 +112,14 @@ export class UserService {
     if (!deleted) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    return deleted as any;
+    return deleted;
   }
 
   @Trace('UserService.findAll')
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async findAll(query: any = {}): Promise<any> {
+  async findAll(query: FindAllQuery = {}): Promise<UserDocument[] | FindAllReturn> {
     const page = Number(query.page) || 1;
     const limit = Number(query.limit) || 10;
-    const search = query.search as string | undefined;
+    const search = query.search;
 
     const filter = search
       ? {
@@ -116,22 +129,22 @@ export class UserService {
 
     // Search path: tests expect just array back (no meta object)
     if (search) {
-      const users = await (this.userModel as any)
+      const users = await this.userModel
         .find(filter)
-        .select?.('-password')
-        .skip?.((page - 1) * limit)
-        .limit?.(limit)
-        .sort?.({ createdAt: -1 });
+        .select('-password')
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .sort({ createdAt: -1 });
       return users;
     }
 
-    const total = await (this.userModel as any).countDocuments(filter);
-    const users = await (this.userModel as any)
+    const total = await this.userModel.countDocuments(filter);
+    const users = await this.userModel
       .find(filter)
-      .select?.('-password')
-      .skip?.((page - 1) * limit)
-      .limit?.(limit)
-      .sort?.({ createdAt: -1 });
+      .select('-password')
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .sort({ createdAt: -1 });
 
     return {
       users,
@@ -149,7 +162,7 @@ export class UserService {
     overdueTodos: number;
   }> {
     // Tests stub aggregate() and expect the first element or a default object
-    const stats = (await (this.userModel as any).aggregate?.([])) || [];
+    const stats = (await this.userModel.aggregate?.([])) || [];
     if (stats.length > 0) {
       return stats[0];
     }

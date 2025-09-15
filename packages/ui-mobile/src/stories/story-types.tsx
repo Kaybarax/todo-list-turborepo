@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Common TypeScript types and interfaces for Storybook stories in ui-mobile package
  */
@@ -9,7 +8,7 @@ import { type ComponentType, type ReactNode, type CSSProperties } from 'react';
 /**
  * Base story configuration interface for mobile components
  */
-export interface MobileStoryConfig<T = any> {
+export interface MobileStoryConfig<T = object> {
   title: string;
   component: ComponentType<T>;
   parameters?: {
@@ -22,7 +21,7 @@ export interface MobileStoryConfig<T = any> {
     };
     viewport?: {
       defaultViewport?: string;
-      viewports?: Record<string, any>;
+      viewports?: Record<string, { name: string; styles: { width: string; height: string } }>;
     };
   };
   tags?: string[];
@@ -737,4 +736,3 @@ export function createMobileWebStyles(config: {
     }),
   };
 }
-// @ts-nocheck

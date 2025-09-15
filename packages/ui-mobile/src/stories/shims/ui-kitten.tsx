@@ -6,6 +6,7 @@ import React from 'react';
  * Replace this shim with the real provider once Storybook is configured with a compatible builder
  * (e.g., forcing webpack) or the dependency publishes an ESM-friendly bundle.
  */
-export const ApplicationProvider: React.FC<any> = ({ children }) => <>{children}</>;
+// eslint-disable-next-line react/jsx-no-useless-fragment
+export const ApplicationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => <>{children}</>;
 
 export default { ApplicationProvider };

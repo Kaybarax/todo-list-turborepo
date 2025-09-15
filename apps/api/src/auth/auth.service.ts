@@ -1,13 +1,18 @@
 import { Injectable, UnauthorizedException, ConflictException, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
 import { AuthResponseDto } from './dto/auth-response.dto';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { Trace } from '../telemetry/decorators/trace.decorator';
-import { User, UserDocument } from '../user/schemas/user.schema';
+import { type UserDocument } from '../user/schemas/user.schema';
 import { UserService } from '../user/user.service';
-import * as bcrypt from 'bcrypt';
+
+interface JwtPayload {
+  sub: string;
+  email: string;
+}
 
 @Injectable()
 export class AuthService {
@@ -30,16 +35,11 @@ export class AuthService {
       throw new ConflictException('User with this email already exists');
     }
 
-    try {
-      // Hash password (tests spy on bcrypt.hash with salt rounds 10)
-      const hashed = await bcrypt.hash(password, 10);
-      const user = await this.userService.create({ ...registerDto, password: hashed });
-      this.logger.log(`New user registered: ${user.email}`);
-      return this.generateTokenResponseLegacy(user); // structure tests expect
-    } catch (error) {
-      // Re-throw original error message for specific error handling tests
-      throw error;
-    }
+    // Hash password (tests spy on bcrypt.hash with salt rounds 10)
+    const hashed = await bcrypt.hash(password, 10);
+    const user = await this.userService.create({ ...registerDto, password: hashed });
+    this.logger.log(`New user registered: ${user.email}`);
+    return this.generateTokenResponseLegacy(user); // structure tests expect
   }
 
   @Trace('AuthService.login')
@@ -63,7 +63,7 @@ export class AuthService {
   @Trace('AuthService.validateUser')
   async validateUser(userId: string): Promise<UserDocument | null> {
     // Tests expect call to userService.findById and passing value through
-    const user = await this.userService.findById(userId as any);
+    const user = await this.userService.findById(userId);
     return user || null;
   }
 
@@ -83,18 +83,17 @@ export class AuthService {
   }
 
   private generateTokenResponseLegacy(user: UserDocument): AuthResponseDto {
-    const payload = { sub: user._id, email: user.email } as any;
+    const payload: JwtPayload = { sub: user._id.toString(), email: user.email };
     const token = this.jwtService.sign(payload);
     return {
-      // Minimal shape expected by existing unit tests
       access_token: token,
       user: {
-        id: user._id,
+        id: user._id.toString(),
         email: user.email,
-        name: (user as any).name,
-        walletAddress: (user as any).walletAddress,
-      } as any,
-    } as any;
+        name: user.name,
+        walletAddress: user.walletAddress,
+      },
+    };
   }
 
   @Trace('AuthService.verifyToken')

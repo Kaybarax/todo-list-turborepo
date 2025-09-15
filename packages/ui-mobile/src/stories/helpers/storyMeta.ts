@@ -1,4 +1,4 @@
-import { type Decorator, type Parameters } from '@storybook/react';
+import { type ArgType, type Decorator, type Parameters } from '@storybook/react';
 
 import { withUIKitten } from '../decorators/UIKittenProvider';
 
@@ -21,7 +21,7 @@ export const buildMobileMeta = <T extends object>(overrides: {
   title: string;
   component: T;
   parameters?: Parameters;
-  argTypes?: Record<string, any>;
+  argTypes?: Record<string, ArgType>;
   decorators?: Decorator[];
   tags?: string[];
 }) => {

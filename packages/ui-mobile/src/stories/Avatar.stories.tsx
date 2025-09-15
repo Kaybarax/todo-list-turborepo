@@ -1,11 +1,11 @@
 import { type Meta, type StoryObj } from '@storybook/react';
-import React from 'react';
-import { Avatar } from '../../lib/components/Avatar/Avatar';
+
 import { withUIKitten } from './decorators/UIKittenProvider';
 import './shared/story-styles.css';
+import { Avatar } from '../../lib/components/Avatar/Avatar';
 
 // Mapping from legacy story sizes to real Avatar sizes
-const legacyToRealSize: Record<string, any> = {
+const legacyToRealSize: Record<string, string> = {
   xs: 'tiny',
   sm: 'small',
   md: 'medium',

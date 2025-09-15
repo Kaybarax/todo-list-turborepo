@@ -1,8 +1,8 @@
 import React from 'react';
-import { Badge } from '../../lib/components/Badge/Badge';
 
 import { withUIKitten } from './decorators/UIKittenProvider';
 import './shared/layout.css';
+import { Badge } from '../../lib/components/Badge/Badge';
 
 const meta = {
   title: 'Components/Badge',
