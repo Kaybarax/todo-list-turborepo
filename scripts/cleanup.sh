@@ -175,7 +175,7 @@ clean_artifacts_repo() {
 
     # File patterns to remove repo-wide
     local -a file_patterns=(
-        ".eslintcache" "tsconfig.tsbuildinfo" "chromatic-diagnostics.json"
+        ".eslintcache" "tsconfig.tsbuildinfo" "chromatic-diagnostics.json" "build.log" "*.log"
     )
 
     # Remove directories by name everywhere (excluding .git)
