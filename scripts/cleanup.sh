@@ -228,6 +228,18 @@ run_per_service_cleanups() {
             fi
         fi
     done < <(find apps -maxdepth 2 -type f -name cleanup.sh -print0 2>/dev/null)
+
+    # Auto-discover and run package cleanups under packages/*
+    while IFS= read -r -d '' s; do
+        if [[ -x "$s" ]]; then
+            log "Running package cleanup: $s"
+            if [[ $DRY_RUN -eq 1 ]]; then
+                echo "DRY-RUN: $s --yes"
+            else
+                "$s" --yes || true
+            fi
+        fi
+    done < <(find packages -maxdepth 2 -type f -name cleanup.sh -print0 2>/dev/null)
 }
 
 main() {
