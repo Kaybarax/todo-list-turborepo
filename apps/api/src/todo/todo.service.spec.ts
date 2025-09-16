@@ -5,7 +5,7 @@ import { Test, type TestingModule } from '@nestjs/testing';
 
 import { TodoRepository } from './repositories/todo.repository';
 import { TodoService } from './todo.service';
-import { CacheService } from '../cache/cache.service';
+import { CACHE_PORT, type CachePort } from '../cache/cache.port';
 import { type CreateTodoDto } from './dto/create-todo.dto';
 import { type QueryTodoDto } from './dto/query-todo.dto';
 import { type UpdateTodoDto } from './dto/update-todo.dto';
@@ -14,7 +14,7 @@ import { type Todo } from './schemas/todo.schema';
 describe('TodoService', () => {
   let service: TodoService;
   let todoRepository: jest.Mocked<TodoRepository>;
-  let cacheService: jest.Mocked<CacheService>;
+  let cacheService: jest.Mocked<CachePort>;
 
   const mockTodo: Todo = {
     _id: '507f1f77bcf86cd799439011',
@@ -43,7 +43,7 @@ describe('TodoService', () => {
       aggregate: jest.fn(),
     };
 
-    const mockCacheService = {
+    const mockCacheService: jest.Mocked<CachePort> = {
       get: jest.fn(),
       set: jest.fn(),
       del: jest.fn(),
@@ -61,16 +61,13 @@ describe('TodoService', () => {
           provide: TodoRepository,
           useValue: mockTodoRepository,
         },
-        {
-          provide: CacheService,
-          useValue: mockCacheService,
-        },
+        { provide: CACHE_PORT, useValue: mockCacheService },
       ],
     }).compile();
 
     service = module.get<TodoService>(TodoService);
     todoRepository = module.get(TodoRepository);
-    cacheService = module.get(CacheService);
+    cacheService = module.get(CACHE_PORT);
   });
 
   afterEach(() => {

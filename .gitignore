@@ -57,6 +57,8 @@ lerna-debug.log*
 .eslintcache
 .cache
 tsconfig.tsbuildinfo
+tsconfig.build.tsbuildinfo
+*.tsbuildinfo
 
 # Misc
 *.pem

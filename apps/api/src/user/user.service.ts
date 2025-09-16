@@ -7,8 +7,8 @@ import { RegisterDto } from '../auth/dto/register.dto';
 import { Trace } from '../telemetry/decorators/trace.decorator';
 
 interface FindAllQuery {
-  page?: string;
-  limit?: string;
+  page?: string | number;
+  limit?: string | number;
   search?: string;
 }
 

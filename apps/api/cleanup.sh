@@ -18,7 +18,9 @@ cd "$(cd "$(dirname "$0")" && pwd)"
 
 echo "Cleaning API build artifacts..."
 dirs=(dist build coverage logs .turbo .cache)
-files=(.eslintcache tsconfig.tsbuildinfo)
+files=(.eslintcache tsconfig.tsbuildinfo tsconfig.build.tsbuildinfo)
+# remove any other tsbuildinfo files just in case
+run_cmd "rm -f ./*.tsbuildinfo" || true
 for d in "${dirs[@]}"; do [[ -d $d ]] && run_cmd "rm -rf $d"; done
 for f in "${files[@]}"; do [[ -f $f ]] && run_cmd "rm -f $f"; done
 if confirm "Remove node_modules in apps/api?"; then run_cmd "rm -rf node_modules"; fi

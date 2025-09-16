@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, Optional } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { RedisClientType } from 'redis';
@@ -9,18 +9,20 @@ export class HealthService {
     // eslint-disable-next-line no-unused-vars
     @InjectConnection() private readonly connection: Connection,
     // eslint-disable-next-line no-unused-vars
-    @Inject('REDIS_CLIENT') private readonly redisClient: RedisClientType,
+    @Optional() @Inject('REDIS_CLIENT') private readonly redisClient: RedisClientType | undefined,
   ) {}
 
   async getHealth() {
     const dbStatus = this.connection.readyState === 1 ? 'connected' : 'disconnected';
 
     let redisStatus = 'disconnected';
-    try {
-      await this.redisClient.ping();
-      redisStatus = 'connected';
-    } catch {
-      redisStatus = 'disconnected';
+    if (this.redisClient) {
+      try {
+        await this.redisClient.ping();
+        redisStatus = 'connected';
+      } catch {
+        redisStatus = 'disconnected';
+      }
     }
 
     return {
@@ -44,11 +46,13 @@ export class HealthService {
     const isDbReady = this.connection.readyState === 1;
 
     let isRedisReady = false;
-    try {
-      await this.redisClient.ping();
-      isRedisReady = true;
-    } catch {
-      isRedisReady = false;
+    if (this.redisClient) {
+      try {
+        await this.redisClient.ping();
+        isRedisReady = true;
+      } catch {
+        isRedisReady = false;
+      }
     }
 
     const isReady = isDbReady && isRedisReady;
