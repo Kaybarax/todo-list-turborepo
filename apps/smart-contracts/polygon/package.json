@@ -16,7 +16,8 @@
     "coverage": "npx hardhat coverage",
     "size": "npx hardhat size-contracts",
     "lint": "solhint --config .solhint.json 'contracts/**/*.sol'",
-    "format": "prettier --write 'contracts/**/*.sol'"
+    "format": "prettier --write 'contracts/**/*.sol'",
+    "clean": "npx hardhat clean"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.4.0",

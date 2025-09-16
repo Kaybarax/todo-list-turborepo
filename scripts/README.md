@@ -192,7 +192,7 @@ pnpm db:reset               # Reset database
 # Docker operations
 pnpm docker:build           # Build Docker images
 pnpm docker:build:prod      # Production Docker build
-pnpm docker:clean           # Clean Docker resources
+pnpm docker:clean           # Clean Docker resources (safe)
 ```
 
 ### Utility Scripts
@@ -213,7 +213,6 @@ pnpm test:contracts         # Contract tests
 
 # Maintenance
 pnpm clean                  # Clean build artifacts
-pnpm clean:docker           # Clean Docker resources
 ```
 
 ## Build Process Overview

@@ -23,7 +23,8 @@
     "lint": "solhint --config .solhint.json 'contracts/**/*.sol'",
     "format": "prettier --write 'contracts/**/*.sol'",
     "create-todo-list": "npx hardhat run scripts/create-todo-list.js",
-    "create-sample-todos": "npx hardhat run scripts/create-sample-todos.js"
+    "create-sample-todos": "npx hardhat run scripts/create-sample-todos.js",
+    "clean": "npx hardhat clean"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.4.0",
