@@ -39,12 +39,13 @@ export class UserService {
     try {
       const created = await this.userModel.create(registerDto);
       return created;
-    } catch (error) {
+    } catch (err: unknown) {
       // Normalize non-Error validation objects so Jest's toThrow matcher passes
-      if (error instanceof Error) {
-        throw error;
+      if (err instanceof Error) {
+        throw err;
       }
-      const message = error?.message || error?.errors?.email?.message || 'Validation failed';
+      const e = err as { message?: string; errors?: { email?: { message?: string } } };
+      const message = e?.message || e?.errors?.email?.message || 'Validation failed';
       throw new Error(message);
     }
   }
@@ -76,7 +77,8 @@ export class UserService {
         throw new NotFoundException(`User with ID ${id} not found`);
       }
       return updated;
-    } catch (error) {
+    } catch (err: unknown) {
+      const error = err as any;
       if (error && error.code === 11000 && error.keyPattern) {
         if (error.keyPattern.email) {
           throw new ConflictException('User with this email already exists');

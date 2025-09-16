@@ -198,16 +198,33 @@ clean_artifacts_repo() {
 
     # Remove directories by name everywhere (excluding .git and node_modules)
     for name in "${dir_patterns[@]}"; do
-        if [[ $DRY_RUN -eq 1 ]]; then
-            find . \
-                -path "./.git" -prune -o \
-                -path "*/node_modules/*" -prune -o \
-                -type d -name "$name" -print
+        if [[ "$name" == "cache" ]]; then
+            # Avoid deleting source code folders like apps/*/src/cache
+            if [[ $DRY_RUN -eq 1 ]]; then
+                find . \
+                    -path "./.git" -prune -o \
+                    -path "*/node_modules/*" -prune -o \
+                    -path "*/src/*" -prune -o \
+                    -type d -name "$name" -print
+            else
+                find . \
+                    -path "./.git" -prune -o \
+                    -path "*/node_modules/*" -prune -o \
+                    -path "*/src/*" -prune -o \
+                    -type d -name "$name" -exec rm -rf {} +
+            fi
         else
-            find . \
-                -path "./.git" -prune -o \
-                -path "*/node_modules/*" -prune -o \
-                -type d -name "$name" -exec rm -rf {} +
+            if [[ $DRY_RUN -eq 1 ]]; then
+                find . \
+                    -path "./.git" -prune -o \
+                    -path "*/node_modules/*" -prune -o \
+                    -type d -name "$name" -print
+            else
+                find . \
+                    -path "./.git" -prune -o \
+                    -path "*/node_modules/*" -prune -o \
+                    -type d -name "$name" -exec rm -rf {} +
+            fi
         fi
     done
 
