@@ -46,7 +46,7 @@
     "test:ui-web": "pnpm --filter @todo/ui-web test",
     "format": "prettier --write \"**/*.{js,json,yml,cjs,mjs,ts,tsx,md,sol}\"",
     "format:check": "prettier --check \"**/*.{js,json,yml,cjs,mjs,ts,tsx,md,sol}\"",
-    "clean": "turbo run clean && rm -rf build/ && rm -rf dist/",
+    "clean": "turbo run clean && rm -rf build/ && rm -rf dist/ && ./scripts/cleanup.sh",
     "typecheck": "turbo run typecheck",
     "quality": "pnpm lint && pnpm typecheck",
     "contracts:compile": "./scripts/build-contracts.sh --skip-tests --check-deps",
@@ -84,6 +84,7 @@
     "@changesets/cli": "^2.29.6",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
+    "@types/minimatch": "^6.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.5",
     "prettier": "^3.6.2",
@@ -94,8 +95,8 @@
   "optionalDependencies": {
     "@coral-xyz/anchor": "^0.31.1",
     "@solana/web3.js": "^1.98.4",
-    "hardhat": "^3.0.0",
-    "ethers": "^6.15.0"
+    "ethers": "^6.15.0",
+    "hardhat": "^3.0.0"
   },
   "engines": {
     "node": ">=22.18.0",

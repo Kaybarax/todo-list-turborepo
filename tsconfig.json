@@ -25,6 +25,6 @@
       "@todo/*": ["packages/*/lib", "packages/*/src", "apps/*/src"]
     }
   },
-  "include": [],
+  "include": ["apps/**/*", "packages/**/*"],
   "exclude": ["node_modules", "dist", "build", ".next", "coverage"]
 }

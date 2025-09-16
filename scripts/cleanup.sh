@@ -6,7 +6,7 @@
 # - Removes build artifacts across apps/* and packages/* (dist, build, .next, coverage, .turbo, etc.)
 # - Removes node_modules by default (can be disabled)
 # Usage:
-#   scripts/cleanup.sh [--all] [--docker] [--k8s] [--artifacts] [--no-node] [--prune-docker] [--dry-run] [--yes] [--verbose]
+#   scripts/cleanup.sh [--all] [--docker] [--docker-volumes] [--k8s] [--artifacts] [--no-node] [--prune-docker] [--dry-run] [--yes] [--verbose]
 
 set -euo pipefail
 
@@ -18,6 +18,7 @@ K8S=1
 ARTIFACTS=1
 NODE_MODULES=1
 PRUNE_DOCKER=0
+REMOVE_VOLUMES=0
 DRY_RUN=0
 YES=0
 VERBOSE=0
@@ -39,8 +40,9 @@ Monorepo Cleanup
 
 Options:
     --all             Run all cleanup steps (default behavior)
-    --docker          Clean Docker compose resources (down -v) in available compose files
+    --docker          Clean Docker compose resources (down) in available compose files
     --prune-docker    Prune Docker images/volumes/networks (dangling) after compose down
+    --docker-volumes  Include -v (remove volumes) when bringing compose stacks down
     --k8s             Clean Kubernetes resources from infra/kubernetes (if kubectl available)
     --artifacts       Remove build/test artifacts across repo
     --no-node         Do not remove node_modules (by default node_modules are removed)
@@ -61,6 +63,7 @@ while [[ $# -gt 0 ]]; do
         --all) DOCKER=1; K8S=1; ARTIFACTS=1; NODE_MODULES=1;;
         --docker) DOCKER=1;;
         --prune-docker) PRUNE_DOCKER=1;;
+        --docker-volumes) REMOVE_VOLUMES=1;;
         --k8s) K8S=1;;
         --artifacts) ARTIFACTS=1;;
         --no-node) NODE_MODULES=0;;
@@ -89,6 +92,13 @@ clean_docker() {
         return 0
     fi
 
+    local include_volumes=0
+    if [[ $REMOVE_VOLUMES -eq 1 ]]; then
+        if confirm "Also remove compose volumes (-v)? This permanently deletes data in named volumes."; then
+            include_volumes=1
+        fi
+    fi
+
     local compose_files=(
         "docker-compose.dev.yml"
         "docker-compose.test.yml"
@@ -97,8 +107,16 @@ clean_docker() {
 
     for f in "${compose_files[@]}"; do
         if [[ -f "$f" ]]; then
-            log "Bringing down $f (with volumes, removing orphans)..."
-            run_cmd "docker compose -f $f down -v --remove-orphans || docker-compose -f $f down -v --remove-orphans"
+            local down_args="--remove-orphans"
+            if [[ $include_volumes -eq 1 ]]; then
+                down_args="$down_args -v"
+            fi
+            if [[ $include_volumes -eq 1 ]]; then
+                log "Bringing down $f (removing orphans + volumes)..."
+            else
+                log "Bringing down $f (removing orphans, keeping volumes)..."
+            fi
+            run_cmd "docker compose -f \"$f\" down $down_args || docker-compose -f \"$f\" down $down_args"
         fi
     done
 
@@ -178,22 +196,33 @@ clean_artifacts_repo() {
         ".eslintcache" "tsconfig.tsbuildinfo" "chromatic-diagnostics.json" "build.log" "*.log"
     )
 
-    # Remove directories by name everywhere (excluding .git)
+    # Remove directories by name everywhere (excluding .git and node_modules)
     for name in "${dir_patterns[@]}"; do
-        # find dirs named $name, prune node_modules if NODE_MODULES=0 to speed up
         if [[ $DRY_RUN -eq 1 ]]; then
-            find . -path "./.git" -prune -o -type d -name "$name" -print
+            find . \
+                -path "./.git" -prune -o \
+                -path "*/node_modules/*" -prune -o \
+                -type d -name "$name" -print
         else
-            find . -path "./.git" -prune -o -type d -name "$name" -print0 | xargs -0 rm -rf
+            find . \
+                -path "./.git" -prune -o \
+                -path "*/node_modules/*" -prune -o \
+                -type d -name "$name" -exec rm -rf {} +
         fi
     done
 
-    # Remove files by name everywhere
+    # Remove files by name everywhere (excluding .git and node_modules)
     for name in "${file_patterns[@]}"; do
         if [[ $DRY_RUN -eq 1 ]]; then
-            find . -path "./.git" -prune -o -type f -name "$name" -print
+            find . \
+                -path "./.git" -prune -o \
+                -path "*/node_modules/*" -prune -o \
+                -type f -name "$name" -print
         else
-            find . -path "./.git" -prune -o -type f -name "$name" -print0 | xargs -0 rm -f
+            find . \
+                -path "./.git" -prune -o \
+                -path "*/node_modules/*" -prune -o \
+                -type f -name "$name" -exec rm -f {} +
         fi
     done
 
@@ -212,34 +241,44 @@ clean_node_modules_repo() {
     if [[ $DRY_RUN -eq 1 ]]; then
         find . -path "./.git" -prune -o -type d -name node_modules -print
     else
-        find . -path "./.git" -prune -o -type d -name node_modules -print0 | xargs -0 rm -rf
+        find . -path "./.git" -prune -o -type d -name node_modules -exec rm -rf {} +
     fi
 }
 
 run_per_service_cleanups() {
-    # Auto-discover and run any per-service cleanup scripts under apps/*
+    # Discover per-service cleanup scripts under apps/* and packages/*
+    local -a scripts_found=()
+
     while IFS= read -r -d '' s; do
-        if [[ -x "$s" ]]; then
-            log "Running per-service cleanup: $s"
-            if [[ $DRY_RUN -eq 1 ]]; then
-                echo "DRY-RUN: $s --yes"
-            else
-                "$s" --yes || true
-            fi
-        fi
+        scripts_found+=("$s")
     done < <(find apps -maxdepth 2 -type f -name cleanup.sh -print0 2>/dev/null)
 
-    # Auto-discover and run package cleanups under packages/*
     while IFS= read -r -d '' s; do
+        scripts_found+=("$s")
+    done < <(find packages -maxdepth 2 -type f -name cleanup.sh -print0 2>/dev/null)
+
+    if [[ ${#scripts_found[@]} -eq 0 ]]; then
+        return 0
+    fi
+
+    log "Found ${#scripts_found[@]} per-service cleanup script(s)."
+    if ! confirm "Run them now?"; then
+        log "Skipping per-service cleanup scripts."
+        return 0
+    fi
+
+    for s in "${scripts_found[@]}"; do
         if [[ -x "$s" ]]; then
-            log "Running package cleanup: $s"
+            log "Running cleanup: $s"
             if [[ $DRY_RUN -eq 1 ]]; then
                 echo "DRY-RUN: $s --yes"
             else
                 "$s" --yes || true
             fi
+        else
+            debug "Found but not executable: $s"
         fi
-    done < <(find packages -maxdepth 2 -type f -name cleanup.sh -print0 2>/dev/null)
+    done
 }
 
 main() {
