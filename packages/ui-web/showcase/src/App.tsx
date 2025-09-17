@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Badge } from '../../src';
 import ThemeToggle from './components/ThemeToggle';
 import ComponentShowcase from './components/ComponentShowcase';
-import Navigation from './components/Navigation';
+import Sidebar from './components/Sidebar';
 import './App.css';
 
 // Import component data
@@ -50,6 +50,12 @@ const components: ComponentData[] = [
 function App() {
   const [activeComponent, setActiveComponent] = useState<string>('Button');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('ui-web-showcase:sidebar-collapsed');
+    if (saved === 'true') setSidebarCollapsed(true);
+  }, []);
 
   const currentComponent = components.find(comp => comp.name === activeComponent);
 
@@ -57,13 +63,23 @@ function App() {
     <div className="app-container min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-transparent via-blue-50/50 to-transparent dark:via-gray-900/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between py-6">
-            <div className="min-w-0">
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">UI Web Components</h1>
-              <p className="text-gray-600 dark:text-gray-300 mt-1">Interactive showcase of DaisyUI-based components</p>
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between py-4">
+            <div className="flex items-center gap-3">
+              {/* Mobile menu button */}
+              <div className="lg:hidden">
+                <Button variant="outline" onClick={() => setMobileMenuOpen(true)} aria-label="Open navigation menu">
+                  Menu
+                </Button>
+              </div>
+              <div>
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">UI Web Components</h1>
+                <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
+                  Interactive showcase of DaisyUI-based components
+                </p>
+              </div>
             </div>
-            <div className="flex items-center gap-3 self-start md:self-auto">
+            <div className="flex items-center gap-3">
               <ThemeToggle />
               <Badge variant="default">v0.1.0</Badge>
             </div>
@@ -71,36 +87,30 @@ function App() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Mobile Menu Button */}
-        <div className="lg:hidden mb-6">
-          <Button
-            variant="outline"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="w-full justify-between"
+      {/* Desktop layout with collapsible sidebar */}
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="hidden lg:flex lg:gap-6">
+          {/* Collapsible Sidebar */}
+          <div
+            className={`sticky top-6 h-[calc(100vh-6rem)] ${sidebarCollapsed ? 'w-16' : 'w-64'} transition-all duration-300`}
           >
-            <span>Components Menu</span>
-            <span>{mobileMenuOpen ? '−' : '+'}</span>
-          </Button>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Navigation Sidebar */}
-          <div className={`lg:col-span-1 ${mobileMenuOpen ? 'block' : 'hidden lg:block'}`}>
-            <div className="lg:sticky lg:top-8">
-              <Navigation
-                components={components}
-                activeComponent={activeComponent}
-                onComponentSelect={component => {
-                  setActiveComponent(component);
-                  setMobileMenuOpen(false); // Close mobile menu on selection
-                }}
-              />
-            </div>
+            <Sidebar
+              components={components}
+              activeComponent={activeComponent}
+              onSelect={name => setActiveComponent(name)}
+              collapsed={sidebarCollapsed}
+              onToggleCollapsed={() => {
+                setSidebarCollapsed(prev => {
+                  const next = !prev;
+                  localStorage.setItem('ui-web-showcase:sidebar-collapsed', String(next));
+                  return next;
+                });
+              }}
+            />
           </div>
 
-          {/* Main Content */}
-          <div className="lg:col-span-3">
+          {/* Main content */}
+          <div className="flex-1 min-w-0">
             {currentComponent && (
               <ComponentShowcase
                 name={currentComponent.name}
@@ -108,18 +118,53 @@ function App() {
                 examples={currentComponent.examples}
               />
             )}
+            <footer className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
+              <p>Built with React, Vite, Tailwind CSS, and DaisyUI</p>
+            </footer>
           </div>
+        </div>
+
+        {/* Mobile drawer overlay */}
+        <div className="lg:hidden">
+          {/* Content */}
+          <div className="py-2">
+            {currentComponent && (
+              <ComponentShowcase
+                name={currentComponent.name}
+                description={currentComponent.description}
+                examples={currentComponent.examples}
+              />
+            )}
+            <footer className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
+              <p>Built with React, Vite, Tailwind CSS, and DaisyUI</p>
+            </footer>
+          </div>
+
+          {/* Drawer */}
+          {mobileMenuOpen && (
+            <div className="fixed inset-0 z-50">
+              <div
+                className="absolute inset-0 bg-black/40"
+                aria-hidden="true"
+                onClick={() => setMobileMenuOpen(false)}
+              />
+              <div className="absolute inset-y-0 left-0 w-72 max-w-[80%] p-3">
+                <div className="h-full rounded-lg overflow-hidden">
+                  <Sidebar
+                    components={components}
+                    activeComponent={activeComponent}
+                    onSelect={name => {
+                      setActiveComponent(name);
+                      setMobileMenuOpen(false);
+                    }}
+                    collapsed={false}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-gray-600 dark:text-gray-300">
-            <p>Built with React, Vite, Tailwind CSS, and DaisyUI</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
