@@ -43,7 +43,7 @@
     "test:coverage": "vitest run --coverage",
     "test:visual": "test-storybook",
     "chromatic": "chromatic --exit-zero-on-changes",
-    "storybook": "npm run tokens:build && storybook dev -p 6006",
+    "storybook": "npm run tokens:build && storybook dev -p 6007",
     "build-storybook": "npm run tokens:build && storybook build",
     "test-storybook": "test-storybook",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

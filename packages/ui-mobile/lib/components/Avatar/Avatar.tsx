@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Avatar as KittenAvatar, type AvatarProps as KittenAvatarProps, Text } from '@ui-kitten/components';
 import React, { useMemo } from 'react';
 import {
@@ -80,7 +81,7 @@ const AvatarComponent: React.FC<AvatarProps> = ({
 
   const customStyles = useMemo<ViewStyle>(() => {
     return {
-      backgroundColor: backgroundColor || evaTheme['color-primary-default'] || '#3366FF',
+      backgroundColor: backgroundColor ?? evaTheme['color-primary-default'] ?? '#3366FF',
     };
   }, [backgroundColor, evaTheme]);
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { type Meta, type StoryObj } from '@storybook/react';
 
 import { withUIKitten } from './decorators/UIKittenProvider';
@@ -15,7 +16,8 @@ const legacyToRealSize: Record<string, string> = {
 
 const meta: Meta<typeof Avatar> = {
   title: 'Components/Avatar',
-  component: Avatar,
+  component: Avatar as React.ComponentType<any>,
+  // @ts-ignore
   decorators: [withUIKitten],
   tags: ['autodocs'],
   parameters: {
@@ -29,6 +31,7 @@ const meta: Meta<typeof Avatar> = {
     },
   },
   argTypes: {
+    // @ts-ignore
     size: {
       control: { type: 'select' },
       options: ['tiny', 'small', 'medium', 'large', 'giant'],
@@ -173,14 +176,14 @@ export const DarkBackground: Story = {
 
 export const ImageSmall: Story = {
   args: {
-    source: 'https://via.placeholder.com/150/5856D6/FFFFFF?text=SM',
+    source: '../assets/avatar-image.png',
     size: legacyToRealSize['sm'],
   },
 };
 
 export const ImageLarge: Story = {
   args: {
-    source: 'https://via.placeholder.com/150/34C759/FFFFFF?text=LG',
+    source: '../assets/avatar-image.png',
     size: legacyToRealSize['lg'],
   },
 };
