@@ -2,9 +2,10 @@
 FROM node:20-bullseye
 
 # Install system dependencies
+# NOTE: Removed 'mongodb-clients' which is not available in Debian Bullseye default repos and was causing build failures.
+# If a Mongo shell is needed inside the devcontainer, prefer using 'mongosh' via the official MongoDB repo or rely on the Mongo service container.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends \
-        # Basic development tools
         git \
         curl \
         wget \
@@ -13,24 +14,18 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         ca-certificates \
         gnupg \
         lsb-release \
-        # Build tools
         build-essential \
         python3 \
         python3-pip \
         pkg-config \
         libssl-dev \
-        # Database clients
-        mongodb-clients \
         redis-tools \
-        # Network tools
         netcat \
         telnet \
         dnsutils \
-        # Process tools
         htop \
         tree \
         jq \
-        # Editor tools
         vim \
         nano \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
