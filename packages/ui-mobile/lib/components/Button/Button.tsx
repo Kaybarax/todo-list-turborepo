@@ -125,14 +125,16 @@ export const Button: React.FC<ButtonProps> = ({
       accessibilityState={accessibilityState}
       {...(props as Partial<UIKittenButtonProps>)}
     >
-      <View style={styles.contentRow}>
-        {children}
-        {loading && (
+      {loading ? (
+        <View style={styles.contentRow}>
+          {children}
           <View style={styles.loadingOverlay} testID="button-loading-indicator" accessibilityRole="progressbar">
             <Spinner size="small" />
           </View>
-        )}
-      </View>
+        </View>
+      ) : (
+        children
+      )}
     </UIKittenButton>
   );
 };

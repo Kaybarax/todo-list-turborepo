@@ -41,7 +41,7 @@ const buttonStatusMap: Record<ButtonVariant, string | undefined> = {
 const buttonSizeMap: Record<ButtonSize, 'small' | 'medium' | 'large'> = {
   sm: 'small',
   md: 'medium',
-  lg: 'large',
+  lg: 'medium', // Changed from 'large' to 'medium' for better UI Kitten compatibility
 };
 
 const inputSizeMap: Record<InputSize, 'small' | 'medium' | 'large'> = {
