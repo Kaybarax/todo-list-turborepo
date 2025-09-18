@@ -275,14 +275,18 @@ The devcontainer includes:
 #### Building
 
 ```bash
-# Full build (all apps, packages, and contracts)
+# Full build (apps, packages, contracts) — no Docker
 pnpm build
 
-# Quick development build (skip Docker and tests)
+# Quick development build (skips Docker and tests)
 pnpm build:quick
 
-# Production build with security scanning
+# Production build with security scanning (no Docker)
 pnpm build:production
+
+# Docker images (optional)
+pnpm docker:build           # Build dev images
+pnpm docker:build:prod      # Build prod images
 
 # Build specific components
 pnpm build:packages    # Shared packages only

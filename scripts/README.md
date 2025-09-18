@@ -141,8 +141,8 @@ The root `package.json` includes convenient npm/pnpm scripts:
 ### Build Scripts
 
 ```bash
-# Main builds
-pnpm build                    # Full build
+# Main builds (no Docker)
+pnpm build                    # Full build (apps, packages, contracts)
 pnpm build:quick             # Quick development build
 pnpm build:production        # Production build with security checks
 
@@ -190,8 +190,8 @@ pnpm db:reset               # Reset database
 
 ```bash
 # Docker operations
-pnpm docker:build           # Build Docker images
-pnpm docker:build:prod      # Production Docker build
+pnpm docker:build           # Build Docker images (dev)
+pnpm docker:build:prod      # Build Docker images (prod)
 pnpm docker:clean           # Clean Docker resources (safe)
 ```
 

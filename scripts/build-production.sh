@@ -30,7 +30,7 @@ print_error() {
 
 # Configuration for production
 export ENVIRONMENT="production"
-export BUILD_DOCKER="true"
+export BUILD_DOCKER="false"
 export BUILD_CONTRACTS="true"
 export SKIP_TESTS="false"
 export PARALLEL_BUILDS="true"

@@ -1,5 +1,5 @@
 # Multi-stage build for NestJS API
-FROM node:18-alpine AS base
+FROM node:22-alpine AS base
 
 # Install pnpm
 RUN npm install -g pnpm
@@ -7,19 +7,12 @@ RUN npm install -g pnpm
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY apps/api/package.json ./apps/api/
-COPY packages/*/package.json ./packages/*/
-
-# Install dependencies
-RUN pnpm install --frozen-lockfile
-
 # Development stage
 FROM base AS development
 
-# Copy source code
+# Copy source code and install deps
 COPY . .
+RUN pnpm install --no-frozen-lockfile
 
 # Build the application
 RUN pnpm build:api
@@ -33,20 +26,22 @@ CMD ["pnpm", "dev:api"]
 # Production dependencies stage
 FROM base AS prod-deps
 
-# Install only production dependencies
-RUN pnpm install --frozen-lockfile --prod
+# Copy full workspace and install only production dependencies
+COPY . .
+RUN pnpm install --no-frozen-lockfile --prod
 
 # Production build stage
 FROM base AS build
 
-# Copy source code
+# Copy source code and install deps
 COPY . .
+RUN pnpm install --no-frozen-lockfile
 
 # Build the application
 RUN pnpm build:api
 
 # Production stage
-FROM node:18-alpine AS production
+FROM node:22-alpine AS production
 
 # Install pnpm
 RUN npm install -g pnpm
@@ -58,10 +53,8 @@ WORKDIR /app
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nestjs -u 1001
 
-# Copy package files
+# Copy package files (only what's needed)
 COPY --from=build /app/package.json ./
-COPY --from=build /app/pnpm-lock.yaml ./
-COPY --from=build /app/pnpm-workspace.yaml ./
 COPY --from=build /app/apps/api/package.json ./apps/api/
 
 # Copy production dependencies

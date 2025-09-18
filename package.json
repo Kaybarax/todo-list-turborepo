@@ -5,7 +5,7 @@
   "private": true,
   "packageManager": "pnpm@9.12.0",
   "scripts": {
-    "build": "./scripts/build.sh",
+    "build": "./scripts/build.sh --skip-docker",
     "build:quick": "./scripts/build-quick.sh",
     "build:production": "./scripts/build-production.sh",
     "build:contracts": "./scripts/build-contracts.sh",
@@ -81,6 +81,8 @@
     "db:reset": "node db/setup.js reset",
     "db:rebuild": "pnpm db:reset && pnpm db:setup",
     "docker:clean": "docker system prune -f && docker image prune -f",
+    "docker:build": "./scripts/build.sh",
+    "docker:build:prod": "./scripts/build.sh --environment production",
     "deploy": "./scripts/deploy.sh",
     "deploy:dev": "./scripts/deploy-development.sh",
     "deploy:staging": "./scripts/deploy-staging.sh",
