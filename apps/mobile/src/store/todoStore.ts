@@ -1,5 +1,5 @@
-import { useCallback, useMemo } from 'react';
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TodoApiClient, type BlockchainNetwork } from '@todo/services';
 
 export type Todo = {
@@ -24,6 +24,8 @@ export const useTodoStore = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const hydratedRef = useRef(false);
+  const STORAGE_KEY = '@todo/mobile/todos';
 
   const api = useMemo(() => new TodoApiClient({ baseUrl: 'http://localhost:3001/api/v1' }), []);
 
@@ -49,6 +51,46 @@ export const useTodoStore = () => {
       setIsLoading(false);
     }
   }, [api]);
+
+  // Hydrate from AsyncStorage on mount
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw) as Array<Omit<Todo, 'dueDate'> & { dueDate?: string }>;
+          const restored: Todo[] = parsed.map(t => ({
+            ...t,
+            dueDate: t.dueDate ? new Date(t.dueDate) : undefined,
+          }));
+          setTodos(restored);
+        }
+      } catch {
+        // ignore corrupted cache
+      } finally {
+        hydratedRef.current = true;
+      }
+    };
+    void load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Persist to AsyncStorage when todos change (after hydration)
+  useEffect(() => {
+    if (!hydratedRef.current) return;
+    const save = async () => {
+      try {
+        const serializable = todos.map(t => ({
+          ...t,
+          dueDate: t.dueDate ? t.dueDate.toISOString() : undefined,
+        }));
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(serializable));
+      } catch {
+        // best-effort persistence
+      }
+    };
+    void save();
+  }, [todos]);
 
   const addTodo = useCallback((input: NewTodo) => {
     const newTodo: Todo = {
