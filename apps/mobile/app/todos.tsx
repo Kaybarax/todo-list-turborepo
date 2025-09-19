@@ -1,19 +1,28 @@
 /* eslint-disable @typescript-eslint/no-floating-promises, @typescript-eslint/no-misused-promises */
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Modal, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Modal, ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Card, CardContent } from '@todo/ui-mobile';
+import { mapWalletNetworkToBlockchainNetwork } from '@todo/services';
 import { BlockchainStats } from '../src/components/BlockchainStats';
 import { TodoForm } from '../src/components/TodoForm';
 import { TodoList } from '../src/components/TodoList';
+import { Snackbar } from '../src/components/Snackbar';
+import { ErrorBanner } from '../src/components/ErrorBanner';
 import { useTodoStore, type Todo } from '../src/store/todoStore';
 import { useWallet } from '../src/providers/WalletProvider';
 
 export default function Todos() {
   const [showForm, setShowForm] = useState(false);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
-  const { todos, isLoading, error, addTodo, updateTodo, deleteTodo, toggleTodo, fetchTodos } = useTodoStore();
-  const { isConnected } = useWallet();
+  const { todos, isLoading, error, addTodo, updateTodo, deleteTodo, toggleTodo, fetchTodos, syncToBlockchain } =
+    useTodoStore();
+  const [snack, setSnack] = useState<{ visible: boolean; msg: string; variant: 'success' | 'error' | 'info' }>({
+    visible: false,
+    msg: '',
+    variant: 'info',
+  });
+  const { isConnected, account } = useWallet();
 
   useEffect(() => {
     fetchTodos();
@@ -49,12 +58,12 @@ export default function Todos() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {error && (
-          <View style={styles.errorContainer}>
-            <Text style={styles.errorText}>{error}</Text>
-          </View>
-        )}
+      <ScrollView
+        style={styles.content}
+        showsVerticalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={fetchTodos} />}
+      >
+        {error && <ErrorBanner message={error} />}
 
         {!isConnected && todos.length > 0 && (
           <Card style={styles.walletWarningContainer}>
@@ -73,6 +82,21 @@ export default function Todos() {
             onToggle={toggleTodo}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            onBlockchainSync={
+              isConnected && account?.network
+                ? (id, _network) => {
+                    // fire-and-forget for now, could show progress toast/snackbar later
+                    void (async () => {
+                      try {
+                        await syncToBlockchain(id, mapWalletNetworkToBlockchainNetwork(account.network));
+                        setSnack({ visible: true, msg: 'Synced to blockchain', variant: 'success' });
+                      } catch {
+                        setSnack({ visible: true, msg: 'Failed to sync', variant: 'error' });
+                      }
+                    })();
+                  }
+                : undefined
+            }
             onRefresh={handleRefresh}
             refreshing={isLoading}
           />
@@ -109,6 +133,12 @@ export default function Todos() {
             />
           </SafeAreaView>
         </Modal>
+        <Snackbar
+          visible={snack.visible}
+          message={snack.msg}
+          variant={snack.variant}
+          onHide={() => setSnack(s => ({ ...s, visible: false }))}
+        />
       </ScrollView>
     </SafeAreaView>
   );

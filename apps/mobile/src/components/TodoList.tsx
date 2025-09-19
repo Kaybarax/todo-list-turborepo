@@ -18,7 +18,8 @@ export const TodoList: React.FC<Props> = ({
   todos,
   onToggle,
   onEdit,
-  onDelete /* onBlockchainSync not used here */,
+  onDelete,
+  onBlockchainSync,
   onRefresh,
   refreshing,
 }) => {
@@ -36,6 +37,11 @@ export const TodoList: React.FC<Props> = ({
               <Button variant="outline" size="sm" onPress={() => onToggle(todo.id)}>
                 {todo.completed ? 'Mark Open' : 'Mark Done'}
               </Button>
+              {onBlockchainSync ? (
+                <Button variant="outline" size="sm" onPress={() => onBlockchainSync(todo.id, undefined)}>
+                  Sync
+                </Button>
+              ) : null}
               <Button variant="ghost" size="sm" onPress={() => onEdit(todo)}>
                 Edit
               </Button>

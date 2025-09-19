@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Card, CardContent } from '@todo/ui-mobile';
 import { WalletConnect } from '../src/components/WalletConnect';
+import { ErrorBanner } from '../src/components/ErrorBanner';
+import { Snackbar } from '../src/components/Snackbar';
 import { useWallet } from '../src/providers/WalletProvider';
 import { useDesignTokens } from '../src/hooks/useDesignTokens';
 
 export default function Wallet() {
-  const { isConnected, account, signMessage, sendTransaction } = useWallet();
+  const { isConnected, account, signMessage, sendTransaction, error } = useWallet();
   const tokens = useDesignTokens();
   const styles = createStyles(tokens);
+  const [snack, setSnack] = useState<{ visible: boolean; msg: string; variant: 'success' | 'error' | 'info' }>({
+    visible: false,
+    msg: '',
+    variant: 'info',
+  });
 
   const handleSignMessage = async () => {
     try {
@@ -41,6 +48,7 @@ export default function Wallet() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {error ? <ErrorBanner message={error} /> : null}
         <Text style={styles.pageTitle}>Wallet Connection</Text>
         <Text style={styles.pageSubtitle}>Connect your wallet to enable blockchain features for your todos.</Text>
 
@@ -51,11 +59,35 @@ export default function Wallet() {
             <CardContent>
               <Text style={styles.actionsTitle}>Wallet Actions</Text>
 
-              <Button variant="outline" size="lg" style={styles.actionButton} onPress={handleSignMessage}>
+              <Button
+                variant="outline"
+                size="lg"
+                style={styles.actionButton}
+                onPress={async () => {
+                  try {
+                    await handleSignMessage();
+                    setSnack({ visible: true, msg: 'Message signed', variant: 'success' });
+                  } catch {
+                    setSnack({ visible: true, msg: 'Failed to sign', variant: 'error' });
+                  }
+                }}
+              >
                 Sign Message
               </Button>
 
-              <Button variant="primary" size="lg" style={styles.actionButton} onPress={handleSendTransaction}>
+              <Button
+                variant="primary"
+                size="lg"
+                style={styles.actionButton}
+                onPress={async () => {
+                  try {
+                    await handleSendTransaction();
+                    setSnack({ visible: true, msg: 'Transaction sent', variant: 'success' });
+                  } catch {
+                    setSnack({ visible: true, msg: 'Failed to send transaction', variant: 'error' });
+                  }
+                }}
+              >
                 Send Test Transaction
               </Button>
 
@@ -110,6 +142,12 @@ export default function Wallet() {
             </View>
           </CardContent>
         </Card>
+        <Snackbar
+          visible={snack.visible}
+          message={snack.msg}
+          variant={snack.variant}
+          onHide={() => setSnack(s => ({ ...s, visible: false }))}
+        />
       </ScrollView>
     </SafeAreaView>
   );
