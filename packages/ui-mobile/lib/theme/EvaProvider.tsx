@@ -14,17 +14,31 @@ import { lightTheme, darkTheme } from './eva-theme';
 export interface EvaProviderProps {
   children: React.ReactNode;
   theme?: 'light' | 'dark';
-  customTheme?: Record<string, any>;
+  customTheme?: Record<string, unknown>;
+  /**
+   * When true, apply the library's customMapping to ApplicationProvider.
+   * Defaults to false to avoid unexpected mapping shape conflicts.
+   */
+  useCustomMapping?: boolean;
 }
 
-export const EvaProvider: React.FC<EvaProviderProps> = ({ children, theme = 'light', customTheme }) => {
+export const EvaProvider: React.FC<EvaProviderProps> = ({
+  children,
+  theme = 'light',
+  customTheme,
+  useCustomMapping = false,
+}) => {
   const selectedTheme = theme === 'dark' ? darkTheme : lightTheme;
   const finalTheme = customTheme ? { ...selectedTheme, ...customTheme } : selectedTheme;
 
   return (
     <>
       <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={{ ...eva.light, ...finalTheme }} customMapping={customMapping}>
+      <ApplicationProvider
+        {...eva}
+        theme={{ ...eva.light, ...finalTheme }}
+        {...(useCustomMapping ? { customMapping } : {})}
+      >
         {children}
       </ApplicationProvider>
     </>

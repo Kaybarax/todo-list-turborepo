@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Button Component
  * Enhanced button component with Eva Design and UI Kitten integration
