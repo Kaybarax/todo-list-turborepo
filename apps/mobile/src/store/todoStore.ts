@@ -135,6 +135,19 @@ export const useTodoStore = () => {
     await new Promise<void>(resolve => setTimeout(resolve, 300));
   }, []);
 
+  // Bulk operations and state replacement (for undo scenarios)
+  const replaceTodos = useCallback((next: Todo[]) => {
+    setTodos(next);
+  }, []);
+
+  const markAllDone = useCallback(() => {
+    setTodos(prev => prev.map(t => ({ ...t, completed: true })));
+  }, []);
+
+  const clearCompleted = useCallback(() => {
+    setTodos(prev => prev.filter(t => !t.completed));
+  }, []);
+
   return {
     todos,
     isLoading,
@@ -143,6 +156,9 @@ export const useTodoStore = () => {
     updateTodo,
     deleteTodo,
     toggleTodo,
+    replaceTodos,
+    markAllDone,
+    clearCompleted,
     syncToBlockchain,
     fetchTodos,
   } as const;
