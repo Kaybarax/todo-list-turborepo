@@ -1,60 +1,113 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { Button } from '@todo/ui-mobile';
-import { useRouter } from 'expo-router';
+import { View, Text, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Link } from 'expo-router';
+import { Button, Card, CardContent } from '@todo/ui-mobile';
+import { useDesignTokens } from '../src/hooks/useDesignTokens';
 
 export default function Home() {
-  const router = useRouter();
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>🚀 Fresh Expo Router App (Web)</Text>
-      <Text style={styles.subtext}>If you can read this, web rendering works.</Text>
+  const tokens = useDesignTokens();
+  const styles = createStyles(tokens);
 
-      <View style={styles.buttons}>
-        <Button variant="primary" onPress={() => router.push('/todos')}>
-          UI Kit Button → Todos
-        </Button>
-        <Pressable style={styles.button} onPress={() => router.push('/todos')}>
-          <Text style={styles.buttonText}>Go to Todos</Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={() => router.push('/wallet')}>
-          <Text style={styles.buttonText}>Go to Wallet</Text>
-        </Pressable>
+  return (
+    <SafeAreaView style={[styles.container, { backgroundColor: tokens.colors.background }]}>
+      <View style={styles.content}>
+        <Text style={[styles.title, { color: tokens.colors.text.primary }]}>Welcome to Todo App</Text>
+        <Text style={[styles.subtitle, { color: tokens.colors.text.secondary }]}>
+          A modern todo application with blockchain integration for mobile devices.
+        </Text>
+
+        <View style={styles.buttonContainer}>
+          <Link href="/todos" asChild>
+            <Button variant="primary" size="lg" style={styles.button} onPress={() => {}}>
+              Get Started
+            </Button>
+          </Link>
+
+          <Link href="/wallet" asChild>
+            <Button variant="outline" size="lg" style={styles.button} onPress={() => {}}>
+              Connect Wallet
+            </Button>
+          </Link>
+        </View>
+
+        <View style={styles.featureContainer}>
+          <Card style={styles.featureCard}>
+            <CardContent>
+              <Text style={[styles.featureTitle, { color: tokens.colors.text.primary }]}>📝 Smart Todo Management</Text>
+              <Text style={[styles.featureDescription, { color: tokens.colors.text.secondary }]}>
+                Create, organize, and track your tasks with intelligent categorization and priority management.
+              </Text>
+            </CardContent>
+          </Card>
+
+          <Card style={styles.featureCard}>
+            <CardContent>
+              <Text style={[styles.featureTitle, { color: tokens.colors.text.primary }]}>
+                🔗 Blockchain Integration
+              </Text>
+              <Text style={[styles.featureDescription, { color: tokens.colors.text.secondary }]}>
+                Secure your todos on the blockchain with decentralized storage and verification.
+              </Text>
+            </CardContent>
+          </Card>
+
+          <Card style={styles.featureCard}>
+            <CardContent>
+              <Text style={[styles.featureTitle, { color: tokens.colors.text.primary }]}>📱 Cross-Platform Sync</Text>
+              <Text style={[styles.featureDescription, { color: tokens.colors.text.secondary }]}>
+                Access your todos anywhere with seamless synchronization across all your devices.
+              </Text>
+            </CardContent>
+          </Card>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-    padding: 16,
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: '600',
-  },
-  subtext: {
-    marginTop: 8,
-    fontSize: 14,
-    color: '#555',
-  },
-  buttons: {
-    marginTop: 16,
-    flexDirection: 'row',
-    gap: 12,
-  },
-  button: {
-    backgroundColor: '#111827',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: '600',
-  },
-});
+const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    content: {
+      flex: 1,
+      padding: tokens.spacing.xl,
+      alignItems: 'center',
+    },
+    title: {
+      fontSize: tokens.typography.fontSize.xxxl,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: tokens.spacing.lg,
+    },
+    subtitle: {
+      fontSize: tokens.typography.fontSize.md,
+      textAlign: 'center',
+      marginBottom: tokens.spacing.xxxl,
+      lineHeight: tokens.typography.lineHeight.relaxed,
+    },
+    buttonContainer: {
+      width: '100%',
+      marginBottom: tokens.spacing.xxxl,
+    },
+    button: {
+      marginBottom: tokens.spacing.md,
+    },
+    featureContainer: {
+      width: '100%',
+    },
+    featureCard: {
+      marginBottom: tokens.spacing.md,
+    },
+    featureTitle: {
+      fontSize: tokens.typography.fontSize.lg,
+      fontWeight: '600',
+      marginBottom: tokens.spacing.sm,
+    },
+    featureDescription: {
+      fontSize: tokens.typography.fontSize.sm,
+      lineHeight: tokens.typography.lineHeight.normal,
+    },
+  });

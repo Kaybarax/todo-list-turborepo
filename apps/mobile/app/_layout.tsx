@@ -9,7 +9,7 @@ import { EvaProvider } from '@todo/ui-mobile';
 export default function RootLayout() {
   return (
     <SafeAreaProvider>
-      <EvaProvider theme="light">
+      <EvaProvider theme="light" useCustomMapping={false}>
         <ThemeProvider>
           <WalletProvider>
             <Stack screenOptions={{ headerShown: false }}>
