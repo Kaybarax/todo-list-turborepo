@@ -1,18 +1,7 @@
 {
-  "extends": "../../packages/config-ts/react-native.json",
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "baseUrl": ".",
-    "noUnusedParameters": false,
-    "noUnusedLocals": false,
-    "moduleResolution": "bundler",
-    "paths": {
-      "@/*": ["./src/*"],
-      "react-native": ["../../node_modules/react-native"],
-      "react-native-safe-area-context": ["../../node_modules/react-native-safe-area-context"]
-    },
-    "typeRoots": ["../../node_modules/@types"],
-    "types": ["react", "jest", "node"]
+    "strict": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "app/**/*.ts", "app/**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
-  "exclude": ["node_modules"]
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
 }
