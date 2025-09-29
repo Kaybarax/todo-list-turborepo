@@ -398,11 +398,20 @@ pnpm build
 pnpm test
 ```
 
+## 🧭 Adding new components
+
+1. Create the component in `src/components/<Name>/<Name>.tsx` with an index exporting it.
+2. Add stories in `src/components/<Name>/<Name>.stories.tsx` covering variants and states.
+3. Add tests in `__tests__/components/<Name>.test.tsx` with accessibility assertions where applicable.
+4. Export from `src/index.ts` and re-run `pnpm build`.
+5. Verify visually in Storybook (`pnpm storybook`) and run tests (`pnpm test`).
+6. If tokens are needed, add them under `tokens/` and run `pnpm build:tokens`.
+
 ## 🏗️ Architecture
 
 ### Directory Structure
 
-```
+```text
 packages/ui-mobile/
 ├── lib/                        # Source code (consolidated structure)
 │   ├── components/            # Component implementations
