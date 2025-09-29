@@ -4,31 +4,53 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 import { Button, Card, CardContent } from '@todo/ui-mobile';
 import { useDesignTokens } from '../src/hooks/useDesignTokens';
+import { useTheme } from '../src/providers/ThemeProvider';
 
 export default function Home() {
   const tokens = useDesignTokens();
   const styles = createStyles(tokens);
+  const { themeMode, toggleTheme } = useTheme();
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: tokens.colors.background }]}>
       <View style={styles.content}>
-        <Text style={[styles.title, { color: tokens.colors.text.primary }]}>Welcome to Todo App</Text>
+        <Text testID="home-title" style={[styles.title, { color: tokens.colors.text.primary }]}>
+          Welcome to Todo App
+        </Text>
         <Text style={[styles.subtitle, { color: tokens.colors.text.secondary }]}>
           A modern todo application with blockchain integration for mobile devices.
         </Text>
 
         <View style={styles.buttonContainer}>
           <Link href="/todos" asChild>
-            <Button variant="primary" size="lg" style={styles.button} onPress={() => {}}>
+            <Button
+              testID="nav-todos"
+              variant="primary"
+              size="lg"
+              style={styles.button}
+              onPress={() => {}}
+              accessibilityLabel="Go to your todos"
+            >
               Get Started
             </Button>
           </Link>
 
           <Link href="/wallet" asChild>
-            <Button variant="outline" size="lg" style={styles.button} onPress={() => {}}>
+            <Button
+              testID="nav-wallet"
+              variant="outline"
+              size="lg"
+              style={styles.button}
+              onPress={() => {}}
+              accessibilityLabel="Go to wallet"
+            >
               Connect Wallet
             </Button>
           </Link>
+
+          <Button variant="ghost" size="sm" onPress={toggleTheme} accessibilityLabel="Toggle color theme">
+            Toggle {themeMode === 'light' ? 'Dark' : 'Light'} Mode
+          </Button>
         </View>
 
         <View style={styles.featureContainer}>

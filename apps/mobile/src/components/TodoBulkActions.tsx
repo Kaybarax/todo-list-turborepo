@@ -17,10 +17,24 @@ export const TodoBulkActions: React.FC<Props> = ({ onMarkAllDone, onClearComplet
     <Card style={styles.card}>
       <CardContent>
         <View style={styles.row}>
-          <Button variant="outline" size="sm" onPress={onMarkAllDone} disabled={!hasTodos}>
+          <Button
+            variant="outline"
+            size="sm"
+            onPress={onMarkAllDone}
+            disabled={!hasTodos}
+            accessibilityLabel="Mark all todos as done"
+            style={{ minHeight: 44, paddingHorizontal: 12 }}
+          >
             Mark all done
           </Button>
-          <Button variant="destructive" size="sm" onPress={onClearCompleted} disabled={!hasCompleted}>
+          <Button
+            variant="destructive"
+            size="sm"
+            onPress={onClearCompleted}
+            disabled={!hasCompleted}
+            accessibilityLabel="Clear all completed todos"
+            style={{ minHeight: 44, paddingHorizontal: 12 }}
+          >
             Clear completed
           </Button>
         </View>

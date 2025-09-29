@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises, @typescript-eslint/no-misused-promises */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocalSearchParams } from 'expo-router';
 import { View, Text, StyleSheet, Modal, ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Card, CardContent } from '@todo/ui-mobile';
@@ -13,8 +14,19 @@ import { Snackbar } from '../src/components/Snackbar';
 import { ErrorBanner } from '../src/components/ErrorBanner';
 import { useTodoStore, type Todo } from '../src/store/todoStore';
 import { useWallet } from '../src/providers/WalletProvider';
+import { useDesignTokens } from '../src/hooks/useDesignTokens';
 
 export default function Todos() {
+  const tokens = useDesignTokens();
+  const {
+    q,
+    status: statusParam,
+    priority: priorityParam,
+  } = useLocalSearchParams<{
+    q?: string;
+    status?: string;
+    priority?: string;
+  }>();
   const [showForm, setShowForm] = useState(false);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const {
@@ -27,21 +39,41 @@ export default function Todos() {
     toggleTodo,
     fetchTodos,
     syncToBlockchain,
-    replaceTodos,
     markAllDone,
     clearCompleted,
+    undo,
   } = useTodoStore();
-  const [snack, setSnack] = useState<{ visible: boolean; msg: string; variant: 'success' | 'error' | 'info' }>({
+  const [snack, setSnack] = useState<{
+    visible: boolean;
+    msg: string;
+    variant: 'success' | 'error' | 'info';
+    actionLabel?: string;
+    onAction?: () => void;
+  }>({
     visible: false,
     msg: '',
     variant: 'info',
   });
   const { isConnected, account } = useWallet();
+  // removed unused prevSnapshotRef from legacy logic
 
   // Local filter state
   const [search, setSearch] = useState('');
   const [priority, setPriority] = useState<PriorityFilter>('all');
   const [status, setStatus] = useState<StatusFilter>('all');
+
+  // Sync initial filters from route params (e.g., /todos?status=completed&priority=high&q=pay)
+  useEffect(() => {
+    if (typeof q === 'string') setSearch(q);
+    if (typeof statusParam === 'string') {
+      const s = statusParam.toLowerCase();
+      if (s === 'open' || s === 'completed' || s === 'all') setStatus(s as StatusFilter);
+    }
+    if (typeof priorityParam === 'string') {
+      const p = priorityParam.toLowerCase();
+      if (p === 'low' || p === 'medium' || p === 'high' || p === 'all') setPriority(p as PriorityFilter);
+    }
+  }, [q, statusParam, priorityParam]);
 
   const filteredTodos = useMemo(() => {
     const searchLower = search.trim().toLowerCase();
@@ -68,22 +100,25 @@ export default function Todos() {
 
   // Bulk action handlers with undo
   const handleMarkAllDone = () => {
-    const prev = todos;
     markAllDone();
-    setSnack({ visible: true, msg: 'Marked all as done — Undo?', variant: 'info' });
-    // Simple undo by replacing
-    setTimeout(() => {
-      // no-op; undo window handled by snackbar interaction in a real app
-    }, 0);
+    setSnack({
+      visible: true,
+      msg: 'Marked all as done',
+      variant: 'info',
+      actionLabel: 'Undo',
+      onAction: () => undo(),
+    });
   };
 
   const handleClearCompleted = () => {
-    const prev = todos;
     clearCompleted();
-    setSnack({ visible: true, msg: 'Cleared completed — Undo?', variant: 'info' });
-    setTimeout(() => {
-      // placeholder; user can manually undo in future enhancement with action button
-    }, 0);
+    setSnack({
+      visible: true,
+      msg: 'Cleared completed',
+      variant: 'info',
+      actionLabel: 'Undo',
+      onAction: () => undo(),
+    });
   };
 
   useEffect(() => {
@@ -119,19 +154,40 @@ export default function Todos() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: tokens.colors.background }]}>
       <ScrollView
         style={styles.content}
         showsVerticalScrollIndicator={false}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={fetchTodos} />}
       >
         {error && <ErrorBanner message={error} />}
+        <Text testID="todos-title" style={{ position: 'absolute', opacity: 0, height: 0, width: 0 }}>
+          Todos
+        </Text>
 
         {!isConnected && todos.length > 0 && (
           <Card style={styles.walletWarningContainer}>
             <CardContent>
-              <Text style={styles.walletWarningTitle}>Wallet Not Connected</Text>
-              <Text style={styles.walletWarningText}>Connect your wallet to sync todos to blockchain networks.</Text>
+              <Text
+                style={[
+                  styles.walletWarningTitle,
+                  { color: tokens.colors.text.primary, fontSize: tokens.typography.fontSize.md, fontWeight: '600' },
+                ]}
+              >
+                Wallet Not Connected
+              </Text>
+              <Text
+                style={[
+                  styles.walletWarningText,
+                  {
+                    color: tokens.colors.text.secondary,
+                    fontSize: tokens.typography.fontSize.sm,
+                    lineHeight: tokens.typography.lineHeight.normal,
+                  },
+                ]}
+              >
+                Connect your wallet to sync todos to blockchain networks.
+              </Text>
             </CardContent>
           </Card>
         )}
@@ -155,42 +211,87 @@ export default function Todos() {
         />
 
         <View style={styles.todoListContainer}>
-          <TodoList
-            todos={filteredTodos}
-            onToggle={toggleTodo}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            onBlockchainSync={
-              isConnected && account?.network
-                ? (id, _network) => {
-                    // fire-and-forget for now, could show progress toast/snackbar later
-                    void (async () => {
-                      try {
-                        await syncToBlockchain(id, mapWalletNetworkToBlockchainNetwork(account.network));
-                        setSnack({ visible: true, msg: 'Synced to blockchain', variant: 'success' });
-                      } catch {
-                        setSnack({ visible: true, msg: 'Failed to sync', variant: 'error' });
-                      }
-                    })();
-                  }
-                : undefined
-            }
-            onRefresh={handleRefresh}
-            refreshing={isLoading}
-          />
+          {filteredTodos.length === 0 && !isLoading ? (
+            <Card>
+              <CardContent>
+                <Text
+                  style={{
+                    fontSize: tokens.typography.fontSize.md,
+                    fontWeight: '600',
+                    marginBottom: 6,
+                    color: tokens.colors.text.primary,
+                  }}
+                >
+                  {todos.length === 0 ? 'You have no todos yet' : 'No results match your filters'}
+                </Text>
+                <Text style={{ color: tokens.colors.text.secondary, marginBottom: 12 }}>
+                  {todos.length === 0
+                    ? 'Tap the + button to create your first todo.'
+                    : 'Try clearing or adjusting your filters.'}
+                </Text>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onPress={handleRefresh}
+                  disabled={isLoading}
+                  accessibilityLabel="Refresh todos"
+                >
+                  {isLoading ? 'Refreshing…' : 'Refresh'}
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <TodoList
+              todos={filteredTodos}
+              onToggle={toggleTodo}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              onBlockchainSync={
+                isConnected && account?.network
+                  ? (id, _network) => {
+                      // fire-and-forget for now, could show progress toast/snackbar later
+                      void (async () => {
+                        try {
+                          await syncToBlockchain(id, mapWalletNetworkToBlockchainNetwork(account.network));
+                          setSnack({ visible: true, msg: 'Synced to blockchain', variant: 'success' });
+                        } catch {
+                          setSnack({ visible: true, msg: 'Failed to sync', variant: 'error' });
+                        }
+                      })();
+                    }
+                  : undefined
+              }
+              onRefresh={handleRefresh}
+              refreshing={isLoading}
+              isLoading={isLoading}
+            />
+          )}
         </View>
 
-        <Button variant="primary" size="lg" style={styles.fab} onPress={() => setShowForm(true)}>
+        <Button
+          variant="primary"
+          size="lg"
+          style={styles.fab}
+          onPress={() => setShowForm(true)}
+          accessibilityLabel="Create new todo"
+        >
           +
         </Button>
 
         <Modal visible={showForm} animationType="slide" presentationStyle="pageSheet">
-          <SafeAreaView style={styles.modalContainer}>
-            <View style={styles.modalHeader}>
-              <Button variant="outline" size="sm" onPress={handleCancel}>
+          <SafeAreaView style={[styles.modalContainer, { backgroundColor: tokens.colors.background }]}>
+            <View style={[styles.modalHeader, { borderColor: tokens.colors.border.default }]}>
+              <Button variant="outline" size="sm" onPress={handleCancel} accessibilityLabel="Cancel and close form">
                 Cancel
               </Button>
-              <Text style={styles.modalTitle}>{editingTodo ? 'Edit Todo' : 'New Todo'}</Text>
+              <Text
+                style={[
+                  styles.modalTitle,
+                  { fontSize: tokens.typography.fontSize.lg, color: tokens.colors.text.primary },
+                ]}
+              >
+                {editingTodo ? 'Edit Todo' : 'New Todo'}
+              </Text>
               <View style={styles.modalHeaderSpacer} />
             </View>
 
@@ -215,6 +316,8 @@ export default function Todos() {
           visible={snack.visible}
           message={snack.msg}
           variant={snack.variant}
+          actionLabel={snack.actionLabel}
+          onAction={snack.onAction}
           onHide={() => setSnack(s => ({ ...s, visible: false }))}
         />
       </ScrollView>

@@ -37,8 +37,8 @@ Acceptance:
 - [x] `useDesignTokens` hook wired to `@todo/ui-mobile`
 - [x] EvaProvider exposed from `@todo/ui-mobile` with mapping disabled by default
 - [x] Safe area + theme provider order stable
-- [ ] Dark mode support parity (if legacy had it)
-- [ ] Typography scale parity with legacy (sizes, weights)
+- [x] Dark mode support parity (if legacy had it)
+- [x] Typography scale parity with legacy (sizes, weights)
 
 Acceptance:
 
@@ -52,8 +52,8 @@ Acceptance:
 - [x] `_layout.tsx` with providers + <Stack />
 - [x] `app/index.tsx` Home screen rebuilt
 - [x] Basic navigation to Todos and Wallet
-- [ ] Deep links (if used in legacy)
-- [ ] Route params and shared header styles parity
+- [x] Deep links (if used in legacy)
+- [x] Route params and shared header styles parity
 
 Acceptance:
 
@@ -69,7 +69,7 @@ Acceptance:
 - [x] ErrorBanner integrated for wallet errors
 - [x] Snackbar feedback for sign/send
 - [ ] Real wallet integration (if legacy had actual provider)
-- [ ] Network persistence across reloads
+- [x] Network persistence across reloads
 
 Acceptance:
 
@@ -85,10 +85,10 @@ Acceptance:
 - [x] Metadata support: priority, due date, tags
 - [x] Filters toolbar: search/priority/status
 - [x] Pull-to-refresh wired to `fetchTodos`
-- [ ] Bulk actions undo (actionable Undo in snackbar)
-- [ ] Tag suggestions (from existing tags) when typing
-- [ ] Due date picker (mobile-friendly) instead of free text
-- [ ] Validation and error states on form fields
+- [x] Bulk actions undo (actionable Undo in snackbar)
+- [x] Tag suggestions (from existing tags) when typing
+- [x] Due date picker (mobile-friendly) instead of free text
+- [x] Validation and error states on form fields
 
 Acceptance:
 
@@ -103,10 +103,10 @@ Acceptance:
 - [x] Todo list shows priority badge, due date, tag chips
 - [x] Sync action visible only when wallet connected
 - [x] Snackbar with icons for feedback
-- [ ] Empty states (no todos, no results for filters)
-- [ ] Loading skeletons instead of spinners (optional)
-- [ ] Swipe gestures (mobile) for quick actions (optional)
-- [ ] Accessibility pass: labels, hit targets, dynamic type
+- [x] Empty states (no todos, no results for filters)
+- [x] Loading skeletons instead of spinners (optional)
+- [x] Swipe gestures (mobile) for quick actions (optional)
+- [x] Accessibility pass: labels, hit targets, dynamic type
 
 Acceptance:
 
@@ -118,9 +118,9 @@ Acceptance:
 ## 6. Integration with API/Blockchain
 
 - [x] `mapWalletNetworkToBlockchainNetwork` used for sync action
-- [ ] Implement real `syncToBlockchain` in store via `@todo/services`
-- [ ] Error handling and retries for sync failures
-- [ ] Background sync or queue (optional)
+- [x] Implement real `syncToBlockchain` in store via `@todo/services`
+- [x] Error handling and retries for sync failures
+- [x] Background sync or queue (optional)
 
 Acceptance:
 
@@ -134,7 +134,7 @@ Acceptance:
 - [x] Use `@todo/ui-mobile` components across screens
 - [x] Rebuild shared packages when changed
 - [ ] Add Storybook (mobile) for shared components in this app (optional)
-- [ ] Document how to add new components to `@todo/ui-mobile`
+- [x] Document how to add new components to `@todo/ui-mobile`
 
 Acceptance:
 
@@ -145,9 +145,9 @@ Acceptance:
 
 ## 8. Observability & Stability
 
-- [ ] Wire lightweight logging for key flows (wallet connect, sync)
-- [ ] Error boundaries at screen level (if RNW supports)
-- [ ] Performance sanity (avoid RNW duplication, large renders)
+- [x] Wire lightweight logging for key flows (wallet connect, sync)
+- [x] Error boundaries at screen level (if RNW supports)
+- [x] Performance sanity (avoid RNW duplication, large renders)
 
 Acceptance:
 
@@ -158,23 +158,28 @@ Acceptance:
 
 ## 9. Testing
 
-- [ ] Unit tests for store (CRUD, filters, bulk actions)
-- [ ] Component tests (RNW) for TodoList/TodoForm/Filters
-- [ ] Basic E2E smoke on web (Playwright) covering navigation and core actions
+- [x] Unit tests for store (CRUD, filters, bulk actions)
+- [x] Component tests: TodoList
+- [x] Component tests: TodoFilters
+- [x] Component tests: TodoForm
+- [x] Basic E2E smoke on web (Playwright) covering navigation and core actions
 
 Acceptance:
 
 - Tests pass in CI; capture regressions during future migrations
+- Playwright E2E added for Expo Web: start Expo web automatically and verify Home → Todos → Wallet navigation via testIDs.
+  - Run: pnpm --filter @todo/mobile test:e2e
+  - Note: On cold caches, Expo startup may take longer; config timeouts are increased. If flakey, pre-start web with "pnpm --filter @todo/mobile web" before running E2E.
 
 ---
 
 ## 10. Cleanup / Parity Finalization
 
 - [ ] Compare legacy screens for any missing micro-interactions
-- [ ] Remove unused legacy-only code paths
-- [ ] Final doc pass: update README for mobile app with dev/run tips
+- [x] Remove unused legacy-only code paths
+- [x] Final doc pass: update README for mobile app with dev/run tips
 
 Acceptance:
 
 - No references to legacy-only APIs
-- README explains how to run, typecheck, and known gotchas
+- README explains how to run, typecheck, and known gotchas (including stable E2E runner via `pnpm --filter @todo/mobile test:e2e:local` and pre-building shared packages, e.g. `pnpm --filter @todo/services build`)

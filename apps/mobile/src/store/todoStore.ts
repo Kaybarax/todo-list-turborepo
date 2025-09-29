@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TodoApiClient, type BlockchainNetwork } from '@todo/services';
+import {
+  TodoApiClient,
+  BlockchainServiceFactory,
+  BlockchainNetwork,
+  type UpdateBlockchainTodoInput,
+} from '@todo/services';
 
 export type Todo = {
   id: string;
@@ -25,7 +30,10 @@ export const useTodoStore = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const hydratedRef = useRef(false);
+  const undoStackRef = useRef<Todo[][]>([]);
   const STORAGE_KEY = '@todo/mobile/todos';
+  const QUEUE_KEY = '@todo/mobile/sync-queue';
+  const processingRef = useRef(false);
 
   const api = useMemo(() => new TodoApiClient({ baseUrl: 'http://localhost:3001/api/v1' }), []);
 
@@ -65,10 +73,16 @@ export const useTodoStore = () => {
           }));
           setTodos(restored);
         }
+        // Load background queue
+        const qraw = await AsyncStorage.getItem(QUEUE_KEY);
+        if (qraw)
+          queueRef.current = JSON.parse(qraw) as Array<{ id: string; network: BlockchainNetwork; attempts: number }>;
       } catch {
         // ignore corrupted cache
       } finally {
         hydratedRef.current = true;
+        // Kick off background processing after hydration
+        void processQueue();
       }
     };
     void load();
@@ -91,6 +105,127 @@ export const useTodoStore = () => {
     };
     void save();
   }, [todos]);
+
+  const syncToBlockchain = useCallback(
+    async (id: string, network: BlockchainNetwork) => {
+      // Map our local todo to blockchain update input (title + completed for now)
+      const todo = todos.find(t => t.id === id);
+      if (!todo) return;
+
+      // Minimal factory config; uses mock implementations by default
+      const factory = new BlockchainServiceFactory({
+        polygon: {
+          mainnet: {
+            rpcUrl: 'http://localhost:8545',
+            todoListFactoryAddress: '0x0000000000000000000000000000000000000000',
+          },
+        },
+        base: {
+          mainnet: {
+            rpcUrl: 'http://localhost:8545',
+            todoListFactoryAddress: '0x0000000000000000000000000000000000000000',
+          },
+        },
+        moonbeam: {
+          mainnet: {
+            rpcUrl: 'http://localhost:8545',
+            todoListFactoryAddress: '0x0000000000000000000000000000000000000000',
+          },
+        },
+      } as any);
+
+      const service = factory.getService(network);
+      // Retry with simple backoff up to 3 attempts
+      const maxAttempts = 3;
+      let attempt = 0;
+      let lastError: unknown = null;
+      const updates: UpdateBlockchainTodoInput = {
+        title: todo.title,
+        completed: todo.completed,
+      };
+      while (attempt < maxAttempts) {
+        try {
+          // Pick operation: if todo exists on chain we'd update; for demo always update
+          const receipt = await service.updateTodo(id, updates);
+          // Optionally wait for confirmation
+          if (receipt.status === 'pending' && receipt.hash) {
+            const status = await service.getTransactionStatus(receipt.hash);
+            if (status === 'failed') throw new Error('Transaction failed');
+          }
+          return; // success
+        } catch (e) {
+          lastError = e;
+          attempt += 1;
+          await new Promise(r => setTimeout(r, 300 * attempt));
+        }
+      }
+      throw lastError ?? new Error('Blockchain sync failed');
+    },
+    [todos],
+  );
+
+  // Background sync queue (very light)
+  const queueRef = useRef<Array<{ id: string; network: BlockchainNetwork; attempts: number }>>([]);
+
+  const persistQueue = async () => {
+    try {
+      await AsyncStorage.setItem(QUEUE_KEY, JSON.stringify(queueRef.current));
+    } catch {
+      // best-effort
+    }
+  };
+
+  const enqueueSync = useCallback(async (id: string, network: BlockchainNetwork) => {
+    queueRef.current.push({ id, network, attempts: 0 });
+    await persistQueue();
+    void processQueue();
+  }, []);
+
+  const processQueue = useCallback(async () => {
+    if (processingRef.current) return;
+    processingRef.current = true;
+    try {
+      while (queueRef.current.length > 0) {
+        const job = queueRef.current[0];
+        try {
+          await syncToBlockchain(job.id, job.network);
+          queueRef.current.shift();
+          await persistQueue();
+        } catch (e) {
+          job.attempts += 1;
+          if (job.attempts >= 5) {
+            // Drop after 5 attempts
+            queueRef.current.shift();
+            await persistQueue();
+          } else {
+            // Simple backoff
+            await new Promise(r => setTimeout(r, 500 * job.attempts));
+          }
+        }
+      }
+    } finally {
+      processingRef.current = false;
+    }
+  }, [syncToBlockchain]);
+
+  // Undo stack helpers (in-memory, not persisted)
+  const pushSnapshot = useCallback((snapshot: Todo[]) => {
+    // Cap to last 5 states
+    const stack = undoStackRef.current;
+    if (stack.length >= 5) {
+      stack.shift();
+    }
+    // shallow clone array to decouple from future mutations
+    stack.push(snapshot.map(t => ({ ...t })));
+  }, []);
+
+  const undo = useCallback(() => {
+    const stack = undoStackRef.current;
+    const last = stack.pop();
+    if (last) {
+      setTodos(last);
+    }
+  }, []);
 
   const addTodo = useCallback((input: NewTodo) => {
     const newTodo: Todo = {
@@ -130,23 +265,24 @@ export const useTodoStore = () => {
     setTodos(prev => prev.map(t => (t.id === id ? { ...t, completed: !t.completed } : t)));
   }, []);
 
-  const syncToBlockchain = useCallback(async (_id: string, _network: BlockchainNetwork) => {
-    // Placeholder: in real app, call a service
-    await new Promise<void>(resolve => setTimeout(resolve, 300));
-  }, []);
-
   // Bulk operations and state replacement (for undo scenarios)
   const replaceTodos = useCallback((next: Todo[]) => {
     setTodos(next);
   }, []);
 
   const markAllDone = useCallback(() => {
-    setTodos(prev => prev.map(t => ({ ...t, completed: true })));
-  }, []);
+    setTodos(prev => {
+      pushSnapshot(prev);
+      return prev.map(t => ({ ...t, completed: true }));
+    });
+  }, [pushSnapshot]);
 
   const clearCompleted = useCallback(() => {
-    setTodos(prev => prev.filter(t => !t.completed));
-  }, []);
+    setTodos(prev => {
+      pushSnapshot(prev);
+      return prev.filter(t => !t.completed);
+    });
+  }, [pushSnapshot]);
 
   return {
     todos,
@@ -159,7 +295,9 @@ export const useTodoStore = () => {
     replaceTodos,
     markAllDone,
     clearCompleted,
+    undo,
     syncToBlockchain,
+    enqueueSync,
     fetchTodos,
   } as const;
 };

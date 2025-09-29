@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getSupportedWalletNetworks, generateMockAddress } from '@todo/services';
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { Alert } from 'react-native';
+import { logger } from '../utils/logger';
 
 export interface WalletAccount {
   address: string;
@@ -55,10 +56,12 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       setIsConnected(true);
       await AsyncStorage.setItem('wallet-connected', 'true');
       await AsyncStorage.setItem('wallet-account', JSON.stringify(mockAccount));
+      logger.info('wallet_connected', { network: mockAccount.network });
       Alert.alert('Wallet Connected', `Connected to ${network}`);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to connect wallet';
       setError(errorMessage);
+      logger.error('wallet_connect_failed', { error: errorMessage, network });
       Alert.alert('Connection Failed', errorMessage);
     } finally {
       setIsConnecting(false);
@@ -74,6 +77,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       setError(null);
       await AsyncStorage.removeItem('wallet-connected');
       await AsyncStorage.removeItem('wallet-account');
+      logger.info('wallet_disconnected');
       Alert.alert('Wallet Disconnected');
     } finally {
       setIsConnecting(false);
@@ -94,6 +98,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       };
       setAccount(updated);
       await AsyncStorage.setItem('wallet-account', JSON.stringify(updated));
+      logger.info('wallet_switched_network', { network });
       Alert.alert('Network Switched', `Switched to ${network}`);
     } finally {
       setIsConnecting(false);
@@ -103,12 +108,14 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const signMessage = async (message: string) => {
     if (!account) throw new Error('No wallet connected');
     await new Promise<void>(resolve => setTimeout(() => resolve(), 300));
+    logger.info('wallet_sign_message', { network: account.network });
     return `0x${Math.random().toString(16).slice(2).padEnd(64, '0')}`;
   };
 
   const sendTransaction = async (_to: string, _amount: string) => {
     if (!account) throw new Error('No wallet connected');
     await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
+    logger.info('wallet_send_transaction', { network: account.network, to: _to, amount: _amount });
     return `0x${Math.random().toString(16).slice(2).padEnd(64, '0')}`;
   };
 
@@ -120,8 +127,10 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         if (isWalletConnected && stored) {
           setAccount(JSON.parse(stored));
           setIsConnected(true);
+          logger.info('wallet_restored');
         }
       } catch (e) {
+        logger.warn('wallet_restore_failed');
         await AsyncStorage.removeItem('wallet-connected');
         await AsyncStorage.removeItem('wallet-account');
       }

@@ -46,18 +46,22 @@ export default function Wallet() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: tokens.colors.background }]}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {error ? <ErrorBanner message={error} /> : null}
-        <Text style={styles.pageTitle}>Wallet Connection</Text>
-        <Text style={styles.pageSubtitle}>Connect your wallet to enable blockchain features for your todos.</Text>
+        <Text testID="wallet-title" style={[styles.pageTitle, { color: tokens.colors.text.primary }]}>
+          Wallet Connection
+        </Text>
+        <Text style={[styles.pageSubtitle, { color: tokens.colors.text.secondary }]}>
+          Connect your wallet to enable blockchain features for your todos.
+        </Text>
 
         <WalletConnect />
 
         {isConnected && account ? (
           <Card style={styles.actionsContainer}>
             <CardContent>
-              <Text style={styles.actionsTitle}>Wallet Actions</Text>
+              <Text style={[styles.actionsTitle, { color: tokens.colors.text.primary }]}>Wallet Actions</Text>
 
               <Button
                 variant="outline"
@@ -91,52 +95,78 @@ export default function Wallet() {
                 Send Test Transaction
               </Button>
 
-              <View style={styles.featuresContainer}>
-                <Text style={styles.featuresTitle}>Blockchain Features</Text>
+              <View
+                style={[
+                  styles.featuresContainer,
+                  { backgroundColor: tokens.colors.surface, borderColor: tokens.colors.border.default },
+                ]}
+              >
+                <Text style={[styles.featuresTitle, { color: tokens.colors.text.primary }]}>Blockchain Features</Text>
                 <View style={styles.featuresList}>
-                  <Text style={styles.featureItem}>• Store todos on blockchain networks</Text>
-                  <Text style={styles.featureItem}>• Immutable and decentralized storage</Text>
-                  <Text style={styles.featureItem}>• Cross-network compatibility</Text>
-                  <Text style={styles.featureItem}>• Cryptographic verification</Text>
+                  <Text style={[styles.featureItem, { color: tokens.colors.text.secondary }]}>
+                    • Store todos on blockchain networks
+                  </Text>
+                  <Text style={[styles.featureItem, { color: tokens.colors.text.secondary }]}>
+                    • Immutable and decentralized storage
+                  </Text>
+                  <Text style={[styles.featureItem, { color: tokens.colors.text.secondary }]}>
+                    • Cross-network compatibility
+                  </Text>
+                  <Text style={[styles.featureItem, { color: tokens.colors.text.secondary }]}>
+                    • Cryptographic verification
+                  </Text>
                 </View>
               </View>
             </CardContent>
           </Card>
         ) : (
-          <Card style={styles.disconnectedContainer}>
+          <Card
+            style={[
+              styles.disconnectedContainer,
+              { backgroundColor: tokens.colors.surface, borderColor: tokens.colors.border.default },
+            ]}
+          >
             <CardContent>
-              <Text style={styles.disconnectedTitle}>No wallet connected</Text>
-              <Text style={styles.disconnectedSubtitle}>Connect your wallet to access blockchain features.</Text>
+              <Text style={[styles.disconnectedTitle, { color: tokens.colors.text.primary }]}>No wallet connected</Text>
+              <Text style={[styles.disconnectedSubtitle, { color: tokens.colors.text.secondary }]}>
+                Connect your wallet to access blockchain features.
+              </Text>
             </CardContent>
           </Card>
         )}
 
         <Card style={styles.networksContainer}>
           <CardContent>
-            <Text style={styles.networksTitle}>Supported Networks</Text>
+            <Text style={[styles.networksTitle, { color: tokens.colors.text.primary }]}>Supported Networks</Text>
 
             <View style={styles.networksList}>
               <View style={styles.networkItem}>
                 <View style={[styles.networkDot, { backgroundColor: '#9333ea' }]} />
                 <View style={styles.networkInfo}>
-                  <Text style={styles.networkName}>Solana</Text>
-                  <Text style={styles.networkDescription}>Fast and low-cost transactions</Text>
+                  <Text style={[styles.networkName, { color: tokens.colors.text.primary }]}>Solana</Text>
+                  <Text style={[styles.networkDescription, { color: tokens.colors.text.secondary }]}>
+                    Fast and low-cost transactions
+                  </Text>
                 </View>
               </View>
 
               <View style={styles.networkItem}>
                 <View style={[styles.networkDot, { backgroundColor: '#ec4899' }]} />
                 <View style={styles.networkInfo}>
-                  <Text style={styles.networkName}>Polkadot</Text>
-                  <Text style={styles.networkDescription}>Interoperable blockchain network</Text>
+                  <Text style={[styles.networkName, { color: tokens.colors.text.primary }]}>Polkadot</Text>
+                  <Text style={[styles.networkDescription, { color: tokens.colors.text.secondary }]}>
+                    Interoperable blockchain network
+                  </Text>
                 </View>
               </View>
 
               <View style={styles.networkItem}>
                 <View style={[styles.networkDot, { backgroundColor: '#6366f1' }]} />
                 <View style={styles.networkInfo}>
-                  <Text style={styles.networkName}>Polygon</Text>
-                  <Text style={styles.networkDescription}>Ethereum-compatible scaling solution</Text>
+                  <Text style={[styles.networkName, { color: tokens.colors.text.primary }]}>Polygon</Text>
+                  <Text style={[styles.networkDescription, { color: tokens.colors.text.secondary }]}>
+                    Ethereum-compatible scaling solution
+                  </Text>
                 </View>
               </View>
             </View>
@@ -157,31 +187,31 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#f8f9fa',
+      backgroundColor: tokens.colors.background,
     },
     content: {
       flex: 1,
       padding: 20,
     },
     pageTitle: {
-      fontSize: 28,
+      fontSize: tokens.typography.fontSize.xxxl,
       fontWeight: 'bold',
-      color: '#1f2937',
+      color: tokens.colors.text.primary,
       marginBottom: 8,
     },
     pageSubtitle: {
-      fontSize: 16,
-      color: '#6b7280',
+      fontSize: tokens.typography.fontSize.md,
+      color: tokens.colors.text.secondary,
       marginBottom: 24,
-      lineHeight: 24,
+      lineHeight: tokens.typography.lineHeight.relaxed,
     },
     actionsContainer: {
       marginTop: 20,
     },
     actionsTitle: {
-      fontSize: 20,
+      fontSize: tokens.typography.fontSize.xl,
       fontWeight: '600',
-      color: '#1f2937',
+      color: tokens.colors.text.primary,
       marginBottom: 16,
     },
     actionButton: {
@@ -190,50 +220,50 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
     featuresContainer: {
       marginTop: 20,
       padding: 16,
-      backgroundColor: '#eff6ff',
+      backgroundColor: tokens.colors.surface,
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: '#bfdbfe',
+      borderColor: tokens.colors.border.default,
     },
     featuresTitle: {
-      fontSize: 16,
+      fontSize: tokens.typography.fontSize.md,
       fontWeight: '600',
-      color: '#1e40af',
+      color: tokens.colors.text.primary,
       marginBottom: 8,
     },
     featuresList: {
       marginLeft: 8,
     },
     featureItem: {
-      fontSize: 14,
-      color: '#1e40af',
+      fontSize: tokens.typography.fontSize.sm,
+      color: tokens.colors.text.secondary,
       marginBottom: 4,
     },
     disconnectedContainer: {
-      backgroundColor: '#f9fafb',
+      backgroundColor: tokens.colors.surface,
       borderWidth: 2,
-      borderColor: '#e5e7eb',
+      borderColor: tokens.colors.border.default,
       borderStyle: 'dashed',
       marginTop: 20,
     },
     disconnectedTitle: {
-      fontSize: 18,
+      fontSize: tokens.typography.fontSize.lg,
       fontWeight: '600',
-      color: '#1f2937',
+      color: tokens.colors.text.primary,
       marginBottom: 8,
     },
     disconnectedSubtitle: {
-      fontSize: 14,
-      color: '#6b7280',
+      fontSize: tokens.typography.fontSize.sm,
+      color: tokens.colors.text.secondary,
       textAlign: 'center',
     },
     networksContainer: {
       marginTop: 20,
     },
     networksTitle: {
-      fontSize: 20,
+      fontSize: tokens.typography.fontSize.xl,
       fontWeight: '600',
-      color: '#1f2937',
+      color: tokens.colors.text.primary,
       marginBottom: 16,
     },
     networksList: {
@@ -253,13 +283,13 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
       flex: 1,
     },
     networkName: {
-      fontSize: 16,
+      fontSize: tokens.typography.fontSize.md,
       fontWeight: '600',
-      color: '#1f2937',
+      color: tokens.colors.text.primary,
       marginBottom: 2,
     },
     networkDescription: {
-      fontSize: 14,
-      color: '#6b7280',
+      fontSize: tokens.typography.fontSize.sm,
+      color: tokens.colors.text.secondary,
     },
   });

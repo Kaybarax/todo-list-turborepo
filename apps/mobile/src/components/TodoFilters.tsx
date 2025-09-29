@@ -86,7 +86,7 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
     card: { marginBottom: tokens.spacing.md },
     input: {
       borderWidth: 1,
-      borderColor: '#e5e7eb',
+      borderColor: tokens.colors.border.default,
       borderRadius: 8,
       padding: 12,
       fontSize: 16,

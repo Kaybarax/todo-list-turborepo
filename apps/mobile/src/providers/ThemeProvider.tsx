@@ -10,16 +10,30 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>('light');
+type ThemeProviderProps = {
+  children: ReactNode;
+  mode?: ThemeMode; // optional controlled mode
+  onModeChange?: (mode: ThemeMode) => void; // optional change handler when controlled
+};
+
+export const ThemeProvider = ({ children, mode, onModeChange }: ThemeProviderProps) => {
+  const [internalMode, setInternalMode] = useState<ThemeMode>('light');
+  const themeMode = mode ?? internalMode;
 
   const value = useMemo(
     () => ({
       themeMode,
-      toggleTheme: () => setThemeMode(m => (m === 'light' ? 'dark' : 'light')),
-      setTheme: (mode: ThemeMode) => setThemeMode(mode),
+      toggleTheme: () => {
+        const next = themeMode === 'light' ? 'dark' : 'light';
+        if (onModeChange) onModeChange(next);
+        else setInternalMode(next);
+      },
+      setTheme: (m: ThemeMode) => {
+        if (onModeChange) onModeChange(m);
+        else setInternalMode(m);
+      },
     }),
-    [themeMode],
+    [themeMode, onModeChange],
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
