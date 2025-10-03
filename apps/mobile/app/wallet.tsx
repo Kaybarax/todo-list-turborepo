@@ -301,15 +301,17 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
       fontSize: tokens.typography.fontSize.md,
       fontWeight: '600',
       color: tokens.colors.text.primary,
-      marginBottom: tokens.spacing.xs,
+      marginBottom: tokens.spacing.sm,
+      lineHeight: 20,
     },
     featuresList: {
       marginLeft: tokens.spacing.xs,
+      marginTop: tokens.spacing.xs,
     },
     featureItem: {
       fontSize: tokens.typography.fontSize.sm,
       color: tokens.colors.text.secondary,
-      marginBottom: tokens.spacing.xs,
-      lineHeight: tokens.typography.lineHeight.relaxed,
+      marginBottom: tokens.spacing.sm,
+      lineHeight: 20,
     },
   });
