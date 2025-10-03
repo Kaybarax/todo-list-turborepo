@@ -8,7 +8,14 @@ export function GlobalThemeFAB() {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={styles.fabContainer(insets.top)}>
+    <View
+      style={{
+        position: 'absolute',
+        right: 16,
+        top: insets.top + 16,
+        zIndex: 1,
+      }}
+    >
       <TouchableOpacity
         style={[
           styles.themeToggle,
@@ -31,12 +38,6 @@ export function GlobalThemeFAB() {
 }
 
 const styles = StyleSheet.create({
-  fabContainer: topInset => ({
-    position: 'absolute',
-    right: 16,
-    top: topInset + 16,
-    zIndex: 1,
-  }),
   themeToggle: {
     width: 48,
     height: 48,

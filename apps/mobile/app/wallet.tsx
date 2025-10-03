@@ -77,7 +77,7 @@ export default function Wallet() {
           Wallet Connection
         </Text>
         <View style={styles.subtitleContainer}>
-          <Text style={styles.pageSubtitle} variant="subtitle1" color="secondary">
+          <Text style={styles.pageSubtitle} variant="body1" color="secondary">
             Connect your wallet to enable blockchain features for your todos.
           </Text>
         </View>
@@ -87,7 +87,7 @@ export default function Wallet() {
           <Card style={styles.walletInfoCard}>
             <CardContent>
               <View style={styles.walletHeader}>
-                <Text style={styles.walletTitle} variant="h6">
+                <Text style={styles.walletTitle} variant="h4">
                   Connected Wallet
                 </Text>
                 <Button variant="outline" size="sm" onPress={disconnect} disabled={isConnecting}>
@@ -132,7 +132,7 @@ export default function Wallet() {
         {/* Network Selector */}
         <Card style={styles.networkSelectorCard}>
           <CardContent>
-            <Text style={styles.sectionTitle} variant="h6">
+            <Text style={styles.sectionTitle} variant="h4">
               {isConnected ? 'Switch Network' : 'Select Network to Connect'}
             </Text>
             <NetworkSelector
@@ -147,7 +147,7 @@ export default function Wallet() {
         {isConnected && account ? (
           <Card style={styles.actionsContainer}>
             <CardContent>
-              <Text style={styles.actionsTitle} variant="h6">
+              <Text style={styles.actionsTitle} variant="h4">
                 Wallet Actions
               </Text>
 
@@ -165,7 +165,7 @@ export default function Wallet() {
                   { backgroundColor: tokens.colors.surface, borderColor: tokens.colors.border.default },
                 ]}
               >
-                <Text style={styles.featuresTitle} variant="h6">
+                <Text style={styles.featuresTitle} variant="h4">
                   Blockchain Features
                 </Text>
                 <View style={styles.featuresList}>
