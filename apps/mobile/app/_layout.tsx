@@ -7,6 +7,7 @@ import React from 'react';
 import { WalletProvider } from '../src/providers/WalletProvider';
 import { EnhancedThemeProvider, useEnhancedTheme } from '@todo/ui-mobile';
 import { ErrorBoundary } from '../src/components/ErrorBoundary';
+import { GlobalThemeFAB } from '../src/components/GlobalThemeFAB';
 
 export default function RootLayout() {
   return (
@@ -25,6 +26,7 @@ export default function RootLayout() {
               <Stack.Screen name="wallet" options={{ headerShown: false }} />
             </Stack>
             <ThemedStatusBar />
+            <GlobalThemeFAB />
           </ErrorBoundary>
         </WalletProvider>
       </EnhancedThemeProvider>

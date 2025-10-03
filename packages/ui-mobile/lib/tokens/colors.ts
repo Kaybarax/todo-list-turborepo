@@ -149,8 +149,8 @@ export const lightColors: ColorTokens = {
   // Text colors
   text: {
     primary: neutral[900],
-    secondary: neutral[600],
-    disabled: neutral[400],
+    secondary: neutral[700],
+    disabled: neutral[500],
     inverse: '#FFFFFF',
   },
 
@@ -179,7 +179,7 @@ export const darkColors: ColorTokens = {
   // Text colors
   text: {
     primary: '#FFFFFF',
-    secondary: neutral[300],
+    secondary: neutral[400],
     disabled: neutral[500],
     inverse: neutral[900],
   },

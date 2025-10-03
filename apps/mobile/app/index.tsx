@@ -14,27 +14,6 @@ export default function Home() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: tokens.colors.background }]}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        {/* Theme Toggle Button */}
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={[
-              styles.themeToggle,
-              {
-                backgroundColor: themeMode === 'light' ? '#2D3748' : '#EDF2F7',
-                borderColor: themeMode === 'light' ? '#2D3748' : '#4299E1',
-              },
-            ]}
-            onPress={toggleTheme}
-            accessibilityLabel="Toggle color theme"
-          >
-            <Icon
-              name={themeMode === 'light' ? 'sun-outline' : 'moon-outline'}
-              size="lg"
-              color={themeMode === 'light' ? '#FFFFFF' : '#4299E1'}
-            />
-          </TouchableOpacity>
-        </View>
-
         {/* Title and Subtitle */}
         <View style={styles.heroSection}>
           <Text

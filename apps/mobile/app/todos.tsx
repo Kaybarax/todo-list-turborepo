@@ -268,16 +268,6 @@ export default function Todos() {
           )}
         </View>
 
-        <Button
-          variant="primary"
-          size="lg"
-          style={styles.fab}
-          onPress={() => setShowForm(true)}
-          accessibilityLabel="Create new todo"
-        >
-          +
-        </Button>
-
         <Modal visible={showForm} animationType="slide" presentationStyle="pageSheet">
           <SafeAreaView style={[styles.modalContainer, { backgroundColor: tokens.colors.background }]}>
             <View style={[styles.modalHeader, { borderColor: tokens.colors.border.default }]}>
@@ -313,6 +303,15 @@ export default function Todos() {
           </SafeAreaView>
         </Modal>
       </ScrollView>
+      <Button
+        variant="primary"
+        size="lg"
+        style={styles.fab}
+        onPress={() => setShowForm(true)}
+        accessibilityLabel="Create new todo"
+      >
+        +
+      </Button>
       <Snackbar
         visible={snack.visible}
         message={snack.msg}

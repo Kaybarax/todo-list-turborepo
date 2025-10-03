@@ -47,9 +47,7 @@ export { Badge } from './components/Badge';
 export type { BadgeProps, BadgeVariant, BadgeSize } from './components/Badge';
 
 export { NetworkSelector } from './components/NetworkSelector';
-export type { NetworkSelectorProps } from './components/NetworkSelector';
-// TODO: Fix NetworkType export issue
-// export type { NetworkType } from './components/NetworkSelector';
+export type { NetworkSelectorProps, NetworkType } from './components/NetworkSelector';
 
 export { Avatar } from './components/Avatar';
 export type { AvatarProps, AvatarSize, AvatarShape } from './components/Avatar';

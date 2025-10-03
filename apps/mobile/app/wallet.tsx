@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Card, CardContent, NetworkSelector, type NetworkType } from '@todo/ui-mobile';
+import { Button, Card, CardContent, NetworkSelector, Text, type NetworkType } from '@todo/ui-mobile';
 import { ErrorBanner } from '../src/components/ErrorBanner';
 import { Snackbar } from '../src/components/Snackbar';
 import { useWallet } from '../src/providers/WalletProvider';
@@ -73,11 +73,11 @@ export default function Wallet() {
     <SafeAreaView style={[styles.container, { backgroundColor: tokens.colors.background }]}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {error ? <ErrorBanner message={error} /> : null}
-        <Text testID="wallet-title" style={[styles.pageTitle, { color: tokens.colors.text.primary }]}>
+        <Text testID="wallet-title" style={styles.pageTitle} variant="h1">
           Wallet Connection
         </Text>
         <View style={styles.subtitleContainer}>
-          <Text style={[styles.pageSubtitle, { color: tokens.colors.text.secondary }]}>
+          <Text style={styles.pageSubtitle} variant="subtitle1" color="secondary">
             Connect your wallet to enable blockchain features for your todos.
           </Text>
         </View>
@@ -87,7 +87,9 @@ export default function Wallet() {
           <Card style={styles.walletInfoCard}>
             <CardContent>
               <View style={styles.walletHeader}>
-                <Text style={[styles.walletTitle, { color: tokens.colors.text.primary }]}>Connected Wallet</Text>
+                <Text style={styles.walletTitle} variant="h6">
+                  Connected Wallet
+                </Text>
                 <Button variant="outline" size="sm" onPress={disconnect} disabled={isConnecting}>
                   Disconnect
                 </Button>
@@ -95,25 +97,31 @@ export default function Wallet() {
 
               <View style={styles.walletDetails}>
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: tokens.colors.text.secondary }]}>Network</Text>
-                  <Text style={[styles.detailValue, { color: tokens.colors.text.primary }]}>{account.network}</Text>
+                  <Text style={styles.detailLabel} variant="body2" color="secondary">
+                    Network
+                  </Text>
+                  <Text style={styles.detailValue} variant="body2">
+                    {account.network}
+                  </Text>
                 </View>
 
                 <View style={styles.detailRow}>
-                  <Text style={[styles.detailLabel, { color: tokens.colors.text.secondary }]}>Address</Text>
-                  <Text
-                    style={[styles.detailValue, { color: tokens.colors.text.primary }]}
-                    numberOfLines={1}
-                    ellipsizeMode="middle"
-                  >
+                  <Text style={styles.detailLabel} variant="body2" color="secondary">
+                    Address
+                  </Text>
+                  <Text style={styles.detailValue} variant="body2" numberOfLines={1} ellipsizeMode="middle">
                     {account.address}
                   </Text>
                 </View>
 
                 {account.balance && (
                   <View style={styles.detailRow}>
-                    <Text style={[styles.detailLabel, { color: tokens.colors.text.secondary }]}>Balance</Text>
-                    <Text style={[styles.detailValue, { color: tokens.colors.text.primary }]}>{account.balance}</Text>
+                    <Text style={styles.detailLabel} variant="body2" color="secondary">
+                      Balance
+                    </Text>
+                    <Text style={styles.detailValue} variant="body2">
+                      {account.balance}
+                    </Text>
                   </View>
                 )}
               </View>
@@ -124,7 +132,7 @@ export default function Wallet() {
         {/* Network Selector */}
         <Card style={styles.networkSelectorCard}>
           <CardContent>
-            <Text style={[styles.sectionTitle, { color: tokens.colors.text.primary }]}>
+            <Text style={styles.sectionTitle} variant="h6">
               {isConnected ? 'Switch Network' : 'Select Network to Connect'}
             </Text>
             <NetworkSelector
@@ -139,7 +147,9 @@ export default function Wallet() {
         {isConnected && account ? (
           <Card style={styles.actionsContainer}>
             <CardContent>
-              <Text style={[styles.actionsTitle, { color: tokens.colors.text.primary }]}>Wallet Actions</Text>
+              <Text style={styles.actionsTitle} variant="h6">
+                Wallet Actions
+              </Text>
 
               <Button variant="outline" size="lg" style={styles.actionButton} onPress={handleSignMessage}>
                 Sign Message
@@ -155,18 +165,20 @@ export default function Wallet() {
                   { backgroundColor: tokens.colors.surface, borderColor: tokens.colors.border.default },
                 ]}
               >
-                <Text style={[styles.featuresTitle, { color: tokens.colors.text.primary }]}>Blockchain Features</Text>
+                <Text style={styles.featuresTitle} variant="h6">
+                  Blockchain Features
+                </Text>
                 <View style={styles.featuresList}>
-                  <Text style={[styles.featureItem, { color: tokens.colors.text.secondary }]}>
+                  <Text style={styles.featureItem} variant="body2" color="secondary">
                     • Store todos on blockchain networks
                   </Text>
-                  <Text style={[styles.featureItem, { color: tokens.colors.text.secondary }]}>
+                  <Text style={styles.featureItem} variant="body2" color="secondary">
                     • Immutable and decentralized storage
                   </Text>
-                  <Text style={[styles.featureItem, { color: tokens.colors.text.secondary }]}>
+                  <Text style={styles.featureItem} variant="body2" color="secondary">
                     • Cross-network compatibility
                   </Text>
-                  <Text style={[styles.featureItem, { color: tokens.colors.text.secondary }]}>
+                  <Text style={styles.featureItem} variant="body2" color="secondary">
                     • Cryptographic verification
                   </Text>
                 </View>
@@ -224,6 +236,7 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
     walletTitle: {
       fontSize: tokens.typography.fontSize.lg,
       fontWeight: '600',
+      color: tokens.colors.text.primary,
     },
     walletDetails: {
       gap: tokens.spacing.sm,
@@ -244,6 +257,7 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
       fontSize: tokens.typography.fontSize.sm,
       flex: 1,
       textAlign: 'right',
+      color: tokens.colors.text.primary,
     },
     networkSelectorCard: {
       marginBottom: tokens.spacing.md,
@@ -251,6 +265,7 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
     sectionTitle: {
       fontSize: tokens.typography.fontSize.lg,
       fontWeight: '600',
+      color: tokens.colors.text.primary,
       marginBottom: tokens.spacing.md,
     },
     actionsContainer: {

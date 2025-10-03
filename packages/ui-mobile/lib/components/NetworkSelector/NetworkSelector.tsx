@@ -62,10 +62,10 @@ export const NetworkSelector = ({
   const supportedNetworks = getSupportedWalletNetworks() ?? [];
 
   // Get Eva Design colors
-  const getBackgroundColor = () => evaTheme['background-basic-color-1'] ?? '#ffffff';
-  const getBorderColor = () => evaTheme['border-basic-color-3'] ?? '#e5e7eb';
-  const getTextPrimaryColor = () => evaTheme['text-basic-color'] ?? '#1f2937';
-  const getTextSecondaryColor = () => evaTheme['text-hint-color'] ?? '#6b7280';
+  const getBackgroundColor = () => theme.colors.surface;
+  const getBorderColor = () => theme.colors.border.default;
+  const getTextPrimaryColor = () => theme.colors.text.primary;
+  const getTextSecondaryColor = () => theme.colors.text.secondary;
   const getDisabledOpacity = () => {
     const raw = evaTheme['opacity-disabled'];
     const parsed = parseFloat(raw ?? '0.5');
@@ -109,7 +109,9 @@ export const NetworkSelector = ({
               ]}
             >
               <View style={styles.listItemContent}>
-                <Text style={[styles.networkIcon, styles.networkIconLarge]}>{networkInfo.icon}</Text>
+                <Text style={[styles.networkIcon, styles.networkIconLarge, { color: getTextPrimaryColor() }]}>
+                  {networkInfo.icon}
+                </Text>
                 <View style={[styles.networkInfo, { marginLeft: theme.spacing.md }]}>
                   <Text category="s1" style={[{ color: getTextPrimaryColor() }, isSelected && { color: networkColor }]}>
                     {networkInfo.name}
@@ -171,7 +173,13 @@ export const NetworkSelector = ({
               ]}
             >
               <View style={styles.networkContent}>
-                <Text style={[styles.networkIcon, styles.networkIconLarge, { marginBottom: theme.spacing.sm }]}>
+                <Text
+                  style={[
+                    styles.networkIcon,
+                    styles.networkIconLarge,
+                    { marginBottom: theme.spacing.sm, color: getTextPrimaryColor() },
+                  ]}
+                >
                   {networkInfo.icon}
                 </Text>
                 <Text
