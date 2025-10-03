@@ -4,12 +4,11 @@
  * Maintains backward compatibility while using Eva Design theming
  */
 
-import { Text as UIKittenText } from '@ui-kitten/components';
+import { Text as UIKittenText, useTheme } from '@ui-kitten/components';
 import type { TextProps as UIKittenTextProps } from '@ui-kitten/components';
 import React from 'react';
 import { type StyleProp, type TextStyle } from 'react-native';
 
-import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { mapTextCategory, type TextVariant as MappingTextVariant } from '../../utils/componentMappings';
 
 export type TextVariant = MappingTextVariant;
@@ -25,6 +24,13 @@ export interface TextProps extends Omit<UIKittenTextProps, 'category' | 'style'>
   style?: StyleProp<TextStyle>;
 }
 
+const fontWeightMap = {
+  regular: '400',
+  medium: '500',
+  semibold: '600',
+  bold: '700',
+};
+
 export const Text: React.FC<TextProps> = ({
   variant = 'body1',
   color = 'primary',
@@ -36,24 +42,25 @@ export const Text: React.FC<TextProps> = ({
   style,
   ...props
 }) => {
-  const { theme, evaTheme } = useEnhancedTheme();
+  // Use UI Kitten's theme directly which is already set by EvaProvider
+  const evaTheme = useTheme();
 
   const category = mapTextCategory(variant);
 
-  // Get text color from Eva theme or fallback to legacy theme
+  // Get text color from Eva theme
   const getTextColor = (colorName: TextColor): string => {
-    if (colorName === 'primary') return evaTheme['text-basic-color'] ?? theme.colors.text.primary;
-    if (colorName === 'secondary') return evaTheme['text-hint-color'] ?? theme.colors.text.secondary;
-    if (colorName === 'disabled') return evaTheme['text-disabled-color'] ?? theme.colors.text.disabled;
-    if (colorName === 'inverse') return evaTheme['text-control-color'] ?? theme.colors.text.inverse;
+    if (colorName === 'primary') return evaTheme['text-basic-color'];
+    if (colorName === 'secondary') return evaTheme['text-hint-color'];
+    if (colorName === 'disabled') return evaTheme['text-disabled-color'];
+    if (colorName === 'inverse') return evaTheme['text-control-color'];
     return colorName; // Custom color string
   };
 
-  // Create custom styles combining Eva Design tokens with legacy theme fallbacks
-  const baseStyle = {
+  // Create custom styles combining Eva Design tokens
+  const baseStyle: TextStyle = {
     color: getTextColor(color),
     textAlign: align,
-    ...(weight && { fontWeight: theme.typography.fontWeights[weight] }),
+    ...(weight && { fontWeight: fontWeightMap[weight] as any }),
   };
 
   return (

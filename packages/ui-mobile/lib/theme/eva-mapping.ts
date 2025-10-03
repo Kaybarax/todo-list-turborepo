@@ -450,5 +450,38 @@ export const customMapping: CustomMappingType = {
         },
       },
     },
+    Card: {
+      meta: {
+        parameters: {},
+        appearances: {
+          filled: {
+            default: true,
+          },
+          outline: {
+            default: false,
+          },
+        },
+        variantGroups: {},
+        states: {},
+      },
+      appearances: {
+        filled: {
+          mapping: {
+            backgroundColor: 'background-basic-color-1',
+            borderColor: 'transparent',
+            borderWidth: 0,
+            borderRadius: 'border-radius',
+          },
+        },
+        outline: {
+          mapping: {
+            backgroundColor: 'transparent',
+            borderColor: 'border-basic-color-3',
+            borderWidth: 1,
+            borderRadius: 'border-radius',
+          },
+        },
+      },
+    },
   },
 };

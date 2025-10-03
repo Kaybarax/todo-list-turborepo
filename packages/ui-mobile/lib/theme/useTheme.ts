@@ -1,6 +1,9 @@
 /**
- * useTheme Hook
- * Custom hook for accessing theme values and theme switching functionality
+ * Theme Hook (Legacy)
+ * Provides access to the current theme context
+ *
+ * @deprecated Use useEnhancedTheme instead for full Eva Design integration
+ * @see useEnhancedTheme for the recommended approach
  */
 
 import { useContext } from 'react';

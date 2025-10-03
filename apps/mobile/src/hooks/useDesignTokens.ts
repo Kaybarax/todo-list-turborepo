@@ -3,18 +3,11 @@
  * Provides easy access to design system tokens with theme support
  */
 
-import { useTheme, lightTheme } from '@todo/ui-mobile';
+import { useEnhancedTheme } from '@todo/ui-mobile';
 
 export const useDesignTokens = () => {
-  // Try to use theme context, fallback to light theme if not available
-  let theme: any;
-  try {
-    const themeContext: any = useTheme();
-    theme = themeContext?.theme || lightTheme;
-  } catch {
-    // Fallback if ThemeProvider is not available
-    theme = lightTheme;
-  }
+  // Use the enhanced theme context which provides both legacy and Eva Design themes
+  const { theme } = useEnhancedTheme();
 
   return {
     // Colors

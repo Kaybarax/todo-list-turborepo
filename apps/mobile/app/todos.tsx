@@ -312,15 +312,15 @@ export default function Todos() {
             />
           </SafeAreaView>
         </Modal>
-        <Snackbar
-          visible={snack.visible}
-          message={snack.msg}
-          variant={snack.variant}
-          actionLabel={snack.actionLabel}
-          onAction={snack.onAction}
-          onHide={() => setSnack(s => ({ ...s, visible: false }))}
-        />
       </ScrollView>
+      <Snackbar
+        visible={snack.visible}
+        message={snack.msg}
+        variant={snack.variant}
+        actionLabel={snack.actionLabel}
+        onAction={snack.onAction}
+        onHide={() => setSnack(s => ({ ...s, visible: false }))}
+      />
     </SafeAreaView>
   );
 }

@@ -1,6 +1,9 @@
 /**
- * Theme Provider Component
+ * Theme Provider Component (Legacy)
  * Provides theme context and manages theme switching
+ *
+ * @deprecated Use EnhancedThemeProvider instead for full Eva Design integration
+ * @see EnhancedThemeProvider for the recommended approach
  */
 
 import React, { createContext, useState, useCallback, type ReactNode, useEffect } from 'react';

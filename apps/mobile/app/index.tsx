@@ -2,14 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
-import { Button, Icon } from '@todo/ui-mobile';
+import { Button, Icon, Card, CardContent, CardTitle, CardDescription, useEnhancedTheme } from '@todo/ui-mobile';
 import { useDesignTokens } from '../src/hooks/useDesignTokens';
-import { useTheme } from '../src/providers/ThemeProvider';
 
 export default function Home() {
   const tokens = useDesignTokens();
   const styles = createStyles(tokens);
-  const { themeMode, toggleTheme } = useTheme();
+  const { themeName, toggleTheme } = useEnhancedTheme();
+  const themeMode = themeName; // For backward compatibility with existing code
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: tokens.colors.background }]}>
@@ -91,80 +91,53 @@ export default function Home() {
 
           {/* Feature Cards */}
           <View style={styles.featureContainer}>
-            <View
-              style={[
-                styles.featureCard,
-                {
-                  backgroundColor: themeMode === 'light' ? '#FFFFFF' : '#2D3748',
-                  borderColor: themeMode === 'light' ? '#E2E8F0' : '#4A5568',
-                },
-              ]}
-            >
-              <View style={styles.featureIconContainer}>
-                <Icon name="file-text-outline" size="xl" color="#805AD5" />
-              </View>
-              <View style={styles.featureContent}>
-                <Text style={[styles.featureTitle, { color: themeMode === 'light' ? '#1A202C' : '#F7FAFC' }]}>
-                  Smart Prioritization
-                </Text>
-                <Text
-                  numberOfLines={0}
-                  style={[styles.featureDescription, { color: themeMode === 'light' ? '#4A5568' : '#CBD5E0' }]}
-                >
-                  Create, categorize, and track your tasks with intelligent prioritization powered by AI.
-                </Text>
-              </View>
-            </View>
+            <Card variant="elevated" padding="md" style={styles.featureCard} testID="feature-card-prioritization">
+              <CardContent style={styles.cardContentWrapper}>
+                <View style={styles.featureIconContainer}>
+                  <Icon name="file-text-outline" size="xl" color="#805AD5" />
+                </View>
+                <View style={styles.featureContent}>
+                  <CardTitle variant="h4" style={styles.cardTitle} numberOfLines={2}>
+                    Smart Prioritization
+                  </CardTitle>
+                  <CardDescription style={styles.cardDescription} numberOfLines={3}>
+                    Create, categorize, and track your tasks with intelligent prioritization powered by AI.
+                  </CardDescription>
+                </View>
+              </CardContent>
+            </Card>
 
-            <View
-              style={[
-                styles.featureCard,
-                {
-                  backgroundColor: themeMode === 'light' ? '#FFFFFF' : '#2D3748',
-                  borderColor: themeMode === 'light' ? '#E2E8F0' : '#4A5568',
-                },
-              ]}
-            >
-              <View style={styles.featureIconContainer}>
-                <Icon name="shield-outline" size="xl" color="#48BB78" />
-              </View>
-              <View style={styles.featureContent}>
-                <Text style={[styles.featureTitle, { color: themeMode === 'light' ? '#1A202C' : '#F7FAFC' }]}>
-                  Secure Blockchain Sync
-                </Text>
-                <Text
-                  numberOfLines={0}
-                  style={[styles.featureDescription, { color: themeMode === 'light' ? '#4A5568' : '#CBD5E0' }]}
-                >
-                  Secure your todos with decentralized storage and verification for maximum privacy.
-                </Text>
-              </View>
-            </View>
+            <Card variant="elevated" padding="md" style={styles.featureCard} testID="feature-card-blockchain">
+              <CardContent style={styles.cardContentWrapper}>
+                <View style={styles.featureIconContainer}>
+                  <Icon name="shield-outline" size="xl" color="#48BB78" />
+                </View>
+                <View style={styles.featureContent}>
+                  <CardTitle variant="h4" style={styles.cardTitle} numberOfLines={2}>
+                    Secure Blockchain Sync
+                  </CardTitle>
+                  <CardDescription style={styles.cardDescription} numberOfLines={3}>
+                    Secure your todos with decentralized storage and verification for maximum privacy.
+                  </CardDescription>
+                </View>
+              </CardContent>
+            </Card>
 
-            <View
-              style={[
-                styles.featureCard,
-                {
-                  backgroundColor: themeMode === 'light' ? '#FFFFFF' : '#2D3748',
-                  borderColor: themeMode === 'light' ? '#E2E8F0' : '#4A5568',
-                },
-              ]}
-            >
-              <View style={styles.featureIconContainer}>
-                <Icon name="sync-outline" size="xl" color="#ED8936" />
-              </View>
-              <View style={styles.featureContent}>
-                <Text style={[styles.featureTitle, { color: themeMode === 'light' ? '#1A202C' : '#F7FAFC' }]}>
-                  Seamless Cross-Device Sync
-                </Text>
-                <Text
-                  numberOfLines={0}
-                  style={[styles.featureDescription, { color: themeMode === 'light' ? '#4A5568' : '#CBD5E0' }]}
-                >
-                  Access your todos anywhere with seamless synchronization across all your devices.
-                </Text>
-              </View>
-            </View>
+            <Card variant="elevated" padding="md" style={styles.featureCard} testID="feature-card-sync">
+              <CardContent style={styles.cardContentWrapper}>
+                <View style={styles.featureIconContainer}>
+                  <Icon name="sync-outline" size="xl" color="#ED8936" />
+                </View>
+                <View style={styles.featureContent}>
+                  <CardTitle variant="h4" style={styles.cardTitle} numberOfLines={2}>
+                    Seamless Cross-Device Sync
+                  </CardTitle>
+                  <CardDescription style={styles.cardDescription} numberOfLines={3}>
+                    Access your todos anywhere with seamless synchronization across all your devices.
+                  </CardDescription>
+                </View>
+              </CardContent>
+            </Card>
           </View>
         </View>
       </ScrollView>
@@ -298,18 +271,17 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
       width: '100%',
     },
     featureCard: {
-      flexDirection: 'row',
-      padding: tokens.spacing.md,
-      paddingVertical: tokens.spacing.lg,
-      borderRadius: 12,
-      borderWidth: 1,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.05,
-      shadowRadius: 4,
-      elevation: 2,
       marginBottom: tokens.spacing.sm,
-      minHeight: 95,
+    },
+    cardContentWrapper: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+    },
+    cardTitle: {
+      marginBottom: 2,
+    },
+    cardDescription: {
+      lineHeight: 18,
     },
     featureIconContainer: {
       marginRight: tokens.spacing.md,
@@ -320,20 +292,5 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
     },
     featureContent: {
       flex: 1,
-      flexShrink: 1,
-      flexWrap: 'wrap',
-      paddingBottom: 4,
-    },
-    featureTitle: {
-      fontSize: tokens.typography.fontSize.md,
-      fontWeight: '700',
-      marginBottom: tokens.spacing.xs,
-      lineHeight: tokens.typography.fontSize.md * 1.6,
-    },
-    featureDescription: {
-      fontSize: tokens.typography.fontSize.xs,
-      lineHeight: tokens.typography.fontSize.xs * 1.6,
-      flexWrap: 'wrap',
-      width: '100%',
     },
   });

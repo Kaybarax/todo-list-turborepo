@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Card, CardContent, NetworkSelector, type NetworkType } from '@todo/ui-mobile';
 import { ErrorBanner } from '../src/components/ErrorBanner';
@@ -46,10 +46,10 @@ export default function Wallet() {
     try {
       const message = 'Hello from Todo App Mobile!';
       const signature = await signMessage(message);
-      Alert.alert('Message Signed', `Signature: ${signature.slice(0, 20)}...`, [{ text: 'OK' }]);
+      setSnack({ visible: true, msg: `Message signed: ${signature.slice(0, 20)}...`, variant: 'success' });
     } catch (error) {
       if (error instanceof Error && error.message !== 'User cancelled signing') {
-        Alert.alert('Error', 'Failed to sign message: ' + error.message);
+        setSnack({ visible: true, msg: 'Failed to sign message: ' + error.message, variant: 'error' });
       }
     }
   };
@@ -61,10 +61,10 @@ export default function Wallet() {
         '0.001',
         'Todo app mobile transaction',
       );
-      Alert.alert('Transaction Sent', `Hash: ${txHash.slice(0, 20)}...`, [{ text: 'OK' }]);
+      setSnack({ visible: true, msg: `Transaction sent: ${txHash.slice(0, 20)}...`, variant: 'success' });
     } catch (error) {
       if (error instanceof Error && error.message !== 'User cancelled transaction') {
-        Alert.alert('Error', 'Failed to send transaction: ' + error.message);
+        setSnack({ visible: true, msg: 'Failed to send transaction: ' + error.message, variant: 'error' });
       }
     }
   };
@@ -141,35 +141,11 @@ export default function Wallet() {
             <CardContent>
               <Text style={[styles.actionsTitle, { color: tokens.colors.text.primary }]}>Wallet Actions</Text>
 
-              <Button
-                variant="outline"
-                size="lg"
-                style={styles.actionButton}
-                onPress={async () => {
-                  try {
-                    await handleSignMessage();
-                    setSnack({ visible: true, msg: 'Message signed', variant: 'success' });
-                  } catch {
-                    setSnack({ visible: true, msg: 'Failed to sign', variant: 'error' });
-                  }
-                }}
-              >
+              <Button variant="outline" size="lg" style={styles.actionButton} onPress={handleSignMessage}>
                 Sign Message
               </Button>
 
-              <Button
-                variant="primary"
-                size="lg"
-                style={styles.actionButton}
-                onPress={async () => {
-                  try {
-                    await handleSendTransaction();
-                    setSnack({ visible: true, msg: 'Transaction sent', variant: 'success' });
-                  } catch {
-                    setSnack({ visible: true, msg: 'Failed to send transaction', variant: 'error' });
-                  }
-                }}
-              >
+              <Button variant="primary" size="lg" style={styles.actionButton} onPress={handleSendTransaction}>
                 Send Test Transaction
               </Button>
 
@@ -198,13 +174,13 @@ export default function Wallet() {
             </CardContent>
           </Card>
         ) : null}
-        <Snackbar
-          visible={snack.visible}
-          message={snack.msg}
-          variant={snack.variant}
-          onHide={() => setSnack(s => ({ ...s, visible: false }))}
-        />
       </ScrollView>
+      <Snackbar
+        visible={snack.visible}
+        message={snack.msg}
+        variant={snack.variant}
+        onHide={() => setSnack(s => ({ ...s, visible: false }))}
+      />
     </SafeAreaView>
   );
 }

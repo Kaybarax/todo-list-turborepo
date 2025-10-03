@@ -36,12 +36,14 @@ export interface CardTitleProps {
   style?: StyleProp<TextStyle>;
   children?: React.ReactNode;
   variant?: 'h1' | 'h2' | 'h3' | 'h4';
+  numberOfLines?: number;
   testID?: string;
 }
 
 export interface CardDescriptionProps {
   style?: StyleProp<TextStyle>;
   children?: React.ReactNode;
+  numberOfLines?: number;
   testID?: string;
 }
 
@@ -76,14 +78,25 @@ const CardBase: React.FC<CardProps> = ({
   style,
   ...props
 }) => {
-  const { theme } = useEnhancedTheme();
+  const { theme, evaTheme, themeName } = useEnhancedTheme();
 
   const appearance = mapCardAppearance(variant);
+
+  // Get background color from Eva theme
+  const backgroundColor = variant === 'outlined' ? 'transparent' : evaTheme['background-basic-color-1'];
+
+  // Debug logging
+  if (__DEV__ && testID === 'feature-card-prioritization') {
+    console.log('Card Debug:', { themeName, backgroundColor, evaThemeBgColor: evaTheme['background-basic-color-1'] });
+  }
 
   // Custom styles for padding and variant-specific styling
   // CRD-2 / CRD-3: dynamic padding + shared shadow util (already in place) + consumer style
   const customStyles: StyleProp<ViewStyle>[] = [
-    { padding: theme.spacing[padding] },
+    {
+      padding: theme.spacing[padding],
+      backgroundColor,
+    },
     variant === 'elevated' ? getShadow('md') : undefined,
     style,
   ];
@@ -130,34 +143,38 @@ const CardHeader: React.FC<CardHeaderProps> = ({ style, children, testID }) => {
   );
 };
 
-const CardTitle: React.FC<CardTitleProps> = ({ style, children, variant = 'h4', testID }) => {
+const CardTitle: React.FC<CardTitleProps> = ({ style, children, variant = 'h4', numberOfLines, testID }) => {
   return (
-    <Text variant={variant} color="primary" weight="semibold" style={[cardStaticStyles.title, style]} testID={testID}>
+    <Text
+      variant={variant}
+      color="primary"
+      weight="semibold"
+      style={[cardStaticStyles.title, style]}
+      numberOfLines={numberOfLines}
+      testID={testID}
+    >
       {children}
     </Text>
   );
 };
 
-const CardDescription: React.FC<CardDescriptionProps> = ({ style, children, testID }) => {
+const CardDescription: React.FC<CardDescriptionProps> = ({ style, children, numberOfLines, testID }) => {
   return (
-    <Text variant="body2" color="secondary" style={[cardStaticStyles.description, style]} testID={testID}>
+    <Text
+      variant="body2"
+      color="secondary"
+      style={[cardStaticStyles.description, style]}
+      numberOfLines={numberOfLines}
+      testID={testID}
+    >
       {children}
     </Text>
   );
 };
 
 const CardContent: React.FC<CardContentProps> = ({ style, children, testID }) => {
-  const { theme } = useEnhancedTheme();
-
-  const contentStyles = [
-    {
-      paddingVertical: theme.spacing.xs,
-    },
-    style,
-  ];
-
   return (
-    <View style={contentStyles} testID={testID}>
+    <View style={style} testID={testID}>
       {wrapIfString(children)}
     </View>
   );
@@ -223,10 +240,10 @@ export default Card;
 // CRD-2: Static style extraction
 const cardStaticStyles = StyleSheet.create({
   title: {
-    marginBottom: 4,
+    marginBottom: 2,
   },
   description: {
-    marginBottom: 8,
+    marginBottom: 0,
   },
   footerBase: {
     flexDirection: 'row',

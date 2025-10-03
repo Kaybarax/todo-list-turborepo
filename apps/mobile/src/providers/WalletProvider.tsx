@@ -2,7 +2,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getSupportedWalletNetworks, generateMockAddress } from '@todo/services';
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { Alert } from 'react-native';
 import { logger } from '../utils/logger';
 
 export interface WalletAccount {
@@ -57,12 +56,10 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       await AsyncStorage.setItem('wallet-connected', 'true');
       await AsyncStorage.setItem('wallet-account', JSON.stringify(mockAccount));
       logger.info('wallet_connected', { network: mockAccount.network });
-      Alert.alert('Wallet Connected', `Connected to ${network}`);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to connect wallet';
       setError(errorMessage);
       logger.error('wallet_connect_failed', { error: errorMessage, network });
-      Alert.alert('Connection Failed', errorMessage);
     } finally {
       setIsConnecting(false);
     }
@@ -78,7 +75,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       await AsyncStorage.removeItem('wallet-connected');
       await AsyncStorage.removeItem('wallet-account');
       logger.info('wallet_disconnected');
-      Alert.alert('Wallet Disconnected');
     } finally {
       setIsConnecting(false);
     }
@@ -99,7 +95,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       setAccount(updated);
       await AsyncStorage.setItem('wallet-account', JSON.stringify(updated));
       logger.info('wallet_switched_network', { network });
-      Alert.alert('Network Switched', `Switched to ${network}`);
     } finally {
       setIsConnecting(false);
     }

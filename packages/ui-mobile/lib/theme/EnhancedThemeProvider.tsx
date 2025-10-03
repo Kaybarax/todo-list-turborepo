@@ -221,10 +221,11 @@ export const EnhancedThemeProvider: React.FC<EnhancedThemeProviderProps> = ({
 
   // Wrap with Eva Design ApplicationProvider if enabled
   if (enableEvaDesign) {
+    const baseEvaTheme = evaThemeMode === 'dark' ? eva.dark : eva.light;
     return (
       <>
         <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={{ ...eva.light, ...evaTheme }} customMapping={customMapping}>
+        <ApplicationProvider {...eva} theme={{ ...baseEvaTheme, ...evaTheme }} customMapping={customMapping}>
           {content}
         </ApplicationProvider>
       </>

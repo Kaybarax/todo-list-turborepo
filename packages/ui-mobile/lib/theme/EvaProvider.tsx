@@ -1,6 +1,11 @@
 /**
  * Eva Design Application Provider
  * Wraps the app with Eva Design theming system
+ *
+ * @deprecated Consider using EnhancedThemeProvider for integrated theme management
+ * @see EnhancedThemeProvider combines Eva Design with legacy theme tokens
+ *
+ * Note: This provider is still useful for simple Eva-only setups
  */
 
 import * as eva from '@eva-design/eva';
@@ -30,13 +35,14 @@ export const EvaProvider: React.FC<EvaProviderProps> = ({
 }) => {
   const selectedTheme = theme === 'dark' ? darkTheme : lightTheme;
   const finalTheme = customTheme ? { ...selectedTheme, ...customTheme } : selectedTheme;
+  const baseEvaTheme = theme === 'dark' ? eva.dark : eva.light;
 
   return (
     <>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider
         {...eva}
-        theme={{ ...eva.light, ...finalTheme }}
+        theme={{ ...baseEvaTheme, ...finalTheme }}
         {...(useCustomMapping ? { customMapping } : {})}
       >
         {children}
