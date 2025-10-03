@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Card, CardContent } from '@todo/ui-mobile';
-import { WalletConnect } from '../src/components/WalletConnect';
+import { Button, Card, CardContent, NetworkSelector, type NetworkType } from '@todo/ui-mobile';
 import { ErrorBanner } from '../src/components/ErrorBanner';
 import { Snackbar } from '../src/components/Snackbar';
 import { useWallet } from '../src/providers/WalletProvider';
 import { useDesignTokens } from '../src/hooks/useDesignTokens';
 
 export default function Wallet() {
-  const { isConnected, account, signMessage, sendTransaction, error } = useWallet();
+  const {
+    isConnected,
+    isConnecting,
+    account,
+    connect,
+    disconnect,
+    switchNetwork,
+    supportedNetworks,
+    signMessage,
+    sendTransaction,
+    error,
+  } = useWallet();
   const tokens = useDesignTokens();
   const styles = createStyles(tokens);
   const [snack, setSnack] = useState<{ visible: boolean; msg: string; variant: 'success' | 'error' | 'info' }>({
@@ -17,6 +27,20 @@ export default function Wallet() {
     msg: '',
     variant: 'info',
   });
+
+  const handleNetworkSelect = async (network: NetworkType) => {
+    try {
+      if (isConnected) {
+        await switchNetwork(network);
+        setSnack({ visible: true, msg: `Switched to ${network}`, variant: 'success' });
+      } else {
+        await connect(network);
+        setSnack({ visible: true, msg: `Connected to ${network}`, variant: 'success' });
+      }
+    } catch (error) {
+      setSnack({ visible: true, msg: 'Failed to change network', variant: 'error' });
+    }
+  };
 
   const handleSignMessage = async () => {
     try {
@@ -52,11 +76,65 @@ export default function Wallet() {
         <Text testID="wallet-title" style={[styles.pageTitle, { color: tokens.colors.text.primary }]}>
           Wallet Connection
         </Text>
-        <Text style={[styles.pageSubtitle, { color: tokens.colors.text.secondary }]}>
-          Connect your wallet to enable blockchain features for your todos.
-        </Text>
+        <View style={styles.subtitleContainer}>
+          <Text style={[styles.pageSubtitle, { color: tokens.colors.text.secondary }]}>
+            Connect your wallet to enable blockchain features for your todos.
+          </Text>
+        </View>
 
-        <WalletConnect />
+        {/* Wallet Info Section */}
+        {isConnected && account ? (
+          <Card style={styles.walletInfoCard}>
+            <CardContent>
+              <View style={styles.walletHeader}>
+                <Text style={[styles.walletTitle, { color: tokens.colors.text.primary }]}>Connected Wallet</Text>
+                <Button variant="outline" size="sm" onPress={disconnect} disabled={isConnecting}>
+                  Disconnect
+                </Button>
+              </View>
+
+              <View style={styles.walletDetails}>
+                <View style={styles.detailRow}>
+                  <Text style={[styles.detailLabel, { color: tokens.colors.text.secondary }]}>Network</Text>
+                  <Text style={[styles.detailValue, { color: tokens.colors.text.primary }]}>{account.network}</Text>
+                </View>
+
+                <View style={styles.detailRow}>
+                  <Text style={[styles.detailLabel, { color: tokens.colors.text.secondary }]}>Address</Text>
+                  <Text
+                    style={[styles.detailValue, { color: tokens.colors.text.primary }]}
+                    numberOfLines={1}
+                    ellipsizeMode="middle"
+                  >
+                    {account.address}
+                  </Text>
+                </View>
+
+                {account.balance && (
+                  <View style={styles.detailRow}>
+                    <Text style={[styles.detailLabel, { color: tokens.colors.text.secondary }]}>Balance</Text>
+                    <Text style={[styles.detailValue, { color: tokens.colors.text.primary }]}>{account.balance}</Text>
+                  </View>
+                )}
+              </View>
+            </CardContent>
+          </Card>
+        ) : null}
+
+        {/* Network Selector */}
+        <Card style={styles.networkSelectorCard}>
+          <CardContent>
+            <Text style={[styles.sectionTitle, { color: tokens.colors.text.primary }]}>
+              {isConnected ? 'Switch Network' : 'Select Network to Connect'}
+            </Text>
+            <NetworkSelector
+              selectedNetwork={(account?.network as any) || 'solana'}
+              onNetworkSelect={handleNetworkSelect}
+              disabled={isConnecting}
+              variant="grid"
+            />
+          </CardContent>
+        </Card>
 
         {isConnected && account ? (
           <Card style={styles.actionsContainer}>
@@ -119,59 +197,7 @@ export default function Wallet() {
               </View>
             </CardContent>
           </Card>
-        ) : (
-          <Card
-            style={[
-              styles.disconnectedContainer,
-              { backgroundColor: tokens.colors.surface, borderColor: tokens.colors.border.default },
-            ]}
-          >
-            <CardContent>
-              <Text style={[styles.disconnectedTitle, { color: tokens.colors.text.primary }]}>No wallet connected</Text>
-              <Text style={[styles.disconnectedSubtitle, { color: tokens.colors.text.secondary }]}>
-                Connect your wallet to access blockchain features.
-              </Text>
-            </CardContent>
-          </Card>
-        )}
-
-        <Card style={styles.networksContainer}>
-          <CardContent>
-            <Text style={[styles.networksTitle, { color: tokens.colors.text.primary }]}>Supported Networks</Text>
-
-            <View style={styles.networksList}>
-              <View style={styles.networkItem}>
-                <View style={[styles.networkDot, { backgroundColor: '#9333ea' }]} />
-                <View style={styles.networkInfo}>
-                  <Text style={[styles.networkName, { color: tokens.colors.text.primary }]}>Solana</Text>
-                  <Text style={[styles.networkDescription, { color: tokens.colors.text.secondary }]}>
-                    Fast and low-cost transactions
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.networkItem}>
-                <View style={[styles.networkDot, { backgroundColor: '#ec4899' }]} />
-                <View style={styles.networkInfo}>
-                  <Text style={[styles.networkName, { color: tokens.colors.text.primary }]}>Polkadot</Text>
-                  <Text style={[styles.networkDescription, { color: tokens.colors.text.secondary }]}>
-                    Interoperable blockchain network
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.networkItem}>
-                <View style={[styles.networkDot, { backgroundColor: '#6366f1' }]} />
-                <View style={styles.networkInfo}>
-                  <Text style={[styles.networkName, { color: tokens.colors.text.primary }]}>Polygon</Text>
-                  <Text style={[styles.networkDescription, { color: tokens.colors.text.secondary }]}>
-                    Ethereum-compatible scaling solution
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </CardContent>
-        </Card>
+        ) : null}
         <Snackbar
           visible={snack.visible}
           message={snack.msg}
@@ -191,35 +217,81 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
     },
     content: {
       flex: 1,
-      padding: 20,
+      paddingHorizontal: 20,
+      paddingTop: 20,
+      paddingBottom: 20,
     },
     pageTitle: {
       fontSize: tokens.typography.fontSize.xxxl,
       fontWeight: 'bold',
       color: tokens.colors.text.primary,
-      marginBottom: 8,
+      marginBottom: tokens.spacing.xs,
+    },
+    subtitleContainer: {
+      width: '100%',
+      marginBottom: tokens.spacing.lg,
     },
     pageSubtitle: {
       fontSize: tokens.typography.fontSize.md,
       color: tokens.colors.text.secondary,
-      marginBottom: 24,
-      lineHeight: tokens.typography.lineHeight.relaxed,
+      lineHeight: 22,
+    },
+    walletInfoCard: {
+      marginBottom: tokens.spacing.md,
+    },
+    walletHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: tokens.spacing.md,
+    },
+    walletTitle: {
+      fontSize: tokens.typography.fontSize.lg,
+      fontWeight: '600',
+    },
+    walletDetails: {
+      gap: tokens.spacing.sm,
+    },
+    detailRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      paddingVertical: tokens.spacing.xs,
+    },
+    detailLabel: {
+      fontSize: tokens.typography.fontSize.sm,
+      fontWeight: '500',
+      flex: 0,
+      minWidth: 80,
+    },
+    detailValue: {
+      fontSize: tokens.typography.fontSize.sm,
+      flex: 1,
+      textAlign: 'right',
+    },
+    networkSelectorCard: {
+      marginBottom: tokens.spacing.md,
+    },
+    sectionTitle: {
+      fontSize: tokens.typography.fontSize.lg,
+      fontWeight: '600',
+      marginBottom: tokens.spacing.md,
     },
     actionsContainer: {
-      marginTop: 20,
+      marginBottom: tokens.spacing.md,
     },
     actionsTitle: {
-      fontSize: tokens.typography.fontSize.xl,
+      fontSize: tokens.typography.fontSize.lg,
       fontWeight: '600',
       color: tokens.colors.text.primary,
-      marginBottom: 16,
+      marginBottom: tokens.spacing.md,
     },
     actionButton: {
-      marginBottom: 12,
+      marginBottom: tokens.spacing.sm,
     },
     featuresContainer: {
-      marginTop: 20,
-      padding: 16,
+      marginTop: tokens.spacing.md,
+      padding: tokens.spacing.md,
       backgroundColor: tokens.colors.surface,
       borderRadius: 8,
       borderWidth: 1,
@@ -229,67 +301,15 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
       fontSize: tokens.typography.fontSize.md,
       fontWeight: '600',
       color: tokens.colors.text.primary,
-      marginBottom: 8,
+      marginBottom: tokens.spacing.xs,
     },
     featuresList: {
-      marginLeft: 8,
+      marginLeft: tokens.spacing.xs,
     },
     featureItem: {
       fontSize: tokens.typography.fontSize.sm,
       color: tokens.colors.text.secondary,
-      marginBottom: 4,
-    },
-    disconnectedContainer: {
-      backgroundColor: tokens.colors.surface,
-      borderWidth: 2,
-      borderColor: tokens.colors.border.default,
-      borderStyle: 'dashed',
-      marginTop: 20,
-    },
-    disconnectedTitle: {
-      fontSize: tokens.typography.fontSize.lg,
-      fontWeight: '600',
-      color: tokens.colors.text.primary,
-      marginBottom: 8,
-    },
-    disconnectedSubtitle: {
-      fontSize: tokens.typography.fontSize.sm,
-      color: tokens.colors.text.secondary,
-      textAlign: 'center',
-    },
-    networksContainer: {
-      marginTop: 20,
-    },
-    networksTitle: {
-      fontSize: tokens.typography.fontSize.xl,
-      fontWeight: '600',
-      color: tokens.colors.text.primary,
-      marginBottom: 16,
-    },
-    networksList: {
-      gap: 16,
-    },
-    networkItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    networkDot: {
-      width: 12,
-      height: 12,
-      borderRadius: 6,
-      marginRight: 12,
-    },
-    networkInfo: {
-      flex: 1,
-    },
-    networkName: {
-      fontSize: tokens.typography.fontSize.md,
-      fontWeight: '600',
-      color: tokens.colors.text.primary,
-      marginBottom: 2,
-    },
-    networkDescription: {
-      fontSize: tokens.typography.fontSize.sm,
-      color: tokens.colors.text.secondary,
+      marginBottom: tokens.spacing.xs,
+      lineHeight: tokens.typography.lineHeight.relaxed,
     },
   });

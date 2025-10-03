@@ -29,7 +29,7 @@ export { default as Input } from '../lib/components/Input';
 export type { InputProps } from '../lib/components/Input';
 
 export { NetworkSelector } from '../lib/components/NetworkSelector';
-export type { NetworkSelectorProps } from '../lib/components/NetworkSelector';
+export type { NetworkSelectorProps, NetworkType } from '../lib/components/NetworkSelector';
 
 export { default as Switch } from '../lib/components/Switch';
 export type { SwitchProps } from '../lib/components/Switch';
