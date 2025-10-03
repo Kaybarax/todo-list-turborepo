@@ -8,7 +8,7 @@ import { Badge } from '../Badge';
 export type NetworkType = 'solana' | 'polkadot' | 'polygon' | 'moonbeam' | 'base';
 
 export interface NetworkSelectorProps {
-  selectedNetwork: NetworkType;
+  selectedNetwork?: NetworkType;
   // eslint-disable-next-line no-unused-vars
   onNetworkSelect: (network: NetworkType) => void;
   disabled?: boolean;

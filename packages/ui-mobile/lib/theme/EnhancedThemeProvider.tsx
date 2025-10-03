@@ -176,21 +176,29 @@ export const EnhancedThemeProvider: React.FC<EnhancedThemeProviderProps> = ({
   }, [validateCurrentTheme]);
 
   // Theme management functions
+  // Unified setters/toggles keep legacy theme and Eva theme in sync
   const setTheme = useCallback((newThemeName: ThemeName) => {
     setThemeName(newThemeName);
+    setEvaThemeModeState(newThemeName === 'dark' ? 'dark' : 'light');
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setThemeName(current => (current === 'light' ? 'dark' : 'light'));
+    setThemeName(current => {
+      const next = current === 'light' ? 'dark' : 'light';
+      setEvaThemeModeState(next);
+      return next;
+    });
   }, []);
 
+  // Back-compat: alias Eva controls to unified controls
   const setEvaTheme = useCallback((mode: EnhancedThemeMode) => {
+    setThemeName(mode);
     setEvaThemeModeState(mode);
   }, []);
 
   const toggleEvaTheme = useCallback(() => {
-    setEvaThemeModeState(current => (current === 'light' ? 'dark' : 'light'));
-  }, []);
+    toggleTheme();
+  }, [toggleTheme]);
 
   const updateCustomTheme = useCallback((newCustomTheme: Record<string, any>) => {
     setCustomThemeState(newCustomTheme);

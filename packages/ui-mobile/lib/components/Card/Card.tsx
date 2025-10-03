@@ -82,8 +82,10 @@ const CardBase: React.FC<CardProps> = ({
 
   const appearance = mapCardAppearance(variant);
 
-  // Get background color from Eva theme
-  const backgroundColor = variant === 'outlined' ? 'transparent' : evaTheme['background-basic-color-1'];
+  // Use a surface-like background so cards are slightly contrasted against the screen background
+  // Eva mapping: background-basic-color-2 provides the appropriate surface shade in both modes
+  const backgroundColor =
+    variant === 'outlined' ? 'transparent' : evaTheme['background-basic-color-2'] || theme.colors.surface;
 
   // Debug logging
   if (__DEV__ && testID === 'feature-card-prioritization') {

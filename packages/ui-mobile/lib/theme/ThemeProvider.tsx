@@ -1,18 +1,15 @@
 /**
- * Theme Provider Component (Legacy)
- * Provides theme context and manages theme switching
+ * Theme Provider Component (Legacy shim)
  *
- * @deprecated Use EnhancedThemeProvider instead for full Eva Design integration
- * @see EnhancedThemeProvider for the recommended approach
+ * This is now a thin proxy around EnhancedThemeProvider to ensure there's a
+ * single source of truth for theming (including Eva Design). It keeps the
+ * legacy API surface to avoid breaking changes.
  */
 
-import React, { createContext, useState, useCallback, type ReactNode, useEffect } from 'react';
-import { Appearance, type ColorSchemeName } from 'react-native';
+import React, { type ReactNode } from 'react';
 
-import { lightTheme, darkTheme } from './themes';
-import { type Theme, type ThemeName, type ThemeContextValue } from './types';
-
-const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
+import { EnhancedThemeProvider, EnhancedThemeContext } from './EnhancedThemeProvider';
+import { type ThemeName } from './types';
 
 export interface ThemeProviderProps {
   children: ReactNode;
@@ -20,54 +17,24 @@ export interface ThemeProviderProps {
   followSystemTheme?: boolean;
 }
 
+// Backward-compatible alias so consumers importing ThemeContext keep working
+export const ThemeContext = EnhancedThemeContext as any;
+
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
   initialTheme = 'light',
   followSystemTheme = true,
 }) => {
-  const [themeName, setThemeName] = useState<ThemeName>(initialTheme);
-
-  // Get current theme object
-  const theme: Theme = themeName === 'dark' ? darkTheme : lightTheme;
-
-  // Handle system theme changes
-  useEffect(() => {
-    if (!followSystemTheme) return;
-
-    const handleSystemThemeChange = (preferences: { colorScheme: ColorSchemeName }) => {
-      const systemTheme = preferences.colorScheme === 'dark' ? 'dark' : 'light';
-      setThemeName(systemTheme);
-    };
-
-    // Set initial theme based on system
-    const systemColorScheme = Appearance.getColorScheme();
-    if (systemColorScheme) {
-      setThemeName(systemColorScheme === 'dark' ? 'dark' : 'light');
-    }
-
-    // Listen for system theme changes
-    const subscription = Appearance.addChangeListener(handleSystemThemeChange);
-
-    return () => subscription?.remove();
-  }, [followSystemTheme]);
-
-  const setTheme = useCallback((newThemeName: ThemeName) => {
-    setThemeName(newThemeName);
-  }, []);
-
-  const toggleTheme = useCallback(() => {
-    setThemeName(current => (current === 'light' ? 'dark' : 'light'));
-  }, []);
-
-  const contextValue: ThemeContextValue = {
-    theme,
-    themeName,
-    setTheme,
-    toggleTheme,
-  };
-
-  return <ThemeContext.Provider value={contextValue}>{children}</ThemeContext.Provider>;
+  return (
+    <EnhancedThemeProvider
+      initialTheme={initialTheme}
+      initialEvaTheme={initialTheme}
+      followSystemTheme={followSystemTheme}
+      enableEvaDesign={true}
+    >
+      {children}
+    </EnhancedThemeProvider>
+  );
 };
 
-export { ThemeContext };
 export default ThemeProvider;

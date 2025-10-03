@@ -128,7 +128,7 @@ export default function Wallet() {
               {isConnected ? 'Switch Network' : 'Select Network to Connect'}
             </Text>
             <NetworkSelector
-              selectedNetwork={(account?.network as any) || 'solana'}
+              selectedNetwork={account?.network as NetworkType | undefined}
               onNetworkSelect={handleNetworkSelect}
               disabled={isConnecting}
               variant="grid"
