@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { cn, Input, Select } from '@todo/ui-web';
+import { Button, cn, Input, Select } from '@todo/ui-web';
 import { TodoData, TodoItem } from './TodoItem';
 import { BlockchainNetwork } from '@todo/services';
 
@@ -56,6 +56,8 @@ export interface TodoListProps
   }>;
   getNetworkDisplayInfo?: (network: BlockchainNetwork) => { displayName: string };
   supportedNetworks?: BlockchainNetwork[];
+  onRefresh?: () => void;
+  refreshing?: boolean;
 }
 
 const TodoList = React.forwardRef<HTMLDivElement, TodoListProps>(
@@ -79,6 +81,8 @@ const TodoList = React.forwardRef<HTMLDivElement, TodoListProps>(
       TransactionStatusComponent,
       getNetworkDisplayInfo,
       supportedNetworks,
+      onRefresh,
+      refreshing = false,
       ...props
     },
     ref,
@@ -162,6 +166,13 @@ const TodoList = React.forwardRef<HTMLDivElement, TodoListProps>(
         return emptyState;
       }
 
+      const refreshButton =
+        onRefresh !== undefined ? (
+          <Button className="mt-4" variant="outline" size="sm" onClick={onRefresh} disabled={refreshing}>
+            {refreshing ? 'Refreshing…' : 'Refresh'}
+          </Button>
+        ) : null;
+
       if (todos.length === 0) {
         return (
           <div className="text-center py-12">
@@ -180,6 +191,7 @@ const TodoList = React.forwardRef<HTMLDivElement, TodoListProps>(
             </svg>
             <h3 className="mt-2 text-sm font-medium text-base-content">No todos</h3>
             <p className="mt-1 text-sm text-base-content/70">Get started by creating a new todo.</p>
+            {refreshButton}
           </div>
         );
       }
@@ -187,6 +199,7 @@ const TodoList = React.forwardRef<HTMLDivElement, TodoListProps>(
       return (
         <div className="text-center py-8">
           <p className="text-sm text-base-content/70">No todos match your current filter and search criteria.</p>
+          {refreshButton}
         </div>
       );
     };
@@ -283,6 +296,13 @@ const TodoList = React.forwardRef<HTMLDivElement, TodoListProps>(
               supportedNetworks={supportedNetworks}
             />
           ))}
+          {onRefresh ? (
+            <div className="flex justify-center mt-4">
+              <Button variant="link" onClick={onRefresh} disabled={refreshing}>
+                {refreshing ? 'Refreshing…' : 'Refresh'}
+              </Button>
+            </div>
+          ) : null}
         </div>
       );
     };

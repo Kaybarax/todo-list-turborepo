@@ -8,3 +8,5 @@ export {
   type FilterType,
   type SortType,
 } from './TodoList';
+export { TodoFilters, type TodoFiltersProps, type PriorityFilter, type StatusFilter } from './TodoFilters';
+export { TodoBulkActions, type TodoBulkActionsProps } from './TodoBulkActions';

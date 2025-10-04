@@ -8,12 +8,17 @@ interface TodoStore {
   todos: Todo[];
   isLoading: boolean;
   error: string | null;
+  undoStack: Todo[][];
+  canUndo: boolean;
 
   // Actions
   addTodo: (_todoData: Omit<Todo, 'id' | 'createdAt' | 'updatedAt' | 'userId'>) => void;
   updateTodo: (_todoId: string, _todoUpdates: Partial<Todo>) => void;
   deleteTodo: (_todoId: string) => void;
   toggleTodo: (_todoId: string) => void;
+  markAllDone: () => void;
+  clearCompleted: () => void;
+  undo: () => void;
   syncToBlockchain: (_todoId: string, _selectedNetwork: BlockchainNetwork) => Promise<void>;
 
   // API actions (will be implemented when API is ready)
@@ -35,6 +40,8 @@ export const useTodoStore = create<TodoStore>()(
       todos: [],
       isLoading: false,
       error: null,
+      undoStack: [],
+      canUndo: false,
 
       addTodo: todoData => {
         const newTodo: Todo = {
@@ -48,6 +55,8 @@ export const useTodoStore = create<TodoStore>()(
 
         set(state => ({
           todos: [newTodo, ...state.todos],
+          undoStack: [],
+          canUndo: false,
         }));
       },
 
@@ -56,12 +65,16 @@ export const useTodoStore = create<TodoStore>()(
           todos: state.todos.map(todo =>
             todo.id === todoId ? { ...todo, ...todoUpdates, updatedAt: new Date() } : todo,
           ),
+          undoStack: [],
+          canUndo: false,
         }));
       },
 
       deleteTodo: todoId => {
         set(state => ({
           todos: state.todos.filter(todo => todo.id !== todoId),
+          undoStack: [],
+          canUndo: false,
         }));
       },
 
@@ -70,7 +83,69 @@ export const useTodoStore = create<TodoStore>()(
           todos: state.todos.map(todo =>
             todo.id === todoId ? { ...todo, completed: !todo.completed, updatedAt: new Date() } : todo,
           ),
+          undoStack: [],
+          canUndo: false,
         }));
+      },
+
+      markAllDone: () => {
+        set(state => {
+          if (state.todos.length === 0 || state.todos.every(todo => todo.completed)) {
+            return state;
+          }
+
+          const snapshot = state.todos.map(todo => ({ ...todo }));
+          const nextUndoStack = [...state.undoStack, snapshot].slice(-5);
+
+          return {
+            todos: state.todos.map(todo =>
+              todo.completed
+                ? todo
+                : {
+                    ...todo,
+                    completed: true,
+                    updatedAt: new Date(),
+                  },
+            ),
+            undoStack: nextUndoStack,
+            canUndo: true,
+          };
+        });
+      },
+
+      clearCompleted: () => {
+        set(state => {
+          const hasCompleted = state.todos.some(todo => todo.completed);
+          if (!hasCompleted) {
+            return state;
+          }
+
+          const snapshot = state.todos.map(todo => ({ ...todo }));
+          const nextUndoStack = [...state.undoStack, snapshot].slice(-5);
+
+          return {
+            todos: state.todos.filter(todo => !todo.completed),
+            undoStack: nextUndoStack,
+            canUndo: true,
+          };
+        });
+      },
+
+      undo: () => {
+        set(state => {
+          if (state.undoStack.length === 0) {
+            return state;
+          }
+
+          const nextUndoStack = state.undoStack.slice(0, -1);
+          const previousTodos = state.undoStack[state.undoStack.length - 1];
+
+          return {
+            todos: previousTodos.map(todo => ({ ...todo })),
+            undoStack: nextUndoStack,
+            canUndo: nextUndoStack.length > 0,
+          };
+        });
       },
 
       syncToBlockchain: async (todoId, selectedNetwork) => {

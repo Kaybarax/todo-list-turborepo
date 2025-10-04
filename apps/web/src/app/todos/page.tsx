@@ -4,6 +4,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { Button, BlockchainStats } from '@todo/ui-web';
 import { TodoForm } from '@/components/todo/TodoForm';
 import { TodoList } from '@/components/todo/TodoList';
+import { TodoFilters, type PriorityFilter, type StatusFilter } from '@/components/todo/TodoFilters';
+import { TodoBulkActions } from '@/components/todo/TodoBulkActions';
 import { useTodoStore } from '@/store/todoStore';
 import { useWallet } from '@/components/WalletProvider';
 import type { BlockchainNetwork } from '@todo/services';
@@ -12,18 +14,61 @@ import type { TodoData as Todo } from '@/components/todo/TodoItem';
 const TodosPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
+  const [search, setSearch] = useState('');
+  const [priority, setPriority] = useState<PriorityFilter>('all');
+  const [status, setStatus] = useState<StatusFilter>('all');
+  const [bulkStatus, setBulkStatus] = useState<string | null>(null);
 
-  const { todos, isLoading, error, addTodo, updateTodo, deleteTodo, toggleTodo, syncToBlockchain, fetchTodos } =
-    useTodoStore();
+  const {
+    todos,
+    isLoading,
+    error,
+    addTodo,
+    updateTodo,
+    deleteTodo,
+    toggleTodo,
+    markAllDone,
+    clearCompleted,
+    undo,
+    canUndo,
+    syncToBlockchain,
+    fetchTodos,
+  } = useTodoStore();
 
   const { isConnected } = useWallet();
 
+  const filteredTodos = useMemo(() => {
+    const term = search.trim().toLowerCase();
+
+    return todos.filter(todo => {
+      if (status === 'open' && todo.completed) return false;
+      if (status === 'completed' && !todo.completed) return false;
+
+      if (priority !== 'all' && todo.priority !== priority) return false;
+
+      if (term.length > 0) {
+        const inTitle = todo.title.toLowerCase().includes(term);
+        const inDescription = (todo.description ?? '').toLowerCase().includes(term);
+        const inTags = (todo.tags ?? []).some(tag => {
+          const lower = tag.toLowerCase();
+          return lower.includes(term) || `#${lower}`.includes(term);
+        });
+
+        if (!inTitle && !inDescription && !inTags) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [todos, search, priority, status]);
+
   const blockchainStats = useMemo(() => {
-    const total = todos.length;
-    const onChain = todos.filter(todo => todo.blockchainNetwork).length;
+    const total = filteredTodos.length;
+    const onChain = filteredTodos.filter(todo => todo.blockchainNetwork).length;
     const offChain = total - onChain;
 
-    const networkBreakdown = todos.reduce(
+    const networkBreakdown = filteredTodos.reduce(
       (acc, todo) => {
         if (todo.blockchainNetwork) {
           acc[todo.blockchainNetwork] = (acc[todo.blockchainNetwork] || 0) + 1;
@@ -33,7 +78,7 @@ const TodosPage = () => {
       {} as Record<string, number>,
     );
 
-    const pendingTransactions = todos.filter(todo => todo.transactionHash && !todo.blockchainAddress).length;
+    const pendingTransactions = filteredTodos.filter(todo => todo.transactionHash && !todo.blockchainAddress).length;
 
     return {
       total,
@@ -43,11 +88,29 @@ const TodosPage = () => {
       pendingTransactions,
       syncPercentage: total > 0 ? Math.round((onChain / total) * 100) : 0,
     };
-  }, [todos]);
+  }, [filteredTodos]);
 
   useEffect(() => {
     void fetchTodos();
   }, [fetchTodos]);
+
+  useEffect(() => {
+    if (!bulkStatus) return;
+    const timeout = window.setTimeout(() => setBulkStatus(null), 4000);
+    return () => window.clearTimeout(timeout);
+  }, [bulkStatus]);
+
+  const handleClearFilters = () => {
+    setSearch('');
+    setPriority('all');
+    setStatus('all');
+    setBulkStatus(null);
+  };
+
+  const handleRefresh = () => {
+    void fetchTodos();
+    setBulkStatus(null);
+  };
 
   const handleSubmit = (todoData: {
     title: string;
@@ -84,8 +147,59 @@ const TodosPage = () => {
   const handleDelete = (id: string) => {
     if (window.confirm('Are you sure you want to delete this todo?')) {
       deleteTodo(id);
+      setBulkStatus(null);
     }
   };
+
+  const handleMarkAllDone = () => {
+    const hasOpenTodos = todos.some(todo => !todo.completed);
+    if (!hasOpenTodos) {
+      setBulkStatus('All todos are already marked as done.');
+      return;
+    }
+    markAllDone();
+    setBulkStatus('Marked all todos as done.');
+  };
+
+  const handleClearCompleted = () => {
+    const hasCompletedTodos = todos.some(todo => todo.completed);
+    if (!hasCompletedTodos) {
+      setBulkStatus('No completed todos to clear.');
+      return;
+    }
+    clearCompleted();
+    setBulkStatus('Cleared completed todos.');
+  };
+
+  const handleUndo = () => {
+    if (!canUndo) return;
+    undo();
+    setBulkStatus('Reverted last bulk action.');
+  };
+
+  const filteredHasTodos = filteredTodos.length > 0;
+  const filteredHasCompleted = filteredTodos.some(todo => todo.completed);
+
+  const emptyState =
+    !isLoading && filteredTodos.length === 0 ? (
+      todos.length === 0 ? (
+        <div className="rounded-lg border border-base-300 bg-base-100 p-6 text-center">
+          <h3 className="text-base font-semibold text-base-content">You have no todos yet</h3>
+          <p className="mt-2 text-sm text-base-content/70">Create your first todo to get started.</p>
+          <Button className="mt-4" variant="outline" size="sm" onClick={handleRefresh}>
+            Refresh
+          </Button>
+        </div>
+      ) : (
+        <div className="rounded-lg border border-base-300 bg-base-100 p-6 text-center">
+          <h3 className="text-base font-semibold text-base-content">No results match your filters</h3>
+          <p className="mt-2 text-sm text-base-content/70">Try adjusting or clearing your filters.</p>
+          <Button className="mt-4" variant="outline" size="sm" onClick={handleClearFilters}>
+            Clear filters
+          </Button>
+        </div>
+      )
+    ) : undefined;
 
   return (
     <div className="px-4 py-6 sm:px-0">
@@ -172,6 +286,26 @@ const TodosPage = () => {
         </div>
       )}
 
+      <TodoFilters
+        search={search}
+        onSearchChange={setSearch}
+        priority={priority}
+        onPriorityChange={setPriority}
+        status={status}
+        onStatusChange={setStatus}
+        onClear={handleClearFilters}
+      />
+
+      <TodoBulkActions
+        onMarkAllDone={handleMarkAllDone}
+        onClearCompleted={handleClearCompleted}
+        onUndo={canUndo ? handleUndo : undefined}
+        hasTodos={filteredHasTodos && !isLoading}
+        hasCompleted={filteredHasCompleted && !isLoading}
+        canUndo={canUndo}
+        statusMessage={bulkStatus}
+      />
+
       {blockchainStats.total > 0 && <BlockchainStats data={blockchainStats} />}
 
       {isLoading && (
@@ -181,13 +315,18 @@ const TodosPage = () => {
       )}
 
       <TodoList
-        todos={todos}
+        todos={filteredTodos}
         onToggle={toggleTodo}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onBlockchainSync={
           isConnected ? (todoId, network) => void syncToBlockchain(todoId, network as BlockchainNetwork) : undefined
         }
+        loading={isLoading}
+        showFilters={false}
+        emptyState={emptyState}
+        onRefresh={handleRefresh}
+        refreshing={isLoading}
       />
     </div>
   );
