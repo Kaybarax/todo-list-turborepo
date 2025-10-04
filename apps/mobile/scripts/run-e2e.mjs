@@ -9,7 +9,9 @@ const URL = `http://localhost:${PORT}`;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const cwd = path.resolve(__dirname, '..');
 
-function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+function wait(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
 
 async function waitForServer(url, timeoutMs = 180000) {
   const start = Date.now();
@@ -60,7 +62,9 @@ async function main() {
     expo.kill('SIGINT');
     // give expo a moment to exit cleanly
     await wait(2000);
-    try { expo.kill('SIGKILL'); } catch {}
+    try {
+      expo.kill('SIGKILL');
+    } catch {}
     process.exit(code ?? (signal ? 1 : 0));
   });
 }
