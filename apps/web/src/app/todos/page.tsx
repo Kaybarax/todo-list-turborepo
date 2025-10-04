@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Button, BlockchainStats } from '@todo/ui-web';
-import { TodoForm } from '@/components/todo/TodoForm';
+import { Alert, Button, BlockchainStats, FloatingActionButton, useToast } from '@todo/ui-web';
+import { TodoFormModal } from '@/components/todo/TodoFormModal';
 import { TodoList } from '@/components/todo/TodoList';
 import { TodoFilters, type PriorityFilter, type StatusFilter } from '@/components/todo/TodoFilters';
 import { TodoBulkActions } from '@/components/todo/TodoBulkActions';
@@ -17,7 +17,6 @@ const TodosPage = () => {
   const [search, setSearch] = useState('');
   const [priority, setPriority] = useState<PriorityFilter>('all');
   const [status, setStatus] = useState<StatusFilter>('all');
-  const [bulkStatus, setBulkStatus] = useState<string | null>(null);
 
   const {
     todos,
@@ -35,7 +34,22 @@ const TodosPage = () => {
     fetchTodos,
   } = useTodoStore();
 
-  const { isConnected } = useWallet();
+  const { isConnected, supportedNetworks } = useWallet();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    void fetchTodos();
+  }, [fetchTodos]);
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        variant: 'error',
+        title: 'An error occurred',
+        description: error,
+      });
+    }
+  }, [error, toast]);
 
   const filteredTodos = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -90,26 +104,14 @@ const TodosPage = () => {
     };
   }, [filteredTodos]);
 
-  useEffect(() => {
-    void fetchTodos();
-  }, [fetchTodos]);
-
-  useEffect(() => {
-    if (!bulkStatus) return;
-    const timeout = window.setTimeout(() => setBulkStatus(null), 4000);
-    return () => window.clearTimeout(timeout);
-  }, [bulkStatus]);
-
   const handleClearFilters = () => {
     setSearch('');
     setPriority('all');
     setStatus('all');
-    setBulkStatus(null);
   };
 
   const handleRefresh = () => {
     void fetchTodos();
-    setBulkStatus(null);
   };
 
   const handleSubmit = (todoData: {
@@ -127,9 +129,11 @@ const TodosPage = () => {
 
     if (editingTodo) {
       updateTodo(editingTodo.id, fullTodoData);
+      toast({ variant: 'success', title: 'Todo updated' });
       setEditingTodo(null);
     } else {
       addTodo(fullTodoData);
+      toast({ variant: 'success', title: 'Todo created' });
     }
     setShowForm(false);
   };
@@ -147,34 +151,43 @@ const TodosPage = () => {
   const handleDelete = (id: string) => {
     if (window.confirm('Are you sure you want to delete this todo?')) {
       deleteTodo(id);
-      setBulkStatus(null);
+      toast({ variant: 'info', title: 'Todo deleted' });
     }
   };
 
   const handleMarkAllDone = () => {
     const hasOpenTodos = todos.some(todo => !todo.completed);
     if (!hasOpenTodos) {
-      setBulkStatus('All todos are already marked as done.');
+      toast({ variant: 'info', title: 'No open todos to mark as done.' });
       return;
     }
     markAllDone();
-    setBulkStatus('Marked all todos as done.');
+    toast({ variant: 'success', title: 'Marked all todos as done.' });
   };
 
   const handleClearCompleted = () => {
     const hasCompletedTodos = todos.some(todo => todo.completed);
     if (!hasCompletedTodos) {
-      setBulkStatus('No completed todos to clear.');
+      toast({ variant: 'info', title: 'No completed todos to clear.' });
       return;
     }
     clearCompleted();
-    setBulkStatus('Cleared completed todos.');
+    toast({ variant: 'success', title: 'Cleared completed todos.' });
   };
 
   const handleUndo = () => {
     if (!canUndo) return;
     undo();
-    setBulkStatus('Reverted last bulk action.');
+    toast({ title: 'Action reverted', description: 'The last bulk action has been undone.' });
+  };
+
+  const handleBlockchainSync = (todoId: string, network: BlockchainNetwork) => {
+    toast({ title: 'Syncing to blockchain...', description: `Todo is being synced to ${network}.` });
+    syncToBlockchain(todoId, network)
+      .then(() =>
+        toast({ variant: 'success', title: 'Sync successful', description: 'Todo has been synced to the blockchain.' }),
+      )
+      .catch(err => toast({ variant: 'error', title: 'Sync failed', description: (err as Error).message }));
   };
 
   const filteredHasTodos = filteredTodos.length > 0;
@@ -208,7 +221,7 @@ const TodosPage = () => {
           <h1 className="text-2xl font-bold text-gray-900">Todo Management</h1>
           <p className="mt-1 text-sm text-gray-600">Create, manage, and sync your todos to blockchain networks.</p>
         </div>
-        <Button onClick={() => setShowForm(true)} variant="default">
+        <Button onClick={() => setShowForm(true)} variant="default" className="hidden sm:inline-flex">
           <svg className="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
@@ -216,74 +229,33 @@ const TodosPage = () => {
         </Button>
       </div>
 
-      {error && (
-        <div className="mb-6 rounded-md bg-red-50 p-4">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">Error</h3>
-              <div className="mt-2 text-sm text-red-700">
-                <p>{error}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showForm && (
-        <div className="mb-6 bg-white p-6 rounded-lg shadow-sm border">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">{editingTodo ? 'Edit Todo' : 'Create New Todo'}</h2>
-          <TodoForm
-            onSubmit={handleSubmit}
-            onCancel={handleCancel}
-            initialData={
-              editingTodo
-                ? {
-                    title: editingTodo.title,
-                    description: editingTodo.description,
-                    priority: editingTodo.priority,
-                    dueDate: editingTodo.dueDate ? editingTodo.dueDate.toISOString().split('T')[0] : undefined,
-                    tags: editingTodo.tags,
-                  }
-                : undefined
-            }
-          />
-        </div>
-      )}
+      <TodoFormModal
+        open={showForm}
+        onClose={handleCancel}
+        onSubmit={handleSubmit}
+        initialData={
+          editingTodo
+            ? {
+                title: editingTodo.title,
+                description: editingTodo.description,
+                priority: editingTodo.priority,
+                dueDate: editingTodo.dueDate ? editingTodo.dueDate.toISOString().split('T')[0] : undefined,
+                tags: editingTodo.tags,
+              }
+            : undefined
+        }
+      />
 
       {!isConnected && todos.length > 0 && (
-        <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                  fillRule="evenodd"
-                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-yellow-800">Wallet Not Connected</h3>
-              <div className="mt-2 text-sm text-yellow-700">
-                <p>
-                  Connect your wallet to sync todos to blockchain networks.{' '}
-                  <a href="/wallet" className="font-medium underline hover:text-yellow-600">
-                    Go to wallet page
-                  </a>
-                </p>
-              </div>
-            </div>
+        <Alert variant="warning" className="mb-6">
+          <div className="flex-1">
+            <h3 className="font-bold">Wallet Not Connected</h3>
+            <p className="text-xs">Connect your wallet to sync todos to blockchain networks.</p>
           </div>
-        </div>
+          <a href="/wallet" className="btn btn-sm btn-warning">
+            Go to wallet page
+          </a>
+        </Alert>
       )}
 
       <TodoFilters
@@ -303,7 +275,6 @@ const TodosPage = () => {
         hasTodos={filteredHasTodos && !isLoading}
         hasCompleted={filteredHasCompleted && !isLoading}
         canUndo={canUndo}
-        statusMessage={bulkStatus}
       />
 
       {blockchainStats.total > 0 && <BlockchainStats data={blockchainStats} />}
@@ -319,15 +290,15 @@ const TodosPage = () => {
         onToggle={toggleTodo}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        onBlockchainSync={
-          isConnected ? (todoId, network) => void syncToBlockchain(todoId, network as BlockchainNetwork) : undefined
-        }
+        onBlockchainSync={isConnected ? handleBlockchainSync : undefined}
+        supportedNetworks={supportedNetworks}
         loading={isLoading}
         showFilters={false}
         emptyState={emptyState}
         onRefresh={handleRefresh}
         refreshing={isLoading}
       />
+      <FloatingActionButton onClick={() => setShowForm(true)} className="sm:hidden" />
     </div>
   );
 };

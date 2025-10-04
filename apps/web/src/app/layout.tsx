@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { WalletProvider } from '../components/WalletProvider';
 import { ThemeProvider } from '../components/theme/ThemeProvider';
 import { ThemeSwitcher } from '../components/theme/ThemeSwitcher';
+import { ToastProvider } from '@todo/ui-web';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -57,6 +58,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
                 </div>
               </header>
               <main className="container mx-auto px-4 py-6 max-w-7xl">{children}</main>
+              <ToastProvider />
             </div>
           </WalletProvider>
         </ThemeProvider>
