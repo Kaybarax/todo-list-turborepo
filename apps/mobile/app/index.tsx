@@ -47,19 +47,18 @@ export default function Home() {
             </Button>
           </Link>
 
-          <View style={themeMode === 'light' ? styles.walletButtonWrapperLight : styles.walletButtonWrapperDark}>
-            <Link href="/wallet" asChild>
-              <TouchableOpacity
-                testID="nav-wallet"
-                style={styles.walletButtonInner}
-                onPress={() => {}}
-                accessibilityLabel="Go to wallet"
-                accessibilityRole="button"
-              >
-                <Text style={styles.walletButtonText}>Connect Wallet (Optional)</Text>
-              </TouchableOpacity>
-            </Link>
-          </View>
+          <Link href="/wallet" asChild>
+            <Button
+              testID="nav-wallet"
+              variant="outline"
+              size="lg"
+              style={{ width: '100%', marginBottom: tokens.spacing.sm }}
+              onPress={() => {}}
+              accessibilityLabel="Go to wallet"
+            >
+              Connect Wallet (Optional)
+            </Button>
+          </Link>
         </View>
 
         {/* Key Features Section */}
@@ -206,36 +205,6 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
       backgroundColor: '#1A202C',
       borderWidth: 2,
       borderRadius: 12,
-    },
-    walletButtonWrapperLight: {
-      width: '100%',
-      marginBottom: tokens.spacing.sm,
-      backgroundColor: '#FFFFFF',
-      borderColor: '#4299E1',
-      borderWidth: 2,
-      borderRadius: 12,
-      overflow: 'hidden',
-    },
-    walletButtonWrapperDark: {
-      width: '100%',
-      marginBottom: tokens.spacing.sm,
-      backgroundColor: '#1A202C',
-      borderColor: '#4299E1',
-      borderWidth: 2,
-      borderRadius: 12,
-      overflow: 'hidden',
-    },
-    walletButtonInner: {
-      width: '100%',
-      paddingVertical: 16,
-      paddingHorizontal: 20,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    walletButtonText: {
-      fontSize: tokens.typography.fontSize.md,
-      fontWeight: '600',
-      color: '#4299E1',
     },
     featuresSection: {
       width: '100%',
