@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Card, CardContent, NetworkSelector, Text, type NetworkType } from '@todo/ui-mobile';
-import { ErrorBanner } from '../src/components/ErrorBanner';
-import { Snackbar } from '../src/components/Snackbar';
-import { useWallet } from '../src/providers/WalletProvider';
-import { useDesignTokens } from '../src/hooks/useDesignTokens';
+import { Button, Card, CardContent, NetworkSelector, Text, type NetworkType, useEnhancedTheme } from '@todo/ui-mobile';
+import { ErrorBanner } from '../../src/components/ErrorBanner';
+import { Snackbar } from '../../src/components/Snackbar';
+import { useWallet } from '../../src/providers/WalletProvider';
+import { useDesignTokens } from '../../src/hooks/useDesignTokens';
 
 export default function Wallet() {
   const {
@@ -21,6 +21,7 @@ export default function Wallet() {
     error,
   } = useWallet();
   const tokens = useDesignTokens();
+  const { evaTheme } = useEnhancedTheme();
   const styles = createStyles(tokens);
   const [snack, setSnack] = useState<{ visible: boolean; msg: string; variant: 'success' | 'error' | 'info' }>({
     visible: false,
@@ -70,7 +71,7 @@ export default function Wallet() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: tokens.colors.background }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: evaTheme['background-basic-color-1'] }]}>
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {error ? <ErrorBanner message={error} /> : null}
         <Text testID="wallet-title" style={styles.pageTitle} variant="h1">

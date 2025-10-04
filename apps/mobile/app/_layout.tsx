@@ -23,9 +23,7 @@ export default function RootLayout() {
           <WalletProvider>
             <ErrorBoundary>
               <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="index" options={{ headerShown: false }} />
-                <Stack.Screen name="todos" options={{ headerShown: false }} />
-                <Stack.Screen name="wallet" options={{ headerShown: false }} />
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               </Stack>
               <ThemedStatusBar />
               <GlobalThemeFAB />

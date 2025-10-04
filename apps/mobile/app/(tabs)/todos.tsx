@@ -3,21 +3,22 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { View, Text, StyleSheet, Modal, ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Card, CardContent } from '@todo/ui-mobile';
+import { Button, Card, CardContent, useEnhancedTheme } from '@todo/ui-mobile';
 import { mapWalletNetworkToBlockchainNetwork } from '@todo/services';
-import { BlockchainStats } from '../src/components/BlockchainStats';
-import { TodoForm } from '../src/components/TodoForm';
-import { TodoList } from '../src/components/TodoList';
-import { TodoFilters, type PriorityFilter, type StatusFilter } from '../src/components/TodoFilters';
-import { TodoBulkActions } from '../src/components/TodoBulkActions';
-import { Snackbar } from '../src/components/Snackbar';
-import { ErrorBanner } from '../src/components/ErrorBanner';
-import { useTodoStore, type Todo } from '../src/store/todoStore';
-import { useWallet } from '../src/providers/WalletProvider';
-import { useDesignTokens } from '../src/hooks/useDesignTokens';
+import { BlockchainStats } from '../../src/components/BlockchainStats';
+import { TodoForm } from '../../src/components/TodoForm';
+import { TodoList } from '../../src/components/TodoList';
+import { TodoFilters, type PriorityFilter, type StatusFilter } from '../../src/components/TodoFilters';
+import { TodoBulkActions } from '../../src/components/TodoBulkActions';
+import { Snackbar } from '../../src/components/Snackbar';
+import { ErrorBanner } from '../../src/components/ErrorBanner';
+import { useTodoStore, type Todo } from '../../src/store/todoStore';
+import { useWallet } from '../../src/providers/WalletProvider';
+import { useDesignTokens } from '../../src/hooks/useDesignTokens';
 
 export default function Todos() {
   const tokens = useDesignTokens();
+  const { evaTheme } = useEnhancedTheme();
   const {
     q,
     status: statusParam,
@@ -154,7 +155,7 @@ export default function Todos() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: tokens.colors.background }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: evaTheme['background-basic-color-1'] }]}>
       <ScrollView
         style={styles.content}
         showsVerticalScrollIndicator={false}
