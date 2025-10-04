@@ -99,14 +99,16 @@ install_dependencies() {
         pnpm install --frozen-lockfile
     fi
     
-    print_success "Dependencies installed"
 }
 
 # Function to build shared packages
 build_packages() {
     print_status "Building shared packages..."
     
-    # Build packages in dependency order
+    # Always build utils first because other packages require its artifacts
+    pnpm turbo run build --filter="@todo/utils"
+    
+    # Build remaining packages (utils will be skipped via cache if already built)
     if [ "$PARALLEL_BUILDS" = "true" ]; then
         pnpm turbo run build --filter="./packages/*" --parallel
     else
@@ -118,6 +120,7 @@ build_packages() {
 
 # Function to compile blockchain contracts
 build_contracts() {
+{{ ... }}
     if [ "$BUILD_CONTRACTS" = "false" ]; then
         print_warning "Skipping blockchain contract compilation"
         return

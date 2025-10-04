@@ -22,6 +22,7 @@ print_status "Starting quick build for development..."
 
 # Build only packages and applications
 print_status "Building shared packages..."
+pnpm turbo run build --filter="@todo/utils"
 pnpm turbo run build --filter="./packages/*" --parallel
 
 print_status "Building applications..."
