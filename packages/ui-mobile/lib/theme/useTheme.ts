@@ -8,11 +8,11 @@
 
 import { useContext } from 'react';
 
-import { ThemeContext } from './ThemeProvider';
-import { type ThemeContextValue } from './types';
+import { EnhancedThemeContext } from './EnhancedThemeProvider';
+import { type EnhancedThemeContextValue } from './EnhancedThemeProvider';
 
-export const useTheme = (): ThemeContextValue => {
-  const context = useContext(ThemeContext);
+export const useTheme = (): EnhancedThemeContextValue => {
+  const context = useContext(EnhancedThemeContext);
 
   if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider');

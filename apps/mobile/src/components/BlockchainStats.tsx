@@ -28,7 +28,7 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
     card: { marginBottom: tokens.spacing.lg },
     title: { fontSize: tokens.typography.fontSize.lg, fontWeight: '600', marginBottom: tokens.spacing.sm },
     row: { flexDirection: 'row', gap: tokens.spacing.lg },
-    stat: { fontSize: tokens.typography.fontSize.sm, color: '#374151' },
+    stat: { fontSize: tokens.typography.fontSize.sm, color: tokens.colors.text.secondary },
   });
 
 export default BlockchainStats;

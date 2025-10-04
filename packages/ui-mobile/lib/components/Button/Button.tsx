@@ -16,7 +16,7 @@ import {
   mapButtonStatus,
   type ButtonVariant as MappingButtonVariant,
   type ButtonSize as MappingButtonSize,
-} from '../../utils/componentMappings';
+} from '@todo/utils/ui/mobile';
 
 // No theme usage required here
 
@@ -25,6 +25,8 @@ export type ButtonSize = MappingButtonSize;
 
 // BTN-1: Compose props from UI Kitten without direct inheritance to avoid RN duplicate type resolution issues
 export interface ButtonProps {
+  selected?: boolean;
+  value?: string;
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
@@ -45,6 +47,7 @@ export interface ButtonProps {
 }
 
 export const Button: React.FC<ButtonProps> = ({
+  selected,
   variant = 'primary',
   size = 'md',
   disabled = false,
@@ -66,7 +69,8 @@ export const Button: React.FC<ButtonProps> = ({
   // no-op
 
   // Mapping via shared util
-  const appearance = mapButtonAppearance(variant);
+  const finalVariant = selected ? 'primary' : variant;
+  const appearance = mapButtonAppearance(finalVariant);
   const normalizedSize = mapButtonSize(size);
   const status = mapButtonStatus(variant);
 

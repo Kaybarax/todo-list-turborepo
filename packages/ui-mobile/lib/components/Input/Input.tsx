@@ -1,20 +1,18 @@
 /**
- * Input Component
  * Enhanced input component with Eva Design and UI Kitten integration
- * Maintains backward compatibility while using Eva Design theming
  */
 
 import { Input as UIKittenInput, useTheme } from '@ui-kitten/components';
 import type { InputProps as UIKittenInputProps } from '@ui-kitten/components';
 import React, { type ReactNode } from 'react';
-import { StyleSheet, TouchableOpacity, type StyleProp, type TextStyle } from 'react-native';
+import { TouchableOpacity, type StyleProp, type TextStyle } from 'react-native';
 import {
   mapInputSize,
   mapInputStatus,
   type InputSize as MappingInputSize,
   type InputStatus as MappingInputStatus,
   type InputVariant as MappingInputVariant,
-} from '../../utils/componentMappings';
+} from '@todo/utils/ui/mobile';
 
 // No theme usage here
 
@@ -101,8 +99,7 @@ export const Input: React.FC<InputProps> = ({
   );
 };
 
-// Legacy StyleSheet retained for potential future static styles; variant styles now dynamic w/theme
-const styles = StyleSheet.create({});
+// Legacy StyleSheet can be used here for potential future static styles; variant styles are now dynamic w/theme
 
 Input.displayName = 'Input';
 

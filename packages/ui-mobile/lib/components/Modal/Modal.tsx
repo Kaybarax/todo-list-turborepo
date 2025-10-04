@@ -112,7 +112,6 @@ export const Modal: React.FC<ModalProps> = ({
   style,
   backdropStyle,
   accessibilityLabel,
-  accessibilityDescription,
   keyboardAvoidingBehavior = 'padding',
   onAnimationValues,
 }) => {

@@ -5,7 +5,7 @@
   "private": true,
   "packageManager": "pnpm@9.12.0",
   "scripts": {
-    "//": "=== GLOBAL COMMANDS ===",
+    "//_global": "=== GLOBAL COMMANDS ===",
     "dev": "./scripts/startDev.sh",
     "build": "./scripts/build.sh --skip-docker",
     "build:quick": "./scripts/build-quick.sh",
@@ -19,7 +19,7 @@
     "clean": "turbo run clean && rm -rf build/ && rm -rf dist/ && ./scripts/cleanup.sh",
     "quality": "pnpm lint && pnpm typecheck",
 
-    "//": "=== WEB APP SCRIPTS ===",
+    "//_web": "=== WEB APP SCRIPTS ===",
     "dev:web": "pnpm --filter @todo/web dev",
     "build:web": "turbo run build --filter=@todo/web",
     "test:integration:web": "jest --config=test/integration/jest.config.js --testPathPattern=web-blockchain-integration",
@@ -30,7 +30,7 @@
     "tokens:validate": "pnpm --filter @todo/ui-web tokens:validate",
     "test:ui-web": "pnpm --filter @todo/ui-web test",
 
-    "//": "=== MOBILE APP SCRIPTS ===",
+    "//_mobile": "=== MOBILE APP SCRIPTS ===",
     "dev:mobile": "pnpm --filter @todo/mobile dev",
     "build:mobile": "turbo run build --filter=@todo/mobile",
     "build:ui-mobile": "pnpm --filter @todo/ui-mobile build",
@@ -43,15 +43,15 @@
     "build:apps:mobile": "turbo run build --filter=@todo/mobile",
     "build:packages:ui-mobile": "turbo run build --filter=\"./packages/ui-mobile\"",
 
-    "//": "=== API SERVICE SCRIPTS ===",
+    "//_api": "=== API SERVICE SCRIPTS ===",
     "dev:api": "pnpm --filter @todo/api dev",
     "build:api": "turbo run build --filter=@todo/api",
 
-    "//": "=== INGESTION SERVICE SCRIPTS ===",
+    "//_ingestion": "=== INGESTION SERVICE SCRIPTS ===",
     "dev:ingestion": "pnpm --filter @todo/ingestion dev",
     "build:ingestion": "turbo run build --filter=@todo/ingestion",
 
-    "//": "=== BLOCKCHAIN & SMART CONTRACTS ===",
+    "//_blockchain": "=== BLOCKCHAIN & SMART CONTRACTS ===",
     "dev:blockchain": "./scripts/dev-blockchain.sh",
     "build:contracts": "./scripts/build-contracts.sh",
     "contracts:compile": "./scripts/build-contracts.sh --skip-tests --check-deps",
@@ -71,18 +71,18 @@
     "blockchain:help": "./scripts/blockchain-help.sh",
     "blockchain:help:interactive": "./scripts/interactive-help.sh",
 
-    "//": "=== DESIGN SYSTEM ===",
+    "//_design_system": "=== DESIGN SYSTEM ===",
     "design-system:build": "pnpm tokens:build && pnpm storybook:build:web",
     "design-system:test": "pnpm --filter @todo/ui-web test:visual",
 
-    "//": "=== DATABASE SCRIPTS ===",
+    "//_db": "=== DATABASE SCRIPTS ===",
     "db:setup": "node db/setup.js",
     "db:migrate": "node db/migrate.js up",
     "db:seed": "node db/seed-todos.js",
     "db:reset": "node db/setup.js reset",
     "db:rebuild": "pnpm db:reset && pnpm db:setup",
 
-    "//": "=== GROUPED BUILD SCRIPTS ===",
+    "//_grouped_build": "=== GROUPED BUILD SCRIPTS ===",
     "dev:frontend": "./scripts/dev-frontend.sh",
     "dev:backend": "./scripts/dev-backend.sh",
     "build:apps": "turbo run build --filter=\"./apps/*\"",
@@ -98,8 +98,9 @@
     "build:packages:config-jest": "turbo run build --filter=\"./packages/config-jest\"",
     "build:packages:config-ts": "turbo run build --filter=\"./packages/config-ts\"",
     "build:packages:config-release": "turbo run build --filter=\"./packages/config-release\"",
+    "build:utils": "pnpm --filter @todo/utils build",
 
-    "//": "=== TESTING SCRIPTS ===",
+    "//_testing": "=== TESTING SCRIPTS ===",
     "test:unit": "turbo run test:unit",
     "test:integration": "turbo run test:integration",
     "test:integration:all": "jest --config=test/integration/jest.config.js",
@@ -107,7 +108,7 @@
     "test:deps": "./test/dependency-management/run-tests.sh",
     "test:packages": "./scripts/test-package-installation.sh",
 
-    "//": "=== DOCKER & INFRASTRUCTURE ===",
+    "//_docker": "=== DOCKER & INFRASTRUCTURE ===",
     "docker:clean": "docker system prune -f && docker image prune -f",
     "docker:build": "./scripts/build.sh",
     "docker:build:prod": "./scripts/build.sh --environment production",
@@ -118,7 +119,7 @@
     "infra:compose:up": "docker compose -f docker-compose.dev.yml up -d",
     "infra:compose:down": "docker compose -f docker-compose.dev.yml down",
 
-    "//": "=== DEPLOYMENT SCRIPTS ===",
+    "//_deployment": "=== DEPLOYMENT SCRIPTS ===",
     "deploy": "./scripts/deploy.sh",
     "deploy:dev": "./scripts/deploy-development.sh",
     "deploy:staging": "./scripts/deploy-staging.sh",
@@ -127,7 +128,7 @@
     "deploy:k8s:dry-run": "./scripts/deploy.sh --dry-run",
     "deploy:docker": "./scripts/deploy.sh --docker-compose",
 
-    "//": "=== PACKAGE MANAGEMENT ===",
+    "//_pkg_mgmt": "=== PACKAGE MANAGEMENT ===",
     "prepare": "husky",
     "changeset": "changeset",
     "version-packages": "changeset version",

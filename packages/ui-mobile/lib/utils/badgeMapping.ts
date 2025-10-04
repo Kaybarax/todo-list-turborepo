@@ -7,7 +7,7 @@ export interface BadgeVisualMapping {
 
 export type BadgeVariantMap = Record<BadgeVariant, (tokens: Record<string, string>) => BadgeVisualMapping>;
 
-export const createBadgeVariantMap = (tokens: Record<string, string>): BadgeVariantMap => ({
+export const createBadgeVariantMap = (): BadgeVariantMap => ({
   default: t => ({
     background: t['background-basic-color-2'] || '#F7F9FC',
     text: t['text-hint-color'] || '#8F9BB3',

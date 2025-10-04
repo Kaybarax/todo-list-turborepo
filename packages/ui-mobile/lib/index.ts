@@ -6,6 +6,9 @@
 export { Button } from './components/Button';
 export type { ButtonProps, ButtonVariant, ButtonSize } from './components/Button';
 
+export { ButtonGroup } from './components/ButtonGroup';
+export type { ButtonGroupProps } from './components/ButtonGroup';
+
 export { Text } from './components/Text';
 export type { TextProps, TextVariant, TextColor, TextAlign, FontWeight } from './components/Text';
 

@@ -10,7 +10,7 @@ import React from 'react';
 import { type ViewStyle, type TextStyle, View, StyleSheet, type StyleProp } from 'react-native';
 
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
-import { mapCardAppearance, type CardVariant as MappingCardVariant } from '../../utils/componentMappings';
+import { mapCardAppearance, type CardVariant as MappingCardVariant } from '@todo/utils/ui/mobile';
 import { getShadow } from '../../utils/shadows';
 import { Text } from '../Text/Text';
 

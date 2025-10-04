@@ -272,9 +272,6 @@ export default function Todos() {
         <Modal visible={showForm} animationType="slide" presentationStyle="pageSheet">
           <SafeAreaView style={[styles.modalContainer, { backgroundColor: tokens.colors.background }]}>
             <View style={[styles.modalHeader, { borderColor: tokens.colors.border.default }]}>
-              <Button variant="outline" size="sm" onPress={handleCancel} accessibilityLabel="Cancel and close form">
-                Cancel
-              </Button>
               <Text
                 style={[
                   styles.modalTitle,
@@ -283,7 +280,6 @@ export default function Todos() {
               >
                 {editingTodo ? 'Edit Todo' : 'New Todo'}
               </Text>
-              <View style={styles.modalHeaderSpacer} />
             </View>
 
             <TodoForm
@@ -351,11 +347,10 @@ const styles = StyleSheet.create({
   modalHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
+    justifyContent: 'center',
+    paddingHorizontal: 16,
     paddingVertical: 16,
     borderBottomWidth: 1,
   },
   modalTitle: { fontSize: 18, fontWeight: '600' },
-  modalHeaderSpacer: { width: 60 },
 });

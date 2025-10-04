@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, Text } from 'react-native';
-import { Button, Card, CardContent } from '@todo/ui-mobile';
+import { Button, ButtonGroup, Card, CardContent } from '@todo/ui-mobile';
 import { useDesignTokens } from '../hooks/useDesignTokens';
 
 export type PriorityFilter = 'all' | 'low' | 'medium' | 'high';
@@ -37,30 +37,36 @@ export const TodoFilters: React.FC<Props> = ({
           value={search}
           onChangeText={onSearchChange}
           placeholder="Search title, description, or #tag"
+          placeholderTextColor={tokens.colors.text.secondary}
         />
 
         <Text style={[styles.sectionLabel, styles.sectionSpacing]}>Priority</Text>
-        <View style={styles.row}>
+        <ButtonGroup
+          attached={true}
+          type="single"
+          value={priority}
+          onValueChange={(value: string | string[]) => onPriorityChange(value as PriorityFilter)}
+        >
           {(['all', 'low', 'medium', 'high'] as const).map(p => (
-            <Button
-              key={p}
-              size="sm"
-              variant={priority === p ? 'primary' : 'outline'}
-              onPress={() => onPriorityChange(p)}
-            >
+            <Button key={p} size="sm" variant={priority === p ? 'primary' : 'outline'} value={p}>
               {p[0].toUpperCase() + p.slice(1)}
             </Button>
           ))}
-        </View>
+        </ButtonGroup>
 
         <Text style={[styles.sectionLabel, styles.sectionSpacing]}>Status</Text>
-        <View style={styles.row}>
+        <ButtonGroup
+          attached={true}
+          type="single"
+          value={status}
+          onValueChange={(value: string | string[]) => onStatusChange(value as StatusFilter)}
+        >
           {(['all', 'open', 'completed'] as const).map(s => (
-            <Button key={s} size="sm" variant={status === s ? 'primary' : 'outline'} onPress={() => onStatusChange(s)}>
+            <Button key={s} size="sm" variant={status === s ? 'primary' : 'outline'} value={s}>
               {s[0].toUpperCase() + s.slice(1)}
             </Button>
           ))}
-        </View>
+        </ButtonGroup>
 
         <View style={styles.clearRow}>
           <Button
@@ -90,10 +96,16 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
       borderRadius: 8,
       padding: 12,
       fontSize: 16,
+      color: tokens.colors.text.primary,
+      backgroundColor: tokens.colors.surface,
     },
-    sectionLabel: { fontSize: tokens.typography.fontSize.sm, marginBottom: tokens.spacing.xs },
+    sectionLabel: {
+      fontSize: tokens.typography.fontSize.sm,
+      marginBottom: tokens.spacing.xs,
+      color: tokens.colors.text.primary,
+      fontWeight: '600',
+    },
     sectionSpacing: { marginTop: tokens.spacing.sm },
-    row: { flexDirection: 'row', gap: tokens.spacing.sm },
     clearRow: { marginTop: tokens.spacing.sm, flexDirection: 'row', justifyContent: 'flex-end' },
   });
 

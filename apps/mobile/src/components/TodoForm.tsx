@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Platform } from 'react-native';
-import { Button, Card, CardContent } from '@todo/ui-mobile';
+import { Button, Card, CardContent, ButtonGroup } from '@todo/ui-mobile';
 import { useDesignTokens } from '../hooks/useDesignTokens';
 import { useTodoStore } from '../store/todoStore';
 
@@ -76,17 +76,16 @@ export const TodoForm: React.FC<Props> = ({ onSubmit, onCancel, initialData }) =
     <Card>
       <CardContent>
         <View style={styles.field}>
-          <Text style={styles.label}>Title</Text>
           <TextInput
             style={[styles.input, errors.title ? { borderColor: tokens.colors.border.error } : null]}
             value={title}
             onChangeText={v => {
               setTitle(v);
-              setErrors(prev => ({ ...prev, title: validateTitle(v) }));
+              if (errors.title) setErrors(e => ({ ...e, title: undefined }));
             }}
-            onBlur={() => setErrors(prev => ({ ...prev, title: validateTitle(title) }))}
-            placeholder="What to do?"
-            accessibilityLabel="Todo title"
+            placeholder="Enter todo title"
+            placeholderTextColor={tokens.colors.text.secondary}
+            autoFocus
           />
           {errors.title ? <Text style={[styles.errorText, { color: tokens.colors.error }]}>{errors.title}</Text> : null}
         </View>
@@ -96,126 +95,52 @@ export const TodoForm: React.FC<Props> = ({ onSubmit, onCancel, initialData }) =
             style={[styles.input, styles.textarea]}
             value={description}
             onChangeText={setDescription}
+            placeholder="Enter description (optional)"
+            placeholderTextColor={tokens.colors.text.secondary}
             multiline
-            numberOfLines={4}
-            placeholder="More details"
-            accessibilityLabel="Todo description"
           />
         </View>
         <View style={styles.field}>
           <Text style={styles.label}>Priority</Text>
-          <View style={styles.row}>
-            {(['low', 'medium', 'high'] as const).map(p => (
-              <Button key={p} variant={priority === p ? 'primary' : 'outline'} size="sm" onPress={() => setPriority(p)}>
-                {p[0].toUpperCase() + p.slice(1)}
-              </Button>
-            ))}
+          <View style={styles.buttonGroupContainer}>
+            <ButtonGroup
+              attached={true}
+              type="single"
+              value={priority || 'medium'}
+              onValueChange={(p: string | string[]) => setPriority(p as 'low' | 'medium' | 'high')}
+            >
+              {(['low', 'medium', 'high'] as const).map(p => (
+                <Button key={p} variant={priority === p ? 'primary' : 'outline'} size="sm" value={p}>
+                  {p[0].toUpperCase() + p.slice(1)}
+                </Button>
+              ))}
+            </ButtonGroup>
           </View>
         </View>
-
         <View style={styles.field}>
           <Text style={styles.label}>Due Date</Text>
-          {Platform.OS === 'web' ? (
-            <View style={styles.rowBetween}>
-              {/* Using native input type=date on web via createElement to avoid TS DOM typings */}
-              {React.createElement('input' as any, {
-                ref: webDateInputRef,
-                type: 'date',
-                value: dueDate,
-                onChange: (e: any) => setDueDate(e.target.value),
-                style: {
-                  borderWidth: 1,
-                  borderColor: tokens.colors.border.default,
-                  borderRadius: 8,
-                  padding: 10,
-                  fontSize: 16,
-                  flex: 1,
-                  marginRight: 8,
-                },
-                'aria-label': 'Due date',
-              })}
-              <Button
-                variant="outline"
-                size="sm"
-                onPress={() => {
-                  setDueDate('');
-                  if (webDateInputRef.current) {
-                    try {
-                      webDateInputRef.current.value = '';
-                    } catch {}
-                  }
-                }}
-                accessibilityLabel="Clear due date"
-              >
-                Clear
-              </Button>
-            </View>
-          ) : (
-            <View>
-              <TextInput
-                style={[styles.input, errors.dueDate ? { borderColor: tokens.colors.border.error } : null]}
-                value={dueDate}
-                onChangeText={v => {
-                  setDueDate(v);
-                  setErrors(prev => ({ ...prev, dueDate: validateDueDate(v) }));
-                }}
-                onBlur={() => setErrors(prev => ({ ...prev, dueDate: validateDueDate(dueDate) }))}
-                placeholder="YYYY-MM-DD"
-                inputMode="numeric"
-                accessibilityLabel="Due date"
-              />
-              {errors.dueDate ? (
-                <Text style={[styles.errorText, { color: tokens.colors.error }]}>{errors.dueDate}</Text>
-              ) : null}
-              <View style={[styles.row, { marginTop: 8 }]}>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onPress={() => setDueDate(new Date().toISOString().slice(0, 10))}
-                  accessibilityLabel="Set due date to today"
-                >
-                  Today
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onPress={() => {
-                    const d = new Date();
-                    d.setDate(d.getDate() + 1);
-                    setDueDate(d.toISOString().slice(0, 10));
-                  }}
-                  accessibilityLabel="Set due date to tomorrow"
-                >
-                  Tomorrow
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onPress={() => {
-                    const d = new Date();
-                    d.setDate(d.getDate() + 7);
-                    setDueDate(d.toISOString().slice(0, 10));
-                  }}
-                  accessibilityLabel="Set due date to next week"
-                >
-                  Next Week
-                </Button>
-                <Button variant="ghost" size="sm" onPress={() => setDueDate('')} accessibilityLabel="Clear due date">
-                  Clear
-                </Button>
-              </View>
-            </View>
-          )}
+          <TextInput
+            style={[styles.input, errors.dueDate ? { borderColor: tokens.colors.border.error } : null]}
+            value={dueDate}
+            onChangeText={v => {
+              setDueDate(v);
+              if (errors.dueDate) setErrors(e => ({ ...e, dueDate: undefined }));
+            }}
+            placeholder="YYYY-MM-DD"
+            placeholderTextColor={tokens.colors.text.secondary}
+          />
+          {errors.dueDate ? (
+            <Text style={[styles.errorText, { color: tokens.colors.error }]}>{errors.dueDate}</Text>
+          ) : null}
         </View>
-
         <View style={styles.field}>
           <Text style={styles.label}>Tags</Text>
           <TextInput
             style={styles.input}
             value={tagsInput}
             onChangeText={setTagsInput}
-            placeholder="e.g. work, urgent, ui"
-            accessibilityLabel="Tags"
+            placeholder="Enter tags separated by commas"
+            placeholderTextColor={tokens.colors.text.secondary}
           />
           {suggestedTags.length > 0 ? (
             <View style={[styles.row, { marginTop: 8, flexWrap: 'wrap' as const }]}>
@@ -272,12 +197,33 @@ export const TodoForm: React.FC<Props> = ({ onSubmit, onCancel, initialData }) =
 const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
   StyleSheet.create({
     field: { marginBottom: tokens.spacing.md },
-    label: { fontSize: tokens.typography.fontSize.sm, marginBottom: tokens.spacing.xs },
-    input: { borderWidth: 1, borderColor: tokens.colors.border.default, borderRadius: 8, padding: 12, fontSize: 16 },
+    label: {
+      fontSize: tokens.typography.fontSize.sm,
+      marginBottom: tokens.spacing.xs,
+      color: tokens.colors.text.primary,
+      fontWeight: '600',
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: tokens.colors.border.default,
+      borderRadius: 8,
+      padding: 12,
+      fontSize: 16,
+      color: tokens.colors.text.primary,
+      backgroundColor: tokens.colors.surface,
+    },
     textarea: { height: 100, textAlignVertical: 'top' as const },
+    buttonGroupContainer: {
+      height: 40,
+      overflow: 'hidden',
+    },
     row: { flexDirection: 'row', gap: tokens.spacing.sm },
     rowBetween: { flexDirection: 'row', justifyContent: 'space-between', marginTop: tokens.spacing.md },
-    errorText: { marginTop: 6, fontSize: tokens.typography.fontSize.sm },
+    errorText: {
+      marginTop: 6,
+      fontSize: tokens.typography.fontSize.sm,
+      color: tokens.colors.error[500],
+    },
   });
 
 export default TodoForm;

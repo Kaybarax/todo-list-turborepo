@@ -9,7 +9,7 @@ import type { TextProps as UIKittenTextProps } from '@ui-kitten/components';
 import React from 'react';
 import { type StyleProp, type TextStyle } from 'react-native';
 
-import { mapTextCategory, type TextVariant as MappingTextVariant } from '../../utils/componentMappings';
+import { mapTextCategory, type TextVariant as MappingTextVariant } from '@todo/utils/ui/mobile';
 
 export type TextVariant = MappingTextVariant;
 export type TextColor = 'primary' | 'secondary' | 'disabled' | 'inverse' | string;

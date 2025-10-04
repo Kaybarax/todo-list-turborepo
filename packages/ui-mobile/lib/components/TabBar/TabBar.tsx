@@ -195,17 +195,7 @@ export const TabBar: React.FC<TabBarProps> = ({
     );
   };
 
-  const renderTabLabel = (tab: TabItem, isActive: boolean) => {
-    if (!showLabels) return null;
-
-    return (
-      <Text variant="caption" style={getLabelStyles(isActive)} numberOfLines={1}>
-        {tab.label}
-      </Text>
-    );
-  };
-
-  const handleTabPress = (tab: TabItem, index: number) => {
+  const handleTabPress = (index: number) => {
     // Fire numeric index for tests; if consumer expects string key they can derive from tabs[index].
     onTabPress(index);
   };
@@ -226,7 +216,7 @@ export const TabBar: React.FC<TabBarProps> = ({
             <TouchableOpacity
               key={tabKey}
               style={getTabStyles()}
-              onPress={() => handleTabPress({ ...tab, key: tabKey }, idx)}
+              onPress={() => handleTabPress(idx)}
               accessibilityRole="tab"
               accessibilityState={{ selected: isActive }}
               accessibilityLabel={

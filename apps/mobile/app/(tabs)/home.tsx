@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 import { Button, Icon, Card, CardContent, CardTitle, CardDescription, useEnhancedTheme } from '@todo/ui-mobile';
@@ -8,8 +8,7 @@ import { useDesignTokens } from '../../src/hooks/useDesignTokens';
 export default function Home() {
   const tokens = useDesignTokens();
   const styles = createStyles(tokens);
-  const { themeName, toggleTheme, evaTheme } = useEnhancedTheme();
-  const themeMode = themeName; // For backward compatibility with existing code
+  const { evaTheme } = useEnhancedTheme();
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: evaTheme['background-basic-color-1'] }]}>
@@ -21,13 +20,13 @@ export default function Home() {
             style={[
               styles.title,
               {
-                color: themeMode === 'light' ? '#F6AD55' : '#805AD5',
+                color: tokens.colors.primary,
               },
             ]}
           >
             Todo Pro
           </Text>
-          <Text style={[styles.subtitle, { color: themeMode === 'light' ? '#2D3748' : '#A0AEC0' }]}>
+          <Text style={[styles.subtitle, { color: tokens.colors.text.primary }]}>
             A modern app for getting things done
           </Text>
         </View>
@@ -39,7 +38,7 @@ export default function Home() {
               testID="nav-todos"
               variant="primary"
               size="lg"
-              style={styles.primaryButton}
+              style={styles.actionButton}
               onPress={() => {}}
               accessibilityLabel="Go to your todos"
             >
@@ -52,7 +51,7 @@ export default function Home() {
               testID="nav-wallet"
               variant="outline"
               size="lg"
-              style={{ width: '100%', marginBottom: tokens.spacing.sm }}
+              style={styles.actionButton}
               onPress={() => {}}
               accessibilityLabel="Go to wallet"
             >
@@ -63,16 +62,14 @@ export default function Home() {
 
         {/* Key Features Section */}
         <View style={styles.featuresSection}>
-          <Text style={[styles.featuresHeader, { color: themeMode === 'light' ? '#F6AD55' : '#805AD5' }]}>
-            Key Features
-          </Text>
+          <Text style={[styles.featuresHeader, { color: tokens.colors.primary }]}>Key Features</Text>
 
           {/* Feature Cards */}
           <View style={styles.featureContainer}>
             <Card variant="elevated" padding="md" style={styles.featureCard} testID="feature-card-prioritization">
               <CardContent style={styles.cardContentWrapper}>
                 <View style={styles.featureIconContainer}>
-                  <Icon name="file-text-outline" size="xl" color="#805AD5" />
+                  <Icon name="file-text-outline" size="xl" color={tokens.colors.primary} />
                 </View>
                 <View style={styles.featureContent}>
                   <CardTitle variant="h4" style={styles.cardTitle} numberOfLines={2}>
@@ -88,7 +85,7 @@ export default function Home() {
             <Card variant="elevated" padding="md" style={styles.featureCard} testID="feature-card-blockchain">
               <CardContent style={styles.cardContentWrapper}>
                 <View style={styles.featureIconContainer}>
-                  <Icon name="shield-outline" size="xl" color="#48BB78" />
+                  <Icon name="shield-outline" size="xl" color={tokens.colors.success} />
                 </View>
                 <View style={styles.featureContent}>
                   <CardTitle variant="h4" style={styles.cardTitle} numberOfLines={2}>
@@ -104,7 +101,7 @@ export default function Home() {
             <Card variant="elevated" padding="md" style={styles.featureCard} testID="feature-card-sync">
               <CardContent style={styles.cardContentWrapper}>
                 <View style={styles.featureIconContainer}>
-                  <Icon name="sync-outline" size="xl" color="#ED8936" />
+                  <Icon name="sync-outline" size="xl" color={tokens.colors.warning} />
                 </View>
                 <View style={styles.featureContent}>
                   <CardTitle variant="h4" style={styles.cardTitle} numberOfLines={2}>
@@ -171,40 +168,9 @@ const createStyles = (tokens: ReturnType<typeof useDesignTokens>) =>
       width: '100%',
       marginBottom: tokens.spacing.xl,
     },
-    primaryButton: {
+    actionButton: {
       width: '100%',
       marginBottom: tokens.spacing.sm,
-      backgroundColor: '#4299E1',
-      borderRadius: 12,
-    },
-    secondaryButton: {
-      width: '100%',
-      marginBottom: tokens.spacing.sm,
-      backgroundColor: '#2D3748',
-      borderRadius: 12,
-    },
-    outlineButton: {
-      width: '100%',
-      marginBottom: tokens.spacing.sm,
-      borderColor: '#4299E1',
-      borderWidth: 2,
-      borderRadius: 12,
-    },
-    outlineButtonLight: {
-      width: '100%',
-      marginBottom: tokens.spacing.sm,
-      borderColor: '#4299E1',
-      backgroundColor: '#FFFFFF',
-      borderWidth: 2,
-      borderRadius: 12,
-    },
-    outlineButtonDark: {
-      width: '100%',
-      marginBottom: tokens.spacing.sm,
-      borderColor: '#4299E1',
-      backgroundColor: '#1A202C',
-      borderWidth: 2,
-      borderRadius: 12,
     },
     featuresSection: {
       width: '100%',

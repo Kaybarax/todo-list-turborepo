@@ -28,7 +28,7 @@ export function GlobalThemeFAB() {
         accessibilityLabel="Toggle color theme"
       >
         <Icon
-          name={themeName === 'light' ? 'sun-outline' : 'moon-outline'}
+          name={themeName === 'light' ? 'moon-outline' : 'sun-outline'}
           size="md"
           color={themeName === 'light' ? '#FFFFFF' : '#4299E1'}
         />

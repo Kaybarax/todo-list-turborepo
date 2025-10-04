@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Platform, StatusBar, StyleSheet } from 'react-native';
-import { TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { TopNavigation } from '@ui-kitten/components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEnhancedTheme } from '../../theme/useEnhancedTheme';
 import { getShadow } from '../../utils/shadows';

@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useState, useCallback } from 'react';
-import { AccessibilityInfo, Platform } from 'react-native';
+import { AccessibilityInfo } from 'react-native';
 
 export interface UseReducedMotionOptions {
   /** Explicit override. If provided it wins over system preference. */

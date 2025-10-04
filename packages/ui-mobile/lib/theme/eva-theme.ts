@@ -171,7 +171,7 @@ export const darkTheme = {
   // Override colors for dark theme
   'text-basic-color': '#ffffff',
   'text-alternate-color': '#171717',
-  'text-control-color': '#171717',
+  'text-control-color': '#ffffff',
   'text-disabled-color': '#525252',
   'text-hint-color': '#737373',
 

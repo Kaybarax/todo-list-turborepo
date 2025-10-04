@@ -20,7 +20,7 @@ export interface BadgeProps {
 const Badge: React.FC<BadgeProps> = ({ text, variant = 'default', size = 'medium', style, textStyle, testID }) => {
   const { evaTheme } = useEnhancedTheme();
 
-  const variantMap = useMemo(() => createBadgeVariantMap(evaTheme), [evaTheme]);
+  const variantMap = useMemo(() => createBadgeVariantMap(), []);
   const visual = variantMap[variant](evaTheme);
   const sizeKey = sizeStyleKey(size);
 
