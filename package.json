@@ -22,6 +22,7 @@
     "//_web": "=== WEB APP SCRIPTS ===",
     "dev:web": "pnpm --filter @todo/web dev",
     "build:web": "turbo run build --filter=@todo/web",
+    "build:ui-web": "pnpm --filter @todo/ui-web build",
     "test:integration:web": "jest --config=test/integration/jest.config.js --testPathPattern=web-blockchain-integration",
     "storybook:web": "pnpm --filter @todo/ui-web storybook",
     "storybook:build:web": "pnpm --filter @todo/ui-web build-storybook",
