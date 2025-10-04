@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { cn, cv, type VariantProps } from '@todo/utils/ui/web';
+import { Text } from '../Text/Text';
 
 const cardVariants = cv('card bg-base-100 transition-shadow', {
   variants: {
@@ -46,7 +47,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       ref={ref}
       className={cn(cardVariants({ elevation, variant, interactive, glass }), className)}
       tabIndex={interactive ? 0 : undefined}
-      role={interactive ? 'group' : undefined}
+      role={interactive ? 'button' : undefined}
       {...props}
     />
   ),
@@ -62,15 +63,13 @@ CardHeader.displayName = 'CardHeader';
 
 const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
   ({ className, ...props }, ref) => (
-    <h3 ref={ref} className={cn('card-title text-2xl font-semibold', className)} {...props} />
+    <Text as="h3" variant="h3" ref={ref} className={cn('card-title', className)} {...props} />
   ),
 );
 CardTitle.displayName = 'CardTitle';
 
 const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
-  ({ className, ...props }, ref) => (
-    <p ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />
-  ),
+  ({ className, ...props }, ref) => <Text variant="muted" ref={ref} className={className} {...props} />,
 );
 CardDescription.displayName = 'CardDescription';
 

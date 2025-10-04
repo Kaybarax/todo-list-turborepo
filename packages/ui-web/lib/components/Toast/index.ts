@@ -1,1 +1,2 @@
-export { Toast, Toaster, type ToastProps, type ToasterProps } from './Toast';
+export * from './Toast';
+export * from './ToastProvider';

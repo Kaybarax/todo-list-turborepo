@@ -20,6 +20,7 @@ const buttonVariants = cva('btn bg-primary h-10', {
       outline: 'btn-outline',
       active: 'btn-active',
       disabled: 'btn-disabled',
+      destructive: 'btn-error',
     },
     size: {
       xs: 'btn-xs',
@@ -98,8 +99,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className,
         )}
         disabled={loading || disabled}
-        aria-disabled={loading || disabled ? 'true' : undefined}
-        aria-busy={loading ? 'true' : undefined}
         {...props}
       >
         {loading ? (
