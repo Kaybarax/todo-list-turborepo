@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Edit, Trash2 } from 'lucide-react';
 import { cn, Badge, Button, Checkbox, IconButton } from '@todo/ui-web';
+import { BlockchainNetwork } from '@todo/services';
 
 const todoItemVariants = cva('card bg-base-100 shadow-sm border border-base-300 hover:shadow-md transition-shadow', {
   variants: {
@@ -27,9 +28,6 @@ const todoItemVariants = cva('card bg-base-100 shadow-sm border border-base-300 
     overdue: false,
   },
 });
-
-// Import blockchain types from services package
-import { BlockchainNetwork } from '@todo/services';
 
 export interface TodoData {
   id: string;
@@ -62,7 +60,7 @@ export interface TodoItemProps
     network: BlockchainNetwork;
   }>;
   getNetworkDisplayInfo?: (network: BlockchainNetwork) => { displayName: string };
-  supportedNetworks?: BlockchainNetwork[];
+  supportedNetworks?: string[];
 }
 
 const TodoItem = React.forwardRef<HTMLDivElement, TodoItemProps>(
@@ -79,165 +77,115 @@ const TodoItem = React.forwardRef<HTMLDivElement, TodoItemProps>(
       showBlockchainInfo = true,
       TransactionStatusComponent,
       getNetworkDisplayInfo,
-      supportedNetworks = [
-        BlockchainNetwork.SOLANA,
-        BlockchainNetwork.POLKADOT,
-        BlockchainNetwork.POLYGON,
-        BlockchainNetwork.MOONBEAM,
-        BlockchainNetwork.BASE,
-      ],
+      supportedNetworks = [],
       ...props
     },
     ref,
   ) => {
-    const [showActionsState, setShowActionsState] = useState(false);
-
-    const formatDate = (date: Date) => {
-      return new Intl.DateTimeFormat('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      }).format(date);
-    };
-
     const isOverdue = todo.dueDate && new Date(todo.dueDate) < new Date() && !todo.completed;
 
     const getNetworkDisplayName = (network: BlockchainNetwork) => {
-      if (getNetworkDisplayInfo) {
-        return getNetworkDisplayInfo(network).displayName;
-      }
-      // Fallback: capitalize first letter
-      return network.charAt(0).toUpperCase() + network.slice(1);
+      return getNetworkDisplayInfo
+        ? getNetworkDisplayInfo(network).displayName
+        : network.charAt(0).toUpperCase() + network.slice(1);
     };
 
     const getPriorityVariant = (priority: string) => {
       switch (priority) {
         case 'high':
-          return 'destructive';
+          return 'error';
         case 'medium':
-          return 'default';
+          return 'warning';
         case 'low':
-          return 'secondary';
+          return 'info';
         default:
-          return 'default';
+          return 'success';
       }
     };
 
-    const priorityBorderClass = (priority: string) => {
-      switch (priority) {
-        case 'high':
-          return 'border-l-error';
-        case 'low':
-          return 'border-l-success';
-        default:
-          return '';
+    const renderSyncButton = () => {
+      if (!onBlockchainSync) return null;
+
+      if (!supportedNetworks || supportedNetworks.length <= 1) {
+        const network = (supportedNetworks?.[0] ?? 'solana') as BlockchainNetwork;
+        return (
+          <Button variant="outline" size="sm" onClick={() => onBlockchainSync(todo.id, network)}>
+            Sync
+          </Button>
+        );
       }
+
+      return (
+        <div className="dropdown dropdown-top dropdown-end">
+          <Button variant="outline" size="sm" tabIndex={0} role="button">
+            Sync
+          </Button>
+          <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-10">
+            {supportedNetworks.map(network => (
+              <li key={network}>
+                <a onClick={() => onBlockchainSync(todo.id, network as BlockchainNetwork)}>
+                  {getNetworkDisplayName(network as BlockchainNetwork)}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
     };
 
     return (
       <div
         ref={ref}
-        className={cn(
-          todoItemVariants({
-            variant,
-            completed: todo.completed,
-            overdue: isOverdue,
-          }),
-          priorityBorderClass(todo.priority),
-          className,
-        )}
-        onMouseEnter={() => setShowActionsState(true)}
-        onMouseLeave={() => setShowActionsState(false)}
+        className={cn(todoItemVariants({ variant, completed: todo.completed, overdue: isOverdue, className }))}
         {...props}
       >
-        <div className={variant === 'compact' ? 'card-body p-3' : 'card-body p-4'}>
-          <div className="flex items-start space-x-3">
-            <div className="flex-shrink-0">
-              <Checkbox checked={todo.completed} onChange={() => onToggle(todo.id)} />
-            </div>
+        <div className="card-body">
+          <div className="flex items-start gap-4">
+            <Checkbox
+              checked={todo.completed}
+              onChange={() => onToggle(todo.id)}
+              aria-label={`Mark ${todo.title} as ${todo.completed ? 'incomplete' : 'complete'}`}
+            />
+            <div className="flex-1">
+              <h2 className={cn('card-title', { 'line-through': todo.completed })}>{todo.title}</h2>
+              {todo.description && <p className="text-sm text-base-content/70 mt-1">{todo.description}</p>}
 
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between">
-                <h3
-                  className={`text-sm font-medium ${
-                    todo.completed ? 'line-through text-base-content/50' : 'text-base-content'
-                  }`}
-                >
-                  {todo.title}
-                </h3>
-
-                {showActions && (showActionsState || variant === 'detailed') && (
-                  <div className="flex items-center space-x-2">
-                    <IconButton onClick={() => onEdit(todo)} variant="ghost" size="sm" title="Edit todo">
-                      <Edit className="h-4 w-4" />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => onDelete(todo.id)}
-                      variant="ghost"
-                      size="sm"
-                      title="Delete todo"
-                      className="hover:text-red-600"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </IconButton>
-                  </div>
-                )}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-xs text-base-content/70">
+                <Badge variant={getPriorityVariant(todo.priority)} size="sm">
+                  {todo.priority}
+                </Badge>
+                {todo.dueDate && <span>Due: {new Date(todo.dueDate).toLocaleDateString()}</span>}
               </div>
 
-              {todo.description && variant !== 'compact' && (
-                <p className={`mt-1 text-sm ${todo.completed ? 'text-base-content/40' : 'text-base-content/70'}`}>
-                  {todo.description}
-                </p>
-              )}
-
-              <div className="mt-2 flex items-center space-x-2 flex-wrap gap-1">
-                <Badge variant={getPriorityVariant(todo.priority)}>{todo.priority}</Badge>
-
-                {todo.dueDate && (
-                  <Badge variant={isOverdue ? 'destructive' : 'outline'}>Due: {formatDate(todo.dueDate)}</Badge>
-                )}
-
-                {showBlockchainInfo && todo.blockchainNetwork && (
-                  <Badge variant="secondary">{getNetworkDisplayName(todo.blockchainNetwork)}</Badge>
-                )}
-
-                {variant !== 'compact' &&
-                  todo.tags.map(tag => (
-                    <Badge key={tag} variant="outline">
-                      {tag}
+              {todo.tags && todo.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {todo.tags.map(tag => (
+                    <Badge key={tag} variant="outline" size="sm">
+                      #{tag}
                     </Badge>
                   ))}
-              </div>
-
-              {showBlockchainInfo && todo.transactionHash && todo.blockchainNetwork && TransactionStatusComponent && (
-                <div className="mt-2">
-                  <TransactionStatusComponent transactionHash={todo.transactionHash} network={todo.blockchainNetwork} />
                 </div>
               )}
 
-              {onBlockchainSync && !todo.blockchainNetwork && variant !== 'compact' && (
-                <div className="mt-2">
-                  <details className="text-xs">
-                    <summary className="cursor-pointer text-primary hover:text-primary-focus">
-                      Sync to blockchain
-                    </summary>
-                    <div className="mt-1 flex flex-wrap gap-2">
-                      {supportedNetworks.map(network => (
-                        <Button
-                          key={network}
-                          onClick={() => onBlockchainSync(todo.id, network)}
-                          variant="outline"
-                          size="sm"
-                        >
-                          {getNetworkDisplayName(network)}
-                        </Button>
-                      ))}
-                    </div>
-                  </details>
+              {showBlockchainInfo && todo.blockchainNetwork && todo.transactionHash && TransactionStatusComponent && (
+                <div className="mt-3">
+                  <TransactionStatusComponent transactionHash={todo.transactionHash} network={todo.blockchainNetwork} />
                 </div>
               )}
             </div>
           </div>
+
+          {showActions && (
+            <div className="card-actions justify-end mt-4">
+              {renderSyncButton()}
+              <IconButton variant="ghost" size="sm" onClick={() => onEdit(todo)}>
+                <Edit className="h-4 w-4" />
+              </IconButton>
+              <IconButton variant="ghost" size="sm" onClick={() => onDelete(todo.id)}>
+                <Trash2 className="h-4 w-4" />
+              </IconButton>
+            </div>
+          )}
         </div>
       </div>
     );

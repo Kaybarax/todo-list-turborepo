@@ -55,7 +55,7 @@ export interface TodoListProps
     network: BlockchainNetwork;
   }>;
   getNetworkDisplayInfo?: (network: BlockchainNetwork) => { displayName: string };
-  supportedNetworks?: BlockchainNetwork[];
+  supportedNetworks?: string[];
   onRefresh?: () => void;
   refreshing?: boolean;
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button, Input } from '@todo/ui-web';
+import { Button, ButtonGroup, Input } from '@todo/ui-web';
 
 export type PriorityFilter = 'all' | 'low' | 'medium' | 'high';
 export type StatusFilter = 'all' | 'open' | 'completed';
@@ -47,38 +47,24 @@ export const TodoFilters: React.FC<TodoFiltersProps> = ({
 
       <div className="space-y-2">
         <div className="text-sm font-medium text-base-content">Priority</div>
-        <div className="flex flex-wrap gap-2">
+        <ButtonGroup value={priority} onValueChange={p => onPriorityChange(p as PriorityFilter)}>
           {PRIORITY_OPTIONS.map(option => (
-            <Button
-              key={option}
-              type="button"
-              size="sm"
-              variant={priority === option ? 'primary' : 'outline'}
-              aria-pressed={priority === option}
-              onClick={() => onPriorityChange(option)}
-            >
+            <Button key={option} value={option} size="sm">
               {option === 'all' ? 'All' : option.charAt(0).toUpperCase() + option.slice(1)}
             </Button>
           ))}
-        </div>
+        </ButtonGroup>
       </div>
 
       <div className="space-y-2">
         <div className="text-sm font-medium text-base-content">Status</div>
-        <div className="flex flex-wrap gap-2">
+        <ButtonGroup value={status} onValueChange={s => onStatusChange(s as StatusFilter)}>
           {STATUS_OPTIONS.map(option => (
-            <Button
-              key={option}
-              type="button"
-              size="sm"
-              variant={status === option ? 'primary' : 'outline'}
-              aria-pressed={status === option}
-              onClick={() => onStatusChange(option)}
-            >
+            <Button key={option} value={option} size="sm">
               {option === 'all' ? 'All' : option.charAt(0).toUpperCase() + option.slice(1)}
             </Button>
           ))}
-        </div>
+        </ButtonGroup>
       </div>
 
       <div className="flex justify-end">
