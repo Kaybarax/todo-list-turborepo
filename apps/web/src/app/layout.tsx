@@ -33,13 +33,13 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <ThemeProvider>
           <WalletProvider>
             <div className="min-h-screen bg-base-200">
-              <Navbar shadow="lg" className="px-4">
+              <Navbar shadow="lg" className="px-4" variant="default">
                 <div className="flex-1 gap-2">
                   <Link href="/" className="btn btn-ghost text-xl font-bold normal-case">
                     Todo App
                   </Link>
                   {/* Desktop Menu - Hidden on mobile */}
-                  <ul className="menu menu-horizontal hidden lg:flex">
+                  <ul className="menu menu-horizontal gap-6 hidden lg:flex items-center">
                     <li>
                       <Link href="/">Home</Link>
                     </li>
@@ -49,11 +49,14 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
                     <li>
                       <Link href="/wallet">Wallet</Link>
                     </li>
+                    <li>
+                      <ThemeSwitcher variant="select" showLabel={false} size="sm" />
+                    </li>
                   </ul>
                 </div>
                 <div className="flex-none gap-2">
-                  {/* Theme Switcher */}
-                  <div className="dropdown dropdown-end">
+                  {/* Theme Switcher moved into desktop menu; keep only for mobile */}
+                  <div className="dropdown dropdown-end lg:hidden">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-sm">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
