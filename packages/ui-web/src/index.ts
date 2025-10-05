@@ -26,6 +26,7 @@ export * from '../lib/components/Label';
 export * from '../lib/components/Link';
 export * from '../lib/components/List';
 export * from '../lib/components/Loading';
+export * from '../lib/components/Navbar';
 export * from '../lib/components/Pagination';
 export * from '../lib/components/Popover';
 export * from '../lib/components/Progress';
