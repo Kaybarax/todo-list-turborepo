@@ -47,7 +47,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       ref={ref}
       className={cn(cardVariants({ elevation, variant, interactive, glass }), className)}
       tabIndex={interactive ? 0 : undefined}
-      role={interactive ? 'button' : undefined}
+      role="button"
       {...props}
     />
   ),

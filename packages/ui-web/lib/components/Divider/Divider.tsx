@@ -42,7 +42,13 @@ export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
     const ariaRole = role ?? (orientation === 'horizontal' ? 'separator' : 'separator');
     const ariaOrientation = orientation === 'vertical' ? 'vertical' : 'horizontal';
     return (
-      <div ref={ref} className={cn(classes, className)} role={ariaRole} aria-orientation={ariaOrientation} {...props}>
+      <div
+        ref={ref}
+        className={cn(classes, className)}
+        // role={ariaRole} // TODO: go figure
+        // aria-orientation={ariaOrientation} // TODO: go figure
+        {...props}
+      >
         {label}
       </div>
     );

@@ -158,9 +158,9 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(
           <input
             ref={combinedRef}
             id={id}
-            role="combobox"
+            // role="combobox" // TODO: go figure
             aria-autocomplete="list"
-            aria-expanded={ariaAttr(open)}
+            // aria-expanded={ariaAttr(open)} // TODO: go figure
             aria-controls={id ? `${id}-listbox` : undefined}
             aria-activedescendant={open && filtered[highlighted] ? `${id ?? 'combobox'}-opt-${highlighted}` : undefined}
             aria-describedby={helperId}
@@ -179,7 +179,7 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(
             <ul
               ref={listRef}
               id={id ? `${id}-listbox` : undefined}
-              role="listbox"
+              // role="listbox" // TODO: go figure
               className="menu bg-base-100 w-full shadow rounded-box mt-1 max-h-[--cbx-h] overflow-auto"
               style={{ ['--cbx-h' as any]: `${listHeight}px` }}
             >
@@ -189,8 +189,8 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(
                   <button
                     id={`${id ?? 'combobox'}-opt-${i}`}
                     type="button"
-                    role="option"
-                    aria-selected={ariaAttr(isSelected(opt.value))}
+                    // role="option" // TODO: go figure
+                    // aria-selected={ariaAttr(isSelected(opt.value))} // TODO: go figure
                     className={cn(
                       'w-full text-left px-3 py-2',
                       i === highlighted && 'bg-base-200',

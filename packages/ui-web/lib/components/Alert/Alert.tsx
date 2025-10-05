@@ -34,11 +34,11 @@ export interface AlertProps
 }
 
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant, size, title, description, icon, dismissible, onDismiss, children, role, ...props }, ref) => {
+  ({ className, variant, size, title, description, icon, dismissible, onDismiss, children, ...props }, ref) => {
     return (
       <div
         ref={ref}
-        role={role ?? 'alert'}
+        role="alert"
         className={cn(alertVariants({ variant, size }), 'flex items-start gap-3', className)}
         {...props}
       >

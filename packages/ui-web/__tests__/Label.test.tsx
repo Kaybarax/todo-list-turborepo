@@ -51,7 +51,7 @@ describe('Label', () => {
     render(
       <div>
         <Label htmlFor="test-input">Test Input Label</Label>
-        <input id="test-input" type="text" />
+        <input id="test-input" type="text" title="test-title" />
       </div>,
     );
 
@@ -82,7 +82,7 @@ describe('Label', () => {
         <Label htmlFor="disabled-input" className="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
           Disabled Label
         </Label>
-        <input id="disabled-input" type="text" disabled className="peer" />
+        <input id="disabled-input" type="text" title="test-title" disabled className="peer" />
       </div>,
     );
 

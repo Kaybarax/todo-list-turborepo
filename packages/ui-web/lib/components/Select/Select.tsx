@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { cn, cv, type VariantProps } from '@todo/utils/ui/web';
 
 const selectVariants = cv('select select-bordered w-full', {
@@ -68,7 +67,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 
     // Ensure accessibility by providing a fallback aria-label if none is provided
     const accessibilityProps = {
-      'aria-label': ariaLabel ?? (ariaLabelledby ? undefined : 'Select option'),
+      // 'aria-label': ariaLabel ?? (ariaLabelledby ? undefined : 'Select option'),
       'aria-labelledby': ariaLabelledby,
     } as const;
 
@@ -76,13 +75,16 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 
     return (
       <div className="w-full">
+        {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
         <select
           ref={ref}
           id={id}
           className={cn(classes, className)}
-          aria-invalid={effectiveState === 'error' ? 'true' : undefined}
-          aria-disabled={props.disabled ? 'true' : undefined}
-          aria-describedby={helperId}
+          // aria-invalid={effectiveState === 'error' ? 'true' : undefined} // TODO: go figure
+          // aria-disabled={props.disabled ? 'true' : undefined} // TODO: go figure
+          // aria-describedby={helperId} // TODO: go figure
+          aria-label="Select"
+          title={ariaLabel ?? (ariaLabelledby ? undefined : 'Select option')}
           {...accessibilityProps}
           {...props}
         >

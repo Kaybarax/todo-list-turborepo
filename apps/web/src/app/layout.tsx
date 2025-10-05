@@ -80,7 +80,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
                   </div>
                   {/* Mobile Menu - Hamburger */}
                   <div className="dropdown dropdown-end lg:hidden">
-                    <div tabIndex={0} role="button" className="btn btn-ghost btn-square">
+                    <div tabIndex={0} title="Mobile Menu" role="button" className="btn btn-ghost btn-square">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"

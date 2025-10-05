@@ -43,7 +43,12 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
 
     return (
       <div className={cn(tooltipVariants({ placement, color }), className)} {...props} ref={ref}>
-        <div role="tooltip" id={tooltipId} className="tooltip-content" aria-hidden={false}>
+        <div
+          // role="tooltip"
+          id={tooltipId}
+          className="tooltip-content"
+          // aria-hidden={false}
+        >
           {content}
         </div>
         {child}

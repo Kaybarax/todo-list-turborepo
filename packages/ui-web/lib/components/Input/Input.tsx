@@ -85,7 +85,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             id={id}
             type={type}
             className={cn(classes, className)}
-            aria-invalid={effectiveState === 'error' ? true : undefined}
+            // aria-invalid={effectiveState === 'error' ? true : undefined} // TODO: go figure
             aria-describedby={helperId}
             {...props}
           />

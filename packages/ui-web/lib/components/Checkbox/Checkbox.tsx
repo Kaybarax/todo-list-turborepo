@@ -94,7 +94,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             className={cn(classes, className)}
             aria-describedby={helperId}
-            aria-disabled={props.disabled}
+            disabled={props.disabled}
             onChange={handleChange}
             {...props}
           />
