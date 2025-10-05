@@ -34,9 +34,7 @@ export type DaisyUITheme =
   | 'winter'
   | 'dim'
   | 'nord'
-  | 'sunset'
-  | 'todo-light'
-  | 'todo-dark';
+  | 'sunset';
 
 interface ThemeContextType {
   theme: DaisyUITheme;
@@ -48,8 +46,8 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_STORAGE_KEY = 'daisyui-theme';
-const DEFAULT_LIGHT_THEME: DaisyUITheme = 'todo-light';
-const DEFAULT_DARK_THEME: DaisyUITheme = 'todo-dark';
+const DEFAULT_LIGHT_THEME: DaisyUITheme = 'light';
+const DEFAULT_DARK_THEME: DaisyUITheme = 'dark';
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -171,8 +169,6 @@ function isValidTheme(theme: string): theme is DaisyUITheme {
     'dim',
     'nord',
     'sunset',
-    'todo-light',
-    'todo-dark',
   ];
   return validThemes.includes(theme as DaisyUITheme);
 }
@@ -189,7 +185,6 @@ function isDark(theme: DaisyUITheme): boolean {
     'night',
     'coffee',
     'dim',
-    'todo-dark',
   ];
   return darkThemes.includes(theme);
 }

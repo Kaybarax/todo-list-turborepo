@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Link from 'next/link';
 import { WalletProvider } from '../components/WalletProvider';
-import { ThemeProvider } from '../components/theme/ThemeProvider';
+import { ThemeProvider } from '../components/theme/theme-provider';
 import { ThemeSwitcher } from '../components/theme/ThemeSwitcher';
 import { ToastProvider } from '@todo/ui-web';
 
@@ -16,7 +16,19 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                const theme = localStorage.getItem('daisyui-theme') || 'light';
+                document.documentElement.setAttribute('data-theme', theme);
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className={inter.className}>
         <ThemeProvider>
           <WalletProvider>

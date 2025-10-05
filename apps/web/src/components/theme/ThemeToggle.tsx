@@ -3,7 +3,7 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Button, cn } from '@todo/ui-web';
-import { useThemeContext } from './ThemeProvider';
+import { useTheme } from './theme-provider';
 
 const themeToggleVariants = cva('theme-toggle transition-all duration-200', {
   variants: {
@@ -46,7 +46,7 @@ export function ThemeToggle({
   customIcons,
   'data-testid': testId,
 }: ThemeToggleProps) {
-  const { mode, resolvedType, theme, themes, setMode, setTheme } = useThemeContext();
+  const { theme, toggleTheme } = useTheme();
 
   const getThemeIcon = (type: 'light' | 'dark' | 'system') => {
     if (customIcons) {
@@ -91,53 +91,41 @@ export function ThemeToggle({
   };
 
   const handleToggle = () => {
-    if (cycleThrough === 'mode') {
-      // Cycle through light -> dark -> system
-      const modes = ['light', 'dark', 'system'] as const;
-      const currentIndex = modes.indexOf(mode);
-      const nextMode = modes[(currentIndex + 1) % modes.length];
-      setMode(nextMode);
-    } else if (cycleThrough === 'lightDark') {
-      // Simple light/dark toggle
-      const newMode = resolvedType === 'light' ? 'dark' : 'light';
-      setMode(newMode);
-    } else if (cycleThrough === 'themes') {
-      // Cycle through available themes
-      const currentIndex = themes.findIndex(t => t.name === theme.name);
-      const nextTheme = themes[(currentIndex + 1) % themes.length];
-      setTheme(nextTheme);
-    }
+    toggleTheme();
+  };
+
+  const isDarkTheme = (themeName: string) => {
+    const darkThemes = [
+      'dark',
+      'synthwave',
+      'halloween',
+      'forest',
+      'black',
+      'luxury',
+      'dracula',
+      'night',
+      'coffee',
+      'dim',
+    ];
+    return darkThemes.includes(themeName);
   };
 
   const getAriaLabel = () => {
-    if (cycleThrough === 'mode') {
-      const nextMode = mode === 'light' ? 'dark' : mode === 'dark' ? 'system' : 'light';
-      return `Switch to ${getThemeLabel(nextMode)} theme`;
-    } else if (cycleThrough === 'lightDark') {
-      const nextType = resolvedType === 'light' ? 'dark' : 'light';
-      return `Switch to ${getThemeLabel(nextType)} theme`;
-    } else {
-      return 'Switch theme';
-    }
+    const nextType = isDarkTheme(theme) ? 'light' : 'dark';
+    return `Switch to ${getThemeLabel(nextType)} theme`;
   };
 
   const getCurrentIcon = () => {
-    if (cycleThrough === 'themes') {
-      return getThemeIcon(theme.type);
-    }
-    return getThemeIcon(mode === 'system' ? 'system' : resolvedType);
+    return getThemeIcon(isDarkTheme(theme) ? 'dark' : 'light');
   };
 
   const getCurrentLabel = () => {
-    if (cycleThrough === 'themes') {
-      return theme.displayName || theme.name;
-    }
-    return getThemeLabel(mode === 'system' ? 'system' : resolvedType);
+    return getThemeLabel(isDarkTheme(theme) ? 'dark' : 'light');
   };
 
   if (variant === 'switch') {
     return (
-      <div className={cn('form-control', className)} data-testid={testId}>
+      <div className={cn(themeToggleVariants({ variant, size }), className)} data-testid={testId}>
         {showLabel && (
           <label className="label cursor-pointer">
             <span className="label-text">{getCurrentLabel()}</span>
@@ -145,8 +133,8 @@ export function ThemeToggle({
         )}
         <input
           type="checkbox"
-          className={cn(themeToggleVariants({ variant, size }))}
-          checked={resolvedType === 'dark'}
+          className="toggle"
+          checked={isDarkTheme(theme)}
           onChange={handleToggle}
           aria-label={getAriaLabel()}
         />

@@ -1,26 +1,7 @@
 // Theme Components
-export {
-  ThemeProvider,
-  useThemeContext,
-  useTheme,
-  type ThemeProviderProps,
-  type DaisyUITheme,
-} from './theme/ThemeProvider';
+export { ThemeProvider, useTheme, type DaisyUITheme } from './theme/theme-provider';
 export { ThemeSwitcher, type ThemeSwitcherProps } from './theme/ThemeSwitcher';
 export { ThemeToggle, type ThemeToggleProps } from './theme/ThemeToggle';
-
-// Theme Utilities and Types
-export { useThemeSync, regenerateThemes, exportThemeConfig, type ThemeSyncOptions } from './theme/theme-sync';
-export {
-  validateTheme,
-  validateAllThemes,
-  getThemePreview,
-  useThemeValidation,
-  type ThemeValidationResult,
-  type DaisyUIThemeColors,
-} from './theme/theme-validator';
-export { lightTheme, darkTheme, daisyUIThemes, defaultThemes, getDaisyUIThemeNames } from './theme/themes';
-export { type ThemeMode, type ThemeConfig, type ThemeState, type ThemeContextValue } from './theme/types';
 
 // Blockchain Components
 export {

@@ -3,7 +3,7 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Select, Button, Dropdown, type DropdownItem, cn } from '@todo/ui-web';
-import { useThemeContext, type DaisyUITheme } from './ThemeProvider';
+import { useTheme, type DaisyUITheme } from './theme-provider';
 
 const themeSwitcherVariants = cva('theme-switcher', {
   variants: {
@@ -41,21 +41,46 @@ export function ThemeSwitcher({
   customThemes,
   'data-testid': testId,
 }: ThemeSwitcherProps) {
-  const { theme, themes, daisyUITheme, setTheme, setDaisyUITheme } = useThemeContext();
+  const { theme, setTheme } = useTheme();
 
-  // Convert themes to theme names for consistent handling
-  const availableThemeNames = customThemes || (themes.map(t => t.daisyUITheme || t.name).filter(Boolean) as string[]);
-  const currentTheme = daisyUITheme || theme.name;
+  // All available DaisyUI themes
+  const allThemes: DaisyUITheme[] = (customThemes as DaisyUITheme[]) || [
+    'light',
+    'dark',
+    'cupcake',
+    'bumblebee',
+    'emerald',
+    'corporate',
+    'synthwave',
+    'retro',
+    'cyberpunk',
+    'valentine',
+    'halloween',
+    'garden',
+    'forest',
+    'aqua',
+    'lofi',
+    'pastel',
+    'fantasy',
+    'wireframe',
+    'black',
+    'luxury',
+    'dracula',
+    'cmyk',
+    'autumn',
+    'business',
+    'acid',
+    'lemonade',
+    'night',
+    'coffee',
+    'winter',
+    'dim',
+    'nord',
+    'sunset',
+  ];
 
   const handleThemeChange = (newTheme: string) => {
-    if (setDaisyUITheme && themes.find(t => t.daisyUITheme === newTheme)) {
-      setDaisyUITheme(newTheme as DaisyUITheme);
-    } else {
-      const themeConfig = themes.find(t => t.name === newTheme);
-      if (themeConfig) {
-        setTheme(themeConfig);
-      }
-    }
+    setTheme(newTheme as DaisyUITheme);
   };
 
   const formatThemeName = (themeName: string) => {
@@ -65,16 +90,24 @@ export function ThemeSwitcher({
       .join(' ');
   };
 
+  // Dark themes for grouping
+  const darkThemesList = [
+    'dark',
+    'synthwave',
+    'halloween',
+    'forest',
+    'black',
+    'luxury',
+    'dracula',
+    'night',
+    'coffee',
+    'dim',
+  ];
+
   const groupedThemes = groupThemes
     ? {
-        light: availableThemeNames.filter((t: string) => {
-          const themeConfig = themes.find(tc => tc.name === t || tc.daisyUITheme === t);
-          return themeConfig?.type === 'light';
-        }),
-        dark: availableThemeNames.filter((t: string) => {
-          const themeConfig = themes.find(tc => tc.name === t || tc.daisyUITheme === t);
-          return themeConfig?.type === 'dark';
-        }),
+        light: allThemes.filter(t => !darkThemesList.includes(t)),
+        dark: allThemes.filter(t => darkThemesList.includes(t)),
       }
     : null;
 
@@ -87,7 +120,7 @@ export function ThemeSwitcher({
           </label>
         )}
         <Select
-          value={currentTheme}
+          value={theme}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleThemeChange(e.target.value)}
           className={cn('select-bordered', {
             'select-sm': size === 'sm',
@@ -97,14 +130,14 @@ export function ThemeSwitcher({
           {groupedThemes ? (
             <>
               <optgroup label="Light Themes">
-                {groupedThemes.light.map((themeName: string) => (
+                {groupedThemes.light.map(themeName => (
                   <option key={themeName} value={themeName}>
                     {formatThemeName(themeName)}
                   </option>
                 ))}
               </optgroup>
               <optgroup label="Dark Themes">
-                {groupedThemes.dark.map((themeName: string) => (
+                {groupedThemes.dark.map(themeName => (
                   <option key={themeName} value={themeName}>
                     {formatThemeName(themeName)}
                   </option>
@@ -112,7 +145,7 @@ export function ThemeSwitcher({
               </optgroup>
             </>
           ) : (
-            availableThemeNames.map((themeName: string) => (
+            allThemes.map(themeName => (
               <option key={themeName} value={themeName}>
                 {formatThemeName(themeName)}
               </option>
@@ -140,7 +173,7 @@ export function ThemeSwitcher({
           })),
         ];
       }
-      return availableThemeNames.map((themeName: string) => ({
+      return allThemes.map(themeName => ({
         id: themeName,
         label: formatThemeName(themeName),
         onSelect: () => handleThemeChange(themeName),
@@ -149,14 +182,13 @@ export function ThemeSwitcher({
 
     return (
       <div className={cn(themeSwitcherVariants({ variant, size }), className)} data-testid={testId}>
-        <Dropdown items={createDropdownItems()} label={formatThemeName(currentTheme)} />
+        <Dropdown items={createDropdownItems()} label={formatThemeName(theme)} />
       </div>
     );
   }
 
   if (variant === 'buttons') {
-    const displayThemes =
-      groupThemes && groupedThemes ? [...groupedThemes.light, ...groupedThemes.dark] : availableThemeNames;
+    const displayThemes = groupThemes && groupedThemes ? [...groupedThemes.light, ...groupedThemes.dark] : allThemes;
 
     return (
       <div className={cn(themeSwitcherVariants({ variant, size }), className)} data-testid={testId}>
@@ -169,7 +201,7 @@ export function ThemeSwitcher({
           {displayThemes.slice(0, 6).map((themeName: string) => (
             <Button
               key={themeName}
-              variant={themeName === currentTheme ? 'primary' : 'ghost'}
+              variant={themeName === theme ? 'primary' : 'ghost'}
               size={size}
               onClick={() => handleThemeChange(themeName)}
               className="btn-sm"
@@ -201,11 +233,11 @@ export function ThemeSwitcher({
         </label>
       )}
       <Select
-        value={currentTheme}
+        value={theme}
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleThemeChange(e.target.value)}
         className="select-bordered"
       >
-        {availableThemeNames.map((themeName: string) => (
+        {allThemes.map(themeName => (
           <option key={themeName} value={themeName}>
             {formatThemeName(themeName)}
           </option>
