@@ -1,9 +1,9 @@
+import { type Meta, type StoryFn } from '@storybook/react';
 import { useState } from 'react';
-import { Meta, StoryFn } from '@storybook/react';
 import { View } from 'react-native';
 
-import { ButtonGroup } from '../../lib/components/ButtonGroup';
 import { Button } from '../../lib/components/Button';
+import { ButtonGroup } from '../../lib/components/ButtonGroup';
 
 const meta: Meta<typeof ButtonGroup> = {
   title: 'Components/ButtonGroup',

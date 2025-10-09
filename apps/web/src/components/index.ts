@@ -10,7 +10,6 @@ export {
   type TransactionStatusType,
   type TransactionStatusProps,
 } from './blockchain/TransactionStatus';
-export { WalletConnect, type WalletAccount, type WalletConnectProps } from './blockchain/WalletConnect';
 
 // Todo Components
 export { TodoForm, todoFormVariants, type TodoFormData, type TodoFormProps } from './todo/TodoForm';

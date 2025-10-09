@@ -1,6 +1,5 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { FloatingActionButton } from '@todo/ui-web';
+import { FloatingActionButton } from '../components/FloatingActionButton';
 
 const meta: Meta<typeof FloatingActionButton> = {
   title: 'Components/FloatingActionButton',

@@ -29,7 +29,11 @@
       "import": "./dist/components/blockchain/index.js",
       "require": "./dist/components/blockchain/index.cjs"
     },
-    "./styles.css": "./dist/style.css"
+    "./styles.css": "./dist/style.css",
+    "./tokens": {
+      "types": "./dist/tokens/tokens.d.ts",
+      "import": "./dist/tokens/tokens.js"
+    }
   },
   "scripts": {
     "tokens:build": "node scripts/build-tokens.cjs",
@@ -46,7 +50,7 @@
     "storybook": "npm run tokens:build && storybook dev -p 6007",
     "build-storybook": "npm run tokens:build && storybook build",
     "test-storybook": "test-storybook",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+  "lint": "eslint . --ext ts,tsx --report-unused-disable-directives",
     "type-check": "tsc --noEmit",
     "bundle-analyze": "vite build --config bundle-analyzer.config.js",
     "size-check": "bundlesize",

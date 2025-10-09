@@ -2,6 +2,8 @@ export type ThemeMode = 'light' | 'dark' | 'system';
 
 // DaisyUI theme names
 export type DaisyUITheme =
+  | 'todo-light'
+  | 'todo-dark'
   | 'light'
   | 'dark'
   | 'cupcake'
@@ -34,6 +36,33 @@ export type DaisyUITheme =
   | 'dim'
   | 'nord'
   | 'sunset';
+
+export interface DaisyUIThemeColors {
+  primary: string;
+  'primary-focus'?: string;
+  'primary-content'?: string;
+  secondary: string;
+  'secondary-focus'?: string;
+  'secondary-content'?: string;
+  accent: string;
+  'accent-focus'?: string;
+  'accent-content'?: string;
+  neutral: string;
+  'neutral-focus'?: string;
+  'neutral-content'?: string;
+  'base-100': string;
+  'base-200': string;
+  'base-300': string;
+  'base-content': string;
+  info: string;
+  'info-content'?: string;
+  success: string;
+  'success-content'?: string;
+  warning: string;
+  'warning-content'?: string;
+  error: string;
+  'error-content'?: string;
+}
 
 export interface ThemeConfig {
   name: string; // unique key

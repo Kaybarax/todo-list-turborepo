@@ -39,8 +39,7 @@ export interface DividerProps extends React.HTMLAttributes<HTMLDivElement>, Vari
 export const Divider = React.forwardRef<HTMLDivElement, DividerProps>(
   ({ className, orientation, tone, inset, label, role, ...props }, ref) => {
     const classes = dividerVariants({ orientation, tone, inset });
-    const ariaRole = role ?? (orientation === 'horizontal' ? 'separator' : 'separator');
-    const ariaOrientation = orientation === 'vertical' ? 'vertical' : 'horizontal';
+
     return (
       <div
         ref={ref}

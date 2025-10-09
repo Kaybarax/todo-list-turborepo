@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Button, NetworkSelector } from '@todo/ui-web';
-import { BlockchainNetwork } from '@todo/services';
+
 import { useWallet } from '../WalletProvider';
 
 export const WalletCard: React.FC = () => {
