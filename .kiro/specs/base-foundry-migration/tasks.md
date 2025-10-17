@@ -62,7 +62,7 @@
   - Test deployment scripts on local Anvil node
   - _Requirements: 3.1, 3.2, 3.4, 3.5_
 
-- [ ] 8. Test deployment on Base Sepolia testnet
+- [x] 8. Test deployment on Base Sepolia testnet
   - Configure Base Sepolia RPC URL and private key in `.env`
   - Deploy TodoListFactory to Base Sepolia using deployment script
   - Verify contract deployment on Base Sepolia explorer
