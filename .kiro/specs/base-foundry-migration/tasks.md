@@ -44,7 +44,7 @@
   - Run tests with `forge test` and verify all pass
   - _Requirements: 2.1, 2.2, 2.3, 2.5_
 
-- [ ] 6. Add advanced Foundry testing features
+- [x] 6. Add advanced Foundry testing features
   - Create `test/helpers/TestHelpers.sol` for shared test utilities
   - Implement fuzz tests for TodoList input validation
   - Add property-based tests for TodoList invariants
