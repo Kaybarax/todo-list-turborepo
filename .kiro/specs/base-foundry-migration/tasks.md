@@ -7,7 +7,7 @@
   - Update `.gitignore` to include Foundry-specific directories (out/, cache/, lib/)
   - _Requirements: 1.1, 1.4, 5.1_
 
-- [ ] 2. Set up Foundry dependencies
+- [x] 2. Set up Foundry dependencies
   - Install OpenZeppelin contracts v5.4.0 as git submodule using `forge install`
   - Install forge-std as git submodule for testing utilities
   - Configure remappings for `@openzeppelin/contracts/` imports
