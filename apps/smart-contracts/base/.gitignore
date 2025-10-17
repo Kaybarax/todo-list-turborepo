@@ -2,6 +2,8 @@
 out/
 cache/
 lib/
+broadcast/
+deployments/
 
 # Hardhat (will be removed in later tasks)
 artifacts/

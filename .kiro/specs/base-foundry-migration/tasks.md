@@ -53,7 +53,7 @@
   - Verify coverage meets or exceeds 100% of original test coverage
   - _Requirements: 2.2, 2.3, 2.4_
 
-- [ ] 7. Create Foundry deployment scripts
+- [x] 7. Create Foundry deployment scripts
   - Create `script/Deploy.s.sol` for main deployment
   - Implement deployment logic for TodoListFactory
   - Add deployment address logging and JSON output
