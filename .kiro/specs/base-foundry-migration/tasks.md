@@ -14,7 +14,7 @@
   - Verify contracts can resolve OpenZeppelin imports correctly
   - _Requirements: 1.1, 6.1, 6.2, 6.3_
 
-- [ ] 3. Migrate contract source files
+- [x] 3. Migrate contract source files
   - Create `src/` directory in Base contracts
   - Move `TodoList.sol` from `contracts/` to `src/`
   - Move `TodoListFactory.sol` from `contracts/` to `src/`
