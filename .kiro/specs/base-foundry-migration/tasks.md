@@ -22,7 +22,7 @@
   - Verify generated artifacts in `out/` directory
   - _Requirements: 1.1, 1.3, 3.1_
 
-- [ ] 4. Convert TodoList tests to Foundry
+- [x] 4. Convert TodoList tests to Foundry
   - Create `test/TodoList.t.sol` test contract
   - Implement `setUp()` function to initialize test environment
   - Convert all TodoList creation tests from JavaScript to Solidity
