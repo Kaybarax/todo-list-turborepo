@@ -34,7 +34,7 @@
   - Run tests with `forge test` and verify all pass
   - _Requirements: 2.1, 2.2, 2.3, 2.5_
 
-- [ ] 5. Convert TodoListFactory tests to Foundry
+- [x] 5. Convert TodoListFactory tests to Foundry
   - Create `test/TodoListFactory.t.sol` test contract
   - Implement `setUp()` function for factory tests
   - Convert factory creation tests from JavaScript to Solidity
