@@ -80,6 +80,10 @@ typechain/
 typechain-types/
 target/
 
+# Foundry
+out/
+lib/
+
 # Deployment
 .vercel
 .netlify

@@ -1,0 +1,22 @@
+# Foundry
+out/
+cache/
+lib/
+
+# Hardhat (will be removed in later tasks)
+artifacts/
+typechain/
+typechain-types/
+
+# Environment
+.env
+.env.local
+
+# Node
+node_modules/
+
+# Logs
+*.log
+
+# Cache
+.DS_Store
