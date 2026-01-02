@@ -26,6 +26,9 @@ export function GlobalThemeFAB() {
         ]}
         onPress={toggleTheme}
         accessibilityLabel="Toggle color theme"
+        accessibilityRole="button"
+        accessibilityHint="Toggles between light and dark theme"
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
         <Icon
           name={themeName === 'light' ? 'moon-outline' : 'sun-outline'}
