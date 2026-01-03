@@ -18,6 +18,7 @@
     "format:check": "prettier --check \"**/*.{js,json,yml,cjs,mjs,ts,tsx,md,sol}\"",
     "clean": "turbo run clean && rm -rf build/ && rm -rf dist/ && ./scripts/cleanup.sh",
     "quality": "pnpm lint && pnpm typecheck",
+
     "//_web": "=== WEB APP SCRIPTS ===",
     "dev:web": "pnpm --filter @todo/web dev",
     "build:web": "turbo run build --filter=@todo/web",
@@ -29,6 +30,7 @@
     "tokens:watch": "pnpm --filter @todo/ui-web tokens:watch",
     "tokens:validate": "pnpm --filter @todo/ui-web tokens:validate",
     "test:ui-web": "pnpm --filter @todo/ui-web test",
+
     "//_mobile": "=== MOBILE APP SCRIPTS ===",
     "dev:mobile": "pnpm --filter @todo/mobile dev",
     "build:mobile": "turbo run build --filter=@todo/mobile",
@@ -41,12 +43,14 @@
     "test:ui-mobile": "pnpm --filter @todo/ui-mobile test",
     "build:apps:mobile": "turbo run build --filter=@todo/mobile",
     "build:packages:ui-mobile": "turbo run build --filter=\"./packages/ui-mobile\"",
+
     "//_api": "=== API SERVICE SCRIPTS ===",
     "dev:api": "pnpm --filter @todo/api dev",
     "build:api": "turbo run build --filter=@todo/api",
     "//_ingestion": "=== INGESTION SERVICE SCRIPTS ===",
     "dev:ingestion": "pnpm --filter @todo/ingestion dev",
     "build:ingestion": "turbo run build --filter=@todo/ingestion",
+
     "//_blockchain": "=== BLOCKCHAIN & SMART CONTRACTS ===",
     "dev:blockchain": "./scripts/dev-blockchain.sh",
     "build:contracts": "./scripts/build-contracts.sh",
@@ -70,12 +74,14 @@
     "//_design_system": "=== DESIGN SYSTEM ===",
     "design-system:build": "pnpm tokens:build && pnpm storybook:build:web",
     "design-system:test": "pnpm --filter @todo/ui-web test:visual",
+
     "//_db": "=== DATABASE SCRIPTS ===",
     "db:setup": "node db/setup.js",
     "db:migrate": "node db/migrate.js up",
     "db:seed": "node db/seed-todos.js",
     "db:reset": "node db/setup.js reset",
     "db:rebuild": "pnpm db:reset && pnpm db:setup",
+
     "//_grouped_build": "=== GROUPED BUILD SCRIPTS ===",
     "dev:frontend": "./scripts/dev-frontend.sh",
     "dev:backend": "./scripts/dev-backend.sh",
@@ -93,6 +99,7 @@
     "build:packages:config-ts": "turbo run build --filter=\"./packages/config-ts\"",
     "build:packages:config-release": "turbo run build --filter=\"./packages/config-release\"",
     "build:utils": "pnpm --filter @todo/utils build",
+
     "//_testing": "=== TESTING SCRIPTS ===",
     "test:unit": "turbo run test:unit",
     "test:integration": "turbo run test:integration",
@@ -100,6 +107,7 @@
     "test:e2e": "turbo run test:e2e",
     "test:deps": "./test/dependency-management/run-tests.sh",
     "test:packages": "./scripts/test-package-installation.sh",
+
     "//_docker": "=== DOCKER & INFRASTRUCTURE ===",
     "docker:clean": "docker system prune -f && docker image prune -f",
     "docker:build": "./scripts/build.sh",
@@ -110,6 +118,7 @@
     "infra:compose:build": "docker compose -f docker-compose.dev.yml build",
     "infra:compose:up": "docker compose -f docker-compose.dev.yml up -d",
     "infra:compose:down": "docker compose -f docker-compose.dev.yml down",
+
     "//_deployment": "=== DEPLOYMENT SCRIPTS ===",
     "deploy": "./scripts/deploy.sh",
     "deploy:dev": "./scripts/deploy-development.sh",
@@ -118,6 +127,7 @@
     "deploy:k8s": "./scripts/deploy.sh",
     "deploy:k8s:dry-run": "./scripts/deploy.sh --dry-run",
     "deploy:docker": "./scripts/deploy.sh --docker-compose",
+    
     "//_pkg_mgmt": "=== PACKAGE MANAGEMENT ===",
     "prepare": "husky",
     "changeset": "changeset",
