@@ -18,6 +18,7 @@
     "format:check": "prettier --check \"**/*.{js,json,yml,cjs,mjs,ts,tsx,md,sol}\"",
     "clean": "turbo run clean && rm -rf build/ && rm -rf dist/ && ./scripts/cleanup.sh",
     "quality": "pnpm lint && pnpm typecheck",
+
     "//_web": "=== WEB APP SCRIPTS ===",
     "dev:web": "pnpm --filter @todo/web dev",
     "build:web": "turbo run build --filter=@todo/web",
@@ -29,6 +30,7 @@
     "tokens:watch": "pnpm --filter @todo/ui-web tokens:watch",
     "tokens:validate": "pnpm --filter @todo/ui-web tokens:validate",
     "test:ui-web": "pnpm --filter @todo/ui-web test",
+
     "//_mobile": "=== MOBILE APP SCRIPTS ===",
     "dev:mobile": "pnpm --filter @todo/mobile dev",
     "build:mobile": "turbo run build --filter=@todo/mobile",
@@ -41,6 +43,7 @@
     "test:ui-mobile": "pnpm --filter @todo/ui-mobile test",
     "build:apps:mobile": "turbo run build --filter=@todo/mobile",
     "build:packages:ui-mobile": "turbo run build --filter=\"./packages/ui-mobile\"",
+    
     "//_api": "=== API SERVICE SCRIPTS ===",
     "dev:api": "pnpm --filter @todo/api dev",
     "build:api": "turbo run build --filter=@todo/api",
