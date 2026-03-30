@@ -158,9 +158,9 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(
           <input
             ref={combinedRef}
             id={id}
-            // role="combobox" // TODO: go figure
+            role="combobox"
             aria-autocomplete="list"
-            // aria-expanded={ariaAttr(open)} // TODO: go figure
+            aria-expanded={open}
             aria-controls={id ? `${id}-listbox` : undefined}
             aria-activedescendant={open && filtered[highlighted] ? `${id ?? 'combobox'}-opt-${highlighted}` : undefined}
             aria-describedby={helperId}
@@ -179,18 +179,20 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(
             <ul
               ref={listRef}
               id={id ? `${id}-listbox` : undefined}
-              // role="listbox" // TODO: go figure
+              role="listbox"
               className="menu bg-base-100 w-full shadow rounded-box mt-1 max-h-[--cbx-h] overflow-auto"
               style={{ ['--cbx-h' as any]: `${listHeight}px` }}
             >
-              {filtered.length === 0 && <li className="menu-title px-3 py-2 opacity-60">No results</li>}
+              {filtered.length === 0 && <li role="option" aria-disabled="true" className="menu-title px-3 py-2 opacity-60">No results</li>}
               {filtered.map((opt, i) => (
-                <li key={opt.value}>
+                <li
+                  key={opt.value}
+                  role="option"
+                  id={`${id ?? 'combobox'}-opt-${i}`}
+                  aria-selected={isSelected(opt.value)}
+                >
                   <button
-                    id={`${id ?? 'combobox'}-opt-${i}`}
                     type="button"
-                    // role="option" // TODO: go figure
-                    // aria-selected={ariaAttr(isSelected(opt.value))} // TODO: go figure
                     className={cn(
                       'w-full text-left px-3 py-2',
                       i === highlighted && 'bg-base-200',

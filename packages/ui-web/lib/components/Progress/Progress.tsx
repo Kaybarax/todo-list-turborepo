@@ -44,9 +44,9 @@ export const Progress = React.forwardRef<HTMLProgressElement, ProgressProps>(
         ref={ref}
         value={isIndeterminate ? undefined : clamped}
         max={max}
-        // aria-valuenow={isIndeterminate ? undefined : String(clamped)} // TODO: go figure
-        // aria-valuemin={String(min)} // TODO: go figure
-        // aria-valuemax={String(max)} // TODO: go figure
+        aria-valuenow={isIndeterminate ? undefined : clamped}
+        aria-valuemin={min}
+        aria-valuemax={max}
         className={cn(progressVariants({ size, variant }), className)}
         {...(props as any)}
       />

@@ -107,7 +107,7 @@ export const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
           type="button"
           className="btn"
           aria-haspopup="menu"
-          // aria-expanded={actualOpen} // TODO: go figure
+          aria-expanded={actualOpen}
           aria-controls={menuId}
           onClick={() => setOpen(!actualOpen)}
           onKeyDown={onTriggerKeyDown}

@@ -78,8 +78,8 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
     return (
       <div ref={ref} className={cn(tabsVariants({ orientation }), className)} {...props}>
         <div
-          // role="tablist" // TODO: go figure
-          // aria-orientation={orientation || undefined} // TODO: go figure
+          role="tablist"
+          aria-orientation={orientation || undefined}
           className={cn(tabListVariants({ orientation }))}
           onKeyDown={onKeyDown}
         >
@@ -93,9 +93,9 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
                 ref={el => {
                   tabsRef.current[i] = el;
                 }}
-                // role="tab" // TODO: go figure
+                role="tab"
                 id={tabId}
-                // aria-selected={selected} // TODO: go figure
+                aria-selected={selected}
                 aria-controls={panelId}
                 tabIndex={selected ? 0 : -1}
                 disabled={it.disabled}
