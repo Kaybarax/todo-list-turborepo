@@ -30,10 +30,8 @@ describe('AuthController', () => {
   };
 
   const mockAuthResponse: AuthResponseDto = {
-    accessToken: 'mock-access-token',
-    refreshToken: 'mock-refresh-token',
+    access_token: 'mock-access-token',
     user: mockUser,
-    expiresIn: 900,
   };
 
   beforeEach(async () => {
