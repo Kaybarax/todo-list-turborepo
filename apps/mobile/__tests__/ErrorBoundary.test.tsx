@@ -1,5 +1,18 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { Text } from 'react-native';
+import { render, fireEvent, act } from '@testing-library/react-native';
+
+// Mock @todo/ui-mobile Button with a simple pressable so fireEvent.press works
+jest.mock('@todo/ui-mobile', () => {
+  const { Text, TouchableOpacity } = require('react-native');
+  return {
+    Button: ({ children, onPress, ...props }: any) => (
+      <TouchableOpacity onPress={onPress} {...props}>
+        <Text>{children}</Text>
+      </TouchableOpacity>
+    ),
+  };
+});
 
 // Silence console.error from ErrorBoundary during test output
 const originalError = console.error;
@@ -10,8 +23,7 @@ afterAll(() => {
   console.error = originalError;
 });
 
-// TODO: Re-enable after stabilizing state transitions in class boundary + mocked Button press semantics
-it.skip('ErrorBoundary: renders fallback and retries', async () => {
+it('ErrorBoundary: renders fallback and retries', async () => {
   const tokensModule = require('../src/hooks/useDesignTokens');
   jest.spyOn(tokensModule, 'useDesignTokens').mockReturnValue({
     colors: { background: '#fff', error: '#f00', text: { secondary: '#555' } },
@@ -21,13 +33,17 @@ it.skip('ErrorBoundary: renders fallback and retries', async () => {
 
   const { ErrorBoundary } = require('../src/components/ErrorBoundary');
 
-  const Boom: React.FC = () => {
-    throw new Error('Boom');
+  let shouldThrow = true;
+  const MaybeBoom: React.FC = () => {
+    if (shouldThrow) {
+      throw new Error('Boom');
+    }
+    return <Text>OK</Text>;
   };
 
-  const { getByText, rerender, queryByText, getByRole } = render(
+  const { getByText, queryByText } = render(
     <ErrorBoundary>
-      <Boom />
+      <MaybeBoom />
     </ErrorBoundary>,
   );
 
@@ -35,15 +51,16 @@ it.skip('ErrorBoundary: renders fallback and retries', async () => {
   getByText('Something went wrong');
   getByText('Boom');
 
+  // Stop throwing before retry so re-render succeeds
+  shouldThrow = false;
+
   // Retry clears error and renders children again
-  fireEvent.press(getByText('Try again'));
-  rerender(
-    <ErrorBoundary>
-      <React.Fragment>OK</React.Fragment>
-    </ErrorBoundary>,
-  );
-  await waitFor(() => {
-    getByText('OK');
+  const tryAgain = getByText('Try again');
+  await act(() => {
+    fireEvent.press(tryAgain);
   });
+
+  // After retry, ErrorBoundary re-renders children which no longer throw
+  getByText('OK');
   expect(queryByText('Something went wrong')).toBeNull();
 });
