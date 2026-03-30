@@ -3,10 +3,10 @@ import { fn } from '@storybook/test';
 import { clsx } from 'clsx';
 import React from 'react';
 
-// TODO: Replace with actual component import
+// Template: Replace with your actual component import, e.g.:
 // import { ComponentName } from '../../lib/components/ComponentName';
 
-// TODO: Replace with actual component interface
+// Template: Replace with your actual component interface
 interface ComponentNameProps {
   children?: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'accent' | 'ghost' | 'outline';
@@ -18,7 +18,7 @@ interface ComponentNameProps {
   'aria-label'?: string;
 }
 
-// TODO: Remove this mock component and import the real one
+// Template: Remove this mock component once you import the real one
 const ComponentName: React.FC<ComponentNameProps> = ({
   children = 'Component',
   variant = 'primary',
