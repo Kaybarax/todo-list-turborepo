@@ -86,7 +86,11 @@ const preview: Preview = {
   // Global decorators for consistent styling
   decorators: [
     Story => {
-      return React.createElement('div', { className: 'font-sans antialiased' }, React.createElement(Story));
+      return React.createElement(
+        'div',
+        { 'data-theme': 'light', className: 'font-sans antialiased bg-base-100 text-base-content' },
+        React.createElement(Story),
+      );
     },
   ],
   // Tags for organizing stories - moved to individual stories
