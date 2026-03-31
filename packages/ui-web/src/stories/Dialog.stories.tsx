@@ -25,11 +25,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Controlled: Story = {
+  parameters: { layout: 'fullscreen' },
   render: args => {
     const [open, setOpen] = React.useState(true);
     const titleId = 'dialog-title';
     return (
-      <>
+      <div className="relative min-h-screen flex items-center justify-center p-4">
         <Button onClick={() => setOpen(true)}>Open Dialog</Button>
         <Dialog {...args} open={open} onOpenChange={setOpen} titleId={titleId}>
           <DialogHeader>
@@ -43,7 +44,7 @@ export const Controlled: Story = {
             <Button onClick={() => setOpen(false)}>Close</Button>
           </DialogFooter>
         </Dialog>
-      </>
+      </div>
     );
   },
   args: { size: 'md' },

@@ -27,13 +27,19 @@ export const Default: Story = {
 };
 
 export const Positions: Story = {
+  parameters: {
+    layout: 'fullscreen',
+  },
   render: () => (
-    <>
+    <div className="relative w-screen h-screen">
       <Toaster position="top-left">
         <Toast title="Top Left" />
       </Toaster>
       <Toaster position="top-center">
         <Toast title="Top Center" />
+      </Toaster>
+      <Toaster position="top-right">
+        <Toast title="Top Right" />
       </Toaster>
       <Toaster position="bottom-left">
         <Toast title="Bottom Left" />
@@ -44,6 +50,6 @@ export const Positions: Story = {
       <Toaster position="bottom-right">
         <Toast title="Bottom Right" />
       </Toaster>
-    </>
+    </div>
   ),
 };

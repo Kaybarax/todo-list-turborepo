@@ -18,7 +18,7 @@ type Story = StoryObj<typeof meta>;
 
 export const WithImage: Story = {
   args: {
-    src: 'https://picsum.photos/seed/avatar/200',
+    src: 'https://i.pravatar.cc/150?u=storybook',
     alt: 'User avatar',
     size: 'md',
     shape: 'round',

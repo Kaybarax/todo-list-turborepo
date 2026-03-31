@@ -30,9 +30,11 @@ export const Default: Story = {
 };
 
 export const WithFallback: Story = {
-  args: {
-    alt: 'Broken image',
-    fallback: <span>Fallback</span>,
-    style: { width: 200, height: 120 },
-  },
+  render: () => (
+    <Image
+      alt="Broken image"
+      fallback={<span className="text-base-content/60 text-sm">Image unavailable</span>}
+      style={{ width: 200, height: 120 }}
+    />
+  ),
 };
