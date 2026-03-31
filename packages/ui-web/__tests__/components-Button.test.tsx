@@ -112,7 +112,7 @@ describe('Button Component - DaisyUI Integration', () => {
     it('should support loading state with proper ARIA', () => {
       render(<Button loading>Loading Button</Button>);
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('loading');
+      expect(button).toBeDisabled();
       expect(button).toHaveAttribute('aria-busy', 'true');
     });
 
