@@ -93,12 +93,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         type="button"
         className={cn(
           buttonVariants({ variant, size, shape, glass, block }),
-          {
-            loading: loading,
-          },
           className,
         )}
         disabled={loading || disabled}
+        aria-busy={loading || undefined}
         {...props}
       >
         {loading ? (

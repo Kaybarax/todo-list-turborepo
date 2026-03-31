@@ -84,7 +84,20 @@ const BlockchainStats = React.forwardRef<HTMLDivElement, BlockchainStatsProps>(
     };
 
     if (data.total === 0) {
-      return null;
+      return (
+        <div ref={ref} className={cn(blockchainStatsVariants({ variant, size }), className)} {...props}>
+          <h3
+            className={cn('font-medium text-base-content mb-4', {
+              'text-lg': size === 'md' || size === 'lg',
+              'text-base': size === 'sm',
+              'text-xl': size === 'lg' && variant === 'detailed',
+            })}
+          >
+            Blockchain Integration
+          </h3>
+          <p className="text-base-content/60 text-sm">No blockchain data available yet. Create some todos to get started.</p>
+        </div>
+      );
     }
 
     return (
