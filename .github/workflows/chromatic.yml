@@ -29,14 +29,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: npm ci
-        working-directory: .
+        run: pnpm install
 
       - name: Build Storybook
-        run: npm run build-storybook
+        run: pnpm run build-storybook
 
       - name: Publish to Chromatic
         uses: chromaui/action@v1
@@ -53,8 +57,6 @@ jobs:
     defaults:
       run:
         working-directory: packages/ui-mobile
-    # Only run if the ui-mobile package exists and has a Storybook configuration
-    if: ${{ hashFiles('packages/ui-mobile/package.json') != '' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
