@@ -1,0 +1,117 @@
+# CLAUDE.md
+
+## Project Overview
+
+Enterprise-grade monorepo (Turborepo) for a todo list application with full-stack web/mobile, blockchain integrations, and a design system.
+
+## Package Manager
+
+**Always use `pnpm`** (v9.12.0). Never use npm or yarn.
+
+## Monorepo Structure
+
+```
+apps/
+  web/          # Next.js 15 + React 19 (port 3000)
+  mobile/       # Expo 54 + React Native 0.81
+  api/          # NestJS 11 + MongoDB + Redis (port 3001)
+  ingestion/    # Background processing
+  smart-contracts/
+    polygon/    # Solidity + Hardhat
+    solana/     # Rust + Anchor
+    polkadot/   # Substrate
+    moonbeam/   # EVM + Hardhat
+    base/       # L2 + Hardhat
+packages/
+  ui-web/       # React component library (DaisyUI + Style Dictionary)
+  ui-mobile/    # React Native component library
+  services/     # Blockchain & API services
+  utils/        # Shared utilities
+  config-eslint/
+  config-jest/
+  config-ts/
+  config-release/
+src/
+  test/         # Shared test utilities
+test/
+  integration/    # Root-level integration test suites
+  dependency-management/  # Dependency validation tests
+scripts/          # Shell scripts referenced by pnpm commands
+db/             # MongoDB migrations & seeds
+infra/          # k8s, nginx, redis configs
+```
+
+## Key Commands
+
+```bash
+# Development
+pnpm dev              # All apps
+pnpm dev:web          # Web only
+pnpm dev:api          # API only
+pnpm dev:mobile       # Mobile only
+
+# Build
+pnpm build            # Full build
+pnpm build:quick      # Fast dev build
+
+# Quality
+pnpm lint             # ESLint
+pnpm lint:fix         # Auto-fix
+pnpm format           # Prettier
+pnpm typecheck        # TypeScript
+pnpm quality          # lint + typecheck
+
+# Testing
+pnpm test             # All tests (coverage depends on per-package Jest config)
+pnpm test:unit        # Unit tests
+pnpm test:integration # Integration tests
+pnpm test:e2e         # Playwright E2E
+pnpm test:contracts   # Blockchain contract tests
+
+# Database
+pnpm db:setup         # Initialize
+pnpm db:migrate       # Run migrations
+pnpm db:seed          # Seed data
+pnpm db:reset         # Clear & reinitialize
+
+# Infrastructure (required for API & integration tests)
+pnpm infra:compose:up    # Start MongoDB + Redis via docker-compose.dev.yml
+pnpm infra:compose:down  # Stop infrastructure containers
+
+# Design system
+pnpm tokens:build     # Build design tokens
+pnpm storybook:web    # Launch Storybook
+```
+
+## First-Time Setup
+
+Copy `.env.example` to `.env` before running any app or test (each app also has its own `.env.example`).
+
+## Tech Stack
+
+- **Web**: Next.js 15, React 19, TypeScript 5.9, Tailwind CSS 3.4, DaisyUI 5.0
+- **Mobile**: Expo 54, React Native 0.81, Eva Design + UI Kitten
+- **API**: NestJS 11, MongoDB 8, Redis 4, Mongoose, Passport JWT
+- **Blockchain**: Hardhat (EVM), Anchor/Rust (Solana), Substrate (Polkadot)
+- **Testing**: Jest 30, Playwright 1.54, React Testing Library, Vitest 3.2, Supertest
+- **Design System**: Style Dictionary 5, Storybook 8.6, Chromatic
+- **Node**: 22.18.0 (enforced via .nvmrc)
+
+## Code Quality
+
+- ESLint 9 with flat config
+- Prettier (120 char line width, Solidity plugin)
+- Conventional commits enforced by commitlint + husky
+- Commit scopes: `web`, `mobile`, `api`, `ingestion`, `contracts`, `ui-web`, `ui-mobile`, `services`, `config`, `deps`, `release`, `docs`, `ci`, `infra`, `db`
+
+## TypeScript
+
+Root `tsconfig.json` uses `ignoreDeprecations: "6.0"` for compatibility. Path aliases use `@todo/*` prefix.
+
+## CI/CD
+
+GitHub Actions (`.github/workflows/`):
+
+- `ci.yml`: lint → typecheck → test (with MongoDB + Redis) → E2E → contract tests (matrix) → design-system → build
+- Turbo remote caching via `TURBO_TOKEN` / `TURBO_TEAM` secrets
+- Build only runs on push to `main` after all checks pass
