@@ -23,13 +23,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Lint
-        run: npm run lint
+        run: pnpm lint
 
   type-check:
     name: Type Check
@@ -42,13 +47,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Type check
-        run: npm run build -- --no-cache --filter=!@todo/web
+        run: pnpm build -- --no-cache --filter=!@todo/web
 
   test:
     name: Test
@@ -74,13 +84,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Run tests
-        run: npm test -- --coverage
+        run: pnpm test -- --coverage
         env:
           MONGODB_URI: mongodb://root:password@localhost:27017/todos_test?authSource=admin
           REDIS_URI: redis://localhost:6379
@@ -94,7 +109,6 @@ jobs:
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
-    if: hashFiles('apps/web/playwright.config.ts') != ''
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -103,17 +117,21 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        run: pnpm exec playwright install --with-deps
 
       - name: Run E2E tests
-        run: npm run test:e2e
-        working-directory: apps/web
+        run: pnpm --filter @todo/web test:e2e
         env:
           CI: true
 
@@ -128,7 +146,6 @@ jobs:
   contract-tests:
     name: Smart Contract Tests
     runs-on: ubuntu-latest
-    if: hashFiles('apps/smart-contracts/package.json') != ''
     strategy:
       matrix:
         network: [polygon, moonbeam, base, solana, polkadot]
@@ -140,10 +157,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Setup Rust (for Solana and Polkadot)
         if: matrix.network == 'solana' || matrix.network == 'polkadot'
@@ -166,7 +188,7 @@ jobs:
         if: matrix.network == 'polygon' || matrix.network == 'moonbeam' || matrix.network == 'base'
         run: |
           cd apps/smart-contracts/${{ matrix.network }}
-          npx hardhat node --port 8545 &
+          pnpm exec hardhat node --port 8545 &
           sleep 10
 
       - name: Start local Moonbeam node
@@ -180,7 +202,7 @@ jobs:
           sleep 10
 
       - name: Run contract tests for ${{ matrix.network }}
-        run: npm run contracts:${{ matrix.network }}
+        run: pnpm run contracts:${{ matrix.network }}
         env:
           MOONBEAM_RPC_URL: http://localhost:9933
           POLYGON_RPC_URL: http://localhost:8545
@@ -198,22 +220,27 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Build design tokens
-        run: npm run tokens:build
+        run: pnpm run tokens:build
 
       - name: Validate design tokens
-        run: npm run tokens:validate
+        run: pnpm run tokens:validate
 
       - name: Build Storybook
-        run: npm run storybook:build:web
+        run: pnpm run storybook:build:web
 
       - name: Run visual regression tests
-        run: npm run design-system:test
+        run: pnpm run design-system:test
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
@@ -230,13 +257,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Build
-        run: npm run build
+        run: pnpm build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
