@@ -2,6 +2,7 @@ import { Elysia } from 'elysia';
 
 import { routeTable } from '../config/route-table';
 import { GatewayMethodNotAllowedError, GatewayRouteNotFoundError } from '../errors';
+import { enforceAuthPolicy } from '../plugins/auth-policy';
 import { proxyRequest } from '../proxy/proxy';
 import { matchRoute } from '../routing/matcher';
 
@@ -18,6 +19,7 @@ async function handleProxy(request: Request): Promise<Response> {
     throw new GatewayRouteNotFoundError(url.pathname);
   }
 
+  enforceAuthPolicy(request, match.route);
   return proxyRequest(request, match);
 }
 

@@ -414,25 +414,25 @@ Make gateway auth-aware while preserving upstream auth as defense in depth.
 
 ### Todo
 
-- [ ] Define public routes in route metadata.
-- [ ] Define protected routes in route metadata.
-- [ ] Add auth policy middleware.
-- [ ] Allow public routes without token.
-- [ ] Reject protected routes without token at gateway.
-- [ ] Validate Bearer token format.
-- [ ] Validate JWT locally with shared `JWT_SECRET`.
-- [ ] Extract user ID and email from token where available.
-- [ ] Do not log raw JWT.
-- [ ] Add user ID hash to logs, not raw sensitive data.
-- [ ] Forward original `authorization` header to upstream.
-- [ ] Keep upstream auth validation active.
-- [ ] Add tests:
-  - [ ] Public route without token.
-  - [ ] Protected route without token.
-  - [ ] Protected route with invalid token.
-  - [ ] Protected route with valid token.
-  - [ ] Authorization header is forwarded.
-- [ ] Document future JWKS migration in gateway README or auth docs.
+- [x] Define public routes in route metadata.
+- [x] Define protected routes in route metadata.
+- [x] Add auth policy middleware.
+- [x] Allow public routes without token.
+- [x] Reject protected routes without token at gateway.
+- [x] Validate Bearer token format.
+- [x] Validate JWT locally with shared `JWT_SECRET`.
+- [x] Extract user ID and email from token where available.
+- [x] Do not log raw JWT.
+- [x] Add user ID hash to logs, not raw sensitive data.
+- [x] Forward original `authorization` header to upstream.
+- [x] Keep upstream auth validation active.
+- [x] Add tests:
+  - [x] Public route without token.
+  - [x] Protected route without token.
+  - [x] Protected route with invalid token.
+  - [x] Protected route with valid token.
+  - [x] Authorization header is forwarded.
+- [x] Document future JWKS migration in gateway README or auth docs.
 
 ### Validation
 

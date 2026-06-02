@@ -1,5 +1,6 @@
 import { Elysia } from 'elysia';
 
+import { getAuthContext } from './auth-policy';
 import { getRequestId } from './request-id';
 
 type GatewayLog = {
@@ -11,6 +12,7 @@ type GatewayLog = {
   status: number;
   durationMs: number;
   requestId: string;
+  userIdHash?: string;
   upstream: 'gateway';
 };
 
@@ -31,6 +33,7 @@ export const structuredLoggingPlugin = new Elysia({ name: 'structured-logging' }
       status: statusFromSet(set.status),
       durationMs: Math.round((performance.now() - startedAt) * 100) / 100,
       requestId,
+      userIdHash: getAuthContext(request)?.userIdHash,
       upstream: 'gateway',
     };
 

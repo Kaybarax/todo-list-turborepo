@@ -3,13 +3,17 @@ import { beforeAll, beforeEach, describe, expect, it } from 'bun:test';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 type AppModule = typeof import('../app');
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+type AuthPolicyModule = typeof import('../plugins/auth-policy');
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 type RateLimitModule = typeof import('../plugins/rate-limit');
 
 let app: AppModule['app'];
 let resetRateLimitBuckets: RateLimitModule['resetRateLimitBuckets'];
+let signTestJwt: AuthPolicyModule['signTestJwt'];
 let logLines: string[];
 
 const originalConsoleInfo = console.info;
+const originalFetch = globalThis.fetch;
 
 beforeAll(async () => {
   process.env.JWT_SECRET = 'test-secret-value';
@@ -17,13 +21,16 @@ beforeAll(async () => {
   process.env.RATE_LIMIT_ENABLED = 'true';
 
   const appModule = await import('../app');
+  const authPolicyModule = await import('../plugins/auth-policy');
   const rateLimitModule = await import('../plugins/rate-limit');
   app = appModule.app;
+  signTestJwt = authPolicyModule.signTestJwt;
   resetRateLimitBuckets = rateLimitModule.resetRateLimitBuckets;
 });
 
 beforeEach(() => {
   resetRateLimitBuckets();
+  globalThis.fetch = originalFetch;
   logLines = [];
   console.info = (message?: unknown) => {
     logLines.push(String(message));
@@ -138,8 +145,90 @@ describe('api-gateway', () => {
     const body = (await lastResponse.json()) as { errorCode: string };
     expect(body.errorCode).toBe('GW_RATE_LIMITED');
   });
+
+  it('allows public proxied auth routes without a token', async () => {
+    let upstreamCalled = false;
+    globalThis.fetch = (async () => {
+      upstreamCalled = true;
+      return new Response(JSON.stringify({ token: 'issued-upstream-token' }), {
+        status: 201,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/auth/register', {
+        method: 'POST',
+      }),
+    );
+
+    expect(upstreamCalled).toBe(true);
+    expect(response.status).toBe(201);
+  });
+
+  it('rejects protected routes without a token at the gateway', async () => {
+    let upstreamCalled = false;
+    globalThis.fetch = (async () => {
+      upstreamCalled = true;
+      return new Response('should not be called');
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(new Request('http://localhost/api/v1/todos'));
+
+    expect(upstreamCalled).toBe(false);
+    expect(response.status).toBe(401);
+    const body = (await response.json()) as { errorCode: string };
+    expect(body.errorCode).toBe('GW_AUTH_REQUIRED');
+  });
+
+  it('rejects protected routes with invalid Bearer token format', async () => {
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/todos', {
+        headers: { authorization: 'Bearer invalid' },
+      }),
+    );
+
+    expect(response.status).toBe(401);
+    const body = (await response.json()) as { errorCode: string; message: string };
+    expect(body.errorCode).toBe('GW_AUTH_INVALID');
+    expect(body.message).toContain('Bearer JWT format');
+  });
+
+  it('accepts a valid JWT, forwards authorization upstream, and does not log raw JWT', async () => {
+    const token = signTestJwt({
+      sub: 'user-123',
+      email: 'user@example.com',
+      exp: Math.floor(Date.now() / 1000) + 60,
+    });
+    let forwardedAuthorization: string | null = null;
+    globalThis.fetch = (async (_input: string | URL | Request, init?: Parameters<typeof fetch>[1]) => {
+      forwardedAuthorization = new Headers(init?.headers).get('authorization');
+      return new Response(JSON.stringify({ todos: [] }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/todos', {
+        headers: {
+          authorization: `Bearer ${token}`,
+          'x-request-id': 'request-auth-valid',
+        },
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(forwardedAuthorization ?? '').toBe(`Bearer ${token}`);
+    expect(logLines.join('\n')).not.toContain(token);
+    const log = JSON.parse(logLines.at(-1) ?? '{}') as Record<string, unknown>;
+    expect(log.userIdHash).toBeTruthy();
+    expect(log.userIdHash).not.toBe('user-123');
+    expect(JSON.stringify(log)).not.toContain('user@example.com');
+  });
 });
 
 process.on('exit', () => {
   console.info = originalConsoleInfo;
+  globalThis.fetch = originalFetch;
 });
