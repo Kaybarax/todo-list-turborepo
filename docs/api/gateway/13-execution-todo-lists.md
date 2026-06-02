@@ -947,7 +947,7 @@ Make gateway quality checks part of regular development.
 - [ ] Ensure web e2e uses gateway URL.
 - [ ] Ensure mobile smoke tests use gateway URL.
 - [ ] Add production deployment approval gate.
-- [ ] Add rollback runbook link to deployment docs.
+- [x] Add rollback runbook link to deployment docs. — See [Rollback section in Infrastructure and Deployment](../10-infrastructure-and-deployment.md#rollback)
 
 ### Validation
 
