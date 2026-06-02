@@ -13,6 +13,12 @@ export const routeTable = [
     retries: 0,
     tags: ['gateway'],
     owner: 'gateway',
+    openapi: {
+      source: 'gateway',
+      operationId: 'gatewayIndex',
+      summary: 'Get gateway service metadata',
+      responseShape: 'GatewayMetadata',
+    },
   },
   {
     id: 'gateway.health',
@@ -24,6 +30,12 @@ export const routeTable = [
     retries: 0,
     tags: ['health'],
     owner: 'gateway',
+    openapi: {
+      source: 'gateway',
+      operationId: 'gatewayHealth',
+      summary: 'Get gateway health metadata',
+      responseShape: 'GatewayMetadata',
+    },
   },
   {
     id: 'gateway.health.ready',
@@ -35,6 +47,12 @@ export const routeTable = [
     retries: 0,
     tags: ['health'],
     owner: 'gateway',
+    openapi: {
+      source: 'gateway',
+      operationId: 'gatewayHealthReady',
+      summary: 'Get gateway readiness status',
+      responseShape: 'GatewayReadiness',
+    },
   },
   {
     id: 'auth.register',
@@ -47,6 +65,12 @@ export const routeTable = [
     retries: 0,
     tags: ['auth'],
     owner: 'api-bun',
+    openapi: {
+      source: 'bun-openapi',
+      operationId: 'registerUser',
+      summary: 'Register a user',
+      responseShape: 'AuthResponse',
+    },
   },
   {
     id: 'auth.login',
@@ -59,6 +83,12 @@ export const routeTable = [
     retries: 0,
     tags: ['auth'],
     owner: 'api-bun',
+    openapi: {
+      source: 'bun-openapi',
+      operationId: 'loginUser',
+      summary: 'Log in a user',
+      responseShape: 'AuthResponse',
+    },
   },
   {
     id: 'auth.refresh',
@@ -71,6 +101,12 @@ export const routeTable = [
     retries: 0,
     tags: ['auth'],
     owner: 'api-bun',
+    openapi: {
+      source: 'bun-openapi',
+      operationId: 'refreshAuthToken',
+      summary: 'Refresh an access token',
+      responseShape: 'AuthResponse',
+    },
   },
   {
     id: 'auth.profile',
@@ -84,6 +120,12 @@ export const routeTable = [
     fallback: 'nest-api',
     tags: ['auth'],
     owner: 'api-bun',
+    openapi: {
+      source: 'bun-openapi',
+      operationId: 'getAuthProfile',
+      summary: 'Get the current authenticated user profile',
+      responseShape: 'PublicUser',
+    },
   },
   {
     id: 'users.profile',
@@ -96,6 +138,12 @@ export const routeTable = [
     retries: 1,
     tags: ['users'],
     owner: 'api',
+    openapi: {
+      source: 'nest-openapi',
+      operationId: 'getUserProfile',
+      summary: 'Get the current user profile',
+      responseShape: 'UserProfile',
+    },
   },
   {
     id: 'todos.list',
@@ -109,6 +157,12 @@ export const routeTable = [
     fallback: 'nest-api',
     tags: ['todos'],
     owner: 'api-bun',
+    openapi: {
+      source: 'bun-openapi',
+      operationId: 'listTodos',
+      summary: 'List todos with filtering and pagination',
+      responseShape: 'PaginatedTodos',
+    },
   },
   {
     id: 'todos.create',
@@ -121,6 +175,12 @@ export const routeTable = [
     retries: 0,
     tags: ['todos'],
     owner: 'api',
+    openapi: {
+      source: 'nest-openapi',
+      operationId: 'createTodo',
+      summary: 'Create a todo',
+      responseShape: 'ApiTodo',
+    },
   },
   {
     id: 'todos.stats',
@@ -134,11 +194,17 @@ export const routeTable = [
     fallback: 'nest-api',
     tags: ['todos'],
     owner: 'api-bun',
+    openapi: {
+      source: 'bun-openapi',
+      operationId: 'getTodoStats',
+      summary: 'Get todo statistics',
+      responseShape: 'TodoStats',
+    },
   },
   {
     id: 'todos.by-id',
     publicPath: '/api/v1/todos/:id',
-    methods: ['GET', 'PATCH', 'PUT', 'DELETE'],
+    methods: ['GET', 'PATCH', 'DELETE'],
     upstream: 'nest-api',
     upstreamPath: '/api/v1/todos/:id',
     auth: 'required',
@@ -146,6 +212,12 @@ export const routeTable = [
     retries: 0,
     tags: ['todos'],
     owner: 'api',
+    openapi: {
+      source: 'nest-openapi',
+      operationId: 'getUpdateOrDeleteTodoById',
+      summary: 'Get, update, or delete a todo by ID',
+      responseShape: 'ApiTodo',
+    },
   },
   {
     id: 'todos.toggle',
@@ -158,5 +230,11 @@ export const routeTable = [
     retries: 0,
     tags: ['todos'],
     owner: 'api',
+    openapi: {
+      source: 'nest-openapi',
+      operationId: 'toggleTodo',
+      summary: 'Toggle a todo completion state',
+      responseShape: 'ApiTodo',
+    },
   },
 ] satisfies GatewayRoute[];

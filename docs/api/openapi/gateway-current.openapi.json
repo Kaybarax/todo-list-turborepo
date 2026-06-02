@@ -16,6 +16,42 @@
       "get": {
         "operationId": "getApiV1"
       }
+    },
+    "/api/v1/health": {
+      "get": {
+        "operationId": "getApiV1Health"
+      }
+    },
+    "/api/v1/health/ready": {
+      "get": {
+        "operationId": "getApiV1HealthReady"
+      }
+    },
+    "/api/v1/*": {
+      "get": {
+        "operationId": "allApiV1*"
+      },
+      "post": {
+        "operationId": "allApiV1*"
+      },
+      "put": {
+        "operationId": "allApiV1*"
+      },
+      "delete": {
+        "operationId": "allApiV1*"
+      },
+      "patch": {
+        "operationId": "allApiV1*"
+      },
+      "head": {
+        "operationId": "allApiV1*"
+      },
+      "options": {
+        "operationId": "allApiV1*"
+      },
+      "trace": {
+        "operationId": "allApiV1*"
+      }
     }
   },
   "components": {

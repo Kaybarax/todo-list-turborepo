@@ -727,20 +727,20 @@ Make the gateway public contract explicit and prevent silent route drift.
 
 ### Todo
 
-- [ ] Add Elysia OpenAPI plugin to gateway.
-- [ ] Add route metadata for public gateway routes.
-- [ ] Add `apps/api-gateway/scripts/export-openapi.ts`.
-- [ ] Export gateway OpenAPI to a known path.
-- [ ] Decide whether generated OpenAPI is committed.
-- [ ] Add test ensuring every route table entry has OpenAPI metadata.
-- [ ] Add test ensuring every proxied route has an upstream configured.
-- [ ] Add contract test for response shape used by `@todo/services`.
-- [ ] Add comparison against NestJS OpenAPI for Nest-owned routes.
-- [ ] Add comparison against Bun OpenAPI for Bun-owned routes.
+- [x] Add Elysia OpenAPI plugin to gateway.
+- [x] Add route metadata for public gateway routes.
+- [x] Add `apps/api-gateway/scripts/export-openapi.ts`.
+- [x] Export gateway OpenAPI to a known path.
+- [x] Decide whether generated OpenAPI is committed.
+- [x] Add test ensuring every route table entry has OpenAPI metadata.
+- [x] Add test ensuring every proxied route has an upstream configured.
+- [x] Add contract test for response shape used by `@todo/services`.
+- [x] Add comparison against NestJS OpenAPI for Nest-owned routes.
+- [x] Add comparison against Bun OpenAPI for Bun-owned routes.
 - [ ] Add CI command:
-  - [ ] `pnpm --filter @todo/api-gateway openapi:export`
-- [ ] Add route table drift test.
-- [ ] Document process for changing public API routes.
+  - [x] `pnpm --filter @todo/api-gateway openapi:export`
+- [x] Add route table drift test.
+- [x] Document process for changing public API routes.
 
 ### Validation
 
@@ -1169,9 +1169,9 @@ Expected result:
 
 - [ ] Add trace propagation.
 - [ ] Add gateway spans.
-- [ ] Add OpenAPI export.
-- [ ] Add route drift tests.
-- [ ] Add contract tests.
+- [x] Add OpenAPI export.
+- [x] Add route drift tests.
+- [x] Add contract tests.
 
 ### PR 5: Canary Controls
 

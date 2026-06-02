@@ -113,6 +113,12 @@ describe('route matcher', () => {
       retries: 0,
       tags: ['debug'],
       owner: 'api',
+      openapi: {
+        source: 'nest-openapi',
+        operationId: 'debugWildcard',
+        summary: 'Debug wildcard route',
+        responseShape: 'DebugResponse',
+      },
     };
 
     expect(matchRoute([wildcardRoute], 'GET', '/api/v1/debug/a/b/c')?.route.id).toBe('debug.wildcard');

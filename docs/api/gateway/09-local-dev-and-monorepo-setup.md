@@ -183,10 +183,14 @@ pnpm --filter @todo/api-gateway openapi:export
 Recommended output:
 
 ```text
-apps/api-gateway/openapi.json
+docs/api/openapi/gateway-current.openapi.json
 ```
 
-Do not commit generated OpenAPI unless the repo already commits generated API specs. If committed, update docs and CI checks accordingly.
+This repo commits generated API specs under `docs/api/openapi`, so public
+gateway route changes should update `gateway-current.openapi.json` and include a
+passing `pnpm --filter @todo/api-gateway openapi:export` run. Any route table
+change should also update route metadata and pass the gateway contract/drift
+tests.
 
 ## Developer Debugging
 

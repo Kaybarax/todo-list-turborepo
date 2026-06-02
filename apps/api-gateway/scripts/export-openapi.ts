@@ -1,11 +1,13 @@
-import { writeFileSync } from 'fs';
+import { mkdirSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
-import { app } from '../src/app';
+process.env.JWT_SECRET ??= 'openapi-export-secret';
+process.env.CORS_ORIGIN ??= 'http://localhost:3000';
 
 async function exportOpenAPI() {
   console.log('Exporting OpenAPI spec...');
 
+  const { app } = await import('../src/app');
   const response = await app.handle(new Request('http://localhost/api/docs/json'));
 
   if (!response.ok) {
@@ -16,6 +18,7 @@ async function exportOpenAPI() {
   const spec = await response.json();
   const outputPath = resolve(__dirname, '../../../docs/api/openapi/gateway-current.openapi.json');
 
+  mkdirSync(resolve(outputPath, '..'), { recursive: true });
   writeFileSync(outputPath, `${JSON.stringify(spec, null, 2)}\n`);
   console.log(`OpenAPI spec exported to: ${outputPath}`);
 }
