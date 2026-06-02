@@ -11,13 +11,28 @@ import {
   type ServerConfig,
   type UpstreamsConfig,
   parseBoolean,
+  parseCsv,
+  parseOptionalURL,
   parsePositiveInt,
   parseURL,
   requireNonEmpty,
 } from './validators';
 
 export type { AuthConfig, Config, CorsConfig, ProxyConfig, RateLimitingConfig, ServerConfig, UpstreamsConfig };
-export { parseBoolean, parsePositiveInt, parseURL, requireNonEmpty };
+export { parseBoolean, parseCsv, parseOptionalURL, parsePositiveInt, parseURL, requireNonEmpty };
+
+export const DEFAULT_CORS_ALLOWED_HEADERS = [
+  'content-type',
+  'authorization',
+  'x-request-id',
+  'x-api-version',
+  'x-environment',
+  'traceparent',
+  'tracestate',
+  'baggage',
+];
+
+export const DEFAULT_CORS_ALLOWED_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
 
 // ---------------------------------------------------------------------------
 // Config object
@@ -38,13 +53,20 @@ export const config: Config = {
     authForwardAuthorization: parseBoolean('AUTH_FORWARD_AUTHORIZATION', process.env.AUTH_FORWARD_AUTHORIZATION, true),
   },
   cors: {
-    corsOrigin: requireNonEmpty('CORS_ORIGIN', process.env.CORS_ORIGIN),
+    origins: parseCsv('CORS_ORIGIN', requireNonEmpty('CORS_ORIGIN', process.env.CORS_ORIGIN), []),
+    credentials: parseBoolean('CORS_CREDENTIALS', process.env.CORS_CREDENTIALS, true),
+    allowedHeaders: parseCsv('CORS_ALLOWED_HEADERS', process.env.CORS_ALLOWED_HEADERS, DEFAULT_CORS_ALLOWED_HEADERS),
+    allowedMethods: parseCsv('CORS_ALLOWED_METHODS', process.env.CORS_ALLOWED_METHODS, DEFAULT_CORS_ALLOWED_METHODS),
   },
   proxy: {
     proxyTimeoutMs: parsePositiveInt('PROXY_TIMEOUT_MS', process.env.PROXY_TIMEOUT_MS, 10000),
+    bodyLimitBytes: parsePositiveInt('BODY_LIMIT_BYTES', process.env.BODY_LIMIT_BYTES, 1_048_576),
   },
   rateLimiting: {
     rateLimitEnabled: parseBoolean('RATE_LIMIT_ENABLED', process.env.RATE_LIMIT_ENABLED, true),
+    windowMs: parsePositiveInt('RATE_LIMIT_WINDOW_MS', process.env.RATE_LIMIT_WINDOW_MS, 60_000),
+    max: parsePositiveInt('RATE_LIMIT_MAX', process.env.RATE_LIMIT_MAX, 300),
+    redisUrl: parseOptionalURL('RATE_LIMIT_REDIS_URL', process.env.RATE_LIMIT_REDIS_URL),
   },
 };
 

@@ -1,7 +1,14 @@
 import { describe, expect, it, beforeAll, afterAll } from 'bun:test';
 
 // validators.ts has no process.env dependency — safe to import statically
-import { parseBoolean, parsePositiveInt, parseURL, requireNonEmpty } from '../config/validators';
+import {
+  parseBoolean,
+  parseCsv,
+  parseOptionalURL,
+  parsePositiveInt,
+  parseURL,
+  requireNonEmpty,
+} from '../config/validators';
 
 // ---------------------------------------------------------------------------
 // Config helpers used across integration tests
@@ -94,6 +101,26 @@ describe('parseURL', () => {
   });
 });
 
+describe('parseOptionalURL', () => {
+  it('returns null when optional URL is unset', () => {
+    expect(parseOptionalURL('RATE_LIMIT_REDIS_URL', undefined)).toBeNull();
+  });
+
+  it('returns null when optional URL is empty', () => {
+    expect(parseOptionalURL('RATE_LIMIT_REDIS_URL', '')).toBeNull();
+  });
+
+  it('returns valid optional URL values', () => {
+    expect(parseOptionalURL('RATE_LIMIT_REDIS_URL', 'redis://localhost:6379')).toBe('redis://localhost:6379');
+  });
+
+  it('throws a clear error for invalid optional URL values', () => {
+    expect(() => parseOptionalURL('RATE_LIMIT_REDIS_URL', 'not-a-url')).toThrow(
+      'Environment variable RATE_LIMIT_REDIS_URL must be a valid URL, got: not-a-url',
+    );
+  });
+});
+
 describe('parseBoolean', () => {
   it('returns default when value is undefined', () => {
     expect(parseBoolean('RATE_LIMIT_ENABLED', undefined, true)).toBe(true);
@@ -128,6 +155,25 @@ describe('parseBoolean', () => {
   it('throws a clear error for numeric string', () => {
     expect(() => parseBoolean('RATE_LIMIT_ENABLED', '1', true)).toThrow(
       'Environment variable RATE_LIMIT_ENABLED must be "true" or "false", got: 1',
+    );
+  });
+});
+
+describe('parseCsv', () => {
+  it('parses comma-separated values', () => {
+    expect(parseCsv('CORS_ORIGIN', 'http://localhost:3000, http://localhost:8081', [])).toEqual([
+      'http://localhost:3000',
+      'http://localhost:8081',
+    ]);
+  });
+
+  it('uses defaults when unset', () => {
+    expect(parseCsv('CORS_ALLOWED_METHODS', undefined, ['GET', 'POST'])).toEqual(['GET', 'POST']);
+  });
+
+  it('throws when no values remain', () => {
+    expect(() => parseCsv('CORS_ORIGIN', ',,,', [])).toThrow(
+      'Environment variable CORS_ORIGIN must include at least one value',
     );
   });
 });
@@ -172,15 +218,22 @@ describe('env config integration', () => {
   });
 
   it('reads CORS_ORIGIN from environment', () => {
-    expect(mod.config.cors.corsOrigin).toBe('http://localhost:3000');
+    expect(mod.config.cors.origins).toContain('http://localhost:3000');
+    expect(mod.config.cors.credentials).toBe(true);
+    expect(mod.config.cors.allowedHeaders).toContain('x-request-id');
+    expect(mod.config.cors.allowedMethods).toContain('OPTIONS');
   });
 
   it('uses default proxyTimeoutMs when not set', () => {
     expect(mod.config.proxy.proxyTimeoutMs).toBe(10000);
+    expect(mod.config.proxy.bodyLimitBytes).toBe(1_048_576);
   });
 
   it('uses default rateLimitEnabled when not set', () => {
     expect(mod.config.rateLimiting.rateLimitEnabled).toBe(true);
+    expect(mod.config.rateLimiting.windowMs).toBe(60_000);
+    expect(mod.config.rateLimiting.max).toBe(300);
+    expect(mod.config.rateLimiting.redisUrl).toBeNull();
   });
 });
 

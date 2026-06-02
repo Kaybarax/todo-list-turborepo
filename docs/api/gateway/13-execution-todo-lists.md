@@ -194,55 +194,55 @@ Add the non-negotiable gateway middleware: request ID, logging, errors, CORS, se
 
 ### Todo
 
-- [ ] Add typed environment config.
-- [ ] Fail fast when required env values are invalid.
-- [ ] Add `PORT`, default `3003`.
-- [ ] Add `PUBLIC_API_PREFIX`, default `/api/v1`.
-- [ ] Add `NEST_API_URL`, default `http://localhost:3001`.
-- [ ] Add `BUN_API_URL`, default `http://localhost:3002`.
-- [ ] Add `JWT_SECRET`.
-- [ ] Add `CORS_ORIGIN`.
-- [ ] Add `PROXY_TIMEOUT_MS`.
-- [ ] Add `RATE_LIMIT_ENABLED`.
-- [ ] Add request ID plugin.
-- [ ] Reuse valid incoming `x-request-id`.
-- [ ] Generate `x-request-id` when missing.
-- [ ] Add `x-request-id` to every response.
-- [ ] Add structured logging plugin.
-- [ ] Log method, path, route ID, status, duration, request ID, and upstream.
-- [ ] Add error classes:
-  - [ ] `GatewayRouteNotFoundError`
-  - [ ] `GatewayAuthRequiredError`
-  - [ ] `GatewayAuthInvalidError`
-  - [ ] `GatewayPayloadTooLargeError`
-  - [ ] `GatewayUpstreamTimeoutError`
-  - [ ] `GatewayUpstreamUnavailableError`
-- [ ] Add error response normalizer.
-- [ ] Add CORS plugin.
-- [ ] Add allowed origins from env.
-- [ ] Add credentials support.
-- [ ] Add allowed headers:
-  - [ ] `content-type`
-  - [ ] `authorization`
-  - [ ] `x-request-id`
-  - [ ] `x-api-version`
-  - [ ] `x-environment`
-  - [ ] `traceparent`
-  - [ ] `tracestate`
-  - [ ] `baggage`
-- [ ] Add allowed methods:
-  - [ ] `GET`
-  - [ ] `POST`
-  - [ ] `PUT`
-  - [ ] `PATCH`
-  - [ ] `DELETE`
-  - [ ] `OPTIONS`
-- [ ] Add security headers.
-- [ ] Add request body size guard.
-- [ ] Set default JSON body limit to `1 MB`.
-- [ ] Add rate limiting.
-- [ ] Use in-memory rate limiting for initial local mode if Redis integration is not ready.
-- [ ] Add Redis-backed rate limiting path for multi-instance deployment.
+- [x] Add typed environment config.
+- [x] Fail fast when required env values are invalid.
+- [x] Add `PORT`, default `3003`.
+- [x] Add `PUBLIC_API_PREFIX`, default `/api/v1`.
+- [x] Add `NEST_API_URL`, default `http://localhost:3001`.
+- [x] Add `BUN_API_URL`, default `http://localhost:3002`.
+- [x] Add `JWT_SECRET`.
+- [x] Add `CORS_ORIGIN`.
+- [x] Add `PROXY_TIMEOUT_MS`.
+- [x] Add `RATE_LIMIT_ENABLED`.
+- [x] Add request ID plugin.
+- [x] Reuse valid incoming `x-request-id`.
+- [x] Generate `x-request-id` when missing.
+- [x] Add `x-request-id` to every response.
+- [x] Add structured logging plugin.
+- [x] Log method, path, route ID, status, duration, request ID, and upstream.
+- [x] Add error classes:
+  - [x] `GatewayRouteNotFoundError`
+  - [x] `GatewayAuthRequiredError`
+  - [x] `GatewayAuthInvalidError`
+  - [x] `GatewayPayloadTooLargeError`
+  - [x] `GatewayUpstreamTimeoutError`
+  - [x] `GatewayUpstreamUnavailableError`
+- [x] Add error response normalizer.
+- [x] Add CORS plugin.
+- [x] Add allowed origins from env.
+- [x] Add credentials support.
+- [x] Add allowed headers:
+  - [x] `content-type`
+  - [x] `authorization`
+  - [x] `x-request-id`
+  - [x] `x-api-version`
+  - [x] `x-environment`
+  - [x] `traceparent`
+  - [x] `tracestate`
+  - [x] `baggage`
+- [x] Add allowed methods:
+  - [x] `GET`
+  - [x] `POST`
+  - [x] `PUT`
+  - [x] `PATCH`
+  - [x] `DELETE`
+  - [x] `OPTIONS`
+- [x] Add security headers.
+- [x] Add request body size guard.
+- [x] Set default JSON body limit to `1 MB`.
+- [x] Add rate limiting.
+- [x] Use in-memory rate limiting for initial local mode if Redis integration is not ready.
+- [x] Add Redis-backed rate limiting path for multi-instance deployment.
 
 ### Validation
 
@@ -274,67 +274,67 @@ Implement deterministic route matching and safe HTTP proxying to NestJS and Bun 
 
 ### Todo
 
-- [ ] Add `src/types/route.ts`.
-- [ ] Add `src/types/upstream.ts`.
-- [ ] Define route metadata fields:
-  - [ ] `id`
-  - [ ] `publicPath`
-  - [ ] `methods`
-  - [ ] `upstream`
-  - [ ] `upstreamPath`
-  - [ ] `auth`
-  - [ ] `timeoutMs`
-  - [ ] `retries`
-  - [ ] `fallback`
-  - [ ] `tags`
-  - [ ] `owner`
-- [ ] Add `src/config/upstreams.ts`.
-- [ ] Add `nest-api` upstream.
-- [ ] Add `bun-api` upstream.
-- [ ] Add `src/config/route-table.ts`.
-- [ ] Add gateway-owned route entries:
-  - [ ] `GET /api/v1`
-  - [ ] `GET /api/v1/health`
-  - [ ] `GET /api/v1/health/ready`
-- [ ] Add proxied route entries:
-  - [ ] `POST /api/v1/auth/register`
-  - [ ] `POST /api/v1/auth/login`
-  - [ ] `POST /api/v1/auth/refresh`
-  - [ ] `GET /api/v1/auth/profile`
-  - [ ] `GET /api/v1/users/profile`
-  - [ ] `GET /api/v1/todos`
-  - [ ] `POST /api/v1/todos`
-  - [ ] `GET /api/v1/todos/stats`
-  - [ ] `GET /api/v1/todos/:id`
-  - [ ] `PATCH /api/v1/todos/:id`
-  - [ ] `PUT /api/v1/todos/:id`
-  - [ ] `PATCH /api/v1/todos/:id/toggle`
-  - [ ] `DELETE /api/v1/todos/:id`
-- [ ] Add route matcher.
-- [ ] Support exact routes.
-- [ ] Support parameterized routes.
-- [ ] Support wildcard routes only where explicitly needed.
-- [ ] Return 404 for no route.
-- [ ] Return 405 for matched path with unsupported method if feasible.
-- [ ] Add proxy URL builder using `URL`.
-- [ ] Preserve query strings.
-- [ ] Preserve path params.
-- [ ] Add header allowlist.
-- [ ] Add hop-by-hop header denylist.
-- [ ] Add gateway headers:
-  - [ ] `x-gateway-service`
-  - [ ] `x-gateway-route`
-  - [ ] `x-forwarded-host`
-  - [ ] `x-forwarded-proto`
-  - [ ] `x-forwarded-for`
-- [ ] Add timeout wrapper with `AbortController`.
-- [ ] Add retry helper for idempotent methods.
-- [ ] Disable mutating retries by default.
-- [ ] Preserve upstream status codes.
-- [ ] Preserve upstream response body in phase 1 migration.
-- [ ] Add development-only debug headers:
-  - [ ] `x-gateway-upstream`
-  - [ ] `x-gateway-route`
+- [x] Add `src/types/route.ts`.
+- [x] Add `src/types/upstream.ts`.
+- [x] Define route metadata fields:
+  - [x] `id`
+  - [x] `publicPath`
+  - [x] `methods`
+  - [x] `upstream`
+  - [x] `upstreamPath`
+  - [x] `auth`
+  - [x] `timeoutMs`
+  - [x] `retries`
+  - [x] `fallback`
+  - [x] `tags`
+  - [x] `owner`
+- [x] Add `src/config/upstreams.ts`.
+- [x] Add `nest-api` upstream.
+- [x] Add `bun-api` upstream.
+- [x] Add `src/config/route-table.ts`.
+- [x] Add gateway-owned route entries:
+  - [x] `GET /api/v1`
+  - [x] `GET /api/v1/health`
+  - [x] `GET /api/v1/health/ready`
+- [x] Add proxied route entries:
+  - [x] `POST /api/v1/auth/register`
+  - [x] `POST /api/v1/auth/login`
+  - [x] `POST /api/v1/auth/refresh`
+  - [x] `GET /api/v1/auth/profile`
+  - [x] `GET /api/v1/users/profile`
+  - [x] `GET /api/v1/todos`
+  - [x] `POST /api/v1/todos`
+  - [x] `GET /api/v1/todos/stats`
+  - [x] `GET /api/v1/todos/:id`
+  - [x] `PATCH /api/v1/todos/:id`
+  - [x] `PUT /api/v1/todos/:id`
+  - [x] `PATCH /api/v1/todos/:id/toggle`
+  - [x] `DELETE /api/v1/todos/:id`
+- [x] Add route matcher.
+- [x] Support exact routes.
+- [x] Support parameterized routes.
+- [x] Support wildcard routes only where explicitly needed.
+- [x] Return 404 for no route.
+- [x] Return 405 for matched path with unsupported method if feasible.
+- [x] Add proxy URL builder using `URL`.
+- [x] Preserve query strings.
+- [x] Preserve path params.
+- [x] Add header allowlist.
+- [x] Add hop-by-hop header denylist.
+- [x] Add gateway headers:
+  - [x] `x-gateway-service`
+  - [x] `x-gateway-route`
+  - [x] `x-forwarded-host`
+  - [x] `x-forwarded-proto`
+  - [x] `x-forwarded-for`
+- [x] Add timeout wrapper with `AbortController`.
+- [x] Add retry helper for idempotent methods.
+- [x] Disable mutating retries by default.
+- [x] Preserve upstream status codes.
+- [x] Preserve upstream response body in phase 1 migration.
+- [x] Add development-only debug headers:
+  - [x] `x-gateway-upstream`
+  - [x] `x-gateway-route`
 
 ### Validation
 

@@ -19,15 +19,22 @@ export interface AuthConfig {
 }
 
 export interface CorsConfig {
-  corsOrigin: string;
+  origins: string[];
+  credentials: boolean;
+  allowedHeaders: string[];
+  allowedMethods: string[];
 }
 
 export interface ProxyConfig {
   proxyTimeoutMs: number;
+  bodyLimitBytes: number;
 }
 
 export interface RateLimitingConfig {
   rateLimitEnabled: boolean;
+  windowMs: number;
+  max: number;
+  redisUrl: string | null;
 }
 
 export interface Config {
@@ -65,10 +72,34 @@ export function parseURL(key: string, value: string | undefined, defaultVal: str
   }
 }
 
+export function parseOptionalURL(key: string, value: string | undefined): string | null {
+  if (value === undefined || value === '') return null;
+  try {
+    new URL(value);
+    return value;
+  } catch {
+    throw new Error(`Environment variable ${key} must be a valid URL, got: ${value}`);
+  }
+}
+
 export function parseBoolean(key: string, value: string | undefined, defaultVal: boolean): boolean {
   if (value === undefined || value === '') return defaultVal;
   const lower = value.toLowerCase();
   if (lower === 'true') return true;
   if (lower === 'false') return false;
   throw new Error(`Environment variable ${key} must be "true" or "false", got: ${value}`);
+}
+
+export function parseCsv(key: string, value: string | undefined, defaultVal: string[]): string[] {
+  const source = value === undefined || value === '' ? defaultVal.join(',') : value;
+  const values = source
+    .split(',')
+    .map(part => part.trim())
+    .filter(Boolean);
+
+  if (values.length === 0) {
+    throw new Error(`Environment variable ${key} must include at least one value`);
+  }
+
+  return values;
 }
