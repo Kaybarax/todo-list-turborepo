@@ -2,6 +2,8 @@ import { beforeAll, describe, expect, it } from 'bun:test';
 
 import { routeTable } from '../config/route-table';
 import { GatewayUpstreamTimeoutError } from '../errors';
+import { getGatewayRequestContext } from '../observability/request-context';
+import { getRecordedSpans, resetRecordedSpans } from '../observability/telemetry';
 import { buildProxyHeaders } from '../proxy/headers';
 import { shouldRetry } from '../proxy/retry-policy';
 import { buildProxyUrl } from '../proxy/url';
@@ -136,8 +138,11 @@ describe('proxy URL and header behavior', () => {
     const request = new Request('https://gateway.local/api/v1/todos', {
       headers: {
         authorization: 'Bearer token',
+        baggage: 'feature=todo-gateway',
         connection: 'keep-alive',
         host: 'gateway.local',
+        traceparent: '00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01',
+        tracestate: 'vendor=value',
         'x-request-id': 'request-headers-1',
         'x-api-version': '2026-06-02',
         'x-secret-debug': 'nope',
@@ -147,6 +152,9 @@ describe('proxy URL and header behavior', () => {
     const headers = buildProxyHeaders(request, route('todos.list'));
 
     expect(headers.get('authorization')).toBe('Bearer token');
+    expect(headers.get('baggage')).toBe('feature=todo-gateway');
+    expect(headers.get('traceparent')).toBe('00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01');
+    expect(headers.get('tracestate')).toBe('vendor=value');
     expect(headers.get('x-api-version')).toBe('2026-06-02');
     expect(headers.get('connection')).toBeNull();
     expect(headers.get('host')).toBeNull();
@@ -161,7 +169,14 @@ describe('proxy URL and header behavior', () => {
 
 describe('timeout and retry behavior', () => {
   it('retries idempotent requests on retryable upstream status and preserves final response body', async () => {
+    resetRecordedSpans();
     const calls: string[] = [];
+    const request = new Request('http://gateway.local/api/v1/todos?page=1', {
+      headers: {
+        traceparent: '00-11111111111111111111111111111111-2222222222222222-01',
+        tracestate: 'todo=1',
+      },
+    });
     const fetcher = async (input: string | URL | Request): Promise<Response> => {
       calls.push(String(input));
       if (calls.length === 1) {
@@ -173,17 +188,31 @@ describe('timeout and retry behavior', () => {
       });
     };
 
-    const result = await proxyRequest(
-      new Request('http://gateway.local/api/v1/todos?page=1'),
-      match('GET', '/api/v1/todos'),
-      fetcher,
-    );
+    const result = await proxyRequest(request, match('GET', '/api/v1/todos'), fetcher);
 
     expect(calls).toHaveLength(2);
     expect(result.status).toBe(200);
     expect(result.headers.get('x-gateway-route')).toBe('todos.list');
     expect(result.headers.get('x-gateway-upstream')).toBe('bun-api');
     expect(await result.json()).toEqual({ ok: true });
+
+    const requestContext = getGatewayRequestContext(request);
+    expect(requestContext.routeId).toBe('todos.list');
+    expect(requestContext.upstream).toBe('bun-api');
+    expect(requestContext.retryCount).toBe(1);
+    expect(typeof requestContext.upstreamLatencyMs).toBe('number');
+
+    const upstreamSpan = getRecordedSpans().find(span => span.name === 'gateway.upstream');
+    expect(upstreamSpan?.serviceName).toBe('todo-api-gateway');
+    expect(upstreamSpan?.traceparent).toBe('00-11111111111111111111111111111111-2222222222222222-01');
+    expect(upstreamSpan?.tracestate).toBe('todo=1');
+    expect(upstreamSpan?.attributes['gateway.route_id']).toBe('todos.list');
+    expect(upstreamSpan?.attributes['gateway.upstream']).toBe('bun-api');
+    expect(upstreamSpan?.attributes['http.method']).toBe('GET');
+    expect(upstreamSpan?.attributes['http.route']).toBe('/api/v1/todos');
+    expect(upstreamSpan?.attributes['http.status_code']).toBe(200);
+    expect(upstreamSpan?.attributes['gateway.retry_count']).toBe(1);
+    expect(upstreamSpan?.attributes['gateway.fallback_used']).toBe(false);
   });
 
   it('does not retry mutating requests by default', () => {

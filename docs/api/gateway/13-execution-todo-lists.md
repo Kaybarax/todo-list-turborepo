@@ -513,26 +513,26 @@ Move `apps/web` from direct API selection to gateway-only API access.
 
 ### Todo
 
-- [ ] Update `apps/web/src/config/api.ts`.
-- [ ] Prefer `NEXT_PUBLIC_API_GATEWAY_URL`.
-- [ ] Fall back to `NEXT_PUBLIC_API_URL`.
-- [ ] Remove runtime dependency on `NEXT_PUBLIC_API_MODE`.
-- [ ] Remove runtime dependency on `NEXT_PUBLIC_API_BUN_URL`.
-- [ ] Update `apps/web/.env.example`.
-- [ ] Add `NEXT_PUBLIC_API_GATEWAY_URL=http://localhost:3003`.
-- [ ] Add `NEXT_PUBLIC_WS_GATEWAY_URL=ws://localhost:3003`.
-- [ ] Point compatibility `NEXT_PUBLIC_API_URL` to `http://localhost:3003`.
-- [ ] Point compatibility `NEXT_PUBLIC_WS_URL` to `ws://localhost:3003`.
+- [x] Update `apps/web/src/config/api.ts`.
+- [x] Prefer `NEXT_PUBLIC_API_GATEWAY_URL`.
+- [x] Fall back to `NEXT_PUBLIC_API_URL`.
+- [x] Remove runtime dependency on `NEXT_PUBLIC_API_MODE`.
+- [x] Remove runtime dependency on `NEXT_PUBLIC_API_BUN_URL`.
+- [x] Update `apps/web/.env.example`.
+- [x] Add `NEXT_PUBLIC_API_GATEWAY_URL=http://localhost:3003`.
+- [x] Add `NEXT_PUBLIC_WS_GATEWAY_URL=ws://localhost:3003`.
+- [x] Point compatibility `NEXT_PUBLIC_API_URL` to `http://localhost:3003`.
+- [x] Point compatibility `NEXT_PUBLIC_WS_URL` to `ws://localhost:3003`.
 - [ ] Update `apps/web/.env.local`.
-- [ ] Update web API integration tests from `localhost:3001` to `localhost:3003`.
-- [ ] Update web deploy smoke test to prefer `NEXT_PUBLIC_API_GATEWAY_URL`.
-- [ ] Search for remaining web runtime references to:
-  - [ ] `NEXT_PUBLIC_API_BUN_URL`
-  - [ ] `NEXT_PUBLIC_API_MODE`
-  - [ ] `localhost:3001`
-  - [ ] `localhost:3002`
-- [ ] Keep direct API references only in docs or explicit backend comparison tests.
-- [ ] Run web unit/integration tests.
+- [x] Update web API integration tests from `localhost:3001` to `localhost:3003`.
+- [x] Update web deploy smoke test to prefer `NEXT_PUBLIC_API_GATEWAY_URL`.
+- [x] Search for remaining web runtime references to:
+  - [x] `NEXT_PUBLIC_API_BUN_URL`
+  - [x] `NEXT_PUBLIC_API_MODE`
+  - [x] `localhost:3001`
+  - [x] `localhost:3002`
+- [x] Keep direct API references only in docs or explicit backend comparison tests.
+- [x] Run web unit/integration tests.
 - [ ] Run web e2e todo flows through gateway.
 
 ### Validation
@@ -562,29 +562,29 @@ Move `apps/mobile` from direct API selection to gateway-only API access.
 
 ### Todo
 
-- [ ] Update `apps/mobile/src/config/api.ts`.
-- [ ] Prefer `EXPO_PUBLIC_API_GATEWAY_URL`.
-- [ ] Fall back to `EXPO_PUBLIC_API_URL`.
-- [ ] Remove runtime dependency on `EXPO_PUBLIC_API_MODE`.
-- [ ] Remove runtime dependency on `EXPO_PUBLIC_API_BUN_URL`.
-- [ ] Update `apps/mobile/.env.example`.
-- [ ] Add `EXPO_PUBLIC_API_GATEWAY_URL=http://localhost:3003`.
-- [ ] Add `EXPO_PUBLIC_WS_GATEWAY_URL=ws://localhost:3003`.
-- [ ] Point compatibility `EXPO_PUBLIC_API_URL` to `http://localhost:3003`.
+- [x] Update `apps/mobile/src/config/api.ts`.
+- [x] Prefer `EXPO_PUBLIC_API_GATEWAY_URL`.
+- [x] Fall back to `EXPO_PUBLIC_API_URL`.
+- [x] Remove runtime dependency on `EXPO_PUBLIC_API_MODE`.
+- [x] Remove runtime dependency on `EXPO_PUBLIC_API_BUN_URL`.
+- [x] Update `apps/mobile/.env.example`.
+- [x] Add `EXPO_PUBLIC_API_GATEWAY_URL=http://localhost:3003`.
+- [x] Add `EXPO_PUBLIC_WS_GATEWAY_URL=ws://localhost:3003`.
+- [x] Point compatibility `EXPO_PUBLIC_API_URL` to `http://localhost:3003`.
 - [ ] Update `apps/mobile/.env`.
-- [ ] Decide simulator URL guidance:
-  - [ ] iOS simulator can use `localhost` in many cases.
-  - [ ] Android emulator may need `10.0.2.2`.
-  - [ ] Physical device needs developer machine LAN IP.
-- [ ] Document physical device example:
-  - [ ] `EXPO_PUBLIC_API_GATEWAY_URL=http://<lan-ip>:3003`
-- [ ] Search for remaining mobile runtime references to:
-  - [ ] `EXPO_PUBLIC_API_BUN_URL`
-  - [ ] `EXPO_PUBLIC_API_MODE`
-  - [ ] `localhost:3001`
-  - [ ] `localhost:3002`
-- [ ] Update mobile tests/mocks as needed.
-- [ ] Run mobile test suite.
+- [x] Decide simulator URL guidance:
+  - [x] iOS simulator can use `localhost` in many cases.
+  - [x] Android emulator may need `10.0.2.2`.
+  - [x] Physical device needs developer machine LAN IP.
+- [x] Document physical device example:
+  - [x] `EXPO_PUBLIC_API_GATEWAY_URL=http://<lan-ip>:3003`
+- [x] Search for remaining mobile runtime references to:
+  - [x] `EXPO_PUBLIC_API_BUN_URL`
+  - [x] `EXPO_PUBLIC_API_MODE`
+  - [x] `localhost:3001`
+  - [x] `localhost:3002`
+- [x] Update mobile tests/mocks as needed.
+- [x] Run mobile test suite.
 - [ ] Run Expo smoke workflow.
 
 ### Validation

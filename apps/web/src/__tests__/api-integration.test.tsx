@@ -36,7 +36,7 @@ let mockApiTodos = [
 
 // Mock server setup
 const server = setupServer(
-  http.get('http://localhost:3001/api/v1/todos', ({ request }) => {
+  http.get('http://localhost:3003/api/v1/todos', ({ request }) => {
     const url = new URL(request.url);
     const page = url.searchParams.get('page') || '1';
     const limit = url.searchParams.get('limit') || '10';
@@ -74,7 +74,7 @@ const server = setupServer(
     });
   }),
 
-  http.get('http://localhost:3001/api/v1/todos/:id', ({ params }) => {
+  http.get('http://localhost:3003/api/v1/todos/:id', ({ params }) => {
     const { id } = params;
     const todo = mockApiTodos.find(t => t.id === id);
 
@@ -94,7 +94,7 @@ const server = setupServer(
     });
   }),
 
-  http.post('http://localhost:3001/api/v1/todos', async ({ request }) => {
+  http.post('http://localhost:3003/api/v1/todos', async ({ request }) => {
     const body = (await request.json()) as any;
     const newTodo = {
       id: `todo-${Date.now()}`,
@@ -120,7 +120,7 @@ const server = setupServer(
     );
   }),
 
-  http.patch('http://localhost:3001/api/v1/todos/:id', async ({ params, request }) => {
+  http.patch('http://localhost:3003/api/v1/todos/:id', async ({ params, request }) => {
     const { id } = params;
     const body = (await request.json()) as any;
     const todoIndex = mockApiTodos.findIndex(t => t.id === id);
@@ -147,7 +147,7 @@ const server = setupServer(
     });
   }),
 
-  http.patch('http://localhost:3001/api/v1/todos/:id/toggle', ({ params }) => {
+  http.patch('http://localhost:3003/api/v1/todos/:id/toggle', ({ params }) => {
     const { id } = params;
     const todoIndex = mockApiTodos.findIndex(t => t.id === id);
 
@@ -173,7 +173,7 @@ const server = setupServer(
     });
   }),
 
-  http.delete('http://localhost:3001/api/v1/todos/:id', ({ params }) => {
+  http.delete('http://localhost:3003/api/v1/todos/:id', ({ params }) => {
     const { id } = params;
     const todoIndex = mockApiTodos.findIndex(t => t.id === id);
 
@@ -233,7 +233,7 @@ describe('API Integration Tests', () => {
 
   beforeEach(() => {
     apiClient = new TodoApiClient({
-      baseUrl: 'http://localhost:3001/api/v1',
+      baseUrl: 'http://localhost:3003/api/v1',
     });
   });
 

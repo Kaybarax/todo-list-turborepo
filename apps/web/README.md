@@ -113,8 +113,10 @@ Create `.env.local` in the `apps/web` directory:
 
 ```bash
 # API Configuration
-NEXT_PUBLIC_API_URL=http://localhost:3001
-NEXT_PUBLIC_WS_URL=ws://localhost:3001
+NEXT_PUBLIC_API_GATEWAY_URL=http://localhost:3003
+NEXT_PUBLIC_WS_GATEWAY_URL=ws://localhost:3003
+NEXT_PUBLIC_API_URL=http://localhost:3003
+NEXT_PUBLIC_WS_URL=ws://localhost:3003
 
 # Authentication
 NEXTAUTH_URL=http://localhost:3000
@@ -705,7 +707,7 @@ pnpm type-check
 # Enable React DevTools for debugging
 
 # Check API connectivity
-curl http://localhost:3001/health
+curl http://localhost:3003/api/v1/health
 ```
 
 #### Wallet Connection Issues

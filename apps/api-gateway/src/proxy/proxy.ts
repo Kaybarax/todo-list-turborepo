@@ -1,5 +1,7 @@
 import { upstreams } from '../config/upstreams';
 import { GatewayUpstreamTimeoutError, GatewayUpstreamUnavailableError } from '../errors';
+import { mergeGatewayRequestContext } from '../observability/request-context';
+import { startUpstreamSpan } from '../observability/telemetry';
 import { buildProxyHeaders } from './headers';
 import { shouldRetry } from './retry-policy';
 import { buildProxyUrl } from './url';
@@ -48,6 +50,12 @@ export async function proxyRequest(request: Request, match: RouteMatch, fetcher:
 
   const upstream = upstreams[route.upstream];
   const url = buildProxyUrl(request, route, upstream, match.params);
+  const startedAt = performance.now();
+  const endUpstreamSpan = startUpstreamSpan(request, {
+    'gateway.route_id': route.id,
+    'gateway.upstream': upstream.id,
+    'http.route': route.publicPath,
+  });
   const init: FetchInit = {
     method: request.method,
     headers: buildProxyHeaders(request, route),
@@ -59,6 +67,14 @@ export async function proxyRequest(request: Request, match: RouteMatch, fetcher:
   while (true) {
     const response = await fetchWithTimeout(fetcher, url, init, route.timeoutMs);
     if (!shouldRetry(request.method, route, attempt, response)) {
+      mergeGatewayRequestContext(request, {
+        routeId: route.id,
+        upstream: upstream.id,
+        upstreamLatencyMs: Math.round((performance.now() - startedAt) * 100) / 100,
+        retryCount: attempt,
+        fallbackUsed: false,
+      });
+      endUpstreamSpan(response.status, attempt);
       return debugHeaders(response, route, upstream);
     }
     attempt += 1;

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? process.env.API_URL;
+const apiUrl = process.env.NEXT_PUBLIC_API_GATEWAY_URL ?? process.env.NEXT_PUBLIC_API_URL ?? process.env.API_URL;
 
 test.describe('web deployment smoke test', () => {
   test('homepage renders', async ({ page }) => {
@@ -18,11 +18,17 @@ test.describe('web deployment smoke test', () => {
   });
 
   test('configured API health endpoint is reachable', async ({ request }) => {
-    test.skip(!apiUrl && !process.env.CI, 'Set NEXT_PUBLIC_API_URL or API_URL to smoke test API connectivity.');
+    test.skip(
+      !apiUrl && !process.env.CI,
+      'Set NEXT_PUBLIC_API_GATEWAY_URL, NEXT_PUBLIC_API_URL, or API_URL to smoke test API connectivity.',
+    );
 
-    expect(apiUrl, 'NEXT_PUBLIC_API_URL or API_URL must be configured for deployed smoke tests.').toBeTruthy();
+    expect(
+      apiUrl,
+      'NEXT_PUBLIC_API_GATEWAY_URL, NEXT_PUBLIC_API_URL, or API_URL must be configured for deployed smoke tests.',
+    ).toBeTruthy();
 
-    const healthUrl = new URL('/health', apiUrl);
+    const healthUrl = new URL('/api/v1/health', apiUrl);
     const response = await request.get(healthUrl.toString(), { timeout: 10000 });
 
     expect(response.ok(), `Expected ${healthUrl.toString()} to return a 2xx/3xx response.`).toBe(true);

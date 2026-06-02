@@ -1,5 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'bun:test';
 
+import { getRecordedSpans, resetRecordedSpans } from '../observability/telemetry';
+
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 type AppModule = typeof import('../app');
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
@@ -31,6 +33,7 @@ beforeAll(async () => {
 beforeEach(() => {
   resetRateLimitBuckets();
   globalThis.fetch = originalFetch;
+  resetRecordedSpans();
   logLines = [];
   console.info = (message?: unknown) => {
     logLines.push(String(message));
@@ -126,6 +129,8 @@ describe('api-gateway', () => {
     expect(typeof log.durationMs).toBe('number');
     expect(log.requestId).toBe('request-logging-1');
     expect(log.upstream).toBe('gateway');
+    expect(log.retryCount).toBe(0);
+    expect(log.fallbackUsed).toBe(false);
   });
 
   it('applies in-memory rate limiting in local mode', async () => {
@@ -225,6 +230,83 @@ describe('api-gateway', () => {
     expect(log.userIdHash).toBeTruthy();
     expect(log.userIdHash).not.toBe('user-123');
     expect(JSON.stringify(log)).not.toContain('user@example.com');
+  });
+
+  it('logs proxied route decisions, upstream latency, request id, and trace-linked spans', async () => {
+    const token = signTestJwt({
+      sub: 'user-456',
+      exp: Math.floor(Date.now() / 1000) + 60,
+    });
+    let forwardedHeaders = new Headers();
+    globalThis.fetch = (async (_input: string | URL | Request, init?: Parameters<typeof fetch>[1]) => {
+      forwardedHeaders = new Headers(init?.headers);
+      return new Response(JSON.stringify({ todos: [] }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/todos', {
+        headers: {
+          authorization: `Bearer ${token}`,
+          baggage: 'tenant=demo',
+          traceparent: '00-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-bbbbbbbbbbbbbbbb-01',
+          tracestate: 'todo=observability',
+          'x-request-id': 'request-observe-proxy',
+        },
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(forwardedHeaders.get('traceparent')).toBe('00-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-bbbbbbbbbbbbbbbb-01');
+    expect(forwardedHeaders.get('tracestate')).toBe('todo=observability');
+    expect(forwardedHeaders.get('baggage')).toBe('tenant=demo');
+    expect(forwardedHeaders.get('x-request-id')).toBe('request-observe-proxy');
+
+    const log = JSON.parse(logLines.at(-1) ?? '{}') as Record<string, unknown>;
+    expect(log.requestId).toBe('request-observe-proxy');
+    expect(log.routeId).toBe('todos.list');
+    expect(log.upstream).toBe('bun-api');
+    expect(typeof log.upstreamLatencyMs).toBe('number');
+    expect(log.retryCount).toBe(0);
+    expect(log.fallbackUsed).toBe(false);
+
+    const spans = getRecordedSpans();
+    const gatewaySpan = spans.find(span => span.name === 'gateway.request');
+    const upstreamSpan = spans.find(span => span.name === 'gateway.upstream');
+    expect(gatewaySpan?.serviceName).toBe('todo-api-gateway');
+    expect(gatewaySpan?.traceparent).toBe('00-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-bbbbbbbbbbbbbbbb-01');
+    expect(gatewaySpan?.attributes['gateway.route_id']).toBe('todos.list');
+    expect(gatewaySpan?.attributes['gateway.upstream']).toBe('bun-api');
+    expect(gatewaySpan?.attributes['http.status_code']).toBe(200);
+    expect(upstreamSpan?.attributes['gateway.route_id']).toBe('todos.list');
+    expect(upstreamSpan?.attributes['gateway.upstream']).toBe('bun-api');
+    expect(upstreamSpan?.attributes['http.status_code']).toBe(200);
+  });
+
+  it('keeps request id in gateway-generated error responses and error scenario logs', async () => {
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/missing', {
+        headers: { 'x-request-id': 'request-error-observe' },
+      }),
+    );
+
+    expect(response.status).toBe(404);
+    const body = (await response.json()) as { requestId: string };
+    expect(body.requestId).toBe('request-error-observe');
+    expect(response.headers.get('x-request-id')).toBe('request-error-observe');
+
+    const log = JSON.parse(logLines.at(-1) ?? '{}') as Record<string, unknown>;
+    expect(log.requestId).toBe('request-error-observe');
+    expect(log.path).toBe('/api/v1/missing');
+    expect(log.status).toBe(404);
+    expect(log.upstream).toBe('gateway');
+
+    const gatewaySpan = getRecordedSpans().find(span => span.name === 'gateway.request');
+    expect(gatewaySpan?.attributes['http.status_code']).toBe(404);
+    expect(gatewaySpan?.attributes['http.route']).toBe('/api/v1/missing');
+    expect(gatewaySpan?.attributes['gateway.upstream']).toBe('gateway');
   });
 });
 

@@ -1,14 +1,12 @@
 import { ApiClientFactory } from '@todo/services';
 
+const DEFAULT_GATEWAY_URL = 'http://localhost:3003';
+
 /**
- * Get the API base URL based on environment and feature flag
+ * Get the API gateway base URL.
  */
 export const getApiBaseUrl = (): string => {
-  const mode = process.env.NEXT_PUBLIC_API_MODE;
-  const standardUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-  const bunUrl = process.env.NEXT_PUBLIC_API_BUN_URL || 'http://localhost:3002';
-
-  return mode === 'bun' ? bunUrl : standardUrl;
+  return process.env.NEXT_PUBLIC_API_GATEWAY_URL ?? process.env.NEXT_PUBLIC_API_URL ?? DEFAULT_GATEWAY_URL;
 };
 
 /**

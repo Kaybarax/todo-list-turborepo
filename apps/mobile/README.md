@@ -59,7 +59,11 @@ CI note:
 
 - Avoid importing native-only modules in shared packages unless they are declared as peerDependencies.
 - Rebuild `@todo/ui-mobile` after token changes: `pnpm --filter @todo/ui-mobile build`.
-- API base URL defaults to `http://localhost:3001/api/v1`.
+- API base URL defaults to the gateway at `http://localhost:3003/api/v1`.
+- Local gateway networking:
+  - iOS simulator and Expo Web can usually use `EXPO_PUBLIC_API_GATEWAY_URL=http://localhost:3003`.
+  - Android emulator may need `EXPO_PUBLIC_API_GATEWAY_URL=http://10.0.2.2:3003`.
+  - Physical devices need your machine LAN IP, for example `EXPO_PUBLIC_API_GATEWAY_URL=http://192.168.1.50:3003`.
 - Expo SDK 54: keep `expo`, `expo-router`, `react`, `react-dom`, and RN aligned with pinned versions.
 
 ## 🚀 Deployment
