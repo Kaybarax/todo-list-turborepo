@@ -106,3 +106,5 @@ crash.*.log
 *storybook.log
 .air/mcp.json
 .mcp.json
+.devin/
+.windsurf/
