@@ -132,7 +132,7 @@ describe('gateway OpenAPI and route contract', () => {
     for (const route of routeTable.filter(route => route.upstream !== 'gateway')) {
       const source = route.openapi.source;
       expect(source).not.toBe('gateway');
-      const sourcePaths = upstreamContractPaths[source as keyof typeof upstreamContractPaths];
+      const sourcePaths = upstreamContractPaths[source];
       for (const method of route.methods) {
         expect(sourcePaths.has(`${method} ${toOpenApiPath(route.upstreamPath ?? route.publicPath)}`)).toBe(true);
       }

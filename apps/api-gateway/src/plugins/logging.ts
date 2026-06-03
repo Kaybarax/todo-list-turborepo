@@ -1,10 +1,10 @@
 import { Elysia } from 'elysia';
 
 import { GatewayError } from '../errors';
-import { getGatewayRequestContext } from '../observability/request-context';
-import { startGatewaySpan } from '../observability/telemetry';
 import { getAuthContext } from './auth-policy';
 import { getRequestId } from './request-id';
+import { getGatewayRequestContext } from '../observability/request-context';
+import { startGatewaySpan } from '../observability/telemetry';
 
 type GatewayLog = {
   level: 'info';

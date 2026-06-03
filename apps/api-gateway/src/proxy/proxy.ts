@@ -1,10 +1,10 @@
 import { upstreams } from '../config/upstreams';
 import { GatewayUpstreamTimeoutError, GatewayUpstreamUnavailableError } from '../errors';
-import { mergeGatewayRequestContext } from '../observability/request-context';
-import { startUpstreamSpan } from '../observability/telemetry';
 import { buildProxyHeaders } from './headers';
 import { shouldRetry } from './retry-policy';
 import { buildProxyUrl } from './url';
+import { mergeGatewayRequestContext } from '../observability/request-context';
+import { startUpstreamSpan } from '../observability/telemetry';
 import { type GatewayRoute, type RouteMatch } from '../types/route';
 import { type Upstream } from '../types/upstream';
 

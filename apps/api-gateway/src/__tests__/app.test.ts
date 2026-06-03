@@ -58,6 +58,26 @@ describe('api-gateway', () => {
     expect(body.timestamp).toBeDefined();
   });
 
+  it('returns enhanced health metadata with uptime and telemetry', async () => {
+    const response = await app.handle(new Request('http://localhost/api/v1/health'));
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as {
+      service: string;
+      version: string;
+      timestamp: string;
+      uptime: number;
+      telemetry: { enabled: boolean; serviceName: string };
+    };
+    expect(body.service).toBe('api-gateway');
+    expect(body.version).toBe('0.0.1');
+    expect(body.timestamp).toBeDefined();
+    expect(typeof body.uptime).toBe('number');
+    expect(body.uptime).toBeGreaterThanOrEqual(0);
+    expect(body.telemetry).toBeDefined();
+    expect(typeof body.telemetry.enabled).toBe('boolean');
+    expect(body.telemetry.serviceName).toBe('todo-api-gateway');
+  });
+
   it('handles CORS preflight with configured origins, methods, headers, and credentials', async () => {
     const response = await app.handle(
       new Request('http://localhost/api/v1/todos', {

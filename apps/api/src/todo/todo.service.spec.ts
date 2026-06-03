@@ -2,12 +2,12 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, type TestingModule } from '@nestjs/testing';
 
-import { TodoRepository } from './repositories/todo.repository';
-import { TodoService } from './todo.service';
-import { CACHE_PORT, type CachePort } from '../cache/cache.port';
 import { type CreateTodoDto } from './dto/create-todo.dto';
 import { type QueryTodoDto } from './dto/query-todo.dto';
 import { type UpdateTodoDto } from './dto/update-todo.dto';
+import { TodoRepository } from './repositories/todo.repository';
+import { TodoService } from './todo.service';
+import { CACHE_PORT, type CachePort } from '../cache/cache.port';
 import { type Todo } from './schemas/todo.schema';
 
 describe('TodoService', () => {

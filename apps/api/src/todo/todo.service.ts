@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException, Logger, Inject } from '@nestjs/common';
 import { FilterQuery } from 'mongoose';
 
-import { TodoRepository } from './repositories/todo.repository';
-import { Todo, TodoDocument } from './schemas/todo.schema';
-import { CACHE_PORT, type CachePort } from '../cache/cache.port';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { QueryTodoDto } from './dto/query-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { TodoRepository } from './repositories/todo.repository';
+import { Todo, TodoDocument } from './schemas/todo.schema';
+import { CACHE_PORT, type CachePort } from '../cache/cache.port';
 import { Trace } from '../telemetry/decorators/trace.decorator';
 
 export interface PaginatedTodos {
