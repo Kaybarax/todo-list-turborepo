@@ -115,6 +115,13 @@ The gateway is already scaffolded and has substantial middleware, route table, a
 - [ ] Add mobile GraphQL client configuration.
 - [ ] Migrate mobile todo/profile/dashboard reads to GraphQL.
 - [ ] Migrate mobile todo mutations to GraphQL where appropriate.
+- [ ] Add GraphQL fields for blockchain capability summaries:
+  - [ ] Supported networks.
+  - [ ] Wallet/account status.
+  - [ ] Stablecoin payment status.
+  - [ ] RWA asset status.
+  - [ ] Cross-chain transaction status.
+  - [ ] Agent wallet policy status.
 - [ ] Keep web todo/auth flows on gateway REST.
 - [ ] Add `api-gateway` to `docker-compose.dev.yml`.
 - [ ] Add an `apps/api-gateway/Dockerfile`.
@@ -197,6 +204,13 @@ The gateway is already scaffolded and has substantial middleware, route table, a
 - [ ] Make the web app gateway-first in all runtime paths.
 - [ ] Keep the web app on REST through gateway `/api/v1/*` to demonstrate REST as the browser-facing client technology.
 - [ ] Verify auth, todo CRUD, todo filtering, wallet connect, blockchain status, theme switching, and error states through Playwright.
+- [ ] Add optional web demo pages for modern blockchain capabilities through REST:
+  - [ ] Stablecoin payment creation and status.
+  - [ ] Tokenized asset/RWA registry view.
+  - [ ] ZK credential/proof verification result.
+  - [ ] Smart-wallet/account-abstraction transaction preview.
+  - [ ] Cross-chain transaction tracker.
+  - [ ] AI-agent wallet approval/audit screen.
 - [ ] Add loading, empty, error, offline, and retry states for all primary workflows.
 - [ ] Add production-ready authentication UX:
   - [ ] Register.
@@ -219,6 +233,13 @@ The gateway is already scaffolded and has substantial middleware, route table, a
 - [ ] Add a mobile GraphQL client, cache policy, auth header handling, and request ID propagation.
 - [ ] Add GraphQL queries for profile, todo list, todo detail, todo stats, dashboard, and blockchain summary.
 - [ ] Add GraphQL mutations for create, update, toggle, and delete todo flows where appropriate.
+- [ ] Add mobile GraphQL workflows for modern blockchain capabilities:
+  - [ ] Stablecoin payment send/request/status.
+  - [ ] Smart-wallet session key and sponsored transaction UX.
+  - [ ] Cross-chain transfer/status UX.
+  - [ ] RWA asset detail and transfer eligibility.
+  - [ ] ZK identity/proof presentation.
+  - [ ] AI-agent wallet approval, limits, and audit log.
 - [ ] Add persisted-query plan for production mobile clients.
 - [ ] Run Expo smoke workflow for iOS simulator, Android emulator, and Expo Go where supported.
 - [ ] Add EAS build profile validation for development, preview, and production.
@@ -255,6 +276,13 @@ The gateway is already scaffolded and has substantial middleware, route table, a
 - [ ] Add API pagination, sorting, filtering, and limits as reusable patterns.
 - [ ] Add API rate-limit policy docs.
 - [ ] Add database transaction and consistency policy.
+- [ ] Add API domain modules to support blockchain-adjacent capabilities:
+  - [ ] Payments module for stablecoin payment intents, statuses, reconciliation, and receipts.
+  - [ ] Asset/tokenization module for RWA metadata, ownership references, transfer policy, and off-chain document links.
+  - [ ] Identity/compliance module for wallet ownership, allowlists, KYC/KYB provider hooks, and verifiable credentials.
+  - [ ] Cross-chain transaction module for bridge/message status tracking.
+  - [ ] Agent wallet policy module for spending limits, approvals, and audit logs.
+  - [ ] ZK proof verification module for proof metadata and verification results.
 - [ ] Add API runbooks:
   - [ ] Local debugging.
   - [ ] Production incident.
@@ -321,12 +349,30 @@ The gateway is already scaffolded and has substantial middleware, route table, a
 - [ ] Add public/private network boundary documentation.
 - [ ] Add mobile secret exposure review.
 - [ ] Add smart-contract security review checklist.
+- [ ] Add modern blockchain security review checklists:
+  - [ ] Bridge and cross-chain messaging risks.
+  - [ ] Stablecoin payment fraud, refund, and reconciliation risks.
+  - [ ] RWA legal/compliance and off-chain truth risks.
+  - [ ] ZK trusted setup, verifier, proof freshness, and metadata leakage risks.
+  - [ ] Smart-wallet/session-key permissions and paymaster abuse risks.
+  - [ ] Restaking/shared-security correlated slashing risks.
+  - [ ] DePIN device spoofing and proof-of-service risks.
+  - [ ] AI-agent wallet runaway-spend and prompt-injection risks.
 
 ## P1: Ingestion Service Completion
 
 - [ ] Define ingestion ownership: blockchain events, API imports, data sync, or all of these.
 - [ ] Replace placeholder polling paths with production event ingestion where supported.
 - [ ] Add per-network ingestion adapters.
+- [ ] Add event ingestion families for modern blockchain capabilities:
+  - [ ] Smart-contract events.
+  - [ ] Stablecoin transfer/payment events.
+  - [ ] Tokenized asset/RWA mint, transfer, freeze, redeem, and metadata events.
+  - [ ] Cross-chain bridge/message events.
+  - [ ] Account-abstraction user operation events.
+  - [ ] ZK proof verification events.
+  - [ ] DePIN device/proof/reward events.
+  - [ ] AI-agent wallet transaction events.
 - [ ] Add checkpointing for each network.
 - [ ] Add idempotency keys and duplicate handling.
 - [ ] Add retry and dead-letter behavior.
@@ -364,7 +410,107 @@ The gateway is already scaffolded and has substantial middleware, route table, a
 - [ ] Add chain-specific failure-mode docs.
 - [ ] Add smart-contract audit checklist.
 - [ ] Add gas/cost reporting.
-- [ ] Add bridge/cross-chain policy only if cross-chain behavior becomes a goal.
+- [ ] Add stablecoin payments module:
+  - [ ] USDC-style payment intent example.
+  - [ ] Payment settlement and receipt tracking.
+  - [ ] Refund/cancel/expiry policy.
+  - [ ] Backend reconciliation model.
+  - [ ] Web REST and mobile GraphQL demo flows.
+- [ ] Add RWA/tokenization module:
+  - [ ] Fungible and non-fungible asset templates.
+  - [ ] Asset metadata schema.
+  - [ ] Off-chain document/reference linkage.
+  - [ ] Transfer restriction/compliance hooks.
+  - [ ] Redemption/burn lifecycle.
+- [ ] Add ZK/privacy module:
+  - [ ] ZK proof verification example.
+  - [ ] ZK identity or credential verification flow.
+  - [ ] Verifier contract/program examples where feasible.
+  - [ ] Docs explaining privacy, proof freshness, and metadata leakage.
+- [ ] Add account abstraction and smart-wallet module:
+  - [ ] EIP-4337/EIP-7702 concept docs.
+  - [ ] Smart account transaction flow.
+  - [ ] Gas sponsorship/paymaster flow.
+  - [ ] Session keys and spending limits.
+  - [ ] Social recovery or delegated authorization example.
+- [ ] Add cross-chain interoperability module:
+  - [ ] Chain abstraction service interface.
+  - [ ] Cross-chain transaction status model.
+  - [ ] Bridge/provider adapter interface.
+  - [ ] Failure, delay, and finality-state docs.
+  - [ ] Bridge risk and allowlist policy.
+- [ ] Add modular blockchain and rollup module:
+  - [ ] Architecture docs for execution, settlement, consensus, and data availability.
+  - [ ] L1/L2/rollup/appchain decision guide.
+  - [ ] Data availability provider comparison.
+  - [ ] Appchain/rollup deployment checklist.
+- [ ] Add restaking/shared-security module:
+  - [ ] AVS/shared-security concept docs.
+  - [ ] Service health and slashing-risk model.
+  - [ ] Operator/validator status ingestion hooks.
+  - [ ] Correlated-risk warning docs.
+- [ ] Add DePIN module:
+  - [ ] Device registration model.
+  - [ ] Proof-of-service/proof-of-location concept flow.
+  - [ ] Reward accounting example.
+  - [ ] Device-event ingestion adapter.
+- [ ] Add AI-agent wallet module:
+  - [ ] Agent wallet sandbox.
+  - [ ] Spending limits and policy engine.
+  - [ ] Human approval workflow.
+  - [ ] Audit log and replay protection.
+  - [ ] Prompt-injection and runaway-action safety notes.
+- [ ] Add compliance and identity module:
+  - [ ] Wallet ownership verification.
+  - [ ] Verifiable credential model.
+  - [ ] KYC/KYB provider abstraction.
+  - [ ] Sanctions/allowlist/denylist hooks.
+  - [ ] Privacy-preserving verification path using ZK where feasible.
+
+## P1: Modern Blockchain Capability Roadmap
+
+This is the cross-repo expansion list for going beyond smart contracts while still keeping smart contracts as the programmable settlement foundation.
+
+- [ ] Create `docs/blockchain/modern-blockchain-capabilities.md` covering stablecoins, RWA/tokenization, ZK, modular chains, account abstraction, interoperability, restaking, DePIN, AI-agent wallets, and compliance/identity.
+- [ ] Create a capability matrix showing:
+  - [ ] Concept docs.
+  - [ ] Contract/program support.
+  - [ ] API support.
+  - [ ] Gateway REST support.
+  - [ ] Mobile GraphQL support.
+  - [ ] Web demo support.
+  - [ ] Ingestion support.
+  - [ ] Tests.
+  - [ ] Deployment notes.
+- [ ] Add a "choose your blockchain capability" guide for teams:
+  - [ ] Payments: stablecoins.
+  - [ ] Assets: RWA/tokenization.
+  - [ ] Privacy: ZK/credentials.
+  - [ ] UX: account abstraction/smart wallets.
+  - [ ] Multi-chain: interoperability/chain abstraction.
+  - [ ] Infrastructure: modular chains/restaking.
+  - [ ] Physical networks: DePIN.
+  - [ ] Automation: AI-agent wallets.
+  - [ ] Regulated workflows: identity/compliance.
+- [ ] Add a staged implementation order:
+  - [ ] Stage 1: Stablecoin payments and account abstraction.
+  - [ ] Stage 2: Cross-chain status and tokenized assets.
+  - [ ] Stage 3: ZK credential/proof verification.
+  - [ ] Stage 4: AI-agent wallet policy and audit logs.
+  - [ ] Stage 5: DePIN and restaking examples.
+  - [ ] Stage 6: Modular chain/appchain/rollup guides.
+- [ ] Add a common blockchain domain model:
+  - [ ] Network.
+  - [ ] Wallet/account.
+  - [ ] Transaction.
+  - [ ] Operation/user operation.
+  - [ ] Asset.
+  - [ ] Payment.
+  - [ ] Proof.
+  - [ ] Credential.
+  - [ ] Bridge message.
+  - [ ] Agent policy.
+  - [ ] Device/proof/reward.
 
 ## P1: Shared Services Package Completion
 
@@ -376,6 +522,14 @@ The gateway is already scaffolded and has substantial middleware, route table, a
 - [ ] Add typed error classes and docs.
 - [ ] Add auth token storage abstraction for web/mobile.
 - [ ] Add blockchain provider abstraction docs.
+- [ ] Add typed service clients for modern blockchain capabilities:
+  - [ ] Stablecoin payments.
+  - [ ] Tokenized assets/RWA.
+  - [ ] ZK proof verification.
+  - [ ] Smart wallets/account abstraction.
+  - [ ] Cross-chain operations.
+  - [ ] AI-agent wallet policies.
+  - [ ] DePIN device/reward status.
 - [ ] Add package API report or export-surface tests to prevent accidental breaking changes.
 - [ ] Add semver/release policy.
 
@@ -518,6 +672,7 @@ The repo should eventually be decomposable into a platform core plus optional de
 
 - [ ] Expo app template.
 - [ ] Gateway GraphQL client setup.
+- [ ] Mobile GraphQL screens for stablecoin payments, smart-wallet flows, cross-chain status, RWA assets, ZK credentials, and AI-agent wallet approvals.
 - [ ] Auth flows.
 - [ ] Shared mobile UI integration.
 - [ ] EAS build/submit setup.
@@ -541,6 +696,7 @@ The repo should eventually be decomposable into a platform core plus optional de
 - [ ] Bun/Elysia API option.
 - [ ] Auth module.
 - [ ] Todo/domain module example.
+- [ ] Blockchain-adjacent domain modules for payments, tokenized assets, identity/compliance, cross-chain status, ZK proofs, and agent wallet policy.
 - [ ] MongoDB/Redis integration.
 - [ ] OpenAPI generation.
 - [ ] Unit/integration tests.
@@ -552,6 +708,7 @@ The repo should eventually be decomposable into a platform core plus optional de
 - [ ] Route table.
 - [ ] REST contract for web.
 - [ ] GraphQL contract for mobile.
+- [ ] Gateway aggregation for blockchain capability summaries.
 - [ ] Auth boundary.
 - [ ] Proxy engine.
 - [ ] Health/readiness.
@@ -567,6 +724,7 @@ The repo should eventually be decomposable into a platform core plus optional de
 - [ ] Checkpointing.
 - [ ] Backfill.
 - [ ] Retry/dead-letter policy.
+- [ ] Event adapters for stablecoin payments, RWA assets, cross-chain messages, account-abstraction operations, ZK verifications, DePIN devices, and AI-agent wallet activity.
 - [ ] Worker observability.
 - [ ] ECS deployment.
 
@@ -577,6 +735,16 @@ The repo should eventually be decomposable into a platform core plus optional de
 - [ ] EVM contract template.
 - [ ] Solana Anchor template.
 - [ ] Polkadot/Substrate template.
+- [ ] Stablecoin payments module.
+- [ ] RWA/tokenization module.
+- [ ] ZK/privacy module.
+- [ ] Account abstraction/smart-wallet module.
+- [ ] Cross-chain interoperability module.
+- [ ] Modular chain/rollup/appchain guidance.
+- [ ] Restaking/shared-security module.
+- [ ] DePIN module.
+- [ ] AI-agent wallet module.
+- [ ] Compliance and identity module.
 - [ ] Deployment scripts.
 - [ ] Artifact/version registry.
 - [ ] Contract tests.
@@ -662,6 +830,7 @@ Each skill should include:
 
 - [ ] Enable Expo app.
 - [ ] Configure gateway GraphQL URL for simulator/device.
+- [ ] Optionally enable mobile GraphQL screens for stablecoins, RWA assets, ZK credentials, cross-chain status, smart wallets, and AI-agent approvals.
 - [ ] Configure EAS profiles.
 - [ ] Wire mobile UI package.
 - [ ] Add smoke test.
@@ -671,6 +840,7 @@ Each skill should include:
 
 - [ ] Choose NestJS, Bun/Elysia, or both.
 - [ ] Create resource module.
+- [ ] Optionally create blockchain-adjacent modules for payments, assets, identity/compliance, cross-chain status, ZK proofs, and agent wallet policy.
 - [ ] Add schema/model/controller/service/tests.
 - [ ] Add OpenAPI docs.
 - [ ] Add Docker and ECS wiring.
@@ -683,6 +853,7 @@ Each skill should include:
 - [ ] Add route table.
 - [ ] Add REST routes for web clients.
 - [ ] Add GraphQL schema/resolvers for mobile clients.
+- [ ] Add GraphQL blockchain capability summary fields when blockchain modules are enabled.
 - [ ] Add auth policies.
 - [ ] Add health/readiness.
 - [ ] Add OpenAPI/contract tests.
@@ -706,6 +877,29 @@ Each skill should include:
 - [ ] Add service factory implementation.
 - [ ] Add frontend wallet config.
 - [ ] Add artifact registry entry.
+
+### Skill 7A: Blockchain Capability Bootstrap
+
+- [ ] Choose capability:
+  - [ ] Stablecoin payments.
+  - [ ] RWA/tokenization.
+  - [ ] ZK/privacy.
+  - [ ] Account abstraction/smart wallets.
+  - [ ] Cross-chain interoperability.
+  - [ ] Modular chain/rollup/appchain.
+  - [ ] Restaking/shared security.
+  - [ ] DePIN.
+  - [ ] AI-agent wallets.
+  - [ ] Compliance and identity.
+- [ ] Add concept docs and architecture notes.
+- [ ] Add contract/program/verifier templates where applicable.
+- [ ] Add API domain module.
+- [ ] Add gateway REST or GraphQL surface.
+- [ ] Add mobile GraphQL integration when user-facing.
+- [ ] Add optional web REST demo.
+- [ ] Add ingestion adapters if events need indexing.
+- [ ] Add security checklist and tests.
+- [ ] Add deployment and runbook notes.
 
 ### Skill 8: Ingestion Worker Bootstrap
 
