@@ -10,11 +10,11 @@ It also includes the later breakup plan: how to split this monorepo into smaller
 
 The repo already contains a broad foundation:
 
-- Next.js web app in `apps/web`.
-- Expo React Native app in `apps/mobile`.
-- NestJS API in `apps/api`.
-- Bun/Elysia API in `apps/api-bun`.
-- Bun/Elysia API gateway in `apps/api-gateway`.
+- Next.js web app currently in `apps/web`, targeted for `apps/web-frontends/nextjs-web`.
+- Expo React Native app currently in `apps/mobile`, targeted for `apps/mobile-frontends/react-native-mobile`.
+- NestJS API currently in `apps/api`, targeted for `apps/apis/nestjs-api`.
+- Bun/Elysia API currently in `apps/api-bun`, targeted for `apps/apis/bun-elysia-api`.
+- Bun/Elysia API gateway in `apps/api-gateway`, staying top-level as the client/API boundary.
 - Background ingestion worker in `apps/ingestion`.
 - Multi-network smart contracts in `apps/smart-contracts` for Polygon, Solana, Polkadot, Moonbeam, and Base.
 - Shared packages for web UI, mobile UI, services, utilities, TypeScript, ESLint, Jest, and release config.
@@ -65,6 +65,105 @@ The repo should become an engineering-department template with these properties:
 - [ ] Create a maintained status matrix showing each app/package with build, lint, typecheck, unit test, integration test, e2e, Docker, deployment, docs, and owner status.
 - [ ] Update `AGENTS.md` with the current gateway-first architecture and the new engineering-department roadmap.
 
+## P0: Workspace Taxonomy Refactor
+
+This should happen before the gateway rollout, broader blockchain expansion, and future app/framework additions. The goal is to make the repo structure reflect department families rather than one flat `apps/*` namespace.
+
+Target app layout:
+
+```text
+apps/
+  api-gateway/         # boundary/orchestration layer, stays top-level
+  apis/
+    nestjs-api/          # moved from apps/api
+    bun-elysia-api/      # moved from apps/api-bun
+  web-frontends/
+    nextjs-web/          # moved from apps/web
+    angular-web/         # future
+    other-web/           # future
+  mobile-frontends/
+    react-native-mobile/ # moved from apps/mobile
+    flutter-mobile/      # future
+  ingestion/             # can stay here or later move under apps/workers/
+  smart-contracts/       # can stay here or later move under apps/blockchain/
+```
+
+- [ ] Decide exact directory names before moving files:
+  - [ ] `apps/apis/nestjs-api`.
+  - [ ] `apps/apis/bun-elysia-api`.
+  - [ ] Keep `apps/api-gateway` top-level.
+  - [ ] `apps/web-frontends/nextjs-web`.
+  - [ ] `apps/mobile-frontends/react-native-mobile`.
+  - [ ] Future `apps/mobile-frontends/flutter-mobile`.
+- [ ] Decide whether to also introduce later families:
+  - [ ] `apps/workers/ingestion`.
+  - [ ] `apps/blockchain/smart-contracts`.
+  - [ ] `apps/admin-frontends/*`.
+  - [ ] `apps/devtools/*`.
+- [ ] Move current apps with `git mv` so history is preserved.
+- [ ] Keep package names stable at first:
+  - [ ] `@todo/api`.
+  - [ ] `@todo/api-bun`.
+  - [ ] `@todo/api-gateway`.
+  - [ ] `@todo/web`.
+  - [ ] `@todo/mobile`.
+- [ ] Rename package names only in a later compatibility PR if desired:
+  - [ ] `@todo/nestjs-api`.
+  - [ ] `@todo/bun-elysia-api`.
+  - [ ] `@todo/nextjs-web`.
+  - [ ] `@todo/react-native-mobile`.
+- [ ] Update workspace discovery in `pnpm-workspace.yaml`:
+  - [ ] `apps/apis/*`.
+  - [ ] `apps/web-frontends/*`.
+  - [ ] `apps/mobile-frontends/*`.
+  - [ ] Keep `apps/*` for top-level boundary/services such as `api-gateway`, ingestion, and smart contracts.
+- [ ] Update root `package.json` scripts and Turborepo filters:
+  - [ ] `dev:api`.
+  - [ ] `dev:api-bun`.
+  - [ ] `dev:api-gateway`.
+  - [ ] `dev:web`.
+  - [ ] `dev:mobile`.
+  - [ ] Build/test/lint/typecheck aliases.
+- [ ] Update `turbo.json` task inputs/outputs if paths are app-specific.
+- [ ] Update Docker and Compose paths:
+  - [ ] `docker-compose.dev.yml`.
+  - [ ] `docker-compose.yml`.
+  - [ ] `docker-compose.test.yml`.
+  - [ ] Docker build contexts.
+  - [ ] Dockerfile copy paths.
+- [ ] Update GitHub Actions path filters and working directories.
+- [ ] Update deployment workflows:
+  - [ ] Vercel web workflow.
+  - [ ] AWS API workflows.
+  - [ ] EAS mobile workflow.
+  - [ ] Gateway deployment workflow.
+- [ ] Update Terraform/Terragrunt, Kubernetes, and deployment docs that reference old app paths.
+- [ ] Update test configs and Playwright configs that reference old app paths.
+- [ ] Update Storybook/Chromatic workflows if they reference app paths.
+- [ ] Update scripts under `scripts/` that assume flat `apps/*` paths.
+- [ ] Update docs and AGENTS instructions:
+  - [ ] README repository tree.
+  - [ ] `AGENTS.md`.
+  - [ ] `docs/README.md`.
+  - [ ] Gateway docs.
+  - [ ] Deployment docs.
+  - [ ] Testing docs.
+- [ ] Add compatibility notes for old paths so contributors understand the move.
+- [ ] Add a validation checklist:
+  - [ ] `pnpm install`.
+  - [ ] `pnpm dev:web`.
+  - [ ] `pnpm dev:mobile`.
+  - [ ] `pnpm dev:api`.
+  - [ ] `pnpm dev:api-bun`.
+  - [ ] `pnpm dev:api-gateway`.
+  - [ ] `pnpm build`.
+  - [ ] `pnpm quality`.
+  - [ ] Focused app tests for moved apps.
+- [ ] Add a future app onboarding guide:
+  - [ ] "Add a new API under `apps/apis/*`."
+  - [ ] "Add a new web frontend under `apps/web-frontends/*`."
+  - [ ] "Add a new mobile frontend under `apps/mobile-frontends/*`."
+
 ## P0: Product And Template Readiness
 
 - [ ] Decide whether the template is primarily:
@@ -75,10 +174,13 @@ The repo should become an engineering-department template with these properties:
 - [ ] Move domain-specific constants, sample data, names, and labels behind configurable template variables where possible.
 - [ ] Add a bootstrap questionnaire for new teams:
   - [ ] Web enabled?
+  - [ ] Web framework: Next.js now, Angular or others later?
   - [ ] Mobile enabled?
+  - [ ] Mobile framework: React Native now, Flutter later?
   - [ ] API gateway enabled?
   - [ ] NestJS API enabled?
   - [ ] Bun API enabled?
+  - [ ] Additional APIs enabled?
   - [ ] Blockchain enabled?
   - [ ] Which chains?
   - [ ] Ingestion worker enabled?
@@ -88,6 +190,12 @@ The repo should become an engineering-department template with these properties:
   - [ ] Terraform/Terragrunt enabled?
   - [ ] Kubernetes reference manifests enabled?
 - [ ] Add a `template.config.json` or equivalent manifest describing enabled modules, ports, env vars, service names, package names, and deployment targets.
+- [ ] Include app-family selections in the template manifest:
+  - [ ] `apis`.
+  - [ ] `webFrontends`.
+  - [ ] `mobileFrontends`.
+  - [ ] `workers`.
+  - [ ] `blockchain`.
 - [ ] Add scripts or docs for renaming the workspace from `@todo/*` to a company namespace.
 - [ ] Add a checklist for safely deleting optional modules.
 - [ ] Add a "minimal install" path for teams that want only web + API + DB.
@@ -124,7 +232,7 @@ The gateway is already scaffolded and has substantial middleware, route table, a
   - [ ] Agent wallet policy status.
 - [ ] Keep web todo/auth flows on gateway REST.
 - [ ] Add `api-gateway` to `docker-compose.dev.yml`.
-- [ ] Add an `apps/api-gateway/Dockerfile`.
+- [ ] Keep or add the gateway Dockerfile at `apps/api-gateway/Dockerfile`.
 - [ ] Update `scripts/startDev.sh` so `pnpm dev` starts the gateway by default.
 - [ ] Update `scripts/dev-backend.sh` for service-specific startup groups.
 - [ ] Add OpenTelemetry initialization for the gateway.
@@ -195,13 +303,16 @@ The gateway is already scaffolded and has substantial middleware, route table, a
 - [ ] Fix the testing strategy doc so examples are valid Markdown and commands use pnpm.
 - [ ] Add coverage thresholds per package where practical.
 - [ ] Add flake-tracking for Playwright, mobile e2e, blockchain integration, and external-service-dependent tests.
-- [ ] Ensure GitHub Actions path filters map correctly to all workspaces, including `apps/api-gateway`.
+- [ ] Ensure GitHub Actions path filters map correctly to all workspaces, including top-level `apps/api-gateway`.
 - [ ] Add CI artifact retention rules for coverage, traces, Playwright reports, and deployment metadata.
 - [ ] Add a release gate checklist that can be run manually before tagging or production deploy.
 
 ## P0: Web App Completion
 
 - [ ] Make the web app gateway-first in all runtime paths.
+- [ ] Move the current Next.js app to `apps/web-frontends/nextjs-web` as part of the workspace taxonomy refactor.
+- [ ] Add a future placeholder roadmap for `apps/web-frontends/angular-web`.
+- [ ] Document how web frontends share `@todo/ui-web`, `@todo/services`, auth, gateway REST conventions, and deployment rules.
 - [ ] Keep the web app on REST through gateway `/api/v1/*` to demonstrate REST as the browser-facing client technology.
 - [ ] Verify auth, todo CRUD, todo filtering, wallet connect, blockchain status, theme switching, and error states through Playwright.
 - [ ] Add optional web demo pages for modern blockchain capabilities through REST:
@@ -229,6 +340,14 @@ The gateway is already scaffolded and has substantial middleware, route table, a
 ## P0: Mobile App Completion
 
 - [ ] Make the mobile app gateway-first in all runtime paths.
+- [ ] Move the current Expo React Native app to `apps/mobile-frontends/react-native-mobile` as part of the workspace taxonomy refactor.
+- [ ] Add a future placeholder roadmap for `apps/mobile-frontends/flutter-mobile`.
+- [ ] Document what React Native and Flutter should share:
+  - [ ] Gateway GraphQL schema.
+  - [ ] Auth/session semantics.
+  - [ ] Design tokens.
+  - [ ] Mobile wallet/connectivity patterns.
+  - [ ] E2E/smoke expectations.
 - [ ] Use GraphQL through gateway `/graphql` for mobile application data flows.
 - [ ] Add a mobile GraphQL client, cache policy, auth header handling, and request ID propagation.
 - [ ] Add GraphQL queries for profile, todo list, todo detail, todo stats, dashboard, and blockchain summary.
@@ -261,7 +380,15 @@ The gateway is already scaffolded and has substantial middleware, route table, a
 
 ## P0: API Services Completion
 
-- [ ] Decide long-term role of `apps/api` versus `apps/api-bun`:
+- [ ] Move API services under `apps/apis/*` before adding more APIs:
+  - [ ] `apps/api` -> `apps/apis/nestjs-api`.
+  - [ ] `apps/api-bun` -> `apps/apis/bun-elysia-api`.
+- [ ] Document the API family convention:
+  - [ ] Every API owns its runtime, package metadata, Dockerfile, env schema, tests, OpenAPI/export contract, and deployment notes.
+  - [ ] Shared API contracts go through the gateway, not direct frontend runtime selection.
+  - [ ] New APIs should be added under `apps/apis/<runtime-or-domain>-api`.
+- [ ] Document that the API gateway is intentionally not under `apps/apis/*` because it is the boundary/orchestration layer between clients and APIs.
+- [ ] Decide long-term role of `apps/apis/nestjs-api` versus `apps/apis/bun-elysia-api`:
   - [ ] NestJS as canonical API and Bun as experimental/edge.
   - [ ] Bun as future canonical API and NestJS as legacy.
   - [ ] Both as supported runtimes behind gateway.
@@ -651,6 +778,12 @@ The repo should eventually be decomposable into a platform core plus optional de
 ### Module 1: Platform Core
 
 - [ ] pnpm/Turborepo workspace.
+- [ ] App-family workspace taxonomy:
+  - [ ] `apps/apis/*`.
+  - [ ] `apps/web-frontends/*`.
+  - [ ] `apps/mobile-frontends/*`.
+  - [ ] Future `apps/workers/*`.
+  - [ ] Future `apps/blockchain/*`.
 - [ ] Shared TypeScript, ESLint, Prettier, Jest/Vitest, Playwright, and release config.
 - [ ] Scripts for doctor, verify, clean, build, test, and package validation.
 - [ ] GitHub Actions base workflows.
@@ -659,7 +792,9 @@ The repo should eventually be decomposable into a platform core plus optional de
 
 ### Module 2: Web Department
 
-- [ ] Next.js app template.
+- [ ] Web frontend family under `apps/web-frontends/*`.
+- [ ] Next.js app template at `apps/web-frontends/nextjs-web`.
+- [ ] Future Angular app template at `apps/web-frontends/angular-web`.
 - [ ] Gateway REST client setup.
 - [ ] Auth flows.
 - [ ] Design-system integration.
@@ -670,7 +805,9 @@ The repo should eventually be decomposable into a platform core plus optional de
 
 ### Module 3: Mobile Department
 
-- [ ] Expo app template.
+- [ ] Mobile frontend family under `apps/mobile-frontends/*`.
+- [ ] Expo React Native app template at `apps/mobile-frontends/react-native-mobile`.
+- [ ] Future Flutter app template at `apps/mobile-frontends/flutter-mobile`.
 - [ ] Gateway GraphQL client setup.
 - [ ] Mobile GraphQL screens for stablecoin payments, smart-wallet flows, cross-chain status, RWA assets, ZK credentials, and AI-agent wallet approvals.
 - [ ] Auth flows.
@@ -692,8 +829,10 @@ The repo should eventually be decomposable into a platform core plus optional de
 
 ### Module 5: API Department
 
-- [ ] NestJS API option.
-- [ ] Bun/Elysia API option.
+- [ ] API family under `apps/apis/*`.
+- [ ] NestJS API option at `apps/apis/nestjs-api`.
+- [ ] Bun/Elysia API option at `apps/apis/bun-elysia-api`.
+- [ ] Future APIs under `apps/apis/<name>-api`.
 - [ ] Auth module.
 - [ ] Todo/domain module example.
 - [ ] Blockchain-adjacent domain modules for payments, tokenized assets, identity/compliance, cross-chain status, ZK proofs, and agent wallet policy.
@@ -704,7 +843,7 @@ The repo should eventually be decomposable into a platform core plus optional de
 
 ### Module 6: API Gateway Department
 
-- [ ] Bun/Elysia gateway.
+- [ ] Bun/Elysia gateway at top-level `apps/api-gateway`.
 - [ ] Route table.
 - [ ] REST contract for web.
 - [ ] GraphQL contract for mobile.
@@ -811,15 +950,44 @@ Each skill should include:
 
 - [ ] Read target company/product name.
 - [ ] Choose enabled modules.
+- [ ] Choose app families:
+  - [ ] APIs.
+  - [ ] Web frontends.
+  - [ ] Mobile frontends.
+  - [ ] Workers.
+  - [ ] Blockchain.
+- [ ] Choose initial frameworks:
+  - [ ] API: NestJS, Bun/Elysia, future APIs.
+  - [ ] Gateway: top-level API gateway.
+  - [ ] Web: Next.js now, Angular later.
+  - [ ] Mobile: React Native now, Flutter later.
 - [ ] Rename namespace from `@todo/*`.
 - [ ] Generate/update `template.config.json`.
 - [ ] Create initial env examples.
 - [ ] Run doctor/verify.
 - [ ] Produce onboarding summary.
 
+### Skill 1A: Workspace Taxonomy Refactor
+
+- [ ] Inspect current app paths.
+- [ ] Confirm target app-family layout.
+- [ ] Move APIs to `apps/apis/*`.
+- [ ] Keep API gateway at top-level `apps/api-gateway`.
+- [ ] Move web frontends to `apps/web-frontends/*`.
+- [ ] Move mobile frontends to `apps/mobile-frontends/*`.
+- [ ] Preserve package names during the first move.
+- [ ] Update `pnpm-workspace.yaml`.
+- [ ] Update root scripts and Turborepo filters.
+- [ ] Update Docker, Compose, CI, deployment, test, and docs paths.
+- [ ] Add compatibility notes for old paths.
+- [ ] Run focused validation for every moved app.
+- [ ] Produce migration summary and follow-up checklist.
+
 ### Skill 2: Web App Bootstrap
 
-- [ ] Enable Next.js app.
+- [ ] Choose web frontend framework.
+- [ ] Enable Next.js app under `apps/web-frontends/nextjs-web`.
+- [ ] Later enable Angular app under `apps/web-frontends/angular-web`.
 - [ ] Configure gateway REST URL.
 - [ ] Configure auth pages.
 - [ ] Wire design system.
@@ -828,7 +996,9 @@ Each skill should include:
 
 ### Skill 3: Mobile App Bootstrap
 
-- [ ] Enable Expo app.
+- [ ] Choose mobile frontend framework.
+- [ ] Enable Expo React Native app under `apps/mobile-frontends/react-native-mobile`.
+- [ ] Later enable Flutter app under `apps/mobile-frontends/flutter-mobile`.
 - [ ] Configure gateway GraphQL URL for simulator/device.
 - [ ] Optionally enable mobile GraphQL screens for stablecoins, RWA assets, ZK credentials, cross-chain status, smart wallets, and AI-agent approvals.
 - [ ] Configure EAS profiles.
@@ -839,6 +1009,7 @@ Each skill should include:
 ### Skill 4: API Service Bootstrap
 
 - [ ] Choose NestJS, Bun/Elysia, or both.
+- [ ] Create or update API under `apps/apis/<name>-api`.
 - [ ] Create resource module.
 - [ ] Optionally create blockchain-adjacent modules for payments, assets, identity/compliance, cross-chain status, ZK proofs, and agent wallet policy.
 - [ ] Add schema/model/controller/service/tests.
@@ -848,7 +1019,7 @@ Each skill should include:
 
 ### Skill 5: API Gateway Bootstrap
 
-- [ ] Add gateway service.
+- [ ] Add gateway service under top-level `apps/api-gateway`.
 - [ ] Add upstreams.
 - [ ] Add route table.
 - [ ] Add REST routes for web clients.
@@ -949,7 +1120,17 @@ Each skill should include:
 
 ## Suggested Implementation Sequence
 
-### Phase 1: Stabilize The Existing Repo
+### Phase 1: Workspace Taxonomy Refactor
+
+- [ ] Move APIs under `apps/apis/*`.
+- [ ] Keep gateway at top-level `apps/api-gateway`.
+- [ ] Move web apps under `apps/web-frontends/*`.
+- [ ] Move mobile apps under `apps/mobile-frontends/*`.
+- [ ] Update workspaces, scripts, Docker, CI, deployments, tests, docs, and AGENTS instructions.
+- [ ] Validate existing Next.js, React Native, NestJS, Bun/Elysia, and gateway commands from their new paths.
+- [ ] Add future app onboarding docs for APIs, web frontends, and mobile frontends.
+
+### Phase 2: Stabilize The Existing Repo
 
 - [ ] Clean generated artifacts from source.
 - [ ] Fix docs command drift.
@@ -958,7 +1139,7 @@ Each skill should include:
 - [ ] Add `pnpm verify`.
 - [ ] Make core checks green.
 
-### Phase 2: Finish Gateway-First Architecture
+### Phase 3: Finish Gateway-First Architecture
 
 - [ ] Complete gateway health/readiness.
 - [ ] Add gateway Docker/dev-script integration.
@@ -967,7 +1148,7 @@ Each skill should include:
 - [ ] Add gateway infrastructure and deployment.
 - [ ] Remove direct API public exposure.
 
-### Phase 3: Production Hardening
+### Phase 4: Production Hardening
 
 - [ ] Finish env/secrets contract.
 - [ ] Finish security baseline.
@@ -975,7 +1156,7 @@ Each skill should include:
 - [ ] Finish deployment rollback docs.
 - [ ] Finish API/database migration policies.
 
-### Phase 4: Make It A True Template
+### Phase 5: Make It A True Template
 
 - [ ] Add module enable/disable strategy.
 - [ ] Add namespace/domain replacement strategy.
@@ -983,7 +1164,7 @@ Each skill should include:
 - [ ] Add template manifest.
 - [ ] Add reusable generation scripts or documented manual flows.
 
-### Phase 5: Strengthen Each Department Module
+### Phase 6: Strengthen Each Department Module
 
 - [ ] Web department.
 - [ ] Mobile department.
@@ -995,16 +1176,17 @@ Each skill should include:
 - [ ] QA/release department.
 - [ ] AI-agent department.
 
-### Phase 6: Create Skills
+### Phase 7: Create Skills
 
 - [ ] Write the global engineering-department bootstrap skill.
+- [ ] Write the workspace taxonomy refactor skill.
 - [ ] Write module-specific bootstrap skills.
 - [ ] Add validation fixtures for each skill.
 - [ ] Test skills against a fresh clone.
 - [ ] Test skills against a partially configured repo.
 - [ ] Test decomposition skill by extracting at least one module.
 
-### Phase 7: Split Into Standalone Parts
+### Phase 8: Split Into Standalone Parts
 
 - [ ] Extract platform core.
 - [ ] Extract web module.
@@ -1020,6 +1202,12 @@ Each skill should include:
 ## Definition Of Done For The Whole Vision
 
 - [ ] A new user can clone the repo and run one documented flow to get a working local platform.
+- [ ] App families use the target taxonomy:
+  - [ ] API gateway remains top-level at `apps/api-gateway`.
+  - [ ] APIs live under `apps/apis/*`.
+  - [ ] Web frontends live under `apps/web-frontends/*`.
+  - [ ] Mobile frontends live under `apps/mobile-frontends/*`.
+  - [ ] Future APIs/web/mobile apps can be added without flattening `apps/`.
 - [ ] A new user can choose a minimal setup without blockchain/mobile/infra complexity.
 - [ ] A new user can choose the full setup with all major engineering-department capabilities.
 - [ ] CI reliably validates the selected platform.
