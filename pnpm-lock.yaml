@@ -445,6 +445,9 @@ importers:
       react-test-renderer:
         specifier: 19.1.0
         version: 19.1.0(react@19.1.0)
+      semver:
+        specifier: ^7.6.3
+        version: 7.7.2
       typescript:
         specifier: ~5.9.2
         version: 5.9.2
