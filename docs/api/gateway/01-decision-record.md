@@ -48,6 +48,12 @@ Mobile: EXPO_PUBLIC_API_GATEWAY_URL=http://localhost:3003
 
 The gateway decides whether each request goes to the NestJS API, the Bun API, GraphQL resolvers, or future services.
 
+The intended client technology split is:
+
+- Web uses REST through gateway `/api/v1/*`.
+- Mobile uses GraphQL through gateway `/graphql` for application data.
+- Both clients still use the same gateway origin and do not choose backend runtimes directly.
+
 ## Why Not Only Vercel / ALB / NGINX Routing
 
 External infrastructure routing is useful, but it is too limited for the application-level needs here.
@@ -65,7 +71,7 @@ This project also needs:
 - Auth-aware routing
 - API version mediation
 - Response normalization
-- GraphQL aggregation
+- Mobile-facing GraphQL aggregation
 - Per-user or per-feature canaries
 - Request/response shaping for web and mobile
 - Trace, request ID, and error envelope consistency

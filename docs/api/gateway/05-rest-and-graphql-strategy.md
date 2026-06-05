@@ -2,11 +2,13 @@
 
 ## Recommendation
 
-Start with REST proxying as the default gateway behavior.
+Use a deliberate hybrid gateway contract:
 
-Add GraphQL as an optional gateway-owned aggregation surface after REST migration is stable.
+- The web app uses REST through `/api/v1/*`.
+- The mobile app uses GraphQL through `/graphql`.
+- The gateway owns both contracts and hides NestJS/Bun/internal-service routing from clients.
 
-Do not replace every REST endpoint with GraphQL. Use GraphQL where it removes meaningful frontend complexity.
+Start by stabilizing REST proxying because the existing clients are REST-oriented. Then add GraphQL as the mobile-facing gateway-owned aggregation surface. Do not replace every REST endpoint with GraphQL. Use GraphQL where it makes the mobile app simpler, reduces round trips, or demonstrates flexible client-driven data selection.
 
 ## Why REST First
 
@@ -19,21 +21,23 @@ Existing endpoints already fit REST well:
 - Todos
 - Health
 
-The fastest safe migration is:
+The fastest safe web migration is:
 
 ```text
-frontend REST calls -> gateway REST path -> existing upstream REST path
+web REST calls -> gateway REST path -> existing upstream REST path
 ```
 
-This preserves existing contracts while moving routing decisions out of the frontend.
+This preserves existing web contracts while moving routing decisions out of the frontend.
 
 ## When GraphQL Helps
 
-GraphQL is worth adding when a screen needs multiple backend calls or flexible field selection.
+GraphQL is the target mobile application data contract. It is especially useful when a screen needs multiple backend calls or flexible field selection.
 
 Good examples:
 
 - Mobile home screen that needs user profile, todo stats, recent todos, and blockchain sync summary.
+- Mobile todo list with pagination, filters, and only the fields needed for the current view.
+- Mobile wallet screen with profile, connected networks, and recent transaction status.
 - Dashboard view that combines todos, blockchain networks, transaction status, and ingestion status.
 - Future admin or analytics surface.
 - Future clients that need smaller payloads on mobile networks.
@@ -49,14 +53,14 @@ Poor examples:
 
 ```text
 /api/v1/*     REST, stable client contract, proxy or BFF handlers
-/graphql      optional GraphQL aggregation endpoint
+/graphql      mobile-facing GraphQL aggregation endpoint
 /api/docs     gateway OpenAPI docs
 /graphql/docs optional GraphQL explorer in development only
 ```
 
 ## GraphQL Ownership
 
-The gateway owns the GraphQL schema because GraphQL is a client-facing composition contract.
+The gateway owns the GraphQL schema because GraphQL is a client-facing composition contract. In this repo, GraphQL is specifically the mobile-facing application data contract.
 
 Resolvers should call:
 
@@ -176,9 +180,19 @@ CI checks:
 - Breaking changes require explicit approval.
 - Client tests use gateway URL only.
 
+## Mobile GraphQL Client Requirements
+
+- Add a GraphQL client in `apps/mobile`.
+- Keep the gateway URL as the only public backend URL.
+- Add `EXPO_PUBLIC_GRAPHQL_GATEWAY_URL` only if the GraphQL endpoint cannot be derived from `EXPO_PUBLIC_API_GATEWAY_URL`.
+- Share auth token handling with REST-compatible auth flows.
+- Pass `x-request-id` or a generated correlation ID with GraphQL requests.
+- Add persisted queries once the mobile schema stabilizes.
+- Add mobile GraphQL tests for dashboard, todo list, todo mutation, auth failure, offline, and partial-error states.
+
 ## GraphQL Security
 
-If GraphQL is enabled:
+For the mobile GraphQL endpoint:
 
 - Disable introspection in production unless behind admin auth.
 - Enforce max query depth.
@@ -189,4 +203,4 @@ If GraphQL is enabled:
 
 ## Migration Rule
 
-No frontend should call GraphQL because it exists. Add GraphQL only when it improves a real screen or workflow.
+The web app does not need to move to GraphQL for this template. Its role is to demonstrate REST through the gateway while mobile demonstrates GraphQL through the gateway.

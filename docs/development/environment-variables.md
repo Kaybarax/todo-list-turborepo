@@ -19,8 +19,10 @@ These variables are prefixed with `NEXT_PUBLIC_` to be exposed to the browser.
 
 | Variable Name                             | Secret | Build/Runtime | Source of Truth  | Description                          |
 | ----------------------------------------- | ------ | ------------- | ---------------- | ------------------------------------ |
-| `NEXT_PUBLIC_API_URL`                     | No     | Build         | Terraform Output | Base URL for the NestJS API          |
-| `NEXT_PUBLIC_WS_URL`                      | No     | Build         | Terraform Output | WebSocket URL for the NestJS API     |
+| `NEXT_PUBLIC_API_GATEWAY_URL`             | No     | Build         | Terraform Output | Gateway origin for web REST calls    |
+| `NEXT_PUBLIC_API_URL`                     | No     | Build         | Terraform Output | Compatibility alias for gateway URL  |
+| `NEXT_PUBLIC_WS_GATEWAY_URL`              | No     | Build         | Terraform Output | Gateway WebSocket URL                |
+| `NEXT_PUBLIC_WS_URL`                      | No     | Build         | Terraform Output | Compatibility alias for gateway WS   |
 | `NEXT_PUBLIC_POLYGON_RPC_URL`             | No     | Build         | Environment      | RPC endpoint for Polygon             |
 | `NEXT_PUBLIC_SOLANA_RPC_URL`              | No     | Build         | Environment      | RPC endpoint for Solana              |
 | `NEXT_PUBLIC_POLKADOT_RPC_URL`            | No     | Build         | Environment      | RPC endpoint for Polkadot            |
@@ -43,6 +45,23 @@ These variables are prefixed with `NEXT_PUBLIC_` to be exposed to the browser.
 | `OTLP_ENDPOINT`     | No      | Runtime       | Terraform Output | OTLP collector endpoint         |
 | `OTEL_SERVICE_NAME` | No      | Runtime       | Environment      | Service name for tracing        |
 
+## API Gateway (`apps/api-gateway`)
+
+| Variable Name                 | Secret  | Build/Runtime | Source of Truth | Description                                      |
+| ----------------------------- | ------- | ------------- | --------------- | ------------------------------------------------ |
+| `PORT`                        | No      | Runtime       | Environment     | Gateway HTTP port, default `3003`                |
+| `PUBLIC_API_PREFIX`           | No      | Runtime       | Environment     | REST prefix for web clients, default `/api/v1`   |
+| `GRAPHQL_ENABLED`             | No      | Runtime       | Environment     | Enables mobile GraphQL endpoint                  |
+| `GRAPHQL_PATH`                | No      | Runtime       | Environment     | GraphQL endpoint, default `/graphql`             |
+| `NEST_API_URL`                | No      | Runtime       | Environment     | Internal NestJS upstream URL                     |
+| `BUN_API_URL`                 | No      | Runtime       | Environment     | Internal Bun/Elysia upstream URL                 |
+| `JWT_SECRET`                  | **Yes** | Runtime       | Secrets Manager | JWT validation secret until JWKS/asymmetric keys |
+| `CORS_ORIGIN`                 | No      | Runtime       | Environment     | Browser origins allowed for web REST clients     |
+| `PROXY_TIMEOUT_MS`            | No      | Runtime       | Environment     | Upstream proxy timeout                           |
+| `RATE_LIMIT_ENABLED`          | No      | Runtime       | Environment     | Enables gateway rate limiting                    |
+| `OTEL_SERVICE_NAME`           | No      | Runtime       | Environment     | Gateway service name for tracing                 |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | No      | Runtime       | Environment     | OTLP collector endpoint                          |
+
 ## Ingestion Service (`apps/ingestion`)
 
 | Variable Name        | Secret | Build/Runtime | Source of Truth | Description                            |
@@ -61,8 +80,11 @@ These variables are prefixed with `EXPO_PUBLIC_` to be available in the React Na
 
 | Variable Name                          | Secret | Build/Runtime | Source of Truth  | Description                          |
 | -------------------------------------- | ------ | ------------- | ---------------- | ------------------------------------ |
-| `EXPO_PUBLIC_API_URL`                  | No     | Build         | Terraform Output | Base URL for the NestJS API          |
-| `EXPO_PUBLIC_WS_URL`                   | No     | Build         | Terraform Output | WebSocket URL for the NestJS API     |
+| `EXPO_PUBLIC_API_GATEWAY_URL`          | No     | Build         | Terraform Output | Gateway origin for mobile calls      |
+| `EXPO_PUBLIC_GRAPHQL_GATEWAY_URL`      | No     | Build         | Terraform Output | Optional GraphQL override for mobile |
+| `EXPO_PUBLIC_API_URL`                  | No     | Build         | Terraform Output | Compatibility alias for gateway URL  |
+| `EXPO_PUBLIC_WS_GATEWAY_URL`           | No     | Build         | Terraform Output | Gateway WebSocket URL                |
+| `EXPO_PUBLIC_WS_URL`                   | No     | Build         | Terraform Output | Compatibility alias for gateway WS   |
 | `EXPO_PUBLIC_POLYGON_RPC_URL`          | No     | Build         | Environment      | RPC endpoint for Polygon             |
 | `EXPO_PUBLIC_SOLANA_RPC_URL`           | No     | Build         | Environment      | RPC endpoint for Solana              |
 | `EXPO_PUBLIC_POLKADOT_RPC_URL`         | No     | Build         | Environment      | RPC endpoint for Polkadot            |

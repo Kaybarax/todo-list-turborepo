@@ -2,9 +2,15 @@
 
 ## Goal
 
-Web, mobile, and future clients should call one gateway URL.
+Web, mobile, and future clients should call the gateway as the only public backend URL.
 
 They should not choose between NestJS and Bun APIs.
+
+The intended client split is:
+
+- `apps/web` uses REST through `NEXT_PUBLIC_API_GATEWAY_URL` and `/api/v1/*`.
+- `apps/mobile` uses GraphQL through `EXPO_PUBLIC_API_GATEWAY_URL` and `/graphql` for application data.
+- Mobile auth may use REST temporarily during migration, but the target mobile todo/profile/dashboard data surface is GraphQL.
 
 ## Current State
 
@@ -44,6 +50,8 @@ Mobile:
 ```text
 EXPO_PUBLIC_API_GATEWAY_URL=http://localhost:3003
 EXPO_PUBLIC_WS_GATEWAY_URL=ws://localhost:3003
+# Optional only if not derived from EXPO_PUBLIC_API_GATEWAY_URL:
+EXPO_PUBLIC_GRAPHQL_GATEWAY_URL=http://localhost:3003/graphql
 ```
 
 Temporary compatibility aliases:
@@ -84,7 +92,7 @@ export const authClient = apiFactory.getAuthClient();
 
 ## Mobile Code Change
 
-Target `apps/mobile/src/config/api.ts`:
+Target `apps/mobile/src/config/api.ts` for REST-compatible transitional clients:
 
 ```ts
 import { ApiClientFactory } from '@todo/services';
@@ -101,6 +109,19 @@ export const apiFactory = new ApiClientFactory({
 export const todoClient = apiFactory.getTodoClient();
 export const authClient = apiFactory.getAuthClient();
 ```
+
+Add a mobile GraphQL config alongside it:
+
+```ts
+export const getGraphQLUrl = (): string => {
+  const gatewayUrl =
+    process.env.EXPO_PUBLIC_API_GATEWAY_URL ?? process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:3003';
+
+  return process.env.EXPO_PUBLIC_GRAPHQL_GATEWAY_URL ?? `${gatewayUrl.replace(/\/$/, '')}/graphql`;
+};
+```
+
+The target mobile todo/profile/dashboard flows should use the GraphQL client. Keep REST clients only for migration compatibility and auth flows until the GraphQL auth mutation decision is made.
 
 ## Web Env File Updates
 
@@ -139,6 +160,7 @@ Target `apps/mobile/.env.example`:
 ```text
 EXPO_PUBLIC_API_GATEWAY_URL=http://localhost:3003
 EXPO_PUBLIC_WS_GATEWAY_URL=ws://localhost:3003
+EXPO_PUBLIC_GRAPHQL_GATEWAY_URL=http://localhost:3003/graphql
 ```
 
 Target `apps/mobile/.env`:
@@ -146,6 +168,7 @@ Target `apps/mobile/.env`:
 ```text
 EXPO_PUBLIC_API_GATEWAY_URL=http://localhost:3003
 EXPO_PUBLIC_WS_GATEWAY_URL=ws://localhost:3003
+EXPO_PUBLIC_GRAPHQL_GATEWAY_URL=http://localhost:3003/graphql
 ```
 
 Remove later:

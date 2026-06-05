@@ -137,7 +137,7 @@
 6. Add shadow read traffic for parity checks.
 7. Add canary metrics.
 
-## Phase L: Optional GraphQL
+## Phase L: Mobile GraphQL
 
 1. Add GraphQL feature flag.
 2. Add GraphQL endpoint at `/graphql`.
@@ -146,9 +146,13 @@
 5. Add `todos` query.
 6. Add `todoStats` query.
 7. Add `dashboard` query.
-8. Add depth/complexity limits.
-9. Disable production introspection unless explicitly enabled.
-10. Add resolver tests.
+8. Add mutations required by mobile todo workflows.
+9. Add depth/complexity limits.
+10. Disable production introspection unless explicitly enabled.
+11. Add mobile GraphQL client and config.
+12. Migrate mobile todo/profile/dashboard data flows to GraphQL.
+13. Keep web on REST through `/api/v1/*`.
+14. Add resolver and mobile integration tests.
 
 ## Phase M: Infrastructure
 

@@ -173,10 +173,12 @@ PATCH /api/v1/todos/:id
 DELETE /api/v1/todos/:id
 ```
 
-### Step 6: Optional GraphQL
+### Step 6: Mobile GraphQL
 
 - Add `/graphql` behind a feature flag.
-- Start with dashboard read query.
+- Start with mobile dashboard/profile/todo read queries.
+- Add mobile todo mutations after read flows are stable.
+- Keep web e2e coverage on REST through `/api/v1/*`.
 - Add persisted query support later.
 
 ## Rollback Tests

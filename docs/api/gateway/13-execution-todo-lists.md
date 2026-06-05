@@ -142,7 +142,7 @@ Create a runnable `apps/api-gateway` workspace app using Bun + Elysia.
   - [x] `elysia-rate-limit`
   - [x] `@sinclair/typebox`
   - [x] `ioredis`
-- [ ] Add optional GraphQL dependencies only if implementing GraphQL in this phase:
+- [ ] Add GraphQL dependencies when implementing the mobile GraphQL phase:
   - [ ] `graphql`
   - [ ] `graphql-yoga`
   - [ ] `@graphql-tools/schema`
@@ -804,16 +804,17 @@ curl http://localhost:3003/api/v1/todos -H "Authorization: Bearer $TOKEN" -H "x-
 - Read fallback is safe and observable.
 - Write fallback is not enabled accidentally.
 
-## Phase 13: Optional GraphQL Gateway
+## Phase 13: Mobile GraphQL Gateway
 
 ### Objective
 
-Add GraphQL only where it improves frontend data access, without replacing simple REST endpoints unnecessarily.
+Add GraphQL as the mobile-facing application data contract through the gateway, while keeping the web app on REST through `/api/v1/*`.
 
 ### Dependencies
 
 - REST gateway stable.
-- A concrete frontend use case exists, such as a dashboard aggregation.
+- Mobile gateway base URL is stable.
+- Mobile todo/profile/dashboard flows are ready to move from REST clients to GraphQL.
 
 ### Todo
 
@@ -834,12 +835,25 @@ Add GraphQL only where it improves frontend data access, without replacing simpl
 - [ ] Add `todos` query.
 - [ ] Add `todoStats` query.
 - [ ] Add `dashboard` query.
+- [ ] Add mobile-focused todo mutations:
+  - [ ] `createTodo`
+  - [ ] `updateTodo`
+  - [ ] `toggleTodo`
+  - [ ] `deleteTodo`
 - [ ] Add depth limit.
 - [ ] Add complexity limit.
 - [ ] Disable production introspection by default.
+- [ ] Add optional persisted-query support for production mobile clients.
+- [ ] Add `apps/mobile` GraphQL client.
+- [ ] Add mobile GraphQL URL derivation from `EXPO_PUBLIC_API_GATEWAY_URL`.
+- [ ] Add `EXPO_PUBLIC_GRAPHQL_GATEWAY_URL` only as an optional override.
+- [ ] Migrate mobile todo/profile/dashboard reads to GraphQL.
+- [ ] Migrate mobile todo mutations to GraphQL.
+- [ ] Keep web REST clients on `/api/v1/*`.
 - [ ] Add resolver tests.
 - [ ] Add GraphQL auth tests.
-- [ ] Add docs explaining when frontends should use GraphQL versus REST.
+- [ ] Add mobile GraphQL integration tests.
+- [ ] Add docs explaining that web demonstrates REST and mobile demonstrates GraphQL through the gateway.
 
 ### Validation
 
@@ -857,7 +871,8 @@ pnpm --filter @todo/api-gateway test
 
 - GraphQL is feature-flagged.
 - GraphQL has security controls.
-- GraphQL solves a real aggregation use case.
+- Mobile app data flows use GraphQL through the gateway.
+- Web app remains REST through the gateway.
 
 ## Phase 14: Infrastructure And Deployment
 
@@ -1188,10 +1203,12 @@ Expected result:
 - [ ] Add production deployment.
 - [ ] Restrict direct API exposure.
 
-### PR 7: Optional GraphQL
+### PR 7: Mobile GraphQL
 
 - [ ] Add feature-flagged GraphQL endpoint.
 - [ ] Add dashboard query.
+- [ ] Add mobile todo/profile queries and todo mutations.
+- [ ] Add mobile GraphQL client and migrate mobile data flows.
 - [ ] Add security limits.
 - [ ] Add resolver tests.
 

@@ -31,6 +31,7 @@ Client response
 ```text
 apps/web                  apps/mobile
    |                          |
+   | REST over                | GraphQL over
    | NEXT_PUBLIC_API_         | EXPO_PUBLIC_API_
    | GATEWAY_URL              | GATEWAY_URL
    v                          v
@@ -40,7 +41,7 @@ apps/api-gateway
   Framework: Elysia
   Local port: 3003
   Public prefix: /api/v1
-  Optional GraphQL: /graphql
+  Mobile GraphQL: /graphql
 ------------------------------------------------
    |                      |
    | NEST_API_URL         | BUN_API_URL
@@ -59,7 +60,7 @@ MongoDB, Redis, OTEL Collector, Jaeger
 
 This is the API surface the frontends know.
 
-Recommended public endpoints:
+Recommended public REST endpoints for the web app:
 
 ```text
 GET    /api/v1
@@ -80,7 +81,16 @@ PATCH  /api/v1/todos/:id/toggle
 DELETE /api/v1/todos/:id
 ```
 
-The gateway may proxy these unchanged at first. Later it can normalize response bodies or compose richer frontend-specific responses.
+The gateway may proxy these unchanged at first. Later it can normalize response bodies or compose richer web-specific responses.
+
+Recommended public GraphQL endpoint for the mobile app:
+
+```text
+POST   /graphql
+GET    /graphql/docs    development only
+```
+
+The mobile app should use GraphQL through the gateway for todo, profile, dashboard, and blockchain-summary workflows. Auth operations may remain REST during the first migration if that is faster and safer, but the target mobile application data surface is GraphQL.
 
 ### 2. Policy Layer
 
@@ -113,7 +123,7 @@ Example:
 /api/v1/users/*      -> nest-api until parity is verified
 /api/v1/todos/*      -> bun-api for canary users, otherwise nest-api
 /api/v1/health       -> gateway aggregate health
-/graphql             -> gateway GraphQL resolvers
+/graphql             -> gateway GraphQL resolvers for mobile
 ```
 
 ### 4. Upstream Client Layer
@@ -168,7 +178,7 @@ Error response target:
 - CORS allowlists
 - Rate limit policy
 - Trace propagation
-- Optional GraphQL schema/resolvers
+- Mobile-facing GraphQL schema/resolvers
 - Canary/migration policy
 - Public OpenAPI aggregation
 

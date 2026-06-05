@@ -24,8 +24,8 @@ The gateway should own:
 - One stable frontend-facing API contract
 - Routing between NestJS and Bun APIs
 - Auth boundary checks and token forwarding
-- REST proxying
-- Optional GraphQL aggregation
+- REST proxying for the web app
+- GraphQL aggregation for the mobile app
 - CORS, rate limiting, request IDs, trace propagation, error normalization
 - Canary routing and progressive migration from NestJS to Bun where useful
 
@@ -50,7 +50,9 @@ apps/web
 apps/mobile
 future clients
     |
-    | HTTPS, REST, optional GraphQL
+    | HTTPS
+    | web: REST /api/v1/*
+    | mobile: GraphQL /graphql
     v
 apps/api-gateway  (Bun + Elysia)
     |
