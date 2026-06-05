@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
 
+import { getRequestId } from './request-id';
 import { GatewayError, GatewayRouteNotFoundError, errorTitle } from '../errors';
 import { getGatewayRequestContext } from '../observability/request-context';
 import { startGatewaySpan } from '../observability/telemetry';
-import { getRequestId } from './request-id';
 
 export const errorNormalizerPlugin = new Elysia({ name: 'error-normalizer' })
   .onError(({ code, error, path, request, set }) => {

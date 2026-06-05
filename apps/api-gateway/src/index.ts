@@ -1,5 +1,6 @@
 import { app } from './app';
 import { config } from './config/env';
+import './observability/tracing';
 
 app.listen(config.server.port, () => {
   console.log('Gateway started');
