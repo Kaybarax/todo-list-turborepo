@@ -6,6 +6,8 @@
 
 **Key structural decisions**: Monorepo enables shared UI components (`packages/ui-web/ui-mobile`) and blockchain services while maintaining deployment independence. Ingestion service decouples blockchain data processing from API responses. **Infrastructure is managed via Terraform/Terragrunt**, enabling a decoupled deployment strategy across Vercel (Web), AWS ECS (API/Ingestion), and EAS (Mobile).
 
+**API Family Convention**: API services follow a documented convention for ownership, packaging, routing, and deployment — see [`docs/api/api-family-convention.md`](./docs/api/api-family-convention.md). The convention covers API ownership (runtime, Dockerfile, env schema, tests, OpenAPI contracts), route ownership, gateway routing, and the process for adding new APIs under `apps/apis/`.
+
 ## Critical Workflows
 
 ### Development Environment
@@ -101,5 +103,6 @@
 - `infra/terraform/modules/`: Reusable IaC modules for AWS and GitHub
 - `infra/terragrunt/`: Live environment configurations (dev, staging, prod)
 - `turbo.json`: Build orchestration (dependsOn, caching, outputs)
-- `pnpm-workspace.yaml`: Workspace config + shared dependency catalog</content>
+- `pnpm-workspace.yaml`: Workspace config + shared dependency catalog
+- `docs/api/api-family-convention.md`: API family convention — ownership, packaging, gateway routing, and adding new APIs</content>
   <parameter name="filePath">/Users/kevin/workspace/todo-list-turborepo/AGENTS.md

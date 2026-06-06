@@ -383,11 +383,11 @@ The gateway is already scaffolded and has substantial middleware, route table, a
 - [ ] Move API services under `apps/apis/*` before adding more APIs:
   - [ ] `apps/api` -> `apps/apis/nestjs-api`.
   - [ ] `apps/api-bun` -> `apps/apis/bun-elysia-api`.
-- [ ] Document the API family convention:
-  - [ ] Every API owns its runtime, package metadata, Dockerfile, env schema, tests, OpenAPI/export contract, and deployment notes.
-  - [ ] Shared API contracts go through the gateway, not direct frontend runtime selection.
-  - [ ] New APIs should be added under `apps/apis/<runtime-or-domain>-api`.
-- [ ] Document that the API gateway is intentionally not under `apps/apis/*` because it is the boundary/orchestration layer between clients and APIs.
+- [x] Document the API family convention:
+  - [x] Every API owns its runtime, package metadata, Dockerfile, env schema, tests, OpenAPI/export contract, and deployment notes.
+  - [x] Shared API contracts go through the gateway, not direct frontend runtime selection.
+  - [x] New APIs should be added under `apps/apis/<runtime-or-domain>-api`.
+- [x] Document that the API gateway is intentionally not under `apps/apis/*` because it is the boundary/orchestration layer between clients and APIs.
 - [ ] Decide long-term role of `apps/apis/nestjs-api` versus `apps/apis/bun-elysia-api`:
   - [ ] NestJS as canonical API and Bun as experimental/edge.
   - [ ] Bun as future canonical API and NestJS as legacy.
