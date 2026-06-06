@@ -101,5 +101,21 @@
 - `infra/terraform/modules/`: Reusable IaC modules for AWS and GitHub
 - `infra/terragrunt/`: Live environment configurations (dev, staging, prod)
 - `turbo.json`: Build orchestration (dependsOn, caching, outputs)
-- `pnpm-workspace.yaml`: Workspace config + shared dependency catalog</content>
-  <parameter name="filePath">/Users/kevin/workspace/todo-list-turborepo/AGENTS.md
+- `pnpm-workspace.yaml`: Workspace config + shared dependency catalog
+
+## Workspace Taxonomy Compatibility
+
+The engineering roadmap plans a **Workspace Taxonomy Refactor** that will move apps from flat `apps/*` paths to organized family subdirectories. This is a **planned future change** — apps have not been moved yet. AI agents should expect the new structure when referencing app directories after the refactor.
+
+| Current (flat)         | Planned (family)                                     |
+| ---------------------- | ---------------------------------------------------- |
+| `apps/api`             | `apps/apis/nestjs-api`                               |
+| `apps/api-bun`         | `apps/apis/bun-elysia-api`                           |
+| `apps/web`             | `apps/web-frontends/nextjs-web`                      |
+| `apps/mobile`          | `apps/mobile-frontends/react-native-mobile`          |
+| `apps/ingestion`       | `apps/workers/ingestion` (future/undecided)          |
+| `apps/smart-contracts` | `apps/blockchain/smart-contracts` (future/undecided) |
+| `apps/api-gateway`     | stays at `apps/api-gateway` (top-level)              |
+
+Package names (`@todo/api`, `@todo/web`, `@todo/mobile`, etc.) will be preserved during the first move. References to package names in imports, `turbo.json`, and CI/CD configuration should remain stable.</content>
+<parameter name="filePath">/Users/kevin/workspace/todo-list-turborepo/AGENTS.md

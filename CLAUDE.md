@@ -29,6 +29,22 @@ infra/
   redis/        # Redis configs
 ````
 
+### Workspace Taxonomy (Planned)
+
+A future refactor will reorganize `apps/` into family subdirectories. Apps are currently flat; this is the planned mapping:
+
+| Current                | Planned                                     |
+| ---------------------- | ------------------------------------------- |
+| `apps/api`             | `apps/apis/nestjs-api`                      |
+| `apps/api-bun`         | `apps/apis/bun-elysia-api`                  |
+| `apps/web`             | `apps/web-frontends/nextjs-web`             |
+| `apps/mobile`          | `apps/mobile-frontends/react-native-mobile` |
+| `apps/ingestion`       | `apps/workers/ingestion`                    |
+| `apps/smart-contracts` | `apps/blockchain/smart-contracts`           |
+| `apps/api-gateway`     | stays at `apps/api-gateway`                 |
+
+Package names (`@todo/*`) will be preserved during the move.
+
 ## Key Commands
 
 ```bash

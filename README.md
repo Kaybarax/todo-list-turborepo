@@ -56,6 +56,20 @@ A full-stack Todo application built as a pnpm + Turborepo monorepo. The reposito
 └── README.md
 ```
 
+### Workspace Compatibility Notes
+
+The engineering roadmap plans a **Workspace Taxonomy Refactor** that will reorganize `apps/` into family subdirectories. The apps have **not been moved yet** — the mapping below shows candidate future paths. Package names (`@todo/api`, `@todo/web`, `@todo/mobile`, etc.) will be preserved during the first move.
+
+| Current (flat) path    | Planned (family) path                                |
+| ---------------------- | ---------------------------------------------------- |
+| `apps/api`             | `apps/apis/nestjs-api`                               |
+| `apps/api-bun`         | `apps/apis/bun-elysia-api`                           |
+| `apps/web`             | `apps/web-frontends/nextjs-web`                      |
+| `apps/mobile`          | `apps/mobile-frontends/react-native-mobile`          |
+| `apps/ingestion`       | `apps/workers/ingestion` (future/undecided)          |
+| `apps/smart-contracts` | `apps/blockchain/smart-contracts` (future/undecided) |
+| `apps/api-gateway`     | stays at `apps/api-gateway` (top-level)              |
+
 ## Architecture
 
 The user-facing clients call an API service, which persists application data in MongoDB, uses Redis for caching where available, and delegates blockchain-specific behavior to shared services in `packages/services`.
