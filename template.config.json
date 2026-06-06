@@ -1,0 +1,213 @@
+{
+  "schemaVersion": "1.0",
+  "name": "todo-list-monorepo",
+  "namespace": "@todo",
+  "packageManager": "pnpm@9.12.0",
+  "version": "2.1.0",
+
+  "appModules": [
+    {
+      "packageName": "@todo/api",
+      "currentDir": "apps/api",
+      "targetDir": "apps/apis/nestjs-api",
+      "runtime": "Node.js",
+      "defaultPort": 3001,
+      "dockerServiceName": "api",
+      "deploymentTarget": "AWS ECS"
+    },
+    {
+      "packageName": "@todo/api-bun",
+      "currentDir": "apps/api-bun",
+      "targetDir": "apps/apis/bun-elysia-api",
+      "runtime": "Bun",
+      "defaultPort": 3002,
+      "dockerServiceName": "api-bun",
+      "deploymentTarget": "AWS ECS"
+    },
+    {
+      "packageName": "@todo/api-gateway",
+      "currentDir": "apps/api-gateway",
+      "targetDir": "apps/api-gateway",
+      "runtime": "Bun",
+      "defaultPort": 3003,
+      "dockerServiceName": null,
+      "deploymentTarget": "AWS ECS"
+    },
+    {
+      "packageName": "@todo/web",
+      "currentDir": "apps/web",
+      "targetDir": "apps/web-frontends/nextjs-web",
+      "runtime": "Next.js",
+      "defaultPort": 3000,
+      "dockerServiceName": "web",
+      "deploymentTarget": "Vercel"
+    },
+    {
+      "packageName": "@todo/mobile",
+      "currentDir": "apps/mobile",
+      "targetDir": "apps/mobile-frontends/react-native-mobile",
+      "runtime": "React Native",
+      "defaultPort": 8081,
+      "dockerServiceName": "mobile",
+      "deploymentTarget": "EAS"
+    },
+    {
+      "packageName": "@todo/ingestion",
+      "currentDir": "apps/ingestion",
+      "targetDir": "apps/ingestion",
+      "runtime": "Node.js",
+      "defaultPort": null,
+      "dockerServiceName": "ingestion",
+      "deploymentTarget": "AWS ECS"
+    },
+    {
+      "packageName": "@todo/smart-contracts",
+      "currentDir": "apps/smart-contracts",
+      "targetDir": "apps/smart-contracts",
+      "runtime": "Node.js",
+      "defaultPort": null,
+      "dockerServiceName": "hardhat-node",
+      "deploymentTarget": "manual"
+    }
+  ],
+
+  "infrastructureModules": [
+    {
+      "name": "mongodb",
+      "defaultPort": 27017,
+      "dockerServiceName": "mongodb",
+      "description": "MongoDB 7 document database"
+    },
+    {
+      "name": "redis",
+      "defaultPort": 6379,
+      "dockerServiceName": "redis",
+      "description": "Redis 7-Alpine cache and message broker"
+    },
+    {
+      "name": "jaeger",
+      "ports": {
+        "ui": 16686,
+        "collectorHttp": 14268,
+        "collectorGrpc": 14250
+      },
+      "dockerServiceName": "jaeger",
+      "description": "Jaeger distributed tracing UI and collector"
+    },
+    {
+      "name": "otel-collector",
+      "ports": {
+        "otlpGrpc": 4317,
+        "otlpHttp": 4318,
+        "prometheusMetrics": 8888,
+        "prometheusExporter": 8889
+      },
+      "dockerServiceName": "otel-collector",
+      "description": "OpenTelemetry collector for traces and metrics"
+    },
+    {
+      "name": "mailhog",
+      "ports": {
+        "smtp": 1025,
+        "ui": 8025
+      },
+      "dockerServiceName": "mailhog",
+      "description": "MailHog SMTP testing server with web UI"
+    },
+    {
+      "name": "hardhat-node",
+      "defaultPort": 8545,
+      "dockerServiceName": "hardhat-node",
+      "description": "Local Hardhat blockchain node for development"
+    }
+  ],
+
+  "packageModules": [
+    { "packageName": "@todo/services", "currentDir": "packages/services" },
+    { "packageName": "@todo/ui-web", "currentDir": "packages/ui-web" },
+    { "packageName": "@todo/ui-mobile", "currentDir": "packages/ui-mobile" },
+    { "packageName": "@todo/utils", "currentDir": "packages/utils" },
+    { "packageName": "@todo/config-eslint", "currentDir": "packages/config-eslint" },
+    { "packageName": "@todo/config-jest", "currentDir": "packages/config-jest" },
+    { "packageName": "@todo/config-ts", "currentDir": "packages/config-ts" },
+    { "packageName": "@todo/config-release", "currentDir": "packages/config-release" }
+  ],
+
+  "appFamilies": {
+    "apis": {
+      "description": "Backend API services",
+      "members": ["@todo/api", "@todo/api-bun"],
+      "targetDirectory": "apps/apis"
+    },
+    "webFrontends": {
+      "description": "Web frontend applications",
+      "members": ["@todo/web"],
+      "targetDirectory": "apps/web-frontends"
+    },
+    "mobileFrontends": {
+      "description": "Mobile frontend applications",
+      "members": ["@todo/mobile"],
+      "targetDirectory": "apps/mobile-frontends"
+    },
+    "ingestion": {
+      "description": "Background ingestion workers",
+      "members": ["@todo/ingestion"],
+      "targetDirectory": "apps/ingestion"
+    },
+    "blockchain": {
+      "description": "Smart contracts and blockchain integrations",
+      "members": ["@todo/smart-contracts"],
+      "targetDirectory": "apps/smart-contracts"
+    }
+  },
+
+  "deploymentTargets": {
+    "web": {
+      "target": "Vercel",
+      "description": "Next.js web application deployed to Vercel"
+    },
+    "api": {
+      "target": "AWS ECS",
+      "description": "NestJS and Bun/Elysia API services deployed on AWS ECS (Fargate)"
+    },
+    "gateway": {
+      "target": "AWS ECS",
+      "description": "Bun/Elysia API gateway deployed on AWS ECS (Fargate)"
+    },
+    "mobile": {
+      "target": "EAS",
+      "description": "React Native (Expo) mobile app published via Expo Application Services"
+    },
+    "contracts": {
+      "target": "manual",
+      "description": "Smart contracts deployed manually via scripts/ (see scripts/build-contracts.sh)"
+    },
+    "infra": {
+      "target": "Terraform/Terragrunt on AWS",
+      "description": "Infrastructure as Code managed via Terraform modules and Terragrunt environments"
+    }
+  },
+
+  "defaultEnvVars": {
+    "MONGODB_URI": {
+      "description": "MongoDB connection string",
+      "default": "mongodb://localhost:27017/todos"
+    },
+    "REDIS_URI": {
+      "description": "Redis connection string",
+      "default": "redis://localhost:6379"
+    },
+    "PORT": {
+      "description": "Default port for NestJS API",
+      "default": "3001"
+    },
+    "NODE_ENV": {
+      "description": "Node.js environment",
+      "default": "development"
+    },
+    "OTEL_EXPORTER_OTLP_ENDPOINT": {
+      "description": "OpenTelemetry OTLP exporter endpoint",
+      "default": "http://localhost:4318/v1/traces"
+    }
+  }
+}
