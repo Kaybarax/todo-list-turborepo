@@ -26,6 +26,8 @@
 - **Quick dev build**: `pnpm build:quick` (skips Docker/tests)
 - **Full CI build**: `pnpm build` (Turborepo orchestration, dependsOn relationships)
 - **Code quality**: `pnpm quality` (lint + typecheck), `pnpm format` (Prettier with Solidity plugin)
+- **Repo health**: `pnpm doctor` (checks Node, pnpm, Bun, Docker, Terraform, Terragrunt, Rust, Solana, Anchor, Expo/EAS)
+- **Pre-PR verification**: `pnpm verify` (lint → typecheck → test, exits on first failure)
 
 ### Infrastructure as Code (IaC)
 

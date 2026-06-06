@@ -48,6 +48,8 @@ pnpm lint:fix         # Auto-fix
 pnpm format           # Prettier
 pnpm typecheck        # TypeScript
 pnpm quality          # lint + typecheck
+pnpm doctor           # Repo health check (Node, pnpm, Bun, Docker, Terraform, etc.)
+pnpm verify           # Pre-PR: lint → typecheck → test
 
 # Testing
 pnpm test             # All tests (coverage depends on per-package Jest config)

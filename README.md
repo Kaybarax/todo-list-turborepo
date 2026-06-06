@@ -107,6 +107,22 @@ pnpm blockchain:deps:check
 pnpm blockchain:deps:fix
 ```
 
+## Golden Path (Onboarding)
+
+```bash
+# 1. Install dependencies
+pnpm install
+
+# 2. Check development environment health
+pnpm doctor
+
+# 3. Start development environment
+pnpm dev
+
+# 4. Run pre-PR quality checks
+pnpm verify
+```
+
 ## Quick Start
 
 ```bash

@@ -55,13 +55,13 @@ The repo should become an engineering-department template with these properties:
 - [ ] Add a repeatable repo-clean verification command that fails on committed generated artifacts.
 - [ ] Normalize all docs to use `pnpm`, not `npm`, unless a package truly requires npm.
 - [ ] Fix stale docs that still reference old smart-contract paths, direct API URLs, or outdated test locations.
-- [ ] Add a single top-level "golden path" onboarding flow:
-  - [ ] `pnpm install`.
-  - [ ] `pnpm doctor`.
-  - [ ] `pnpm dev`.
-  - [ ] `pnpm verify`.
-- [ ] Add `pnpm doctor` as a repo health command covering Node, pnpm, Bun, Docker, Terraform, Terragrunt, Expo/EAS, Rust, Solana, Anchor, and optional blockchain tools.
-- [ ] Add `pnpm verify` as the default pre-PR quality command.
+- [x] Add a single top-level "golden path" onboarding flow:
+  - [x] `pnpm install`.
+  - [x] `pnpm doctor`.
+  - [x] `pnpm dev`.
+  - [x] `pnpm verify`.
+- [x] Add `pnpm doctor` as a repo health command covering Node, pnpm, Bun, Docker, Terraform, Terragrunt, Expo/EAS, Rust, Solana, Anchor, and optional blockchain tools.
+- [x] Add `pnpm verify` as the default pre-PR quality command.
 - [ ] Create a maintained status matrix showing each app/package with build, lint, typecheck, unit test, integration test, e2e, Docker, deployment, docs, and owner status.
 - [ ] Update `AGENTS.md` with the current gateway-first architecture and the new engineering-department roadmap.
 

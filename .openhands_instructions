@@ -13,6 +13,8 @@ Core rules:
 - Do not merge PRs. The merge workflow is separate and gated.
 
 Useful checks:
+- Repo health: `pnpm doctor`
+- Pre-PR verification: `pnpm verify` (lint → typecheck → test)
 - General quality: `pnpm lint`, `pnpm typecheck`, `pnpm test`
 - Quick build: `pnpm build:quick`
 - API work: `pnpm build:api`, relevant API tests

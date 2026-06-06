@@ -7,6 +7,8 @@
   "scripts": {
     "//_global": "=== GLOBAL COMMANDS ===",
     "dev": "./scripts/startDev.sh",
+    "doctor": "./scripts/doctor.sh",
+    "verify": "./scripts/verify.sh",
     "build": "./scripts/build.sh --skip-docker",
     "build:quick": "./scripts/build-quick.sh",
     "build:production": "./scripts/build-production.sh",
