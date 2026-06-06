@@ -26,6 +26,7 @@
 - **Quick dev build**: `pnpm build:quick` (skips Docker/tests)
 - **Full CI build**: `pnpm build` (Turborepo orchestration, dependsOn relationships)
 - **Code quality**: `pnpm quality` (lint + typecheck), `pnpm format` (Prettier with Solidity plugin)
+- **Fast default check**: `pnpm fast-check` (incremental pre-PR gate — format check + affected lint/typecheck/tests via `turbo run --since=origin/main`)
 
 ### Infrastructure as Code (IaC)
 

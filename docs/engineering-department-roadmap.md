@@ -285,11 +285,21 @@ The gateway is already scaffolded and has substantial middleware, route table, a
 
 - [ ] Make `pnpm quality` consistently green.
 - [ ] Make `pnpm test` consistently green or split it into clearly documented reliable tiers.
-- [ ] Add a fast default check:
-  - [ ] Format check.
-  - [ ] Lint affected packages.
-  - [ ] Typecheck affected packages.
-  - [ ] Unit tests affected packages.
+- [x] Add a fast default check:
+  - [x] Format check.
+  - [x] Lint affected packages.
+  - [x] Typecheck affected packages.
+  - [x] Unit tests affected packages.
+
+  > **`pnpm fast-check`** — the default pre-PR quality gate. Runs:
+  >
+  > - `pnpm format:check` — Prettier formatting check across all files.
+  > - `turbo run lint --since=origin/main` — ESLint on packages changed since the base branch.
+  > - `turbo run typecheck --since=origin/main` — TypeScript checking on affected packages.
+  > - `turbo run test --since=origin/main` — Unit tests on affected packages.
+  >
+  > "Affected" means packages whose contents differ from `origin/main`, determined by Turborepo's `--since` flag. This makes the check incremental and fast during local development. Run it before pushing, before opening a PR, or any time you want quick feedback on your current changes. It is intentionally lighter than `pnpm quality` (which checks all packages unconditionally) and serves as the first CI-equivalent gate in the local workflow.
+
 - [ ] Add a full release check:
   - [ ] All builds.
   - [ ] All tests.

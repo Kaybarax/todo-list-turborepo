@@ -47,7 +47,8 @@ pnpm lint             # ESLint
 pnpm lint:fix         # Auto-fix
 pnpm format           # Prettier
 pnpm typecheck        # TypeScript
-pnpm quality          # lint + typecheck
+pnpm fast-check       # Fast pre-PR gate: format + affected lint/typecheck/tests
+pnpm quality          # Full lint + typecheck (all packages)
 
 # Testing
 pnpm test             # All tests (coverage depends on per-package Jest config)
