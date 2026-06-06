@@ -1,6 +1,7 @@
 import { openapi } from '@elysiajs/openapi';
 import { Elysia } from 'elysia';
 
+import { createGraphQLRoute } from './graphql';
 import { bodyLimitPlugin } from './plugins/body-limit';
 import { corsPolicyPlugin } from './plugins/cors';
 import { errorNormalizerPlugin } from './plugins/errors';
@@ -36,4 +37,5 @@ export const app = new Elysia()
     }),
   )
   .use(indexRoute)
-  .use(restProxyRoute);
+  .use(restProxyRoute)
+  .use(createGraphQLRoute());

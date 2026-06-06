@@ -37,6 +37,11 @@ export interface RateLimitingConfig {
   redisUrl: string | null;
 }
 
+export interface GraphQLConfig {
+  enabled: boolean;
+  path: string;
+}
+
 export interface Config {
   server: ServerConfig;
   upstreams: UpstreamsConfig;
@@ -44,12 +49,18 @@ export interface Config {
   cors: CorsConfig;
   proxy: ProxyConfig;
   rateLimiting: RateLimitingConfig;
+  graphql: GraphQLConfig;
 }
 
 export function requireNonEmpty(key: string, value: string | undefined): string {
   if (!value || value.trim() === '') {
     throw new Error(`Missing required environment variable: ${key}`);
   }
+  return value;
+}
+
+export function parseNonEmpty(_key: string, value: string | undefined, defaultVal: string): string {
+  if (value === undefined || value.trim() === '') return defaultVal;
   return value;
 }
 

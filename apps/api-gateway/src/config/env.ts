@@ -6,20 +6,31 @@ import {
   type AuthConfig,
   type Config,
   type CorsConfig,
+  type GraphQLConfig,
   type ProxyConfig,
   type RateLimitingConfig,
   type ServerConfig,
   type UpstreamsConfig,
   parseBoolean,
   parseCsv,
+  parseNonEmpty,
   parseOptionalURL,
   parsePositiveInt,
   parseURL,
   requireNonEmpty,
 } from './validators';
 
-export type { AuthConfig, Config, CorsConfig, ProxyConfig, RateLimitingConfig, ServerConfig, UpstreamsConfig };
-export { parseBoolean, parseCsv, parseOptionalURL, parsePositiveInt, parseURL, requireNonEmpty };
+export type {
+  AuthConfig,
+  Config,
+  CorsConfig,
+  GraphQLConfig,
+  ProxyConfig,
+  RateLimitingConfig,
+  ServerConfig,
+  UpstreamsConfig,
+};
+export { parseBoolean, parseCsv, parseNonEmpty, parseOptionalURL, parsePositiveInt, parseURL, requireNonEmpty };
 
 export const DEFAULT_CORS_ALLOWED_HEADERS = [
   'content-type',
@@ -68,6 +79,10 @@ export const config: Config = {
     max: parsePositiveInt('RATE_LIMIT_MAX', process.env.RATE_LIMIT_MAX, 300),
     redisUrl: parseOptionalURL('RATE_LIMIT_REDIS_URL', process.env.RATE_LIMIT_REDIS_URL),
   },
+  graphql: {
+    enabled: parseBoolean('GRAPHQL_ENABLED', process.env.GRAPHQL_ENABLED, false),
+    path: parseNonEmpty('GRAPHQL_PATH', process.env.GRAPHQL_PATH, '/graphql'),
+  },
 };
 
-export const { server, upstreams, auth, cors, proxy, rateLimiting } = config;
+export const { server, upstreams, auth, cors, proxy, rateLimiting, graphql } = config;
