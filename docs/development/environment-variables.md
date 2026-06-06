@@ -13,25 +13,48 @@ This document defines the environment variables used across the Todo List Turbor
 | `JWT_SECRET`  | API            | **Yes** | Runtime       | Secrets Manager | All          | Secret key for signing JWT tokens                      |
 | `LOG_LEVEL`   | All            | No      | Runtime       | Environment     | All          | Logging verbosity (debug, info, warn, error)           |
 
+## Gateway-First Convention
+
+Frontend applications (Web and Mobile) communicate with backend services exclusively through the **API Gateway** (`apps/api-gateway`). The gateway origin is set at build time via the `*_API_GATEWAY_URL` and `*_WS_GATEWAY_URL` variables. Frontends derive their REST, WebSocket, and GraphQL endpoints from these gateway URLs:
+
+- **REST endpoints**: `{API_GATEWAY_URL}/api/v1/...`
+- **GraphQL endpoint**: `{API_GATEWAY_URL}/graphql` (mobile only)
+- **WebSocket connections**: `{WS_GATEWAY_URL}/...`
+
+This gateway-first architecture decouples clients from backend service topology and enables centralized routing, rate limiting, and observability at a single ingress point.
+
+### Migration Note
+
+The project previously used flat `*_API_URL` and `*_WS_URL` variables. These have been superseded by the gateway-first naming convention:
+
+| Legacy (deprecated)   | Canonical (gateway-first)     |
+| --------------------- | ----------------------------- |
+| `NEXT_PUBLIC_API_URL` | `NEXT_PUBLIC_API_GATEWAY_URL` |
+| `NEXT_PUBLIC_WS_URL`  | `NEXT_PUBLIC_WS_GATEWAY_URL`  |
+| `EXPO_PUBLIC_API_URL` | `EXPO_PUBLIC_API_GATEWAY_URL` |
+| `EXPO_PUBLIC_WS_URL`  | `EXPO_PUBLIC_WS_GATEWAY_URL`  |
+
+The legacy `_API_URL` / `_WS_URL` variables are **deprecated** and kept only for backward compatibility during the migration period. New deployments, CI/CD pipelines, and documentation should reference the canonical `*_GATEWAY_*` variants. The deprecated aliases will be removed in a future release.
+
 ## Web Application (`apps/web`)
 
 These variables are prefixed with `NEXT_PUBLIC_` to be exposed to the browser.
 
-| Variable Name                             | Secret | Build/Runtime | Source of Truth  | Description                          |
-| ----------------------------------------- | ------ | ------------- | ---------------- | ------------------------------------ |
-| `NEXT_PUBLIC_API_GATEWAY_URL`             | No     | Build         | Terraform Output | Gateway origin for web REST calls    |
-| `NEXT_PUBLIC_API_URL`                     | No     | Build         | Terraform Output | Compatibility alias for gateway URL  |
-| `NEXT_PUBLIC_WS_GATEWAY_URL`              | No     | Build         | Terraform Output | Gateway WebSocket URL                |
-| `NEXT_PUBLIC_WS_URL`                      | No     | Build         | Terraform Output | Compatibility alias for gateway WS   |
-| `NEXT_PUBLIC_POLYGON_RPC_URL`             | No     | Build         | Environment      | RPC endpoint for Polygon             |
-| `NEXT_PUBLIC_SOLANA_RPC_URL`              | No     | Build         | Environment      | RPC endpoint for Solana              |
-| `NEXT_PUBLIC_POLKADOT_RPC_URL`            | No     | Build         | Environment      | RPC endpoint for Polkadot            |
-| `NEXT_PUBLIC_MOONBEAM_RPC_URL`            | No     | Build         | Environment      | RPC endpoint for Moonbeam            |
-| `NEXT_PUBLIC_BASE_RPC_URL`                | No     | Build         | Environment      | RPC endpoint for Base                |
-| `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`    | No     | Build         | WalletConnect    | Project ID for WalletConnect v2      |
-| `NEXT_PUBLIC_ENABLE_BLOCKCHAIN`           | No     | Build         | Environment      | Feature flag for blockchain features |
-| `NEXT_PUBLIC_ENABLE_PWA`                  | No     | Build         | Build            | Feature flag for PWA support         |
-| `NEXT_PUBLIC_OTEL_EXPORTER_OTLP_ENDPOINT` | No     | Build         | Terraform Output | OTLP endpoint for tracing            |
+| Variable Name                             | Secret | Build/Runtime | Source of Truth  | Description                                         |
+| ----------------------------------------- | ------ | ------------- | ---------------- | --------------------------------------------------- |
+| `NEXT_PUBLIC_API_GATEWAY_URL`             | No     | Build         | Terraform Output | Gateway origin for web REST calls                   |
+| `NEXT_PUBLIC_API_URL`                     | No     | Build         | Terraform Output | ⚠️ Deprecated — compatibility alias for gateway URL |
+| `NEXT_PUBLIC_WS_GATEWAY_URL`              | No     | Build         | Terraform Output | Gateway WebSocket URL                               |
+| `NEXT_PUBLIC_WS_URL`                      | No     | Build         | Terraform Output | ⚠️ Deprecated — compatibility alias for gateway WS  |
+| `NEXT_PUBLIC_POLYGON_RPC_URL`             | No     | Build         | Environment      | RPC endpoint for Polygon                            |
+| `NEXT_PUBLIC_SOLANA_RPC_URL`              | No     | Build         | Environment      | RPC endpoint for Solana                             |
+| `NEXT_PUBLIC_POLKADOT_RPC_URL`            | No     | Build         | Environment      | RPC endpoint for Polkadot                           |
+| `NEXT_PUBLIC_MOONBEAM_RPC_URL`            | No     | Build         | Environment      | RPC endpoint for Moonbeam                           |
+| `NEXT_PUBLIC_BASE_RPC_URL`                | No     | Build         | Environment      | RPC endpoint for Base                               |
+| `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`    | No     | Build         | WalletConnect    | Project ID for WalletConnect v2                     |
+| `NEXT_PUBLIC_ENABLE_BLOCKCHAIN`           | No     | Build         | Environment      | Feature flag for blockchain features                |
+| `NEXT_PUBLIC_ENABLE_PWA`                  | No     | Build         | Build            | Feature flag for PWA support                        |
+| `NEXT_PUBLIC_OTEL_EXPORTER_OTLP_ENDPOINT` | No     | Build         | Terraform Output | OTLP endpoint for tracing                           |
 
 ## NestJS API (`apps/api`)
 
@@ -78,20 +101,20 @@ These variables are prefixed with `NEXT_PUBLIC_` to be exposed to the browser.
 
 These variables are prefixed with `EXPO_PUBLIC_` to be available in the React Native bundle.
 
-| Variable Name                          | Secret | Build/Runtime | Source of Truth  | Description                          |
-| -------------------------------------- | ------ | ------------- | ---------------- | ------------------------------------ |
-| `EXPO_PUBLIC_API_GATEWAY_URL`          | No     | Build         | Terraform Output | Gateway origin for mobile calls      |
-| `EXPO_PUBLIC_GRAPHQL_GATEWAY_URL`      | No     | Build         | Terraform Output | Optional GraphQL override for mobile |
-| `EXPO_PUBLIC_API_URL`                  | No     | Build         | Terraform Output | Compatibility alias for gateway URL  |
-| `EXPO_PUBLIC_WS_GATEWAY_URL`           | No     | Build         | Terraform Output | Gateway WebSocket URL                |
-| `EXPO_PUBLIC_WS_URL`                   | No     | Build         | Terraform Output | Compatibility alias for gateway WS   |
-| `EXPO_PUBLIC_POLYGON_RPC_URL`          | No     | Build         | Environment      | RPC endpoint for Polygon             |
-| `EXPO_PUBLIC_SOLANA_RPC_URL`           | No     | Build         | Environment      | RPC endpoint for Solana              |
-| `EXPO_PUBLIC_POLKADOT_RPC_URL`         | No     | Build         | Environment      | RPC endpoint for Polkadot            |
-| `EXPO_PUBLIC_MOONBEAM_RPC_URL`         | No     | Build         | Environment      | RPC endpoint for Moonbeam            |
-| `EXPO_PUBLIC_BASE_RPC_URL`             | No     | Build         | Environment      | RPC endpoint for Base                |
-| `EXPO_PUBLIC_WALLETCONNECT_PROJECT_ID` | No     | Build         | WalletConnect    | Project ID for WalletConnect v2      |
-| `EXPO_PUBLIC_ENABLE_BLOCKCHAIN`        | No     | Build         | Environment      | Feature flag for blockchain features |
+| Variable Name                          | Secret | Build/Runtime | Source of Truth  | Description                                                                    |
+| -------------------------------------- | ------ | ------------- | ---------------- | ------------------------------------------------------------------------------ |
+| `EXPO_PUBLIC_API_GATEWAY_URL`          | No     | Build         | Terraform Output | Gateway origin for mobile calls                                                |
+| `EXPO_PUBLIC_GRAPHQL_GATEWAY_URL`      | No     | Build         | Terraform Output | Optional GraphQL override for mobile (defaults to `{API_GATEWAY_URL}/graphql`) |
+| `EXPO_PUBLIC_API_URL`                  | No     | Build         | Terraform Output | ⚠️ Deprecated — compatibility alias for gateway URL                            |
+| `EXPO_PUBLIC_WS_GATEWAY_URL`           | No     | Build         | Terraform Output | Gateway WebSocket URL                                                          |
+| `EXPO_PUBLIC_WS_URL`                   | No     | Build         | Terraform Output | ⚠️ Deprecated — compatibility alias for gateway WS                             |
+| `EXPO_PUBLIC_POLYGON_RPC_URL`          | No     | Build         | Environment      | RPC endpoint for Polygon                                                       |
+| `EXPO_PUBLIC_SOLANA_RPC_URL`           | No     | Build         | Environment      | RPC endpoint for Solana                                                        |
+| `EXPO_PUBLIC_POLKADOT_RPC_URL`         | No     | Build         | Environment      | RPC endpoint for Polkadot                                                      |
+| `EXPO_PUBLIC_MOONBEAM_RPC_URL`         | No     | Build         | Environment      | RPC endpoint for Moonbeam                                                      |
+| `EXPO_PUBLIC_BASE_RPC_URL`             | No     | Build         | Environment      | RPC endpoint for Base                                                          |
+| `EXPO_PUBLIC_WALLETCONNECT_PROJECT_ID` | No     | Build         | WalletConnect    | Project ID for WalletConnect v2                                                |
+| `EXPO_PUBLIC_ENABLE_BLOCKCHAIN`        | No     | Build         | Environment      | Feature flag for blockchain features                                           |
 
 ## Smart Contracts (`apps/smart-contracts`)
 
