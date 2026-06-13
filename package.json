@@ -133,6 +133,7 @@
     "release": "./scripts/build-production.sh && changeset publish",
     "validate-packages": "./scripts/validate-packages.sh",
     "verify-dependencies": "./scripts/verify-dependencies.sh",
+    "repo-clean-check": "./scripts/repo-clean-check.sh",
     "publish-packages": "./scripts/publish-packages.sh",
     "dev:api-gateway": "turbo run dev --filter=@todo/api-gateway",
     "build:api-gateway": "turbo run build --filter=@todo/api-gateway",
