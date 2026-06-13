@@ -1,0 +1,35 @@
+{
+  "buildTime": "2026-06-13T00:23:23Z",
+  "environment": "development",
+  "version": "latest",
+  "nodeVersion": "v22.22.3",
+  "pnpmVersion": "9.12.0",
+  "turboVersion": "2.5.6",
+  "dockerImages": [],
+  "packages": [
+    "@todo/config-eslint",
+    "@todo/config-jest",
+    "@todo/config-release",
+    "@todo/config-ts",
+    "@todo/services",
+    "@todo/ui-mobile",
+    "@todo/ui-web",
+    "@todo/utils"
+  ],
+  "applications": [
+    "@todo/api",
+    "@todo/api-bun",
+    "@todo/api-gateway",
+    "@todo/ingestion",
+    "@todo/mobile",
+    "@todo/smart-contracts",
+    "@todo/web"
+  ],
+  "contracts": {
+    "polygon": true,
+    "solana": true,
+    "polkadot": true,
+    "moonbeam": true,
+    "base": true
+  }
+}

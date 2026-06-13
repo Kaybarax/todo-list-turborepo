@@ -52,7 +52,7 @@ The repo should become an engineering-department template with these properties:
   - [ ] `test-results`.
   - [ ] `playwright-report`.
 - [ ] Decide whether generated `.d.ts` and `.map` files under `packages/services/src` belong in source. Prefer generating them into `dist` only.
-- [ ] Add a repeatable repo-clean verification command that fails on committed generated artifacts.
+- [x] Add a repeatable repo-clean verification command that fails on committed generated artifacts.
 - [ ] Normalize all docs to use `pnpm`, not `npm`, unless a package truly requires npm.
 - [ ] Fix stale docs that still reference old smart-contract paths, direct API URLs, or outdated test locations.
 - [ ] Add a single top-level "golden path" onboarding flow:
