@@ -23,21 +23,21 @@ All packages and applications aim for 100% test coverage. Coverage reports are g
 To run all tests across the monorepo:
 
 ```bash
-npm test
+pnpm test
 ```
 
 To run tests for a specific package or app:
 
 ```bash
-npm test --filter=@todo/web
-npm test --filter=@todo/api
-npm test --filter=@todo/services
+pnpm test --filter=@todo/web
+pnpm test --filter=@todo/api
+pnpm test --filter=@todo/services
 ```
 
 To run tests with coverage:
 
 ```bash
-npm test -- --coverage
+pnpm test -- --coverage
 ```
 
 ### End-to-End Tests
@@ -48,14 +48,14 @@ To run E2E tests:
 
 ```bash
 cd apps/web
-npm run test:e2e
+pnpm run test:e2e
 ```
 
 To run E2E tests with the Playwright UI:
 
 ```bash
 cd apps/web
-npm run test:e2e:ui
+pnpm run test:e2e:ui
 ```
 
 ### Visual Regression Tests
@@ -66,7 +66,7 @@ To run Storybook locally:
 
 ```bash
 cd packages/ui-web
-npm run storybook
+pnpm run storybook
 ```
 
 Chromatic tests run automatically on GitHub Actions when changes are pushed to the main branch or when a pull request is opened.
@@ -83,23 +83,23 @@ To run smart contract tests:
 
 ```bash
 cd apps/smart-contracts
-npm test
+pnpm test
 ```
 
 To run smart contract tests with coverage:
 
 ```bash
 cd apps/smart-contracts
-npm run coverage
+pnpm run coverage
 ```
 
 To deploy smart contracts to a local or test network:
 
 ```bash
 cd apps/smart-contracts
-npm run deploy
+pnpm run deploy
 # or for Moonbase Alpha testnet
-npm run deploy:moonbase
+pnpm run deploy:moonbase
 ```
 
 ## Test Structure
@@ -167,6 +167,8 @@ The project uses various mocking strategies:
 5.  Maintain high test coverage, especially for critical paths
 6.  Use the testing pyramid: more unit tests, fewer E2E tests
 7.  Keep tests fast and reliable to encourage frequent running
+
+```typescript
     .get('/todos')
     .set('Authorization', `Bearer ${authToken}`)
     .expect(200)
@@ -233,8 +235,7 @@ priority: 'high',
 
 });
 });
-
-````text
+```
 
 ### Database Integration Tests
 
@@ -290,7 +291,7 @@ describe('Database Integration', () => {
     expect(todos[0].title).toBe(todoData.title);
   });
 });
-````
+```
 
 ## 🎭 End-to-End Testing
 
@@ -784,7 +785,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run dev',
+    command: 'pnpm run dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
   },
@@ -816,9 +817,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-      - run: npm ci
-      - run: npm run test:unit
-      - run: npm run test:coverage
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run test:unit
+      - run: pnpm run test:coverage
       - uses: codecov/codecov-action@v3
 
   integration-tests:
@@ -835,25 +836,25 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - run: npm ci
-      - run: npm run test:integration
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run test:integration
 
   e2e-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
       - run: npx playwright install
-      - run: npm run test:e2e
+      - run: pnpm run test:e2e
 
   contract-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - run: npm ci
-      - run: npm run test:contracts
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run test:contracts
 ```
 
 ## 🛠️ Testing Best Practices
