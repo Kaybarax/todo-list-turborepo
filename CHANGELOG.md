@@ -736,3 +736,5 @@ For support and questions:
 ---
 
 **Maintained by the Todo App Team** | **Licensed under MIT**
+
+- HEPA DeepSeek live matrix validation: cloud worker and cloud reviewer completed.
