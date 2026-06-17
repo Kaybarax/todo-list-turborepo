@@ -63,6 +63,7 @@ The repo should become an engineering-department template with these properties:
 - [ ] Add `pnpm doctor` as a repo health command covering Node, pnpm, Bun, Docker, Terraform, Terragrunt, Expo/EAS, Rust, Solana, Anchor, and optional blockchain tools.
 - [ ] Add `pnpm verify` as the default pre-PR quality command.
 - [ ] Create a maintained status matrix showing each app/package with build, lint, typecheck, unit test, integration test, e2e, Docker, deployment, docs, and owner status.
+  - [ ] Starter matrix should include owner, quality gates, deployment, docs, and status columns for each app/package.
 - [ ] Update `AGENTS.md` with the current gateway-first architecture and the new engineering-department roadmap.
 
 ## P0: Workspace Taxonomy Refactor
