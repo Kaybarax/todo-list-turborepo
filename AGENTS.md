@@ -2,7 +2,9 @@
 
 ## Architecture Overview
 
-**Turborepo monorepo** with pnpm workspaces managing 4 apps + 7 shared packages. Data flows: Web/Mobile → NestJS API → MongoDB/Redis, with background ingestion processing blockchain data. Multi-network blockchain integration (Polygon/Solana/Polkadot/Moonbeam/Base) via factory pattern in `packages/services`.
+**Turborepo monorepo** with pnpm workspaces managing 4 apps + 7 shared packages. Data flows: Web/Mobile → API Gateway → NestJS/Bun APIs → MongoDB/Redis, with background ingestion processing blockchain data. Multi-network blockchain integration (Polygon/Solana/Polkadot/Moonbeam/Base) via factory pattern in `packages/services`.
+
+**Gateway-first architecture**: `apps/api-gateway` is the public boundary. Web clients use REST under `/api/v1/*`, mobile clients use GraphQL under `/graphql`. The gateway routes to upstream NestJS/Bun APIs in `apps/api` and `apps/api-bun`, providing a single auth, telemetry, and routing policy layer.
 
 **Key structural decisions**: Monorepo enables shared UI components (`packages/ui-web/ui-mobile`) and blockchain services while maintaining deployment independence. Ingestion service decouples blockchain data processing from API responses. **Infrastructure is managed via Terraform/Terragrunt**, enabling a decoupled deployment strategy across Vercel (Web), AWS ECS (API/Ingestion), and EAS (Mobile).
 
@@ -101,5 +103,8 @@
 - `infra/terraform/modules/`: Reusable IaC modules for AWS and GitHub
 - `infra/terragrunt/`: Live environment configurations (dev, staging, prod)
 - `turbo.json`: Build orchestration (dependsOn, caching, outputs)
-- `pnpm-workspace.yaml`: Workspace config + shared dependency catalog</content>
-  <parameter name="filePath">/Users/kevin/workspace/todo-list-turborepo/AGENTS.md
+- `pnpm-workspace.yaml`: Workspace config + shared dependency catalog
+
+## Engineering Department Roadmap
+
+`docs/engineering-department-roadmap.md` is the source of truth for the remaining engineering-department template work, including workspace taxonomy refactor, API gateway completion, and production hardening.
