@@ -2,7 +2,7 @@
 
 ## Architecture Overview
 
-**Turborepo monorepo** with pnpm workspaces managing 4 apps + 7 shared packages. Data flows: Web/Mobile → NestJS API → MongoDB/Redis, with background ingestion processing blockchain data. Multi-network blockchain integration (Polygon/Solana/Polkadot/Moonbeam/Base) via factory pattern in `packages/services`.
+**Turborepo monorepo** with pnpm workspaces managing 5 apps + 7 shared packages. Data flows: Web/Mobile → API Gateway (`apps/api-gateway`) → NestJS/Bun APIs → MongoDB/Redis, with background ingestion processing blockchain data. Multi-network blockchain integration (Polygon/Solana/Polkadot/Moonbeam/Base) via factory pattern in `packages/services`.
 
 **Key structural decisions**: Monorepo enables shared UI components (`packages/ui-web/ui-mobile`) and blockchain services while maintaining deployment independence. Ingestion service decouples blockchain data processing from API responses. **Infrastructure is managed via Terraform/Terragrunt**, enabling a decoupled deployment strategy across Vercel (Web), AWS ECS (API/Ingestion), and EAS (Mobile).
 
@@ -45,6 +45,7 @@
 
 ### Code Organization
 
+- **API gateway**: `apps/api-gateway/` (Bun/Elysia — public boundary for REST and GraphQL)
 - **API modules**: `apps/api/src/{auth,todo,user,blockchain,...}` (NestJS) or `apps/api-bun/src/modules/` (Bun/Elysia)
 - **Shared services**: `packages/services/src/{api,blockchain,todo,utils}` (Axios clients, blockchain factory)
 - **UI components**: `packages/ui-web/ui-mobile` (DaisyUI + Style Dictionary tokens)
@@ -75,8 +76,8 @@
 ### Infrastructure
 
 - **Docker compose**: `docker-compose.dev.yml` (MongoDB:27017, Redis:6379, Jaeger:16686, MailHog:8025)
-- **Health checks**: API `/health`, Web `GET /api/health`
-- **Tracing**: OTEL in API (`JAEGER_ENDPOINT`, `OTEL_*` env vars) → Collector → Jaeger UI (Supported in both NestJS and Bun APIs)
+- **Health checks**: Gateway `/api/v1/health`, upstream API `/health`, Web `GET /api/health`
+- **Tracing**: OTEL in API and gateway (`JAEGER_ENDPOINT`, `OTEL_*` env vars) → Collector → Jaeger UI (Supported in NestJS, Bun, and gateway)
 
 ### External Dependencies
 
@@ -84,10 +85,16 @@
 - **WalletConnect**: v2 integration for Web3 wallet connections
 - **Database**: MongoDB with Mongoose schemas, Redis for caching/API responses
 
+### Gateway-First Architecture
+
+`apps/api-gateway` is the single public boundary for all clients. Web clients communicate via REST under `/api/v1/*`; mobile clients communicate via GraphQL under `/graphql`. The gateway routes requests to the appropriate upstream NestJS API (`apps/api`) or Bun API (`apps/api-bun`), enforces auth policy, manages request IDs, and propagates OpenTelemetry traces. Backend APIs are private in production.
+
 ### Cross-Component Communication
 
+- **Web → Gateway**: RESTful endpoints via `/api/v1/*` with JWT auth
+- **Mobile → Gateway**: GraphQL queries/mutations via `/graphql`
+- **Gateway → Upstream APIs**: Proxied to NestJS (`apps/api`) or Bun (`apps/api-bun`)
 - **API ↔ Blockchain**: `packages/services` provides unified client interfaces
-- **Web ↔ API**: RESTful endpoints with JWT auth (`apps/api/src/auth/`)
 - **Ingestion ↔ DB**: Background processing updates MongoDB with blockchain events
 - **UI packages**: Shared components via pnpm workspace linking
 
@@ -100,6 +107,8 @@
 - `db/`: MongoDB migrations, seeding, setup scripts
 - `infra/terraform/modules/`: Reusable IaC modules for AWS and GitHub
 - `infra/terragrunt/`: Live environment configurations (dev, staging, prod)
+- `apps/api-gateway/`: Single public boundary — REST `/api/v1/*` and GraphQL `/graphql`
 - `turbo.json`: Build orchestration (dependsOn, caching, outputs)
-- `pnpm-workspace.yaml`: Workspace config + shared dependency catalog</content>
+- `pnpm-workspace.yaml`: Workspace config + shared dependency catalog
+- `docs/engineering-department-roadmap.md`: Source of truth for remaining engineering-department template work</content>
   <parameter name="filePath">/Users/kevin/workspace/todo-list-turborepo/AGENTS.md
