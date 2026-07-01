@@ -41,3 +41,8 @@ This folder is organized by topic.
 - [Testing Strategy](./testing/testing-strategy.md)
 - [FAQ](./support/faq.md)
 - [Troubleshooting](./support/troubleshooting.md)
+
+## HEPA Cloud Stress Validation
+
+This project includes HEPA cloud stress validation checks that run in CI to verify infrastructure reliability under simulated load.
+See [Stress Testing](./cloud/stress-testing.md) for configuration and results.
