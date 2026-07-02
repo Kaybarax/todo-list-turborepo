@@ -22,6 +22,7 @@
     "clean:artifacts": "./scripts/cleanup.sh --artifacts --no-node --yes",
     "clean:docker": "./scripts/cleanup.sh --docker --artifacts --no-node --yes",
     "lint:sh": "find scripts apps packages infra test -name \"*.sh\" | xargs shellcheck",
+    "doctor:repository-health": "./scripts/doctor-repository-health.sh",
     "quality": "pnpm lint && pnpm typecheck && pnpm lint:sh",
     "//_web": "=== WEB APP SCRIPTS ===",
     "dev:web": "pnpm --filter @todo/web dev",

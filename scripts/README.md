@@ -134,6 +134,29 @@ Specialized script for blockchain contract compilation.
 - Contract verification
 - Artifact management
 
+### `doctor-repository-health.sh`
+
+Repository health inspection script — the implementation behind `pnpm doctor:repository-health`.
+
+```bash
+# Run all health checks
+./scripts/doctor-repository-health.sh
+pnpm doctor:repository-health
+```
+
+**Checks performed:**
+
+| Category | What it inspects |
+|---|---|
+| **Package Scripts** | Required scripts (`dev`, `build`, `test`, `lint`, `clean`) exist in root `package.json`; detects placeholder scripts; validates `packageManager` field |
+| **Workspace Discovery** | Reads `pnpm-workspace.yaml` globs and confirms every matching directory has a valid `package.json` with a `name` field |
+| **Repository Hygiene** | Essential config files (`.editorconfig`, `.env.example`, `.gitignore`, `.npmrc`, `.prettierrc`, `tsconfig.json`, `turbo.json`); ensures `.env` is not committed; verifies `.gitignore` covers `node_modules`, `dist`, `.turbo`; checks all `package.json` files have `name` and `version`; confirms `pnpm-lock.yaml` exists; optionally runs Prettier check |
+
+**Exit codes:**
+
+- `0` — all checks pass (warnings are allowed)
+- `1` — one or more fatal checks failed
+
 ## Package.json Scripts
 
 The root `package.json` includes convenient npm/pnpm scripts:
