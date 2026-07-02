@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Alert, Button, BlockchainStats, FloatingActionButton, useToast } from '@todo/ui-web';
 import { TodoFormModal } from '@/components/todo/TodoFormModal';
 import { TodoList } from '@/components/todo/TodoList';
-import { TodoFilters, type PriorityFilter, type StatusFilter } from '@/components/todo/TodoFilters';
+import { TodoFilters, type PriorityFilter, type StatusFilter, type SavedFilterView } from '@/components/todo/TodoFilters';
 import { TodoBulkActions } from '@/components/todo/TodoBulkActions';
 import { useTodoStore } from '@/store/todoStore';
 import { useWallet } from '@/components/WalletProvider';
@@ -17,6 +17,7 @@ const TodosPage = () => {
   const [search, setSearch] = useState('');
   const [priority, setPriority] = useState<PriorityFilter>('all');
   const [status, setStatus] = useState<StatusFilter>('all');
+  const [activeViewId, setActiveViewId] = useState<string | undefined>(undefined);
 
   const {
     todos,
@@ -32,6 +33,9 @@ const TodosPage = () => {
     canUndo,
     syncToBlockchain,
     fetchTodos,
+    savedViews,
+    addSavedView,
+    deleteSavedView,
   } = useTodoStore();
 
   const { isConnected, supportedNetworks } = useWallet();
@@ -108,6 +112,31 @@ const TodosPage = () => {
     setSearch('');
     setPriority('all');
     setStatus('all');
+    setActiveViewId(undefined);
+  };
+
+  const handleSelectView = (view: SavedFilterView) => {
+    setSearch(view.search);
+    setPriority(view.priority);
+    setStatus(view.status);
+    setActiveViewId(view.id);
+  };
+
+  const handleSaveView = (name: string) => {
+    addSavedView({
+      name,
+      search,
+      priority,
+      status,
+    });
+    setActiveViewId(undefined);
+  };
+
+  const handleDeleteView = (id: string) => {
+    deleteSavedView(id);
+    if (activeViewId === id) {
+      setActiveViewId(undefined);
+    }
   };
 
   const handleRefresh = () => {
@@ -260,12 +289,26 @@ const TodosPage = () => {
 
       <TodoFilters
         search={search}
-        onSearchChange={setSearch}
+        onSearchChange={value => {
+          setSearch(value);
+          setActiveViewId(undefined);
+        }}
         priority={priority}
-        onPriorityChange={setPriority}
+        onPriorityChange={value => {
+          setPriority(value);
+          setActiveViewId(undefined);
+        }}
         status={status}
-        onStatusChange={setStatus}
+        onStatusChange={value => {
+          setStatus(value);
+          setActiveViewId(undefined);
+        }}
         onClear={handleClearFilters}
+        savedViews={savedViews}
+        activeViewId={activeViewId}
+        onSelectView={handleSelectView}
+        onSaveView={handleSaveView}
+        onDeleteView={handleDeleteView}
       />
 
       <TodoBulkActions

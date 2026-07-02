@@ -5,6 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Button, cn, Input, Select } from '@todo/ui-web';
 import { type TodoData, TodoItem } from './TodoItem';
 import { type BlockchainNetwork } from '@todo/services';
+import type { SavedFilterView, SortType } from './TodoFilters';
 
 const todoListVariants = cva('w-full', {
   variants: {
@@ -26,7 +27,6 @@ const todoListVariants = cva('w-full', {
 });
 
 export type FilterType = 'all' | 'active' | 'completed';
-export type SortType = 'created' | 'priority' | 'dueDate' | 'title';
 
 export interface TodoListStats {
   total: number;
@@ -50,6 +50,11 @@ export interface TodoListProps
   initialFilter?: FilterType;
   initialSort?: SortType;
   initialSearchTerm?: string;
+  savedViews?: SavedFilterView[];
+  activeViewId?: string;
+  onSelectView?: (view: SavedFilterView) => void;
+  onSaveView?: (name: string) => void;
+  onDeleteView?: (id: string) => void;
   TransactionStatusComponent?: React.ComponentType<{
     transactionHash: string;
     network: BlockchainNetwork;
@@ -81,6 +86,11 @@ const TodoList = React.forwardRef<HTMLDivElement, TodoListProps>(
       TransactionStatusComponent,
       getNetworkDisplayInfo,
       supportedNetworks,
+      savedViews,
+      activeViewId,
+      onSelectView,
+      onSaveView,
+      onDeleteView,
       onRefresh,
       refreshing = false,
       ...props
@@ -90,6 +100,7 @@ const TodoList = React.forwardRef<HTMLDivElement, TodoListProps>(
     const [filter, setFilter] = useState<FilterType>(initialFilter);
     const [sort, setSort] = useState<SortType>(initialSort);
     const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+    const [newViewName, setNewViewName] = useState('');
 
     const filteredAndSortedTodos = useMemo(() => {
       let filtered = todos;
@@ -229,11 +240,80 @@ const TodoList = React.forwardRef<HTMLDivElement, TodoListProps>(
       );
     };
 
+    const renderSavedViews = () => {
+      if (!savedViews || savedViews.length === 0) return null;
+
+      return (
+        <div className="mb-3 space-y-2">
+          <div className="text-sm font-medium text-base-content">Saved Views</div>
+          <div className="flex flex-wrap gap-2">
+            {savedViews.map(view => (
+              <div key={view.id} className="flex items-center gap-1">
+                <Button
+                  type="button"
+                  size="xs"
+                  variant={activeViewId === view.id ? 'default' : 'outline'}
+                  onClick={() => {
+                    onSelectView?.(view);
+                    setFilter(view.status === 'open' ? 'active' : view.status === 'completed' ? 'completed' : 'all');
+                    setSort(view.sort ?? 'created');
+                    setSearchTerm(view.search);
+                  }}
+                >
+                  {view.name}
+                </Button>
+                {onDeleteView && (
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-xs text-base-content/50 hover:text-error"
+                    aria-label={`Delete saved view ${view.name}`}
+                    onClick={() => onDeleteView(view.id)}
+                  >
+                    &times;
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    const renderSaveViewInput = () => {
+      const hasActiveFilters = filter !== 'all' || searchTerm.trim().length > 0 || sort !== 'created';
+      if (!hasActiveFilters || !onSaveView) return null;
+
+      return (
+        <div className="mt-2 flex items-center gap-2">
+          <Input
+            type="text"
+            value={newViewName}
+            onChange={e => setNewViewName(e.target.value)}
+            placeholder="View name..."
+            className="flex-1"
+          />
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              const name = newViewName.trim() || `View ${(savedViews?.length ?? 0) + 1}`;
+              onSaveView(name);
+              setNewViewName('');
+            }}
+          >
+            Save view
+          </Button>
+        </div>
+      );
+    };
+
     const renderControls = () => {
       if (!showFilters) return null;
 
       return (
         <div className="bg-base-100 p-4 rounded-lg shadow-sm border border-base-300">
+          {renderSavedViews()}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 sm:space-x-4">
             <div className="flex-1">
               <Input
@@ -260,6 +340,7 @@ const TodoList = React.forwardRef<HTMLDivElement, TodoListProps>(
               </Select>
             </div>
           </div>
+          {renderSaveViewInput()}
           <div className="mt-2 text-sm text-base-content/70">{filteredAndSortedTodos.length} todos to display</div>
         </div>
       );

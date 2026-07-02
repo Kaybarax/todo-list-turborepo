@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { TodoData as Todo } from '@/components/todo/TodoItem';
+import type { SavedFilterView } from '@/components/todo/TodoFilters';
 import { createBlockchainService, todoToBlockchainTodo, type TransactionResult } from '@/services/blockchainService';
 import type { BlockchainNetwork, ApiTodo, ApiResponse } from '@todo/services';
 import { todoClient } from '@/config/api';
@@ -11,6 +12,7 @@ interface TodoStore {
   error: string | null;
   undoStack: Todo[][];
   canUndo: boolean;
+  savedViews: SavedFilterView[];
 
   // Actions
   addTodo: (_todoData: Omit<Todo, 'id' | 'createdAt' | 'updatedAt' | 'userId'>) => void;
@@ -21,6 +23,8 @@ interface TodoStore {
   clearCompleted: () => void;
   undo: () => void;
   syncToBlockchain: (_todoId: string, _selectedNetwork: BlockchainNetwork) => Promise<void>;
+  addSavedView: (_view: Omit<SavedFilterView, 'id'>) => void;
+  deleteSavedView: (_id: string) => void;
 
   // API actions (will be implemented when API is ready)
   fetchTodos: () => Promise<void>;
@@ -43,6 +47,7 @@ export const useTodoStore = create<TodoStore>()(
       error: null,
       undoStack: [],
       canUndo: false,
+      savedViews: [],
 
       addTodo: todoData => {
         const newTodo: Todo = {
@@ -261,10 +266,26 @@ export const useTodoStore = create<TodoStore>()(
           });
         }
       },
+
+      addSavedView: view => {
+        const newView: SavedFilterView = {
+          ...view,
+          id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+        };
+        set(state => ({
+          savedViews: [...state.savedViews, newView],
+        }));
+      },
+
+      deleteSavedView: id => {
+        set(state => ({
+          savedViews: state.savedViews.filter(v => v.id !== id),
+        }));
+      },
     }),
     {
       name: 'todo-storage',
-      partialize: state => ({ todos: state.todos }),
+      partialize: state => ({ todos: state.todos, savedViews: state.savedViews }),
     },
   ),
 );

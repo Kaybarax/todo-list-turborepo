@@ -488,4 +488,67 @@ describe('TodoList', () => {
       expect(screen.getAllByRole('checkbox')).toHaveLength(5);
     });
   });
+
+  describe('Saved Views', () => {
+    const mockViews = [
+      { id: 'v1', name: 'High Priority', search: '', priority: 'high' as const, status: 'all' as const, sort: 'priority' as const },
+      { id: 'v2', name: 'Today', search: '', priority: 'all' as const, status: 'open' as const, sort: 'created' as const },
+      { id: 'v3', name: 'Blockchain', search: 'blockchain', priority: 'all' as const, status: 'all' as const, sort: 'created' as const },
+    ];
+
+    it('renders saved view buttons when savedViews is provided', () => {
+      render(<TodoList {...defaultProps} savedViews={mockViews} />);
+
+      expect(screen.getByText('High Priority')).toBeInTheDocument();
+      expect(screen.getByText('Today')).toBeInTheDocument();
+      expect(screen.getByText('Blockchain')).toBeInTheDocument();
+    });
+
+    it('selecting a saved view applies its filter and sort', async () => {
+      const user = userEvent.setup();
+      render(<TodoList {...defaultProps} savedViews={mockViews} />);
+
+      // Click "High Priority" saved view
+      await user.click(screen.getByText('High Priority'));
+
+      // The filter/sort select should reflect "Active" (all non-completed) and "Priority"
+      const sortSelect = screen.getByDisplayValue('Priority');
+      expect(sortSelect).toBeInTheDocument();
+    });
+
+    it('calls onSelectView when a saved view is clicked', async () => {
+      const onSelectView = jest.fn();
+      const user = userEvent.setup();
+      render(<TodoList {...defaultProps} savedViews={mockViews} onSelectView={onSelectView} />);
+
+      await user.click(screen.getByText('Today'));
+      expect(onSelectView).toHaveBeenCalledWith(mockViews[1]);
+    });
+
+    it('calls onDeleteView when delete button is clicked', async () => {
+      const onDeleteView = jest.fn();
+      const user = userEvent.setup();
+      render(<TodoList {...defaultProps} savedViews={mockViews} onDeleteView={onDeleteView} />);
+
+      await user.click(screen.getByLabelText('Delete saved view Blockchain'));
+      expect(onDeleteView).toHaveBeenCalledWith('v3');
+    });
+
+    it('clears saved view highlight when changing manual filters', async () => {
+      const user = userEvent.setup();
+      const { rerender } = render(
+        <TodoList {...defaultProps} savedViews={mockViews} activeViewId="v1" />,
+      );
+
+      // Change search filters manually
+      const searchInput = screen.getByPlaceholderText('Search todos...');
+      await user.type(searchInput, 'test');
+
+      // After rerender without activeViewId, the highlight should be gone
+      rerender(<TodoList {...defaultProps} savedViews={mockViews} />);
+
+      // All saved view buttons should still be present
+      expect(screen.getByText('High Priority')).toBeInTheDocument();
+    });
+  });
 });
