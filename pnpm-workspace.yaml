@@ -3,6 +3,29 @@ packages:
   - 'apps/smart-contracts/*'
   - 'packages/*'
 
+allowBuilds:
+  '@bundled-es-modules/glob': set this to true or false
+  '@eth-optimism/core-utils': set this to true or false
+  '@nestjs/core': set this to true or false
+  '@scarf/scarf': set this to true or false
+  '@swc/core': set this to true or false
+  bcrypt: set this to true or false
+  bigint-buffer: set this to true or false
+  blake-hash: set this to true or false
+  bufferutil: set this to true or false
+  esbuild: set this to true or false
+  keccak: set this to true or false
+  mongodb-memory-server: set this to true or false
+  msw: set this to true or false
+  protobufjs: set this to true or false
+  secp256k1: set this to true or false
+  sharp: set this to true or false
+  style-dictionary: set this to true or false
+  tiny-secp256k1: set this to true or false
+  unrs-resolver: set this to true or false
+  usb: set this to true or false
+  utf-8-validate: set this to true or false
+
 # Catalog for shared dependencies
 catalog:
   # Blockchain dependencies
@@ -11,11 +34,11 @@ catalog:
   "@openzeppelin/contracts": ^5.4.0
   "@solana/web3.js": ^1.98.4
   "@polkadot/api": ^16.4.4
-  
+
   # Testing dependencies
   chai: ^4.3.10
   jest: ^30.0.5
-  
+
   # Build tools
   typescript: ^5.9.2
   prettier: ^3.4.2

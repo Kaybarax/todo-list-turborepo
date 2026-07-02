@@ -467,6 +467,19 @@ __tests__/
     └── wallet.spec.ts
 ```
 
+### Health-Check Suite
+
+The project includes a lightweight health-check suite that validates core
+utilities without depending on React, Next.js, or external services.
+
+```bash
+pnpm test:health
+```
+
+These tests live in `src/__tests__/health.test.ts` and cover the validation
+helpers in `src/helpers/validators.ts`. They run verbosely so CI logs show
+exactly which checks passed or failed.
+
 ### Unit Testing
 
 ```typescript
