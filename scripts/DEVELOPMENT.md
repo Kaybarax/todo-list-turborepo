@@ -86,6 +86,33 @@ Options:
 - **Services**: Any single service with smart dependency management
 - **Features**: Automatic dependency detection and startup
 
+### Repository Cleanliness Verification (`repo-clean.sh`)
+
+Verifies the working tree is free of generated build artifacts, ignored runtime
+folders, and stale validation/test output.
+
+**Usage:**
+
+```bash
+./scripts/repo-clean.sh          # Scan & report (exit 1 if dirty)
+./scripts/repo-clean.sh --quiet  # Silent check, exit code only
+./scripts/repo-clean.sh --list   # Show all scanned patterns
+pnpm repo-clean                  # Convenience alias via package.json
+pnpm repo-clean:verify           # Silent variant for CI
+```
+
+**What it checks:**
+
+| Category | Examples |
+|---|---|
+| Build artifact dirs | `.turbo`, `dist`, `build`, `.next`, `coverage`, `storybook-static` |
+| Runtime / ignored dirs | `node_modules`, `logs`, `.cache`, `.terraform` |
+| Stale / leftover files | `*.tsbuildinfo`, `*.log`, `.eslintcache`, `chromatic-diagnostics.json` |
+| Ignored config files | `.env`, `.env.local` (should not be tracked) |
+
+This helper is designed for pre-commit hooks, CI pipelines, and general
+repository hygiene enforcement.
+
 ## 🔧 Service Dependencies
 
 ### Dependency Graph

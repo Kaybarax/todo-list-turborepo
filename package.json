@@ -23,6 +23,8 @@
     "clean:docker": "./scripts/cleanup.sh --docker --artifacts --no-node --yes",
     "lint:sh": "find scripts apps packages infra test -name \"*.sh\" | xargs shellcheck",
     "quality": "pnpm lint && pnpm typecheck && pnpm lint:sh",
+    "repo-clean": "./scripts/repo-clean.sh",
+    "repo-clean:verify": "./scripts/repo-clean.sh --quiet",
     "//_web": "=== WEB APP SCRIPTS ===",
     "dev:web": "pnpm --filter @todo/web dev",
     "build:web": "turbo run build --filter=@todo/web",

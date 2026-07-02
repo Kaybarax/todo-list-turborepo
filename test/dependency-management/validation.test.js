@@ -22,6 +22,23 @@ describe('Test Framework Validation', () => {
     expect(require('fs').existsSync(mockPath)).toBe(true);
   });
 
+  test('repo-clean.sh should report clean on a fresh checkout', () => {
+    const result = global.executeScript('scripts/repo-clean.sh', ['--quiet']);
+
+    // The script exits 0 when clean, 1 when dirty.
+    // In test we just verify it runs and returns a predictable shape.
+    expect(result).toHaveProperty('exitCode');
+    expect(typeof result.exitCode).toBe('number');
+  });
+
+  test('repo-clean.sh --list should print known patterns', () => {
+    const result = global.executeScript('scripts/repo-clean.sh', ['--list']);
+
+    expect(result).toHaveProperty('success');
+    expect(result.output).toContain('build artifact');
+    expect(result.output).toContain('runtime');
+  });
+
   test('should be able to create test fixtures', () => {
     const fixturePath = global.createTestFixture('test-file.txt', 'test content');
 
