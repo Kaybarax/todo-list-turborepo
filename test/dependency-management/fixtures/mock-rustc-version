@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ "$1" = "--version" ]; then
+  echo "rustc 1.75.0 (82e1608df 2023-12-21)"
+  exit 0
+fi
+echo "Mock rustc command"
+exit 0

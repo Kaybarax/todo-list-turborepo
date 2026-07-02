@@ -136,7 +136,9 @@
     "publish-packages": "./scripts/publish-packages.sh",
     "dev:api-gateway": "turbo run dev --filter=@todo/api-gateway",
     "build:api-gateway": "turbo run build --filter=@todo/api-gateway",
-    "test:api-gateway": "turbo run test --filter=@todo/api-gateway"
+    "test:api-gateway": "turbo run test --filter=@todo/api-gateway",
+    "//_doctor": "=== REPOSITORY HEALTH CHECK ===",
+    "doctor:repo": "./scripts/doctor-repo-health.sh"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.6",

@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ "$1" = "--version" ]; then
+  echo "anchor-cli 0.29.0"
+  exit 0
+fi
+echo "Mock anchor command"
+exit 0

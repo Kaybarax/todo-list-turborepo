@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ "$1" = "--version" ]; then
+  echo "solana-cli 1.18.0 (src:12345678; feat:1234567890)"
+  exit 0
+fi
+echo "Mock solana command"
+exit 0

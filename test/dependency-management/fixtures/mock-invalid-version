@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ "$1" = "--version" ]; then
+  echo "invalid-version-string"
+  exit 0
+fi
+echo "Mock command"
+exit 0

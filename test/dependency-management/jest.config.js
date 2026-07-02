@@ -6,6 +6,7 @@ module.exports = {
     '../../scripts/blockchain-deps-check.sh',
     '../../scripts/install-blockchain-tools.sh',
     '../../scripts/build-contracts.sh',
+    '../../scripts/doctor-repo-health.sh',
   ],
   coverageDirectory: './coverage',
   coverageReporters: ['text', 'lcov', 'html'],

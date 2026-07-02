@@ -1,0 +1,9 @@
+#!/bin/bash
+if [ "$1" = "--version" ]; then
+  echo "anchor-cli 0.29.0
+solana-cli 1.18.0 (src:12345678; feat:1234567890)
+rustc 1.75.0 (82e1608df 2023-12-21)"
+  exit 0
+fi
+echo "Mock anchor command"
+exit 0

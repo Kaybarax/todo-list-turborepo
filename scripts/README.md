@@ -483,6 +483,39 @@ export NODE_OPTIONS="--max-old-space-size=8192"
 7. **Clean builds** for production releases
 8. **Validate artifacts** after building
 
+## Repository Health Doctor
+
+### `doctor-repo-health.sh`
+
+A `pnpm doctor` sub-command that inspects package scripts, workspace package discovery, and general repository hygiene.
+
+```bash
+# Run the full health check
+pnpm doctor:repo
+
+# Or invoke directly
+./scripts/doctor-repo-health.sh
+```
+
+**What it checks:**
+
+| Category | Check | Description |
+|---|---|---|
+| **Workspace Discovery** | `pnpm-workspace.yaml` presence | Verifies the workspace configuration file exists |
+| | Glob resolution | Every glob in `pnpm-workspace.yaml` is tested against actual directories containing `package.json` |
+| **Package Scripts** | Build script coverage | Scans all workspace packages for the presence of a `build` script |
+| | Test script coverage | Reports how many packages define a `test` script |
+| | Orphan prebuild references | Flags `prebuild` scripts that reference commands (`tokens:build`) not defined in the same package |
+| **Repository Hygiene** | `.gitignore` coverage | Confirms critical entries (`node_modules`, `.env`, `dist`, `build`, `.next`, `coverage`) |
+| | `engines` declaration | Validates that `engines.node` and `engines.pnpm` are set in root `package.json` |
+| | Lock file | Ensures `pnpm-lock.yaml` exists |
+| | Core config files | Checks for `.npmrc` and `turbo.json` |
+
+**Exit codes:**
+
+- `0` — All checks passed
+- `1` — One or more checks failed (details printed to stderr)
+
 ## Support
 
 For build-related issues:
