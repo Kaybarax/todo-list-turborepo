@@ -86,6 +86,9 @@ target/
 out/
 lib/
 
+# But keep our web source lib directory tracked
+!apps/web/src/lib/
+
 # Deployment
 .vercel
 .netlify

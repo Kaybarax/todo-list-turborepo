@@ -730,6 +730,30 @@ NODE_OPTIONS='--inspect' pnpm dev
 DEBUG=* pnpm dev
 ```
 
+## 🩺 Health‑Check Surface
+
+The web app exposes a deterministic, testable health-check layer in
+[`src/lib/health.ts`](./src/lib/health.ts). It is **not** a runtime HTTP
+endpoint — it is a programmatic surface that can be consumed by startup
+guards, CI smoke-gates, or deployment scripts.
+
+### Available checks
+
+| Check function | What it validates |
+|---|---|
+| `checkEnvVars(required)` | Required `process.env` entries are present and non-empty |
+| `checkTodoShape(value)` | A value conforms to the expected Todo shape (`id`, `title`, `completed`, `priority`) |
+| `runHealthChecks(...)` | Aggregates all checks into a single `{ healthy, checks }` summary |
+
+### Running health tests
+
+```bash
+pnpm test:health
+```
+
+This runs only the `*.health.test.*` files with verbose output and no
+coverage collection, providing a fast feedback loop for validation.
+
 ## 📖 Additional Resources
 
 - [Next.js Documentation](https://nextjs.org/docs)
