@@ -21,6 +21,8 @@
     "clean:no-node": "pnpm run clean && ./scripts/cleanup.sh --no-node --yes",
     "clean:artifacts": "./scripts/cleanup.sh --artifacts --no-node --yes",
     "clean:docker": "./scripts/cleanup.sh --docker --artifacts --no-node --yes",
+    "repo-clean:verify": "./scripts/repo-clean-verify.sh",
+    "repo-clean:verify:strict": "./scripts/repo-clean-verify.sh --strict",
     "lint:sh": "find scripts apps packages infra test -name \"*.sh\" | xargs shellcheck",
     "quality": "pnpm lint && pnpm typecheck && pnpm lint:sh",
     "//_web": "=== WEB APP SCRIPTS ===",

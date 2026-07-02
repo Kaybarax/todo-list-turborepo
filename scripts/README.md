@@ -213,6 +213,8 @@ pnpm test:contracts         # Contract tests
 
 # Maintenance
 pnpm clean                  # Clean build artifacts
+pnpm repo-clean:verify      # Verify no leftover artefacts exist
+pnpm repo-clean:verify:strict # Strict scan (includes optional caches)
 ```
 
 ## Build Process Overview
@@ -360,6 +362,29 @@ build:
       - build/
       - production-build-manifest.json
 ```
+
+## Repository Cleanliness Verification
+
+`scripts/repo-clean-verify.sh` scans the workspace for leftover generated
+artefacts (`.turbo`, `dist`, `build`, `.next`, `coverage`, etc.), runtime
+ignored folders, and validation/diagnostic output that should not persist
+in a clean tree. It pairs with `scripts/cleanup.sh --verify`.
+
+```bash
+# Check if the repo is clean
+./scripts/repo-clean-verify.sh
+
+# Stricter check — also flags optional caches
+./scripts/repo-clean-verify.sh --strict
+
+# List all known dirty patterns without scanning
+./scripts/repo-clean-verify.sh --list
+
+# Delegate via the cleanup script
+./scripts/cleanup.sh --verify
+```
+
+Exit codes: `0` = clean, `1` = detritus found.
 
 ## Troubleshooting
 

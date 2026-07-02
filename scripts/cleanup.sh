@@ -50,6 +50,7 @@ Options:
     --dry-run         Show what would be removed without deleting
     --yes             Auto-approve prompts
     --verbose         Extra logging
+    --verify          Run repo-clean-verify.sh instead of cleaning
     -h, --help        Show this help
 
 Examples:
@@ -71,6 +72,7 @@ while [[ $# -gt 0 ]]; do
         --dry-run) DRY_RUN=1;;
         --yes|-y) YES=1;;
         --verbose|-v) VERBOSE=1;;
+        --verify) exec "$ROOT_DIR/scripts/repo-clean-verify.sh" "${@:2}";;
         -h|--help) usage; exit 0;;
         *) echo "Unknown option: $1"; usage; exit 1;;
     esac

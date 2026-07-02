@@ -30,3 +30,40 @@ describe('Test Framework Validation', () => {
     expect(require('fs').readFileSync(fixturePath, 'utf8')).toBe('test content');
   });
 });
+
+describe('Repo Clean Verification', () => {
+  test('repo-clean-verify.sh should exist and be executable', () => {
+    const fs = require('fs');
+    const path = require('path');
+    const scriptPath = path.resolve(__dirname, '../../scripts/repo-clean-verify.sh');
+
+    expect(fs.existsSync(scriptPath)).toBe(true);
+    const stat = fs.statSync(scriptPath);
+    expect(stat.isFile()).toBe(true);
+    // Check it's executable
+    expect((stat.mode & 0o111) !== 0).toBe(true);
+  });
+
+  test('repo-clean-verify.sh --list should print known patterns', () => {
+    const result = global.executeScript('scripts/repo-clean-verify.sh', ['--list']);
+
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('.turbo');
+    expect(result.output).toContain('.eslintcache');
+    expect(result.output).toContain('Always-flagged directories');
+  });
+
+  test('repo-clean-verify.sh should exit 0 on a clean repo', () => {
+    const result = global.executeScript('scripts/repo-clean-verify.sh', []);
+
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('Repository is clean');
+  });
+
+  test('cleanup.sh --verify should delegate to repo-clean-verify.sh', () => {
+    const result = global.executeScript('scripts/cleanup.sh', ['--verify', '--list']);
+
+    expect(result.success).toBe(true);
+    expect(result.output).toContain('.turbo');
+  });
+});
