@@ -41,3 +41,7 @@ This folder is organized by topic.
 - [Testing Strategy](./testing/testing-strategy.md)
 - [FAQ](./support/faq.md)
 - [Troubleshooting](./support/troubleshooting.md)
+
+## HEPA Parallel Stress Validation
+
+This lane worktree is used for HEPA parallel stress testing. Concurrent edits to this file validate that HEPA correctly isolates worktrees and applies conflict-free patches under load.
