@@ -20,6 +20,7 @@
     "clean:all": "pnpm run clean && ./scripts/cleanup.sh --yes",
     "clean:no-node": "pnpm run clean && ./scripts/cleanup.sh --no-node --yes",
     "clean:artifacts": "./scripts/cleanup.sh --artifacts --no-node --yes",
+    "verify:repo-clean": "./scripts/cleanup.sh --verify",
     "clean:docker": "./scripts/cleanup.sh --docker --artifacts --no-node --yes",
     "lint:sh": "find scripts apps packages infra test -name \"*.sh\" | xargs shellcheck",
     "quality": "pnpm lint && pnpm typecheck && pnpm lint:sh",

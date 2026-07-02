@@ -213,7 +213,34 @@ pnpm test:contracts         # Contract tests
 
 # Maintenance
 pnpm clean                  # Clean build artifacts
+pnpm verify:repo-clean      # Verify repo cleanliness (see below)
 ```
+
+### Repo-Clean Verification
+
+The `cleanup.sh --verify` mode (invoked via `pnpm verify:repo-clean`) is a non-destructive check that
+reports on three areas of repository cleanliness:
+
+1. **Orphaned build artifacts** – scans for leftover Turbo, Next.js, Storybook, coverage,
+   contract-artifact, and Expo build output directories that should have been cleaned.
+2. **Runtime folder coverage in `.gitignore`** – checks that common runtime directories
+   (`node_modules`, `.cache`, `.terraform`, logs, etc.) are listed in the root `.gitignore`.
+3. **Stale validation output** – looks for leftover TypeScript build-info files, ESLint caches,
+   and similar generated metadata that can cause CI flakiness.
+
+```bash
+# Run the verification directly
+./scripts/cleanup.sh --verify
+
+# Via pnpm
+pnpm verify:repo-clean
+
+# Non-zero exit code if issues are found
+./scripts/cleanup.sh --verify && echo "Repo is clean"
+```
+
+The verification exits with code 0 when the repository is clean and code 1 when any
+issues are detected, making it suitable for CI gating.
 
 ## Build Process Overview
 

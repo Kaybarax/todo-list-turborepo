@@ -22,6 +22,7 @@ REMOVE_VOLUMES=0
 DRY_RUN=0
 YES=0
 VERBOSE=0
+VERIFY=0
 
 log() { echo -e "${1}"; }
 debug() { [[ $VERBOSE -eq 1 ]] && echo "[debug] $1" || true; }
@@ -37,7 +38,7 @@ confirm() {
 
 usage() {
     cat <<EOF
-Monorepo Cleanup
+Monorepo Cleanup / Verification
 
 Options:
     --all             Run all cleanup steps (default behavior)
@@ -47,6 +48,8 @@ Options:
     --k8s             Clean Kubernetes resources from infra/kubernetes (if kubectl available)
     --artifacts       Remove build/test artifacts across repo
     --no-node         Do not remove node_modules (by default node_modules are removed)
+    --verify          Verify repo cleanliness – check for orphaned build artifacts,
+                      runtime folders outside .gitignore, and stale validation output
     --dry-run         Show what would be removed without deleting
     --yes             Auto-approve prompts
     --verbose         Extra logging
@@ -68,6 +71,7 @@ while [[ $# -gt 0 ]]; do
         --k8s) K8S=1;;
         --artifacts) ARTIFACTS=1;;
         --no-node) NODE_MODULES=0;;
+        --verify) VERIFY=1;;
         --dry-run) DRY_RUN=1;;
         --yes|-y) YES=1;;
         --verbose|-v) VERBOSE=1;;
@@ -306,7 +310,126 @@ run_per_service_cleanups() {
     done
 }
 
+# ──────────────────────────────────────────────
+# Repo-clean verification helper
+# Check for orphaned build artifacts, runtime folders
+# not covered by .gitignore, and stale validation output.
+# Returns 0 if clean, 1 if issues found.
+# ──────────────────────────────────────────────
+verify_repo_clean() {
+    local issues=0
+    local report_file
+    report_file="$(mktemp)"
+
+    echo "============================================"
+    echo "  Repo-Clean Verification Report"
+    echo "  $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+    echo "============================================"
+
+    # 1. Check for orphaned build artifacts
+    echo ""
+    echo "[1/3] Orphaned build artifacts ..."
+    local -a artifact_dirs=(
+        ".turbo" "dist" "build" ".build" ".dist" ".next" "out"
+        "storybook-static" "chromatic-output"
+        "coverage" ".nyc_output" "playwright-report" "test-results"
+        "artifacts" "typechain" "typechain-types"
+        ".expo" "web-build"
+    )
+    local found_any=0
+    for dir in "${artifact_dirs[@]}"; do
+        while IFS= read -r -d '' found; do
+            # Skip .git and node_modules
+            case "$found" in
+                */.git/*|*/.git) continue ;;
+                */node_modules/*|*/node_modules) continue ;;
+            esac
+            echo "  !  Orphaned artifact: $found"
+            found_any=1
+            issues=$((issues + 1))
+        done < <(find . -maxdepth 5 -type d -name "$dir" -print0 2>/dev/null)
+    done
+    if [[ $found_any -eq 0 ]]; then
+        echo "     No orphaned build artifacts found."
+    fi
+
+    # 2. Check for runtime folders that should be in .gitignore
+    echo ""
+    echo "[2/3] Runtime folder coverage in .gitignore ..."
+    local -a runtime_dirs=(
+        "node_modules"
+        ".pnp"
+        "logs"
+        ".cache"
+        ".eslintcache"
+        ".terraform"
+        ".terragrunt-cache"
+        ".vercel"
+        ".netlify"
+    )
+    if [[ -f .gitignore ]]; then
+        local gitignore_content
+        gitignore_content=$(<.gitignore)
+        for dir in "${runtime_dirs[@]}"; do
+            if echo "$gitignore_content" | grep -q "^${dir}\(/\|$\)"; then
+                echo "     ✓  '$dir' covered in .gitignore"
+            else
+                echo "  !  MISSING from .gitignore: '$dir'"
+                issues=$((issues + 1))
+            fi
+        done
+    else
+        echo "  !  No .gitignore file found at repo root"
+        issues=$((issues + 1))
+    fi
+
+    # 3. Check for stale validation / test output
+    echo ""
+    echo "[3/3] Stale validation output ..."
+    local -a stale_patterns=(
+        "chromatic-diagnostics.json"
+        "*storybook.log"
+        "tsconfig.tsbuildinfo"
+        "tsconfig.build.tsbuildinfo"
+        "*.tsbuildinfo"
+        ".eslintcache"
+    )
+    local found_stale=0
+    for pat in "${stale_patterns[@]}"; do
+        while IFS= read -r -d '' f; do
+            case "$f" in
+                */.git/*) continue ;;
+                */node_modules/*) continue ;;
+            esac
+            echo "  !  Stale file: $f"
+            found_stale=1
+            issues=$((issues + 1))
+        done < <(find . -maxdepth 4 -type f -name "$pat" -print0 2>/dev/null)
+    done
+    if [[ $found_stale -eq 0 ]]; then
+        echo "     No stale validation output found."
+    fi
+
+    # Summary
+    echo ""
+    echo "============================================"
+    if [[ $issues -eq 0 ]]; then
+        echo "  RESULT: CLEAN  –  no issues found"
+        return 0
+    else
+        echo "  RESULT: $issues issue(s) found – repo is NOT clean"
+        return 1
+    fi
+    echo "============================================"
+}
+
 main() {
+    # If --verify was passed, run verification and exit
+    if [[ $VERIFY -eq 1 ]]; then
+        verify_repo_clean
+        return $?
+    fi
+
     log "Starting monorepo cleanup (dry-run=$DRY_RUN)"
 
     if [[ $DOCKER -eq 1 ]]; then
