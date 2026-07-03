@@ -1,7 +1,7 @@
 import { Elysia } from 'elysia';
 
 import { getAuthContext } from './auth-policy';
-import { getRequestId } from './request-id';
+import { getCorrelationId, getRequestId } from './request-id';
 import { GatewayError } from '../errors';
 import { getGatewayRequestContext } from '../observability/request-context';
 import { startGatewaySpan } from '../observability/telemetry';
@@ -15,6 +15,7 @@ type GatewayLog = {
   status: number;
   durationMs: number;
   requestId: string;
+  correlationId: string;
   userIdHash?: string;
   upstream: string;
   upstreamLatencyMs?: number;
@@ -50,6 +51,7 @@ function writeRequestLog(input: {
 }) {
   const { path, request, set, startedAt, status, endGatewaySpan } = input;
   const requestId = String(set.headers['x-request-id'] ?? getRequestId(request));
+  const correlationId = String(set.headers['x-correlation-id'] ?? getCorrelationId(request));
   const requestContext = getGatewayRequestContext(request);
   const log: GatewayLog = {
     level: 'info',
@@ -60,6 +62,7 @@ function writeRequestLog(input: {
     status,
     durationMs: Math.round((performance.now() - startedAt) * 100) / 100,
     requestId,
+    correlationId,
     userIdHash: getAuthContext(request)?.userIdHash,
     upstream: requestContext.upstream ?? 'gateway',
     upstreamLatencyMs: requestContext.upstreamLatencyMs,

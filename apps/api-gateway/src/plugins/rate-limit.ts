@@ -2,6 +2,7 @@ import { Elysia } from 'elysia';
 import Redis from 'ioredis';
 
 import { config } from '../config/env';
+import { getCorrelationId, getRequestId } from './request-id';
 
 type Bucket = {
   count: number;
@@ -74,11 +75,15 @@ export const rateLimitPlugin = new Elysia({ name: 'rate-limit' })
     set.headers['x-ratelimit-reset'] = String(Math.ceil(bucket.resetAt / 1000));
 
     if (bucket.count > config.rateLimiting.max) {
+      const requestId = getRequestId(request);
+      const correlationId = getCorrelationId(request);
       set.status = 429;
       return {
         error: 'Too Many Requests',
         errorCode: 'GW_RATE_LIMITED',
         message: 'Rate limit exceeded',
+        requestId,
+        correlationId,
       };
     }
 

@@ -31,10 +31,11 @@ async function fetchWithTimeout(fetcher: Fetcher, url: URL, init: FetchInit, tim
   }
 }
 
-function debugHeaders(response: Response, route: GatewayRoute, upstream: Upstream): Response {
+function debugHeaders(request: Request, response: Response, route: GatewayRoute, upstream: Upstream): Response {
   const headers = new Headers(response.headers);
   headers.set('x-gateway-route', route.id);
   headers.set('x-gateway-upstream', upstream.id);
+  headers.set('x-correlation-id', request.headers.get('x-correlation-id') ?? '');
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
@@ -75,7 +76,7 @@ export async function proxyRequest(request: Request, match: RouteMatch, fetcher:
         fallbackUsed: false,
       });
       endUpstreamSpan(response.status, attempt);
-      return debugHeaders(response, route, upstream);
+      return debugHeaders(request, response, route, upstream);
     }
     attempt += 1;
   }

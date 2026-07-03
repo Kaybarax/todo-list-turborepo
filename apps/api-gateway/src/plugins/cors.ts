@@ -12,7 +12,7 @@ function applyCorsHeaders(headers: Record<string, string | number>, origin: stri
   headers['access-control-allow-origin'] = origin;
   headers['access-control-allow-methods'] = config.cors.allowedMethods.join(', ');
   headers['access-control-allow-headers'] = config.cors.allowedHeaders.join(', ');
-  headers['access-control-expose-headers'] = 'x-request-id';
+  headers['access-control-expose-headers'] = 'x-request-id, x-correlation-id';
   headers.vary = 'Origin';
 
   if (config.cors.credentials) {

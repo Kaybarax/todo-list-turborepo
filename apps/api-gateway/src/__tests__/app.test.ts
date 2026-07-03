@@ -14,6 +14,9 @@ let resetRateLimitBuckets: RateLimitModule['resetRateLimitBuckets'];
 let signTestJwt: AuthPolicyModule['signTestJwt'];
 let logLines: string[];
 
+// ISO 8601 timestamp pattern used to validate timestamp fields
+type IsoTimestamp = string;
+
 const originalConsoleInfo = console.info;
 const originalFetch = globalThis.fetch;
 
@@ -75,24 +78,32 @@ describe('api-gateway', () => {
     expect(response.headers.get('access-control-allow-credentials')).toBe('true');
     expect(response.headers.get('access-control-allow-methods')).toContain('OPTIONS');
     expect(response.headers.get('access-control-allow-headers')).toContain('x-request-id');
-    expect(response.headers.get('access-control-expose-headers')).toBe('x-request-id');
+    expect(response.headers.get('access-control-expose-headers')).toBe('x-request-id, x-correlation-id');
   });
 
-  it('normalizes gateway-generated errors', async () => {
+  it('normalizes gateway-generated errors with correlation id and timestamp', async () => {
     const response = await app.handle(new Request('http://localhost/api/v1/missing'));
 
     expect(response.status).toBe(404);
     expect(response.headers.get('x-request-id')).toBeTruthy();
+    expect(response.headers.get('x-correlation-id')).toBeTruthy();
     const body = (await response.json()) as {
       error: string;
       errorCode: string;
       message: string;
       requestId: string;
+      correlationId: string;
+      timestamp: string;
     };
     expect(body.error).toBe('Route Not Found');
     expect(body.errorCode).toBe('GW_ROUTE_NOT_FOUND');
     expect(body.message).toContain('/api/v1/missing');
+    expect(body.requestId).toBeTruthy();
+    expect(body.correlationId).toBe(body.requestId);
+    expect(body.timestamp).toBeTruthy();
+    expect(new Date(body.timestamp).toISOString()).toBe(body.timestamp);
     expect(response.headers.get('x-request-id')).toBe(body.requestId);
+    expect(response.headers.get('x-correlation-id')).toBe(body.correlationId);
   });
 
   it('rejects oversized request bodies before route handling', async () => {
@@ -112,7 +123,7 @@ describe('api-gateway', () => {
     expect(body.errorCode).toBe('GW_PAYLOAD_TOO_LARGE');
   });
 
-  it('emits structured request logs with method, path, route id, status, duration, request id, and upstream', async () => {
+  it('emits structured request logs with method, path, route id, status, duration, request id, correlation id, and upstream', async () => {
     const response = await app.handle(
       new Request('http://localhost/api/v1', {
         headers: { 'x-request-id': 'request-logging-1' },
@@ -128,12 +139,13 @@ describe('api-gateway', () => {
     expect(log.status).toBe(200);
     expect(typeof log.durationMs).toBe('number');
     expect(log.requestId).toBe('request-logging-1');
+    expect(log.correlationId).toBe('request-logging-1');
     expect(log.upstream).toBe('gateway');
     expect(log.retryCount).toBe(0);
     expect(log.fallbackUsed).toBe(false);
   });
 
-  it('applies in-memory rate limiting in local mode', async () => {
+  it('applies in-memory rate limiting in local mode with request metadata', async () => {
     let lastResponse = new Response();
     for (let i = 0; i < 301; i += 1) {
       lastResponse = await app.handle(
@@ -147,8 +159,10 @@ describe('api-gateway', () => {
     expect(lastResponse.headers.get('x-request-id')).toBeTruthy();
     expect(lastResponse.headers.get('x-ratelimit-limit')).toBe('300');
     expect(lastResponse.headers.get('x-ratelimit-remaining')).toBe('0');
-    const body = (await lastResponse.json()) as { errorCode: string };
+    const body = (await lastResponse.json()) as { errorCode: string; requestId?: string };
     expect(body.errorCode).toBe('GW_RATE_LIMITED');
+    expect(body.requestId).toBeTruthy();
+    expect(body.correlationId).toBeTruthy();
   });
 
   it('allows public proxied auth routes without a token', async () => {
@@ -232,7 +246,7 @@ describe('api-gateway', () => {
     expect(JSON.stringify(log)).not.toContain('user@example.com');
   });
 
-  it('logs proxied route decisions, upstream latency, request id, and trace-linked spans', async () => {
+  it('logs proxied route decisions, upstream latency, request id, correlation id, and trace-linked spans', async () => {
     const token = signTestJwt({
       sub: 'user-456',
       exp: Math.floor(Date.now() / 1000) + 60,
@@ -263,9 +277,11 @@ describe('api-gateway', () => {
     expect(forwardedHeaders.get('tracestate')).toBe('todo=observability');
     expect(forwardedHeaders.get('baggage')).toBe('tenant=demo');
     expect(forwardedHeaders.get('x-request-id')).toBe('request-observe-proxy');
+    expect(forwardedHeaders.get('x-correlation-id')).toBe('request-observe-proxy');
 
     const log = JSON.parse(logLines.at(-1) ?? '{}') as Record<string, unknown>;
     expect(log.requestId).toBe('request-observe-proxy');
+    expect(log.correlationId).toBe('request-observe-proxy');
     expect(log.routeId).toBe('todos.list');
     expect(log.upstream).toBe('bun-api');
     expect(typeof log.upstreamLatencyMs).toBe('number');
@@ -285,7 +301,7 @@ describe('api-gateway', () => {
     expect(upstreamSpan?.attributes['http.status_code']).toBe(200);
   });
 
-  it('keeps request id in gateway-generated error responses and error scenario logs', async () => {
+  it('keeps request id and correlation id in gateway-generated error responses and error scenario logs', async () => {
     const response = await app.handle(
       new Request('http://localhost/api/v1/missing', {
         headers: { 'x-request-id': 'request-error-observe' },
@@ -293,12 +309,17 @@ describe('api-gateway', () => {
     );
 
     expect(response.status).toBe(404);
-    const body = (await response.json()) as { requestId: string };
+    const body = (await response.json()) as { requestId: string; correlationId: string; timestamp: string };
     expect(body.requestId).toBe('request-error-observe');
+    expect(body.correlationId).toBe('request-error-observe');
+    expect(body.timestamp).toBeTruthy();
+    expect(new Date(body.timestamp).toISOString()).toBe(body.timestamp);
     expect(response.headers.get('x-request-id')).toBe('request-error-observe');
+    expect(response.headers.get('x-correlation-id')).toBe('request-error-observe');
 
     const log = JSON.parse(logLines.at(-1) ?? '{}') as Record<string, unknown>;
     expect(log.requestId).toBe('request-error-observe');
+    expect(log.correlationId).toBe('request-error-observe');
     expect(log.path).toBe('/api/v1/missing');
     expect(log.status).toBe(404);
     expect(log.upstream).toBe('gateway');
