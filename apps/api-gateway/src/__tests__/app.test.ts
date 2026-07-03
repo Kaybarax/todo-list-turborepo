@@ -308,6 +308,358 @@ describe('api-gateway', () => {
     expect(gatewaySpan?.attributes['http.route']).toBe('/api/v1/missing');
     expect(gatewaySpan?.attributes['gateway.upstream']).toBe('gateway');
   });
+
+  it('proxies auth.login to bun-api with deterministic mock response', async () => {
+    let upstreamUrl = '';
+    globalThis.fetch = (async (input: string | URL | Request) => {
+      upstreamUrl = String(input);
+      return new Response(JSON.stringify({ token: 'login-token', user: { id: 'user-login', email: 'user@example.com' } }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/auth/login', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email: 'user@example.com', password: 'secret' }),
+      }),
+    );
+
+    expect(upstreamUrl).toBe('http://localhost:3002/api/v1/auth/login');
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as { token: string; user: { id: string; email: string } };
+    expect(body.token).toBe('login-token');
+    expect(body.user.id).toBe('user-login');
+    expect(response.headers.get('x-gateway-route')).toBe('auth.login');
+    expect(response.headers.get('x-gateway-upstream')).toBe('bun-api');
+  });
+
+  it('proxies auth.refresh to bun-api with required auth and deterministic mock response', async () => {
+    const token = signTestJwt({
+      sub: 'user-refresh',
+      exp: Math.floor(Date.now() / 1000) + 60,
+    });
+    let upstreamUrl = '';
+    globalThis.fetch = (async (input: string | URL | Request) => {
+      upstreamUrl = String(input);
+      return new Response(JSON.stringify({ token: 'refreshed-token', user: { id: 'user-refresh' } }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/auth/refresh', {
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${token}`,
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({ refreshToken: 'abc' }),
+      }),
+    );
+
+    expect(upstreamUrl).toBe('http://localhost:3002/api/v1/auth/refresh');
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as { token: string; user: { id: string } };
+    expect(body.token).toBe('refreshed-token');
+    expect(body.user.id).toBe('user-refresh');
+    expect(response.headers.get('x-gateway-route')).toBe('auth.refresh');
+    expect(response.headers.get('x-gateway-upstream')).toBe('bun-api');
+  });
+
+  it('rejects auth.refresh without a token', async () => {
+    let upstreamCalled = false;
+    globalThis.fetch = (async () => {
+      upstreamCalled = true;
+      return new Response('should not be called');
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/auth/refresh', { method: 'POST' }),
+    );
+
+    expect(upstreamCalled).toBe(false);
+    expect(response.status).toBe(401);
+    const body = (await response.json()) as { errorCode: string };
+    expect(body.errorCode).toBe('GW_AUTH_REQUIRED');
+  });
+
+  it('proxies auth.profile to bun-api with required auth and deterministic mock response', async () => {
+    const token = signTestJwt({
+      sub: 'user-profile',
+      email: 'profile@example.com',
+      exp: Math.floor(Date.now() / 1000) + 60,
+    });
+    let upstreamUrl = '';
+    globalThis.fetch = (async (input: string | URL | Request) => {
+      upstreamUrl = String(input);
+      return new Response(JSON.stringify({ id: 'user-profile', email: 'profile@example.com', name: 'Profile User' }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/auth/profile', {
+        headers: { authorization: `Bearer ${token}` },
+      }),
+    );
+
+    expect(upstreamUrl).toBe('http://localhost:3002/api/v1/auth/profile');
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as { id: string; email: string; name: string };
+    expect(body.id).toBe('user-profile');
+    expect(body.email).toBe('profile@example.com');
+    expect(body.name).toBe('Profile User');
+    expect(response.headers.get('x-gateway-route')).toBe('auth.profile');
+    expect(response.headers.get('x-gateway-upstream')).toBe('bun-api');
+  });
+
+  it('proxies users.profile to nest-api with required auth and deterministic mock response', async () => {
+    const token = signTestJwt({
+      sub: 'user-nest',
+      exp: Math.floor(Date.now() / 1000) + 60,
+    });
+    let upstreamUrl = '';
+    globalThis.fetch = (async (input: string | URL | Request) => {
+      upstreamUrl = String(input);
+      return new Response(JSON.stringify({ id: 'user-nest', email: 'nest@example.com', name: 'Nest User' }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/users/profile', {
+        headers: { authorization: `Bearer ${token}` },
+      }),
+    );
+
+    expect(upstreamUrl).toBe('http://localhost:3001/api/v1/users/profile');
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as { id: string; email: string; name: string };
+    expect(body.id).toBe('user-nest');
+    expect(body.email).toBe('nest@example.com');
+    expect(body.name).toBe('Nest User');
+    expect(response.headers.get('x-gateway-route')).toBe('users.profile');
+    expect(response.headers.get('x-gateway-upstream')).toBe('nest-api');
+  });
+
+  it('proxies todos.create to nest-api with required auth and deterministic mock response', async () => {
+    const token = signTestJwt({
+      sub: 'user-create',
+      exp: Math.floor(Date.now() / 1000) + 60,
+    });
+    let upstreamUrl = '';
+    globalThis.fetch = (async (input: string | URL | Request) => {
+      upstreamUrl = String(input);
+      return new Response(JSON.stringify({ id: 'todo-created', title: 'New Todo', completed: false }), {
+        status: 201,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/todos', {
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${token}`,
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({ title: 'New Todo' }),
+      }),
+    );
+
+    expect(upstreamUrl).toBe('http://localhost:3001/api/v1/todos');
+    expect(response.status).toBe(201);
+    const body = (await response.json()) as { id: string; title: string; completed: boolean };
+    expect(body.id).toBe('todo-created');
+    expect(body.title).toBe('New Todo');
+    expect(body.completed).toBe(false);
+    expect(response.headers.get('x-gateway-route')).toBe('todos.create');
+    expect(response.headers.get('x-gateway-upstream')).toBe('nest-api');
+  });
+
+  it('proxies todos.stats to bun-api with required auth and deterministic mock response', async () => {
+    const token = signTestJwt({
+      sub: 'user-stats',
+      exp: Math.floor(Date.now() / 1000) + 60,
+    });
+    let upstreamUrl = '';
+    globalThis.fetch = (async (input: string | URL | Request) => {
+      upstreamUrl = String(input);
+      return new Response(JSON.stringify({ total: 10, completed: 7, pending: 3 }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/todos/stats', {
+        headers: { authorization: `Bearer ${token}` },
+      }),
+    );
+
+    expect(upstreamUrl).toBe('http://localhost:3002/api/v1/todos/stats');
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as { total: number; completed: number; pending: number };
+    expect(body.total).toBe(10);
+    expect(body.completed).toBe(7);
+    expect(body.pending).toBe(3);
+    expect(response.headers.get('x-gateway-route')).toBe('todos.stats');
+    expect(response.headers.get('x-gateway-upstream')).toBe('bun-api');
+  });
+
+  it('proxies todos.by-id GET to nest-api with path parameter substitution and deterministic mock response', async () => {
+    const token = signTestJwt({
+      sub: 'user-byid',
+      exp: Math.floor(Date.now() / 1000) + 60,
+    });
+    let upstreamUrl = '';
+    globalThis.fetch = (async (input: string | URL | Request) => {
+      upstreamUrl = String(input);
+      return new Response(JSON.stringify({ id: 'todo-42', title: 'Specific Todo', completed: false }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/todos/todo-42', {
+        headers: { authorization: `Bearer ${token}` },
+      }),
+    );
+
+    expect(upstreamUrl).toBe('http://localhost:3001/api/v1/todos/todo-42');
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as { id: string; title: string; completed: boolean };
+    expect(body.id).toBe('todo-42');
+    expect(body.title).toBe('Specific Todo');
+    expect(body.completed).toBe(false);
+    expect(response.headers.get('x-gateway-route')).toBe('todos.by-id');
+    expect(response.headers.get('x-gateway-upstream')).toBe('nest-api');
+  });
+
+  it('proxies todos.by-id PATCH to nest-api with path parameter substitution and deterministic mock response', async () => {
+    const token = signTestJwt({
+      sub: 'user-patch',
+      exp: Math.floor(Date.now() / 1000) + 60,
+    });
+    let upstreamUrl = '';
+    globalThis.fetch = (async (input: string | URL | Request) => {
+      upstreamUrl = String(input);
+      return new Response(JSON.stringify({ id: 'todo-42', title: 'Updated Todo', completed: true }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/todos/todo-42', {
+        method: 'PATCH',
+        headers: {
+          authorization: `Bearer ${token}`,
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({ title: 'Updated Todo', completed: true }),
+      }),
+    );
+
+    expect(upstreamUrl).toBe('http://localhost:3001/api/v1/todos/todo-42');
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as { id: string; title: string; completed: boolean };
+    expect(body.id).toBe('todo-42');
+    expect(body.title).toBe('Updated Todo');
+    expect(body.completed).toBe(true);
+    expect(response.headers.get('x-gateway-route')).toBe('todos.by-id');
+    expect(response.headers.get('x-gateway-upstream')).toBe('nest-api');
+  });
+
+  it('proxies todos.by-id DELETE to nest-api with path parameter substitution and deterministic mock response', async () => {
+    const token = signTestJwt({
+      sub: 'user-delete',
+      exp: Math.floor(Date.now() / 1000) + 60,
+    });
+    let upstreamUrl = '';
+    globalThis.fetch = (async (input: string | URL | Request) => {
+      upstreamUrl = String(input);
+      return new Response(undefined, {
+        status: 204,
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/todos/todo-42', {
+        method: 'DELETE',
+        headers: { authorization: `Bearer ${token}` },
+      }),
+    );
+
+    expect(upstreamUrl).toBe('http://localhost:3001/api/v1/todos/todo-42');
+    expect(response.status).toBe(204);
+    expect(response.headers.get('x-gateway-route')).toBe('todos.by-id');
+    expect(response.headers.get('x-gateway-upstream')).toBe('nest-api');
+  });
+
+  it('proxies todos.toggle to nest-api with path parameter substitution and deterministic mock response', async () => {
+    const token = signTestJwt({
+      sub: 'user-toggle',
+      exp: Math.floor(Date.now() / 1000) + 60,
+    });
+    let upstreamUrl = '';
+    globalThis.fetch = (async (input: string | URL | Request) => {
+      upstreamUrl = String(input);
+      return new Response(JSON.stringify({ id: 'todo-42', title: 'Toggle Todo', completed: true }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/todos/todo-42/toggle', {
+        method: 'PATCH',
+        headers: { authorization: `Bearer ${token}` },
+      }),
+    );
+
+    expect(upstreamUrl).toBe('http://localhost:3001/api/v1/todos/todo-42/toggle');
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as { id: string; title: string; completed: boolean };
+    expect(body.id).toBe('todo-42');
+    expect(body.title).toBe('Toggle Todo');
+    expect(body.completed).toBe(true);
+    expect(response.headers.get('x-gateway-route')).toBe('todos.toggle');
+    expect(response.headers.get('x-gateway-upstream')).toBe('nest-api');
+  });
+
+  it('forwards query params for todos.by-id GET', async () => {
+    const token = signTestJwt({
+      sub: 'user-query',
+      exp: Math.floor(Date.now() / 1000) + 60,
+    });
+    let upstreamUrl = '';
+    globalThis.fetch = (async (input: string | URL | Request) => {
+      upstreamUrl = String(input);
+      return new Response(JSON.stringify({ id: 'todo-99', title: 'Queried Todo', completed: false }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    }) as unknown as typeof fetch;
+
+    const response = await app.handle(
+      new Request('http://localhost/api/v1/todos/todo-99?fields=id,title&include=subtasks', {
+        headers: { authorization: `Bearer ${token}` },
+      }),
+    );
+
+    expect(upstreamUrl).toBe('http://localhost:3001/api/v1/todos/todo-99?fields=id,title&include=subtasks');
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as { id: string };
+    expect(body.id).toBe('todo-99');
+  });
 });
 
 process.on('exit', () => {

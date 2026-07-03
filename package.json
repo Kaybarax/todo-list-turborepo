@@ -151,10 +151,8 @@
     "turbo": "^2.5.6",
     "typescript": "^5.9.2"
   },
-  "pnpm": {
-    "overrides": {
-      "@types/node": "^22.17.2"
-    }
+  "overrides": {
+    "@types/node": "^22.17.2"
   },
   "optionalDependencies": {
     "@coral-xyz/anchor": "^0.31.1",
