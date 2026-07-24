@@ -53,6 +53,9 @@ jobs:
           path: packages/ui-mobile/storybook-static
           if-no-files-found: error
 
+      - name: Install Playwright browsers
+        run: pnpm --filter @todo/ui-mobile exec playwright install --with-deps
+
       - name: Accessibility Tests (Playwright)
         run: pnpm --filter @todo/ui-mobile test:a11y
 
