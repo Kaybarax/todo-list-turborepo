@@ -121,7 +121,7 @@ print_status "Verifying build artifacts..."
 
 # Check if all expected build outputs exist
 expected_builds=(
-    "apps/api/dist"
+    "apps/apis/nestjs-api/dist"
     "apps/web/.next"
     "apps/ingestion/dist"
     "packages/ui-web/dist"
@@ -159,8 +159,8 @@ cat > production-build-manifest.json << EOF
 EOF
 
 # Add checksums for critical files
-if [ -f "apps/api/dist/main.js" ]; then
-    echo "    \"api\": \"$(sha256sum apps/api/dist/main.js | cut -d' ' -f1)\"," >> production-build-manifest.json
+if [ -f "apps/apis/nestjs-api/dist/main.js" ]; then
+    echo "    \"api\": \"$(sha256sum apps/apis/nestjs-api/dist/main.js | cut -d' ' -f1)\"," >> production-build-manifest.json
 fi
 
 if [ -f "apps/web/.next/BUILD_ID" ]; then

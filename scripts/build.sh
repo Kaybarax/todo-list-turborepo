@@ -245,7 +245,7 @@ build_docker_images() {
         --target production \
         --build-arg NODE_ENV="$ENVIRONMENT" \
         -t "${REGISTRY_PREFIX}todo-api:$VERSION" \
-        -f apps/api/Dockerfile .
+        -f apps/apis/nestjs-api/Dockerfile .
     
     # Build Web app image
     print_status "Building Web app Docker image..."

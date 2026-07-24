@@ -43,7 +43,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: apps/api/Dockerfile
+      dockerfile: apps/apis/nestjs-api/Dockerfile
       target: development
     container_name: todo-api-dev
     restart: unless-stopped
@@ -52,15 +52,15 @@ services:
       - '9229:9229' # Debug port
     environment:
       NODE_ENV: development
-      MONGODB_URI: mongodb://admin:password@mongodb:27017/todo-app?authSource=admin
+      MONGODB_URI: mongodb://admin:***@mongodb:27017/todo-app?authSource=admin
       REDIS_URI: redis://redis:6379
       JWT_SECRET: dev-jwt-secret
       CORS_ORIGIN: http://localhost:3000
     volumes:
-      - ./apps/api:/app/apps/api
+      - ./apps/apis/nestjs-api:/app/apps/apis/nestjs-api
       - ./packages:/app/packages
       - /app/node_modules
-      - /app/apps/api/node_modules
+      - /app/apps/apis/nestjs-api/node_modules
     depends_on:
       mongodb:
         condition: service_healthy
@@ -73,7 +73,7 @@ services:
   api-bun:
     build:
       context: .
-      dockerfile: apps/api-bun/Dockerfile
+      dockerfile: apps/apis/bun-elysia-api/Dockerfile
       target: development
     container_name: todo-api-bun-dev
     restart: unless-stopped
@@ -81,15 +81,15 @@ services:
       - '3002:3002'
     environment:
       NODE_ENV: development
-      MONGODB_URI: mongodb://admin:password@mongodb:27017/todo-app?authSource=admin
+      MONGODB_URI: mongodb://admin:***@mongodb:27017/todo-app?authSource=admin
       REDIS_URI: redis://redis:6379
       JWT_SECRET: dev-jwt-secret
       CORS_ORIGIN: http://localhost:3000
     volumes:
-      - ./apps/api-bun:/app/apps/api-bun
+      - ./apps/apis/bun-elysia-api:/app/apps/apis/bun-elysia-api
       - ./packages:/app/packages
       - /app/node_modules
-      - /app/apps/api-bun/node_modules
+      - /app/apps/apis/bun-elysia-api/node_modules
     depends_on:
       mongodb:
         condition: service_healthy

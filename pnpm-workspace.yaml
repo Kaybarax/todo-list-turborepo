@@ -1,5 +1,6 @@
 packages:
   - 'apps/*'
+  - 'apps/apis/*'
   - 'apps/smart-contracts/*'
   - 'packages/*'
 
@@ -8,14 +9,14 @@ catalog:
   # Blockchain dependencies
   ethers: ^6.8.1
   hardhat: ^3.0.0
-  "@openzeppelin/contracts": ^5.4.0
-  "@solana/web3.js": ^1.98.4
-  "@polkadot/api": ^16.4.4
-  
+  '@openzeppelin/contracts': ^5.4.0
+  '@solana/web3.js': ^1.98.4
+  '@polkadot/api': ^16.4.4
+
   # Testing dependencies
   chai: ^4.3.10
   jest: ^30.0.5
-  
+
   # Build tools
   typescript: ^5.9.2
   prettier: ^3.4.2

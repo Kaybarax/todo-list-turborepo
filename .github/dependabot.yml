@@ -34,7 +34,7 @@ updates:
     open-pull-requests-limit: 5
 
   - package-ecosystem: 'docker'
-    directory: '/apps/api'
+    directory: '/apps/apis/nestjs-api'
     schedule:
       interval: 'weekly'
     open-pull-requests-limit: 5
