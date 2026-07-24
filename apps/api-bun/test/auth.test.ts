@@ -2,9 +2,9 @@ import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test'
 
 import mongoose from 'mongoose';
 
+import { resolveTestMongoUri } from './mongo-test-helper';
 import { app } from '../src/app';
 import { User } from '../src/modules/user/user.model';
-import { resolveTestMongoUri } from './mongo-test-helper';
 
 describe('Auth Integration', () => {
   let stopMongo: () => Promise<void>;

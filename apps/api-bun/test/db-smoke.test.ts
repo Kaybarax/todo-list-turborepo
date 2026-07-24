@@ -2,9 +2,9 @@ import { describe, it, expect, beforeAll, afterAll } from 'bun:test';
 
 import mongoose from 'mongoose';
 
+import { resolveTestMongoUri } from './mongo-test-helper';
 import { Todo } from '../src/modules/todo/todo.model';
 import { User } from '../src/modules/user/user.model';
-import { resolveTestMongoUri } from './mongo-test-helper';
 
 describe('Database Smoke Test', () => {
   let stopMongo: () => Promise<void>;

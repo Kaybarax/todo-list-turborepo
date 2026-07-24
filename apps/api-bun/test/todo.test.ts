@@ -2,11 +2,11 @@ import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test'
 
 import mongoose from 'mongoose';
 
+import { resolveTestMongoUri } from './mongo-test-helper';
 import { app } from '../src/app';
 import { cache } from '../src/cache';
 import { Todo } from '../src/modules/todo/todo.model';
 import { User } from '../src/modules/user/user.model';
-import { resolveTestMongoUri } from './mongo-test-helper';
 
 describe('Todo Integration', () => {
   let stopMongo: () => Promise<void>;
