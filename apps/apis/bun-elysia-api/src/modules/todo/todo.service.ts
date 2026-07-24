@@ -112,7 +112,7 @@ export class TodoService {
     const cachedTodo = await cache.get<TodoDocument>(cacheKey);
 
     if (cachedTodo && cachedTodo.userId === userId) {
-      return cachedTodo;
+      return Todo.hydrate(cachedTodo);
     }
 
     const todo = await Todo.findOne({ _id: id, userId });

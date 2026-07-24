@@ -39,6 +39,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build @todo/utils dependency
+        run: pnpm --filter @todo/utils build
+
       - name: Build Storybook
         run: pnpm run build-storybook
 
@@ -77,6 +80,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
         working-directory: .
+
+      - name: Build @todo/utils dependency
+        run: pnpm --filter @todo/utils build
 
       - name: Build Storybook
         run: pnpm run build-storybook
