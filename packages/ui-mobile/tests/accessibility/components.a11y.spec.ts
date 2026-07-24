@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { injectAxe, checkA11y } from 'axe-playwright';
+import { injectAxe, checkA11y, configureAxe } from 'axe-playwright';
+import { ACCESSIBILITY_TEST_CONFIG } from '../../.storybook/visual-tests';
 
 const COMPONENT_STORIES = [
   'components-button--primary',
@@ -20,6 +21,9 @@ const COMPONENT_STORIES = [
 test.describe('Accessibility Tests', () => {
   test.beforeEach(async ({ page }) => {
     await injectAxe(page);
+    await configureAxe(page, {
+      rules: ACCESSIBILITY_TEST_CONFIG.rules,
+    });
   });
 
   COMPONENT_STORIES.forEach(story => {
