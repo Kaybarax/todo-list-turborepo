@@ -4,7 +4,7 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - apps/api/**
+      - apps/apis/nestjs-api/**
       - packages/services/**
       - packages/utils/**
       - pnpm-lock.yaml
@@ -81,7 +81,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./apps/api/Dockerfile
+          file: ./apps/apis/nestjs-api/Dockerfile
           push: ${{ github.event_name == 'push' || github.event.inputs.push_image == 'true' }}
           tags: ${{ steps.image-tags.outputs.tags }}
           cache-from: type=registry,ref=${{ env.API_ECR_REPOSITORY_URL }}:buildcache
