@@ -16,6 +16,8 @@ jobs:
   chromatic:
     name: Chromatic Visual Tests
     runs-on: ubuntu-latest
+    env:
+      CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -44,9 +46,10 @@ jobs:
         run: pnpm --filter @todo/ui-mobile build-storybook
 
       - name: Run Chromatic
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
         uses: chromaui/action@v1
         with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/ui-mobile
           buildScriptName: build-storybook
           storybookBuildDir: storybook-static

@@ -16,6 +16,8 @@ jobs:
   chromatic-ui-web:
     name: Chromatic UI Web
     runs-on: ubuntu-latest
+    env:
+      CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN_UI_WEB }}
     defaults:
       run:
         working-directory: packages/ui-web
@@ -46,9 +48,10 @@ jobs:
         run: pnpm run build-storybook
 
       - name: Publish to Chromatic
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
         uses: chromaui/action@v1
         with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN_UI_WEB }}
+          projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/ui-web
           storybookBuildDir: storybook-static
           exitZeroOnChanges: true # Optional: Allow the workflow to pass even if there are UI changes
@@ -57,6 +60,8 @@ jobs:
   chromatic-ui-mobile:
     name: Chromatic UI Mobile
     runs-on: ubuntu-latest
+    env:
+      CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN_UI_MOBILE }}
     defaults:
       run:
         working-directory: packages/ui-mobile
@@ -88,9 +93,10 @@ jobs:
         run: pnpm run build-storybook
 
       - name: Publish to Chromatic
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
         uses: chromaui/action@v1
         with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN_UI_MOBILE }}
+          projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/ui-mobile
           storybookBuildDir: storybook-static
           exitZeroOnChanges: true # Optional: Allow the workflow to pass even if there are UI changes

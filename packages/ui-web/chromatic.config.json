@@ -6,7 +6,6 @@
   "ignoreLastBuildOnBranch": "main",
   "onlyChanged": true,
   "projectId": "Project:68a509e2239206f05e7bab14",
-  "projectToken": "CHROMATIC_PROJECT_TOKEN",
   "storybookBaseDir": "packages/ui-web",
   "storybookBuildDir": "storybook-static",
   "zip": true
