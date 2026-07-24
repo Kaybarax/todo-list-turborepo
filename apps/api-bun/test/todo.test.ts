@@ -1,21 +1,21 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
 
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
 import { app } from '../src/app';
 import { cache } from '../src/cache';
 import { Todo } from '../src/modules/todo/todo.model';
 import { User } from '../src/modules/user/user.model';
+import { resolveTestMongoUri } from './mongo-test-helper';
 
 describe('Todo Integration', () => {
-  let mongod: MongoMemoryServer;
+  let stopMongo: () => Promise<void>;
   let authToken: string;
   let userId: string;
 
   beforeAll(async () => {
-    mongod = await MongoMemoryServer.create();
-    const uri = mongod.getUri();
+    const { uri, stop } = await resolveTestMongoUri();
+    stopMongo = stop;
     await mongoose.connect(uri);
     await cache.initialize();
   });
@@ -23,7 +23,7 @@ describe('Todo Integration', () => {
   afterAll(async () => {
     await cache.quit();
     await mongoose.disconnect();
-    await mongod.stop();
+    if (stopMongo) await stopMongo();
   });
 
   beforeEach(async () => {

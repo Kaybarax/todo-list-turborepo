@@ -1,25 +1,26 @@
 import { describe, expect, it, beforeAll, afterAll } from 'bun:test';
 
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
 import { app } from '../../../src/app';
 import { cache } from '../../../src/cache';
 import { type HealthResponse, type ReadinessResponse } from '../../../src/schemas/health';
+import { resolveTestMongoUri } from '../../mongo-test-helper';
 
 describe('Health Module', () => {
-  let mongod: MongoMemoryServer;
+  let stopMongo: () => Promise<void>;
 
   beforeAll(async () => {
-    mongod = await MongoMemoryServer.create();
-    await mongoose.connect(mongod.getUri());
+    const { uri, stop } = await resolveTestMongoUri();
+    stopMongo = stop;
+    await mongoose.connect(uri);
     await cache.initialize();
   });
 
   afterAll(async () => {
     await cache.quit();
     await mongoose.disconnect();
-    await mongod.stop();
+    if (stopMongo) await stopMongo();
   });
 
   describe('GET /api/v1/health', () => {

@@ -11,6 +11,7 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   ...baseConfig,
   setupFilesAfterEnv: ['<rootDir>/../../packages/config-jest/setup-tests.js', '<rootDir>/jest.setup.js'],
+  testTimeout: 15000, // CI runners are slower; 5s default causes flaky timeouts
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@todo/utils/(.*)$': '<rootDir>/../../packages/utils/src/$1',
