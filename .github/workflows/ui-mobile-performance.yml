@@ -12,6 +12,10 @@ on:
       - 'packages/ui-mobile/**'
       - '.github/workflows/ui-mobile-performance.yml'
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   profile:
     name: Profile Components
