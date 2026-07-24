@@ -1,29 +1,25 @@
 import { test, expect } from '@playwright/test';
-import { injectAxe, checkA11y, configureAxe } from 'axe-playwright';
-import { ACCESSIBILITY_TEST_CONFIG } from '../../.storybook/visual-tests';
+import { injectAxe, checkA11y } from 'axe-playwright';
 
 const COMPONENT_STORIES = [
-  'button--primary',
-  'button--secondary',
-  'button--disabled',
-  'card--default',
-  'card--interactive',
-  'header--default',
-  'header--with-actions',
-  'modal--default',
-  'modal--alert',
-  'tabbar--default',
-  'tabbar--with-badges',
-  'text--heading',
-  'text--body',
+  'components-button--primary',
+  'components-button--secondary',
+  'components-button--disabled',
+  'components-card--elevated',
+  'components-card--interactive',
+  'components-header--basic',
+  'components-header--with-both-actions',
+  'components-modal--default',
+  'components-modal--alert',
+  'components-tabbar--basic',
+  'components-tabbar--with-badges',
+  'components-text--headings',
+  'components-text--body-text',
 ];
 
 test.describe('Accessibility Tests', () => {
   test.beforeEach(async ({ page }) => {
     await injectAxe(page);
-    await configureAxe(page, {
-      rules: ACCESSIBILITY_TEST_CONFIG.rules,
-    });
   });
 
   COMPONENT_STORIES.forEach(story => {
@@ -40,7 +36,7 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('Keyboard navigation - Button component', async ({ page }) => {
-    await page.goto('/iframe.html?id=button--primary');
+    await page.goto('/iframe.html?id=components-button--primary');
     await page.waitForSelector('#storybook-root');
 
     const button = page.locator('button');
@@ -60,7 +56,7 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('Keyboard navigation - Modal component', async ({ page }) => {
-    await page.goto('/iframe.html?id=modal--default');
+    await page.goto('/iframe.html?id=components-modal--default');
     await page.waitForSelector('#storybook-root');
 
     // Open modal (assuming there's a trigger button)
@@ -79,7 +75,7 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('Keyboard navigation - TabBar component', async ({ page }) => {
-    await page.goto('/iframe.html?id=tabbar--default');
+    await page.goto('/iframe.html?id=components-tabbar--basic');
     await page.waitForSelector('#storybook-root');
 
     const tabs = page.locator('[role="tab"]');
@@ -104,7 +100,7 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('Screen reader announcements - Button states', async ({ page }) => {
-    await page.goto('/iframe.html?id=button--loading');
+    await page.goto('/iframe.html?id=components-button--loading');
     await page.waitForSelector('#storybook-root');
 
     const button = page.locator('button');
@@ -114,7 +110,7 @@ test.describe('Accessibility Tests', () => {
     await expect(button).toHaveAttribute('aria-label', /.*loading.*/i);
 
     // Check disabled state
-    await page.goto('/iframe.html?id=button--disabled');
+    await page.goto('/iframe.html?id=components-button--disabled');
     await page.waitForSelector('#storybook-root');
 
     const disabledButton = page.locator('button');
@@ -122,7 +118,7 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('Touch target size validation', async ({ page }) => {
-    await page.goto('/iframe.html?id=button--primary');
+    await page.goto('/iframe.html?id=components-button--primary');
     await page.waitForSelector('#storybook-root');
 
     const button = page.locator('button');
@@ -134,7 +130,7 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('Color contrast validation', async ({ page }) => {
-    await page.goto('/iframe.html?id=text--body');
+    await page.goto('/iframe.html?id=components-text--body-text');
     await page.waitForSelector('#storybook-root');
 
     // Check color contrast with axe
@@ -146,7 +142,7 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('Focus management - Modal component', async ({ page }) => {
-    await page.goto('/iframe.html?id=modal--default');
+    await page.goto('/iframe.html?id=components-modal--default');
     await page.waitForSelector('#storybook-root');
 
     // Store initial focus
@@ -180,7 +176,7 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('ARIA labels and roles validation', async ({ page }) => {
-    await page.goto('/iframe.html?id=tabbar--with-badges');
+    await page.goto('/iframe.html?id=components-tabbar--with-badges');
     await page.waitForSelector('#storybook-root');
 
     // Check tab roles
@@ -206,7 +202,7 @@ test.describe('Accessibility Tests', () => {
     // Set reduced motion preference
     await page.emulateMedia({ reducedMotion: 'reduce' });
 
-    await page.goto('/iframe.html?id=modal--default');
+    await page.goto('/iframe.html?id=components-modal--default');
     await page.waitForSelector('#storybook-root');
 
     // Open modal
@@ -233,7 +229,7 @@ test.describe('Accessibility Tests', () => {
     // Simulate high contrast mode
     await page.emulateMedia({ forcedColors: 'active' });
 
-    await page.goto('/iframe.html?id=button--primary');
+    await page.goto('/iframe.html?id=components-button--primary');
     await page.waitForSelector('#storybook-root');
 
     // Check that components still have proper contrast
