@@ -34,8 +34,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build @todo/utils
-        run: pnpm --filter @todo/utils build
+      - name: Build workspace dependencies
+        run: |
+          pnpm --filter @todo/services build
+          pnpm --filter @todo/utils build
 
       - name: Build ui-mobile package
         run: pnpm --filter @todo/ui-mobile build

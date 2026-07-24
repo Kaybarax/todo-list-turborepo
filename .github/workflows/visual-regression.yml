@@ -39,8 +39,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build @todo/utils dependency
-        run: pnpm --filter @todo/utils build
+      - name: Build workspace dependencies
+        run: |
+          pnpm --filter @todo/services build
+          pnpm --filter @todo/utils build
 
       - name: Build Storybook
         run: pnpm --filter @todo/ui-mobile build-storybook
@@ -80,8 +82,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build @todo/utils
-        run: pnpm --filter @todo/utils build
+      - name: Build workspace dependencies
+        run: |
+          pnpm --filter @todo/services build
+          pnpm --filter @todo/utils build
 
       - name: Install Playwright
         run: pnpm --filter @todo/ui-mobile exec playwright install --with-deps
@@ -121,8 +125,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build @todo/utils
-        run: pnpm --filter @todo/utils build
+      - name: Build workspace dependencies
+        run: |
+          pnpm --filter @todo/services build
+          pnpm --filter @todo/utils build
 
       - name: Install Playwright
         run: pnpm --filter @todo/ui-mobile exec playwright install --with-deps
@@ -166,8 +172,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build @todo/utils
-        run: pnpm --filter @todo/utils build
+      - name: Build workspace dependencies
+        run: |
+          pnpm --filter @todo/services build
+          pnpm --filter @todo/utils build
 
       - name: Install Playwright
         run: pnpm --filter @todo/ui-mobile exec playwright install --with-deps
