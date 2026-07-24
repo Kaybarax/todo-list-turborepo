@@ -85,6 +85,18 @@ export const VISUAL_TEST_SCENARIOS: VisualTestScenario[] = [
     platform: 'android',
     userAgent: 'Mozilla/5.0 (Linux; Android 11; SM-G991B) AppleWebKit/537.36',
   },
+  {
+    name: 'web-light-desktop',
+    viewport: { width: 1280, height: 720 },
+    theme: 'light',
+    platform: 'web',
+  },
+  {
+    name: 'web-dark-desktop',
+    viewport: { width: 1280, height: 720 },
+    theme: 'dark',
+    platform: 'web',
+  },
 
   // Tablet Scenarios
   {

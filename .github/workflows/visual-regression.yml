@@ -184,7 +184,7 @@ jobs:
         run: pnpm --filter @todo/ui-mobile build-storybook
 
       - name: Run visual regression tests
-        run: pnpm --filter @todo/ui-mobile test:visual --platform=${{ matrix.platform }} --theme=${{ matrix.theme }}
+        run: pnpm --filter @todo/ui-mobile test:visual
         env:
           PLATFORM: ${{ matrix.platform }}
           THEME: ${{ matrix.theme }}
