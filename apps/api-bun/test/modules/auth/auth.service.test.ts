@@ -1,15 +1,15 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach, mock } from 'bun:test';
 
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
 import { AuthService, type JwtSigner } from '../../../src/modules/auth/auth.service';
 import { User } from '../../../src/modules/user/user.model';
 import { UserService } from '../../../src/modules/user/user.service';
 import { UnauthorizedError, ConflictError } from '../../../src/plugins/errors';
+import { resolveTestMongoUri } from '../../mongo-test-helper';
 
 describe('AuthService', () => {
-  let mongod: MongoMemoryServer;
+  let stopMongo: () => Promise<void>;
   let userService: UserService;
   let authService: AuthService;
 
@@ -18,8 +18,8 @@ describe('AuthService', () => {
   };
 
   beforeAll(async () => {
-    mongod = await MongoMemoryServer.create();
-    const uri = mongod.getUri();
+    const { uri, stop } = await resolveTestMongoUri();
+    stopMongo = stop;
     await mongoose.connect(uri);
     userService = new UserService();
     authService = new AuthService(userService);
@@ -27,7 +27,7 @@ describe('AuthService', () => {
 
   afterAll(async () => {
     await mongoose.disconnect();
-    await mongod.stop();
+    if (stopMongo) await stopMongo();
   });
 
   beforeEach(async () => {

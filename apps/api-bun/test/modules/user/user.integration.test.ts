@@ -2,15 +2,15 @@ import { describe, it, expect, beforeAll, afterAll } from 'bun:test';
 
 import { jwt } from '@elysiajs/jwt';
 import { Elysia } from 'elysia';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
 import { app } from '../../../src/app';
 import { config } from '../../../src/config/env';
 import { User } from '../../../src/modules/user/user.model';
+import { resolveTestMongoUri } from '../../mongo-test-helper';
 
 describe('User Integration', () => {
-  let mongod: MongoMemoryServer;
+  let stopMongo: () => Promise<void>;
 
   // Helper to sign a token for testing
   const signToken = async (sub: string, email: string) => {
@@ -25,14 +25,14 @@ describe('User Integration', () => {
   };
 
   beforeAll(async () => {
-    mongod = await MongoMemoryServer.create();
-    const uri = mongod.getUri();
+    const { uri, stop } = await resolveTestMongoUri();
+    stopMongo = stop;
     await mongoose.connect(uri);
   });
 
   afterAll(async () => {
     await mongoose.disconnect();
-    await mongod.stop();
+    if (stopMongo) await stopMongo();
   });
 
   describe('GET /api/v1/users/profile', () => {

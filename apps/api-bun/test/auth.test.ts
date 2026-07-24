@@ -1,23 +1,23 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
 
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
+import { resolveTestMongoUri } from './mongo-test-helper';
 import { app } from '../src/app';
 import { User } from '../src/modules/user/user.model';
 
 describe('Auth Integration', () => {
-  let mongod: MongoMemoryServer;
+  let stopMongo: () => Promise<void>;
 
   beforeAll(async () => {
-    mongod = await MongoMemoryServer.create();
-    const uri = mongod.getUri();
+    const { uri, stop } = await resolveTestMongoUri();
+    stopMongo = stop;
     await mongoose.connect(uri);
   });
 
   afterAll(async () => {
     await mongoose.disconnect();
-    await mongod.stop();
+    if (stopMongo) await stopMongo();
   });
 
   beforeEach(async () => {

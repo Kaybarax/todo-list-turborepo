@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { TodoForm, type TodoFormData } from '../todo/TodoForm';
@@ -187,7 +187,9 @@ describe('TodoForm', () => {
       await user.type(screen.getByLabelText('Tags'), 'test-tag');
       await user.click(screen.getByRole('button', { name: 'Add' }));
 
-      expect(screen.getByText('test-tag')).toBeInTheDocument();
+      // Use findByText — tag rendering involves a state update that may not
+      // be settled on slow CI runners with synchronous getByText.
+      expect(await screen.findByText('test-tag')).toBeInTheDocument();
       expect(screen.getByLabelText('Tags')).toHaveValue('');
     });
 
@@ -199,7 +201,8 @@ describe('TodoForm', () => {
       await user.type(tagInput, 'test-tag');
       await user.keyboard('{Enter}');
 
-      expect(screen.getByText('test-tag')).toBeInTheDocument();
+      // Use findByText — Enter key triggers addTag which calls setState
+      expect(await screen.findByText('test-tag')).toBeInTheDocument();
       expect(tagInput).toHaveValue('');
     });
 
@@ -213,7 +216,9 @@ describe('TodoForm', () => {
       await user.type(screen.getByLabelText('Tags'), 'duplicate');
       await user.click(screen.getByRole('button', { name: 'Add' }));
 
-      expect(screen.getAllByText('duplicate')).toHaveLength(1);
+      // Use findAllByText and await — duplicate assertion needs DOM settled
+      const tags = await screen.findAllByText('duplicate');
+      expect(tags).toHaveLength(1);
     });
 
     it('removes tags when remove button is clicked', async () => {
@@ -221,11 +226,14 @@ describe('TodoForm', () => {
       const initialData = { title: 'Test', priority: 'medium' as const, tags: ['removeme'] };
       render(<TodoForm onSubmit={mockOnSubmit} initialData={initialData} />);
 
-      expect(screen.getByText('removeme')).toBeInTheDocument();
+      expect(await screen.findByText('removeme')).toBeInTheDocument();
 
       await user.click(screen.getByRole('button', { name: 'Remove removeme tag' }));
 
-      expect(screen.queryByText('removeme')).not.toBeInTheDocument();
+      // Wait for removal to settle before asserting absence
+      await waitFor(() => {
+        expect(screen.queryByText('removeme')).not.toBeInTheDocument();
+      });
     });
 
     it('prevents adding more than 10 tags', async () => {
@@ -237,10 +245,17 @@ describe('TodoForm', () => {
       };
       render(<TodoForm onSubmit={mockOnSubmit} initialData={initialData} />);
 
+      // Verify all 10 initial tags render
+      for (let i = 0; i < 10; i++) {
+        expect(await screen.findByText(`tag${i}`)).toBeInTheDocument();
+      }
+
       await user.type(screen.getByLabelText('Tags'), 'extra-tag');
       await user.click(screen.getByRole('button', { name: 'Add' }));
 
-      expect(screen.queryByText('extra-tag')).not.toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.queryByText('extra-tag')).not.toBeInTheDocument();
+      });
     });
 
     it('includes tags in form submission', async () => {

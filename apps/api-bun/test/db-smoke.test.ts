@@ -1,23 +1,23 @@
 import { describe, it, expect, beforeAll, afterAll } from 'bun:test';
 
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
+import { resolveTestMongoUri } from './mongo-test-helper';
 import { Todo } from '../src/modules/todo/todo.model';
 import { User } from '../src/modules/user/user.model';
 
 describe('Database Smoke Test', () => {
-  let mongod: MongoMemoryServer;
+  let stopMongo: () => Promise<void>;
 
   beforeAll(async () => {
-    mongod = await MongoMemoryServer.create();
-    const uri = mongod.getUri();
+    const { uri, stop } = await resolveTestMongoUri();
+    stopMongo = stop;
     await mongoose.connect(uri);
   }, 30000);
 
   afterAll(async () => {
     await mongoose.disconnect();
-    await mongod?.stop();
+    if (stopMongo) await stopMongo();
   }, 30000);
 
   it('should create and save a user with hashed password', async () => {
