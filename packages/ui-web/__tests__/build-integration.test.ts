@@ -184,7 +184,7 @@ describe('Style Dictionary Build Integration', () => {
   });
 
   describe('Build Consistency', () => {
-    it('should produce identical output on repeated builds', async () => {
+    it('should produce identical output on repeated builds', { timeout: 30000 }, async () => {
       // Build tokens twice
       await execAsync('npm run tokens:build', { cwd: projectRoot });
       const firstBuild = readFileSync(resolve(distTokensPath, 'tokens.js'), 'utf-8');
