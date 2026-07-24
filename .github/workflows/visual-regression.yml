@@ -23,19 +23,22 @@ jobs:
         with:
           fetch-depth: 0 # Required for Chromatic baseline detection
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.0
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build @todo/utils dependency
+        run: pnpm --filter @todo/utils build
 
       - name: Build Storybook
         run: pnpm --filter @todo/ui-mobile build-storybook
@@ -60,19 +63,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.0
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build @todo/utils
+        run: pnpm --filter @todo/utils build
 
       - name: Install Playwright
         run: pnpm --filter @todo/ui-mobile exec playwright install --with-deps
@@ -98,19 +104,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.0
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build @todo/utils
+        run: pnpm --filter @todo/utils build
 
       - name: Install Playwright
         run: pnpm --filter @todo/ui-mobile exec playwright install --with-deps
@@ -140,19 +149,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.0
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build @todo/utils
+        run: pnpm --filter @todo/utils build
 
       - name: Install Playwright
         run: pnpm --filter @todo/ui-mobile exec playwright install --with-deps
