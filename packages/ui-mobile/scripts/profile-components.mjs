@@ -29,7 +29,7 @@ import {
   mapButtonStatus,
   mapButtonSize,
   mapTextCategory,
-} from '../lib/utils/componentMappings.ts';
+} from '@todo/utils/ui/mobile';
 
 // Local light replicas for Avatar & Badge mapping logic (avoid RN / theme deps)
 const avatarSizeToCategory = size => {
