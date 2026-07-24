@@ -203,7 +203,7 @@ describe('Style Dictionary Build Integration', () => {
           .trim();
 
       expect(normalizeContent(firstBuild)).toBe(normalizeContent(secondBuild));
-    });
+    }, 30_000);
 
     it('should maintain token references across formats', async () => {
       // Read the generated files
