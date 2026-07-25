@@ -40,10 +40,17 @@ export default defineConfig({
       testMatch: /.*\.a11y\.spec\.ts/,
     },
   ],
-  webServer: {
-    command: 'npm run storybook',
-    url: 'http://localhost:6006',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
-  },
+  webServer: process.env.CI
+    ? {
+        command: 'npx serve storybook-static -p 6006 -L',
+        url: 'http://localhost:6006',
+        reuseExistingServer: true,
+        timeout: 30 * 1000,
+      }
+    : {
+        command: 'npm run storybook',
+        url: 'http://localhost:6006',
+        reuseExistingServer: !process.env.CI,
+        timeout: 120 * 1000,
+      },
 });
