@@ -22,7 +22,10 @@ test.describe('Accessibility Tests', () => {
   test.beforeEach(async ({ page }) => {
     await injectAxe(page);
     await configureAxe(page, {
-      rules: ACCESSIBILITY_TEST_CONFIG.rules,
+      rules: Object.entries(ACCESSIBILITY_TEST_CONFIG.rules).map(([id, config]) => ({
+        id,
+        ...config,
+      })),
     });
   });
 
