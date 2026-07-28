@@ -2,6 +2,10 @@ import React from 'react';
 import type { Preview } from '@storybook/react';
 import { ThemeProvider } from '../lib/theme';
 
+// Make React globally available for bundled @ui-kitten components that use
+// React.createElement from classic JSX transform without their own import.
+(window as any).React = React;
+
 // Theme decorator with theme switching support
 const withTheme = (Story: any, context: any) => {
   const themeName = context.globals.theme === 'dark' ? 'dark' : 'light';

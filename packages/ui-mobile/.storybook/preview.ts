@@ -1,5 +1,9 @@
 import { withUIKitten } from '../src/stories/decorators/UIKittenProvider';
 
+// Make React globally available for bundled @ui-kitten components
+import React from 'react';
+(window as any).React = React;
+
 const preview = {
   parameters: {
     controls: {
