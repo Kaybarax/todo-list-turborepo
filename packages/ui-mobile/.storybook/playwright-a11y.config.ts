@@ -42,11 +42,10 @@ export default defineConfig({
   ],
   webServer: process.env.CI
     ? {
-        command: 'node scripts/serve-storybook.mjs',
+        command: 'node node_modules/.bin/serve packages/ui-mobile/storybook-static -p 6006 -L',
         url: 'http://localhost:6006',
-        reuseExistingServer: true,
+        reuseExistingServer: false,
         timeout: 120 * 1000,
-        cwd: '..',
       }
     : {
         command: 'npm run storybook',
