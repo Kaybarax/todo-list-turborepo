@@ -324,7 +324,7 @@ describe('api-gateway', () => {
     });
 
     it('reports all-up healthy via /api/v1/health', async () => {
-      globalThis.fetch = (async (input: string | URL | Request) => {
+      globalThis.fetch = (async () => {
         return new Response(JSON.stringify({ status: 'ready' }), {
           status: 200,
           headers: { 'content-type': 'application/json' },
@@ -346,7 +346,7 @@ describe('api-gateway', () => {
     });
 
     it('reports all-up via /api/v1/health/ready with cache-control header', async () => {
-      globalThis.fetch = (async (input: string | URL | Request) => {
+      globalThis.fetch = (async () => {
         return new Response(JSON.stringify({ status: 'ready' }), {
           status: 200,
           headers: { 'content-type': 'application/json' },
@@ -368,7 +368,7 @@ describe('api-gateway', () => {
 
     it('reports degraded state when one upstream is down', async () => {
       let callCount = 0;
-      globalThis.fetch = (async (input: string | URL | Request) => {
+      globalThis.fetch = (async () => {
         callCount += 1;
         // First upstream OK, second fails
         if (callCount === 1) {
@@ -393,7 +393,7 @@ describe('api-gateway', () => {
     });
 
     it('reports unhealthy and returns 503 when all upstreams are down', async () => {
-      globalThis.fetch = (async (input: string | URL | Request) => {
+      globalThis.fetch = (async () => {
         throw new Error('upstream unreachable');
       }) as unknown as typeof fetch;
 
@@ -415,7 +415,7 @@ describe('api-gateway', () => {
     });
 
     it('reports upstream health at /api/v1/health even when all down (200 OK)', async () => {
-      globalThis.fetch = (async (input: string | URL | Request) => {
+      globalThis.fetch = (async () => {
         throw new Error('upstream unreachable');
       }) as unknown as typeof fetch;
 
