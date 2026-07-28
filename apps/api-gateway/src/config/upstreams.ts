@@ -1,5 +1,5 @@
 import { config } from './env';
-import { type Upstream } from '../types/upstream';
+import { type Upstream, type UpstreamId } from '../types/upstream';
 
 export const upstreams: Record<Upstream['id'], Upstream> = {
   'nest-api': {
@@ -15,3 +15,6 @@ export const upstreams: Record<Upstream['id'], Upstream> = {
     serviceName: 'todo-api-bun',
   },
 };
+
+/** Stable ordered list of upstream IDs for consistent health-report ordering. */
+export const UPSTREAM_IDS: UpstreamId[] = ['nest-api', 'bun-api'];
