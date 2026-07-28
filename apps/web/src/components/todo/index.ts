@@ -1,12 +1,12 @@
 export { TodoForm, todoFormVariants, type TodoFormData, type TodoFormProps } from './TodoForm';
 export { TodoItem, todoItemVariants, type TodoData, type TodoItemProps } from './TodoItem';
+export { TodoList, todoListVariants, type TodoListProps, type TodoListStats, type FilterType } from './TodoList';
 export {
-  TodoList,
-  todoListVariants,
-  type TodoListProps,
-  type TodoListStats,
-  type FilterType,
+  TodoFilters,
+  type TodoFiltersProps,
+  type PriorityFilter,
+  type StatusFilter,
+  type SavedFilterView,
   type SortType,
-} from './TodoList';
-export { TodoFilters, type TodoFiltersProps, type PriorityFilter, type StatusFilter } from './TodoFilters';
+} from './TodoFilters';
 export { TodoBulkActions, type TodoBulkActionsProps } from './TodoBulkActions';

@@ -14,14 +14,15 @@ export {
 // Todo Components
 export { TodoForm, todoFormVariants, type TodoFormData, type TodoFormProps } from './todo/TodoForm';
 export { TodoItem, todoItemVariants, type TodoData, type TodoItemProps } from './todo/TodoItem';
+export { TodoList, todoListVariants, type TodoListProps, type TodoListStats, type FilterType } from './todo/TodoList';
 export {
-  TodoList,
-  todoListVariants,
-  type TodoListProps,
-  type TodoListStats,
-  type FilterType,
+  TodoFilters,
+  type TodoFiltersProps,
+  type PriorityFilter,
+  type StatusFilter,
+  type SavedFilterView,
   type SortType,
-} from './todo/TodoList';
+} from './todo/TodoFilters';
 
 // Wallet Provider Components
 export {
