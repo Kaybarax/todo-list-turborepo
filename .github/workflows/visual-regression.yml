@@ -183,8 +183,8 @@ jobs:
       - name: Build Storybook
         run: pnpm --filter @todo/ui-mobile build-storybook
 
-      - name: Run visual regression tests
-        run: pnpm --filter @todo/ui-mobile test:visual
+      - name: Run visual regression tests (generate baseline snapshots)
+        run: pnpm --filter @todo/ui-mobile exec playwright test --config=.storybook/playwright-visual.config.ts --update-snapshots
         env:
           PLATFORM: ${{ matrix.platform }}
           THEME: ${{ matrix.theme }}
@@ -195,6 +195,13 @@ jobs:
         with:
           name: screenshots-${{ matrix.platform }}-${{ matrix.theme }}
           path: packages/ui-mobile/screenshots/
+
+      - name: Upload baseline snapshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: visual-snapshots-${{ matrix.platform }}-${{ matrix.theme }}
+          path: packages/ui-mobile/tests/visual/*.spec.ts-snapshots/
 
   report:
     name: Generate Test Report
