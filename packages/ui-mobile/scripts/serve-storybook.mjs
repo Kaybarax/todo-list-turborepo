@@ -39,7 +39,10 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
-  let filePath = path.join(STATIC_DIR, req.url === '/' ? 'index.html' : req.url);
+  // Strip query string from URL pathname (e.g. /iframe.html?id=foo → /iframe.html)
+  const pathname = req.url.split('?')[0];
+  const relativePath = pathname === '/' ? '/index.html' : pathname;
+  const filePath = path.join(STATIC_DIR, relativePath);
 
   // Security: prevent directory traversal outside STATIC_DIR
   if (!filePath.startsWith(STATIC_DIR)) {
@@ -50,16 +53,16 @@ const server = http.createServer((req, res) => {
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
-      // Try index.html for SPA-style routes
+      // Try index.html for SPA-style client-side routing
       const indexPath = path.join(STATIC_DIR, 'index.html');
       fs.readFile(indexPath, (err2, data2) => {
         if (err2) {
-          res.writeHead(404);
-          res.end('Not found');
+          res.writeHead(404, { 'Content-Type': 'text/plain' });
+          res.end(`Not found: ${relativePath}`);
           return;
         }
         const ext = path.extname(indexPath);
-        res.writeHead(200, { 'Content-Type': MIME_TYPES[ext] || 'text/plain' });
+        res.writeHead(200, { 'Content-Type': MIME_TYPES[ext] || 'text/html' });
         res.end(data2);
       });
       return;
