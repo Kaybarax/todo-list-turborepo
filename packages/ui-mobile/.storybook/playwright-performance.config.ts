@@ -41,10 +41,10 @@ export default defineConfig({
   ],
   webServer: process.env.CI
     ? {
-        command: 'npx serve storybook-static -p 6006 -L',
+        command: 'npx --no-install serve storybook-static -p 6006',
         url: 'http://localhost:6006',
         reuseExistingServer: true,
-        timeout: 60 * 1000,
+        timeout: 120 * 1000,
       }
     : {
         command: 'npm run storybook',
