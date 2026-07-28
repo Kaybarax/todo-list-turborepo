@@ -308,6 +308,128 @@ describe('api-gateway', () => {
     expect(gatewaySpan?.attributes['http.route']).toBe('/api/v1/missing');
     expect(gatewaySpan?.attributes['gateway.upstream']).toBe('gateway');
   });
+
+  describe('health / readiness diagnostics', () => {
+    it('returns simple gateway metadata on /api/v1 (no upstream checks)', async () => {
+      const response = await app.handle(new Request('http://localhost/api/v1'));
+
+      expect(response.status).toBe(200);
+      const body = (await response.json()) as Record<string, unknown>;
+      expect(body.service).toBe('api-gateway');
+      expect(body.version).toBe('0.0.1');
+      expect(body.timestamp).toBeDefined();
+      // /api/v1 does not include upstream diagnostics
+      expect(body).not.toHaveProperty('status');
+      expect(body).not.toHaveProperty('upstreams');
+    });
+
+    it('reports all-up healthy via /api/v1/health', async () => {
+      globalThis.fetch = (async () => {
+        return new Response(JSON.stringify({ status: 'ready' }), {
+          status: 200,
+          headers: { 'content-type': 'application/json' },
+        });
+      }) as unknown as typeof fetch;
+
+      const response = await app.handle(new Request('http://localhost/api/v1/health'));
+
+      expect(response.status).toBe(200);
+      const body = (await response.json()) as Record<string, unknown>;
+      expect(body.service).toBe('api-gateway');
+      expect(body.version).toBe('0.0.1');
+      expect(body.status).toBe('healthy');
+      expect(body.healthyCount).toBe(2);
+      expect(body.unhealthyCount).toBe(0);
+      expect(body.totalCount).toBe(2);
+      expect(body.upstreams).toHaveLength(2);
+      expect(body.timestamp).toBeDefined();
+    });
+
+    it('reports all-up via /api/v1/health/ready with cache-control header', async () => {
+      globalThis.fetch = (async () => {
+        return new Response(JSON.stringify({ status: 'ready' }), {
+          status: 200,
+          headers: { 'content-type': 'application/json' },
+        });
+      }) as unknown as typeof fetch;
+
+      const response = await app.handle(new Request('http://localhost/api/v1/health/ready'));
+
+      expect(response.status).toBe(200);
+      expect(response.headers.get('cache-control')).toBe('no-cache, no-store, must-revalidate');
+      const body = (await response.json()) as Record<string, unknown>;
+      expect(body.status).toBe('ready');
+      expect(body.service).toBe('api-gateway');
+      expect(body.healthyCount).toBe(2);
+      expect(body.unhealthyCount).toBe(0);
+      expect(body.totalCount).toBe(2);
+      expect(body.upstreams).toHaveLength(2);
+    });
+
+    it('reports degraded state when one upstream is down', async () => {
+      let callCount = 0;
+      globalThis.fetch = (async () => {
+        callCount += 1;
+        // First upstream OK, second fails
+        if (callCount === 1) {
+          return new Response(JSON.stringify({ status: 'ready' }), {
+            status: 200,
+            headers: { 'content-type': 'application/json' },
+          });
+        }
+        return new Response('Service Unavailable', { status: 503 });
+      }) as unknown as typeof fetch;
+
+      const response = await app.handle(new Request('http://localhost/api/v1/health/ready'));
+
+      expect(response.status).toBe(200);
+      expect(response.headers.get('cache-control')).toBe('no-cache, no-store, must-revalidate');
+      const body = (await response.json()) as Record<string, unknown>;
+      expect(body.status).toBe('degraded');
+      expect(body.healthyCount).toBe(1);
+      expect(body.unhealthyCount).toBe(1);
+      expect(body.totalCount).toBe(2);
+      expect(body.upstreams).toHaveLength(2);
+    });
+
+    it('reports unhealthy and returns 503 when all upstreams are down', async () => {
+      globalThis.fetch = (async () => {
+        throw new Error('upstream unreachable');
+      }) as unknown as typeof fetch;
+
+      const response = await app.handle(new Request('http://localhost/api/v1/health/ready'));
+
+      expect(response.status).toBe(503);
+      expect(response.headers.get('cache-control')).toBe('no-cache, no-store, must-revalidate');
+      const body = (await response.json()) as Record<string, unknown>;
+      expect(body.status).toBe('unhealthy');
+      expect(body.healthyCount).toBe(0);
+      expect(body.unhealthyCount).toBe(2);
+      expect(body.totalCount).toBe(2);
+      expect(body.upstreams).toHaveLength(2);
+      // Each upstream should report an error
+      for (const u of body.upstreams as Array<Record<string, unknown>>) {
+        expect(u.healthy).toBe(false);
+        expect(u.error).toBe('unreachable');
+      }
+    });
+
+    it('reports upstream health at /api/v1/health even when all down (200 OK)', async () => {
+      globalThis.fetch = (async () => {
+        throw new Error('upstream unreachable');
+      }) as unknown as typeof fetch;
+
+      const response = await app.handle(new Request('http://localhost/api/v1/health'));
+
+      // The /api/v1/health endpoint always returns 200 and includes status detail
+      expect(response.status).toBe(200);
+      const body = (await response.json()) as Record<string, unknown>;
+      expect(body.status).toBe('unhealthy');
+      expect(body.healthyCount).toBe(0);
+      expect(body.unhealthyCount).toBe(2);
+      expect(body.upstreams).toHaveLength(2);
+    });
+  });
 });
 
 process.on('exit', () => {
