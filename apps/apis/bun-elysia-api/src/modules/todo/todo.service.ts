@@ -112,7 +112,7 @@ export class TodoService {
     const cachedTodo = await cache.get<TodoDocument>(cacheKey);
 
     if (cachedTodo && cachedTodo.userId === userId) {
-      return cachedTodo;
+      return Todo.hydrate(cachedTodo);
     }
 
     const todo = await Todo.findOne({ _id: id, userId });
@@ -129,7 +129,8 @@ export class TodoService {
 
   @Trace('TodoService.update')
   async update(id: string, updateTodoBody: UpdateTodoBody, userId: string): Promise<TodoDocument> {
-    const existing = await this.findOne(id, userId);
+    // Verify the todo exists and belongs to the user
+    await this.findOne(id, userId);
 
     const { dueDate, ...rest } = updateTodoBody;
     const updateData: Partial<ITodo> = { ...rest } as any;
@@ -137,9 +138,12 @@ export class TodoService {
       updateData.dueDate = new Date(dueDate);
     }
 
-    // Update the document
-    Object.assign(existing, updateData);
-    const persisted = await existing.save();
+    // Use findByIdAndUpdate to avoid cache hydration issues with _id
+    const persisted = await Todo.findByIdAndUpdate(id, { $set: updateData }, { new: true });
+
+    if (!persisted) {
+      throw new NotFoundError(`Todo with ID ${id} not found or access denied`);
+    }
 
     // Update cache and invalidate user cache
     await Promise.all([
@@ -233,9 +237,16 @@ export class TodoService {
 
   @Trace('TodoService.toggleComplete')
   async toggleComplete(id: string, userId: string): Promise<TodoDocument> {
-    const todo = await this.findOne(id, userId);
-    todo.completed = !todo.completed;
-    const persisted = await todo.save();
+    // Verify the todo exists and belongs to the user
+    await this.findOne(id, userId);
+
+    const persisted = await Todo.findByIdAndUpdate(id, [{ $set: { completed: { $not: '$completed' } } }], {
+      new: true,
+    });
+
+    if (!persisted) {
+      throw new NotFoundError(`Todo with ID ${id} not found or access denied`);
+    }
 
     await Promise.all([
       cache.set(cache.generateTodoKey(id), persisted, this.CACHE_TTL),

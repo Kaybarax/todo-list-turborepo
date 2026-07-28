@@ -1,6 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
 import { VISUAL_TEST_SCENARIOS } from './visual-tests';
 
+const requestedPlatform = process.env.PLATFORM;
+const requestedTheme = process.env.THEME;
+const selectedScenarios = VISUAL_TEST_SCENARIOS.filter(
+  scenario =>
+    (!requestedPlatform || scenario.platform === requestedPlatform) &&
+    (!requestedTheme || scenario.theme === requestedTheme),
+);
+
 export default defineConfig({
   testDir: '../tests/visual',
   fullyParallel: true,
@@ -16,7 +24,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
-  projects: VISUAL_TEST_SCENARIOS.map(scenario => ({
+  projects: selectedScenarios.map(scenario => ({
     name: scenario.name,
     use: {
       ...devices['Desktop Chrome'],
@@ -25,10 +33,18 @@ export default defineConfig({
     },
     testMatch: /.*\.visual\.spec\.ts/,
   })),
-  webServer: {
-    command: 'npm run storybook',
-    url: 'http://localhost:6006',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
-  },
+  webServer: process.env.CI
+    ? {
+        command: 'node scripts/serve-storybook.mjs',
+        url: 'http://localhost:6006',
+        reuseExistingServer: false,
+        timeout: 120 * 1000,
+        cwd: '..',
+      }
+    : {
+        command: 'npm run storybook',
+        url: 'http://localhost:6006',
+        reuseExistingServer: !process.env.CI,
+        timeout: 120 * 1000,
+      },
 });

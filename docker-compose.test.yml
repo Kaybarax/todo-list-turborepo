@@ -40,7 +40,7 @@ services:
   api-test:
     build:
       context: .
-      dockerfile: apps/api/Dockerfile.test
+      dockerfile: apps/apis/nestjs-api/Dockerfile.test
     container_name: todo-api-test
     environment:
       NODE_ENV: test
@@ -55,7 +55,7 @@ services:
     networks:
       - test-network
     volumes:
-      - ./apps/api:/app/apps/api
+      - ./apps/apis/nestjs-api:/app/apps/apis/nestjs-api
       - ./packages:/app/packages
       - ./coverage/api:/app/coverage
     command: pnpm test:api --coverage
@@ -135,7 +135,7 @@ services:
   integration-test:
     build:
       context: .
-      dockerfile: apps/api/Dockerfile.test
+      dockerfile: apps/apis/nestjs-api/Dockerfile.test
     container_name: todo-integration-test
     environment:
       NODE_ENV: test
@@ -150,7 +150,7 @@ services:
     networks:
       - test-network
     volumes:
-      - ./apps/api:/app/apps/api
+      - ./apps/apis/nestjs-api:/app/apps/apis/nestjs-api
       - ./packages:/app/packages
       - ./coverage/integration:/app/coverage
     command: pnpm test:integration --coverage
@@ -159,7 +159,7 @@ services:
   e2e-api:
     build:
       context: .
-      dockerfile: apps/api/Dockerfile
+      dockerfile: apps/apis/nestjs-api/Dockerfile
       target: development
     container_name: todo-e2e-api
     ports:

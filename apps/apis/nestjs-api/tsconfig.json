@@ -9,10 +9,10 @@
     "ignoreDeprecations": "5.0",
     "paths": {
       "@/*": ["src/*"],
-      "@todo/*": ["../../packages/*/src"]
+      "@todo/*": ["../../../packages/*/src"]
     }
   },
   "include": ["src/**/*", "test/**/*", "scripts/**/*"],
   "exclude": ["node_modules", "dist"],
-  "references": [{ "path": "../../packages/services" }]
+  "references": [{ "path": "../../../packages/services" }]
 }

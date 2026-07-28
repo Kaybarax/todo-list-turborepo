@@ -16,6 +16,8 @@ jobs:
   chromatic:
     name: Chromatic Visual Tests
     runs-on: ubuntu-latest
+    env:
+      CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -23,27 +25,33 @@ jobs:
         with:
           fetch-depth: 0 # Required for Chromatic baseline detection
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.0
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build workspace dependencies
+        run: |
+          pnpm --filter @todo/services build
+          pnpm --filter @todo/utils build
 
       - name: Build Storybook
         run: pnpm --filter @todo/ui-mobile build-storybook
 
       - name: Run Chromatic
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
         uses: chromaui/action@v1
         with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/ui-mobile
           buildScriptName: build-storybook
           storybookBuildDir: storybook-static
@@ -60,19 +68,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.0
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build workspace dependencies
+        run: |
+          pnpm --filter @todo/services build
+          pnpm --filter @todo/utils build
 
       - name: Install Playwright
         run: pnpm --filter @todo/ui-mobile exec playwright install --with-deps
@@ -98,19 +111,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.0
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build workspace dependencies
+        run: |
+          pnpm --filter @todo/services build
+          pnpm --filter @todo/utils build
 
       - name: Install Playwright
         run: pnpm --filter @todo/ui-mobile exec playwright install --with-deps
@@ -140,19 +158,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.0
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build workspace dependencies
+        run: |
+          pnpm --filter @todo/services build
+          pnpm --filter @todo/utils build
 
       - name: Install Playwright
         run: pnpm --filter @todo/ui-mobile exec playwright install --with-deps
@@ -160,8 +183,8 @@ jobs:
       - name: Build Storybook
         run: pnpm --filter @todo/ui-mobile build-storybook
 
-      - name: Run visual regression tests
-        run: pnpm --filter @todo/ui-mobile test:visual --platform=${{ matrix.platform }} --theme=${{ matrix.theme }}
+      - name: Run visual regression tests (generate baseline snapshots)
+        run: pnpm --filter @todo/ui-mobile exec playwright test --config=.storybook/playwright-visual.config.ts --update-snapshots
         env:
           PLATFORM: ${{ matrix.platform }}
           THEME: ${{ matrix.theme }}
@@ -172,6 +195,13 @@ jobs:
         with:
           name: screenshots-${{ matrix.platform }}-${{ matrix.theme }}
           path: packages/ui-mobile/screenshots/
+
+      - name: Upload baseline snapshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: visual-snapshots-${{ matrix.platform }}-${{ matrix.theme }}
+          path: packages/ui-mobile/tests/visual/*.spec.ts-snapshots/
 
   report:
     name: Generate Test Report

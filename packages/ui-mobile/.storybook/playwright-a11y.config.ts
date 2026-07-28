@@ -40,10 +40,18 @@ export default defineConfig({
       testMatch: /.*\.a11y\.spec\.ts/,
     },
   ],
-  webServer: {
-    command: 'npm run storybook',
-    url: 'http://localhost:6006',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
-  },
+  webServer: process.env.CI
+    ? {
+        command: 'node scripts/serve-storybook.mjs',
+        url: 'http://localhost:6006',
+        reuseExistingServer: false,
+        timeout: 120 * 1000,
+        cwd: '..',
+      }
+    : {
+        command: 'npm run storybook',
+        url: 'http://localhost:6006',
+        reuseExistingServer: !process.env.CI,
+        timeout: 120 * 1000,
+      },
 });

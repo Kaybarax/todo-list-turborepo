@@ -45,7 +45,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: apps/api/Dockerfile
+      dockerfile: apps/apis/nestjs-api/Dockerfile
       target: production
     container_name: todo-api-prod
     restart: unless-stopped
@@ -73,7 +73,7 @@ services:
   api-bun:
     build:
       context: .
-      dockerfile: apps/api-bun/Dockerfile
+      dockerfile: apps/apis/bun-elysia-api/Dockerfile
       target: production
     container_name: todo-api-bun-prod
     restart: unless-stopped

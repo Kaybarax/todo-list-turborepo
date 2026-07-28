@@ -9,6 +9,7 @@
     "clippy.toml"
   ],
   "globalEnv": ["NODE_ENV", "CI", "ESLINT_USE_FLAT_CONFIG"],
+  "globalPassThroughEnv": ["MONGODB_URI", "REDIS_URI"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

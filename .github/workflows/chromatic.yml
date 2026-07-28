@@ -16,6 +16,8 @@ jobs:
   chromatic-ui-web:
     name: Chromatic UI Web
     runs-on: ubuntu-latest
+    env:
+      CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN_UI_WEB }}
     defaults:
       run:
         working-directory: packages/ui-web
@@ -25,27 +27,33 @@ jobs:
         with:
           fetch-depth: 0 # Required for Chromatic to track changes correctly
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.0
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build workspace dependencies
+        run: |
+          pnpm --filter @todo/services build
+          pnpm --filter @todo/utils build
 
       - name: Build Storybook
         run: pnpm run build-storybook
 
       - name: Publish to Chromatic
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
         uses: chromaui/action@v1
         with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN_UI_WEB }}
+          projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/ui-web
           storybookBuildDir: storybook-static
           exitZeroOnChanges: true # Optional: Allow the workflow to pass even if there are UI changes
@@ -54,6 +62,8 @@ jobs:
   chromatic-ui-mobile:
     name: Chromatic UI Mobile
     runs-on: ubuntu-latest
+    env:
+      CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN_UI_MOBILE }}
     defaults:
       run:
         working-directory: packages/ui-mobile
@@ -78,13 +88,19 @@ jobs:
         run: pnpm install --frozen-lockfile
         working-directory: .
 
+      - name: Build workspace dependencies
+        run: |
+          pnpm --filter @todo/services build
+          pnpm --filter @todo/utils build
+
       - name: Build Storybook
         run: pnpm run build-storybook
 
       - name: Publish to Chromatic
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
         uses: chromaui/action@v1
         with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN_UI_MOBILE }}
+          projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/ui-mobile
           storybookBuildDir: storybook-static
           exitZeroOnChanges: true # Optional: Allow the workflow to pass even if there are UI changes

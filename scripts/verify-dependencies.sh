@@ -154,7 +154,7 @@ verify_packages() {
     local packages
     packages=(
         "apps/web"
-        "apps/api"
+        "apps/apis/nestjs-api"
         "apps/mobile"
         "apps/ingestion"
         "apps/smart-contracts"

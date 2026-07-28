@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/react-vite';
+import { transformWithEsbuild } from 'vite';
 
 const config: StorybookConfig = {
   // Load all stories
@@ -20,6 +21,23 @@ const config: StorybookConfig = {
     reactDocgen: 'react-docgen',
   },
   viteFinal: async config => {
+    config.plugins = [
+      {
+        name: 'transform-ui-kitten-jsx',
+        enforce: 'pre',
+        async transform(code, id) {
+          if (id.includes('/node_modules/@ui-kitten/') && id.endsWith('.js')) {
+            return transformWithEsbuild(code, id, {
+              loader: 'jsx',
+              jsx: 'transform',
+            });
+          }
+          return null;
+        },
+      },
+      ...(config.plugins || []),
+    ];
+
     // Add React Native Web alias for better compatibility
     config.resolve = config.resolve || {};
     // Prefer simple alias mapping to ensure all 'react-native' imports resolve to web
