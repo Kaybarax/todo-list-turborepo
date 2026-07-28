@@ -41,7 +41,7 @@ export default defineConfig({
   ],
   webServer: process.env.CI
     ? {
-        command: 'pnpm exec serve storybook-static -p 6006 -L',
+        command: 'node scripts/serve-storybook.mjs',
         url: 'http://localhost:6006',
         reuseExistingServer: true,
         timeout: 120 * 1000,
