@@ -8,7 +8,7 @@ const COMPONENT_STORIES = [
   'components-button--loading',
   'components-button--disabled',
   'components-card--elevated',
-  'components-card--elevated',
+  'components-card--outlined',
   'components-card--interactive',
   'components-header--basic',
   'components-header--with-both-actions',
