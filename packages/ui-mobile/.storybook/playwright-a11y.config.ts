@@ -45,7 +45,7 @@ export default defineConfig({
         command: 'npx serve storybook-static -p 6006 -L',
         url: 'http://localhost:6006',
         reuseExistingServer: true,
-        timeout: 30 * 1000,
+        timeout: 60 * 1000,
       }
     : {
         command: 'npm run storybook',
