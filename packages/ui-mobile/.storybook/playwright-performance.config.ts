@@ -41,10 +41,11 @@ export default defineConfig({
   ],
   webServer: process.env.CI
     ? {
-        command: 'node node_modules/.bin/serve packages/ui-mobile/storybook-static -p 6006 -L',
+        command: 'node node_modules/serve/build/main.js storybook-static -p 6006 -L --no-clipboard',
         url: 'http://localhost:6006',
         reuseExistingServer: false,
         timeout: 120 * 1000,
+        cwd: '..',
       }
     : {
         command: 'npm run storybook',
