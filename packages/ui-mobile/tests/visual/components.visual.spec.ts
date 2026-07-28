@@ -2,24 +2,24 @@ import { test, expect } from '@playwright/test';
 import { VISUAL_TEST_SCENARIOS, VISUAL_DIFF_THRESHOLDS } from '../../.storybook/visual-tests';
 
 const COMPONENT_STORIES = [
-  'button--primary',
-  'button--secondary',
-  'button--ghost',
-  'button--loading',
-  'button--disabled',
-  'card--default',
-  'card--elevated',
-  'card--interactive',
-  'header--default',
-  'header--with-actions',
-  'header--with-border',
-  'modal--default',
-  'modal--fullscreen',
-  'modal--alert',
-  'tabbar--default',
-  'tabbar--with-badges',
-  'text--heading',
-  'text--body',
+  'components-button--primary',
+  'components-button--secondary',
+  'components-button--ghost',
+  'components-button--loading',
+  'components-button--disabled',
+  'components-card--elevated',
+  'components-card--elevated',
+  'components-card--interactive',
+  'components-header--basic',
+  'components-header--with-both-actions',
+  'components-header--with-border',
+  'components-modal--default',
+  'components-modal--fullscreen-modal',
+  'components-modal--alert',
+  'components-tabbar--basic',
+  'components-tabbar--with-badges',
+  'components-text--headings',
+  'components-text--body-text',
 ];
 
 test.describe('Visual Regression Tests', () => {
@@ -53,7 +53,7 @@ test.describe('Visual Regression Tests', () => {
   });
 
   test('Theme switching visual comparison', async ({ page }) => {
-    const story = 'button--primary';
+    const story = 'components-button--primary';
 
     // Test light theme
     await page.goto(`/iframe.html?id=${story}&globals=theme:light`);
@@ -75,7 +75,7 @@ test.describe('Visual Regression Tests', () => {
   });
 
   test('Responsive breakpoints visual comparison', async ({ page }) => {
-    const story = 'card--default';
+    const story = 'components-card--elevated';
     const breakpoints = [
       { width: 320, height: 568, name: 'mobile-small' },
       { width: 375, height: 812, name: 'mobile-large' },
@@ -99,7 +99,7 @@ test.describe('Visual Regression Tests', () => {
   });
 
   test('Interactive states visual comparison', async ({ page }) => {
-    await page.goto('/iframe.html?id=button--primary');
+    await page.goto('/iframe.html?id=components-button--primary');
     await page.waitForSelector('#storybook-root');
 
     const button = page.locator('button');
@@ -125,9 +125,9 @@ test.describe('Visual Regression Tests', () => {
 
   test('Component variants visual comparison', async ({ page }) => {
     const variants = [
-      { story: 'button--primary', name: 'primary' },
-      { story: 'button--secondary', name: 'secondary' },
-      { story: 'button--ghost', name: 'ghost' },
+      { story: 'components-button--primary', name: 'primary' },
+      { story: 'components-button--secondary', name: 'secondary' },
+      { story: 'components-button--ghost', name: 'ghost' },
     ];
 
     for (const variant of variants) {
@@ -142,7 +142,7 @@ test.describe('Visual Regression Tests', () => {
   });
 
   test('Loading states visual comparison', async ({ page }) => {
-    await page.goto('/iframe.html?id=button--loading');
+    await page.goto('/iframe.html?id=components-button--loading');
     await page.waitForSelector('#storybook-root');
 
     // Wait for loading animation to stabilize
@@ -162,7 +162,7 @@ test.describe('Visual Regression Tests', () => {
 
   test('Error states visual comparison', async ({ page }) => {
     // Test modal with error content
-    await page.goto('/iframe.html?id=modal--alert');
+    await page.goto('/iframe.html?id=components-modal--alert');
     await page.waitForSelector('#storybook-root');
     await page.waitForTimeout(500);
 
